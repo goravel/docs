@@ -1,3 +1,5 @@
+bui# Summary
+
 * [入门指南](start.md)
   * [安装](install.md)
   * [配置信息](config.md)
