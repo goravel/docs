@@ -1,4 +1,4 @@
-### 介绍
+## 介绍
 
 `facades` 为应用的核心功能提供一个「静态」接口。Goravel 自带了很多 `facades`，可以使用大部分功能，在使用时能够提供更加灵活、更加优雅、易于测试的语法。
 
@@ -9,7 +9,7 @@ import "github.com/goravel/framework/support/facades"
 facades.Route.Run(facades.Config.GetString("app.host"))
 ```
 
-### facades 工作原理
+## facades 工作原理
 
 `facades` 一般会在 `ServerProvider` 的 `Register` 或 `Boot` 阶段进行实例化，也可以直接进行赋值，具体根据使用场景不同灵活区分。
 
@@ -34,7 +34,7 @@ func (config *ServiceProvider) Register() {
 }
 ```
 
-### facade 类参考
+## facade 类参考
 
 Facade  |  作用
 ------------- | -------------
