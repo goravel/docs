@@ -16,7 +16,6 @@
     * [路由](cn/基本功能/路由.md)
     * [中间件](cn/基本功能/中间件.md)
     * [控制器](cn/基本功能/控制器.md)
-    * [请求与响应](cn/基本功能/请求与响应.md)
     * [日志](cn/基本功能/日志.md)
   * [综合话题](cn/综合话题/README.md)
     * [Artisan 命令行](cn/综合话题/Artisan.md)
@@ -25,6 +24,8 @@
     * [扩展包开发](cn/综合话题/扩展包开发.md)
     * [队列](cn/综合话题/队列.md)
     * [任务调度](cn/综合话题/任务调度.md)
-  * [ORM](cn/ORM.md)
+  * [ORM](cn/ORM/README.md)
+    * [快速入门](cn/ORM/快速入门.md)
+    * [数据库迁移](cn/ORM/数据库迁移.md)
 
 * [Goravel Documentation](en/README.md)
