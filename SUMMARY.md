@@ -17,7 +17,7 @@
     * [控制器](cn/基本功能/控制器.md)
     * [日志](cn/基本功能/日志.md)
   * [综合话题](cn/综合话题/README.md)
-    * [Artisan 命令行](cn/zong-he-hua-ti/artisan-ming-ling-hang.md)
+    * [Artisan 命令行](cn/综合话题/Artisan命令行.md)
     * [缓存系统](cn/综合话题/缓存系统.md)
     * [邮件发送](cn/综合话题/邮件发送.md)
     * [扩展包开发](cn/综合话题/扩展包开发.md)
