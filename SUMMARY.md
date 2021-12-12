@@ -1,7 +1,6 @@
-# Summary
+# Table of contents
 
 * [LANGS](README.md)
-
 * [Goravel 文档](cn/README.md)
   * [入门指南](cn/入门指南/README.md)
     * [安装](cn/入门指南/安装.md)
@@ -18,7 +17,7 @@
     * [控制器](cn/基本功能/控制器.md)
     * [日志](cn/基本功能/日志.md)
   * [综合话题](cn/综合话题/README.md)
-    * [Artisan 命令行](cn/综合话题/Artisan.md)
+    * [Artisan 命令行](cn/zong-he-hua-ti/artisan-ming-ling-hang.md)
     * [缓存系统](cn/综合话题/缓存系统.md)
     * [邮件发送](cn/综合话题/邮件发送.md)
     * [扩展包开发](cn/综合话题/扩展包开发.md)
@@ -27,5 +26,4 @@
   * [ORM](cn/ORM/README.md)
     * [快速入门](cn/ORM/快速入门.md)
     * [数据库迁移](cn/ORM/数据库迁移.md)
-
 * [Goravel Documentation](en/README.md)
