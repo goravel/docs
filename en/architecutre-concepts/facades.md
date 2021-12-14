@@ -36,12 +36,9 @@ func (config *ServiceProvider) Register() {
 
 ## Facade Class Reference
 
-Facade  |  Action
-------------- | -------------
+Facade   |  Action
+-------- | -------------
 Artisan  |  [Artisan Console](../digging-deeper/artisan-console.md)
-------------- | -------------
-Config  |  [Configuration](../getting-started/configuration.md)
-------------- | -------------
-DB  |  [ORM](../ORM/getting-started.md)
-------------- | -------------
-Route  |  [Roueting](../the-basics/routing.md)
+Config   |  [Configuration](../getting-started/configuration.md)
+DB       |  [ORM](../ORM/getting-started.md)
+Route    |  [Roueting](../the-basics/routing.md)
