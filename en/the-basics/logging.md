@@ -12,16 +12,17 @@ Make custom configurations in `config/logging.php`. Allows to configure differen
 
 ## Available channel drivers
 
-Name     |  Description
--------- | -------------
-`stack`  |  Allow multiple channels
-`single` |  Single log file
-`daily`  |  One log file per day
-`custom` |  Custom drive
+| Name     | Description             |
+| -------- | ----------------------- |
+| `stack`  | Allow multiple channels |
+| `single` | Single log file         |
+| `daily`  | One log file per day    |
+| `custom` | Custom drive            |
 
 ## Write log messages
 
 Available level:
+
 ```
 facades.Log.Trace($message)
 facades.Log.Debug($message)
@@ -35,6 +36,7 @@ facades.Log.Panic($message)
 ## Contextual Information
 
 An array of contextual data may be passed to the log methods. This contextual data will be formatted and displayed with the log message:
+
 ```
 facades.Log.WithFields(logrus.Fields{
 	"goravel": "framework",
@@ -45,6 +47,7 @@ facades.Log.WithFields(logrus.Fields{
 
 If you want to define a completely custom channel, you can specify the `custom` driver type in the `config/logging.php` configuration file.
 Then include a `via` option to implement a `support.Logger` structure:
+
 ```
 //CustomTest
 type CustomTest struct {
@@ -66,6 +69,55 @@ func (custom CustomTest) Handle(configPath string) (logrus.Hook, error) {
     "path":   "storage/logs/goravel-custom.log",//optional
 	"level":  facadesConfig.Env("LOG_LEVEL", "debug"),//optional
 },
+```
+
+Example:
+
+```
+package aliyun
+
+import (
+	"github.com/goravel/framework/support/facades"
+	"github.com/sirupsen/logrus"
+)
+
+type Logger struct {
+}
+
+func (logger Logger) Handle(configPath string) (logrus.Hook, error) {
+	return AliyunLogHook{}, nil
+}
+
+type AliyunLogHook struct {
+}
+
+func (h AliyunLogHook) Levels() []logrus.Level {
+	level := facades.Config.GetString("logging.channels.aliyun.level")
+
+	if level == "error" {
+		return []logrus.Level{
+			logrus.ErrorLevel,
+			logrus.FatalLevel,
+			logrus.PanicLevel,
+		}
+	}
+
+	return []logrus.Level{
+		logrus.TraceLevel,
+		logrus.DebugLevel,
+		logrus.InfoLevel,
+		logrus.WarnLevel,
+		logrus.ErrorLevel,
+		logrus.FatalLevel,
+		logrus.PanicLevel,
+	}
+}
+
+func (h AliyunLogHook) Fire(entry *logrus.Entry) error {
+    // todo logic
+
+	return nil
+}
 ```
 
 ### More
