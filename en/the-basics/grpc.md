@@ -1,0 +1,52 @@
+## Introduction
+
+Grpc module can be operated by `facades.Grpc`.
+
+## Routing File
+
+All routing files can be difined in the `/routes` directory, such as `/routes/grpc.go`. Then register to the `app/providers/grpc_service_provider.go` file, to bind routes.
+
+```
+// routes/grpc.go
+func Grpc() {
+	protos.RegisterUserServer(facades.Grpc.Server(), &controllers.UserController{})
+}
+
+// app/providers/grpc_service_provider.go
+func (router *GrpcServiceProvider) Boot() {
+	routes.Grpc()
+}
+```
+
+## Start Grpc Server
+
+Start Grpc in the `main.go` file.
+
+```
+go facades.Grpc.Run(facades.Config.GetString("grpc.host"))
+```
+
+## Extension
+
+`facades.Grpc` provide extension methods, they can extend Server, for example, the setting of middlewares:
+
+| Name                             | Description         |
+| -------------------------------- | ------------------- |
+| `Server() *grpc.Server`          | Get Server Instance |
+| `SetServer(server *grpc.Server)` | Set Server Instance |
+
+```
+// Set Tracing Analysis Middlewares
+// app/providers/grpc_service_provider.go
+func (router *GrpcServiceProvider) Boot() {
+	tracer, _ := helpers.NewJaegerTracer()
+
+	facades.Grpc.SetServer(grpc.NewServer(grpc.UnaryInterceptor(
+		grpc_middleware.ChainUnaryServer(
+			middleware.OpentracingServer(tracer),
+		),
+	)))
+
+	routes.Grpc()
+}
+```
