@@ -18,6 +18,33 @@ func (router *GrpcServiceProvider) Boot() {
 }
 ```
 
+## Controllers
+
+Controllers can be difined in the `/app/grpc/controllers` directory.
+
+```
+// /app/grpc/controllers/user_controller.go
+package controllers
+
+import (
+	"context"
+	"net/http"
+	"goravel/protos"
+)
+
+type UserController struct {
+}
+
+func (r *UserController) GetUser(ctx context.Context, req *protos.UserRequest) (protoUser *protos.UserResponse, err error) {
+	return &protos.UserResponse{
+		Code: http.StatusOK,
+		Data: &protos.User{
+			Id: user.Id,
+		},
+	}, nil
+}
+```
+
 ## Start Grpc Server
 
 Start Grpc in the `main.go` file.

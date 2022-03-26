@@ -18,6 +18,33 @@ func (router *GrpcServiceProvider) Boot() {
 }
 ```
 
+## 控制器
+
+控制器文件可以定义在 `/app/grpc/controllers` 目录中。
+
+```
+// /app/grpc/controllers/user_controller.go
+package controllers
+
+import (
+	"context"
+	"net/http"
+	"goravel/protos"
+)
+
+type UserController struct {
+}
+
+func (r *UserController) GetUser(ctx context.Context, req *protos.UserRequest) (protoUser *protos.UserResponse, err error) {
+	return &protos.UserResponse{
+		Code: http.StatusOK,
+		Data: &protos.User{
+			Id: user.Id,
+		},
+	}, nil
+}
+```
+
 ## 启动 Grpc 服务器
 
 在 `main.go` 中启动 Grpc
