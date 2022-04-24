@@ -105,20 +105,20 @@ Add `go facades.Schedule.Run()` to the root `main.go` file.
 package main
 
 import (
-	"github.com/goravel/framework/support/facades"
-	"goravel/bootstrap"
+  "github.com/goravel/framework/support/facades"
+  "goravel/bootstrap"
 )
 
 func main() {
-	//This bootstraps the framework and gets it ready for use.
-	bootstrap.Boot()
+  //This bootstraps the framework and gets it ready for use.
+  bootstrap.Boot()
 
-	//Start http server by facades.Route.
-	go facades.Route.Run(facades.Config.GetString("app.host"))
+  //Start http server by facades.Route.
+  go facades.Route.Run(facades.Config.GetString("app.host"))
 
-	//Start schedule by facades.Schedule
-	go facades.Schedule.Run()
+  //Start schedule by facades.Schedule
+  go facades.Schedule.Run()
 
-	select {}
+  select {}
 }
 ```
