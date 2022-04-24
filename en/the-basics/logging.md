@@ -39,7 +39,7 @@ An array of contextual data may be passed to the log methods. This contextual da
 
 ```
 facades.Log.WithFields(logrus.Fields{
-	"goravel": "framework",
+  "goravel": "framework",
 }).Debug("web")
 ```
 
@@ -54,12 +54,12 @@ type CustomTest struct {
 }
 
 func (custom CustomTest) Handle(configPath string) (logrus.Hook, error) {
-	logPath := facades.Config.GetString(configPath + ".path")
+  logPath := facades.Config.GetString(configPath + ".path")
 
-	return lfshook.NewHook(
-		logPath,
-		&formatters.General{},
-	), nil
+  return lfshook.NewHook(
+    logPath,
+    &formatters.General{},
+  ), nil
 }
 
 //logging
@@ -67,7 +67,7 @@ func (custom CustomTest) Handle(configPath string) (logrus.Hook, error) {
     "driver": "custom",
     "via":    CustomTest{},
     "path":   "storage/logs/goravel-custom.log",//optional
-	"level":  facadesConfig.Env("LOG_LEVEL", "debug"),//optional
+  "level":  facadesConfig.Env("LOG_LEVEL", "debug"),//optional
 },
 ```
 
@@ -77,46 +77,46 @@ Example:
 package aliyun
 
 import (
-	"github.com/goravel/framework/support/facades"
-	"github.com/sirupsen/logrus"
+  "github.com/goravel/framework/support/facades"
+  "github.com/sirupsen/logrus"
 )
 
 type Logger struct {
 }
 
 func (logger Logger) Handle(configPath string) (logrus.Hook, error) {
-	return AliyunLogHook{}, nil
+  return AliyunLogHook{}, nil
 }
 
 type AliyunLogHook struct {
 }
 
 func (h AliyunLogHook) Levels() []logrus.Level {
-	level := facades.Config.GetString("logging.channels.aliyun.level")
+  level := facades.Config.GetString("logging.channels.aliyun.level")
 
-	if level == "error" {
-		return []logrus.Level{
-			logrus.ErrorLevel,
-			logrus.FatalLevel,
-			logrus.PanicLevel,
-		}
-	}
+  if level == "error" {
+    return []logrus.Level{
+      logrus.ErrorLevel,
+      logrus.FatalLevel,
+      logrus.PanicLevel,
+    }
+  }
 
-	return []logrus.Level{
-		logrus.TraceLevel,
-		logrus.DebugLevel,
-		logrus.InfoLevel,
-		logrus.WarnLevel,
-		logrus.ErrorLevel,
-		logrus.FatalLevel,
-		logrus.PanicLevel,
-	}
+  return []logrus.Level{
+    logrus.TraceLevel,
+    logrus.DebugLevel,
+    logrus.InfoLevel,
+    logrus.WarnLevel,
+    logrus.ErrorLevel,
+    logrus.FatalLevel,
+    logrus.PanicLevel,
+  }
 }
 
 func (h AliyunLogHook) Fire(entry *logrus.Entry) error {
     // todo logic
 
-	return nil
+  return nil
 }
 ```
 

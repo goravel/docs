@@ -10,7 +10,7 @@
   - [核心架构](cn/核心架构/README.md)
     - [请求周期](cn/核心架构/请求周期.md)
     - [服务提供者](cn/核心架构/服务提供者.md)
-    - [Facades](cn/核心架构/Facades.md)
+    - [Facades](cn/核心架构/facades.md)
   - [基本功能](cn/基本功能/README.md)
     - [路由](cn/基本功能/路由.md)
     - [中间件](cn/基本功能/中间件.md)
