@@ -32,8 +32,8 @@ After generating your command, you should define appropriate values for the sign
 package commands
 
 import (
-	"github.com/goravel/framework/contracts/console"
-	"github.com/urfave/cli/v2"
+  "github.com/goravel/framework/contracts/console"
+  "github.com/urfave/cli/v2"
 )
 
 type SendEmails struct {
@@ -41,23 +41,22 @@ type SendEmails struct {
 
 //Signature The name and signature of the console command.
 func (receiver *SendEmails) Signature() string {
-	return "command:name"
+  return "command:name"
 }
 
 //Description The console command description.
 func (receiver *SendEmails) Description() string {
-	return "Command description"
+  return "Command description"
 }
 
 //Extend The console command extend.
 func (receiver *SendEmails) Extend() console.CommandExtend {
-	return console.CommandExtend{}
+  return console.CommandExtend{}
 }
 
 //Handle Execute the console command.
 func (receiver *SendEmails) Handle(c *cli.Context) error {
-
-	return nil
+  return nil
 }
 ```
 
@@ -77,10 +76,10 @@ Get arguemnts:
 
 ```
 func (receiver *ListCommand) Handle(c *cli.Context) error {
-	name := c.Args().Get(0)
-	email := c.Args().Get(1)
+  name := c.Args().Get(0)
+  email := c.Args().Get(1)
 
-	return nil
+  return nil
 }
 ```
 
@@ -92,16 +91,16 @@ Definition：
 
 ```
 func (receiver *ListCommand) Extend() console.CommandExtend {
-	return console.CommandExtend{
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:    "lang",
-				Value:   "english",// Default
-				Aliases: []string{"l"},// Option shorthand
-				Usage:   "language for the greeting",// Option description
-			},
-		},
-	}
+  return console.CommandExtend{
+    Flags: []cli.Flag{
+      &cli.StringFlag{
+        Name:    "lang",
+        Value:   "english",// Default
+        Aliases: []string{"l"},// Option shorthand
+        Usage:   "language for the greeting",// Option description
+      },
+    },
+  }
 }
 ```
 
@@ -109,9 +108,9 @@ Get：
 
 ```
 func (receiver *ListCommand) Handle(c *cli.Context) error {
-	lang := c.String("lang")
+  lang := c.String("lang")
 
-	return nil
+  return nil
 }
 ```
 
@@ -131,9 +130,9 @@ You can set a set of commands to the same category, convenient in `go run . arti
 ```
 //Extend The console command extend.
 func (receiver *ConsoleMakeCommand) Extend() console.CommandExtend {
-	return console.CommandExtend{
-		Category: "make",
-	}
+  return console.CommandExtend{
+    Category: "make",
+  }
 }
 ```
 
@@ -144,26 +143,26 @@ You can set multiple subcommands for a command:
 ```
 //Extend The console command extend.
 func (receiver *SendEmails) Extend() console.CommandExtend {
-	return console.CommandExtend{
-		Subcommands: []*cli.Command{
-			{
-				Name:  "add",
-				Usage: "add a new template",
-				Action: func(c *cli.Context) error {
-					fmt.Println("new task template: ", c.Args().First())
-					return nil
-				},
-			},
-			{
-				Name:  "remove",
-				Usage: "remove an existing template",
-				Action: func(c *cli.Context) error {
-					fmt.Println("removed task template: ", c.Args().First())
-					return nil
-				},
-			},
-		},
-	}
+  return console.CommandExtend{
+    Subcommands: []*cli.Command{
+      {
+        Name:  "add",
+        Usage: "add a new template",
+        Action: func(c *cli.Context) error {
+          fmt.Println("new task template: ", c.Args().First())
+          return nil
+        },
+      },
+      {
+        Name:  "remove",
+        Usage: "remove an existing template",
+        Action: func(c *cli.Context) error {
+          fmt.Println("removed task template: ", c.Args().First())
+          return nil
+        },
+      },
+    },
+  }
 }
 ```
 
@@ -182,9 +181,9 @@ All of your console commands are registered within your application's `app\conso
 
 ```
 func (kernel Kernel) Commands() []console.Command {
-	return []console.Command{
-		&commands.SendEmails{},
-	}
+  return []console.Command{
+    &commands.SendEmails{},
+  }
 }
 ```
 
@@ -194,7 +193,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 
 ```
 facades.Route.GET("/", func(c *gin.Context) {
-	facades.Artisan.Call("emails")
-	facades.Artisan.Call("emails name --lang chinese") // With arguments and options
+  facades.Artisan.Call("emails")
+  facades.Artisan.Call("emails name --lang chinese") // With arguments and options
 })
 ```

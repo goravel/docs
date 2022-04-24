@@ -32,8 +32,8 @@ go run . artisan make:command SendEmails
 package commands
 
 import (
-	"github.com/goravel/framework/contracts/console"
-	"github.com/urfave/cli/v2"
+  "github.com/goravel/framework/contracts/console"
+  "github.com/urfave/cli/v2"
 )
 
 type SendEmails struct {
@@ -41,23 +41,22 @@ type SendEmails struct {
 
 //Signature The name and signature of the console command.
 func (receiver *SendEmails) Signature() string {
-	return "emails"
+  return "emails"
 }
 
 //Description The console command description.
 func (receiver *SendEmails) Description() string {
-	return "Command description"
+  return "Command description"
 }
 
 //Extend The console command extend.
 func (receiver *SendEmails) Extend() console.CommandExtend {
-	return console.CommandExtend{}
+  return console.CommandExtend{}
 }
 
 //Handle Execute the console command.
 func (receiver *SendEmails) Handle(c *cli.Context) error {
-
-	return nil
+  return nil
 }
 ```
 
@@ -77,10 +76,10 @@ go run . artisan emails NAME EMAIL
 
 ```
 func (receiver *ListCommand) Handle(c *cli.Context) error {
-	name := c.Args().Get(0)
-	email := c.Args().Get(1)
+  name := c.Args().Get(0)
+  email := c.Args().Get(1)
 
-	return nil
+  return nil
 }
 ```
 
@@ -92,16 +91,16 @@ func (receiver *ListCommand) Handle(c *cli.Context) error {
 
 ```
 func (receiver *ListCommand) Extend() console.CommandExtend {
-	return console.CommandExtend{
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:    "lang",
-				Value:   "english",// 默认值
-				Aliases: []string{"l"},// 选项简写
-				Usage:   "language for the greeting",// 选项说明
-			},
-		},
-	}
+  return console.CommandExtend{
+    Flags: []cli.Flag{
+      &cli.StringFlag{
+        Name:    "lang",
+        Value:   "english",// 默认值
+        Aliases: []string{"l"},// 选项简写
+        Usage:   "language for the greeting",// 选项说明
+      },
+    },
+  }
 }
 ```
 
@@ -109,9 +108,9 @@ func (receiver *ListCommand) Extend() console.CommandExtend {
 
 ```
 func (receiver *ListCommand) Handle(c *cli.Context) error {
-	lang := c.String("lang")
+  lang := c.String("lang")
 
-	return nil
+  return nil
 }
 ```
 
@@ -131,9 +130,9 @@ go run . artisan emails -l chinese // 缩写
 ```
 //Extend The console command extend.
 func (receiver *ConsoleMakeCommand) Extend() console.CommandExtend {
-	return console.CommandExtend{
-		Category: "make",
-	}
+  return console.CommandExtend{
+    Category: "make",
+  }
 }
 ```
 
@@ -144,26 +143,26 @@ func (receiver *ConsoleMakeCommand) Extend() console.CommandExtend {
 ```
 //Extend The console command extend.
 func (receiver *SendEmails) Extend() console.CommandExtend {
-	return console.CommandExtend{
-		Subcommands: []*cli.Command{
-			{
-				Name:  "add",
-				Usage: "add a new template",
-				Action: func(c *cli.Context) error {
-					fmt.Println("new task template: ", c.Args().First())
-					return nil
-				},
-			},
-			{
-				Name:  "remove",
-				Usage: "remove an existing template",
-				Action: func(c *cli.Context) error {
-					fmt.Println("removed task template: ", c.Args().First())
-					return nil
-				},
-			},
-		},
-	}
+  return console.CommandExtend{
+    Subcommands: []*cli.Command{
+      {
+        Name:  "add",
+        Usage: "add a new template",
+        Action: func(c *cli.Context) error {
+          fmt.Println("new task template: ", c.Args().First())
+          return nil
+        },
+      },
+      {
+        Name:  "remove",
+        Usage: "remove an existing template",
+        Action: func(c *cli.Context) error {
+          fmt.Println("removed task template: ", c.Args().First())
+          return nil
+        },
+      },
+    },
+  }
 }
 ```
 
@@ -182,9 +181,9 @@ go run . artisan emails remove
 
 ```
 func (kernel Kernel) Commands() []console.Command {
-	return []console.Command{
-		&commands.SendEmails{},
-	}
+  return []console.Command{
+    &commands.SendEmails{},
+  }
 }
 ```
 
@@ -194,7 +193,7 @@ func (kernel Kernel) Commands() []console.Command {
 
 ```
 facades.Route.GET("/", func(c *gin.Context) {
-	facades.Artisan.Call("emails")
-	facades.Artisan.Call("emails name --lang chinese") // 携带参数与选项
+  facades.Artisan.Call("emails")
+  facades.Artisan.Call("emails name --lang chinese") // 携带参数与选项
 })
 ```
