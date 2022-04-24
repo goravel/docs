@@ -2,7 +2,7 @@
 
 English | [中文](../cn/README.md)
 
-# Abuout Goravel
+# About Goravel
 
 Goravel is a web application framework with complete functions and good scalability. As a starting scaffolding to help
 Golang developers quickly build their own applications.
@@ -15,8 +15,10 @@ Golang developers quickly build their own applications.
 - [x] Migrate
 - [x] Logger
 - [x] Cache
+- [x] Grpc
+- [x] Artisan Console
+- [x] Task Scheduling
 - [ ] Queue
-- [ ] Schedule
 - [ ] Event
 - [ ] Mail
 
