@@ -9,12 +9,12 @@ Grpc 模块可以使用 `facades.Grpc` 进行操作。
 ```
 // routes/grpc.go
 func Grpc() {
-	protos.RegisterUserServer(facades.Grpc.Server(), &controllers.UserController{})
+  protos.RegisterUserServer(facades.Grpc.Server(), &controllers.UserController{})
 }
 
 // app/providers/grpc_service_provider.go
 func (router *GrpcServiceProvider) Boot() {
-	routes.Grpc()
+  routes.Grpc()
 }
 ```
 
@@ -27,21 +27,21 @@ func (router *GrpcServiceProvider) Boot() {
 package controllers
 
 import (
-	"context"
-	"net/http"
-	"goravel/protos"
+  "context"
+  "net/http"
+  "goravel/protos"
 )
 
 type UserController struct {
 }
 
 func (r *UserController) GetUser(ctx context.Context, req *protos.UserRequest) (protoUser *protos.UserResponse, err error) {
-	return &protos.UserResponse{
-		Code: http.StatusOK,
-		Data: &protos.User{
-			Id: user.Id,
-		},
-	}, nil
+  return &protos.UserResponse{
+    Code: http.StatusOK,
+    Data: &protos.User{
+      Id: user.Id,
+    },
+  }, nil
 }
 ```
 
@@ -66,14 +66,14 @@ go facades.Grpc.Run(facades.Config.GetString("grpc.host"))
 // 设置链路跟踪中间件
 // app/providers/grpc_service_provider.go
 func (router *GrpcServiceProvider) Boot() {
-	tracer, _ := helpers.NewJaegerTracer()
+  tracer, _ := helpers.NewJaegerTracer()
 
-	facades.Grpc.SetServer(grpc.NewServer(grpc.UnaryInterceptor(
-		grpc_middleware.ChainUnaryServer(
-			middleware.OpentracingServer(tracer),
-		),
-	)))
+  facades.Grpc.SetServer(grpc.NewServer(grpc.UnaryInterceptor(
+    grpc_middleware.ChainUnaryServer(
+      middleware.OpentracingServer(tracer),
+    ),
+  )))
 
-	routes.Grpc()
+  routes.Grpc()
 }
 ```
