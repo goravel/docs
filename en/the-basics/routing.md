@@ -9,6 +9,9 @@ All routing files are defined in the `/routes` directory. The framework defaults
 You can also perform more fine-grained management based on this method. You can add routing files under the `routes` directory, and then register in the `app/providers/route_service_provider.go` file.
 
 ## Start HTTP Server
+
+Start the HTTP server in `main.go` in the root directory.
+
 ```
 facades.Route.Run("127.0.0.1:3000")
 // OR
@@ -18,6 +21,7 @@ facades.Route.Run(facades.Config.GetString("app.host"))
 ## Basic Routing
 
 You can define a very simple route in the form of a closure:
+
 ```
 facades.Route.GET("/", func(c *gin.Context) {
     c.JSON(200, gin.H{
@@ -27,6 +31,7 @@ facades.Route.GET("/", func(c *gin.Context) {
 ```
 
 ### Available Routing Methods
+
 ```
 facades.Route.GET("/someGet", getting)
 facades.Route.POST("/somePost", posting)
@@ -38,6 +43,7 @@ facades.Route.OPTIONS("/someOptions", options)
 ```
 
 ### Routing Parameters
+
 ```
 facades.Route.GET("/user/:name", func(c *gin.Context) {
     name := c.Param("name")
@@ -46,6 +52,7 @@ facades.Route.GET("/user/:name", func(c *gin.Context) {
 ```
 
 ### Routing Queries
+
 ```
 router.GET("/welcome", func(c *gin.Context) {
     firstname := c.DefaultQuery("firstname", "Guest")
