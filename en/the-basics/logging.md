@@ -46,32 +46,34 @@ facades.Log.WithFields(logrus.Fields{
 ## Create a custom channel
 
 If you want to define a completely custom channel, you can specify the `custom` driver type in the `config/logging.php` configuration file.
-Then include a `via` option to implement a `support.Logger` structure:
+Then include a `via` option to implement a `framework\contracts\log\Logger` structure:
 
 ```
-//CustomTest
-type CustomTest struct {
-}
-
-func (custom CustomTest) Handle(configPath string) (logrus.Hook, error) {
-  logPath := facades.Config.GetString(configPath + ".path")
-
-  return lfshook.NewHook(
-    logPath,
-    &formatters.General{},
-  ), nil
-}
-
-//logging
+//config/logging.go
 "custom": map[string]interface{}{
     "driver": "custom",
     "via":    CustomTest{},
-    "path":   "storage/logs/goravel-custom.log",//optional
-  "level":  facadesConfig.Env("LOG_LEVEL", "debug"),//optional
+    "path":   "storage/logs/goravel-custom.log",//选配
+    "level":  facadesConfig.Env("LOG_LEVEL", "debug"),//选配
 },
 ```
 
-Example:
+### 编写驱动
+
+Implement `framework\contracts\log\Logger` interface.
+
+```
+//framework\contracts\log\Logger
+package log
+
+import "github.com/sirupsen/logrus"
+
+type Logger interface {
+  Handle(configPath string) (logrus.Hook, error)
+}
+```
+
+files can be stored in the `app/extensions` folder (modifiable). Example:
 
 ```
 package aliyun
@@ -114,7 +116,10 @@ func (h AliyunLogHook) Levels() []logrus.Level {
 }
 
 func (h AliyunLogHook) Fire(entry *logrus.Entry) error {
-    // todo logic
+  // todo logic
+  level := entry.Level.String()
+	errTime := entry.Time.String()
+	message := entry.Message
 
   return nil
 }
