@@ -16,6 +16,7 @@ You can create a custom model based on the model file `app/models/user.go` that 
 2. Use the plural form of the model "snake naming" as the table name;
 
 ## Query
+
 ```
 facades.DB.First(&user, 10)
 // SELECT * FROM users WHERE id = 10;
@@ -28,12 +29,14 @@ facades.DB.Find(&users, []int{1,2,3})
 ```
 
 ## Create
+
 ```
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 result := facades.DB.Create(&user)
 ```
 
 ## Update
+
 ```
 facades.DB.First(&user)
 user.Name = "jinzhu 2"
@@ -44,22 +47,23 @@ facades.DB.Save(&user)
 facades.DB.Model(&User{}).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE active=true;
 
-db.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
+facades.DB.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
 // UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 ```
 
 ## Delete
+
 ```
-db.Delete(&email)
+facades.DB.Delete(&email)
 // DELETE from emails where id = 10;
 
-db.Where("name = ?", "jinzhu").Delete(&email)
+facades.DB.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 
-db.Delete(&User{}, 10)
+facades.DB.Delete(&User{}, 10)
 // DELETE FROM users WHERE id = 10;
 ```
 
 ## More
 
-See [go-gorm/gorm](https://github.com/go-gorm/gorm)  
+See [go-gorm/gorm](https://github.com/go-gorm/gorm)
