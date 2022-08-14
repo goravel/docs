@@ -82,10 +82,18 @@ func main() {
   bootstrap.Boot()
 
   // Start http server by facades.Route.
-  go facades.Route.Run(facades.Config.GetString("app.host"))
+  go func() {
+    if err := facades.Route.Run(facades.Config.GetString("app.host")); err != nil {
+      facades.Log.Errorf("Route run error: %v", err)
+    }
+  }()
 
   // Start queue server by facades.Queue.
-  go facades.Queue.Worker(queue.Args{}).Run()
+  go func() {
+    if err := facades.Queue.Worker(queue.Args{}).Run(); err != nil {
+      facades.Log.Errorf("Queue run error: %v", err)
+    }
+  }()
 
   select {}
 }
@@ -95,14 +103,22 @@ Different parameters can be passed in the `facades.Queue.Worker` method, you can
 
 ```
 // No parameters, default listens to the configuration in the `config/queue.go`, and the number of concurrency is 1
-go facades.Queue.Worker(queue.Args{}).Run()
+go func() {
+    if err := facades.Queue.Worker(queue.Args{}).Run(); err != nil {
+      facades.Log.Errorf("Queue run error: %v", err)
+    }
+  }()
 
 // Monotor processing queue for redis link, and the number of concurrency is 10
-go facades.Queue.Worker(queue.Args{
-  Connection: "redis",
-  Queue: "processing",
-  Concurrent: 10,
-}).Run()
+go func() {
+    if err := facades.Queue.Worker(queue.Args{
+      Connection: "redis",
+      Queue: "processing",
+      Concurrent: 10,
+    }).Run(); err != nil {
+      facades.Log.Errorf("Queue run error: %v", err)
+    }
+  }()
 ```
 
 ## Dispatching Jobs
@@ -198,4 +214,37 @@ You may chain the `onConnection` and `onQueue` methods together to specify the c
 
 ```
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
+```
+
+## `queue.Arg.Type` Supported Types
+
+```
+bool
+int
+int8
+int16
+int32
+int64
+uint
+uint8
+uint16
+uint32
+uint64
+float32
+float64
+string
+[]bool
+[]int
+[]int8
+[]int16
+[]int32
+[]int64
+[]uint
+[]uint8
+[]uint16
+[]uint32
+[]uint64
+[]float32
+[]float64
+[]string
 ```

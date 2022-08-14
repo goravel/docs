@@ -50,7 +50,11 @@ func (r *UserController) GetUser(ctx context.Context, req *protos.UserRequest) (
 在 `main.go` 中启动 Grpc
 
 ```
-go facades.Grpc.Run(facades.Config.GetString("grpc.host"))
+go func() {
+  if err := facades.Grpc.Run(facades.Config.GetString("grpc.host")); err != nil {
+    facades.Log.Errorf("Grpc run error: %v", err)
+  }
+}()
 ```
 
 ## 扩展

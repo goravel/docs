@@ -1,12 +1,12 @@
 ## Server Requirements
 
-* Golang >= 1.16
+- Golang >= 1.18
 
 ## Installation
 
 ```shell
 // Download framework
-git clone git@github.com:goravel/goravel.git 
+git clone git@github.com:goravel/goravel.git
 
 // Installation dependencies
 cd goravel && go mod tidy
