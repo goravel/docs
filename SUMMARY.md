@@ -49,7 +49,7 @@
     - [Cache](en/digging-deeper/cache.md)
     - [Task Scheduling](en/digging-deeper/task-scheduling.md)
     - [Mail](en/digging-deeper/mail.md)
-    - [Queues](en/digging-deeper/queues.md)
+    - [Queue](en/digging-deeper/queue.md)
   - [ORM](en/ORM/README.md)
     - [Getting Started](en/ORM/getting-started.md)
     - [Migrations](en/ORM/migrations.md)
