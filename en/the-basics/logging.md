@@ -6,7 +6,7 @@ This module can be operated with `facades.Log`, `facades.Log` is an instance of 
 
 ## Configuration
 
-Make custom configurations in `config/logging.php`. Allows to configure different log channels, you can enter the configuration file to view.
+Make custom configurations in `config/logging.go`. Allows to configure different log channels, you can enter the configuration file to view.
 
 `Goravel` uses `stack` channel to record logs by default. `stack` allows logs to be forwarded to multiple channels.
 
@@ -45,7 +45,7 @@ facades.Log.WithFields(logrus.Fields{
 
 ## Create a custom channel
 
-If you want to define a completely custom channel, you can specify the `custom` driver type in the `config/logging.php` configuration file.
+If you want to define a completely custom channel, you can specify the `custom` driver type in the `config/logging.go` configuration file.
 Then include a `via` option to implement a `framework\contracts\log\Logger` structure:
 
 ```

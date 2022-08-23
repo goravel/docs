@@ -35,9 +35,9 @@ func (receiver *EventServiceProvider) listen() map[events.Event][]events.Listene
 You can use the `make:event` and `make:listener` Artisan commands to generate individual events and listeners:
 
 ```
-php artisan make:event PodcastProcessed
+go run . artisan make:event PodcastProcessed
 
-php artisan make:listener SendPodcastNotification
+go run . artisan make:listener SendPodcastNotification
 ```
 
 ## Defining Events

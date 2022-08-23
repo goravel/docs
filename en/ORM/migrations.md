@@ -7,7 +7,7 @@ Goravel's data migration function is supported by the well-known [golang-migrate
 ## Create Migrations
 
 Use the `make:migration` command to create the migration:
-`go run . make:migration create_users_table`
+`go run . artisan make:migration create_users_table`
 
 This command will generate migration files in the `database/migrations` directory. All migration files start with a timestamp. Goravel will use this as the execution order of the migration files. All migration files are `.sql` files, and you can customize the table structure using SQL statements.
 
@@ -16,6 +16,7 @@ The migration command will generate two migration files at the same time: `***.u
 ## Quickly Create
 
 Using `craete_users_table` will automatically generate a table containing the infrastructure of `users`:
+
 ```
 CREATE TABLE users (
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -28,17 +29,20 @@ CREATE TABLE users (
 ```
 
 The realization principle is to match according to the regularity:
+
 ```
 ^create_(\w+)_table$
 ^create_(\w+)$
 ```
 
 Using `add_avatar_to_users_table` will automatically generate a structure for adding fields to the `users` table:
+
 ```
 ALTER TABLE users ADD column varchar(255) COMMENT '';
 ```
 
 The realization principle is to match according to the regularity:
+
 ```
 _(to|from|in)_(\w+)_table$
 _(to|from|in)_(\w+)$

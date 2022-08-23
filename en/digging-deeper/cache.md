@@ -4,7 +4,7 @@ Goravel provides an expandable cache module. This module can be operated using `
 
 ## Configuration
 
-Make all custom configurations in `config/cache.php`. Different cache drivers are allowed to be configured. By default, `redis` is used. You can also customize the driver by entering the configuration file to view it.
+Make all custom configurations in `config/cache.go`. Different cache drivers are allowed to be configured. By default, `redis` is used. You can also customize the driver by entering the configuration file to view it.
 
 ## Available Cache Drivers
 
@@ -107,11 +107,11 @@ res := facades.Cache.Flush()
 
 ### Configuration
 
-If you want to define a completely custom driver, you can specify the `custom` driver type in the `config/cache.php` configuration file.
+If you want to define a completely custom driver, you can specify the `custom` driver type in the `config/cache.go` configuration file.
 Then include a `via` option to implement a `framework\contracts\cache\Store` structure:
 
 ```
-//config/cache.php
+//config/cache.go
 "stores": map[string]interface{}{
     "redis": map[string]interface{}{
         "driver":     "redis",
