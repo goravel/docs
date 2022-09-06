@@ -5,6 +5,7 @@ export default defineUserConfig({
   lang: "en-US",
   title: "Goravel",
   description: "A web application framework",
+  base: "/docs-web/",
   locales: {
     "/": {
       lang: "en-US",
