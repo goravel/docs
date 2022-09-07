@@ -1,3 +1,7 @@
+# 配置信息
+
+[[toc]]
+
 ## 介绍
 
 Goravel 框架所有配置文件都保存在 `config` 目录中。可以查看具体说明，根据项目需要灵活配置。
@@ -13,7 +17,7 @@ Goravel 框架所有配置文件都保存在 `config` 目录中。可以查看�
 
 ## 环境变量类型
 
-支持：string、int、bool、empty
+支持：string、int、bool
 
 ## 检索环境配置
 

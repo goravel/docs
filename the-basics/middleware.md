@@ -1,3 +1,7 @@
+# Middleware
+
+[[toc]]
+
 ## Introduction
 
 Middleware can play a role in filtering HTTP requests that enter the application. For example, `Goravel` provides a CORS middleware, which can be responsible for adding appropriate response headers to all `response`.

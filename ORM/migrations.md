@@ -1,3 +1,7 @@
+# Migrations
+
+[[toc]]
+
 ## Introduction
 
 When multiple people collaborate to develop applications, if there is no unified specification for the synchronization database structure to ensure that everyone's local data is consistent, it will be a disaster. Database migration is to solve this problem. The database structure is version controlled to ensure the consistency of the database structure of all developers.

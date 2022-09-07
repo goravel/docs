@@ -1,3 +1,7 @@
+# 路由
+
+[[toc]]
+
 ## 介绍
 
 Goravel 路由模块可以使用 `facades.Route` 进行操作，`facades.Route` 是知名 HTTP 框架 [gin-gonic/gin](https://github.com/gin-gonic/gin) 的一个实例，使用方法与 `gin-gonic/gin` 完全一致。

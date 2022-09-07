@@ -1,3 +1,7 @@
+# Events
+
+[[toc]]
+
 ## Introduction
 
 Goravel's events provide a simple observer pattern implementation, allowing you to subscribe and listen for various events that occur within your application. Event classes are typically stored in the `app/events` directory, while their listeners are stored in `app/listeners`. Don't worry if you don't see these directories in your application as they will be created for you as you generate events and listeners using Artisan console commands.

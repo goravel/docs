@@ -1,3 +1,7 @@
+# 快速入门
+
+[[toc]]
+
 ## 介绍
 
 Goravel 路由模块可以使用 `facades.DB` 进行操作，`facades.DB` 是知名 ORM 框架 [go-gorm/gorm](https://github.com/go-gorm/gorm) 的一个实例，使用方法与 `go-gorm/gorm` 完全一致。

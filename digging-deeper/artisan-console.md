@@ -1,3 +1,7 @@
+# Artisan Console
+
+[[toc]]
+
 ## Introduction
 
 Artisan is the command line interface included with Goravel, the module can be operated using `facades.Cache`. It provide a number of helpful commands that can assist you while you build your application. The underlying layer uses [urfave/cli](https://github.com/urfave/cli) to realize the function. It's To view a list of all available Artisan commands, you may use the list command:

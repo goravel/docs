@@ -1,6 +1,12 @@
+# Compile
+
+[[toc]]
+
 ## Regular compilation
 
-`go build .`
+```
+go build .
+```
 
 ## Static compilation
 

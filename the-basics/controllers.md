@@ -1,3 +1,7 @@
+# Controllers
+
+[[toc]]
+
 ## Introduction
 
 Instead of defining all request processing logic in the form of a closure in a separate route, a controller can be used for integration. The controllers are stored in the `app/http/controllers` directory.
