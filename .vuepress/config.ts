@@ -1,10 +1,36 @@
 import { defineUserConfig } from "vuepress";
 import { defaultTheme } from "vuepress";
+import { docsearchPlugin } from "@vuepress/plugin-docsearch";
 
 export default defineUserConfig({
   lang: "en-US",
   title: "Goravel",
   description: "A web application framework",
+  plugins: [
+    docsearchPlugin({
+      appId: "4J45WOFT67",
+      apiKey: "7792b58507cf7d450abb1f287f88e3bb",
+      indexName: "goravel",
+      locales: {
+        "/": {
+          placeholder: "Search Documentation",
+          translations: {
+            button: {
+              buttonText: "Search",
+            },
+          },
+        },
+        "/zh/": {
+          placeholder: "搜索文档",
+          translations: {
+            button: {
+              buttonText: "搜索文档",
+            },
+          },
+        },
+      },
+    }),
+  ],
   locales: {
     "/": {
       lang: "en-US",
