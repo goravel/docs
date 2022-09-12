@@ -1,3 +1,7 @@
+# Routing
+
+[[toc]]
+
 ## Introduction
 
 Goravel routing module can use `facades.Route` to operate, `facades.Route` is an example of well-known HTTP framework [gin-gonic/gin](https://github.com/gin-gonic/gin), the usage is exactly the same as `gin-gonic/gin`.

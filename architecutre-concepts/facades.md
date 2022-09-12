@@ -1,3 +1,7 @@
+# Facades
+
+[[toc]]
+
 ## Introduction
 
 `facades` provide a "static" interface for the core functionality of the application. Goravel comes with a lot of `facades`, you can use more of the functions, and can provide a more flexible, more elegant, and easy-to-test syntax when using it.

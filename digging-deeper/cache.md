@@ -1,3 +1,7 @@
+# Cache
+
+[[toc]]
+
 ## Introduction
 
 Goravel provides an expandable cache module. This module can be operated using `facades.Cache`.

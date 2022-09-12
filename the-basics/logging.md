@@ -1,3 +1,7 @@
+# Logging
+
+[[toc]]
+
 ## Introduction
 
 In order to help you understand the running status of the application, Goravel provides a powerful log service that can record log messages and system errors to a file or other channels.

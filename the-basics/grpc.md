@@ -1,3 +1,7 @@
+# Grpc
+
+[[toc]]
+
 ## Introduction
 
 Grpc module can be operated by `facades.Grpc`.

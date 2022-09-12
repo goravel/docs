@@ -1,3 +1,7 @@
+# Getting Started
+
+[[toc]]
+
 ## Introduction
 
 Goravel routing module can use `facades.DB` to operate, `facades.DB` is an instance of well-known ORM framework [go-gorm/gorm](https://github.com/go-gorm/gorm), the usage method is exactly the same as that of `go-gorm/gorm`.

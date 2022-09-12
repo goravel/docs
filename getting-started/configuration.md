@@ -1,3 +1,7 @@
+# Configuration
+
+[[toc]]
+
 ## Introduction
 
 All configuration files of the Goravel framework are stored in the `config` directory. You can view specific instructions and configure flexibly according to project needs.
@@ -14,7 +18,7 @@ In addition, if an intruder gains access to your code repository, there will be 
 
 ## Environment Variable Types
 
-Support：string、int、bool、empty
+Support：string、int、bool
 
 ## Retrieve Environment Configuration
 
