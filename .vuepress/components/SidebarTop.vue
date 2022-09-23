@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" style="width: 260px; margin: 0 auto">
     <!-- sidebar-top -->
     <ins
       class="adsbygoogle"
