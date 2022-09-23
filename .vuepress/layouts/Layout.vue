@@ -4,7 +4,7 @@ import ParentLayout from "@vuepress/theme-default/layouts/Layout.vue";
 
 <template>
   <ParentLayout>
-    <template #sidebar-bottom>
+    <template #sidebar-top>
       <sidebar-top />
     </template>
   </ParentLayout>
