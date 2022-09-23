@@ -4,6 +4,10 @@ import { docsearchPlugin } from "@vuepress/plugin-docsearch";
 import taskLists from "markdown-it-task-lists";
 import { getZhSidebar } from "./config/sidebar/zh";
 import { getEnSidebar } from "./config/sidebar/en";
+import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
+import { getDirname, path } from "@vuepress/utils";
+
+const __dirname = getDirname(import.meta.url);
 
 export default defineUserConfig({
   lang: "en-US",
@@ -13,9 +17,9 @@ export default defineUserConfig({
     [
       "script",
       {
-        "data-ad-client": "ca-pub-4978322804450032",
+        crossorigin: "anonymous",
         async: true,
-        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
+        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4978322804450032",
       },
     ],
     [
@@ -32,6 +36,11 @@ export default defineUserConfig({
     ],
   ],
   plugins: [
+    registerComponentsPlugin({
+      components: {
+        SidebarTop: path.resolve(__dirname, "./components/SidebarTop.vue"),
+      },
+    }),
     docsearchPlugin({
       appId: "4J45WOFT67",
       apiKey: "7792b58507cf7d450abb1f287f88e3bb",
