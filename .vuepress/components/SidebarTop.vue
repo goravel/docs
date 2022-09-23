@@ -3,11 +3,9 @@
     <!-- sidebar-top -->
     <ins
       class="adsbygoogle"
-      style="display: block"
+      style="display: inline-block; width: 260px; height: 160px"
       data-ad-client="ca-pub-4978322804450032"
       data-ad-slot="9393443865"
-      data-ad-format="auto"
-      data-full-width-responsive="true"
     ></ins>
   </div>
 </template>
