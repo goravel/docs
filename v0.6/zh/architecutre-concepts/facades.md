@@ -4,12 +4,12 @@
 
 ## 介绍
 
-`facades` 为应用的核心功能提供一个「静态」接口，能够提供更加灵活、更加优雅、易于测试的语法。
+`facades` 为应用的核心功能提供一个「静态」接口。Goravel 自带了很多 `facades`，可以使用大部分功能，在使用时能够提供更加灵活、更加优雅、易于测试的语法。
 
-Goravel 所有的 `facades` 都定义在 `github.com/goravel/framework/facades` 下。我们可以很轻松的使用 `facades`：
+Goravel 所有的 `facades` 都定义在 `github.com/goravel/framework/support/facades` 下。我们可以很轻松的使用 `facades`：
 
 ```
-import "github.com/goravel/framework/facades"
+import "github.com/goravel/framework/support/facades"
 
 facades.Route.Run(facades.Config.GetString("app.host"))
 ```

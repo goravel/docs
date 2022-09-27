@@ -40,15 +40,11 @@ The `storage` directory contains the `logs` directory, and the `logs` directory 
 
 ### `console` Directory
 
-The `console` directory contains all the custom `Artisan` commands of the application, and the console boot file `kernel.go`, which can be registered in this file [Task Scheduling](../digging-deeper/task-scheduling.md)
+The `console` directory contains all the custom Artisan commands of the application, and the console boot file `kernel.go`, which can be registered in this file [Task Scheduling](../digging-deeper/task-scheduling.md)
 
 ### `http` Directory
 
 The `http` directory contains controllers, middleware, etc., and almost all requests that enter the application via the Web are processed here.
-
-### `grpc` Directory
-
-The `grpc` directory contains controllers, middleware, etc., and almost all requests that enter the application via the Grpc are processed here.
 
 ### `models` Directory
 

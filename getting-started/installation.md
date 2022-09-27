@@ -24,18 +24,28 @@ go run . artisan key:generate
 
 ## Start HTTP Service
 
-`go run .`
+```
+go run .
+```
 
-Built-in [cosmtrek/air](https://github.com/cosmtrek/air) configuration file, which can be used directly.
+### Live reload
 
-`air`
+Built-in [cosmtrek/air](https://github.com/cosmtrek/air) configuration file which can be used directly.
+
+```
+air
+```
 
 ## Configuration
 
 ### Configuration files
 
-All configuration files of the Goravel framework are placed in the `config` directory. No configuration item has a comment, you can adjust it according to your own needs.
+All configuration files of the Goravel framework are placed in the `config` directory. All configuration items has annotations, you can adjust it according to your needs.
 
 ### Application key
 
-After Goravel is installed locally, the application key is generated. After running the `go run. Artisan key:generate` command, a 32-bit string will be generated on the `APP_KEY` key of the `.env` file. This key is mainly used for data encryption and decryption.
+You need to generate the application key after Goravel is installed locally. Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
+
+```
+go run. artisan key:generate
+```

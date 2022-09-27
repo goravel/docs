@@ -4,12 +4,12 @@
 
 ## Introduction
 
-`facades` provide a "static" interface for the core functionality of the application and provide a more flexible, more elegant, and easy-to-test syntax.
+`facades` provide a "static" interface for the core functionality of the application. Goravel comes with a lot of `facades`, you can use more of the functions, and can provide a more flexible, more elegant, and easy-to-test syntax when using it.
 
-All `facades` of Goravel are defined under `github.com/goravel/framework/facades`. We can easily use `facades`:
+All `facades` of Goravel are defined under `github.com/goravel/framework/support/facades`. We can easily use `facades`:
 
 ```
-import "github.com/goravel/framework/facades"
+import "github.com/goravel/framework/support/facades"
 
 facades.Route.Run(facades.Config.GetString("app.host"))
 ```
