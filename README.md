@@ -7,6 +7,12 @@ English | [中文](../zh/README.md)
 Goravel is a web application framework with complete functions and good scalability. As a starting scaffolding to help
 Golang developers quickly build their own applications.
 
+框架与 [Laravel](https://github.com/laravel/laravel) 保持高度一致，让 PHPer 不用学习新的框架，也可以愉快的写 Golang！
+
+Goravel and Laravel remain highly consistent, let PHPer write Golang happily without learning a new framework!
+
+Tribute Laravel!
+
 ## Main Function
 
 - [x] Config
@@ -28,12 +34,6 @@ Golang developers quickly build their own applications.
 Online documentation [https://www.goravel.dev/en](https://www.goravel.dev/en)
 
 > To optimize the documentation, please submit a PR to the documentation repository [https://github.com/goravel/docs](https://github.com/goravel/docs)
-
-## Tribute
-
-The framework refers to the design ideas of [Laravel](https://github.com/laravel/laravel);
-
-The documentation refers to the content of [Laravel](https://laravel.com/docs/8.x);
 
 ## License
 

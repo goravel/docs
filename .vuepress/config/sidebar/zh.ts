@@ -51,17 +51,17 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/the-basics/routing",
         },
         {
-          text: "中间件",
+          text: "HTTP 中间件",
           link: "/zh/the-basics/middleware",
         },
         {
           text: "控制器",
           link: "/zh/the-basics/controllers",
         },
-        {
-          text: "响应",
-          link: "/zh/the-basics/response",
-        },
+        // {
+        //   text: "响应",
+        //   link: "/zh/the-basics/response",
+        // },
         {
           text: "Grpc",
           link: "/zh/the-basics/grpc",
@@ -99,16 +99,16 @@ export function getZhSidebar(): SidebarConfigArray {
       ],
     },
     {
-      text: "Eloquent ORM",
+      text: "ORM",
       // collapsible: true,
       children: [
         {
           text: "快速入门",
-          link: "/zh/ORM/getting-started",
+          link: "/zh/orm/getting-started",
         },
         {
           text: "数据库迁移",
-          link: "/zh/ORM/migrations",
+          link: "/zh/orm/migrations",
         },
       ],
     },

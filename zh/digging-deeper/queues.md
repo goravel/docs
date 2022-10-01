@@ -4,15 +4,15 @@
 
 ## 简介
 
-在构建 Web 应用程序时，您可能需要执行一些任务（例如解析和存储上传的 CSV 文件），但这些任务在典型的 Web 请求中花费的时间太长。幸运的是，Goravel 允许您轻松地创建可在后台排队处理的任务作业。通过将耗时的任务移到队列中，您的应用程序可以以超快的速度响应 Web 请求，并为客户提供更好的用户体验。
+在构建 Web 应用程序时，你可能需要执行一些任务（例如解析和存储上传的 CSV 文件），但这些任务在 Web 请求中花费的时间太长。幸运的是，Goravel 允许你轻松地创建可在后台排队处理的任务。通过将耗时的任务移到队列中，你的应用程序可以以超快的速度响应 Web 请求，并为客户提供更好的用户体验。我们使用 `facades.Queue` 实现这些功能。
 
-队列配置文件存储在 `config/queue.go` 中。 在这个文件中，您可以找到框架中包含的队列驱动程序的连接配置，其中包括 `redis` 和 `sync` 驱动。
+队列配置文件存储在 `config/queue.go` 中。 在这个文件中，你可以找到框架中包含的队列驱动程序的连接配置，其中包括 `redis` 和 `sync` 驱动。
 
 ### 连接 Vs 队列
 
 在开始使用 Goravel 队列之前，理解「连接」和「队列」之间的区别非常重要。在 `config/queue.go` 配置文件中，有一个 connections 配置选项。此选项定义到后端服务（如 Redis）的特定连接。然而，任何给定的队列连接都可能有多个「队列」，这些「队列」可能被认为是不同的堆栈或成堆的排队任务。
 
-请注意，`config/queue.go` 文件中的每个连接配置示例都包含一个 queue 属性。 这是将任务发送到给定连接时将被分配到的默认队列。换句话说，如果您没有显式地定义任务应该被发送到哪个队列，那么该任务将被放置在连接配置的 queue 属性中定义的队列上：
+请注意，`config/queue.go` 文件中的每个连接配置示例都包含一个 queue 属性。 这是将任务发送到给定连接时将被分配到的默认队列。换句话说，如果你没有显式地定义任务应该被发送到哪个队列，那么该任务将被放置在连接配置的 queue 属性中定义的队列上：
 
 ```
 // 这个任务将被推送到默认队列
@@ -30,7 +30,7 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{
 
 ### 生成任务类
 
-默认情况下，应用程序的所有的可排队任务都被存储在了 `app/jobs` 目录中。如果 `app/jobs` 目录不存在，当您运行 `make:job` Artisan 命令时，将会自动创建该目录：
+默认情况下，应用程序的所有的任务都被存储在了 `app/jobs` 目录中。如果 `app/jobs` 目录不存在，当你运行 `make:job` Artisan 命令时，将会自动创建该目录：
 
 ```
 go run . artisan make:job ProcessPodcast
@@ -71,26 +71,20 @@ func (receiver *QueueServiceProvider) Jobs() []queue.Job {
 
 ## 启动队列服务器
 
-在根目录下 `main.go` 中启动队列服务器
+在根目录下 `main.go` 中启动队列服务器。
 
 ```
 package main
 
 import (
   "github.com/goravel/framework/support/facades"
+
   "goravel/bootstrap"
 )
 
 func main() {
   // This bootstraps the framework and gets it ready for use.
   bootstrap.Boot()
-
-  // Start http server by facades.Route.
-  go func() {
-    if err := facades.Route.Run(facades.Config.GetString("app.host")); err != nil {
-      facades.Log.Errorf("Route run error: %v", err)
-    }
-  }()
 
   // Start queue server by facades.Queue.
   go func() {
@@ -108,26 +102,26 @@ func main() {
 ```
 // 不传参数，默认监听 `config/queue.go` 中的配置，并发数为 1
 go func() {
-    if err := facades.Queue.Worker(queue.Args{}).Run(); err != nil {
-      facades.Log.Errorf("Queue run error: %v", err)
-    }
-  }()
+  if err := facades.Queue.Worker(queue.Args{}).Run(); err != nil {
+    facades.Log.Errorf("Queue run error: %v", err)
+  }
+}()
 
 // 监听 redis 链接的 processing 队列，并发数 10
 go func() {
-    if err := facades.Queue.Worker(queue.Args{
-      Connection: "redis",
-      Queue: "processing",
-      Concurrent: 10,
-    }).Run(); err != nil {
-      facades.Log.Errorf("Queue run error: %v", err)
-    }
-  }()
+  if err := facades.Queue.Worker(queue.Args{
+    Connection: "redis",
+    Queue: "processing",
+    Concurrent: 10,
+  }).Run(); err != nil {
+    facades.Log.Errorf("Queue run error: %v", err)
+  }
+}()
 ```
 
 ## 调度任务
 
-一旦您写好了您的任务类，您可以使用任务本身的 `dispatch` 方法来调度它：
+一旦写好了任务类，你可以使用任务本身的 `dispatch` 方法来调度它：
 
 ```
 package controllers
@@ -136,13 +130,14 @@ import (
   "github.com/gin-gonic/gin"
   "github.com/goravel/framework/contracts/queue"
   "github.com/goravel/framework/support/facades"
+
   "goravel/app/jobs"
 )
 
 type UserController struct {
 }
 
-func (r UserController) Show(ctx *gin.Context) {
+func (r *UserController) Show(ctx *gin.Context) {
   err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Dispatch()
   if err != nil {
     // do something
@@ -152,7 +147,7 @@ func (r UserController) Show(ctx *gin.Context) {
 
 ### 同步调度
 
-如果您想立即（同步）调度任务，您可以使用 `dispatchSync` 方法。使用此方法时，任务不会排队，会在当前进程内立即执行：
+如果你想立即（同步）调度任务，你可以使用 `dispatchSync` 方法。使用此方法时，任务不会排队，会在当前进程内立即执行：
 
 ```
 package controllers
@@ -161,13 +156,14 @@ import (
   "github.com/gin-gonic/gin"
   "github.com/goravel/framework/contracts/queue"
   "github.com/goravel/framework/support/facades"
+
   "goravel/app/jobs"
 )
 
 type UserController struct {
 }
 
-func (r UserController) Show(ctx *gin.Context) {
+func (r *serController) Show(ctx *gin.Context) {
   err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).DispatchSync()
   if err != nil {
     // do something
@@ -177,7 +173,7 @@ func (r UserController) Show(ctx *gin.Context) {
 
 ### 任务链
 
-任务链允许您指定一组应在主任务成功执行后按顺序运行的排队任务。如果序列中的一个任务失败，其余的任务将不会运行。要执行一个排队的任务链，您可以使用 `facades.Queue` 提供的 `chain` 方法：
+任务链允许你指定一组按顺序运行的排队任务。如果序列中的一个任务失败，其余的任务将不会运行。要执行一个排队的任务链，你可以使用 `facades.Queue` 提供的 `chain` 方法：
 
 ```
 err := facades.Queue.Chain([]queue.Jobs{
@@ -200,7 +196,7 @@ err := facades.Queue.Chain([]queue.Jobs{
 
 #### 分派到特定队列
 
-通过将任务推送到不同的队列，您可以对排队的任务进行「分类」，甚至可以优先考虑分配给各个队列的 worker 数量。请记住，这不会将任务推送到队列配置文件定义的不同队列「连接」，而只会推送到单个连接中的特定队列。要指定队列，请在调度任务时使用 onQueue 方法：
+通过将任务推送到不同的队列，你可以对排队的任务进行「分类」，甚至可以优先考虑分配给各个队列的 worker 数量。
 
 ```
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Dispatch()
@@ -208,13 +204,13 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Disp
 
 #### 调度到特定连接
 
-如果您的应用程序与多个队列连接交互，您可以使用 `onConnection` 方法指定将任务推送到哪个连接：
+如果你的应用程序与多个队列连接交互，你可以使用 `onConnection` 方法指定将任务推送到哪个连接：
 
 ```
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dispatch()
 ```
 
-您可以将 onConnection 和 onQueue 方法链接在一起，以指定任务的连接和队列：
+你可以将 onConnection 和 onQueue 方法链接在一起，以指定任务的连接和队列：
 
 ```
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()

@@ -51,17 +51,17 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/the-basics/routing",
         },
         {
-          text: "Middleware",
+          text: "HTTP Middleware",
           link: "/the-basics/middleware",
         },
         {
           text: "Controllers",
           link: "/the-basics/controllers",
         },
-        {
-          text: "Response",
-          link: "/the-basics/response",
-        },
+        // {
+        //   text: "Response",
+        //   link: "/the-basics/response",
+        // },
         {
           text: "Grpc",
           link: "/the-basics/grpc",
@@ -99,16 +99,16 @@ export function getEnSidebar(): SidebarConfigArray {
       ],
     },
     {
-      text: "Eloquent ORM",
+      text: "ORM",
       // collapsible: true,
       children: [
         {
           text: "Getting Started",
-          link: "/ORM/getting-started",
+          link: "/orm/getting-started",
         },
         {
           text: "Migrations",
-          link: "/ORM/migrations",
+          link: "/orm/migrations",
         },
       ],
     },

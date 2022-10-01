@@ -4,7 +4,7 @@
 
 ## 介绍
 
-响应模块可以使用 `facades.Response` 进行操作。
+可以使用 `facades.Response` 进行操作。
 
 ## 可用方法
 

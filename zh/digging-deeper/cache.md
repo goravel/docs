@@ -4,20 +4,20 @@
 
 ## 介绍
 
-Goravel 提供了可拓展的缓存模块。该模块可以使用 `facades.Cache` 进行操作。
+Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache` 进行操作。
 
 ## 配置
 
-在 `config/cache.go` 中进行所有自定义配置。允许配置不同的缓存驱动，默认使用 `redis`，你也可以自定义驱动，可以进入配置文件进行查看。
+在 `config/cache.go` 中进行所有自定义配置。允许配置不同的缓存驱动，默认使用 `redis`，你也可以自定义驱动。
 
 ## 可用的缓存驱动
 
-| 名称     | 描述       |
+| 名称      | 描述       |
 | -------- | ---------- |
 | `redis`  | Redis 驱动 |
-| `custom` | 自定义驱动 |
+| `custom` | 自定义驱动  |
 
-## 缓存使用
+## 使用缓存
 
 ### 从缓存中获取数据
 
@@ -61,7 +61,7 @@ value, err := facades.Cache.RememberForever("goravel", func() interface{} {
 })
 ```
 
-### 获取和删除
+### 获取并删除
 
 ```
 value := facades.Cache.Pull("goravel", "default")
@@ -112,7 +112,7 @@ res := facades.Cache.Flush()
 ### 配置
 
 如果你想定义一个完全自定义的驱动，可以在 `config/cache.go` 配置文件中指定 `custom` 驱动类型。
-然后包含一个 `via` 选项，实现一个 `framework\contracts\cache\Store` 结构：
+然后包含一个 `via` 选项，实现一个 `framework\contracts\cache\Store` 接口：
 
 ```
 //config/cache.go
@@ -123,14 +123,14 @@ res := facades.Cache.Flush()
     },
     "custom": map[string]interface{}{
         "driver": "custom",
-        "via":    Logger{},//自定义驱动
+        "via":    Logger{},// 自定义驱动
     },
 },
 ```
 
-### 编写驱动
+### 实现驱动
 
-实现 `framework\contracts\cache\Store` 接口，并配置到 `config/cache.go` 即可。文件可以统一储存到 `app/extensions` 文件夹中（可修改）。
+实现 `framework\contracts\cache\Store` 接口，文件可以统一储存到 `app/extensions` 文件夹中（可修改）。
 
 ```
 //framework\contracts\cache\Store

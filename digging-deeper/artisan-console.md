@@ -4,25 +4,21 @@
 
 ## Introduction
 
-Artisan is the command line interface included with Goravel, the module can be operated using `facades.Cache`. It provide a number of helpful commands that can assist you while you build your application. The underlying layer uses [urfave/cli](https://github.com/urfave/cli) to realize the function. It's To view a list of all available Artisan commands, you may use the list command:
+Artisan is the command line interface included with Goravel, the module can be operated using `facades.Artisan`. It provide a number of helpful commands that can assist you while you build your application. You can use the command blow to get all commands:
 
 ```
 go run . artisan list
 ```
 
-Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, precede the name of the command with help:
+Every command also includes a "help" which displays and describes the command's available arguments and options. To view a help screen, precede the name of the command with help:
 
 ```
 go run . artisan help migrate
 ```
 
-## Writing Commands
-
-In addition to the commands provided with Artisan, you may build your own custom commands. Commands are typically stored in the app/console/commands directory.
-
 ### Generating Commands
 
-To create a new command, you may use the `make:command` Artisan command. This command will create a new command class in the app/console/commands directory. Don't worry if this directory does not exist in your application - it will be created the first time you run the make:command Artisan command:
+You can use the `make:command` command to create a new command in the `app/console/commands` directory. Don't worry if this directory does not exist in your application, it will be created the first time you run the `make:command` command:
 
 ```
 go run . artisan make:command SendEmails
@@ -30,7 +26,7 @@ go run . artisan make:command SendEmails
 
 ### Command Structure
 
-After generating your command, you should define appropriate values for the signature and description properties of the struct. These properties will be used when displaying your command on the list screen. The `handle` method will be called when your command is executed. You may place your command logic in this method.
+After generating your command, you should define appropriate values for the signature and description properties of the struct. The `handle` method will be called when your command is executed. You need to optimize your logic in this method.
 
 ```
 package commands
@@ -45,12 +41,12 @@ type SendEmails struct {
 
 //Signature The name and signature of the console command.
 func (receiver *SendEmails) Signature() string {
-  return "command:name"
+  return "send:emails"
 }
 
 //Description The console command description.
 func (receiver *SendEmails) Description() string {
-  return "Command description"
+  return "Send emails"
 }
 
 //Extend The console command extend.
@@ -73,7 +69,7 @@ When writing console commands, it is common to gather input from the user throug
 Follow the arguments after the command:
 
 ```
-go run . artisan emails NAME EMAIL
+go run . artisan send:emails NAME EMAIL
 ```
 
 Get arguemnts:
@@ -122,7 +118,7 @@ Usage：
 
 ```
 go run . artisan emails --lang chinese
-go run . artisan emails -l chinese // 缩写
+go run . artisan emails -l chinese
 ```
 
 For specific usage, please refer to [urfave/cli Document](https://github.com/urfave/cli/blob/master/docs/v2/manual.md#flags)
@@ -181,7 +177,7 @@ For specific usage, please refer to [urfave/cli Document](https://github.com/urf
 
 ## Registering Commands
 
-All of your console commands are registered within your application's `app\console\kernel.go` file, which is your application's "console kernel". Within the commands method of this class, you will see a call to the kernel's load method.
+All of your console commands needs to be registered within the `Commands` function of the `app\console\kernel.go` file.
 
 ```
 func (kernel Kernel) Commands() []console.Command {
@@ -193,7 +189,7 @@ func (kernel Kernel) Commands() []console.Command {
 
 ## Programmatically Executing Commands
 
-Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to execute an Artisan command from a route or controller. You may use the `Call` method on the `facades.Artisan` to accomplish this.
+Sometimes you may wish to execute an Artisan command outside of the CLI, you can use the `Call` method on the `facades.Artisan` to operation this.
 
 ```
 facades.Route.GET("/", func(c *gin.Context) {

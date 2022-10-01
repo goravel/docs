@@ -10,17 +10,18 @@ Goravel 路由模块可以使用 `facades.Route` 进行操作，`facades.Route` 
 
 所有路由文件都在 `/routes` 目录中进行定义。框架默认有一个示例路由 `/routes/web.go`，其中 `func Web` 方法被注册到 `app/providers/route_service_provider.go` 文件中，以实现路由的绑定。
 
-你也可以根据这种方法进行更细颗粒的管理，可以在 `routes` 目录下新增路由文件，然后在 `app/providers/route_service_provider.go` 文件中进行注册。
+你可以在 `routes` 目录下新增路由文件，以进行更细颗粒的管理，然后在 `app/providers/route_service_provider.go` 文件中进行注册。
 
 ## 启动 HTTP 服务器
 
 在根目录下 `main.go` 中启动 HTTP 服务器
 
-```
+```go
 package main
 
 import (
   "github.com/goravel/framework/support/facades"
+  
   "goravel/bootstrap"
 )
 
@@ -43,7 +44,7 @@ func main() {
 
 可以使用闭包的形式，定义一个很简单的路由：
 
-```
+```go
 facades.Route.GET("/", func(c *gin.Context) {
     c.JSON(200, gin.H{
         "message": "pong",
@@ -53,7 +54,7 @@ facades.Route.GET("/", func(c *gin.Context) {
 
 ### 可用的路由方法
 
-```
+```go
 facades.Route.GET("/someGet", getting)
 facades.Route.POST("/somePost", posting)
 facades.Route.PUT("/somePut", putting)
@@ -63,9 +64,9 @@ facades.Route.HEAD("/someHead", head)
 facades.Route.OPTIONS("/someOptions", options)
 ```
 
-### 路由参数
+### 获取路由参数
 
-```
+```go
 facades.Route.GET("/user/:name", func(c *gin.Context) {
     name := c.Param("name")
     c.String(http.StatusOK, "Hello %s", name)
@@ -74,15 +75,15 @@ facades.Route.GET("/user/:name", func(c *gin.Context) {
 
 ### 路由传参
 
-```
-router.GET("/welcome", func(c *gin.Context) {
-    firstname := c.DefaultQuery("firstname", "Guest")
-    lastname := c.Query("lastname") // shortcut for c.Request.URL.Query().Get("lastname")
+```go
+router.GET("/welcome", func(ctx *gin.Context) {
+    firstname := ctx.DefaultQuery("firstname", "Guest")
+    lastname := ctx.Query("lastname")
 
-    c.String(http.StatusOK, "Hello %s %s", firstname, lastname)
+    ctx.String(http.StatusOK, "Hello %s %s", firstname, lastname)
 })
 ```
 
-### 更多使用方法
+### 更多使用
 
 详见 [gin-gonic/gin](https://github.com/gin-gonic/gin)

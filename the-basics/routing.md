@@ -4,29 +4,47 @@
 
 ## Introduction
 
-Goravel routing module can use `facades.Route` to operate, `facades.Route` is an example of well-known HTTP framework [gin-gonic/gin](https://github.com/gin-gonic/gin), the usage is exactly the same as `gin-gonic/gin`.
+Goravel routing module can operated by `facades.Route`, `facades.Route` is an instance of HTTP framework [gin-gonic/gin](https://github.com/gin-gonic/gin), the usage is exactly the same as `gin-gonic/gin`.
 
 ## Default Routing File
 
 All routing files are defined in the `/routes` directory. The framework defaults to a sample route `/routes/web.go`, in which the `func Web` method is registered in the `app/providers/route_service_provider.go` file to achieve routing binding.
 
-You can also perform more fine-grained management based on this method. You can add routing files under the `routes` directory, and then register in the `app/providers/route_service_provider.go` file.
+You can add routing files under the `routes` directory to perform more fine-grained management, then register them in the `app/providers/route_service_provider.go` file.
 
 ## Start HTTP Server
 
 Start the HTTP server in `main.go` in the root directory.
 
-```
-facades.Route.Run("127.0.0.1:3000")
-// OR
-facades.Route.Run(facades.Config.GetString("app.host"))
+```go
+package main
+
+import (
+  "github.com/goravel/framework/support/facades"
+  
+  "goravel/bootstrap"
+)
+
+func main() {
+  //This bootstraps the framework and gets it ready for use.
+  bootstrap.Boot()
+
+  //Start http server by facades.Route.
+  go func() {
+    if err := facades.Route.Run(facades.Config.GetString("app.host")); err != nil {
+      facades.Log.Errorf("Route run error: %v", err)
+    }
+  }()
+
+  select {}
+}
 ```
 
 ## Basic Routing
 
 You can define a very simple route in the form of a closure:
 
-```
+```go
 facades.Route.GET("/", func(c *gin.Context) {
     c.JSON(200, gin.H{
         "message": "pong",
@@ -36,7 +54,7 @@ facades.Route.GET("/", func(c *gin.Context) {
 
 ### Available Routing Methods
 
-```
+```go
 facades.Route.GET("/someGet", getting)
 facades.Route.POST("/somePost", posting)
 facades.Route.PUT("/somePut", putting)
@@ -46,9 +64,9 @@ facades.Route.HEAD("/someHead", head)
 facades.Route.OPTIONS("/someOptions", options)
 ```
 
-### Routing Parameters
+### Get Routing Parameters
 
-```
+```go
 facades.Route.GET("/user/:name", func(c *gin.Context) {
     name := c.Param("name")
     c.String(http.StatusOK, "Hello %s", name)
@@ -57,12 +75,12 @@ facades.Route.GET("/user/:name", func(c *gin.Context) {
 
 ### Routing Queries
 
-```
-router.GET("/welcome", func(c *gin.Context) {
-    firstname := c.DefaultQuery("firstname", "Guest")
-    lastname := c.Query("lastname") // shortcut for c.Request.URL.Query().Get("lastname")
+```go
+router.GET("/welcome", func(ctx *gin.Context) {
+    firstname := ctx.DefaultQuery("firstname", "Guest")
+    lastname := ctx.Query("lastname")
 
-    c.String(http.StatusOK, "Hello %s %s", firstname, lastname)
+    ctx.String(http.StatusOK, "Hello %s %s", firstname, lastname)
 })
 ```
 

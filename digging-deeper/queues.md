@@ -4,7 +4,7 @@
 
 ## Introduction
 
-While building your web application, you may have some tasks, such as parsing and storing an uploaded CSV file, that take too long to perform during a typical web request. Thankfully, Goravel allows you to easily create queued jobs that may be processed in the background. By moving time intensive tasks to a queue, your application can respond to web requests with blazing speed and provide a better user experience to your customers.
+While building your web application, you may have some tasks, such as parsing and storing an uploaded CSV file, that take too long to perform during a web request. Thankfully, Goravel allows you to easily create queued jobs that may be processed in the background. By moving time intensive tasks to a queue, your application can respond to web requests with blazing speed and provide a better user experience to your customers. We use `facades.Queue` to implement those functions.
 
 Goravel's queue configuration options are stored in your application's `config/queue.go` configuration file. In this file, you will find connection configurations for each of the queue drivers that are included with the framework, including the `redis` and `sync` driver.
 
@@ -30,7 +30,7 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{
 
 ### Generating Job Classes
 
-By default, all of the queueable jobs for your application are stored in the `app/jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the make:job Artisan command:
+By default, all of the jobs for your application are stored in the `app/jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the `make:job` Artisan command:
 
 ```
 go run . artisan make:job ProcessPodcast
@@ -78,19 +78,13 @@ package main
 
 import (
   "github.com/goravel/framework/support/facades"
+
   "goravel/bootstrap"
 )
 
 func main() {
   // This bootstraps the framework and gets it ready for use.
   bootstrap.Boot()
-
-  // Start http server by facades.Route.
-  go func() {
-    if err := facades.Route.Run(facades.Config.GetString("app.host")); err != nil {
-      facades.Log.Errorf("Route run error: %v", err)
-    }
-  }()
 
   // Start queue server by facades.Queue.
   go func() {
@@ -103,31 +97,31 @@ func main() {
 }
 ```
 
-Different parameters can be passed in the `facades.Queue.Worker` method, you can monitor multiple queues by starting multiple `facades.Queue.Worker`
+Different parameters can be passed in the `facades.Queue.Worker` method, you can monitor multiple queues by starting multiple `facades.Queue.Worker`.
 
 ```
 // No parameters, default listens to the configuration in the `config/queue.go`, and the number of concurrency is 1
 go func() {
-    if err := facades.Queue.Worker(queue.Args{}).Run(); err != nil {
-      facades.Log.Errorf("Queue run error: %v", err)
-    }
-  }()
+  if err := facades.Queue.Worker(queue.Args{}).Run(); err != nil {
+    facades.Log.Errorf("Queue run error: %v", err)
+  }
+}()
 
-// Monotor processing queue for redis link, and the number of concurrency is 10
+// Moniting processing queue for redis link, and the number of concurrency is 10
 go func() {
-    if err := facades.Queue.Worker(queue.Args{
-      Connection: "redis",
-      Queue: "processing",
-      Concurrent: 10,
-    }).Run(); err != nil {
-      facades.Log.Errorf("Queue run error: %v", err)
-    }
-  }()
+  if err := facades.Queue.Worker(queue.Args{
+    Connection: "redis",
+    Queue: "processing",
+    Concurrent: 10,
+  }).Run(); err != nil {
+    facades.Log.Errorf("Queue run error: %v", err)
+  }
+}()
 ```
 
 ## Dispatching Jobs
 
-Once you have written your job class, you may dispatch it using the `dispatch` method on the job itself:
+Once you have written the job class, you can dispatch it using the `dispatch` method on the job itself:
 
 ```
 package controllers
@@ -136,13 +130,14 @@ import (
   "github.com/gin-gonic/gin"
   "github.com/goravel/framework/contracts/queue"
   "github.com/goravel/framework/support/facades"
+
   "goravel/app/jobs"
 )
 
 type UserController struct {
 }
 
-func (r UserController) Show(ctx *gin.Context) {
+func (r *UserController) Show(ctx *gin.Context) {
   err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Dispatch()
   if err != nil {
     // do something
@@ -152,7 +147,7 @@ func (r UserController) Show(ctx *gin.Context) {
 
 ### Synchronous Dispatching
 
-If you would like to dispatch a job immediately (synchronously), you may use the `dispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process:
+If you want to dispatch a job immediately (synchronously), you can use the `dispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process:
 
 ```
 package controllers
@@ -161,13 +156,14 @@ import (
   "github.com/gin-gonic/gin"
   "github.com/goravel/framework/contracts/queue"
   "github.com/goravel/framework/support/facades"
+
   "goravel/app/jobs"
 )
 
 type UserController struct {
 }
 
-func (r UserController) Show(ctx *gin.Context) {
+func (r *UserController) Show(ctx *gin.Context) {
   err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).DispatchSync()
   if err != nil {
     // do something
@@ -177,7 +173,7 @@ func (r UserController) Show(ctx *gin.Context) {
 
 ### Job Chaining
 
-Job chaining allows you to specify a list of queued jobs that should be run in sequence after the primary job has executed successfully. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `chain` method provided by the `facades.Queue`:
+Job chaining allows you to specify a list of queued jobs that should be run in sequence. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you can use the `chain` method provided by the `facades.Queue`:
 
 ```
 err := facades.Queue.Chain([]queue.Jobs{
@@ -200,7 +196,7 @@ err := facades.Queue.Chain([]queue.Jobs{
 
 #### Dispatching To A Particular Queue
 
-By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you assign to various queues. Keep in mind, this does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method when dispatching the job:
+By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you assign to various queues.
 
 ```
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Dispatch()
@@ -208,7 +204,7 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Disp
 
 #### Dispatching To A Particular Connection
 
-If your application interacts with multiple queue connections, you may specify which connection to push a job to using the `onConnection` method:
+If your application interacts with multiple queue connections, you can use the `onConnection` method to specify the connection to which the task is pushed.
 
 ```
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dispatch()

@@ -40,7 +40,7 @@
 
 ### console 目录
 
-`console` 目录包含应用程序所有自定义的 `Artisan` 命令，与控制台引导文件 `kernel.go`，可以再这个文件中注册 [任务调度](../综合话题/任务调度.md)
+`console` 目录包含应用程序所有自定义的 `Artisan` 命令，与控制台引导文件 `kernel.go`，可以在这个文件中注册[任务](../digging-deeper/task-scheduling.md)
 
 ### http 目录
 
@@ -56,4 +56,4 @@
 
 ### providers 目录
 
-`providers` 目录包含程序中所有的 [服务提供者](../核心架构/服务提供者.md)。服务提供者通过绑定服务、注册事件或执行任何其他任务来引导应用程序以应对传入的请求。
+`providers` 目录包含程序中所有的 [服务提供者](../architecutre-concepts/service-providers.md)。服务提供者通过绑定服务、注册事件或执行任何其他任务来引导应用程序以应对传入的请求。

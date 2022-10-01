@@ -9,18 +9,47 @@
 ## 定义控制器
 
 下面是一个基础控制器类的例子：
+
 ```
 package controllers
 
+import (
+	"github.com/gin-gonic/gin"
+
+	"github.com/goravel/framework/facades"
+)
+
 type UserController struct {
+	//Dependent services
 }
 
-func (controller UserController) Login(c *gin.Context) {
+func NewUserController() *UserController {
+	return &UserController{
+		//Inject services
+	}
+}
 
+func (r *UserController) Show(ctx *gin.Context) {
+	c.JSON(200, gin.H{
+		"Hello": "Goravel",
+	})
 }
 ```
 
-之后路由可以这样定义：
+路由可以这样定义：
+
 ```
-facades.Route.GET("/users", controllers.UserController{}.Show)
+package routes
+
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/goravel/framework/facades"
+
+	"goravel/app/http/controllers"
+)
+
+func Web() {
+	userController := controllers.NewUserController()
+	facades.Route.GET("/user", userController.Show)
+}
 ```

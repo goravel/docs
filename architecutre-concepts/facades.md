@@ -16,24 +16,7 @@ facades.Route.Run(facades.Config.GetString("app.host"))
 
 ## How Facades Work
 
-`facades` are generally instantiated in the `Register` or `Boot` stage of `ServerProvider`, or they can be assigned directly, which can be flexibly distinguished according to different usage scenarios.
-
-For example, if you just want to use `facades` to instantiate an object, you can assign it directly.
-
-```
-var Artisan = &console.Application{}
-```
-
-If the `facades` use other `facades`, then instantiate them in the `Boot` phase of the `ServerProvider`:
-
-```
-func (database *ServiceProvider) Register() {
-  app := Application{}
-  facades.DB = app.Init()
-}
-```
-
-In other cases, it can be instantiated in the `Register` phase of `ServerProvider`:
+`facades` are generally instantiated in the `Register` or `Boot` stage of each module `ServerProvider`.
 
 ```
 func (config *ServiceProvider) Register() {
@@ -42,11 +25,26 @@ func (config *ServiceProvider) Register() {
 }
 ```
 
+If the `facades` use other `facades`, then instantiate them in the `Boot` phase of the `ServerProvider`:
+
+```
+func (database *ServiceProvider) Boot() {
+  app := Application{}
+  facades.DB = app.Init()
+}
+```
+
 ## Facade Class Reference
 
-| Facade  | Action                                                  |
-| ------- | ------------------------------------------------------- |
-| Artisan | [Artisan Console](../digging-deeper/artisan-console.md) |
-| Config  | [Configuration](../getting-started/configuration.md)    |
-| DB      | [ORM](../ORM/getting-started.md)                        |
-| Route   | [Roueting](../the-basics/routing.md)                    |
+| Facade   | Document                                                 |
+| -------  | -------------------------------------------------------  |
+| Artisan  | [Command Console](../digging-deeper/artisan-console.md)  |
+| Cache    | [Cache](../digging-deeper/cache.md)                      |
+| Config   | [Configuration](../getting-started/configuration.md)     |
+| Orm      | [ORM](../orm/getting-started.md)                         |
+| Event    | [Event](../digging-deeper/events.md)                      |
+| Grpc     | [Grpc](../the-basics/grpc.md)                            |
+| Log      | [Log](../the-basics/logging.md)                              |
+| Queue    | [Queue](../digging-deeper/queues.md)                      |
+| Route    | [Route](../the-basics/routing.md)                          |
+| Schedule | [Schedule](../digging-deeper/task-scheduling.md)                |

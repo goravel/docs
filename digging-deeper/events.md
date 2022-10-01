@@ -98,7 +98,7 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 
 ## Queued Event Listeners
 
-Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making an HTTP request. Before using queued listeners, make sure to [configure your queue](queue.md) and start a queue worker on your server or local development environment.
+Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making an HTTP request. Before using queued listeners, make sure to [configure your queue](queues.md) and start a queue worker on your server or local development environment.
 
 ```
 package listeners

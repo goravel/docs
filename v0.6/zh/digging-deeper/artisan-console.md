@@ -22,7 +22,7 @@ go run . artisan help migrate
 
 ### 生成命令
 
-要创建新命令，可以使用 make:command Artisan 命令。该命令将在 app/console/commands 目录中创建一个新的命令类。如果你的应用程序中不存在此目录，请不要担心，它将在您第一次运行 make:command 命令时自动创建：
+要创建新命令，可以使用 make:command Artisan 命令。该命令将在 app/console/commands 目录中创建一个新的命令类。如果你的应用程序中不存在此目录，请不要担心，它将在你第一次运行 make:command 命令时自动创建：
 
 ```
 go run . artisan make:command SendEmails
@@ -181,7 +181,7 @@ go run . artisan emails remove
 
 ## 注册命令
 
-您的所有控制台命令都在您的应用程序的 `app\console\kernel.go` 中注册，这是您的应用程序的「控制台内核」。在此文件的 `Commands` 方法中，加载所有可用的命令。
+你的所有控制台命令都在你的应用程序的 `app\console\kernel.go` 中注册，这是你的应用程序的「控制台内核」。在此文件的 `Commands` 方法中，加载所有可用的命令。
 
 ```
 func (kernel Kernel) Commands() []console.Command {
@@ -193,7 +193,7 @@ func (kernel Kernel) Commands() []console.Command {
 
 ## 以编程方式执行命令
 
-有时您可能希望在 CLI 之外执行 Artisan 命令。例如，您可能希望从路由或控制器执行 Artisan 命令。可以使用 `facades.Artisan` 上的 `Call` 方法来完成此操作。
+有时你可能希望在 CLI 之外执行 Artisan 命令。例如，你可能希望从路由或控制器执行 Artisan 命令。可以使用 `facades.Artisan` 上的 `Call` 方法来完成此操作。
 
 ```
 facades.Route.GET("/", func(c *gin.Context) {
