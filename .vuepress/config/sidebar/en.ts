@@ -1,4 +1,4 @@
-import { SidebarConfigArray } from 'vuepress'
+import { SidebarConfigArray } from "vuepress";
 
 export function getEnSidebar(): SidebarConfigArray {
   return [
@@ -58,10 +58,14 @@ export function getEnSidebar(): SidebarConfigArray {
           text: "Controllers",
           link: "/the-basics/controllers",
         },
-        // {
-        //   text: "Response",
-        //   link: "/the-basics/response",
-        // },
+        {
+          text: "Requests",
+          link: "/the-basics/request",
+        },
+        {
+          text: "Responses",
+          link: "/the-basics/response",
+        },
         {
           text: "Grpc",
           link: "/the-basics/grpc",
@@ -89,6 +93,10 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/digging-deeper/events",
         },
         {
+          text: "Mail",
+          link: "/digging-deeper/mail",
+        },
+        {
           text: "Queues",
           link: "/digging-deeper/queues",
         },
@@ -112,5 +120,5 @@ export function getEnSidebar(): SidebarConfigArray {
         },
       ],
     },
-  ]
+  ];
 }

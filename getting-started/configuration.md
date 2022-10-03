@@ -16,10 +16,6 @@ Note that the `.env` file should not be added to version control, because when m
 
 In addition, if an intruder gains access to your code repository, there will be a risk of exposing sensitive configuration. If you want to add a new configuration item, you can add it to the `.env.example` file to synchronize the configuration of all developers.
 
-## Environment Variable Types
-
-Support：string、int、bool
-
 ## Retrieve Environment Configuration
 
 Use the following method to obtain the configuration items in the `.env` file:

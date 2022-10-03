@@ -8,13 +8,44 @@ Middleware can filtering HTTP requests that enter the application. For example, 
 
 ## Define Middlewares
 
-You can create your own middleware in the `app/http/middleware` directory, and the writing method is consistent with that of `Gin` middleware, [reference document](https://gin-gonic.com/docs/examples/custom-middleware/).
+You can create your own middleware in the `app/http/middleware` directory, the structure is as follows.
+
+```go
+package middleware
+
+import (
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/facades"
+)
+
+func Cors() http.Middleware {
+	return func(request http.Request) {
+		method := request.Method()
+		origin := request.Header("Origin", "")
+		if origin != "" {
+			facades.Response.Header("Access-Control-Allow-Origin", "*")
+			facades.Response.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
+			facades.Response.Header("Access-Control-Allow-Headers", "*")
+			facades.Response.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization")
+			facades.Response.Header("Access-Control-Max-Age", "172800")
+			facades.Response.Header("Access-Control-Allow-Credentials", "true")
+		}
+
+		if method == "OPTIONS" {
+			request.AbortWithStatus(204)
+			return
+		}
+
+		request.Next()
+	}
+}
+```
 
 There are some middleware available in Goravel:
 
-| Middlewares                                        | Action        |
-| -------------------------------------------------  | ------------  |
-| github.com/goravel/framework/http/middleware/Cors  | across domain |
+| Middlewares                                       | Action        |
+| ------------------------------------------------- | ------------- |
+| github.com/goravel/framework/http/middleware/Cors | across domain |
 
 ## Register Middlewares
 
@@ -27,15 +58,16 @@ If you want to apply middleware for every HTTP request of your application, you 
 package http
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/http/middleware"
 )
 
 type Kernel struct {
 }
 
-func (kernel *Kernel) Middleware() []gin.HandlerFunc {
-	return []gin.HandlerFunc{
-		gin.Logger(),
+func (kernel *Kernel) Middleware() []http.Middleware {
+	return []http.Middleware{
+		middleware.Cors(),
 	}
 }
 ```
@@ -45,7 +77,7 @@ func (kernel *Kernel) Middleware() []gin.HandlerFunc {
 You can register the middleware for some routing separately:
 
 ```go
-route := facades.Route.Group("/")
-route.Use(gin.Logger())
-```
+import "github.com/goravel/framework/http/middleware"
 
+facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
+```

@@ -10,12 +10,11 @@
 
 下面是一个基础控制器类的例子：
 
-```
+```go
 package controllers
 
 import (
-	"github.com/gin-gonic/gin"
-
+	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/facades"
 )
 
@@ -29,20 +28,19 @@ func NewUserController() *UserController {
 	}
 }
 
-func (r *UserController) Show(ctx *gin.Context) {
-	c.JSON(200, gin.H{
+func (r *UserController) Show(request http.Request) {
+	facades.Response.Success().Json(http.Json{
 		"Hello": "Goravel",
 	})
 }
 ```
 
-路由可以这样定义：
+路由定义：
 
-```
+```go
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/goravel/framework/facades"
 
 	"goravel/app/http/controllers"
@@ -50,6 +48,6 @@ import (
 
 func Web() {
 	userController := controllers.NewUserController()
-	facades.Route.GET("/user", userController.Show)
+	facades.Route.Get("/{id}", userController.Show)
 }
 ```

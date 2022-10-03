@@ -8,13 +8,44 @@
 
 ## 定义中间件
 
-你可以在 `app/http/middleware` 目录中创建自己的中间件，写法与 `Gin` 中间件的写法保持一致，可以[参考文章](https://gin-gonic.com/docs/examples/custom-middleware/)。
+你可以在 `app/http/middleware` 目录中创建自己的中间件，结构如下。
+
+```go
+package middleware
+
+import (
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/facades"
+)
+
+func Cors() http.Middleware {
+	return func(request http.Request) {
+		method := request.Method()
+		origin := request.Header("Origin", "")
+		if origin != "" {
+			facades.Response.Header("Access-Control-Allow-Origin", "*")
+			facades.Response.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
+			facades.Response.Header("Access-Control-Allow-Headers", "*")
+			facades.Response.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization")
+			facades.Response.Header("Access-Control-Max-Age", "172800")
+			facades.Response.Header("Access-Control-Allow-Credentials", "true")
+		}
+
+		if method == "OPTIONS" {
+			request.AbortWithStatus(204)
+			return
+		}
+
+		request.Next()
+	}
+}
+```
 
 Goravel 中自带了一些中间件可供使用：
 
-| 中间件                                              | 作用    |
-| -------------------------------------------------  | ------  |
-| github.com/goravel/framework/http/middleware/Cors  | 实现跨域 |
+| 中间件                                            | 作用     |
+| ------------------------------------------------- | -------- |
+| github.com/goravel/framework/http/middleware/Cors | 实现跨域 |
 
 ## 注册中间件
 
@@ -27,15 +58,16 @@ Goravel 中自带了一些中间件可供使用：
 package http
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/http/middleware"
 )
 
 type Kernel struct {
 }
 
-func (kernel *Kernel) Middleware() []gin.HandlerFunc {
-	return []gin.HandlerFunc{
-		gin.Logger(),
+func (kernel *Kernel) Middleware() []http.Middleware {
+	return []http.Middleware{
+		middleware.Cors(),
 	}
 }
 ```
@@ -45,7 +77,7 @@ func (kernel *Kernel) Middleware() []gin.HandlerFunc {
 你可以为某一些路由单独注册中间件：
 
 ```go
-route := facades.Route.Group("/")
-route.Use(gin.Logger())
-```
+import "github.com/goravel/framework/http/middleware"v
 
+facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
+```

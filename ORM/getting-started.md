@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Goravel provides a very easy-to-use way to interact with databases, Developers can use `facades.Orm` to operate. Currently, Goravel provides official support for the following  four databases:
+Goravel provides a very easy-to-use way to interact with databases, Developers can use `facades.Orm` to operate. Currently, Goravel provides official support for the following four databases:
 
 - MySQL 5.7+
 - PostgreSQL 9.6+
@@ -30,47 +30,48 @@ For example, the model name is `UserOrder`, the table name is `user_orders`.
 
 ## facades.Orm available functions
 
-| Name         | Action                                                       |
-| -----------  | ------------                                                 |
-| Connection   | [Specify Database Connection](#Specify-Database-Connection)  |
-| Query        | [Get Database Instance](#Get-Database-Instance)              |
-| Transaction  | [事务](#事务)                                                 |
-| WithContext  | [Inject Context](#Inject-Context)                            |
+| Name        | Action                                                      |
+| ----------- | ----------------------------------------------------------- |
+| Connection  | [Specify Database Connection](#Specify-Database-Connection) |
+| Query       | [Get Database Instance](#Get-Database-Instance)             |
+| Transaction | [Transaction](#Transaction)                                 |
+| WithContext | [Inject Context](#Inject-Context)                           |
 
 ## facades.Orm.Query & facades.Orm.Transaction available functions
 
-| Functions     | Action                                                      |
-| -----------   | ------------                                                |
-| Begin         | [Begin transaction](#Transaction)                           |
-| Commit        | [Commit transaction](#Transaction)                          |
-| Count         | [Count](#Count)                                             |
-| Create        | [Create](#Create)                                           |
-| Delete        | [Delete](#Delete)                                           |
-| Exec          | [Execute native update SQL](#Execute-Native-Update-SQL)     |
-| Find          | [Query one or multiple lines by ID](#Select)                |
-| First         | [Get one line](#Select)                                     |
-| FirstOrCreate | [Query or create](#Select)                                  |
-| ForceDelete   | [Force delete](#Delete)                                     |
-| Get           | [Query multiple lines](#Select)                             |
-| Group         | [Group](#Group-By-&-Having)                                 |
-| Having        | [Having](#Group-By-&-Having)                                |
-| Join          | [Join](#Join)                                               |
-| Limit         | [Limit](#Limit)                                             |
-| Model         | [Specify a model](#Specify-Table-Query)                     |
-| Offset        | [Offset](#Offset)                                           |
-| Order         | [Order](#Order)                                             |
-| OrWhere       | [OrWhere](#Where)                                           |
-| Pluck         | [Query single column](#Query-Single-Column)                 | 
-| Raw           | [Execute native SQL](#Execute-Native-SQL)                   | 
-| Rollback      | [Rollback transaction](#Transaction)                        |
-| Save          | [Update a existing model](#Save-Model)                      |
-| Scan          | [Scan struct](#Execute-Native-SQL)                          |
-| Select        | [Specify Fields](#Specify-Fields)                           |
-| Table         | [Specify a table](#Specify-Table-Query)                     |
-| Update        | [Update a single column](#Save-Model)                       |
-| Updates       | [Update multiple columns](#Save-Model)                      |
-| Where         | [Where](#Where)                                             |
-| WithTrashed   | [Query soft delete data](#Query-Soft-Delete-Data)           |
+| Functions     | Action                                                  |
+| ------------- | ------------------------------------------------------- |
+| Begin         | [Begin transaction](#Transaction)                       |
+| Commit        | [Commit transaction](#Transaction)                      |
+| Count         | [Count](#Count)                                         |
+| Create        | [Create](#Create)                                       |
+| Delete        | [Delete](#Delete)                                       |
+| Exec          | [Execute native update SQL](#Execute-Native-Update-SQL) |
+| Find          | [Query one or multiple lines by ID](#Select)            |
+| First         | [Get one line](#Select)                                 |
+| FirstOrCreate | [Query or create](#Select)                              |
+| ForceDelete   | [Force delete](#Delete)                                 |
+| Get           | [Query multiple lines](#Select)                         |
+| Group         | [Group](#Group-By-&-Having)                             |
+| Having        | [Having](#Group-By-&-Having)                            |
+| Join          | [Join](#Join)                                           |
+| Limit         | [Limit](#Limit)                                         |
+| Model         | [Specify a model](#Specify-Table-Query)                 |
+| Offset        | [Offset](#Offset)                                       |
+| Order         | [Order](#Order)                                         |
+| OrWhere       | [OrWhere](#Where)                                       |
+| Pluck         | [Query single column](#Query-Single-Column)             |
+| Raw           | [Execute native SQL](#Execute-Native-SQL)               |
+| Rollback      | [Rollback transaction](#Transaction)                    |
+| Save          | [Update a existing model](#Save-Model)                  |
+| Scan          | [Scan struct](#Execute-Native-SQL)                      |
+| Scopes        | [Scopes](#Execute-Native-SQL)                           |
+| Select        | [Specify Fields](#Specify-Fields)                       |
+| Table         | [Specify a table](#Specify-Table-Query)                 |
+| Update        | [Update a single column](#Save-Model)                   |
+| Updates       | [Update multiple columns](#Save-Model)                  |
+| Where         | [Where](#Where)                                         |
+| WithTrashed   | [Query soft delete data](#Query-Soft-Delete-Data)       |
 
 ## Query Builder
 
@@ -210,7 +211,7 @@ facades.Orm.Query().Where("name = ?", "tom").Count(&count)
 
 ### Specify Fields
 
-`Select` allows you to specify which fields to retrieve from the database, by default the ORM retrieves all fields. 
+`Select` allows you to specify which fields to retrieve from the database, by default the ORM retrieves all fields.
 
 ```go
 facades.Orm.Query().Select("name", "age").Get(&users)
@@ -383,4 +384,22 @@ if err := tx.Create(&user); err != nil {
 } else {
   err := tx.Commit()
 }
+```
+
+### Scopes
+
+Allows you to specify commonly used queries that can be referenced when methoed are called.
+
+```go
+func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
+	return func(query orm.Query) orm.Query {
+		page, _ := strconv.Atoi(page)
+		limit, _ := strconv.Atoi(limit)
+		offset := (page - 1) * limit
+
+		return query.Offset(offset).Limit(limit)
+	}
+}
+
+facades.Orm.Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
 ```

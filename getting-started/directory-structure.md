@@ -26,7 +26,7 @@ The `database` directory contains database migration files.
 
 ### `public` Directory
 
-The `public` directory contains some resources, such as images, certificates, etc.
+The `public` directory contains some static resources, such as images, certificates, etc.
 
 ### `routes` Directory
 

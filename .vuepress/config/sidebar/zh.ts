@@ -1,4 +1,4 @@
-import { SidebarConfigArray } from 'vuepress'
+import { SidebarConfigArray } from "vuepress";
 
 export function getZhSidebar(): SidebarConfigArray {
   return [
@@ -58,10 +58,14 @@ export function getZhSidebar(): SidebarConfigArray {
           text: "控制器",
           link: "/zh/the-basics/controllers",
         },
-        // {
-        //   text: "响应",
-        //   link: "/zh/the-basics/response",
-        // },
+        {
+          text: "请求",
+          link: "/zh/the-basics/request",
+        },
+        {
+          text: "响应",
+          link: "/zh/the-basics/response",
+        },
         {
           text: "Grpc",
           link: "/zh/the-basics/grpc",
@@ -89,6 +93,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/digging-deeper/events",
         },
         {
+          text: "邮件",
+          link: "/zh/digging-deeper/mail",
+        },
+        {
           text: "队列",
           link: "/zh/digging-deeper/queues",
         },
@@ -112,5 +120,5 @@ export function getZhSidebar(): SidebarConfigArray {
         },
       ],
     },
-  ]
+  ];
 }

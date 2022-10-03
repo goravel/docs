@@ -4,11 +4,11 @@
 
 ## Introduction
 
-Goravel routing module can operated by `facades.Route`, `facades.Route` is an instance of HTTP framework [gin-gonic/gin](https://github.com/gin-gonic/gin), the usage is exactly the same as `gin-gonic/gin`.
+Goravel routing module can operated by `facades.Route`.
 
 ## Default Routing File
 
-All routing files are defined in the `/routes` directory. The framework defaults to a sample route `/routes/web.go`, in which the `func Web` method is registered in the `app/providers/route_service_provider.go` file to achieve routing binding.
+All routing files are defined in the `/routes` directory. The framework defaults to a sample route `/routes/web.go`, in which the `func Web()` method is registered in the `app/providers/route_service_provider.go` file to achieve routing binding.
 
 You can add routing files under the `routes` directory to perform more fine-grained management, then register them in the `app/providers/route_service_provider.go` file.
 
@@ -21,7 +21,7 @@ package main
 
 import (
   "github.com/goravel/framework/support/facades"
-  
+
   "goravel/bootstrap"
 )
 
@@ -40,50 +40,93 @@ func main() {
 }
 ```
 
+### Routing Methods
+
+| Methods    | Action                                  |
+| ---------- | --------------------------------------- |
+| Run        | [Start HTTP Server](#Start-HTTP-Server) |
+| Group      | [Group Routing](#Group-Routing)         |
+| Prefix     | [Routing Prefix](#Routing-Prefix)       |
+| ServeHTTP  | [Testing Routing](#Testing-Routing)     |
+| Get        | [Basic Routing](#Basic-Routing)         |
+| Post       | [Basic Routing](#Basic-Routing)         |
+| Put        | [Basic Routing](#Basic-Routing)         |
+| Delete     | [Basic Routing](#Basic-Routing)         |
+| Patch      | [Basic Routing](#Basic-Routing)         |
+| Options    | [Basic Routing](#Basic-Routing)         |
+| Any        | [Basic Routing](#Basic-Routing)         |
+| Static     | [File Routing](#File-Routing)           |
+| StaticFile | [File Routing](#File-Routing)           |
+| StaticFS   | [File Routing](#File-Routing)           |
+| Middleware | [Middleware](#Middleware)               |
+
 ## Basic Routing
 
-You can define a very simple route in the form of a closure:
+```go
+facades.Route.Get("/", userController.Show)
+facades.Route.Post("/", userController.Show)
+facades.Route.Put("/", userController.Show)
+facades.Route.Delete("/", userController.Show)
+facades.Route.Patch("/", userController.Show)
+facades.Route.Options("/", userController.Show)
+facades.Route.Any("/", userController.Show)
+```
+
+## Group Routing
 
 ```go
-facades.Route.GET("/", func(c *gin.Context) {
-    c.JSON(200, gin.H{
-        "message": "pong",
-    })
+facades.Route.Group(func(route route.Route) {
+  route.Get("group/{id}", func(request http.Request) {
+    facades.Response.Success().String(request.Query("id", "1"))
+  })
 })
 ```
 
-### Available Routing Methods
+## Routing Prefix
 
 ```go
-facades.Route.GET("/someGet", getting)
-facades.Route.POST("/somePost", posting)
-facades.Route.PUT("/somePut", putting)
-facades.Route.DELETE("/someDelete", deleting)
-facades.Route.PATCH("/somePatch", patching)
-facades.Route.HEAD("/someHead", head)
-facades.Route.OPTIONS("/someOptions", options)
+facades.Route.Prefix("users").Get("/", userController.Show)
 ```
 
-### Get Routing Parameters
+## File Routing
 
 ```go
-facades.Route.GET("/user/:name", func(c *gin.Context) {
-    name := c.Param("name")
-    c.String(http.StatusOK, "Hello %s", name)
+facades.Route.Static("static", "./public")
+facades.Route.StaticFile("static-file", "./public/logo.png")
+facades.Route.StaticFS("static-fs", nethttp.Dir("./public"))
+```
+
+## Routing Parameters
+
+```go
+facades.Route.Get("/input/{id}", func(request http.Request) {
+  facades.Response.Success().Json(http.Json{
+    "id": request.Input("id"),
+  })
 })
 ```
 
-### Routing Queries
+Detail [Request](./request.md)
+
+## Middleware
 
 ```go
-router.GET("/welcome", func(ctx *gin.Context) {
-    firstname := ctx.DefaultQuery("firstname", "Guest")
-    lastname := ctx.Query("lastname")
+import "github.com/goravel/framework/http/middleware"
 
-    ctx.String(http.StatusOK, "Hello %s %s", firstname, lastname)
-})
+facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
-### More
+Detail [Middleware](./middleware.md)
 
-See [gin-gonic/gin](https://github.com/gin-gonic/gin)
+## Testing Routing
+
+```go
+func TestHttp(t *testing.T) {
+  w := httptest.NewRecorder()
+  req, err := http.NewRequest("GET", "/users", nil)
+  assert.Nil(t, err)
+  facades.Route.ServeHTTP(w, req)
+  assert.Equal(t, 200, w.Code)
+  assert.Equal(t, "1", w.Body.String())
+}
+```

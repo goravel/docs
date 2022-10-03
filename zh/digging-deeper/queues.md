@@ -14,7 +14,7 @@
 
 请注意，`config/queue.go` 文件中的每个连接配置示例都包含一个 queue 属性。 这是将任务发送到给定连接时将被分配到的默认队列。换句话说，如果你没有显式地定义任务应该被发送到哪个队列，那么该任务将被放置在连接配置的 queue 属性中定义的队列上：
 
-```
+```go
 // 这个任务将被推送到默认队列
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{
   {Type: "int", Value: 1}
@@ -32,7 +32,7 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{
 
 默认情况下，应用程序的所有的任务都被存储在了 `app/jobs` 目录中。如果 `app/jobs` 目录不存在，当你运行 `make:job` Artisan 命令时，将会自动创建该目录：
 
-```
+```go
 go run . artisan make:job ProcessPodcast
 ```
 
@@ -40,7 +40,7 @@ go run . artisan make:job ProcessPodcast
 
 任务类非常简单，包含 `Signature`, `Handle` 方法，`Signature` 是任务类的唯一标识，`Handle` 在队列处理任务时将会被调用，在调用任务时传入的 `[]queue.Arg{}` 将会被传入 `Handle` 中：
 
-```
+```go
 package jobs
 
 type ProcessPodcast struct {
@@ -61,7 +61,7 @@ func (receiver *ProcessPodcast) Handle(args ...interface{}) error {
 
 当任务创建好后，需要注册到 `app/provides/queue_service_provider.go`，以便能够正确调用。
 
-```
+```go
 func (receiver *QueueServiceProvider) Jobs() []queue.Job {
   return []queue.Job{
     &jobs.Test{},
@@ -73,7 +73,7 @@ func (receiver *QueueServiceProvider) Jobs() []queue.Job {
 
 在根目录下 `main.go` 中启动队列服务器。
 
-```
+```go
 package main
 
 import (
@@ -99,7 +99,7 @@ func main() {
 
 `facades.Queue.Worker` 方法中可以传入不同的参数，通过启动多个 `facades.Queue.Worker`，可以达到监听多个队列的目的。
 
-```
+```go
 // 不传参数，默认监听 `config/queue.go` 中的配置，并发数为 1
 go func() {
   if err := facades.Queue.Worker(queue.Args{}).Run(); err != nil {
@@ -123,7 +123,7 @@ go func() {
 
 一旦写好了任务类，你可以使用任务本身的 `dispatch` 方法来调度它：
 
-```
+```go
 package controllers
 
 import (
@@ -149,7 +149,7 @@ func (r *UserController) Show(ctx *gin.Context) {
 
 如果你想立即（同步）调度任务，你可以使用 `dispatchSync` 方法。使用此方法时，任务不会排队，会在当前进程内立即执行：
 
-```
+```go
 package controllers
 
 import (
@@ -175,7 +175,7 @@ func (r *serController) Show(ctx *gin.Context) {
 
 任务链允许你指定一组按顺序运行的排队任务。如果序列中的一个任务失败，其余的任务将不会运行。要执行一个排队的任务链，你可以使用 `facades.Queue` 提供的 `chain` 方法：
 
-```
+```go
 err := facades.Queue.Chain([]queue.Jobs{
   {
     Job: &jobs.Test{},
@@ -198,7 +198,7 @@ err := facades.Queue.Chain([]queue.Jobs{
 
 通过将任务推送到不同的队列，你可以对排队的任务进行「分类」，甚至可以优先考虑分配给各个队列的 worker 数量。
 
-```
+```go
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Dispatch()
 ```
 
@@ -206,19 +206,19 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Disp
 
 如果你的应用程序与多个队列连接交互，你可以使用 `onConnection` 方法指定将任务推送到哪个连接：
 
-```
+```go
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dispatch()
 ```
 
 你可以将 onConnection 和 onQueue 方法链接在一起，以指定任务的连接和队列：
 
-```
+```go
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
 ```
 
 ## `queue.Arg.Type` 支持的类型
 
-```
+```go
 bool
 int
 int8

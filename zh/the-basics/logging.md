@@ -47,7 +47,7 @@ facades.Log.Panicf(message, args)
 //config/logging.go 配置
 "custom": map[string]interface{}{
     "driver": "custom",
-    "via":    Logger{},
+    "via":    &Logger{},
 },
 ```
 

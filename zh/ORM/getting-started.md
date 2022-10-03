@@ -28,50 +28,50 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 
 例如，模型名称为 `UserOrder`，则表名为 `user_orders`。
 
-
 ## facades.Orm 可用方法
 
-| 方法名        | 作用                           |
-| -----------  | ------------                  |
-| Connection   | [指定数据库链接](#指定数据库链接)  |
-| Query        | [获取数据库实例](#获取数据库实例)  |
-| Transaction  | [事务](#事务)                   |
-| WithContext  | [注入Context](#注入-Context)    |
+| 方法名      | 作用                              |
+| ----------- | --------------------------------- |
+| Connection  | [指定数据库链接](#指定数据库链接) |
+| Query       | [获取数据库实例](#获取数据库实例) |
+| Transaction | [事务](#事务)                     |
+| WithContext | [注入 Context](#注入-Context)     |
 
 ## facades.Orm.Query & facades.Orm.Transaction 可用方法
 
-| 方法名         | 作用                                |
-| -----------   | ------------                        |
-| Begin         | [手动开始事务](#事务)                 |
-| Commit        | [提交事务](#事务)                     |
-| Count         | [数据库事务](#事务)                   |
-| Create        | [创建数据](#创建)                     |
-| Delete        | [删除数据](#删除)                     |
-| Exec          | [执行原生更新SQL](#执行原生更新SQL)     |
-| Find          | [获取一条数据](#查询)                  |
-| First         | [获取一条数据](#查询)                  |
+| 方法名        | 作用                                    |
+| ------------- | --------------------------------------- |
+| Begin         | [手动开始事务](#事务)                   |
+| Commit        | [提交事务](#事务)                       |
+| Count         | [数据库事务](#事务)                     |
+| Create        | [创建数据](#创建)                       |
+| Delete        | [删除数据](#删除)                       |
+| Exec          | [执行原生更新 SQL](#执行原生更新SQL)    |
+| Find          | [获取一条数据](#查询)                   |
+| First         | [获取一条数据](#查询)                   |
 | FirstOrCreate | [获取或创建一条数据](#查询)             |
-| ForceDelete   | [强制删除](#删除)                     |
-| Get           | [获取多条数据](#查询)                  |
-| Group         | [Group 查询](#Group-By-&-Having)     |
-| Having        | [Having 查询](#Group-By-&-Having)    |
-| Join          | [Join 查询](#Join查询)                |
-| Limit         | [指定查询数量](#指定查询数量)            |
+| ForceDelete   | [强制删除](#删除)                       |
+| Get           | [获取多条数据](#查询)                   |
+| Group         | [Group 查询](#Group-By-&-Having)        |
+| Having        | [Having 查询](#Group-By-&-Having)       |
+| Join          | [Join 查询](#Join查询)                  |
+| Limit         | [指定查询数量](#指定查询数量)           |
 | Model         | [指定模型](#指定表查询)                 |
-| Offset        | [指定查询开始位置](#指定查询开始位置)     |
-| Order         | [排序](#排序)                         |
-| OrWhere       | [查询条件](#Where条件)                 |
-| Pluck         | [查询单列](查询单列)                    | 
-| Raw           | [执行原生查询SQL](#执行原生查询SQL)      | 
+| Offset        | [指定查询开始位置](#指定查询开始位置)   |
+| Order         | [排序](#排序)                           |
+| OrWhere       | [查询条件](#Where条件)                  |
+| Pluck         | [查询单列](查询单列)                    |
+| Raw           | [执行原生查询 SQL](#执行原生查询SQL)    |
 | Rollback      | [手动回滚事务](#事务)                   |
-| Save          | [保存修改](#更新)                      |
-| Scan          | [将数据解析到 struct](#执行原生查询SQL)  |
+| Save          | [保存修改](#更新)                       |
+| Scan          | [将数据解析到 struct](#执行原生查询SQL) |
+| Scopes        | [Scopes](#Execute-Native-SQL)           |
 | Select        | [指定查询列](#指定查询列)               |
 | Table         | [指定表](#指定表查询)                   |
 | Update        | [更新单个字段](#更新)                   |
 | Updates       | [更新多个字段](#更新)                   |
-| Where         | [查询条件](#Where条件)                 |
-| WithTrashed   | [查询软删除](#查询软删除)                |
+| Where         | [查询条件](#Where条件)                  |
+| WithTrashed   | [查询软删除](#查询软删除)               |
 
 ## 查询构造器
 
@@ -139,7 +139,7 @@ facades.Orm.Query().FirstOrCreate(&user, models.User{Name: "tom"})
 //todo
 ```
 
-### Where条件
+### Where 条件
 
 ```go
 facades.Orm.Query().Where("name", "tom")
@@ -237,7 +237,7 @@ facades.Orm.Query().Model(&models.User{}).Select("name, sum(age) as total").Grou
 // SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "tom"
 ```
 
-### Join查询
+### Join 查询
 
 ```go
 type Result struct {
@@ -333,7 +333,7 @@ var user models.User
 facades.Orm.Query().WithTrashed().First(&user)
 ```
 
-### 执行原生查询SQL
+### 执行原生查询 SQL
 
 ```go
 type Result struct {
@@ -346,7 +346,7 @@ var result Result
 db.Raw("SELECT id, name, age FROM users WHERE name = ?", "tom").Scan(&result)
 ```
 
-### 执行原生更新SQL
+### 执行原生更新 SQL
 
 ```go
 facades.Orm.Query().Exec("DROP TABLE users")
@@ -384,4 +384,22 @@ if err := tx.Create(&user); err != nil {
 } else {
   err := tx.Commit()
 }
+```
+
+### Scopes
+
+允许你指定常用的查询，可以在调用方法时引用这些查询。
+
+```go
+func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
+	return func(query orm.Query) orm.Query {
+		page, _ := strconv.Atoi(page)
+		limit, _ := strconv.Atoi(limit)
+		offset := (page - 1) * limit
+
+		return query.Offset(offset).Limit(limit)
+	}
+}
+
+facades.Orm.Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
 ```

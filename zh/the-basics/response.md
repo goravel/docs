@@ -4,11 +4,66 @@
 
 ## 介绍
 
-可以使用 `facades.Response` 进行操作。
+可以使用 `facades.Response` 进行 HTTP 响应。
 
-## 可用方法
+## 字符串
 
-| 名称                                                   | 描述                    |
-| ------------------------------------------------------ | ----------------------- |
-| `Success(ctx *gin.Context, data interface{})`          | 返回状态码为 200 的响应 |
-| `Custom(ctx *gin.Context, data interface{}, code int)` | 返回自定义状态码的响应  |
+```go
+import "net/http"
+
+facades.Response.String(http.OK, "Hello Goravel")
+```
+
+## JSON
+
+```go
+import (
+  "net/http"
+  contracthttp "github.com/goravel/framework/contracts/http"
+)
+
+facades.Response.Json(http.OK, contracthttp.Json({
+  "Hello": "Goravel",
+}))
+
+facades.Response.Json(http.OK, struct {
+  ID       uint `json:"id"`
+  Name     string `json:"name"`
+}{
+  Id:      1,
+  Front:   "Goravel",
+})
+```
+
+## 文件响应
+
+```go
+import "net/http"
+
+facades.Response.File("./public/logo.png")
+```
+
+## 下载文件
+
+```go
+import "net/http"
+
+facades.Response.Download("./public/logo.png", "1.png")
+```
+
+## 附加 Header
+
+```go
+import "net/http"
+
+facades.Response.Header("Content", "Goravel").String(http.OK, "Hello Goravel")
+```
+
+## 返回成功
+
+```go
+facades.Response.Success().String("Hello Goravel")
+facades.Response.Success().Json(contracthttp.Json({
+  "Hello": "Goravel",
+}))
+```
