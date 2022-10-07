@@ -21,15 +21,13 @@ Make all custom configurations in `config/cache.go`. Different cache drivers are
 
 ### Retrieving Items From The Cache
 
-```
-value := facades.Cache.Get("goravel", func() interface{} {
-    return "default"
-})
+```go
+value := facades.Cache.Get("goravel", "default")
 ```
 
 You can pass a `func` as the default value. If the specified data does not exist in the cache, the result of `func` will be returned. The transitive closure method allows you to obtain default values from the database or other external services. Note the closure structure `func() interface()`.
 
-```
+```go
 value := facades.Cache.Get("goravel", func() interface{} {
     return "default"
 })
@@ -37,15 +35,15 @@ value := facades.Cache.Get("goravel", func() interface{} {
 
 ### Checking For Item Existence
 
-```
-value := facades.Cache.Has("goravel")
+```go
+bool := facades.Cache.Has("goravel")
 ```
 
 ### Retrieve & Store
 
 Sometimes you may want to get data from the cache, and when the requested cache item does not exist, the program can store a default value for you.
 
-```
+```go
 value, err := facades.Cache.Remember("goravel", 5 * time.Second, func() interface{} {
     return "goravel"
 })
@@ -55,7 +53,7 @@ If the data you want does not exist in the cache, the closure passed to the `Rem
 
 You can use the `RememberForever` method to retrieve data from the cache or store it permanently:
 
-```
+```go
 value, err := facades.Cache.RememberForever("goravel", func() interface{} {
     return "default"
 })
@@ -63,19 +61,19 @@ value, err := facades.Cache.RememberForever("goravel", func() interface{} {
 
 ### Retrieve & Delete
 
-```
+```go
 value := facades.Cache.Pull("goravel", "default")
 ```
 
 ### Storing Items In The Cache
 
-```
+```go
 err := facades.Cache.Put("goravel", "value", 5 * time.Second)
 ```
 
 If the expiration time of the cache is set to `0`, the cache will be valid forever:
 
-```
+```go
 err := facades.Cache.Put("goravel", "value", 0)
 ```
 
@@ -83,28 +81,28 @@ err := facades.Cache.Put("goravel", "value", 0)
 
 The `Add` method will only store data that does not exist in the cache. If the storage is successful, it will return `true`, otherwise it will return `false`:
 
-```
-res := facades.Cache.Add("goravel", "value", 5 * time.Second)
+```go
+bool := facades.Cache.Add("goravel", "value", 5 * time.Second)
 ```
 
 ### Storing Items Forever
 
 The `Forever` method can be used to store data persistently in the cache. Because these data will not expire, they must be manually deleted from the cache through the `Forget` method:
 
-```
-res := facades.Cache.Forever("goravel", "value")
+```go
+bool := facades.Cache.Forever("goravel", "value")
 ```
 
 ### Removing Items From The Cache
 
-```
-res := facades.Cache.Forget("goravel")
+```go
+bool := facades.Cache.Forget("goravel")
 ```
 
 You can use the `Flush` method to clear all caches:
 
-```
-res := facades.Cache.Flush()
+```go
+bool := facades.Cache.Flush()
 ```
 
 ## Adding Custom Cache Drivers
@@ -114,7 +112,7 @@ res := facades.Cache.Flush()
 If you want to define a completely custom driver, you can specify the `custom` driver type in the `config/cache.go` configuration file.
 Then include a `via` option to implement a `framework\contracts\cache\Store` interface:
 
-```
+```go
 //config/cache.go
 "stores": map[string]interface{}{
     "redis": map[string]interface{}{
@@ -123,7 +121,7 @@ Then include a `via` option to implement a `framework\contracts\cache\Store` int
     },
     "custom": map[string]interface{}{
         "driver": "custom",
-        "via":    Logger{},// custom driver
+        "via":    &Logger{},
     },
 },
 ```
@@ -132,7 +130,7 @@ Then include a `via` option to implement a `framework\contracts\cache\Store` int
 
 Implement the `framework\contracts\cache\Store` interface, files can be stored in the `app/extensions` folder (modifiable).
 
-```
+```go
 //framework\contracts\cache\Store
 package cache
 

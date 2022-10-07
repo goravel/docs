@@ -20,7 +20,7 @@ Start the HTTP server in `main.go` in the root directory.
 package main
 
 import (
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/facades"
 
   "goravel/bootstrap"
 )

@@ -135,8 +135,13 @@ facades.Orm.Query().Where("id in ?", []int{1,2,3}).Get(&users)
 
 ```go
 var user models.User
-facades.Orm.Query().FirstOrCreate(&user, models.User{Name: "tom"})
-//todo
+facades.Orm.Query().Where("sex = ?", 1).FirstOrCreate(&user, models.User{Name: "tom"})
+// SELECT * FROM users where name="tom" and sex=1;
+// INSERT INTO users (name) VALUES ("tom");
+
+facades.Orm.Query().Where("sex = ?", 1).FirstOrCreate(&user, models.User{Name: "tom"}, , models.User{Avatar: "avatar"})
+// SELECT * FROM users where name="tom" and sex=1;
+// INSERT INTO users (name,avatar) VALUES ("tom", "avatar");
 ```
 
 ### Where 条件
@@ -188,7 +193,7 @@ facades.Orm.Query().Model(&models.User{}).Pluck("age", &ages)
 使用模型指定
 
 ```go
-var count int
+var count int64
 facades.Orm.Query().Model(&models.User{}).Count(&count)
 // SELECT count(1) where users
 ```
@@ -196,7 +201,7 @@ facades.Orm.Query().Model(&models.User{}).Count(&count)
 使用表名指定
 
 ```go
-var count int
+var count int64
 facades.Orm.Query().Table("users").Count(&count)
 // SELECT count(1) where users
 ```
@@ -218,9 +223,6 @@ facades.Orm.Query().Select("name", "age").Get(&users)
 // SELECT name, age FROM users;
 
 facades.Orm.Query().Select([]string{"name", "age"}).Get(&users)
-// SELECT name, age FROM users;
-
-facades.Orm.Query().Select([]string{"name = ?", "age"}).Get(&users)
 // SELECT name, age FROM users;
 ```
 
@@ -257,6 +259,11 @@ user := User{Name: "tom", Age: 18}
 result := facades.Orm.Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
 ```
+
+批量创建
+
+users := []User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
+result := facades.Orm.Query().Create(&users)
 
 > `created_at` 和 `updated_at` 字段将会被自动填充。
 
@@ -307,7 +314,7 @@ facades.Orm.Query().Delete(&user)
 facades.Orm.Query().Delete(&models.User{}, 10)
 // DELETE FROM users WHERE id = 10;
 
-facades.Orm.Query().Delete(&models.User{}, []int{1, 2, 3})
+facades.Orm.Query().Delete(&models.User{}, []uint{1, 2, 3})
 // DELETE FROM users WHERE id in (1, 2, 3);
 ```
 

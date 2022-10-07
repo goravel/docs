@@ -20,7 +20,7 @@ Goravel 路由模块可以使用 `facades.Route` 进行操作。
 package main
 
 import (
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/facades"
 
   "goravel/bootstrap"
 )

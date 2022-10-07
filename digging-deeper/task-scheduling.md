@@ -12,13 +12,13 @@ Goravel's command scheduler offers a fresh approach to managing scheduled tasks 
 
 You may define all of your scheduled tasks in the schedule method of your application's `app\console\kernel.go` file. To get started, let's take a look at an example. In this example, we will schedule a closure to be called every day at midnight. Within the closure we will execute a database query to clear a table:
 
-```
+```go
 package console
 
 import (
   "github.com/goravel/framework/contracts/console"
   "github.com/goravel/framework/schedule/support"
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/facades"
 
   "goravel/app/models"
 )
@@ -39,13 +39,13 @@ func (kernel Kernel) Schedule() []*support.Event {
 
 In addition to scheduling closures, you can also schedule [Artisan commands](./Artisan%E5%91%BD%E4%BB%A4%E8%A1%8C.md). For example, you may use the `command` method to schedule an Artisan command using either the command's name or class.
 
-```
+```go
 package console
 
 import (
   "github.com/goravel/framework/contracts/console"
   "github.com/goravel/framework/schedule/support"
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/facades"
 )
 
 type Kernel struct {
@@ -91,7 +91,7 @@ By default, scheduled tasks will be run even if the previous instance of the tas
 | `.SkipIfStillRunning()`  | Skip if still running  |
 | `.DelayIfStillRunning()` | Delay if still running |
 
-```
+```go
 facades.Schedule.Command("send:emails name").EveryMinute().SkipIfStillRunning()
 facades.Schedule.Command("send:emails name").EveryMinute().DelayIfStillRunning()
 ```
@@ -102,11 +102,11 @@ Now that we have learned how to define scheduled tasks, let's discuss how to act
 
 Add `go facades.Schedule.Run()` to the root `main.go` file.
 
-```
+```go
 package main
 
 import (
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/facades"
 
   "goravel/bootstrap"
 )

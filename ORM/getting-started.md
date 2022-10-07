@@ -135,8 +135,13 @@ Query or create
 
 ```go
 var user models.User
-facades.Orm.Query().FirstOrCreate(&user, models.User{Name: "tom"})
-//todo
+facades.Orm.Query().Where("sex = ?", 1).FirstOrCreate(&user, models.User{Name: "tom"})
+// SELECT * FROM users where name="tom" and sex=1;
+// INSERT INTO users (name) VALUES ("tom");
+
+facades.Orm.Query().Where("sex = ?", 1).FirstOrCreate(&user, models.User{Name: "tom"}, , models.User{Avatar: "avatar"})
+// SELECT * FROM users where name="tom" and sex=1;
+// INSERT INTO users (name,avatar) VALUES ("tom", "avatar");
 ```
 
 ### Where
@@ -188,7 +193,7 @@ If you want to query some aggregate data, you need to specify a specific table.
 Specify a model
 
 ```go
-var count int
+var count int64
 facades.Orm.Query().Model(&models.User{}).Count(&count)
 // SELECT count(1) where users
 ```
@@ -204,7 +209,7 @@ facades.Orm.Query().Table("users").Count(&count)
 ### Count
 
 ```go
-var count int
+var count int64
 facades.Orm.Query().Where("name = ?", "tom").Count(&count)
 // SELECT count(1) FROM users WHERE name = 'tom'
 ```
@@ -218,9 +223,6 @@ facades.Orm.Query().Select("name", "age").Get(&users)
 // SELECT name, age FROM users;
 
 facades.Orm.Query().Select([]string{"name", "age"}).Get(&users)
-// SELECT name, age FROM users;
-
-facades.Orm.Query().Select([]string{"name = ?", "age"}).Get(&users)
 // SELECT name, age FROM users;
 ```
 

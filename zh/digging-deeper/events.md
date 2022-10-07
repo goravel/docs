@@ -12,22 +12,22 @@ Goravel 的事件系统提供了一个简单的观察者模式的实现，允许
 
 你可以使用 `make:event` 以及 `make:listener` 用于生成单个事件和监听器的 `Artisan` 命令：
 
-```
-go run . artisan make:event PodcastProcessed
+```go
+go run . artisan make:event OrderShipped
 
-go run . artisan make:listener SendPodcastNotification
+go run . artisan make:listener SendShipmentNotification
 ```
 
 ## 注册事件和监听器
 
 在系统的服务提供者 `app\providers\EventServiceProvider` 中提供了一个简单的方式来注册你所有的事件监听者。方法 `listener` 包含所有的事件 (作为键) 和对应的监听器 (值)。你可以添加任意多系统需要的监听器在这个数组中，让我们添加一个 `OrderShipped` 事件：
 
-```
+```go
 package providers
 
 import (
   "github.com/goravel/framework/contracts/events"
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/facades"
 )
 
 type EventServiceProvider struct {
@@ -48,7 +48,7 @@ func (receiver *EventServiceProvider) listen() map[events.Event][]events.Listene
 
 事件类本质上是一个数据容器，它保存与事件相关的信息，`event` 的 `Handle` 方法统一传入与返回 `[]events.Arg` 数据结构，你可以在这里进行数据加工，加工后的数据将传入所有关联的 `listeners` 中。例如，让我们假设一个 `app\events\OrderShipped` 事件：
 
-```
+```go
 package events
 
 import "github.com/goravel/framework/contracts/events"
@@ -65,7 +65,7 @@ func (receiver *OrderShipped) Handle(args []events.Arg) ([]events.Arg, error) {
 
 接下来，让我们看一下示例事件的侦听器。事件监听器在其 `Handle` 方法中接收事件 `Handle` 方法返回的 `[]events.Arg`。在 `Handle` 方法中，你可以执行任何必要的操作来响应事件：
 
-```
+```go
 package listeners
 
 import (
@@ -100,7 +100,7 @@ func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
 
 如果侦听器执行缓慢的任务如发送电子邮件或发出 HTTP 请求，你可以将任务丢给队列处理。在开始使用队列监听器之前，请确保在你的服务器或者本地开发环境中 [配置队列](%E9%98%9F%E5%88%97.md) 并启动一个队列监听器。然后在 `listener` 的 `Queue` 方法中定义是否启用队列，及使用的链接与队列。
 
-```
+```go
 package listeners
 
 ...
@@ -114,6 +114,8 @@ func (receiver *SendShipmentNotification) Queue(args ...interface{}) events.Queu
 }
 
 func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
+  name := args[0]
+
   return nil
 }
 ```
@@ -126,31 +128,31 @@ func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
 
 可以使用 `facades.Event.Job().Dispatch()` 方法进行事件调度。
 
-```
+```go
 package controllers
 
 import (
-  "github.com/gin-gonic/gin"
-  "github.com/goravel/framework/contracts/events"
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/contracts/events" 
+  "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/facades"
+
   "goravel/app/events"
 )
 
 type UserController struct {
 }
 
-func (r UserController) Show(ctx *gin.Context) {
+func (r UserController) Show(request http.Request) {
   err := facades.Event.Job(&events.OrderShipped{}, []events.Arg{
-    {Type: "string", Value: "abcc"},
-    {Type: "int", Value: 1234},
+    {Type: "string", Value: "Goravel"},
+    {Type: "int", Value: 1},
   }).Dispatch()
 }
-
 ```
 
 ## `events.Arg.Type` 支持的类型
 
-```
+```go
 bool
 int
 int8

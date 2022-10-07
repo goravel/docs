@@ -4,20 +4,20 @@
 
 ## 简介
 
-在构建 Web 应用程序时，你可能需要执行一些任务（例如解析和存储上传的 CSV 文件），但这些任务在 Web 请求中花费的时间太长。幸运的是，Goravel 允许你轻松地创建可在后台排队处理的任务。通过将耗时的任务移到队列中，你的应用程序可以以超快的速度响应 Web 请求，并为客户提供更好的用户体验。我们使用 `facades.Queue` 实现这些功能。
+在构建 Web 应用程序时，你可能需要执行一些比较耗时的任务（例如解析和存储上传的 CSV 文件），Goravel 可以让你轻松地创建可在后台排队处理的任务。通过将耗时的任务移到队列中，你的应用程序可以以超快的速度响应 Web 请求，并为客户提供更好的用户体验。我们使用 `facades.Queue` 实现这些功能。
 
-队列配置文件存储在 `config/queue.go` 中。 在这个文件中，你可以找到框架中包含的队列驱动程序的连接配置，其中包括 `redis` 和 `sync` 驱动。
+队列配置文件存储在 `config/queue.go` 中。目前框架支持两种队列驱动： `redis` 和 `sync`。
 
 ### 连接 Vs 队列
 
-在开始使用 Goravel 队列之前，理解「连接」和「队列」之间的区别非常重要。在 `config/queue.go` 配置文件中，有一个 connections 配置选项。此选项定义到后端服务（如 Redis）的特定连接。然而，任何给定的队列连接都可能有多个「队列」，这些「队列」可能被认为是不同的堆栈或成堆的排队任务。
+在开始使用 Goravel 队列之前，理解「连接」和「队列」之间的区别非常重要。在 `config/queue.go` 配置文件中，有一个 `connections` 配置选项。此选项定义到后端服务（如 Redis）的特定连接。然而，任何给定的队列连接都可能有多个「队列」，这些「队列」可能被认为是不同的堆栈或成堆的排队任务。
 
-请注意，`config/queue.go` 文件中的每个连接配置示例都包含一个 queue 属性。 这是将任务发送到给定连接时将被分配到的默认队列。换句话说，如果你没有显式地定义任务应该被发送到哪个队列，那么该任务将被放置在连接配置的 queue 属性中定义的队列上：
+请注意，`config/queue.go` 文件中的每个连接配置示例都包含一个 `queue` 属性。 这是将任务发送到给定连接时将被分配到的默认队列。换句话说，如果你没有显式地定义任务应该被发送到哪个队列，那么该任务将被放置在 `queue` 定义的队列上：
 
 ```go
 // 这个任务将被推送到默认队列
 err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{
-  {Type: "int", Value: 1}
+  {Type: "int", Value: 1},
 }).Dispatch()
 
 // 这个任务将被推送到 "emails" 队列
@@ -77,7 +77,7 @@ func (receiver *QueueServiceProvider) Jobs() []queue.Job {
 package main
 
 import (
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/facades"
 
   "goravel/bootstrap"
 )
@@ -88,7 +88,7 @@ func main() {
 
   // Start queue server by facades.Queue.
   go func() {
-    if err := facades.Queue.Worker(queue.Args{}).Run(); err != nil {
+    if err := facades.Queue.Worker(nil).Run(); err != nil {
       facades.Log.Errorf("Queue run error: %v", err)
     }
   }()
@@ -102,14 +102,14 @@ func main() {
 ```go
 // 不传参数，默认监听 `config/queue.go` 中的配置，并发数为 1
 go func() {
-  if err := facades.Queue.Worker(queue.Args{}).Run(); err != nil {
+  if err := facades.Queue.Worker(nil).Run(); err != nil {
     facades.Log.Errorf("Queue run error: %v", err)
   }
 }()
 
 // 监听 redis 链接的 processing 队列，并发数 10
 go func() {
-  if err := facades.Queue.Worker(queue.Args{
+  if err := facades.Queue.Worker(&queue.Args{
     Connection: "redis",
     Queue: "processing",
     Concurrent: 10,
@@ -127,9 +127,9 @@ go func() {
 package controllers
 
 import (
-  "github.com/gin-gonic/gin"
   "github.com/goravel/framework/contracts/queue"
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/facades"
 
   "goravel/app/jobs"
 )
@@ -137,7 +137,7 @@ import (
 type UserController struct {
 }
 
-func (r *UserController) Show(ctx *gin.Context) {
+func (r *UserController) Show(request http.Request) {
   err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Dispatch()
   if err != nil {
     // do something
@@ -153,9 +153,9 @@ func (r *UserController) Show(ctx *gin.Context) {
 package controllers
 
 import (
-  "github.com/gin-gonic/gin"
   "github.com/goravel/framework/contracts/queue"
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/facades"
 
   "goravel/app/jobs"
 )
@@ -163,7 +163,7 @@ import (
 type UserController struct {
 }
 
-func (r *serController) Show(ctx *gin.Context) {
+func (r *serController) Show(request http.Request) {
   err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).DispatchSync()
   if err != nil {
     // do something

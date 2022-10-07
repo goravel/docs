@@ -12,13 +12,13 @@ Goravel 的命令行调度器允许你在 Goravel 中清晰明了地定义命令
 
 你可以在 `app\console\kernel.go` 的 `Schedule` 方法中定义所有的调度任务。在开始之前，我们来看一个例子：我们计划每天午夜执行一个 `闭包`，这个 `闭包` 会执行一次数据库语句去清空一张表：
 
-```
+```go
 package console
 
 import (
   "github.com/goravel/framework/contracts/console"
   "github.com/goravel/framework/schedule/support"
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/facades"
 
   "goravel/app/models"
 )
@@ -39,13 +39,13 @@ func (kernel Kernel) Schedule() []*support.Event {
 
 调度方式不仅有闭包调用，还可以使用 [Artisan commands](./Artisan%E5%91%BD%E4%BB%A4%E8%A1%8C.md)。例如，你可以给 `command` 方法传递命令名称或类来调度一个 Artisan 命令：
 
-```
+```go
 package console
 
 import (
   "github.com/goravel/framework/contracts/console"
   "github.com/goravel/framework/schedule/support"
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/facades"
 )
 
 type Kernel struct {
@@ -91,7 +91,7 @@ func (kernel *Kernel) Schedule() []*support.Event {
 | `.SkipIfStillRunning()`  | 如果有正在执行的相同任务，则本次取消执行                       |
 | `.DelayIfStillRunning()` | 如果有正在执行的相同任务，则本次等待正在执行的任务结束后再执行 |
 
-```
+```go
 facades.Schedule.Command("send:emails name").EveryMinute().SkipIfStillRunning()
 facades.Schedule.Command("send:emails name").EveryMinute().DelayIfStillRunning()
 ```
@@ -102,11 +102,11 @@ facades.Schedule.Command("send:emails name").EveryMinute().DelayIfStillRunning()
 
 在根目录 `main.go` 文件中增加 `go facades.Schedule.Run()`。
 
-```
+```go
 package main
 
 import (
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/facades"
 
   "goravel/bootstrap"
 )

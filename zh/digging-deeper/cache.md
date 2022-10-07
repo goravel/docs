@@ -21,15 +21,14 @@ Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache
 
 ### 从缓存中获取数据
 
-```
-value := facades.Cache.Get("goravel", func() interface{} {
-    return "default"
-})
+```go
+
+value := facades.Cache.Get("goravel", "default")
 ```
 
 你可以传递一个 `func` 作为默认值。如果指定的数据在缓存中不存在，将返回 `func` 的结果。传递闭包的方法允许你从数据库或其他外部服务中获取默认值。注意闭包结构 `func() interface{}`。
 
-```
+```go
 value := facades.Cache.Get("goravel", func() interface{} {
     return "default"
 })
@@ -37,15 +36,15 @@ value := facades.Cache.Get("goravel", func() interface{} {
 
 ### 检查缓存项是否存在
 
-```
-value := facades.Cache.Has("goravel")
+```go
+bool := facades.Cache.Has("goravel")
 ```
 
 ### 获取和存储
 
 有时你可能想从缓存中获取一个数据，而当请求的缓存项不存在时，程序能为你存储一个默认值。
 
-```
+```go
 value, err := facades.Cache.Remember("goravel", 5 * time.Second, func() interface{} {
     return "goravel"
 })
@@ -55,7 +54,7 @@ value, err := facades.Cache.Remember("goravel", 5 * time.Second, func() interfac
 
 你可以使用 `RememberForever` 方法从缓存中获取数据或者永久存储它：
 
-```
+```go
 value, err := facades.Cache.RememberForever("goravel", func() interface{} {
     return "default"
 })
@@ -63,19 +62,19 @@ value, err := facades.Cache.RememberForever("goravel", func() interface{} {
 
 ### 获取并删除
 
-```
+```go
 value := facades.Cache.Pull("goravel", "default")
 ```
 
 ### 在缓存中存储数据
 
-```
+```go
 err := facades.Cache.Put("goravel", "value", 5 * time.Second)
 ```
 
 如果缓存的过期时间设置为 0， 则缓存将永久有效：
 
-```
+```go
 err := facades.Cache.Put("goravel", "value", 0)
 ```
 
@@ -83,28 +82,28 @@ err := facades.Cache.Put("goravel", "value", 0)
 
 `Add` 方法将只存储缓存中不存在的数据。如果存储成功，将返回 `true` ，否则返回 `false` ：
 
-```
-res := facades.Cache.Add("goravel", "value", 5 * time.Second)
+```go
+bool := facades.Cache.Add("goravel", "value", 5 * time.Second)
 ```
 
 ### 数据永久存储
 
 `Forever` 方法可用于将数据持久化存储到缓存中。因为这些数据不会过期，所以必须通过 `Forget` 方法从缓存中手动删除它们：
 
-```
-res := facades.Cache.Forever("goravel", "value")
+```go
+bool := facades.Cache.Forever("goravel", "value")
 ```
 
 ### 从缓存中删除数据
 
-```
-res := facades.Cache.Forget("goravel")
+```go
+bool := facades.Cache.Forget("goravel")
 ```
 
 你可以使用 `Flush` 方法清空所有的缓存：
 
-```
-res := facades.Cache.Flush()
+```go
+bool := facades.Cache.Flush()
 ```
 
 ## 添加自定义缓存驱动
@@ -114,7 +113,7 @@ res := facades.Cache.Flush()
 如果你想定义一个完全自定义的驱动，可以在 `config/cache.go` 配置文件中指定 `custom` 驱动类型。
 然后包含一个 `via` 选项，实现一个 `framework\contracts\cache\Store` 接口：
 
-```
+```go
 //config/cache.go
 "stores": map[string]interface{}{
     "redis": map[string]interface{}{
@@ -123,7 +122,7 @@ res := facades.Cache.Flush()
     },
     "custom": map[string]interface{}{
         "driver": "custom",
-        "via":    Logger{},// 自定义驱动
+        "via":    &Logger{},
     },
 },
 ```
@@ -132,7 +131,7 @@ res := facades.Cache.Flush()
 
 实现 `framework\contracts\cache\Store` 接口，文件可以统一储存到 `app/extensions` 文件夹中（可修改）。
 
-```
+```go
 //framework\contracts\cache\Store
 package cache
 

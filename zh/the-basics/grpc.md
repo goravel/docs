@@ -107,7 +107,7 @@ go func() {
 package providers
 
 import (
-	"github.com/goravel/framework/support/facades"
+	"github.com/goravel/framework/facades"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 
