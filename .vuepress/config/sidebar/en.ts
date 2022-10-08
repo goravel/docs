@@ -90,7 +90,7 @@ export function getEnSidebar(): SidebarConfigArray {
         },
         {
           text: "Events",
-          link: "/digging-deeper/events",
+          link: "/digging-deeper/event",
         },
         {
           text: "Mail",

@@ -36,15 +36,15 @@ func (database *ServiceProvider) Boot() {
 
 ## Facade Class Reference
 
-| Facade   | Document                                                 |
-| -------  | -------------------------------------------------------  |
-| Artisan  | [Command Console](../digging-deeper/artisan-console.md)  |
-| Cache    | [Cache](../digging-deeper/cache.md)                      |
-| Config   | [Configuration](../getting-started/configuration.md)     |
-| Orm      | [ORM](../orm/getting-started.md)                         |
-| Event    | [Event](../digging-deeper/events.md)                      |
-| Grpc     | [Grpc](../the-basics/grpc.md)                            |
-| Log      | [Log](../the-basics/logging.md)                              |
-| Queue    | [Queue](../digging-deeper/queues.md)                      |
-| Route    | [Route](../the-basics/routing.md)                          |
-| Schedule | [Schedule](../digging-deeper/task-scheduling.md)                |
+| Facade   | Document                                                |
+| -------- | ------------------------------------------------------- |
+| Artisan  | [Command Console](../digging-deeper/artisan-console.md) |
+| Cache    | [Cache](../digging-deeper/cache.md)                     |
+| Config   | [Configuration](../getting-started/configuration.md)    |
+| Orm      | [ORM](../orm/getting-started.md)                        |
+| Event    | [Event](../digging-deeper/event.md)                     |
+| Grpc     | [Grpc](../the-basics/grpc.md)                           |
+| Log      | [Log](../the-basics/logging.md)                         |
+| Queue    | [Queue](../digging-deeper/queues.md)                    |
+| Route    | [Route](../the-basics/routing.md)                       |
+| Schedule | [Schedule](../digging-deeper/task-scheduling.md)        |

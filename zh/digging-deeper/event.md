@@ -26,8 +26,11 @@ go run . artisan make:listener SendShipmentNotification
 package providers
 
 import (
-  "github.com/goravel/framework/contracts/events"
+  "github.com/goravel/framework/contracts/event"
   "github.com/goravel/framework/facades"
+
+  "goravel/app/events"
+  "goravel/app/listeners"
 )
 
 type EventServiceProvider struct {
@@ -35,8 +38,8 @@ type EventServiceProvider struct {
 
 ...
 
-func (receiver *EventServiceProvider) listen() map[events.Event][]events.Listener {
-  return map[events.Event][]events.Listener{
+func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
+  return map[event.Event][]event.Listener{
     &events.OrderShipped{}: {
       &listeners.SendShipmentNotification{},
     },
@@ -46,30 +49,30 @@ func (receiver *EventServiceProvider) listen() map[events.Event][]events.Listene
 
 ## 定义事件
 
-事件类本质上是一个数据容器，它保存与事件相关的信息，`event` 的 `Handle` 方法统一传入与返回 `[]events.Arg` 数据结构，你可以在这里进行数据加工，加工后的数据将传入所有关联的 `listeners` 中。例如，让我们假设一个 `app\events\OrderShipped` 事件：
+事件类本质上是一个数据容器，它保存与事件相关的信息，`event` 的 `Handle` 方法统一传入与返回 `[]event.Arg` 数据结构，你可以在这里进行数据加工，加工后的数据将传入所有关联的 `listeners` 中。例如，让我们假设一个 `app\events\OrderShipped` 事件：
 
 ```go
 package events
 
-import "github.com/goravel/framework/contracts/events"
+import "github.com/goravel/framework/contracts/event"
 
 type OrderShipped struct {
 }
 
-func (receiver *OrderShipped) Handle(args []events.Arg) ([]events.Arg, error) {
+func (receiver *OrderShipped) Handle(args []event.Arg) ([]event.Arg, error) {
   return args, nil
 }
 ```
 
 ## 定义监听器
 
-接下来，让我们看一下示例事件的侦听器。事件监听器在其 `Handle` 方法中接收事件 `Handle` 方法返回的 `[]events.Arg`。在 `Handle` 方法中，你可以执行任何必要的操作来响应事件：
+接下来，让我们看一下示例事件的侦听器。事件监听器在其 `Handle` 方法中接收事件 `Handle` 方法返回的 `[]event.Arg`。在 `Handle` 方法中，你可以执行任何必要的操作来响应事件：
 
 ```go
 package listeners
 
 import (
-  "github.com/goravel/framework/contracts/events"
+  "github.com/goravel/framework/contracts/event"
 )
 
 type SendShipmentNotification struct {
@@ -79,8 +82,8 @@ func (receiver *SendShipmentNotification) Signature() string {
   return "send_shipment_notification"
 }
 
-func (receiver *SendShipmentNotification) Queue(args ...interface{}) events.Queue {
-  return events.Queue{
+func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue {
+  return event.Queue{
     Enable:     false,
     Connection: "",
     Queue:      "",
@@ -105,8 +108,8 @@ package listeners
 
 ...
 
-func (receiver *SendShipmentNotification) Queue(args ...interface{}) events.Queue {
-  return events.Queue{
+func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue {
+  return event.Queue{
     Enable:     false,
     Connection: "",
     Queue:      "",
@@ -132,7 +135,7 @@ func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
 package controllers
 
 import (
-  "github.com/goravel/framework/contracts/events" 
+  "github.com/goravel/framework/contracts/event"
   "github.com/goravel/framework/contracts/http"
   "github.com/goravel/framework/facades"
 
@@ -143,14 +146,14 @@ type UserController struct {
 }
 
 func (r UserController) Show(request http.Request) {
-  err := facades.Event.Job(&events.OrderShipped{}, []events.Arg{
+  err := facades.Event.Job(&event.OrderShipped{}, []event.Arg{
     {Type: "string", Value: "Goravel"},
     {Type: "int", Value: 1},
   }).Dispatch()
 }
 ```
 
-## `events.Arg.Type` 支持的类型
+## `event.Arg.Type` 支持的类型
 
 ```go
 bool

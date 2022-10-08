@@ -16,8 +16,11 @@ The `app\providers\EventServiceProvider` included with your Goravel application 
 package providers
 
 import (
-  "github.com/goravel/framework/contracts/events"
+  "github.com/goravel/framework/contracts/event"
   "github.com/goravel/framework/facades"
+
+  "goravel/app/events"
+  "goravel/app/listeners"
 )
 
 type EventServiceProvider struct {
@@ -25,8 +28,8 @@ type EventServiceProvider struct {
 
 ...
 
-func (receiver *EventServiceProvider) listen() map[events.Event][]events.Listener {
-  return map[events.Event][]events.Listener{
+func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
+  return map[event.Event][]event.Listener{
     &events.OrderShipped{}: {
       &listeners.SendShipmentNotification{},
     },
@@ -46,30 +49,30 @@ go run . artisan make:listener SendPodcastNotification
 
 ## Defining Events
 
-An event class is essentially a data container which holds the information related to the event, the Handle method of `event` passes in and returns the `[]events.Arg` structure, you can process data here, the processed data will be passed into all associated `listeners` For example, let's assume an `app\events\OrderShipped` event:
+An event class is essentially a data container which holds the information related to the event, the Handle method of `event` passes in and returns the `[]event.Arg` structure, you can process data here, the processed data will be passed into all associated `listeners` For example, let's assume an `app\events\OrderShipped` event:
 
 ```go
 package events
 
-import "github.com/goravel/framework/contracts/events"
+import "github.com/goravel/framework/contracts/event"
 
 type OrderShipped struct {
 }
 
-func (receiver *OrderShipped) Handle(args []events.Arg) ([]events.Arg, error) {
+func (receiver *OrderShipped) Handle(args []event.Arg) ([]event.Arg, error) {
   return args, nil
 }
 ```
 
 ## Defining Listeners
 
-Next, let's take a look at the listener for our example event. Event listeners receive `[]events.Arg` of the event `Handle` method returns. Within the `Handle` method, you may perform any actions necessary to respond to the event:
+Next, let's take a look at the listener for our example event. Event listeners receive `[]event.Arg` of the event `Handle` method returns. Within the `Handle` method, you may perform any actions necessary to respond to the event:
 
 ```go
 package listeners
 
 import (
-  "github.com/goravel/framework/contracts/events"
+  "github.com/goravel/framework/contracts/event"
 )
 
 type SendShipmentNotification struct {
@@ -79,8 +82,8 @@ func (receiver *SendShipmentNotification) Signature() string {
   return "send_shipment_notification"
 }
 
-func (receiver *SendShipmentNotification) Queue(args ...interface{}) events.Queue {
-  return events.Queue{
+func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue {
+  return event.Queue{
     Enable:     false,
     Connection: "",
     Queue:      "",
@@ -105,8 +108,8 @@ package listeners
 
 ...
 
-func (receiver *SendShipmentNotification) Queue(args ...interface{}) events.Queue {
-  return events.Queue{
+func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue {
+  return event.Queue{
     Enable:     false,
     Connection: "",
     Queue:      "",
@@ -132,7 +135,7 @@ We can dispatching Events by `facades.Event.Job().Dispatch()` method.
 package controllers
 
 import (
-  "github.com/goravel/framework/contracts/events" 
+  "github.com/goravel/framework/contracts/event"
   "github.com/goravel/framework/contracts/http"
   "github.com/goravel/framework/facades"
 
@@ -143,14 +146,14 @@ type UserController struct {
 }
 
 func (r UserController) Show(request http.Request) {
-  err := facades.Event.Job(&events.OrderShipped{}, []events.Arg{
+  err := facades.Event.Job(&events.OrderShipped{}, []event.Arg{
     {Type: "string", Value: "Goravel"},
     {Type: "int", Value: 1},
   }).Dispatch()
 }
 ```
 
-## `events.Arg.Type` Supported Types
+## `event.Arg.Type` Supported Types
 
 ```go
 bool

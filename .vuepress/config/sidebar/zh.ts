@@ -90,7 +90,7 @@ export function getZhSidebar(): SidebarConfigArray {
         },
         {
           text: "事件系统",
-          link: "/zh/digging-deeper/events",
+          link: "/zh/digging-deeper/event",
         },
         {
           text: "邮件",

@@ -37,14 +37,14 @@ func (database *ServiceProvider) Boot() {
 ## facade 类参考
 
 | Facade   | 文档                                               |
-| -------  | ------------------------------------------        |
-| Artisan  | [命令行工具](../digging-deeper/artisan-console.md)  |
+| -------- | -------------------------------------------------- |
+| Artisan  | [命令行工具](../digging-deeper/artisan-console.md) |
 | Cache    | [缓存系统](../digging-deeper/cache.md)             |
 | Config   | [配置信息](../getting-started/configuration.md)    |
-| Orm      | [ORM](../orm/getting-started.md)                  |
-| Event    | [事件系统](../digging-deeper/events.md)             |
-| Grpc     | [Grpc](../the-basics/grpc.md)                     |
-| Log      | [日志](../the-basics/logging.md)                       |
-| Queue    | [队列](../digging-deeper/queues.md)                 |
-| Route    | [路由](../the-basics/routing.md)                     |
-| Schedule | [任务调度](../digging-deeper/task-scheduling.md)           |
+| Orm      | [ORM](../orm/getting-started.md)                   |
+| Event    | [事件系统](../digging-deeper/event.md)             |
+| Grpc     | [Grpc](../the-basics/grpc.md)                      |
+| Log      | [日志](../the-basics/logging.md)                   |
+| Queue    | [队列](../digging-deeper/queues.md)                |
+| Route    | [路由](../the-basics/routing.md)                   |
+| Schedule | [任务调度](../digging-deeper/task-scheduling.md)   |
