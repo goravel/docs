@@ -262,8 +262,10 @@ result := facades.Orm.Query().Create(&user)
 
 批量创建
 
+```go
 users := []User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
 result := facades.Orm.Query().Create(&users)
+```
 
 > `created_at` 和 `updated_at` 字段将会被自动填充。
 

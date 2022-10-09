@@ -260,6 +260,13 @@ result := facades.Orm.Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
 ```
 
+Multiple create
+
+```go
+users := []User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
+result := facades.Orm.Query().Create(&users)
+```
+
 > `created_at` and `updated_at` will be filled automatically.
 
 ### Save Model
