@@ -26,7 +26,7 @@ Goravel is a web application framework with complete functions and good scalabil
 
 ## Documentation
 
-Online documentation [https://www.goravel.dev/en](https://www.goravel.dev/en)
+Online documentation [https://www.goravel.dev](https://www.goravel.dev)
 
 > To optimize the documentation, please submit a PR to the documentation repository [https://github.com/goravel/docs](https://github.com/goravel/docs)
 
