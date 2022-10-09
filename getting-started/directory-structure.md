@@ -26,7 +26,7 @@ The `database` directory contains database migration files.
 
 ### `public` Directory
 
-The `public` directory contains some resources, such as images, certificates, etc.
+The `public` directory contains some static resources, such as images, certificates, etc.
 
 ### `routes` Directory
 
@@ -40,11 +40,15 @@ The `storage` directory contains the `logs` directory, and the `logs` directory 
 
 ### `console` Directory
 
-The `console` directory contains all the custom Artisan commands of the application, and the console boot file `kernel.go`, which can be registered in this file [Task Scheduling](../digging-deeper/task-scheduling.md)
+The `console` directory contains all the custom `Artisan` commands of the application, and the console boot file `kernel.go`, which can be registered in this file [Task Scheduling](../digging-deeper/task-scheduling.md)
 
 ### `http` Directory
 
 The `http` directory contains controllers, middleware, etc., and almost all requests that enter the application via the Web are processed here.
+
+### `grpc` Directory
+
+The `grpc` directory contains controllers, middleware, etc., and almost all requests that enter the application via the Grpc are processed here.
 
 ### `models` Directory
 
@@ -52,4 +56,4 @@ The `models` directory contains all data models.
 
 ### `providers` Directory
 
-The `providers` directory contains all [Service Providers] (../architecture-concepts/service-providers.md) in the program. The service provider guides the application to respond to incoming requests by binding services, registering for events, or performing any other tasks.
+The `providers` directory contains all [Service Providers](../architecutre-concepts/service-providers.md) in the program. The service provider guides the application to respond to incoming requests by binding services, registering for events, or performing any other tasks.

@@ -12,12 +12,15 @@ Events serve as a great way to decouple various aspects of your application, sin
 
 The `app\providers\EventServiceProvider` included with your Goravel application provides a convenient place to register all of your application's event listeners. The `listen` method contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add an `OrderShipped` event:
 
-```
+```go
 package providers
 
 import (
-  "github.com/goravel/framework/contracts/events"
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/contracts/event"
+  "github.com/goravel/framework/facades"
+
+  "goravel/app/events"
+  "goravel/app/listeners"
 )
 
 type EventServiceProvider struct {
@@ -25,8 +28,8 @@ type EventServiceProvider struct {
 
 ...
 
-func (receiver *EventServiceProvider) listen() map[events.Event][]events.Listener {
-  return map[events.Event][]events.Listener{
+func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
+  return map[event.Event][]event.Listener{
     &events.OrderShipped{}: {
       &listeners.SendShipmentNotification{},
     },
@@ -38,7 +41,7 @@ func (receiver *EventServiceProvider) listen() map[events.Event][]events.Listene
 
 You can use the `make:event` and `make:listener` Artisan commands to generate individual events and listeners:
 
-```
+```go
 go run . artisan make:event PodcastProcessed
 
 go run . artisan make:listener SendPodcastNotification
@@ -46,30 +49,30 @@ go run . artisan make:listener SendPodcastNotification
 
 ## Defining Events
 
-An event class is essentially a data container which holds the information related to the event, the Handle method of `event` passes in and returns the `[]events.Arg` structure, you can process data here, the processed data will be passed into all associated `listeners` For example, let's assume an `app\events\OrderShipped` event:
+An event class is essentially a data container which holds the information related to the event, the Handle method of `event` passes in and returns the `[]event.Arg` structure, you can process data here, the processed data will be passed into all associated `listeners` For example, let's assume an `app\events\OrderShipped` event:
 
-```
+```go
 package events
 
-import "github.com/goravel/framework/contracts/events"
+import "github.com/goravel/framework/contracts/event"
 
 type OrderShipped struct {
 }
 
-func (receiver *OrderShipped) Handle(args []events.Arg) ([]events.Arg, error) {
+func (receiver *OrderShipped) Handle(args []event.Arg) ([]event.Arg, error) {
   return args, nil
 }
 ```
 
 ## Defining Listeners
 
-Next, let's take a look at the listener for our example event. Event listeners receive `[]events.Arg` of the event `Handle` method returns. Within the `Handle` method, you may perform any actions necessary to respond to the event:
+Next, let's take a look at the listener for our example event. Event listeners receive `[]event.Arg` of the event `Handle` method returns. Within the `Handle` method, you may perform any actions necessary to respond to the event:
 
-```
+```go
 package listeners
 
 import (
-  "github.com/goravel/framework/contracts/events"
+  "github.com/goravel/framework/contracts/event"
 )
 
 type SendShipmentNotification struct {
@@ -79,8 +82,8 @@ func (receiver *SendShipmentNotification) Signature() string {
   return "send_shipment_notification"
 }
 
-func (receiver *SendShipmentNotification) Queue(args ...interface{}) events.Queue {
-  return events.Queue{
+func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue {
+  return event.Queue{
     Enable:     false,
     Connection: "",
     Queue:      "",
@@ -98,15 +101,15 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 
 ## Queued Event Listeners
 
-Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making an HTTP request. Before using queued listeners, make sure to [configure your queue](queue.md) and start a queue worker on your server or local development environment.
+Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making an HTTP request. Before using queued listeners, make sure to [configure your queue](queues.md) and start a queue worker on your server or local development environment.
 
-```
+```go
 package listeners
 
 ...
 
-func (receiver *SendShipmentNotification) Queue(args ...interface{}) events.Queue {
-  return events.Queue{
+func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue {
+  return event.Queue{
     Enable:     false,
     Connection: "",
     Queue:      "",
@@ -114,6 +117,8 @@ func (receiver *SendShipmentNotification) Queue(args ...interface{}) events.Queu
 }
 
 func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
+  name := args[0]
+
   return nil
 }
 ```
@@ -126,31 +131,31 @@ When queued listeners are dispatched within database transactions, they may be p
 
 We can dispatching Events by `facades.Event.Job().Dispatch()` method.
 
-```
+```go
 package controllers
 
 import (
-  "github.com/gin-gonic/gin"
-  "github.com/goravel/framework/contracts/events"
-  "github.com/goravel/framework/support/facades"
+  "github.com/goravel/framework/contracts/event"
+  "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/facades"
+
   "goravel/app/events"
 )
 
 type UserController struct {
 }
 
-func (r UserController) Show(ctx *gin.Context) {
-  err := facades.Event.Job(&events.OrderShipped{}, []events.Arg{
-    {Type: "string", Value: "abcc"},
-    {Type: "int", Value: 1234},
+func (r UserController) Show(request http.Request) {
+  err := facades.Event.Job(&events.OrderShipped{}, []event.Arg{
+    {Type: "string", Value: "Goravel"},
+    {Type: "int", Value: 1},
   }).Dispatch()
 }
-
 ```
 
-## `events.Arg.Type` Supported Types
+## `event.Arg.Type` Supported Types
 
-```
+```go
 bool
 int
 int8

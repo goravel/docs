@@ -8,19 +8,46 @@ Instead of defining all request processing logic in the form of a closure in a s
 
 ## Define Controllers
 
-The following is an example of a basic controller class:
-```
+The following is an example of a basic controller:
+
+```go
 package controllers
 
+import (
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/facades"
+)
+
 type UserController struct {
+	//Dependent services
 }
 
-func (controller UserController) Login(c *gin.Context) {
+func NewUserController() *UserController {
+	return &UserController{
+		//Inject services
+	}
+}
 
+func (r *UserController) Show(request http.Request) {
+	facades.Response.Success().Json(http.Json{
+		"Hello": "Goravel",
+	})
 }
 ```
 
-Then the route can be defined like this:
-```
-facades.Route.GET("/users", controllers.UserController{}.Show)
+The route define:
+
+```go
+package routes
+
+import (
+	"github.com/goravel/framework/facades"
+
+	"goravel/app/http/controllers"
+)
+
+func Web() {
+	userController := controllers.NewUserController()
+	facades.Route.Get("/{id}", userController.Show)
+}
 ```

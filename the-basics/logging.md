@@ -4,15 +4,13 @@
 
 ## Introduction
 
-In order to help you understand the running status of the application, Goravel provides a powerful log service that can record log messages and system errors to a file or other channels.
-
-This module can be operated with `facades.Log`, `facades.Log` is an instance of the well-known log component [sirupsen/logrus](https://github.com/sirupsen/logrus), the usage method is the same as that of `sirupsen/logrus `Exactly the same.
+In order to understand the running status of the application, Goravel provides a powerful log service that can record log messages and system errors to a file or other channels through `facades.Log`.
 
 ## Configuration
 
-Make custom configurations in `config/logging.go`. Allows to configure different log channels, you can enter the configuration file to view.
+Make custom configurations in `config/logging.go`, allows to configure different log channels.
 
-`Goravel` uses `stack` channel to record logs by default. `stack` allows logs to be forwarded to multiple channels.
+`Goravel` uses `stack` channel to record logs by default, `stack` allows logs to be forwarded to multiple channels.
 
 ## Available channel drivers
 
@@ -25,26 +23,19 @@ Make custom configurations in `config/logging.go`. Allows to configure different
 
 ## Write log messages
 
-Available level:
-
-```
-facades.Log.Trace($message)
-facades.Log.Debug($message)
-facades.Log.Info($message)
-facades.Log.Warn($message)
-facades.Log.Error($message)
-facades.Log.Fatal($message)
-facades.Log.Panic($message)
-```
-
-## Contextual Information
-
-An array of contextual data may be passed to the log methods. This contextual data will be formatted and displayed with the log message:
-
-```
-facades.Log.WithFields(logrus.Fields{
-  "goravel": "framework",
-}).Debug("web")
+```go
+facades.Log.Debug(message)
+facades.Log.Debugf(message, args)
+facades.Log.Info(message)
+facades.Log.Infof(message, args)
+facades.Log.Warning(message)
+facades.Log.Warningf(message, args)
+facades.Log.Error(message)
+facades.Log.Errorf(message, args)
+facades.Log.Fatal(message)
+facades.Log.Fatalf(message, args)
+facades.Log.Panic(message)
+facades.Log.Panicf(message, args)
 ```
 
 ## Create a custom channel
@@ -57,8 +48,6 @@ Then include a `via` option to implement a `framework\contracts\log\Logger` stru
 "custom": map[string]interface{}{
     "driver": "custom",
     "via":    CustomTest{},
-    "path":   "storage/logs/goravel-custom.log",//选配
-    "level":  facadesConfig.Env("LOG_LEVEL", "debug"),//选配
 },
 ```
 
@@ -70,65 +59,50 @@ Implement `framework\contracts\log\Logger` interface.
 //framework\contracts\log\Logger
 package log
 
-import "github.com/sirupsen/logrus"
-
 type Logger interface {
-  Handle(configPath string) (logrus.Hook, error)
+	// Handle pass channel config path here
+	Handle(channel string) (Hook, error)
 }
 ```
 
 files can be stored in the `app/extensions` folder (modifiable). Example:
 
-```
-package aliyun
+```go
+package extensions
 
 import (
-  "github.com/goravel/framework/support/facades"
-  "github.com/sirupsen/logrus"
+	"fmt"
+
+	"github.com/goravel/framework/contracts/log"
 )
 
 type Logger struct {
 }
 
-func (logger Logger) Handle(configPath string) (logrus.Hook, error) {
-  return AliyunLogHook{}, nil
+// Handle pass channel config path here
+func (logger *Logger) Handle(channel string) (log.Hook, error) {
+	return &Hook{}, nil
 }
 
-type AliyunLogHook struct {
+type Hook struct {
 }
 
-func (h AliyunLogHook) Levels() []logrus.Level {
-  level := facades.Config.GetString("logging.channels.aliyun.level")
-
-  if level == "error" {
-    return []logrus.Level{
-      logrus.ErrorLevel,
-      logrus.FatalLevel,
-      logrus.PanicLevel,
-    }
-  }
-
-  return []logrus.Level{
-    logrus.TraceLevel,
-    logrus.DebugLevel,
-    logrus.InfoLevel,
-    logrus.WarnLevel,
-    logrus.ErrorLevel,
-    logrus.FatalLevel,
-    logrus.PanicLevel,
-  }
+// Levels monitoring level
+func (h *Hook) Levels() []log.Level {
+	return []log.Level{
+		log.DebugLevel,
+		log.InfoLevel,
+		log.WarningLevel,
+		log.ErrorLevel,
+		log.FatalLevel,
+		log.PanicLevel,
+	}
 }
 
-func (h AliyunLogHook) Fire(entry *logrus.Entry) error {
-  // todo logic
-  level := entry.Level.String()
-  errTime := entry.Time.String()
-  message := entry.Message
+// Fire execute logic when trigger
+func (h *Hook) Fire(entry *log.Entry) error {
+	fmt.Printf("level=%v time=%v message=%s", entry.GetLevel(), entry.GetTime(), entry.GetMessage())
 
-  return nil
+	return nil
 }
 ```
-
-### More
-
-See [sirupsen/logrus](https://github.com/sirupsen/logrus)

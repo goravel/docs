@@ -1,4 +1,4 @@
-import { SidebarConfigArray } from 'vuepress'
+import { SidebarConfigArray } from "vuepress";
 
 export function getEnSidebar(): SidebarConfigArray {
   return [
@@ -51,7 +51,7 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/the-basics/routing",
         },
         {
-          text: "Middleware",
+          text: "HTTP Middleware",
           link: "/the-basics/middleware",
         },
         {
@@ -59,7 +59,11 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/the-basics/controllers",
         },
         {
-          text: "Response",
+          text: "Requests",
+          link: "/the-basics/request",
+        },
+        {
+          text: "Responses",
           link: "/the-basics/response",
         },
         {
@@ -86,7 +90,11 @@ export function getEnSidebar(): SidebarConfigArray {
         },
         {
           text: "Events",
-          link: "/digging-deeper/events",
+          link: "/digging-deeper/event",
+        },
+        {
+          text: "Mail",
+          link: "/digging-deeper/mail",
         },
         {
           text: "Queues",
@@ -99,18 +107,18 @@ export function getEnSidebar(): SidebarConfigArray {
       ],
     },
     {
-      text: "Eloquent ORM",
+      text: "ORM",
       // collapsible: true,
       children: [
         {
           text: "Getting Started",
-          link: "/ORM/getting-started",
+          link: "/orm/getting-started",
         },
         {
           text: "Migrations",
-          link: "/ORM/migrations",
+          link: "/orm/migrations",
         },
       ],
     },
-  ]
+  ];
 }
