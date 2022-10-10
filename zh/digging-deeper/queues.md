@@ -137,7 +137,7 @@ import (
 type UserController struct {
 }
 
-func (r *UserController) Show(request http.Request) {
+func (r *UserController) Show(ctx http.Context) {
   err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Dispatch()
   if err != nil {
     // do something
@@ -163,7 +163,7 @@ import (
 type UserController struct {
 }
 
-func (r *serController) Show(request http.Request) {
+func (r *serController) Show(ctx http.Context) {
   err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).DispatchSync()
   if err != nil {
     // do something

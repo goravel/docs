@@ -76,8 +76,8 @@ facades.Route.Any("/", userController.Show)
 
 ```go
 facades.Route.Group(func(route route.Route) {
-  route.Get("group/{id}", func(request http.Request) {
-    facades.Response.Success().String(request.Query("id", "1"))
+  route.Get("group/{id}", func(ctx http.Context) {
+    ctx.Response().Success().String(ctx.Request().Query("id", "1"))
   })
 })
 ```
@@ -99,9 +99,9 @@ facades.Route.StaticFS("static-fs", nethttp.Dir("./public"))
 ## Routing Parameters
 
 ```go
-facades.Route.Get("/input/{id}", func(request http.Request) {
-  facades.Response.Success().Json(http.Json{
-    "id": request.Input("id"),
+facades.Route.Get("/input/{id}", func(ctx http.Context) {
+  ctx.Response().Success().Json(http.Json{
+    "id": ctx.Request().Input("id"),
   })
 })
 ```

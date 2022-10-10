@@ -8,12 +8,12 @@ Goravel 的 `contracts/http/Request` 方法可以与应用程序处理的当前 
 
 ## 与请求交互
 
-`request` 实例被自动注入到控制器中：
+`http.Context` 实例被自动注入到控制器中：
 
 ```go
 import "github.com/goravel/framework/contracts/http"
 
-facades.Route.Get("/", func(request http.Request) {
+facades.Route.Get("/", func(ctx http.Context) {
 
 })
 ```
@@ -21,50 +21,38 @@ facades.Route.Get("/", func(request http.Request) {
 ### 获取请求路径
 
 ```go
-path := request.Path() // /users
+path := ctx.Request().Path() // /users
 ```
 
 ### 获取请求 URL
 
 ```go
-url := request.Url() // /users?name=Goravel
+url := ctx.Request().Url() // /users?name=Goravel
 ```
 
 ### 获取完整 URL
 
 ```go
-url := request.FullUrl() // http://**/users?name=Goravel
+url := ctx.Request().FullUrl() // http://**/users?name=Goravel
 ```
 
 ### 获取请求方法
 
 ```go
-method := request.Method()
+method := ctx.Request().Method()
 ```
 
 ### 获取请求头
 
 ```go
-header := request.Header('X-Header-Name', 'default')
-headers := request.Headers()
+header := ctx.Request().Header('X-Header-Name', 'default')
+headers := ctx.Request().Headers()
 ```
 
 ### 获取 IP 地址
 
 ```go
-method := request.Ip()
-```
-
-### 附加 Context
-
-```go
-request := request.WithContext(context.Background())
-```
-
-### 获取 Context
-
-```go
-ctx := request.Context()
+method := ctx.Request().Ip()
 ```
 
 ## 输入
@@ -73,20 +61,20 @@ ctx := request.Context()
 
 ```go
 // /users/:id
-id := request.Input("id")
+id := ctx.Request().Input("id")
 ```
 
 ### 获取链接传入的参数
 
 ```go
 // /users?name=goravel
-name := request.Query("name", "goravel")
+name := ctx.Request().Query("name", "goravel")
 ```
 
 ### 获取 form
 
 ```go
-name := request.Form("name", "goravel")
+name := ctx.Request().Form("name", "goravel")
 ```
 
 ### form 绑定 struct
@@ -97,7 +85,7 @@ type User struct {
 }
 
 var user User
-err := request.Bind(&user)
+err := ctx.Request().Bind(&user)
 ```
 
 ## 文件
@@ -105,18 +93,30 @@ err := request.Bind(&user)
 ### 获取上传的文件
 
 ```go
-file, err := request.File("file")
+file, err := ctx.Request().File("file")
 ```
 
 ### 储存上传的文件
 
 ```go
-file, err := request.File("file")
+file, err := ctx.Request().File("file")
 file.Store("./public/test.png")
 ```
 
 ### 中断请求
 
 ```go
-request.AbortWithStatus(403)
+ctx.Request().AbortWithStatus(403)
+```
+
+### 附加数据
+
+```go
+ctx.WithValue("user", "Goravel")
+```
+
+### 获取数据
+
+```go
+ctx.Value("user")
 ```

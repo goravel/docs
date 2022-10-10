@@ -145,7 +145,7 @@ import (
 type UserController struct {
 }
 
-func (r UserController) Show(request http.Request) {
+func (r UserController) Show(ctx http.Context) {
   err := facades.Event.Job(&events.OrderShipped{}, []event.Arg{
     {Type: "string", Value: "Goravel"},
     {Type: "int", Value: 1},

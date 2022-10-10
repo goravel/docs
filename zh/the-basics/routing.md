@@ -63,8 +63,8 @@ func main() {
 ## 基本路由
 
 ```go
-facades.Route.Get("/", func(request http.Request) {
-  facades.Response.Json(nethttp.StatusOK, http.Json{
+facades.Route.Get("/", func(ctx http.Context) {
+  ctx.Response().Json(nethttp.StatusOK, http.Json{
     "Hello": "Goravel",
   })
 })
@@ -80,8 +80,8 @@ facades.Route.Any("/", userController.Show)
 
 ```go
 facades.Route.Group(func(route route.Route) {
-  route.Get("group/{id}", func(request http.Request) {
-    facades.Response.Success().String(request.Query("id", "1"))
+  route.Get("group/{id}", func(ctx http.Context) {
+    ctx.Response().Success().String(ctx.Request().Query("id", "1"))
   })
 })
 ```
@@ -103,9 +103,9 @@ facades.Route.StaticFS("static-fs", nethttp.Dir("./public"))
 ## 路由传参
 
 ```go
-facades.Route.Get("/input/{id}", func(request http.Request) {
-  facades.Response.Success().Json(http.Json{
-    "id": request.Input("id"),
+facades.Route.Get("/input/{id}", func(ctx http.Context) {
+  ctx.Response().Success().Json(http.Json{
+    "id": ctx.Request().Input("id"),
   })
 })
 ```
