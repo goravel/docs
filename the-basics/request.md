@@ -8,12 +8,12 @@ The `contracts/http/Request` method of Goravel can interact with the current HTT
 
 ## Interacting With The Request
 
-The `request` instance is automatically injected into the controller:
+The `http.Context` instance is automatically injected into the controller:
 
 ```go
 import "github.com/goravel/framework/contracts/http"
 
-facades.Route.Get("/", func(request http.Request) {
+facades.Route.Get("/", func(ctx http.Context) {
 
 })
 ```
@@ -21,50 +21,38 @@ facades.Route.Get("/", func(request http.Request) {
 ### Retrieving The Request Path
 
 ```go
-path := request.Path() // /users
+path := ctx.Request().Path() // /users
 ```
 
 ### Retrieving The Request URL
 
 ```go
-url := request.Url() // /users?name=Goravel
+url := ctx.Request().Url() // /users?name=Goravel
 ```
 
 ### Retrieving The Full Request URL
 
 ```go
-url := request.FullUrl() // http://**/users?name=Goravel
+url := ctx.Request().FullUrl() // http://**/users?name=Goravel
 ```
 
 ### Retrieving The Request Method
 
 ```go
-method := request.Method()
+method := ctx.Request().Method()
 ```
 
 ### Request Headers
 
 ```go
-header := request.Header('X-Header-Name', 'default')
-headers := request.Headers()
+header := ctx.Request().Header('X-Header-Name', 'default')
+headers := ctx.Request().Headers()
 ```
 
 ### Request IP Address
 
 ```go
-method := request.Ip()
-```
-
-### Attach Context
-
-```go
-request := request.WithContext(context.Background())
-```
-
-### Get Context
-
-```go
-ctx := request.Context()
+method := ctx.Request().Ip()
 ```
 
 ## Input
@@ -73,20 +61,20 @@ ctx := request.Context()
 
 ```go
 // /users/:id
-id := request.Input("id")
+id := ctx.Request().Input("id")
 ```
 
 ### Retrieving Input From The Query String
 
 ```go
 // /users?name=goravel
-name := request.Query("name", "goravel")
+name := ctx.Request().Query("name", "goravel")
 ```
 
 ### Retrieving Form
 
 ```go
-name := request.Form("name", "goravel")
+name := ctx.Request().Form("name", "goravel")
 ```
 
 ### Form Bind Struct
@@ -97,7 +85,7 @@ type User struct {
 }
 
 var user User
-err := request.Bind(&user)
+err := ctx.Request().Bind(&user)
 ```
 
 ## File
@@ -105,18 +93,30 @@ err := request.Bind(&user)
 ### Retrieving File
 
 ```go
-file, err := request.File("file")
+file, err := ctx.Request().File("file")
 ```
 
 ### Save File
 
 ```go
-file, err := request.File("file")
+file, err := ctx.Request().File("file")
 file.Store("./public")
 ```
 
 ### Abort Request
 
 ```go
-request.AbortWithStatus(403)
+ctx.Request().AbortWithStatus(403)
+```
+
+### Attach Data
+
+```go
+ctx.WithValue("user", "Goravel")
+```
+
+### Get Data
+
+```go
+ctx.Value("user")
 ```

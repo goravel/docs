@@ -4,14 +4,14 @@
 
 ## Introduction
 
-You can use `facades.Response` for HTTP response.
+You can use `ctx.Response()` for HTTP response in the Controller.
 
 ## String
 
 ```go
 import "net/http"
 
-facades.Response.String(http.OK, "Hello Goravel")
+ctx.Response().String(http.OK, "Hello Goravel")
 ```
 
 ## JSON
@@ -22,11 +22,11 @@ import (
   contracthttp "github.com/goravel/framework/contracts/http"
 )
 
-facades.Response.Json(http.OK, contracthttp.Json({
+ctx.Response().Json(http.OK, contracthttp.Json({
   "Hello": "Goravel",
 }))
 
-facades.Response.Json(http.OK, struct {
+ctx.Response().Json(http.OK, struct {
   ID       uint `json:"id"`
   Name     string `json:"name"`
 }{
@@ -40,7 +40,7 @@ facades.Response.Json(http.OK, struct {
 ```go
 import "net/http"
 
-facades.Response.File("./public/logo.png")
+ctx.Response().File("./public/logo.png")
 ```
 
 ## Download File
@@ -48,7 +48,7 @@ facades.Response.File("./public/logo.png")
 ```go
 import "net/http"
 
-facades.Response.Download("./public/logo.png", "1.png")
+ctx.Response().Download("./public/logo.png", "1.png")
 ```
 
 ## Attach Header
@@ -56,14 +56,14 @@ facades.Response.Download("./public/logo.png", "1.png")
 ```go
 import "net/http"
 
-facades.Response.Header("Content", "Goravel").String(http.OK, "Hello Goravel")
+ctx.Response().Header("Content", "Goravel").String(http.OK, "Hello Goravel")
 ```
 
 ## Return Success
 
 ```go
-facades.Response.Success().String("Hello Goravel")
-facades.Response.Success().Json(contracthttp.Json({
+ctx.Response().Success().String("Hello Goravel")
+ctx.Response().Success().Json(contracthttp.Json({
   "Hello": "Goravel",
 }))
 ```

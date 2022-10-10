@@ -28,8 +28,8 @@ func NewUserController() *UserController {
 	}
 }
 
-func (r *UserController) Show(request http.Request) {
-	facades.Response.Success().Json(http.Json{
+func (r *UserController) Show(ctx http.Context) {
+	ctx.Response().Success().Json(http.Json{
 		"Hello": "Goravel",
 	})
 }
