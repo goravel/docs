@@ -100,7 +100,7 @@ func (h *Hook) Levels() []log.Level {
 }
 
 // Fire execute logic when trigger
-func (h *Hook) Fire(entry *log.Entry) error {
+func (h *Hook) Fire(entry log.Entry) error {
 	fmt.Printf("level=%v time=%v message=%s", entry.GetLevel(), entry.GetTime(), entry.GetMessage())
 
 	return nil
