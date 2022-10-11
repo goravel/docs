@@ -51,7 +51,7 @@ Then include a `via` option to implement a `framework\contracts\log\Logger` stru
 },
 ```
 
-### 编写驱动
+### Implement Driver
 
 Implement `framework\contracts\log\Logger` interface.
 
