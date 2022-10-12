@@ -46,6 +46,7 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 | Count         | [数据库事务](#事务)                     |
 | Create        | [创建数据](#创建)                       |
 | Delete        | [删除数据](#删除)                       |
+| Distinct      | [过滤重复](#过滤重复)                   |
 | Exec          | [执行原生更新 SQL](#执行原生更新SQL)    |
 | Find          | [获取一条数据](#查询)                   |
 | First         | [获取一条数据](#查询)                   |
@@ -340,6 +341,13 @@ facades.Orm.Query().Where("name = ?", "tom").ForceDelete(&models.User{})
 ```go
 var user models.User
 facades.Orm.Query().WithTrashed().First(&user)
+```
+
+### 过滤重复
+
+```go
+var users []models.User
+facades.Orm.Query().Distinct("name").Find(&users)
 ```
 
 ### 执行原生查询 SQL

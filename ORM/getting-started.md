@@ -46,6 +46,7 @@ For example, the model name is `UserOrder`, the table name is `user_orders`.
 | Count         | [Count](#Count)                                         |
 | Create        | [Create](#Create)                                       |
 | Delete        | [Delete](#Delete)                                       |
+| Distinct      | [Filter Repetition](#Filter-Repetition)                 |
 | Exec          | [Execute native update SQL](#Execute-Native-Update-SQL) |
 | Find          | [Query one or multiple lines by ID](#Select)            |
 | First         | [Get one line](#Select)                                 |
@@ -340,6 +341,13 @@ If execute batch delete without any conditions, ORM doesn't do that and returns 
 ```go
 var user models.User
 facades.Orm.Query().WithTrashed().First(&user)
+```
+
+### Filter Repetition
+
+```go
+var users []models.User
+facades.Orm.Query().Distinct("name").Find(&users)
 ```
 
 ### Execute Native SQL
