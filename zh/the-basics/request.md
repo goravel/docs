@@ -109,6 +109,12 @@ file.Store("./public/test.png")
 ctx.Request().AbortWithStatus(403)
 ```
 
+### 获取原始 Request
+
+```go
+request := ctx.Request().Origin()
+```
+
 ### 附加数据
 
 ```go

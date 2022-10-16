@@ -109,6 +109,12 @@ file.Store("./public")
 ctx.Request().AbortWithStatus(403)
 ```
 
+### Get Origin Request
+
+```go
+request := ctx.Request().Origin()
+```
+
 ### Attach Data
 
 ```go
