@@ -7,6 +7,8 @@ Goravel 所有功能都使用 `facades` 实现，而所有的 `facades` 均由�
 ## Mock facades.Cache
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func Cache() string {
 	if err := facades.Cache.Put("name", "goravel", 1*time.Minute); err != nil {
 		fmt.Println("cache.put.error", err)
@@ -16,40 +18,44 @@ func Cache() string {
 }
 
 func TestCache(t *testing.T) {
-	mockCache := goravelmock.Cache()
+	mockCache := mock.Cache()
 	mockCache.On("Put", "name", "goravel", mock.Anything).Return(nil).Once()
-	mockCache.On("Get", "name", "test").Return("hwb").Once()
+	mockCache.On("Get", "name", "test").Return("Goravel").Once()
 
 	res := Cache()
-	assert.Equal(t, res, "hwb")
+	assert.Equal(t, res, "Goravel")
 }
 ```
 
 ## Mock facades.Config
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func Config() string {
 	return facades.Config.GetString("app.name", "test")
 }
 
 func TestConfig(t *testing.T) {
-	mockConfig := goravelmock.Config()
-	mockConfig.On("GetString", "app.name", "test").Return("hwb").Once()
+	mockConfig := mock.Config()
+	mockConfig.On("GetString", "app.name", "test").Return("Goravel").Once()
 
 	res := Config()
-	assert.Equal(t, res, "hwb")
+	assert.Equal(t, res, "Goravel")
 }
 ```
 
 ## Mock facades.Artisan
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func ArtisanCall() {
 	facades.Artisan.Call("list")
 }
 
 func TestArtisan(t *testing.T) {
-	mockArticle := goravelmock.Artisan()
+	mockArticle := mock.Artisan()
 	mockArticle.On("Call", "list").Once()
 
 	assert.NotPanics(t, func() {
@@ -61,6 +67,8 @@ func TestArtisan(t *testing.T) {
 ## Mock facades.Orm
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func Orm() error {
 	if err := facades.Orm.Query().Create(&Test{}); err != nil {
 		return err
@@ -71,7 +79,7 @@ func Orm() error {
 }
 
 func TestOrm(t *testing.T) {
-	mockOrm, mockOrmDB, _ := goravelmock.Orm()
+	mockOrm, mockOrmDB, _ := mock.Orm()
 	mockOrm.On("Query").Return(mockOrmDB)
 
 	mockOrmDB.On("Create", mock.Anything).Return(nil).Once()
@@ -94,7 +102,7 @@ func Transaction() error {
 }
 
 func TestTransaction(t *testing.T) {
-	mockOrm, _, mockOrmTransaction := goravelmock.Orm()
+	mockOrm, _, mockOrmTransaction := mock.Orm()
 	mockOrm.On("Transaction", mock.Anything).Return(func(txFunc func(tx orm.Transaction) error) error {
 		return txFunc(mockOrmTransaction)
 	})
@@ -125,6 +133,8 @@ func Begin() error {
 ## Mock facades.Event
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func Event() error {
 	return facades.Event.Job(&events.TestEvent{}, []contractevent.Arg{
 		{Type: "string", Value: "abcc"},
@@ -133,7 +143,7 @@ func Event() error {
 }
 
 func TestEvent(t *testing.T) {
-	mockEvent, mockTask := goravelmock.Event()
+	mockEvent, mockTask := mock.Event()
 	mockEvent.On("Job", mock.Anything, mock.Anything).Return(mockTask).Once()
 	mockTask.On("Dispatch").Return(nil).Once()
 
@@ -146,12 +156,14 @@ func TestEvent(t *testing.T) {
 `facades.Log` 没有实现 mock，而是使用 `fmt` 代替了实际的日志输出，便于测试过程中调试。
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func Log() {
 	facades.Log.Debug("test")
 }
 
 func TestLog(t *testing.T) {
-	goravelmock.Log()
+	mock.Log()
 
 	Log()
 }
@@ -160,6 +172,8 @@ func TestLog(t *testing.T) {
 ## Mock facades.Mail
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func Mail() error {
 	return facades.Mail.From(mail.From{Address: "example@example.com", Name: "example"}).
 		To([]string{"example@example.com"}).
@@ -168,7 +182,7 @@ func Mail() error {
 }
 
 func TestMail(t *testing.T) {
-	mockMail := goravelmock.Mail()
+	mockMail := mock.Mail()
 	mockMail.On("From", mail.From{Address: "example@example.com", Name: "example"}).Return(mockMail)
 	mockMail.On("To", []string{"example@example.com"}).Return(mockMail)
 	mockMail.On("Content", mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).Return(mockMail)
@@ -181,12 +195,14 @@ func TestMail(t *testing.T) {
 ## Mock facades.Queue
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func Queue() error {
 	return facades.Queue.Job(&jobs.TestSyncJob{}, []queue.Arg{}).Dispatch()
 }
 
 func TestQueue(t *testing.T) {
-	mockQueue, mockTask := goravelmock.Queue()
+	mockQueue, mockTask := mock.Queue()
 	mockQueue.On("Job", mock.Anything, mock.Anything).Return(mockTask).Once()
 	mockTask.On("Dispatch").Return(nil).Once()
 
