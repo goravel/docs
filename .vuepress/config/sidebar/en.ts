@@ -104,6 +104,10 @@ export function getEnSidebar(): SidebarConfigArray {
           text: "Task Scheduling",
           link: "/digging-deeper/task-scheduling",
         },
+        {
+          text: "Mock",
+          link: "/digging-deeper/mock",
+        },
       ],
     },
     {

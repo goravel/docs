@@ -104,6 +104,10 @@ export function getZhSidebar(): SidebarConfigArray {
           text: "任务调度",
           link: "/zh/digging-deeper/task-scheduling",
         },
+        {
+          text: "Mock",
+          link: "/zh/digging-deeper/mock",
+        },
       ],
     },
     {
