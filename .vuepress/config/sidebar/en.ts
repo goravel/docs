@@ -94,6 +94,10 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/digging-deeper/artisan-console",
         },
         {
+          text: "Authentication",
+          link: "/digging-deeper/auth",
+        },
+        {
           text: "Cache",
           link: "/digging-deeper/cache",
         },

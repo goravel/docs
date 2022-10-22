@@ -94,6 +94,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/digging-deeper/artisan-console",
         },
         {
+          text: "用户验证",
+          link: "/zh/digging-deeper/auth",
+        },
+        {
           text: "缓存系统",
           link: "/zh/digging-deeper/cache",
         },
