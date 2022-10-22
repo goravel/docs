@@ -12,10 +12,10 @@ Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache
 
 ## 可用的缓存驱动
 
-| 名称      | 描述       |
+| 名称     | 描述       |
 | -------- | ---------- |
 | `redis`  | Redis 驱动 |
-| `custom` | 自定义驱动  |
+| `custom` | 自定义驱动 |
 
 ## 使用缓存
 
@@ -24,6 +24,9 @@ Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache
 ```go
 
 value := facades.Cache.Get("goravel", "default")
+value := facades.Cache.GetBool("goravel", true)
+value := facades.Cache.GetInt("goravel", 1)
+value := facades.Cache.GetString("goravel", "default")
 ```
 
 你可以传递一个 `func` 作为默认值。如果指定的数据在缓存中不存在，将返回 `func` 的结果。传递闭包的方法允许你从数据库或其他外部服务中获取默认值。注意闭包结构 `func() interface{}`。
@@ -140,6 +143,9 @@ import "time"
 type Store interface {
     //Get Retrieve an item from the cache by key.
     Get(key string, defaults interface{}) interface{}
+    GetBool(key string, defaults bool) bool
+    GetInt(key string, defaults interface{}) int
+    GetString(key string, defaults interface{}) string
 
     //Has Determine if an item exists in the cache.
     Has(key string) bool

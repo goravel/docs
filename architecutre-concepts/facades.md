@@ -39,6 +39,7 @@ func (database *ServiceProvider) Boot() {
 | Facade   | Document                                                |
 | -------- | ------------------------------------------------------- |
 | Artisan  | [Command Console](../digging-deeper/artisan-console.md) |
+| Auth     | [Authentication](../digging-deeper/auth.md)             |
 | Cache    | [Cache](../digging-deeper/cache.md)                     |
 | Config   | [Configuration](../getting-started/configuration.md)    |
 | Orm      | [ORM](../orm/getting-started.md)                        |

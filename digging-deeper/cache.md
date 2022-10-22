@@ -23,6 +23,9 @@ Make all custom configurations in `config/cache.go`. Different cache drivers are
 
 ```go
 value := facades.Cache.Get("goravel", "default")
+value := facades.Cache.GetBool("goravel", true)
+value := facades.Cache.GetInt("goravel", 1)
+value := facades.Cache.GetString("goravel", "default")
 ```
 
 You can pass a `func` as the default value. If the specified data does not exist in the cache, the result of `func` will be returned. The transitive closure method allows you to obtain default values from the database or other external services. Note the closure structure `func() interface()`.
@@ -139,6 +142,9 @@ import "time"
 type Store interface {
     //Get Retrieve an item from the cache by key.
     Get(key string, defaults interface{}) interface{}
+    GetBool(key string, defaults bool) bool
+    GetInt(key string, defaults interface{}) int
+    GetString(key string, defaults interface{}) string
 
     //Has Determine if an item exists in the cache.
     Has(key string) bool

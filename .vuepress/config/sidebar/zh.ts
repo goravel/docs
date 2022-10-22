@@ -3,6 +3,15 @@ import { SidebarConfigArray } from "vuepress";
 export function getZhSidebar(): SidebarConfigArray {
   return [
     {
+      text: "升级指南",
+      children: [
+        {
+          text: "从 v1.0 升级到 v1.1",
+          link: "/zh/upgrade/v1.1",
+        },
+      ],
+    },
+    {
       text: "入门指南",
       // collapsible: true,
       children: [

@@ -39,6 +39,7 @@ func (database *ServiceProvider) Boot() {
 | Facade   | 文档                                               |
 | -------- | -------------------------------------------------- |
 | Artisan  | [命令行工具](../digging-deeper/artisan-console.md) |
+| Auth     | [用户认证](../digging-deeper/auth.md)              |
 | Cache    | [缓存系统](../digging-deeper/cache.md)             |
 | Config   | [配置信息](../getting-started/configuration.md)    |
 | Orm      | [ORM](../orm/getting-started.md)                   |
