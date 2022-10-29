@@ -20,19 +20,19 @@
 var user models.User
 user.ID = 1
 
-token, err := facades.Auth.User(ctx, &user)
+token, err := facades.Auth.User(&user)
 ```
 
 ## 根据用户 ID 生成 Token
 
 ```go
-token, err := facades.Auth.LoginUsingID(ctx, 1)
+token, err := facades.Auth.LoginUsingID(1)
 ```
 
 ## 解析 Token
 
 ```go
-err := facades.Auth.Parse(ctx, token)
+err := facades.Auth.Parse(token)
 ```
 
 可以通过 err 来判断 Token 是否过期：
@@ -52,7 +52,7 @@ errros.Is(err, auth.ErrorTokenExpired)
 
 ```go
 var user models.User
-err := facades.Auth.User(ctx, &user)// 必须是指针
+err := facades.Auth.User(&user)// 必须是指针
 ```
 
 ## 刷新 Token
@@ -60,21 +60,21 @@ err := facades.Auth.User(ctx, &user)// 必须是指针
 刷新 Token 前需要先调用 `Parse` 解析 Token。
 
 ```go
-token, err := facades.Auth.Refresh(ctx)
+token, err := facades.Auth.Refresh()
 ```
 
 ## 登出
 
 ```go
-err := facades.Auth.Logout(ctx)
+err := facades.Auth.Logout()
 ```
 
 ## 多用户授权
 
 ```go
-token, err := facades.Auth.Guard("admin").LoginUsingID(ctx1)
-err := facades.Auth.Guard("admin").Parse(ctx, token)
-token, err := facades.Auth.Guard("admin").User(ctx, &user)
+token, err := facades.Auth.Guard("admin").LoginUsingID(1)
+err := facades.Auth.Guard("admin").Parse(token)
+token, err := facades.Auth.Guard("admin").User(&user)
 ```
 
 > 当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。

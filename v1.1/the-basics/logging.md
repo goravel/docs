@@ -21,12 +21,6 @@ Make custom configurations in `config/logging.go`, allows to configure different
 | `daily`  | One log file per day    |
 | `custom` | Custom drive            |
 
-### Inject Context
-
-```go
-facades.Log.WithContext(ctx)
-```
-
 ## Write log messages
 
 ```go
@@ -107,7 +101,7 @@ func (h *Hook) Levels() []log.Level {
 
 // Fire execute logic when trigger
 func (h *Hook) Fire(entry log.Entry) error {
-	fmt.Printf("context=%v level=%v time=%v message=%s", entry.Context(), entry.Level(), entry.Time(), entry.Message())
+	fmt.Printf("level=%v time=%v message=%s", entry.GetLevel(), entry.GetTime(), entry.GetMessage())
 
 	return nil
 }

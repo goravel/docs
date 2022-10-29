@@ -47,7 +47,6 @@ For example, the model name is `UserOrder`, the table name is `user_orders`.
 | Create        | [Create](#Create)                                       |
 | Delete        | [Delete](#Delete)                                       |
 | Distinct      | [Filter Repetition](#Filter-Repetition)                 |
-| Driver        | [Get Driver](#Get-Driver)                               |
 | Exec          | [Execute native update SQL](#Execute-Native-Update-SQL) |
 | Find          | [Query one or multiple lines by ID](#Select)            |
 | First         | [Get one line](#Select)                                 |
@@ -78,6 +77,8 @@ For example, the model name is `UserOrder`, the table name is `user_orders`.
 ## Query Builder
 
 ### Inject Context
+
+Inject Context, to realize the functions such as timeout control.
 
 ```go
 facades.Orm.WithContext(ctx)
@@ -347,15 +348,6 @@ facades.Orm.Query().WithTrashed().First(&user)
 ```go
 var users []models.User
 facades.Orm.Query().Distinct("name").Find(&users)
-```
-
-### Get Driver
-
-```go
-driver := facades.Orm.Query().Driver()
-
-// Judge driver
-if driver == orm.DriverMysql {}
 ```
 
 ### Execute Native SQL
