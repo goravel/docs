@@ -4,66 +4,11 @@
 
 ## 介绍
 
-可以使用 `ctx.Response()` 在控制其中进行 HTTP 响应。
+响应模块可以使用 `facades.Response` 进行操作。
 
-## 字符串
+## 可用方法
 
-```go
-import "net/http"
-
-ctx.Response().String(http.OK, "Hello Goravel")
-```
-
-## JSON
-
-```go
-import (
-  "net/http"
-  contracthttp "github.com/goravel/framework/contracts/http"
-)
-
-ctx.Response().Json(http.OK, contracthttp.Json({
-  "Hello": "Goravel",
-}))
-
-ctx.Response().Json(http.OK, struct {
-  ID       uint `json:"id"`
-  Name     string `json:"name"`
-}{
-  Id:      1,
-  Front:   "Goravel",
-})
-```
-
-## 文件响应
-
-```go
-import "net/http"
-
-ctx.Response().File("./public/logo.png")
-```
-
-## 下载文件
-
-```go
-import "net/http"
-
-ctx.Response().Download("./public/logo.png", "1.png")
-```
-
-## 附加 Header
-
-```go
-import "net/http"
-
-ctx.Response().Header("Content", "Goravel").String(http.OK, "Hello Goravel")
-```
-
-## 返回成功
-
-```go
-ctx.Response().Success().String("Hello Goravel")
-ctx.Response().Success().Json(contracthttp.Json({
-  "Hello": "Goravel",
-}))
-```
+| 名称                                                   | 描述                    |
+| ------------------------------------------------------ | ----------------------- |
+| `Success(ctx *gin.Context, data interface{})`          | 返回状态码为 200 的响应 |
+| `Custom(ctx *gin.Context, data interface{}, code int)` | 返回自定义状态码的响应  |

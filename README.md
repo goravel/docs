@@ -4,13 +4,13 @@ English | [中文](../zh/README.md)
 
 ## About Goravel
 
-Goravel is a web application framework with complete functions and good scalability. As a starting scaffolding to help Gophper quickly build their own applications.
+Goravel is a web application framework with complete functions and good scalability. As a starting scaffolding to help
+Golang developers quickly build their own applications.
 
 ## Main Function
 
 - [x] Config
 - [x] Http
-- [x] Authentication
 - [x] Orm
 - [x] Migrate
 - [x] Logger
@@ -20,36 +20,29 @@ Goravel is a web application framework with complete functions and good scalabil
 - [x] Task Scheduling
 - [x] Queue
 - [x] Event
-- [x] Mail
-- [x] Mock
-
-## Roadmap
-
-- [ ] Optimize experience of microservice
-- [ ] Orm relationships
-- [ ] Request validator
-- [ ] Custom .env path
+- [ ] Mail
 
 ## Documentation
 
-Online documentation [https://www.goravel.dev](https://www.goravel.dev)
+Online documentation [https://www.goravel.dev/en](https://www.goravel.dev/en)
 
-**Older Documentation**
+Documentation repository [https://github.com/goravel/docs](https://github.com/goravel/docs)
 
-- [v1.1](https://github.com/goravel/docs/tree/master/v1.1)
-- [v0](https://github.com/goravel/docs/tree/master/v0)
+## Grateful
 
-> To optimize the documentation, please submit a PR to the documentation repository [https://github.com/goravel/docs](https://github.com/goravel/docs)
+The framework refers to the design ideas of Laravel;
 
-## Tribute Laravel
+The core functions use well-known Golang components, including but not limited to:
+[spf13/viper](https://github.com/spf13/viper) ,
+[gin-gonic/gin](https://github.com/gin-gonic/gin) ,
+[go-redis/redis](https://github.com/go-redis/redis) ,
+[urfave/cli](https://github.com/urfave/cli) ,
+[sirupsen/logrus](https://github.com/sirupsen/logrus) ,
+[go-gorm/gorm](https://github.com/go-gorm/gorm) ;
 
-Goravel and Laravel remain highly consistent, let PHPer play Golang happily without learning a new framework!
+The documentation refers to the content of [Laravel](https://laravel.com/docs/8.x);
 
-## Group
-
-Welcome more exchanges in Discord.
-
-[https://discord.gg/cFc5csczzS](https://discord.gg/cFc5csczzS)
+Tribute to them!
 
 ## License
 
