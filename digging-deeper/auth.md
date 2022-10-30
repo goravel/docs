@@ -27,19 +27,19 @@ type User struct {
 var user models.User
 user.ID = 1
 
-token, err := facades.Auth.User(ctx, &user)
+token, err := facades.Auth.User(&user)
 ```
 
 ## Generate Token Using ID
 
 ```go
-token, err := facades.Auth.LoginUsingID(ctx, 1)
+token, err := facades.Auth.LoginUsingID(1)
 ```
 
 ## Parse Token
 
 ```go
-err := facades.Auth.Parse(ctx, token)
+err := facades.Auth.Parse(token)
 ```
 
 You can judge whether the Token is expired by err:
@@ -59,7 +59,7 @@ You need to generate Token by `Parse` before getting user, the process can be ha
 
 ```go
 var user models.User
-err := facades.Auth.User(ctx, &user)// Must point
+err := facades.Auth.User(&user)// Must point
 ```
 
 ## Refrech Token
@@ -67,21 +67,21 @@ err := facades.Auth.User(ctx, &user)// Must point
 You need to generate Token by `Parse` before refreshing user.
 
 ```go
-token, err := facades.Auth.Refresh(ctx)
+token, err := facades.Auth.Refresh()
 ```
 
 ## Logout
 
 ```go
-err := facades.Auth.Logout(ctx)
+err := facades.Auth.Logout()
 ```
 
 ## Multiple Guards
 
 ```go
-token, err := facades.Auth.Guard("admin").LoginUsingID(ctx, 1)
-err := facades.Auth.Guard("admin").Parse(ctx, token)
-token, err := facades.Auth.Guard("admin").User(ctx, &user)
+token, err := facades.Auth.Guard("admin").LoginUsingID(1)
+err := facades.Auth.Guard("admin").Parse(token)
+token, err := facades.Auth.Guard("admin").User(&user)
 ```
 
 > When don't use default guard, the `Guard` method needs to be called beforehand when calling the above methods.

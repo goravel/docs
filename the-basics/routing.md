@@ -118,12 +118,6 @@ facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
 
 Detail [Middleware](./middleware.md)
 
-## Cross-Origin Resource Sharing (CORS)
-
-Goravel has CORS enabled by default, the configuration can be modified in `config/cors.go`, the funciton is registered in `app/http/kernel.go` as global middleware.
-
-> For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
-
 ## Testing Routing
 
 ```go

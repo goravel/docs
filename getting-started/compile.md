@@ -30,11 +30,3 @@ CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build .
 // Compile Mac environment
 CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 ```
-
-## Docker
-
-Goravel has a default Dockerfile file, you can use it directly.
-
-```
-docker build .
-```

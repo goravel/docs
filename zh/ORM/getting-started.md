@@ -47,7 +47,6 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 | Create        | [创建数据](#创建)                       |
 | Delete        | [删除数据](#删除)                       |
 | Distinct      | [过滤重复](#过滤重复)                   |
-| Driver        | [获取当前驱动](#获取当前驱动)           |
 | Exec          | [执行原生更新 SQL](#执行原生更新SQL)    |
 | Find          | [获取一条数据](#查询)                   |
 | First         | [获取一条数据](#查询)                   |
@@ -78,6 +77,8 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 ## 查询构造器
 
 ### 注入 Context
+
+注入 Context，以实现超时控制等功能。
 
 ```go
 facades.Orm.WithContext(ctx)
@@ -347,15 +348,6 @@ facades.Orm.Query().WithTrashed().First(&user)
 ```go
 var users []models.User
 facades.Orm.Query().Distinct("name").Find(&users)
-```
-
-### 获取当前驱动
-
-```go
-driver := facades.Orm.Query().Driver()
-
-// 判断驱动
-if driver == orm.DriverMysql {}
 ```
 
 ### 执行原生查询 SQL

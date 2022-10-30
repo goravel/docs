@@ -21,12 +21,6 @@
 | `daily`  | 每天一个日志文件 |
 | `custom` | 自定义驱动       |
 
-### 注入 Context
-
-```go
-facades.Log.WithContext(ctx)
-```
-
 ## 写日志消息
 
 ```go
@@ -107,7 +101,7 @@ func (h *Hook) Levels() []log.Level {
 
 // Fire 当触发时执行的逻辑
 func (h *Hook) Fire(entry log.Entry) error {
-	fmt.Printf("context=%v level=%v time=%v message=%s", entry.Context(), entry.Level(), entry.Time(), entry.Message())
+	fmt.Printf("level=%v time=%v message=%s", entry.GetLevel(), entry.GetTime(), entry.GetMessage())
 
 	return nil
 }
