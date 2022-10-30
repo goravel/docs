@@ -36,8 +36,8 @@ Online documentation [https://www.goravel.dev](https://www.goravel.dev)
 
 **Older Documentation**
 
-- [v1.1](https://github.com/goravel/docs/tree/master/v1.1)
-- [v0](https://github.com/goravel/docs/tree/master/v0)
+- [v1.1](https://github.com/goravel/docs/tree/v1.1)
+- [v0](https://github.com/goravel/docs/tree/v0)
 
 > To optimize the documentation, please submit a PR to the documentation repository [https://github.com/goravel/docs](https://github.com/goravel/docs)
 
