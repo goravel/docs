@@ -6,6 +6,10 @@ export function getZhSidebar(): SidebarConfigArray {
       text: "升级指南",
       children: [
         {
+          text: "从 v1.2 升级到 v1.3",
+          link: "/zh/upgrade/v1.3",
+        },
+        {
           text: "从 v1.1 升级到 v1.2",
           link: "/zh/upgrade/v1.2",
         },
