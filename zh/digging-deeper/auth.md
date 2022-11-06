@@ -41,7 +41,7 @@ err := facades.Auth.Parse(ctx, token)
 "errors"
 "github.com/goravel/framework/auth"
 
-errros.Is(err, auth.ErrorTokenExpired)
+errors.Is(err, auth.ErrorTokenExpired)
 ```
 
 > Token 带不带 Bearer 前缀均可正常解析。

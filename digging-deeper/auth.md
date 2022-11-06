@@ -48,7 +48,7 @@ You can judge whether the Token is expired by err:
 "errors"
 "github.com/goravel/framework/auth"
 
-errros.Is(err, auth.ErrorTokenExpired)
+errors.Is(err, auth.ErrorTokenExpired)
 ```
 
 > Token can be parsed normally with or without Bearer prefix.
