@@ -81,7 +81,7 @@ export default defineUserConfig({
     md.use(taskLists);
   },
   theme: defaultTheme({
-    logo: "https://user-images.githubusercontent.com/24771476/188801966-1b865cb7-99eb-4a62-a486-0c4d9cf7b7fb.png",
+    logo: "goravel.png",
     locales: {
       "/": {
         selectLanguageName: "English",
