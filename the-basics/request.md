@@ -107,6 +107,9 @@ file.Store("./public")
 
 ```go
 ctx.Request().AbortWithStatus(403)
+ctx.Request().AbortWithStatusJson(403, http.Json{
+  "Hello": "World",
+})
 ```
 
 ### Get Origin Request
@@ -124,5 +127,11 @@ ctx.WithValue("user", "Goravel")
 ### Get Data
 
 ```go
-ctx.Value("user")
+user := ctx.Value("user")
+```
+
+### Get Context
+
+```go
+ctx := ctx.Context()
 ```

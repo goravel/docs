@@ -107,6 +107,9 @@ file.Store("./public/test.png")
 
 ```go
 ctx.Request().AbortWithStatus(403)
+ctx.Request().AbortWithStatusJson(403, http.Json{
+  "Hello": "World",
+})
 ```
 
 ### 获取原始 Request
@@ -124,5 +127,11 @@ ctx.WithValue("user", "Goravel")
 ### 获取数据
 
 ```go
-ctx.Value("user")
+user := ctx.Value("user")
+```
+
+### 获取 Context
+
+```go
+ctx := ctx.Context()
 ```

@@ -6,6 +6,10 @@
 
 Grpc 模块可以使用 `facades.Grpc` 进行操作。
 
+## 配置
+
+在 `config/grpc.go` 中进行 Grpc 模块的配置，其中 `grpc.host` 配置 server 的域名，`grpc.clients` 配置 client 的相关信息。
+
 ## 控制器
 
 控制器文件可以定义在 `/app/grpc/controllers` 目录中。
@@ -91,43 +95,75 @@ go func() {
 }()
 ```
 
-## 扩展
+## 拦截器
 
-`facades.Grpc` 提供扩展方法，可以对 Server 进行扩展，例如设置中间件：
+拦截器可以定义在 `app/grpc/inteceptors` 文件夹中，然后注册到 `app/grpc/kernel.go`。
 
-| 名称                             | 描述             |
-| -------------------------------- | ---------------- |
-| `Server() *grpc.Server`          | 获取 Server 实例 |
-| `SetServer(server *grpc.Server)` | 设置 Server 实例 |
+**服务端拦截器**
 
-### 设置链路跟踪中间件
+在 `app/grpc/kernel.go:UnaryServerInterceptors` 方法中设置服务端拦截器。例如：
 
 ```go
-// app/providers/grpc_service_provider.go
-package providers
+// app/grpc/kernel.go
+import (
+	"goravel/app/grpc/interceptors"
+
+	"google.golang.org/grpc"
+)
+
+func (kernel *Kernel) UnaryServerInterceptors() []grpc.UnaryServerInterceptor {
+	return []grpc.UnaryServerInterceptor{
+		interceptors.Server,
+	}
+}
+```
+
+**客户端拦截器**
+
+在 `app/grpc/kernel.go:UnaryClientInterceptorGroups` 方法中设置客户端拦截器，该方法可以对拦截器进行分组。例如设置 `trace` 分组下包含 `interceptors.Client`：
+
+```go
+// app/grpc/kernel.go
+import (
+	"goravel/app/grpc/interceptors"
+
+	"google.golang.org/grpc"
+)
+
+func (kernel *Kernel) UnaryClientInterceptorGroups() map[string][]grpc.UnaryClientInterceptor {
+	return map[string][]grpc.UnaryClientInterceptor{
+		"trace": {
+			interceptors.Client,
+		},
+	}
+}
+```
+
+分组名 `trace` 可以被应用到配置项 `grpc.clients.interceptors` 上，这样该 `Client` 就会被应用该分组下的所有拦截器。例如：
+
+```go
+package config
 
 import (
 	"github.com/goravel/framework/facades"
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	"google.golang.org/grpc"
-
-	"goravel/routes"
 )
 
-type GrpcServiceProvider struct {
-}
+func init() {
+	config := facades.Config
+	config.Add("grpc", map[string]interface{}{
+		// Grpc Configuration
+		//
+		// Configure your server host
+		"host": config.Env("GRPC_HOST", ""),
 
-func (router *GrpcServiceProvider) Register() {
-
-}
-
-func (router *GrpcServiceProvider) Boot() {
-	facades.Grpc.SetServer(grpc.NewServer(grpc.UnaryInterceptor(
-		grpc_middleware.ChainUnaryServer(
-			// Add middleware
-		),
-	)))
-
-	routes.Grpc()
+		// Configure your client host and interceptors.
+		// Interceptors can be the group name of UnaryClientInterceptorGroups in app/grpc/kernel.go.
+		"clients": map[string]any{
+			"user": map[string]any{
+				"host":         config.Env("GRPC_HOST", ""),
+				"interceptors": []string{"trace"},
+			},
+		},
+	})
 }
 ```
