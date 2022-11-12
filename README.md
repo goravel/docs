@@ -25,9 +25,11 @@ Goravel is a web application framework with complete functions and good scalabil
 
 ## Roadmap
 
-- [ ] Optimize experience of microservice
-- [ ] Orm relationships
+- [ ] FileStorage
+- [ ] Authorization
 - [ ] Request validator
+- [ ] Optimize migration
+- [ ] Orm relationships
 - [ ] Custom .env path
 
 ## Documentation
