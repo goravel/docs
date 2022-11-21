@@ -6,6 +6,10 @@ export function getZhSidebar(): SidebarConfigArray {
       text: "升级指南",
       children: [
         {
+          text: "从 v1.4 升级到 v1.5",
+          link: "/zh/upgrade/v1.5",
+        },
+        {
           text: "从 v1.3 升级到 v1.4",
           link: "/zh/upgrade/v1.4",
         },
@@ -116,6 +120,10 @@ export function getZhSidebar(): SidebarConfigArray {
         {
           text: "事件系统",
           link: "/zh/digging-deeper/event",
+        },
+        {
+          text: "文件系统",
+          link: "/zh/digging-deeper/filesystem",
         },
         {
           text: "邮件",
