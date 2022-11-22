@@ -53,7 +53,7 @@ Then include a `via` option to implement a `framework\contracts\log\Logger` stru
 //config/logging.go
 "custom": map[string]interface{}{
     "driver": "custom",
-    "via":    CustomTest{},
+    "via":    &CustomTest{},
 },
 ```
 

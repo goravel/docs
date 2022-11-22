@@ -20,12 +20,12 @@ Goravel is a web application framework with complete functions and good scalabil
 - [x] Task Scheduling
 - [x] Queue
 - [x] Event
+- [x] FileStorage
 - [x] Mail
 - [x] Mock
 
 ## Roadmap
 
-- [ ] FileStorage
 - [ ] Authorization
 - [ ] Request validator
 - [ ] Optimize migration

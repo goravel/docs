@@ -59,7 +59,7 @@ facades.Log.Panicf(message, args)
 
 ### 编写驱动
 
-实现 `framework\contracts\log\Logger` 接口。
+实现 `github.com/goravel/framework/contracts/log/Logger` 接口。
 
 ```
 //framework\contracts\log\Logger

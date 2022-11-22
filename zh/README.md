@@ -20,12 +20,12 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 - [x] 任务调度
 - [x] 队列
 - [x] 事件系统
+- [x] 文件存储
 - [x] 邮件
 - [x] Mock
 
 ## 路线图
 
-- [ ] 文件存储
 - [ ] 用户授权
 - [ ] Request 校验
 - [ ] 优化迁移
@@ -45,7 +45,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## 致敬 Laravel
 
-框架与 [Laravel](https://github.com/laravel/laravel) 保持高度一致，让 PHPer 不用学习新的框架，也可以愉快的玩转 Golang！
+框架风格与 [Laravel](https://github.com/laravel/laravel) 保持一致，让 PHPer 不用学习新的框架，也可以愉快的玩转 Golang！
 
 ## 群组
 

@@ -6,6 +6,10 @@ export function getEnSidebar(): SidebarConfigArray {
       text: "Upgrade Guide",
       children: [
         {
+          text: "Upgrading To v1.5 From v1.4",
+          link: "/upgrade/v1.5",
+        },
+        {
           text: "Upgrading To v1.4 From v1.3",
           link: "/upgrade/v1.4",
         },
@@ -116,6 +120,10 @@ export function getEnSidebar(): SidebarConfigArray {
         {
           text: "Events",
           link: "/digging-deeper/event",
+        },
+        {
+          text: "File Storage",
+          link: "/digging-deeper/filesystem",
         },
         {
           text: "Mail",
