@@ -26,6 +26,12 @@ If your application interacts with multiple disks, you may use the `Disk` method
 facades.Storage.Disk("s3").Put("avatars/1.png", "Contents")
 ```
 
+## Inject Context
+
+```go
+facades.Storage.WithContext(ctx).Put("avatars/1.png", "Contents")
+```
+
 ## Retrieving Files
 
 The `Get` method may be used to retrieve the contents of a file. The raw string contents of the file will be returned by the method. Remember, all file paths should be specified relative to the disk's `root` location:

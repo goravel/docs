@@ -26,6 +26,12 @@ facades.Storage.Put("avatars/1.png", "Contents")
 facades.Storage.Disk("s3").Put("avatars/1.png", "Contents")
 ```
 
+## 注入 Context
+
+```go
+facades.Storage.WithContext(ctx).Put("avatars/1.png", "Contents")
+```
+
 ## 检索文件
 
 `Get` 方法可以用于获取文件的内容，此方法返回该文件的原始字符串内容。切记，所有文件路径的指定都应该相对于该磁盘所配置的 `root` 目录：

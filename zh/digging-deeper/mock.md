@@ -209,3 +209,20 @@ func TestQueue(t *testing.T) {
 	assert.Nil(t, Queue())
 }
 ```
+
+## Mock facades.Storage
+
+```go
+import "github.com/goravel/framework/testing/mock"
+
+func File() error {
+	return facades.Storage.Put("hello.txt", "Goravel")
+}
+
+func TestFile(t *testing.T) {
+	mockStorage, mockDriver, mockFile := mock.Storage()
+	mockStorage.On("Put", "hello.txt", "Goravel").Return(nil).Once()
+
+	assert.Nil(t, File())
+}
+```
