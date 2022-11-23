@@ -122,7 +122,7 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/digging-deeper/event",
         },
         {
-          text: "文件系统",
+          text: "文件储存",
           link: "/zh/digging-deeper/filesystem",
         },
         {
