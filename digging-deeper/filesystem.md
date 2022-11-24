@@ -51,7 +51,7 @@ if (facades.Storage.Disk("s3").Exists("file.jpg")) {
 The `Missing` method may be used to determine if a file is missing from the disk:
 
 ```go
-if (facades.Storage.Disk('s3').Missing("file.jpg")) {
+if (facades.Storage.Disk("s3").Missing("file.jpg")) {
     // ...
 }
 ```
@@ -61,7 +61,7 @@ if (facades.Storage.Disk('s3').Missing("file.jpg")) {
 You may use the `Url` method to get the URL for a given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` driver, the fully qualified remote URL will be returned:
 
 ```go
-url := facades.Storage.Url("file.jpg')
+url := facades.Storage.Url("file.jpg")
 ```
 
 > When using the `local` driver, the return value of `Url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
@@ -119,9 +119,9 @@ There are a few important things to note about the `PutFile` method. Note that w
 The `Copy` method may be used to copy an existing file to a new location on the disk, while the `Move` method may be used to rename or move an existing file to a new location:
 
 ```go
-err := facades.Storage.Copy('old/file.jpg', 'new/file.jpg')
+err := facades.Storage.Copy("old/file.jpg", "new/file.jpg")
 
-err := facades.Storage.Move('old/file.jpg', 'new/file.jpg')
+err := facades.Storage.Move("old/file.jpg", "new/file.jpg")
 ```
 
 ### File Uploads

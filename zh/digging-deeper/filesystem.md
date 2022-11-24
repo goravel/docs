@@ -51,7 +51,7 @@ if (facades.Storage.Disk("s3").Exists("file.jpg")) {
 `Missing` 方法可以用来判断磁盘上是否缺少指定的文件：
 
 ```go
-if (facades.Storage.Disk('s3').Missing("file.jpg")) {
+if (facades.Storage.Disk("s3").Missing("file.jpg")) {
     // ...
 }
 ```
@@ -61,7 +61,7 @@ if (facades.Storage.Disk('s3').Missing("file.jpg")) {
 你可以使用 `Url` 方法来获取给定文件的 url。如果你使用的是 `local` 驱动程序，这通常会将 `/storage` 添加到给定的路径，并返回文件的相对 URL。如果你使用的是 `s3` 驱动程序，则会返回完全限定的远程 URL：
 
 ```go
-url := facades.Storage.Url("file.jpg')
+url := facades.Storage.Url("file.jpg")
 ```
 
 > 注意：当使用 `local` 驱动时， `Url` 的返回值不是 url 编码的。因此，我们建议总是使用可以创建有效 url 的名称来存储文件。
@@ -119,9 +119,9 @@ path := facades.Storage.PutFileAs("photos", file, "photo.jpg")
 `Copy` 方法可用于将现有文件复制到磁盘上的新位置，而 `Move` 方法可用于重命名现有文件或将其移动到新位置：
 
 ```go
-err := facades.Storage.Copy('old/file.jpg', 'new/file.jpg')
+err := facades.Storage.Copy("old/file.jpg", "new/file.jpg")
 
-err := facades.Storage.Move('old/file.jpg', 'new/file.jpg')
+err := facades.Storage.Move("old/file.jpg", "new/file.jpg")
 ```
 
 ### 文件上传
