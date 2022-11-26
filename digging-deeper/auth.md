@@ -27,7 +27,7 @@ type User struct {
 var user models.User
 user.ID = 1
 
-token, err := facades.Auth.User(ctx, &user)
+token, err := facades.Auth.Login(ctx, &user)
 ```
 
 ## Generate Token Using ID
