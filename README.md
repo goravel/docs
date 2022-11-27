@@ -15,6 +15,7 @@ Welcome star, PR and issues！
 - [x] Config
 - [x] Http
 - [x] Authentication
+- [x] Authorization
 - [x] Orm
 - [x] Migrate
 - [x] Logger
@@ -30,7 +31,6 @@ Welcome star, PR and issues！
 
 ## Roadmap
 
-- [ ] Authorization
 - [ ] Request validator
 - [ ] Optimize migration
 - [ ] Orm relationships

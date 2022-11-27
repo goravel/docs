@@ -6,6 +6,10 @@ export function getZhSidebar(): SidebarConfigArray {
       text: "升级指南",
       children: [
         {
+          text: "从 v1.5 升级到 v1.6",
+          link: "/zh/upgrade/v1.6",
+        },
+        {
           text: "从 v1.4 升级到 v1.5",
           link: "/zh/upgrade/v1.5",
         },
@@ -111,7 +115,11 @@ export function getZhSidebar(): SidebarConfigArray {
         },
         {
           text: "用户验证",
-          link: "/zh/digging-deeper/auth",
+          link: "/zh/digging-deeper/authentication",
+        },
+        {
+          text: "用户授权",
+          link: "/digging-deeper/authorization",
         },
         {
           text: "缓存系统",

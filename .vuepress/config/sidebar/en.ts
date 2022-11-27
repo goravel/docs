@@ -6,6 +6,10 @@ export function getEnSidebar(): SidebarConfigArray {
       text: "Upgrade Guide",
       children: [
         {
+          text: "Upgrading To v1.6 From v1.5",
+          link: "/upgrade/v1.6",
+        },
+        {
           text: "Upgrading To v1.5 From v1.4",
           link: "/upgrade/v1.5",
         },
@@ -111,7 +115,11 @@ export function getEnSidebar(): SidebarConfigArray {
         },
         {
           text: "Authentication",
-          link: "/digging-deeper/auth",
+          link: "/digging-deeper/authentication",
+        },
+        {
+          text: "Authorization",
+          link: "/digging-deeper/authorization",
         },
         {
           text: "Cache",
