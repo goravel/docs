@@ -66,8 +66,8 @@ Implement `framework\contracts\log\Logger` interface.
 package log
 
 type Logger interface {
-	// Handle pass channel config path here
-	Handle(channel string) (Hook, error)
+  // Handle pass channel config path here
+  Handle(channel string) (Hook, error)
 }
 ```
 
@@ -77,9 +77,9 @@ files can be stored in the `app/extensions` folder (modifiable). Example:
 package extensions
 
 import (
-	"fmt"
+  "fmt"
 
-	"github.com/goravel/framework/contracts/log"
+  "github.com/goravel/framework/contracts/log"
 )
 
 type Logger struct {
@@ -87,7 +87,7 @@ type Logger struct {
 
 // Handle pass channel config path here
 func (logger *Logger) Handle(channel string) (log.Hook, error) {
-	return &Hook{}, nil
+  return &Hook{}, nil
 }
 
 type Hook struct {
@@ -95,20 +95,20 @@ type Hook struct {
 
 // Levels monitoring level
 func (h *Hook) Levels() []log.Level {
-	return []log.Level{
-		log.DebugLevel,
-		log.InfoLevel,
-		log.WarningLevel,
-		log.ErrorLevel,
-		log.FatalLevel,
-		log.PanicLevel,
-	}
+  return []log.Level{
+    log.DebugLevel,
+    log.InfoLevel,
+    log.WarningLevel,
+    log.ErrorLevel,
+    log.FatalLevel,
+    log.PanicLevel,
+  }
 }
 
 // Fire execute logic when trigger
 func (h *Hook) Fire(entry log.Entry) error {
-	fmt.Printf("context=%v level=%v time=%v message=%s", entry.Context(), entry.Level(), entry.Time(), entry.Message())
+  fmt.Printf("context=%v level=%v time=%v message=%s", entry.Context(), entry.Level(), entry.Time(), entry.Message())
 
-	return nil
+  return nil
 }
 ```

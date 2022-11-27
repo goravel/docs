@@ -14,24 +14,24 @@ The following is an example of a basic controller:
 package controllers
 
 import (
-	"github.com/goravel/framework/contracts/http"
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/facades"
 )
 
 type UserController struct {
-	//Dependent services
+  //Dependent services
 }
 
 func NewUserController() *UserController {
-	return &UserController{
-		//Inject services
-	}
+  return &UserController{
+    //Inject services
+  }
 }
 
 func (r *UserController) Show(ctx http.Context) {
-	ctx.Response().Success().Json(http.Json{
-		"Hello": "Goravel",
-	})
+  ctx.Response().Success().Json(http.Json{
+    "Hello": "Goravel",
+  })
 }
 ```
 
@@ -41,13 +41,13 @@ The route define:
 package routes
 
 import (
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/facades"
 
-	"goravel/app/http/controllers"
+  "goravel/app/http/controllers"
 )
 
 func Web() {
-	userController := controllers.NewUserController()
-	facades.Route.Get("/{id}", userController.Show)
+  userController := controllers.NewUserController()
+  facades.Route.Get("/{id}", userController.Show)
 }
 ```

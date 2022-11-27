@@ -130,8 +130,8 @@ In web applications, one of the most common use-cases for storing files is stori
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
-	file, err := ctx.Request().File("avatar")
-	path, err := file.Store("avatars")
+  file, err := ctx.Request().File("avatar")
+  path, err := file.Store("avatars")
 }
 ```
 
@@ -168,8 +168,8 @@ By default, this uploaded file's `Store` method will use your default disk. If y
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
-	file, err := ctx.Request().File("avatar")
-	path, err := file.Disk("s3").Store("avatars")
+  file, err := ctx.Request().File("avatar")
+  path, err := file.Disk("s3").Store("avatars")
 }
 ```
 
@@ -241,21 +241,21 @@ You need to implement the `github.com/goravel/framework/contracts/filesystem/Dri
 
 ```go
 type Driver interface {
-	WithContext(ctx context.Context) Driver
-	Put(file, content string) error
-	PutFile(path string, source File) (string, error)
-	PutFileAs(path string, source File, name string) (string, error)
-	Get(file string) (string, error)
-	Size(file string) (int64, error)
-	Path(file string) string
-	Exists(file string) bool
-	Missing(file string) bool
-	Url(file string) string
-	TemporaryUrl(file string, time time.Time) (string, error)
-	Copy(oldFile, newFile string) error
-	Move(oldFile, newFile string) error
-	Delete(file ...string) error
-	MakeDirectory(directory string) error
-	DeleteDirectory(directory string) error
+  WithContext(ctx context.Context) Driver
+  Put(file, content string) error
+  PutFile(path string, source File) (string, error)
+  PutFileAs(path string, source File, name string) (string, error)
+  Get(file string) (string, error)
+  Size(file string) (int64, error)
+  Path(file string) string
+  Exists(file string) bool
+  Missing(file string) bool
+  Url(file string) string
+  TemporaryUrl(file string, time time.Time) (string, error)
+  Copy(oldFile, newFile string) error
+  Move(oldFile, newFile string) error
+  Delete(file ...string) error
+  MakeDirectory(directory string) error
+  DeleteDirectory(directory string) error
 }
 ```

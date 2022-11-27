@@ -417,13 +417,13 @@ if err := tx.Create(&user); err != nil {
 
 ```go
 func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
-	return func(query orm.Query) orm.Query {
-		page, _ := strconv.Atoi(page)
-		limit, _ := strconv.Atoi(limit)
-		offset := (page - 1) * limit
+  return func(query orm.Query) orm.Query {
+    page, _ := strconv.Atoi(page)
+    limit, _ := strconv.Atoi(limit)
+    offset := (page - 1) * limit
 
-		return query.Offset(offset).Limit(limit)
-	}
+    return query.Offset(offset).Limit(limit)
+  }
 }
 
 facades.Orm.Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)

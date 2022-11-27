@@ -14,29 +14,29 @@
 package middleware
 
 import (
-	"github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/contracts/http"
 )
 
 func Cors() http.Middleware {
-	return func(ctx http.Context) {
-		method := ctx.Request().Method()
-		origin := ctx.Request().Header("Origin", "")
-		if origin != "" {
-			ctx.Response().Header("Access-Control-Allow-Origin", "*")
-			ctx.Response().Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
-			ctx.Response().Header("Access-Control-Allow-Headers", "*")
-			ctx.Response().Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization")
-			ctx.Response().Header("Access-Control-Max-Age", "172800")
-			ctx.Response().Header("Access-Control-Allow-Credentials", "true")
-		}
+  return func(ctx http.Context) {
+    method := ctx.Request().Method()
+    origin := ctx.Request().Header("Origin", "")
+    if origin != "" {
+      ctx.Response().Header("Access-Control-Allow-Origin", "*")
+      ctx.Response().Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
+      ctx.Response().Header("Access-Control-Allow-Headers", "*")
+      ctx.Response().Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization")
+      ctx.Response().Header("Access-Control-Max-Age", "172800")
+      ctx.Response().Header("Access-Control-Allow-Credentials", "true")
+    }
 
-		if method == "OPTIONS" {
-			ctx.Request().AbortWithStatus(204)
-			return
-		}
+    if method == "OPTIONS" {
+      ctx.Request().AbortWithStatus(204)
+      return
+    }
 
-		ctx.Request().Next()
-	}
+    ctx.Request().Next()
+  }
 }
 
 ```
@@ -58,17 +58,17 @@ Goravel 中自带了一些中间件可供使用：
 package http
 
 import (
-	"github.com/goravel/framework/contracts/http"
-	"github.com/goravel/framework/http/middleware"
+  "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/http/middleware"
 )
 
 type Kernel struct {
 }
 
 func (kernel *Kernel) Middleware() []http.Middleware {
-	return []http.Middleware{
-		middleware.Cors(),
-	}
+  return []http.Middleware{
+    middleware.Cors(),
+  }
 }
 ```
 

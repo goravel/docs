@@ -19,8 +19,8 @@ Grpc 模块可以使用 `facades.Grpc` 进行操作。
 package controllers
 
 import (
-	"context"
-	"net/http"
+  "context"
+  "net/http"
 
   "github.com/goravel/grpc/protos"
 )
@@ -29,13 +29,13 @@ type UserController struct {
 }
 
 func NewUserController() *UserController {
-	return &UserController{}
+  return &UserController{}
 }
 
 func (r *UserController) Show(ctx context.Context, req *protos.UserRequest) (protoBook *protos.UserResponse, err error) {
-	return &protos.UserResponse{
-		Code: http.StatusOK,
-	}, nil
+  return &protos.UserResponse{
+    Code: http.StatusOK,
+  }, nil
 }
 ```
 
@@ -48,10 +48,10 @@ func (r *UserController) Show(ctx context.Context, req *protos.UserRequest) (pro
 package routes
 
 import (
-	"github.com/goravel/grpc/protos"
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/grpc/protos"
+  "github.com/goravel/framework/facades"
 
-	"goravel/app/grpc/controllers"
+  "goravel/app/grpc/controllers"
 )
 
 func Grpc() {
@@ -68,7 +68,7 @@ func Grpc() {
 package providers
 
 import (
-	"goravel/routes"
+  "goravel/routes"
 )
 
 type GrpcServiceProvider struct {
@@ -79,7 +79,7 @@ func (router *GrpcServiceProvider) Register() {
 }
 
 func (router *GrpcServiceProvider) Boot() {
-	routes.Grpc()
+  routes.Grpc()
 }
 ```
 
@@ -106,15 +106,15 @@ go func() {
 ```go
 // app/grpc/kernel.go
 import (
-	"goravel/app/grpc/interceptors"
+  "goravel/app/grpc/interceptors"
 
-	"google.golang.org/grpc"
+  "google.golang.org/grpc"
 )
 
 func (kernel *Kernel) UnaryServerInterceptors() []grpc.UnaryServerInterceptor {
-	return []grpc.UnaryServerInterceptor{
-		interceptors.Server,
-	}
+  return []grpc.UnaryServerInterceptor{
+    interceptors.Server,
+  }
 }
 ```
 
@@ -125,17 +125,17 @@ func (kernel *Kernel) UnaryServerInterceptors() []grpc.UnaryServerInterceptor {
 ```go
 // app/grpc/kernel.go
 import (
-	"goravel/app/grpc/interceptors"
+  "goravel/app/grpc/interceptors"
 
-	"google.golang.org/grpc"
+  "google.golang.org/grpc"
 )
 
 func (kernel *Kernel) UnaryClientInterceptorGroups() map[string][]grpc.UnaryClientInterceptor {
-	return map[string][]grpc.UnaryClientInterceptor{
-		"trace": {
-			interceptors.Client,
-		},
-	}
+  return map[string][]grpc.UnaryClientInterceptor{
+    "trace": {
+      interceptors.Client,
+    },
+  }
 }
 ```
 
@@ -145,25 +145,25 @@ func (kernel *Kernel) UnaryClientInterceptorGroups() map[string][]grpc.UnaryClie
 package config
 
 import (
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/facades"
 )
 
 func init() {
-	config := facades.Config
-	config.Add("grpc", map[string]interface{}{
-		// Grpc Configuration
-		//
-		// Configure your server host
-		"host": config.Env("GRPC_HOST", ""),
+  config := facades.Config
+  config.Add("grpc", map[string]interface{}{
+    // Grpc Configuration
+    //
+    // Configure your server host
+    "host": config.Env("GRPC_HOST", ""),
 
-		// Configure your client host and interceptors.
-		// Interceptors can be the group name of UnaryClientInterceptorGroups in app/grpc/kernel.go.
-		"clients": map[string]any{
-			"user": map[string]any{
-				"host":         config.Env("GRPC_HOST", ""),
-				"interceptors": []string{"trace"},
-			},
-		},
-	})
+    // Configure your client host and interceptors.
+    // Interceptors can be the group name of UnaryClientInterceptorGroups in app/grpc/kernel.go.
+    "clients": map[string]any{
+      "user": map[string]any{
+        "host":         config.Env("GRPC_HOST", ""),
+        "interceptors": []string{"trace"},
+      },
+    },
+  })
 }
 ```

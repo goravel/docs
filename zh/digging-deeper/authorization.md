@@ -22,10 +22,10 @@ Goravel 主要提供了两种授权操作的方法: [拦截器](#拦截器（Gat
 package providers
 
 import (
-	"context"
+  "context"
 
-	"github.com/goravel/framework/contracts/auth/access"
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/contracts/auth/access"
+  "github.com/goravel/framework/facades"
 )
 
 type AuthServiceProvider struct {
@@ -35,16 +35,16 @@ func (receiver *AuthServiceProvider) Register() {
 }
 
 func (receiver *AuthServiceProvider) Boot() {
-	facades.Gate.Define("update-post", func(ctx context.Context, arguments map[string]any) *access.Response {
-		user := ctx.Value("user").(models.User)
+  facades.Gate.Define("update-post", func(ctx context.Context, arguments map[string]any) *access.Response {
+    user := ctx.Value("user").(models.User)
     post := arguments["post"].(models.Post)
-		
+    
     if user.ID == post.UserID {
-			return access.NewAllowResponse()
-		} else {
-			return access.NewDenyResponse("error")
-		}
-	})
+      return access.NewAllowResponse()
+    } else {
+      return access.NewDenyResponse("error")
+    }
+  })
 }
 ```
 
@@ -56,18 +56,18 @@ func (receiver *AuthServiceProvider) Boot() {
 package controllers
 
 import (
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/facades"
 )
 
 type UserController struct {
 
 func (r *UserController) Show(ctx http.Context) {
-	var post models.Post
-	if facades.Gate.Allows("update-post", map[string]any{
-		"post": post,
-	}) {
-		
-	}
+  var post models.Post
+  if facades.Gate.Allows("update-post", map[string]any{
+    "post": post,
+  }) {
+    
+  }
 }
 ```
 
@@ -161,27 +161,27 @@ go run . artisan make:policy PostPolicy
 package policies
 
 import (
-	"context"
+  "context"
 
-	"github.com/goravel/framework/contracts/auth/access"
+  "github.com/goravel/framework/contracts/auth/access"
 )
 
 type PostPolicy struct {
 }
 
 func NewPostPolicy() *PostPolicy {
-	return &PostPolicy{}
+  return &PostPolicy{}
 }
 
 func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) *access.Response {
-	user := ctx.Value("user").(models.User)
+  user := ctx.Value("user").(models.User)
   post := arguments["post"].(models.Post)
-		
+    
   if user.ID == post.UserID {
-		return access.NewAllowResponse()
-	} else {
-		return access.NewDenyResponse("You do not own this post.")
-	}
+    return access.NewAllowResponse()
+  } else {
+    return access.NewDenyResponse("You do not own this post.")
+  }
 }
 ```
 
