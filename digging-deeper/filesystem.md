@@ -210,6 +210,23 @@ err := facades.Storage.Disk("s3").Delete("file.jpg")
 
 ## Directories
 
+### Get All Files Within A Directory
+The `Files` method returns an slice of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `AllFiles` method:
+
+```go
+files, err := facades.Storage.Disk("s3").Files("directory")
+files, err := facades.Storage.Disk("s3").AllFiles("directory")
+```
+
+### Get All Directories Within A Directory
+
+The `Directories` method returns an slice of all the directories within a given directory. Additionally, you may use the `AllDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
+
+```go
+directories, err := facades.Storage.Disk("s3").Directories("directory")
+directories, err := facades.Storage.Disk("s3").AllDirectories("directory")
+```
+
 ### Create A Directory
 
 The `MakeDirectory` method will create the given directory, including any needed subdirectories:

@@ -210,6 +210,24 @@ err := facades.Storage.Disk("s3").Delete("file.jpg")
 
 ## 目录
 
+### 获取目录下所有的文件
+
+`Files` 将以数组的形式返回给定目录下所有的文件。如果你想要检索给定目录的所有文件及其子目录的所有文件，你可以使用 `AllFiles` 方法：
+
+```go
+files, err := facades.Storage.Disk("s3").Files("directory")
+files, err := facades.Storage.Disk("s3").AllFiles("directory")
+```
+
+### 获取特定目录下的子目录
+
+`Directories` 方法以数组的形式返回给定目录中的所有目录。此外，你还可以使用 `AllDirectories` 方法递归地获取给定目录中的所有目录及其子目录中的目录：
+
+```go
+directories, err := facades.Storage.Disk("s3").Directories("directory")
+directories, err := facades.Storage.Disk("s3").AllDirectories("directory")
+```
+
 ### 创建一个目录
 
 `MakeDirectory` 方法可递归的创建指定的目录：
