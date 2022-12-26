@@ -81,7 +81,7 @@ name := ctx.Request().Form("name", "goravel")
 
 ```go
 type User struct {
-  Name string `form:"code" json:"code" binding:"required"`
+  Name string `form:"code" json:"code"`
 }
 
 var user User

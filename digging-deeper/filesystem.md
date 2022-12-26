@@ -103,12 +103,14 @@ err := facades.Storage.Put("file.jpg", contents)
 You can also use `PutFile` and `PutFileAs` to save files directly on disk:
 
 ```go
+import "github.com/goravel/framework/filesystem"
+
 // Automatically generate a unique ID for filename...
-file, err := NewFile("./logo.png")
+file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage.PutFile("photos", file)
 
 // Manually specify a filename...
-file, err := NewFile("./logo.png")
+file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage.PutFileAs("photos", file, "photo.jpg")
 ```
 

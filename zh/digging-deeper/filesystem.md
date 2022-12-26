@@ -103,12 +103,14 @@ err := facades.Storage.Put("file.jpg", contents)
 也可以使用 `PutFile` 和 `PutFileAs` 直接将文件保存在磁盘上：
 
 ```go
+import "github.com/goravel/framework/filesystem"
+
 // 自动生成一个唯一文件名 ...
-file, err := NewFile("./logo.png")
+file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage.PutFile("photos", file)
 
 // 手动指定文件名 ...
-file, err := NewFile("./logo.png")
+file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage.PutFileAs("photos", file, "photo.jpg")
 ```
 

@@ -212,17 +212,151 @@ func TestQueue(t *testing.T) {
 
 ## Mock facades.Storage
 
-```go
-import "github.com/goravel/framework/testing/mock"
+import (
+  "testing"
 
-func File() error {
-  return facades.Storage.Put("hello.txt", "Goravel")
+	"github.com/goravel/framework/filesystem"
+	"github.com/goravel/framework/testing/mock"
+	"github.com/goravel/framework/facades"
+)
+
+```go
+func Storage() (string, error) {
+	file, _ := filesystem.NewFile("1.txt")
+
+	return facades.Storage.WithContext(context.Background()).PutFile("file", file)
 }
 
-func TestFile(t *testing.T) {
-  mockStorage, mockDriver, mockFile := mock.Storage()
-  mockStorage.On("Put", "hello.txt", "Goravel").Return(nil).Once()
+func TestStorage(t *testing.T) {
+	mockStorage, mockDriver, _ := mock.Storage()
+	mockStorage.On("WithContext", context.Background()).Return(mockDriver).Once()
+	file, _ := filesystem.NewFile("1.txt")
+	mockDriver.On("PutFile", "file", file).Return("", nil).Once()
+	path, err := Storage()
 
-  assert.Nil(t, File())
+  assert.Equal(t, "", path)
+	assert.Nil(t, err)
+}
+
+```
+
+## Mock facades.Validation
+
+```go
+
+import (
+  "testing"
+
+	"github.com/goravel/framework/testing/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/goravel/framework/facades"
+)
+
+func Validation() string {
+	validator, _ := facades.Validation.Make(map[string]string{
+		"a": "b",
+	}, map[string]string{
+		"a": "required",
+	})
+	errors := validator.Errors()
+
+	return errors.One("a")
+}
+
+func TestValidation(t *testing.T) {
+	mockValidation, mockValidator, mockErrors := mock.Validator()
+	mockValidation.On("Make", map[string]string{
+		"a": "b",
+	}, map[string]string{
+		"a": "required",
+	}).Return(mockValidator, nil).Once()
+	mockValidator.On("Errors").Return(mockErrors).Once()
+	mockErrors.On("One", "a").Return("error").Once()
+	err := Validation()
+
+	assert.Equal(t, "error", err)
+}
+```
+
+## Mock facades.Auth
+
+```go
+import (
+  "testing"
+
+	"github.com/goravel/framework/http"
+	"github.com/goravel/framework/testing/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/goravel/framework/facades"
+)
+
+func Auth() error {
+	return facades.Auth.Logout(http.Background())
+}
+
+func TestAuth(t *testing.T) {
+	mockAuth := mock.Auth()
+	mockAuth.On("Logout", http.Background()).Return(nil).Once()
+	err := Auth()
+
+	assert.Nil(t, err)
+}
+```
+
+## Mock facades.Gate
+
+```go
+
+import (
+  "testing"
+
+	"github.com/goravel/framework/testing/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/goravel/framework/facades"
+)
+
+func Gate() bool {
+	return facades.Gate.Allows("create", map[string]any{
+		"a": "b",
+	})
+}
+
+func TestGate(t *testing.T) {
+	mockGate := mock.Gate()
+	mockGate.On("Allows", "create", map[string]any{
+		"a": "b",
+	}).Return(true).Once()
+	res := Gate()
+
+	assert.True(t, res)
+}
+```
+
+## Mock facades.Grpc
+
+```go
+
+import (
+	"context"
+	"errors"
+  "testing"
+
+	"github.com/goravel/framework/testing/mock"
+	"github.com/stretchr/testify/assert"
+	"google.golang.org/grpc"
+	"github.com/goravel/framework/facades"
+)
+
+func Grpc() (*grpc.ClientConn, error) {
+	return facades.Grpc.Client(context.Background(), "user")
+}
+
+func TestGrpc(t *testing.T) {
+	mockGrpc := mock.Grpc()
+	mockGrpc.On("Client", context.Background(), "user").Return(nil, errors.New("error")).Once()
+	conn, err := Grpc()
+
+	assert.Nil(t, conn)
+	assert.EqualError(t, err, "error")
 }
 ```

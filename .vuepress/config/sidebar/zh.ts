@@ -100,6 +100,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/the-basics/grpc",
         },
         {
+          text: "表单验证",
+          link: "/zh/the-basics/validation",
+        },
+        {
           text: "日志",
           link: "/zh/the-basics/logging",
         },
