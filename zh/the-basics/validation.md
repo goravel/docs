@@ -61,7 +61,7 @@ func (r *PostController) Store(ctx http.Context) {
 ```go
 func (r *PostController) Store(ctx http.Context) {
   validator, err := ctx.Request().Validate(map[string]string{
-    "title": "required|maxLen:255",
+    "title": "required|max_len:255",
     "body": "required",
   })
 }
@@ -73,7 +73,7 @@ func (r *PostController) Store(ctx http.Context) {
 
 ```go
 validator, err := ctx.Request().Validate(map[string]string{
-  "title": "required|maxLen:255",
+  "title": "required|max_len:255",
   "author.name": "required",
   "author.description": "required",
 })
@@ -96,7 +96,7 @@ go run . artisan make:request StorePostRequest
 ```go
 func (r *StorePostRequest) Rules() map[string]string {
   return map[string]string{
-    "title": "required|maxLen:255",
+    "title": "required|max_len:255",
     "body":  "required",
   }
 }
@@ -181,7 +181,7 @@ func (r *PostController) Store(ctx http.Context) {
   validator, err := facades.Validation.Make(map[string]string{
     "name": "Goravel",
   }, map[string]string{
-    "title": "required|maxLen:255",
+    "title": "required|max_len:255",
     "body":  "required",
   })
 
