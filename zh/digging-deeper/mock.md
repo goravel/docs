@@ -215,27 +215,27 @@ func TestQueue(t *testing.T) {
 import (
   "testing"
 
-	"github.com/goravel/framework/filesystem"
-	"github.com/goravel/framework/testing/mock"
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/filesystem"
+  "github.com/goravel/framework/testing/mock"
+  "github.com/goravel/framework/facades"
 )
 
 ```go
 func Storage() (string, error) {
-	file, _ := filesystem.NewFile("1.txt")
+  file, _ := filesystem.NewFile("1.txt")
 
-	return facades.Storage.WithContext(context.Background()).PutFile("file", file)
+  return facades.Storage.WithContext(context.Background()).PutFile("file", file)
 }
 
 func TestStorage(t *testing.T) {
-	mockStorage, mockDriver, _ := mock.Storage()
-	mockStorage.On("WithContext", context.Background()).Return(mockDriver).Once()
-	file, _ := filesystem.NewFile("1.txt")
-	mockDriver.On("PutFile", "file", file).Return("", nil).Once()
-	path, err := Storage()
+  mockStorage, mockDriver, _ := mock.Storage()
+  mockStorage.On("WithContext", context.Background()).Return(mockDriver).Once()
+  file, _ := filesystem.NewFile("1.txt")
+  mockDriver.On("PutFile", "file", file).Return("", nil).Once()
+  path, err := Storage()
 
   assert.Equal(t, "", path)
-	assert.Nil(t, err)
+  assert.Nil(t, err)
 }
 
 ```
@@ -247,34 +247,34 @@ func TestStorage(t *testing.T) {
 import (
   "testing"
 
-	"github.com/goravel/framework/testing/mock"
-	"github.com/stretchr/testify/assert"
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+  "github.com/goravel/framework/facades"
 )
 
 func Validation() string {
-	validator, _ := facades.Validation.Make(map[string]string{
-		"a": "b",
-	}, map[string]string{
-		"a": "required",
-	})
-	errors := validator.Errors()
+  validator, _ := facades.Validation.Make(map[string]string{
+    "a": "b",
+  }, map[string]string{
+    "a": "required",
+  })
+  errors := validator.Errors()
 
-	return errors.One("a")
+  return errors.One("a")
 }
 
 func TestValidation(t *testing.T) {
-	mockValidation, mockValidator, mockErrors := mock.Validator()
-	mockValidation.On("Make", map[string]string{
-		"a": "b",
-	}, map[string]string{
-		"a": "required",
-	}).Return(mockValidator, nil).Once()
-	mockValidator.On("Errors").Return(mockErrors).Once()
-	mockErrors.On("One", "a").Return("error").Once()
-	err := Validation()
+  mockValidation, mockValidator, mockErrors := mock.Validator()
+  mockValidation.On("Make", map[string]string{
+    "a": "b",
+  }, map[string]string{
+    "a": "required",
+  }).Return(mockValidator, nil).Once()
+  mockValidator.On("Errors").Return(mockErrors).Once()
+  mockErrors.On("One", "a").Return("error").Once()
+  err := Validation()
 
-	assert.Equal(t, "error", err)
+  assert.Equal(t, "error", err)
 }
 ```
 
@@ -284,22 +284,22 @@ func TestValidation(t *testing.T) {
 import (
   "testing"
 
-	"github.com/goravel/framework/http"
-	"github.com/goravel/framework/testing/mock"
-	"github.com/stretchr/testify/assert"
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/http"
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+  "github.com/goravel/framework/facades"
 )
 
 func Auth() error {
-	return facades.Auth.Logout(http.Background())
+  return facades.Auth.Logout(http.Background())
 }
 
 func TestAuth(t *testing.T) {
-	mockAuth := mock.Auth()
-	mockAuth.On("Logout", http.Background()).Return(nil).Once()
-	err := Auth()
+  mockAuth := mock.Auth()
+  mockAuth.On("Logout", http.Background()).Return(nil).Once()
+  err := Auth()
 
-	assert.Nil(t, err)
+  assert.Nil(t, err)
 }
 ```
 
@@ -310,25 +310,25 @@ func TestAuth(t *testing.T) {
 import (
   "testing"
 
-	"github.com/goravel/framework/testing/mock"
-	"github.com/stretchr/testify/assert"
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+  "github.com/goravel/framework/facades"
 )
 
 func Gate() bool {
-	return facades.Gate.Allows("create", map[string]any{
-		"a": "b",
-	})
+  return facades.Gate.Allows("create", map[string]any{
+    "a": "b",
+  })
 }
 
 func TestGate(t *testing.T) {
-	mockGate := mock.Gate()
-	mockGate.On("Allows", "create", map[string]any{
-		"a": "b",
-	}).Return(true).Once()
-	res := Gate()
+  mockGate := mock.Gate()
+  mockGate.On("Allows", "create", map[string]any{
+    "a": "b",
+  }).Return(true).Once()
+  res := Gate()
 
-	assert.True(t, res)
+  assert.True(t, res)
 }
 ```
 
@@ -337,26 +337,26 @@ func TestGate(t *testing.T) {
 ```go
 
 import (
-	"context"
-	"errors"
+  "context"
+  "errors"
   "testing"
 
-	"github.com/goravel/framework/testing/mock"
-	"github.com/stretchr/testify/assert"
-	"google.golang.org/grpc"
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+  "google.golang.org/grpc"
+  "github.com/goravel/framework/facades"
 )
 
 func Grpc() (*grpc.ClientConn, error) {
-	return facades.Grpc.Client(context.Background(), "user")
+  return facades.Grpc.Client(context.Background(), "user")
 }
 
 func TestGrpc(t *testing.T) {
-	mockGrpc := mock.Grpc()
-	mockGrpc.On("Client", context.Background(), "user").Return(nil, errors.New("error")).Once()
-	conn, err := Grpc()
+  mockGrpc := mock.Grpc()
+  mockGrpc.On("Client", context.Background(), "user").Return(nil, errors.New("error")).Once()
+  conn, err := Grpc()
 
-	assert.Nil(t, conn)
-	assert.EqualError(t, err, "error")
+  assert.Nil(t, conn)
+  assert.EqualError(t, err, "error")
 }
 ```

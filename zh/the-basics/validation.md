@@ -32,17 +32,17 @@ facades.Route.Post("/post", postController.Store)
 package controllers
 
 import (
-	"github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/contracts/http"
 )
 
 type PostController struct {
-	//Dependent services
+  //Dependent services
 }
 
 func NewPostController() *PostController {
-	return &PostController{
-		//Inject services
-	}
+  return &PostController{
+    //Inject services
+  }
 }
 
 func (r *PostController) Create(ctx http.Context) {
@@ -61,9 +61,9 @@ func (r *PostController) Store(ctx http.Context) {
 ```go
 func (r *PostController) Store(ctx http.Context) {
   validator, err := ctx.Request().Validate(map[string]string{
-		"title": "required|maxLen:255",
-		"body": "required",
-	})
+    "title": "required|maxLen:255",
+    "body": "required",
+  })
 }
 ```
 
@@ -95,10 +95,10 @@ go run . artisan make:request StorePostRequest
 
 ```go
 func (r *StorePostRequest) Rules() map[string]string {
-	return map[string]string{
-		"title": "required|maxLen:255",
-		"body":  "required",
-	}
+  return map[string]string{
+    "title": "required|maxLen:255",
+    "body":  "required",
+  }
 }
 ```
 
@@ -141,7 +141,7 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
 
 ```go
 func (r *StorePostRequest) Messages() map[string]string {
-	return map[string]string{
+  return map[string]string{
     "title.required": "A title is required",
     "body.required": "A message is required",
   }
@@ -154,7 +154,7 @@ Goravel 的许多内置验证规则错误消息都包含 `:attribute` 占位符�
 
 ```go
 func (r *StorePostRequest) Attributes() map[string]string {
-	return map[string]string{
+  return map[string]string{
     "email": "email address",
   }
 }
@@ -167,8 +167,8 @@ func (r *StorePostRequest) Attributes() map[string]string {
 ```go
 func (r *StorePostRequest) PrepareForValidation(data validate.Data) {
   if name, exist := data.Get("name"); exist {
-		_, _ = data.Set("name", name.(string)+"1")
-	}
+    _, _ = data.Set("name", name.(string)+"1")
+  }
 }
 ```
 
@@ -179,18 +179,18 @@ func (r *StorePostRequest) PrepareForValidation(data validate.Data) {
 ```go
 func (r *PostController) Store(ctx http.Context) {
   validator, err := facades.Validator.Make(map[string]string{
-		"name": "Goravel",
-	}, map[string]string{
-		"title": "required|maxLen:255",
-		"body":  "required",
-	})
+    "name": "Goravel",
+  }, map[string]string{
+    "title": "required|maxLen:255",
+    "body":  "required",
+  })
 
-	if validator.Fails() {
-		// Return fail
-	}
+  if validator.Fails() {
+    // Return fail
+  }
 
-	var user models.User
-	err := validator.Bind(&user)
+  var user models.User
+  err := validator.Bind(&user)
 }
 ```
 
@@ -202,7 +202,7 @@ func (r *PostController) Store(ctx http.Context) {
 
 ```go
 validator, err := facades.Validator.Make(input, rules, validate.Messages(map[string]string{
-	"required": "The :attribute field is required.",
+  "required": "The :attribute field is required.",
 }))
 ```
 
@@ -212,7 +212,7 @@ validator, err := facades.Validator.Make(input, rules, validate.Messages(map[str
 
 ```go
 validator, err := facades.Validator.Make(input, rules, validate.Messages(map[string]string{
-	"email.required": "We need to know your email address!",
+  "email.required": "We need to know your email address!",
 }))
 ```
 
@@ -222,7 +222,7 @@ Goravel 的许多内置错误消息都包含一个 `:attribute` 占位符，该�
 
 ```go
 validator, err := facades.Validator.Make(input, rules, validate.Attributes(map[string]string{
-	"email": "email address",
+  "email": "email address",
 }))
 ```
 
@@ -356,7 +356,7 @@ package rules
 import (
   "strings"
 
-	"github.com/goravel/framework/contracts/validation"
+  "github.com/goravel/framework/contracts/validation"
 )
 
 type Uppercase struct {
@@ -364,17 +364,17 @@ type Uppercase struct {
 
 //Signature The name of the rule.
 func (receiver *Uppercase) Signature() string {
-	return "uppercase"
+  return "uppercase"
 }
 
 //Passes Determine if the validation rule passes.
 func (receiver *Uppercase) Passes(data validation.Data, val any, options ...any) bool {
-	return strings.ToUpper(val.(string)) == val.(string)
+  return strings.ToUpper(val.(string)) == val.(string)
 }
 
 //Message Get the validation error message.
 func (receiver *Uppercase) Message() string {
-	return "The :attribute must be uppercase."
+  return "The :attribute must be uppercase."
 }
 
 ```
@@ -385,10 +385,10 @@ func (receiver *Uppercase) Message() string {
 package providers
 
 import (
-	"github.com/goravel/framework/contracts/validation"
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/contracts/validation"
+  "github.com/goravel/framework/facades"
 
-	"goravel/app/rules"
+  "goravel/app/rules"
 )
 
 type ValidationServiceProvider struct {
@@ -399,15 +399,15 @@ func (receiver *ValidationServiceProvider) Register() {
 }
 
 func (receiver *ValidationServiceProvider) Boot() {
-	if err := facades.Validator.AddRules(receiver.rules()); err != nil {
-		facades.Log.Errorf("add rules error: %+v", err)
-	}
+  if err := facades.Validator.AddRules(receiver.rules()); err != nil {
+    facades.Log.Errorf("add rules error: %+v", err)
+  }
 }
 
 func (receiver *ValidationServiceProvider) rules() []validation.Rule {
-	return []validation.Rule{
-		&rules.Uppercase{},
-	}
+  return []validation.Rule{
+    &rules.Uppercase{},
+  }
 }
 
 ```
