@@ -178,7 +178,7 @@ If you do not want to use the `Validate` method on the request, you may create a
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
-  validator, err := facades.Validator.Make(map[string]string{
+  validator, err := facades.Validation.Make(map[string]string{
     "name": "Goravel",
   }, map[string]string{
     "title": "required|maxLen:255",
@@ -201,7 +201,7 @@ The first argument passed to the `Make` method is the data under validation that
 If needed, you may provide custom error messages that a validator instance should use instead of the default error messages provided by Goravel. You may pass the custom messages as the third argument to the `Make` method:
 
 ```go
-validator, err := facades.Validator.Make(input, rules, validate.Messages(map[string]string{
+validator, err := facades.Validation.Make(input, rules, validate.Messages(map[string]string{
   "required": "The :attribute field is required.",
 }))
 ```
@@ -211,7 +211,7 @@ validator, err := facades.Validator.Make(input, rules, validate.Messages(map[str
 Sometimes you may wish to specify a custom error message only for a specific attribute. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule:
 
 ```go
-validator, err := facades.Validator.Make(input, rules, validate.Messages(map[string]string{
+validator, err := facades.Validation.Make(input, rules, validate.Messages(map[string]string{
   "email.required": "We need to know your email address!",
 }))
 ```
@@ -221,7 +221,7 @@ validator, err := facades.Validator.Make(input, rules, validate.Messages(map[str
 Many of Goravel's built-in error messages include an `:attribute` placeholder that is replaced with the name of the field or attribute under validation. To customize the values used to replace these placeholders for specific fields, you may pass an array of custom attributes as the third argument to the `Make` method:
 
 ```go
-validator, err := facades.Validator.Make(input, rules, validate.Attributes(map[string]string{
+validator, err := facades.Validation.Make(input, rules, validate.Attributes(map[string]string{
   "email": "email address",
 }))
 ```
@@ -237,7 +237,7 @@ validator, err := ctx.Request().Validate(rules)
 var user models.User
 err := validator.Bind(&user)
 
-validator, err := facades.Validator.Make(input, rules)
+validator, err := facades.Validation.Make(input, rules)
 var user models.User
 err := validator.Bind(&user)
 ```
@@ -256,7 +256,7 @@ fmt.Println(storePost.Name)
 
 ```go
 validator, err := ctx.Request().Validate(rules)
-validator, err := facades.Validator.Make(input, rules)
+validator, err := facades.Validation.Make(input, rules)
 
 message := validator.Errors().One("email")
 ```
@@ -399,7 +399,7 @@ func (receiver *ValidationServiceProvider) Register() {
 }
 
 func (receiver *ValidationServiceProvider) Boot() {
-  if err := facades.Validator.AddRules(receiver.rules()); err != nil {
+  if err := facades.Validation.AddRules(receiver.rules()); err != nil {
     facades.Log.Errorf("add rules error: %+v", err)
   }
 }

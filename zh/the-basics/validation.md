@@ -178,7 +178,7 @@ func (r *StorePostRequest) PrepareForValidation(data validate.Data) {
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
-  validator, err := facades.Validator.Make(map[string]string{
+  validator, err := facades.Validation.Make(map[string]string{
     "name": "Goravel",
   }, map[string]string{
     "title": "required|maxLen:255",
@@ -201,7 +201,7 @@ func (r *PostController) Store(ctx http.Context) {
 如果需要，您可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。您可以将自定义消息作为第三个参数传递给 `Make` 方法：
 
 ```go
-validator, err := facades.Validator.Make(input, rules, validate.Messages(map[string]string{
+validator, err := facades.Validation.Make(input, rules, validate.Messages(map[string]string{
   "required": "The :attribute field is required.",
 }))
 ```
@@ -211,7 +211,7 @@ validator, err := facades.Validator.Make(input, rules, validate.Messages(map[str
 有时您可能希望只为特定属性指定自定义错误消息。您可以使用 `.` 表示法。首先指定属性名称，然后指定规则：
 
 ```go
-validator, err := facades.Validator.Make(input, rules, validate.Messages(map[string]string{
+validator, err := facades.Validation.Make(input, rules, validate.Messages(map[string]string{
   "email.required": "We need to know your email address!",
 }))
 ```
@@ -221,7 +221,7 @@ validator, err := facades.Validator.Make(input, rules, validate.Messages(map[str
 Goravel 的许多内置错误消息都包含一个 `:attribute` 占位符，该占位符已被验证中的字段或属性的名称替换。为了自定义用于替换特定字段的这些占位符的值，您可以将自定义属性的数组作为第三个参数传递给 `Make` 方法：
 
 ```go
-validator, err := facades.Validator.Make(input, rules, validate.Attributes(map[string]string{
+validator, err := facades.Validation.Make(input, rules, validate.Attributes(map[string]string{
   "email": "email address",
 }))
 ```
@@ -237,7 +237,7 @@ validator, err := ctx.Request().Validate(rules)
 var user models.User
 err := validator.Bind(&user)
 
-validator, err := facades.Validator.Make(input, rules)
+validator, err := facades.Validation.Make(input, rules)
 var user models.User
 err := validator.Bind(&user)
 ```
@@ -256,7 +256,7 @@ fmt.Println(storePost.Name)
 
 ```go
 validator, err := ctx.Request().Validate(rules)
-validator, err := facades.Validator.Make(input, rules)
+validator, err := facades.Validation.Make(input, rules)
 
 message := validator.Errors().One("email")
 ```
@@ -399,7 +399,7 @@ func (receiver *ValidationServiceProvider) Register() {
 }
 
 func (receiver *ValidationServiceProvider) Boot() {
-  if err := facades.Validator.AddRules(receiver.rules()); err != nil {
+  if err := facades.Validation.AddRules(receiver.rules()); err != nil {
     facades.Log.Errorf("add rules error: %+v", err)
   }
 }
