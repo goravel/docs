@@ -35,6 +35,7 @@ Welcome star, PR and issues！
 - [ ] Optimize migration
 - [ ] Orm relationships
 - [ ] Custom .env path
+- [ ] Database read-write separation
 
 ## Documentation
 
