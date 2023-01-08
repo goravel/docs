@@ -118,9 +118,16 @@ var user models.User
 facades.Orm.Query().Find(&user, 1)
 // SELECT * FROM users WHERE id = 1;
 
-var users []models.User
 facades.Orm.Query().Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
+```
+
+当用户表主键为 `string` 类型，调用 `Find` 方法时需要指定主键
+
+```go
+var user models.User
+facades.Orm.Query().Find(&user, "uuid=?" ,"a")
+// SELECT * FROM users WHERE uuid = "a";
 ```
 
 查询多条数据

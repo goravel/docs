@@ -123,6 +123,14 @@ facades.Orm.Query().Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
+When the primary key of the user table is `string` type, you need to specify the primary key when calling `Find` method
+
+```go
+var user models.User
+facades.Orm.Query().Find(&user, "uuid=?" ,"a")
+// SELECT * FROM users WHERE uuid = "a";
+```
+
 Query multiple lines
 
 ```go
