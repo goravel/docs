@@ -264,7 +264,7 @@ func Validation() string {
 }
 
 func TestValidation(t *testing.T) {
-  mockValidation, mockValidator, mockErrors := mock.Validator()
+  mockValidation, mockValidator, mockErrors := mock.Validation()
   mockValidation.On("Make", map[string]string{
     "a": "b",
   }, map[string]string{

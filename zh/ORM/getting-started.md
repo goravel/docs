@@ -30,9 +30,10 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 
 ## facades.Orm 可用方法
 
-| 方法名      | 作用                              |
+| 方法名       | 作用                              |
 | ----------- | --------------------------------- |
 | Connection  | [指定数据库链接](#指定数据库链接) |
+| DB          | [获取通用数据库接口](#获取通用数据库接口) |
 | Query       | [获取数据库实例](#获取数据库实例) |
 | Transaction | [事务](#事务)                     |
 | WithContext | [注入 Context](#注入-Context)     |
@@ -89,6 +90,33 @@ facades.Orm.WithContext(ctx)
 
 ```go
 facades.Orm.Connection("mysql")
+```
+
+### 获取通用数据库接口
+
+获取通用数据库对象 sql.DB，然后使用其提供的功能：
+
+```go
+db, err := facades.Orm.DB()
+db, err := facades.Orm.Connection("mysql").DB()
+
+// Ping
+db.Ping()
+
+// Close
+db.Close()
+
+// 返回数据库统计信息
+db.Stats()
+
+// SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。
+db.SetMaxIdleConns(10)
+
+// SetMaxOpenConns 设置打开数据库连接的最大数量。
+db.SetMaxOpenConns(100)
+
+// SetConnMaxLifetime 设置了连接可复用的最大时间。
+db.SetConnMaxLifetime(time.Hour)
 ```
 
 ### 获取数据库实例
@@ -338,6 +366,35 @@ facades.Orm.Query().Where("name = ?", "tom").Delete(&models.User{})
 
 ```go
 facades.Orm.Query().Where("name = ?", "tom").ForceDelete(&models.User{})
+```
+
+您可以通过 `Select` 来删除具有模型关联的记录：
+
+```go
+// 删除 user 时，也删除 user 的 account
+facades.Orm.Query().Select("Account").Delete(&user)
+
+// 删除 user 时，也删除 user 的 Orders、CreditCards 记录
+facades.Orm.Query().Select("Orders", "CreditCards").Delete(&user)
+
+// 删除 user 时，也删除用户所有子关联
+facades.Orm.Query().Select(orm.Associations).Delete(&user)
+
+// 删除 users 时，也删除每一个 user 的 account
+facades.Orm.Query().Select("Account").Delete(&users)
+```
+
+注意：只有当记录的主键不为空时，关联才会被删除，Orm 会使用这些主键作为条件来删除关联记录：
+
+```go
+// 会删除所有 name=`jinzhu` 的 user，但这些 user 的 account 不会被删除
+facades.Orm.Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
+
+// 会删除 name = `jinzhu` 且 id = `1` 的 user，并且 user `1` 的 account 也会被删除
+facades.Orm.Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
+
+// 会删除 id = `1` 的 user，并且 account 也会被删除
+facades.Orm.Query().Select("Account").Delete(&User{ID: 1})
 ```
 
 如果在没有任何条件的情况下执行批量删除，ORM 不会执行该操作，并返回错误。对此，你必须加一些条件，或者使用原生 SQL。

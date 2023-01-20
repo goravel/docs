@@ -67,3 +67,20 @@ ctx.Response().Success().Json(contracthttp.Json({
   "Hello": "Goravel",
 }))
 ```
+
+## Get Response
+
+You can get all information of `ctx.Response()`, commonly used in HTTP middleware:
+
+```go
+origin := ctx.Response().Origin()
+```
+
+`origin` contains some methods as shown below：
+
+| Method        | Action           |
+| -----------  | -------------- |
+| Body         | Get response data     |
+| Header       | Get response header |
+| Size         | Get response size     |
+| Status       | Get response status   |
