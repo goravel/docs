@@ -69,6 +69,12 @@ id := ctx.Request().Input("id")
 ```go
 // /users?name=goravel
 name := ctx.Request().Query("name", "goravel")
+
+// /users?names=goravel1&names=goravel2
+names := ctx.Request().QueryArray("names")
+
+// /users?names[a]=goravel1&names[b]=goravel2
+names := ctx.Request().QueryMap("names")
 ```
 
 ### 获取 form

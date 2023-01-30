@@ -32,10 +32,9 @@ Welcome star, PR and issues！
 
 ## Roadmap
 
-- [ ] Optimize migration
-- [ ] Orm relationships
 - [ ] Custom .env path
 - [ ] Database read-write separation
+- [ ] Extend Redis driver
 
 ## Documentation
 

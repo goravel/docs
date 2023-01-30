@@ -33,6 +33,7 @@ For example, the model name is `UserOrder`, the table name is `user_orders`.
 | Name        | Action                                                      |
 | ----------- | ----------------------------------------------------------- |
 | Connection  | [Specify Database Connection](#Specify-Database-Connection) |
+| DB          | [Generic Database Interface sql.DB](#Generic-Database-Interface-sql.DB) |
 | Query       | [Get Database Instance](#Get-Database-Instance)             |
 | Transaction | [Transaction](#Transaction)                                 |
 | WithContext | [Inject Context](#Inject-Context)                           |
@@ -89,6 +90,33 @@ If you define multiple database connections in the `config/database.go` file, yo
 
 ```go
 facades.Orm.Connection("mysql")
+```
+
+### Generic Database Interface sql.DB
+
+Generic database interface sql.DB, then use the functionality it provides:
+
+```go
+db, err := facades.Orm.DB()
+db, err := facades.Orm.Connection("mysql").DB()
+
+// Ping
+db.Ping()
+
+// Close
+db.Close()
+
+// Returns database statistics
+db.Stats()
+
+// SetMaxIdleConns sets the maximum number of connections in the idle connection pool
+db.SetMaxIdleConns(10)
+
+// SetMaxOpenConns sets the maximum number of open connections to the database
+db.SetMaxOpenConns(100)
+
+// SetConnMaxLifetime sets the maximum amount of time a connection may be reused
+db.SetConnMaxLifetime(time.Hour)
 ```
 
 ### Get Database Instance
@@ -339,6 +367,35 @@ Want to force delete a soft-delete data.
 
 ```go
 facades.Orm.Query().Where("name = ?", "tom").ForceDelete(&models.User{})
+```
+
+You can delete records with model associations via `Select`:
+
+```go
+// Delete Account of user when deleting user
+facades.Orm.Query().Select("Account").Delete(&user)
+
+// Delete Orders and CreditCards of user when deleting user
+facades.Orm.Query().Select("Orders", "CreditCards").Delete(&user)
+
+// Delete all child associations of user when deleting user
+facades.Orm.Query().Select(orm.Associations).Delete(&user)
+
+// Delete all Account of users when deleting users
+facades.Orm.Query().Select("Account").Delete(&users)
+```
+
+Note: The associations will be deleted only if the primary key of the record is not empty, and Orm uses these primary keys as conditions to delete associated records:
+
+```go
+// Delete user that name=`jinzhu`, but don't delete account of user
+facades.Orm.Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
+
+// Delete user that name=`jinzhu` and id = `1`, and delete account of user
+facades.Orm.Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
+
+// Delete user that id = `1` and delete account that user
+facades.Orm.Query().Select("Account").Delete(&User{ID: 1})
 ```
 
 If execute batch delete without any conditions, ORM doesn't do that and returns an error. So you have to add some conditions, or use native SQL.
