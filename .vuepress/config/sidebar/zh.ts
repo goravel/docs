@@ -172,6 +172,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/orm/getting-started",
         },
         {
+          text: "模型关联",
+          link: "/zh/orm/relationships",
+        },
+        {
           text: "数据库迁移",
           link: "/zh/orm/migrations",
         },

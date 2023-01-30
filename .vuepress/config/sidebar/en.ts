@@ -172,6 +172,10 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/orm/getting-started",
         },
         {
+          text: "Relationships",
+          link: "/orm/relationships",
+        },
+        {
           text: "Migrations",
           link: "/orm/migrations",
         },
