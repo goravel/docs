@@ -165,7 +165,7 @@ func (r *StorePostRequest) Attributes() map[string]string {
 如果您需要在应用验证规则之前修改或清理请求中的任何数据，您可以使用 `PrepareForValidation` 方法：
 
 ```go
-func (r *StorePostRequest) PrepareForValidation(data validate.Data) {
+func (r *StorePostRequest) PrepareForValidation(data validation.Data) {
   if name, exist := data.Get("name"); exist {
     _, _ = data.Set("name", name.(string)+"1")
   }
@@ -178,7 +178,7 @@ func (r *StorePostRequest) PrepareForValidation(data validate.Data) {
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
-  validator, err := facades.Validation.Make(map[string]string{
+  validator, err := facades.Validation.Make(map[string]any{
     "name": "Goravel",
   }, map[string]string{
     "title": "required|max_len:255",
@@ -201,7 +201,7 @@ func (r *PostController) Store(ctx http.Context) {
 如果需要，您可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。您可以将自定义消息作为第三个参数传递给 `Make` 方法：
 
 ```go
-validator, err := facades.Validation.Make(input, rules, validate.Messages(map[string]string{
+validator, err := facades.Validation.Make(input, rules, validation.Messages(map[string]string{
   "required": "The :attribute field is required.",
 }))
 ```
@@ -211,7 +211,7 @@ validator, err := facades.Validation.Make(input, rules, validate.Messages(map[st
 有时您可能希望只为特定属性指定自定义错误消息。您可以使用 `.` 表示法。首先指定属性名称，然后指定规则：
 
 ```go
-validator, err := facades.Validation.Make(input, rules, validate.Messages(map[string]string{
+validator, err := facades.Validation.Make(input, rules, validation.Messages(map[string]string{
   "email.required": "We need to know your email address!",
 }))
 ```
@@ -221,7 +221,7 @@ validator, err := facades.Validation.Make(input, rules, validate.Messages(map[st
 Goravel 的许多内置错误消息都包含一个 `:attribute` 占位符，该占位符已被验证中的字段或属性的名称替换。为了自定义用于替换特定字段的这些占位符的值，您可以将自定义属性的数组作为第三个参数传递给 `Make` 方法：
 
 ```go
-validator, err := facades.Validation.Make(input, rules, validate.Attributes(map[string]string{
+validator, err := facades.Validation.Make(input, rules, validation.Attributes(map[string]string{
   "email": "email address",
 }))
 ```
