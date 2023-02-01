@@ -198,7 +198,7 @@ The first argument passed to the `Make` method is the data under validation that
 
 ### Customizing The Error Messages
 
-If needed, you may provide custom error messages that a validator instance should use instead of the default error messages provided by Goravel. You may pass the custom messages as the third argument to the `Make` method:
+If needed, you may provide custom error messages that a validator instance should use instead of the default error messages provided by Goravel. You may pass the custom messages as the third argument to the `Make` method(also applicable to `ctx.Request().Validate()`):
 
 ```go
 validator, err := facades.Validation.Make(input, rules, validation.Messages(map[string]string{
@@ -208,7 +208,7 @@ validator, err := facades.Validation.Make(input, rules, validation.Messages(map[
 
 ### Specifying A Custom Message For A Given Attribute
 
-Sometimes you may wish to specify a custom error message only for a specific attribute. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule:
+Sometimes you may wish to specify a custom error message only for a specific attribute. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule(also applicable to `ctx.Request().Validate()`):
 
 ```go
 validator, err := facades.Validation.Make(input, rules, validation.Messages(map[string]string{
@@ -218,11 +218,28 @@ validator, err := facades.Validation.Make(input, rules, validation.Messages(map[
 
 ### Specifying Custom Attribute Values
 
-Many of Goravel's built-in error messages include an `:attribute` placeholder that is replaced with the name of the field or attribute under validation. To customize the values used to replace these placeholders for specific fields, you may pass an array of custom attributes as the third argument to the `Make` method:
+Many of Goravel's built-in error messages include an `:attribute` placeholder that is replaced with the name of the field or attribute under validation. To customize the values used to replace these placeholders for specific fields, you may pass an array of custom attributes as the third argument to the `Make` method(also applicable to `ctx.Request().Validate()`):
 
 ```go
 validator, err := facades.Validation.Make(input, rules, validation.Attributes(map[string]string{
   "email": "email address",
+}))
+```
+
+### Format Data Before Validation
+
+You can format the data before validating the data for more flexible data validation, and you can pass the method of formatting the data as the third parameter to the `Make` method (also applicable to `ctx.Request().Validate()`):
+
+```go
+import (
+  validationcontract "github.com/goravel/framework/contracts/validation"
+  "github.com/goravel/framework/validation"
+)
+
+validator, err := facades.Validation.Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data){
+  if name, exist := data.Get("name"); exist {
+    data.Set("name", int(name))
+  }
 }))
 ```
 
@@ -294,7 +311,7 @@ Below is a list of all available validation rules and their function:
 | `required_with_all`  | `required_with_all:foo,bar,...` The field under validation must be present and not empty only if all of the other specified fields are present.  |
 | `required_without`  | `required_without:foo,bar,...` The field under validation must be present and not empty only when any of the other specified fields are not present.  |
 | `required_without_all`  | `required_without_all:foo,bar,...` The field under validation must be present and not empty only when all of the other specified fields are not present. |
-| `int`  | Check value is `intX` `uintX` type, and support size checking. eg: `int` `int:2` `int:2,12`  |
+| `int`  | Check value is `intX` `uintX` type, and support size checking. eg: `int` `int:2` `int:2,12`. Notice: [Points for using rules](#int)  |
 | `uint`  | Check value is `uint(uintX)` type, `value >= 0`  |
 | `bool`  | Check value is bool string(`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false"). |
 | `string`  | Check value is string type, and support size checking. eg:`string` `string:2` `string:2,12` |
@@ -409,5 +426,18 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
     &rules.Uppercase{},
   }
 }
-
 ```
+
+## Points For Using Rules
+
+### int
+
+当时用 `ctx.Request().Validate(rules)` 进行校验时，传入的 `int` 类型数据将会被 `json.Unmarshal` 解析为 `float64` 类型，从而导致 int 规则验证失败。
+
+When using `ctx.Request().Validate(rules)` for validation, the incoming `int` type data will be parsed by `json.Unmarshal` into `float64` type, which will cause the int rule validation to fail.
+
+**Solutions**
+
+Option 1: Add [`validation.PrepareForValidation`](#Format-Data-Before-Validation), format the data before validating the data;
+
+Option 2: Use `facades.Validation.Make()` for rule validation;
