@@ -198,7 +198,7 @@ func (r *PostController) Store(ctx http.Context) {
 
 ### 自定义错误消息
 
-如果需要，您可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。您可以将自定义消息作为第三个参数传递给 `Make` 方法：
+如果需要，您可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。您可以将自定义消息作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
 
 ```go
 validator, err := facades.Validation.Make(input, rules, validation.Messages(map[string]string{
@@ -208,7 +208,7 @@ validator, err := facades.Validation.Make(input, rules, validation.Messages(map[
 
 ### 为给定属性指定自定义消息
 
-有时您可能希望只为特定属性指定自定义错误消息。您可以使用 `.` 表示法。首先指定属性名称，然后指定规则：
+有时您可能希望只为特定属性指定自定义错误消息。您可以使用 `.` 表示法。首先指定属性名称，然后指定规则(也适用于`ctx.Request().Validate()`)：
 
 ```go
 validator, err := facades.Validation.Make(input, rules, validation.Messages(map[string]string{
@@ -218,11 +218,28 @@ validator, err := facades.Validation.Make(input, rules, validation.Messages(map[
 
 ### 指定自定义属性值
 
-Goravel 的许多内置错误消息都包含一个 `:attribute` 占位符，该占位符已被验证中的字段或属性的名称替换。为了自定义用于替换特定字段的这些占位符的值，您可以将自定义属性的数组作为第三个参数传递给 `Make` 方法：
+Goravel 的许多内置错误消息都包含一个 `:attribute` 占位符，该占位符已被验证中的字段或属性的名称替换。为了自定义用于替换特定字段的这些占位符的值，您可以将自定义属性的数组作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
 
 ```go
 validator, err := facades.Validation.Make(input, rules, validation.Attributes(map[string]string{
   "email": "email address",
+}))
+```
+
+### 验证前格式化数据
+
+您可以在验证数据前先格式化数据，以便更灵活的进行数据校验，您可以将格式化数据的方法作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
+
+```go
+import (
+  validationcontract "github.com/goravel/framework/contracts/validation"
+  "github.com/goravel/framework/validation"
+)
+
+validator, err := facades.Validation.Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data){
+  if name, exist := data.Get("name"); exist {
+    data.Set("name", int(name))
+  }
 }))
 ```
 
@@ -294,7 +311,7 @@ if validator.Errors().Has("email") {
 | `required_with_all`  | `required_with_all:foo,bar,...` 只有在其他指定字段全部出现时，验证的字段才必须存在且不为空。  |
 | `required_without`  | `required_without:foo,bar,...` 在其他指定任一字段不出现时，验证的字段才必须存在且不为空。  |
 | `required_without_all`  | `required_without_all:foo,bar,...` 只有在其他指定字段全部不出现时，验证的字段才必须存在且不为空。  |
-| `int`  | 检查值是 `intX` `uintX` 类型，同时支持大小检查 `int` `int:2` `int:2,12`  |
+| `int`  | 检查值是 `intX` `uintX` 类型，同时支持大小检查 `int` `int:2` `int:2,12`。注意：[使用注意事项](#int)  |
 | `uint`  | 检查值是 `uintX` 类型(`value >= 0`)  |
 | `bool`  | 检查值是布尔字符串(`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false") |
 | `string`  | 检查值是字符串类型，同时支持长度检查 `string` `string:2` `string:2,12` |
@@ -411,3 +428,15 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 }
 
 ```
+
+## 规则使用注意事项
+
+### int
+
+当时用 `ctx.Request().Validate(rules)` 进行校验时，传入的 `int` 类型数据将会被 `json.Unmarshal` 解析为 `float64` 类型，从而导致 int 规则验证失败。
+
+**解决方案：**
+
+方案一：添加 [`validation.PrepareForValidation`](#验证前格式化数据)，在验证数据前对数据进行格式化；
+
+方案二：使用 `facades.Validation.Make()` 进行规则校验；
