@@ -60,7 +60,7 @@ method := ctx.Request().Ip()
 ### 获取链接中的参数
 
 ```go
-// /users/:id
+// /users/{id}
 id := ctx.Request().Input("id")
 ```
 

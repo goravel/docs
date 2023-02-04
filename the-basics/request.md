@@ -60,7 +60,7 @@ method := ctx.Request().Ip()
 ### Retrieving An Input Value
 
 ```go
-// /users/:id
+// /users/{id}
 id := ctx.Request().Input("id")
 ```
 
