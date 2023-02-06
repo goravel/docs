@@ -333,7 +333,7 @@ facades.Orm.Query().Model(&user).Where("name = ?", "tom").Updates(User{Name: "he
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
 ```
 
-> `updated_at` will be updated automatically.
+> When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update.
 
 ### Delete
 

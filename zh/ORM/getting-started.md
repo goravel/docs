@@ -63,7 +63,7 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 | Offset        | [指定查询开始位置](#指定查询开始位置)   |
 | Order         | [排序](#排序)                           |
 | OrWhere       | [查询条件](#Where条件)                  |
-| Pluck         | [查询单列](查询单列)                    |
+| Pluck         | [查询单列](#查询单列)                    |
 | Raw           | [执行原生查询 SQL](#执行原生查询SQL)    |
 | Rollback      | [手动回滚事务](#事务)                   |
 | Save          | [保存修改](#更新)                       |
@@ -332,7 +332,7 @@ facades.Orm.Query().Model(&user).Where("name = ?", "tom").Updates(User{Name: "he
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
 ```
 
-> `updated_at` 字段将会被自动更新。
+> 当使用 `struct` 进行批量更新（Updates）时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。
 
 ### 删除
 
