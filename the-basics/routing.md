@@ -40,6 +40,32 @@ func main() {
 }
 ```
 
+## Start HTTPS Server
+
+### Register Middleware
+
+Framework has a general middleware built in, you can also customize it according to your own needs.
+
+```go
+// app/http/kernel.go
+import "github.com/goravel/framework/http/middleware"
+
+func (kernel *Kernel) Middleware() []http.Middleware {
+	return []http.Middleware{
+		middleware.Tls(facades.Config.GetString("app.host")),
+	}
+}
+```
+
+### Start Server
+
+```go
+// main.go
+if err := facades.Route.RunTLS(facades.Config.GetString("app.host"), "ca.pem", "ca.key"); err != nil {
+  facades.Log.Errorf("Route run error: %v", err)
+}
+```
+
 ### Routing Methods
 
 | Methods    | Action                                  |

@@ -40,6 +40,32 @@ func main() {
 }
 ```
 
+## 启动 HTTPS 服务器
+
+### 注册中间件
+
+框架内置了一个通用的中间件，您也可以根据自己需求进行自定义。
+
+```go
+// app/http/kernel.go
+import "github.com/goravel/framework/http/middleware"
+
+func (kernel *Kernel) Middleware() []http.Middleware {
+	return []http.Middleware{
+		middleware.Tls(facades.Config.GetString("app.host")),
+	}
+}
+```
+
+### 启动服务器
+
+```go
+// main.go
+if err := facades.Route.RunTLS(facades.Config.GetString("app.host"), "ca.pem", "ca.key"); err != nil {
+  facades.Log.Errorf("Route run error: %v", err)
+}
+```
+
 ### 路由方法
 
 | 方法       | 作用                                  |
