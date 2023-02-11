@@ -46,6 +46,7 @@ There are some middleware available in Goravel:
 | Middlewares                                       | Action        |
 | ------------------------------------------------- | ------------- |
 | github.com/goravel/framework/http/middleware/Cors | across domain |
+| github.com/goravel/framework/http/middleware/Limit | limit request |
 
 ## Register Middlewares
 

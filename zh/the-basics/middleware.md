@@ -46,6 +46,7 @@ Goravel 中自带了一些中间件可供使用：
 | 中间件                                            | 作用     |
 | ------------------------------------------------- | -------- |
 | github.com/goravel/framework/http/middleware/Cors | 实现跨域 |
+| github.com/goravel/framework/http/middleware/Limit | 实现限流 |
 
 ## 注册中间件
 
