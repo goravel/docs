@@ -12,6 +12,12 @@
 
 可以在 `config/jwt.go` 文件中配置 JWT 的相关参数，如秘钥、有效时长、可刷新时长等。
 
+## 生成 JWT Token
+
+```
+go run . artisan jwt:secret
+```
+
 ## 根据用户生成 Token
 
 可以根据模型来生成 Token，如果模型使用了 `orm.Model` 则无需额外配置，否则，在模型主键字段上需要配置 Tag，例如：`ID uint `gorm:"primaryKey"``。

@@ -6,36 +6,16 @@ export function getZhSidebar(): SidebarConfigArray {
       text: "升级指南",
       children: [
         {
+          text: "从 v1.8 升级到 v1.9",
+          link: "/zh/upgrade/v1.9",
+        },
+        {
           text: "从 v1.7 升级到 v1.8",
           link: "/zh/upgrade/v1.8",
         },
         {
-          text: "从 v1.6 升级到 v1.7",
-          link: "/zh/upgrade/v1.7",
-        },
-        {
-          text: "从 v1.5 升级到 v1.6",
-          link: "/zh/upgrade/v1.6",
-        },
-        {
-          text: "从 v1.4 升级到 v1.5",
-          link: "/zh/upgrade/v1.5",
-        },
-        {
-          text: "从 v1.3 升级到 v1.4",
-          link: "/zh/upgrade/v1.4",
-        },
-        {
-          text: "从 v1.2 升级到 v1.3",
-          link: "/zh/upgrade/v1.3",
-        },
-        {
-          text: "从 v1.1 升级到 v1.2",
-          link: "/zh/upgrade/v1.2",
-        },
-        {
-          text: "从 v1.0 升级到 v1.1",
-          link: "/zh/upgrade/v1.1",
+          text: "历史版本升级",
+          link: "/zh/upgrade/history",
         },
       ],
     },
@@ -131,7 +111,7 @@ export function getZhSidebar(): SidebarConfigArray {
         },
         {
           text: "用户授权",
-          link: "/digging-deeper/authorization",
+          link: "/zh/digging-deeper/authorization",
         },
         {
           text: "缓存系统",

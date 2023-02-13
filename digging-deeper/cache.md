@@ -8,12 +8,13 @@ Goravel provides an expandable cache module, this module can be operated using `
 
 ## Configuration
 
-Make all custom configurations in `config/cache.go`. Different cache drivers are allowed to be configured. By default, `redis` is used. You can also customize the driver.
+Make all custom configurations in `config/cache.go`. Different cache drivers are allowed to be configured. By default, `memory` is used. You can also customize the driver.
 
 ## Available Cache Drivers
 
 | Name     | Description  |
 | -------- | ------------ |
+| `memory` | Memory drive, restarting service will clear cache |
 | `redis`  | Redis drive  |
 | `custom` | Custom drive |
 

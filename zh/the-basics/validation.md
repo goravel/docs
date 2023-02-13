@@ -236,10 +236,12 @@ import (
   "github.com/goravel/framework/validation"
 )
 
-validator, err := facades.Validation.Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data){
+validator, err := facades.Validation.Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data) error {
   if name, exist := data.Get("name"); exist {
-    data.Set("name", int(name))
+    return data.Set("name", int(name))
   }
+
+  return nil
 }))
 ```
 

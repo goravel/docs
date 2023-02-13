@@ -17,16 +17,65 @@ Before starting, please configure the database in the `.env` file and confirm th
 
 The configuration of databases is in the `config/database.go` file. You can configure all database connections in this file and specify the default database connection. Most of configuration in this file is based on the project's environment variables, and provides examples of database configurations supported by Goravel.
 
+### Read & Write Connections
+
+Sometimes you may wish to use one database connection for `SELECT` statements, and another for `INSERT`, `UPDATE`, and `DELETE` statements. Goravel makes this a breeze.
+
+To see how read / write connections should be configured, let's look at this example:
+
+```
+import "github.com/goravel/framework/contracts/database"
+
+// config/database.go
+"connections": map[string]any{
+  "mysql": map[string]any{
+    "driver": "mysql",
+    "read": []database.Config{
+      {Host: "192.168.1.1", Port: 3306, Database: "forge", Username: "root", Password: "123123"},
+    },
+    "write": []database.Config{
+      {Host: "192.168.1.2", Port: 3306, Database: "forge", Username: "root", Password: "123123"},
+    },
+    "host": config.Env("DB_HOST", "127.0.0.1"),
+    "port":     config.Env("DB_PORT", 3306),
+    "database": config.Env("DB_DATABASE", "forge"),
+    "username": config.Env("DB_USERNAME", ""),
+    "password": config.Env("DB_PASSWORD", ""),
+    "charset":  "utf8mb4",
+    "loc":      "Local",
+  },
+}
+```
+
+Two keys have been added to the configuration array: `read` and `write`, `192.168.1.1` will be used as the host for the "read" connection, while `192.168.1.2` will be used for the "write" connection. The database prefix, character set, and all other options in the main `mysql` array will be shared across both connections. When multiple values exist in the `host` configuration array, a database host will be randomly chosen for each request.
+
+### Connection Pool
+
+You can configure connection pool in the configuration file, reasonable configuration of connection pool parameters can greatly improve concurrency performance:
+
+| Key        | Action           |
+| -----------  | -------------- |
+| pool.max_idle_conns         | Max idle connections    |
+| pool.max_open_conns     | Max open connections |
+| pool.conn_max_idletime     | Connections max idle time |
+| pool.conn_max_lifetime     | Connections max lifetime  |
+
 ## Model Definition
 
 You can create a custom model based on the model file `app/models/user.go` that comes with the framework. In the `app/models/user.go` file, `struct` has nested two frameworks, `orm.Model` and `orm.SoftDeletes`, they define `id, created_at, updated_at` and `deleted_at` respectively, `orm.SoftDeletes` means that soft deletion is enabled for the model.
 
-## Model Convention
+### Model Convention
 
 1. The model is named with a big hump;
 2. Use the plural form of the model "snake naming" as the table name;
 
 For example, the model name is `UserOrder`, the table name is `user_orders`.
+
+### Create Model
+
+```
+go run . artisan make:model User
+```
 
 ## facades.Orm available functions
 
@@ -63,6 +112,7 @@ For example, the model name is `UserOrder`, the table name is `user_orders`.
 | Offset        | [Offset](#Offset)                                       |
 | Order         | [Order](#Order)                                         |
 | OrWhere       | [OrWhere](#Where)                                       |
+| Paginate      | [Paginate](#Paginate)             |
 | Pluck         | [Query single column](#Query-Single-Column)             |
 | Raw           | [Execute native SQL](#Execute-Native-SQL)               |
 | Rollback      | [Rollback transaction](#Transaction)                    |
@@ -212,6 +262,16 @@ facades.Orm.Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 var users []models.User
 facades.Orm.Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM users WHERE name = "tom" order sort asc, id desc;
+```
+
+### Paginate
+
+```go
+var users []models.User
+var total int64
+facades.Orm.Query().Paginate(1, 10, &users, &total)
+// SELECT count(*) FROM `users`;
+// SELECT * FROM `users` LIMIT 10;
 ```
 
 ### Query Single Column
@@ -433,7 +493,7 @@ type Result struct {
 }
 
 var result Result
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", "tom").Scan(&result)
+facades.Orm.Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom").Scan(&result)
 ```
 
 ### Execute Native Update SQL

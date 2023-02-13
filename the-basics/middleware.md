@@ -47,6 +47,11 @@ There are some middleware available in Goravel:
 | ------------------------------------------------- | ------------- |
 | github.com/goravel/framework/http/middleware/Cors | across domain |
 
+### Create Middleware By Command
+```
+go run . artisan make:middleware Cors
+```
+
 ## Register Middlewares
 
 ### Global Middlewares

@@ -17,6 +17,49 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 
 数据库的配置文件在 `config/database.go` 文件中。你可以在这个文件中配置所有的数据库连接，并指定默认的数据库连接。该文件中的大部分配置都基于项目的环境变量，且提供了 Goravel 所支持的数据库配置示例。
 
+### 读写分离
+
+有时候您可能会希望使用一个数据库连接来执行 `SELECT` 语句，而 `INSERT`、`UPDATE` 和 `DELETE` 语句则由另一个数据库连接来执行。在 Goravel 中可以轻松实现读写分离。
+
+为了弄明白如何配置读写分离，我们先来看个例子：
+
+```
+import "github.com/goravel/framework/contracts/database"
+
+// config/database.go
+"connections": map[string]any{
+  "mysql": map[string]any{
+    "driver": "mysql",
+    "read": []database.Config{
+      {Host: "192.168.1.1", Port: 3306, Database: "forge", Username: "root", Password: "123123"},
+    },
+    "write": []database.Config{
+      {Host: "192.168.1.2", Port: 3306, Database: "forge", Username: "root", Password: "123123"},
+    },
+    "host": config.Env("DB_HOST", "127.0.0.1"),
+    "port":     config.Env("DB_PORT", 3306),
+    "database": config.Env("DB_DATABASE", "forge"),
+    "username": config.Env("DB_USERNAME", ""),
+    "password": config.Env("DB_PASSWORD", ""),
+    "charset":  "utf8mb4",
+    "loc":      "Local",
+  },
+}
+```
+
+我们在数据库配置中加入了两个键，分别是：`read`, `write`，`192.168.1.1` 将会被用作「读」连接主机，而 `192.168.1.2` 将作为「写」连接主机。这两个连接将共享 `mysql` 数组中的各项配置，如数据库前缀、字符编码等。如果 `read` 或 `write` 数组中存在多个值，Goravel 将会为每个连接随机选取所使用的数据库主机。
+
+### 连接池
+
+可以在配置文件中配置数据库连接池，合理的配置连接池参数，可以极大的提高并发性能：
+
+| 配置键        | 作用           |
+| -----------  | -------------- |
+| pool.max_idle_conns         | 最大空闲连接    |
+| pool.max_open_conns     | 最大连接数 |
+| pool.conn_max_idletime     | 连接最大空闲时间 |
+| pool.conn_max_lifetime     | 连接最大生命周期 |
+
 ## 模型
 
 模型相当于数据表的映射，你可以根据框架自带的模型文件 `app/models/user.go` 创建自定义模型。在 `app/models/user.go` 文件中 `struct` 嵌套了 `orm.Model` 与 `orm.SoftDeletes` 两个框架自带结构体，他们分别定义了 `id, created_at, updated_at` 与 `deleted_at`，其中 `orm.SoftDeletes` 代表模型开启了软删除功能。
@@ -27,6 +70,12 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 2. 使用模型的复数形式「蛇形命名」来作为表名；
 
 例如，模型名称为 `UserOrder`，则表名为 `user_orders`。
+
+### 创建模型
+
+```
+go run . artisan make:model User
+```
 
 ## facades.Orm 可用方法
 
@@ -63,6 +112,7 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 | Offset        | [指定查询开始位置](#指定查询开始位置)   |
 | Order         | [排序](#排序)                           |
 | OrWhere       | [查询条件](#Where条件)                  |
+| Paginate      | [分页](#分页)                  |
 | Pluck         | [查询单列](#查询单列)                    |
 | Raw           | [执行原生查询 SQL](#执行原生查询SQL)    |
 | Rollback      | [手动回滚事务](#事务)                   |
@@ -211,6 +261,16 @@ facades.Orm.Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 var users []models.User
 facades.Orm.Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM users WHERE name = "tom" order sort asc, id desc;
+```
+
+### 分页
+
+```go
+var users []models.User
+var total int64
+facades.Orm.Query().Paginate(1, 10, &users, &total)
+// SELECT count(*) FROM `users`;
+// SELECT * FROM `users` LIMIT 10;
 ```
 
 ### 查询单列
@@ -432,7 +492,7 @@ type Result struct {
 }
 
 var result Result
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", "tom").Scan(&result)
+facades.Orm.Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom").Scan(&result)
 ```
 
 ### 执行原生更新 SQL
