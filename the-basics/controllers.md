@@ -51,3 +51,9 @@ func Web() {
   facades.Route.Get("/{id}", userController.Show)
 }
 ```
+
+### Create Controller
+
+```
+go run . artisan make:controller UserController
+```

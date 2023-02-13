@@ -6,36 +6,16 @@ export function getEnSidebar(): SidebarConfigArray {
       text: "Upgrade Guide",
       children: [
         {
+          text: "Upgrading To v1.9 From v1.8",
+          link: "/upgrade/v1.9",
+        },
+        {
           text: "Upgrading To v1.8 From v1.7",
           link: "/upgrade/v1.8",
         },
         {
-          text: "Upgrading To v1.7 From v1.6",
-          link: "/upgrade/v1.7",
-        },
-        {
-          text: "Upgrading To v1.6 From v1.5",
-          link: "/upgrade/v1.6",
-        },
-        {
-          text: "Upgrading To v1.5 From v1.4",
-          link: "/upgrade/v1.5",
-        },
-        {
-          text: "Upgrading To v1.4 From v1.3",
-          link: "/upgrade/v1.4",
-        },
-        {
-          text: "Upgrading To v1.3 From v1.2",
-          link: "/upgrade/v1.3",
-        },
-        {
-          text: "Upgrading To v1.2 From v1.1",
-          link: "/upgrade/v1.2",
-        },
-        {
-          text: "Upgrading To v1.1 From v1.0",
-          link: "/upgrade/v1.1",
+          text: "History Upgrade",
+          link: "/upgrade/history",
         },
       ],
     },

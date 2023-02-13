@@ -35,6 +35,12 @@ ctx.Response().Json(http.OK, struct {
 })
 ```
 
+## Custom Return
+
+```go
+ctx.Response().Data(http.StatusOK, "text/html; charset=utf-8", []byte("<b>Goravel</b>"))
+```
+
 ## Response File
 
 ```go
@@ -66,6 +72,12 @@ ctx.Response().Success().String("Hello Goravel")
 ctx.Response().Success().Json(contracthttp.Json({
   "Hello": "Goravel",
 }))
+```
+
+## Redirect
+
+```go
+ctx.Response().Redirect(http.StatusMovedPermanently, "https://goravel.dev")
 ```
 
 ## Get Response

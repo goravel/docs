@@ -12,6 +12,12 @@ You can configure default guard and multiple guards in the `config/auth.go` file
 
 You can configure parameters of JWT in the `config/jwt.go` file, such as `secret`, `ttl`, `refresh_ttl`.
 
+## Generate JWT Token
+
+```
+go run . artisan jwt:secret
+```
+
 ## Generate Token Using User
 
 You can generate Token by Model, there is no extra configuration if the model use `orm.Model`, otherwise, you need to configure Tag on the model permary key filed, for example:

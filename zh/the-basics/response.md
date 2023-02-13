@@ -35,6 +35,12 @@ ctx.Response().Json(http.OK, struct {
 })
 ```
 
+## 自定义返回
+
+```go
+ctx.Response().Data(http.StatusOK, "text/html; charset=utf-8", []byte("<b>Goravel</b>"))
+```
+
 ## 文件响应
 
 ```go
@@ -66,6 +72,12 @@ ctx.Response().Success().String("Hello Goravel")
 ctx.Response().Success().Json(contracthttp.Json({
   "Hello": "Goravel",
 }))
+```
+
+## 重定向
+
+```go
+ctx.Response().Redirect(http.StatusMovedPermanently, "https://goravel.dev")
 ```
 
 ## 获取响应

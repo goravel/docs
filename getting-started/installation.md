@@ -28,12 +28,26 @@ go run . artisan key:generate
 go run .
 ```
 
+## Specify .env File To Start Service
+
+```
+go run . --env=../.env
+```
+
 ### Live reload
 
-Built-in [cosmtrek/air](https://github.com/cosmtrek/air) configuration file which can be used directly.
+Built-in [cosmtrek/air](https://github.com/cosmtrek/air) configuration file which can be used directly:
 
 ```
 air
+```
+
+If you are using Windows system, you need to modify the `.air.toml` file in the root directory, add the `.exe` suffix to the following two lines:
+
+```
+[build]
+  bin = "./storage/temp/main.exe"
+  cmd = "go build -o ./storage/temp/main.exe ."
 ```
 
 ## Configuration
@@ -42,10 +56,18 @@ air
 
 All configuration files of the Goravel framework are placed in the `config` directory. All configuration items has annotations, you can adjust it according to your needs.
 
-### Application key
+### Generate Application key
 
 You need to generate the application key after Goravel is installed locally. Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
 
 ```
 go run. artisan key:generate
+```
+
+### Generate JWT Token
+
+You need to generate JWT Token if you use [Authentication](../digging-deeper/authentication.md).
+
+```
+go run . artisan jwt:secret
 ```

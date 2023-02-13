@@ -47,6 +47,11 @@ Goravel 中自带了一些中间件可供使用：
 | ------------------------------------------------- | -------- |
 | github.com/goravel/framework/http/middleware/Cors | 实现跨域 |
 
+### 命令创建中间件
+```
+go run . artisan make:middleware Cors
+```
+
 ## 注册中间件
 
 ### 全局中间件
