@@ -32,9 +32,14 @@ Welcome star, PR and issues！
 
 ## Roadmap
 
-- [ ] Custom .env path
-- [ ] Database read-write separation
-- [ ] Extend Redis driver
+- [ ] Hash
+- [ ] Crypt
+- [ ] Support Websocket
+- [ ] Broadcasting
+- [ ] Delay Queue
+- [ ] Queue supports DB driver
+- [ ] Notifications
+- [ ] Optimize unit tests
 
 ## Documentation
 
