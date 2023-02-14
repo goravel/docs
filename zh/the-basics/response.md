@@ -22,9 +22,9 @@ import (
   contracthttp "github.com/goravel/framework/contracts/http"
 )
 
-ctx.Response().Json(http.OK, contracthttp.Json({
+ctx.Response().Json(http.OK, contracthttp.Json{
   "Hello": "Goravel",
-}))
+})
 
 ctx.Response().Json(http.OK, struct {
   ID       uint `json:"id"`
