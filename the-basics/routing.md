@@ -117,9 +117,11 @@ facades.Route.Prefix("users").Get("/", userController.Show)
 ## File Routing
 
 ```go
+import "net/http"
+
 facades.Route.Static("static", "./public")
 facades.Route.StaticFile("static-file", "./public/logo.png")
-facades.Route.StaticFS("static-fs", nethttp.Dir("./public"))
+facades.Route.StaticFS("static-fs", http.Dir("./public"))
 ```
 
 ## Routing Parameters

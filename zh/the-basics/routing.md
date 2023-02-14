@@ -121,9 +121,11 @@ facades.Route.Prefix("users").Get("/", userController.Show)
 ## 文件路由
 
 ```go
+import "net/http"
+
 facades.Route.Static("static", "./public")
 facades.Route.StaticFile("static-file", "./public/logo.png")
-facades.Route.StaticFS("static-fs", nethttp.Dir("./public"))
+facades.Route.StaticFS("static-fs", http.Dir("./public"))
 ```
 
 ## 路由传参
