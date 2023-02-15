@@ -1,4 +1,4 @@
-<!-- <p align="center"><img src="https://goravel.s3.us-east-2.amazonaws.com/goravel-word.png" width="300"></p> -->
+<p align="center"><img src="/logo.png" width="300"></p>
 
 [English](../README.md) | 中文
 
@@ -49,13 +49,15 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## 群组
 
-欢迎在 Discord 中更多交流。
-
-[https://discord.gg/cFc5csczzS](https://discord.gg/cFc5csczzS)
-
 微信入群，请备注 Goravel
 
-![](https://user-images.githubusercontent.com/24771476/194740900-cee4aa43-7c22-42b6-ada9-42bc160cd797.JPG)
+<p align="left"><img src="/wechat.jpg" width="200"></p>
+
+<!-- ![](https://user-images.githubusercontent.com/24771476/194740900-cee4aa43-7c22-42b6-ada9-42bc160cd797.JPG) -->
+
+## 赞赏
+
+<p align="left"><img src="/reward.jpg" width="200"></p>
 
 ## 开源许可
 

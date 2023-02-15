@@ -1,4 +1,4 @@
-<!-- <p align="center"><img src="https://goravel.s3.us-east-2.amazonaws.com/goravel-word.png" width="300"></p> -->
+<p align="center"><img src="/logo.png" width="300"></p>
 
 English | [中文](../zh/README.md)
 
@@ -49,9 +49,13 @@ Online documentation [https://www.goravel.dev](https://www.goravel.dev)
 
 ## Group
 
-Welcome more exchanges in Discord.
+Welcome more discussion in Telegram.
 
-[https://discord.gg/cFc5csczzS](https://discord.gg/cFc5csczzS)
+[https://t.me/goravel](https://t.me/goravel)
+
+<p align="left"><img src="/telegram.jpg" width="300"></p>
+
+<!-- [https://discord.gg/cFc5csczzS](https://discord.gg/cFc5csczzS) -->
 
 ## License
 
