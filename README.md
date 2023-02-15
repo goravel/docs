@@ -53,7 +53,7 @@ Welcome more discussion in Telegram.
 
 [https://t.me/goravel](https://t.me/goravel)
 
-<p align="left"><img src="/telegram.jpg" width="300"></p>
+<p align="left"><img src="/telegram.jpg" width="200"></p>
 
 <!-- [https://discord.gg/cFc5csczzS](https://discord.gg/cFc5csczzS) -->
 
