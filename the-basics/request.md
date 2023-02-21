@@ -83,7 +83,7 @@ names := ctx.Request().QueryMap("names")
 name := ctx.Request().Form("name", "goravel")
 ```
 
-### Form Bind Struct
+### Json/Form Bind Struct
 
 ```go
 type User struct {

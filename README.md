@@ -45,6 +45,8 @@ Welcome star, PR and issues！
 
 Online documentation [https://www.goravel.dev](https://www.goravel.dev)
 
+Example [https://github.com/goravel/example](https://github.com/goravel/example)
+
 > To optimize the documentation, please submit a PR to the documentation repository [https://github.com/goravel/docs](https://github.com/goravel/docs)
 
 ## Group

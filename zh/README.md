@@ -45,6 +45,8 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 在线文档 [https://www.goravel.dev/zh](https://www.goravel.dev/zh)
 
+示例 [https://github.com/goravel/example](https://github.com/goravel/example)
+
 > 优化文档，请提交 PR 至文档仓库 [https://github.com/goravel/docs](https://github.com/goravel/docs)
 
 ## 群组
