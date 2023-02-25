@@ -18,6 +18,12 @@ This command will generate migration files in the `database/migrations` director
 
 The migration command will generate two migration files at the same time: `***.up.sql` and `***.down.sql`, respectively corresponding to execution and rollback. 
 
+## Run Migrations
+
+```
+go run . artisan migrate
+```
+
 ## Quickly Create
 
 Using `create_users_table` will automatically generate a table containing the infrastructure of `users`:

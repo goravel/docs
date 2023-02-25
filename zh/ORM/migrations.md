@@ -10,13 +10,19 @@
 
 使用 `make:migration` 命令来创建迁移：
 
-```go
+```
 go run . artisan make:migration create_users_table
 ```
 
 该命令会在 `database/migrations` 目录下生成迁移文件，所有迁移文件都以一个时间戳为开头，Goravel 将以此作为迁移文件的执行顺序。所有的迁移文件都是 `.sql` 文件，你可以使用 SQL 语句自定义表结构。
 
 迁移命令会同时生成两个迁移文件：`***.up.sql`、`***.down.sql`，分别对应执行、回滚。
+
+## 运行迁移
+
+```
+go run . artisan migrate
+```
 
 ## 快捷生成
 
