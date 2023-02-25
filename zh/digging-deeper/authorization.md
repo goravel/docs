@@ -24,7 +24,8 @@ package providers
 import (
   "context"
 
-  "github.com/goravel/framework/contracts/auth/access"
+  contractsaccess "github.com/goravel/framework/contracts/auth/access"
+  "github.com/goravel/framework/auth/access"
   "github.com/goravel/framework/facades"
 )
 
@@ -35,7 +36,7 @@ func (receiver *AuthServiceProvider) Register() {
 }
 
 func (receiver *AuthServiceProvider) Boot() {
-  facades.Gate.Define("update-post", func(ctx context.Context, arguments map[string]any) *access.Response {
+  facades.Gate.Define("update-post", func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
     user := ctx.Value("user").(models.User)
     post := arguments["post"].(models.Post)
     
@@ -106,7 +107,7 @@ if (response.Allowed()) {
 有时，您可能希望将所有权限授予特定用户。您可以使用 `Before` 方法。该方法将定义该授权拦截规则，优先于所有其他授权拦截规则前执行：
 
 ```go
-facades.Gate.Before(func(ctx context.Context, ability string, arguments map[string]any) *access.Response {
+facades.Gate.Before(func(ctx context.Context, ability string, arguments map[string]any) contractsaccess.Response {
   user := ctx.Value("user").(models.User)
   if isAdministrator(user) {
     return access.NewAllowResponse()
@@ -121,7 +122,7 @@ facades.Gate.Before(func(ctx context.Context, ability string, arguments map[stri
 您还可以使用 `After` 方法，来定义在所有授权拦截规则执行后，再次进行授权拦截规则判定：
 
 ```go
-facades.Gate.After(func(ctx context.Context, ability string, arguments map[string]any, result *access.Response) *access.Response {
+facades.Gate.After(func(ctx context.Context, ability string, arguments map[string]any, result contractsaccess.Response) contractsaccess.Response {
   user := ctx.Value("user").(models.User)
   if isAdministrator(user) {
     return access.NewAllowResponse()
@@ -163,6 +164,7 @@ package policies
 import (
   "context"
 
+  contractsaccess "github.com/goravel/framework/contracts/auth/access"
   "github.com/goravel/framework/contracts/auth/access"
 )
 
@@ -173,7 +175,7 @@ func NewPostPolicy() *PostPolicy {
   return &PostPolicy{}
 }
 
-func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) *access.Response {
+func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contractsaccess.Response {
   user := ctx.Value("user").(models.User)
   post := arguments["post"].(models.Post)
     

@@ -14,7 +14,7 @@ You can add routing files under the `routes` directory to perform more fine-grai
 
 ## Start HTTP Server
 
-Start the HTTP server in `main.go` in the root directory.
+Start the HTTP server in `main.go` in the root directory. `facades.Route.Run()` will automatically fetch the `route.host` configuration.
 
 ```go
 package main
@@ -31,7 +31,7 @@ func main() {
 
   //Start http server by facades.Route.
   go func() {
-    if err := facades.Route.Run(facades.Config.GetString("app.host")); err != nil {
+    if err := facades.Route.Run(); err != nil {
       facades.Log.Errorf("Route run error: %v", err)
     }
   }()
@@ -52,16 +52,27 @@ import "github.com/goravel/framework/http/middleware"
 
 func (kernel *Kernel) Middleware() []http.Middleware {
 	return []http.Middleware{
-		middleware.Tls(facades.Config.GetString("app.host")),
+		middleware.Tls(),
 	}
 }
 ```
 
 ### Start Server
 
+`facades.Route.RunTLS()` will automatically fetch the `route.tls` configuration:
+
 ```go
 // main.go
-if err := facades.Route.RunTLS(facades.Config.GetString("app.host"), "ca.pem", "ca.key"); err != nil {
+if err := facades.Route.RunTLS(); err != nil {
+  facades.Log.Errorf("Route run error: %v", err)
+}
+```
+
+You can also use `facades.Route.RunTLSWithCert()` method to customize host and certificate.
+
+```go
+// main.go
+if err := facades.Route.RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
   facades.Log.Errorf("Route run error: %v", err)
 }
 ```
@@ -71,6 +82,8 @@ if err := facades.Route.RunTLS(facades.Config.GetString("app.host"), "ca.pem", "
 | Methods    | Action                                  |
 | ---------- | --------------------------------------- |
 | Run        | [Start HTTP Server](#Start-HTTP-Server) |
+| RunTLS        | [Start HTTPS Server](#Start-HTTPS-Server) |
+| RunTLSWithCert        | [Start HTTPS Server](#Start-HTTPS-Server) |
 | Group      | [Group Routing](#Group-Routing)         |
 | Prefix     | [Routing Prefix](#Routing-Prefix)       |
 | ServeHTTP  | [Testing Routing](#Testing-Routing)     |

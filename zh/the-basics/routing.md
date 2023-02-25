@@ -14,7 +14,7 @@ Goravel 路由模块可以使用 `facades.Route` 进行操作。
 
 ## 启动 HTTP 服务器
 
-在根目录下 `main.go` 中启动 HTTP 服务器
+在根目录下 `main.go` 中启动 HTTP 服务器，`facades.Route.Run()` 将会自动获取 `route.host` 的配置。
 
 ```go
 package main
@@ -31,7 +31,7 @@ func main() {
 
   //Start http server by facades.Route.
   go func() {
-    if err := facades.Route.Run(facades.Config.GetString("app.host")); err != nil {
+    if err := facades.Route.Run(); err != nil {
       facades.Log.Errorf("Route run error: %v", err)
     }
   }()
@@ -52,16 +52,27 @@ import "github.com/goravel/framework/http/middleware"
 
 func (kernel *Kernel) Middleware() []http.Middleware {
 	return []http.Middleware{
-		middleware.Tls(facades.Config.GetString("app.host")),
+		middleware.Tls(),
 	}
 }
 ```
 
 ### 启动服务器
 
+`facades.Route.RunTLS()` 将会自动获取 `route.tls` 的配置：
+
 ```go
 // main.go
-if err := facades.Route.RunTLS(facades.Config.GetString("app.host"), "ca.pem", "ca.key"); err != nil {
+if err := facades.Route.RunTLS(); err != nil {
+  facades.Log.Errorf("Route run error: %v", err)
+}
+```
+
+您也可以使用 `facades.Route.RunTLSWithCert()` 方法，自定义 host 与 证书：
+
+```go
+// main.go
+if err := facades.Route.RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
   facades.Log.Errorf("Route run error: %v", err)
 }
 ```
@@ -71,6 +82,8 @@ if err := facades.Route.RunTLS(facades.Config.GetString("app.host"), "ca.pem", "
 | 方法       | 作用                                  |
 | ---------- | ------------------------------------- |
 | Run        | [启动 HTTP 服务器](#启动-HTTP-服务器) |
+| RunTLS        | [启动 HTTPS 服务器](#启动-HTTPS-服务器) |
+| RunTLSWithCert        | [启动 HTTPS 服务器](#启动-HTTPS-服务器) |
 | Group      | [路由分组](#路由分组)                 |
 | Prefix     | [路由前缀](#路由前缀)                 |
 | ServeHTTP  | [测试路由](#测试路由)                 |
@@ -126,6 +139,31 @@ import "net/http"
 facades.Route.Static("static", "./public")
 facades.Route.StaticFile("static-file", "./public/logo.png")
 facades.Route.StaticFS("static-fs", http.Dir("./public"))
+```
+
+一般情况下，我们无法将文件路由定向到根目录 `/`，如果您真的想这么做，可以使用如下方式：
+
+```go
+// 安装依赖 
+go get -u github.com/gin-contrib/static
+
+// 定义中间件 app/http/middleware/static.go，然后将其注册到 app/http/kernel.go
+package middleware
+
+import (
+	"github.com/gin-contrib/static"
+
+	contractshttp "github.com/goravel/framework/contracts/http"
+	frameworkhttp "github.com/goravel/framework/http"
+)
+
+func Static() contractshttp.Middleware {
+	return func(ctx contractshttp.Context) {
+		static.Serve("/", static.LocalFile("./public", false))(ctx.(*frameworkhttp.GinContext).Instance())
+
+		ctx.Request().Next()
+	}
+}
 ```
 
 ## 路由传参

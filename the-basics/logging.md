@@ -12,6 +12,8 @@ Make custom configurations in `config/logging.go`, allows to configure different
 
 `Goravel` uses `stack` channel to record logs by default, `stack` allows logs to be forwarded to multiple channels.
 
+The `print` configuration in `single` and `daily` drivers can control log output to console.
+
 ## Available channel drivers
 
 | Name     | Description             |

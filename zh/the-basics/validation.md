@@ -94,13 +94,42 @@ go run . artisan make:request StorePostRequest
 正如您可能已经猜到的那样，`Authorize` 方法负责确定当前经过身份验证的用户是否可以执行请求操作，而 `Rules` 方法则返回适用于请求数据的验证规则：
 
 ```go
+package requests
+
+import (
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/contracts/validation"
+)
+
+type StorePostRequest struct {
+	Name string `form:"name" json:"name"`
+}
+
+func (r *StorePostRequest) Authorize(ctx http.Context) error {
+	return nil
+}
+
 func (r *StorePostRequest) Rules() map[string]string {
-  return map[string]string{
-    "title": "required|max_len:255",
-    "body":  "required",
+	return map[string]string{
+    // 键与传入的 JSON 键保持一致
+    "name": "required|max_len:255",
   }
 }
+
+func (r *StorePostRequest) Messages() map[string]string {
+	return map[string]string{}
+}
+
+func (r *StorePostRequest) Attributes() map[string]string {
+	return map[string]string{}
+}
+
+func (r *StorePostRequest) PrepareForValidation(data validation.Data) error {
+	return nil
+}
 ```
+
+> 注意：`Rules` 中的 `key` 需要与 struct 的成员变量名称保持一致。
 
 所以，验证规则是如何运行的呢？您所需要做的就是在控制器方法中类型提示传入的请求。在调用控制器方法之前验证传入的表单请求，这意味着您不需要在控制器中写任何验证逻辑：
 

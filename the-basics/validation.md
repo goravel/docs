@@ -94,13 +94,42 @@ The generated form request class will be placed in the `app/http/requests` direc
 As you might have guessed, the `Authorize` method is responsible for determining if the currently authenticated user can perform the action represented by the request, while the `Rules` method returns the validation rules that should apply to the request's data:
 
 ```go
+package requests
+
+import (
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/contracts/validation"
+)
+
+type StorePostRequest struct {
+	Name string `form:"name" json:"name"`
+}
+
+func (r *StorePostRequest) Authorize(ctx http.Context) error {
+	return nil
+}
+
 func (r *StorePostRequest) Rules() map[string]string {
-  return map[string]string{
-    "title": "required|max_len:255",
-    "body":  "required",
+	return map[string]string{
+    // The key are consistent with JSON key.
+    "name": "required|max_len:255",
   }
 }
+
+func (r *StorePostRequest) Messages() map[string]string {
+	return map[string]string{}
+}
+
+func (r *StorePostRequest) Attributes() map[string]string {
+	return map[string]string{}
+}
+
+func (r *StorePostRequest) PrepareForValidation(data validation.Data) error {
+	return nil
+}
 ```
+
+> Note: The `key` in `Rules` needs to be consistent with the member variable name of struct.
 
 So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
 

@@ -38,3 +38,7 @@ Goravel has a default Dockerfile file, you can use it directly.
 ```
 docker build .
 ```
+
+## Reduce package size
+
+Commenting out the unused `ServiceProvider` in `ServiceProviders` will effectively reduce the packaging volume.

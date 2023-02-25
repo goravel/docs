@@ -24,7 +24,8 @@ package providers
 import (
   "context"
 
-  "github.com/goravel/framework/contracts/auth/access"
+  contractsaccess "github.com/goravel/framework/contracts/auth/access"
+  "github.com/goravel/framework/auth/access"
   "github.com/goravel/framework/facades"
 )
 
@@ -35,7 +36,7 @@ func (receiver *AuthServiceProvider) Register() {
 }
 
 func (receiver *AuthServiceProvider) Boot() {
-  facades.Gate.Define("update-post", func(ctx context.Context, arguments map[string]any) *access.Response {
+  facades.Gate.Define("update-post", func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
     user := ctx.Value("user").(models.User)
     post := arguments["post"].(models.Post)
     
@@ -106,7 +107,7 @@ if (response.Allowed()) {
 Sometimes, you may wish to grant all abilities to a specific user. You may use the `Before` method to define a closure that is run before all other authorization checks:
 
 ```go
-facades.Gate.Before(func(ctx context.Context, ability string, arguments map[string]any) *access.Response {
+facades.Gate.Before(func(ctx context.Context, ability string, arguments map[string]any) contractsaccess.Response {
   user := ctx.Value("user").(models.User)
   if isAdministrator(user) {
     return access.NewAllowResponse()
@@ -121,7 +122,7 @@ If the before closure returns a non-nil result that result will be considered th
 You may use the `After` method to define a closure to be executed after all other authorization checks:
 
 ```go
-facades.Gate.After(func(ctx context.Context, ability string, arguments map[string]any, result *access.Response) *access.Response {
+facades.Gate.After(func(ctx context.Context, ability string, arguments map[string]any, result contractsaccess.Response) contractsaccess.Response {
   user := ctx.Value("user").(models.User)
   if isAdministrator(user) {
     return access.NewAllowResponse()
@@ -163,6 +164,7 @@ package policies
 import (
   "context"
 
+  contractsaccess "github.com/goravel/framework/contracts/auth/access"
   "github.com/goravel/framework/contracts/auth/access"
 )
 
@@ -173,7 +175,7 @@ func NewPostPolicy() *PostPolicy {
   return &PostPolicy{}
 }
 
-func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) *access.Response {
+func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contractsaccess.Response {
   user := ctx.Value("user").(models.User)
   post := arguments["post"].(models.Post)
     
