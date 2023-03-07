@@ -238,7 +238,7 @@ import (
 
 validator, err := facades.Validation.Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data) error {
   if name, exist := data.Get("name"); exist {
-    return data.Set("name", int(name))
+    return data.Set("name", name)
   }
 
   return nil
