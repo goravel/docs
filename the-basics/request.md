@@ -57,18 +57,26 @@ method := ctx.Request().Ip()
 
 ## Input
 
-### Retrieving An Input Value
+### Retrieving An Route Value
 
 ```go
 // /users/{id}
-id := ctx.Request().Input("id")
+id := ctx.Request().Route("id")
+id := ctx.Request().RouteInt("id")
+id := ctx.Request().RouteInt64("id")
 ```
 
 ### Retrieving Input From The Query String
 
 ```go
 // /users?name=goravel
-name := ctx.Request().Query("name", "goravel")
+name := ctx.Request().Query("name")
+name := ctx.Request().Query("name", "default")
+
+// /users?id=1
+name := ctx.Request().QueryInt("id")
+name := ctx.Request().QueryInt64("id")
+name := ctx.Request().QueryBool("id")
 
 // /users?names=goravel1&names=goravel2
 names := ctx.Request().QueryArray("names")
@@ -80,7 +88,29 @@ names := ctx.Request().QueryMap("names")
 ### Retrieving Form
 
 ```go
+name := ctx.Request().Form("name")
 name := ctx.Request().Form("name", "goravel")
+```
+
+### Retrieving Json
+
+```go
+name := ctx.Request().Json("name")
+name := ctx.Request().Json("name", "goravel")
+```
+
+> Note: Only one-dimensional Json data can be obtained, otherwise it will return empty.
+
+### Retrieving An Input Value
+
+Access all of the user input without worrying about which HTTP verb was used for the request. Retrieve order: `json`, `form`, `query`, `route`.
+
+```go
+name := ctx.Request().Input("name")
+name := ctx.Request().Json("name", "goravel")
+name := ctx.Request().InputInt("name")
+name := ctx.Request().InputInt64("name")
+name := ctx.Request().InputBool("name")
 ```
 
 ### Json/Form Bind Struct
@@ -91,6 +121,11 @@ type User struct {
 }
 
 var user User
+err := ctx.Request().Bind(&user)
+```
+
+```go
+var user map[string]any
 err := ctx.Request().Bind(&user)
 ```
 

@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## 介绍
+## 简介
 
 Goravel 提供了几种不同的方法来验证传入应用程序的数据。最常见的做法是在所有传入的 HTTP 请求中使用 `validate` 方法。Goravel 包含了各种方便的验证规则。
 
@@ -94,11 +94,38 @@ go run . artisan make:request StorePostRequest
 正如您可能已经猜到的那样，`Authorize` 方法负责确定当前经过身份验证的用户是否可以执行请求操作，而 `Rules` 方法则返回适用于请求数据的验证规则：
 
 ```go
-func (r *StorePostRequest) Rules() map[string]string {
+package requests
+
+import (
+  "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/contracts/validation"
+)
+
+type StorePostRequest struct {
+  Name string `form:"name" json:"name"`
+}
+
+func (r *StorePostRequest) Authorize(ctx http.Context) error {
+  return nil
+}
+
+func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
   return map[string]string{
-    "title": "required|max_len:255",
-    "body":  "required",
+    // 键与传入的键保持一致
+    "name": "required|max_len:255",
   }
+}
+
+func (r *StorePostRequest) Messages(ctx http.Context) map[string]string {
+  return map[string]string{}
+}
+
+func (r *StorePostRequest) Attributes(ctx http.Context) map[string]string {
+  return map[string]string{}
+}
+
+func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validation.Data) error {
+  return nil
 }
 ```
 
@@ -111,9 +138,11 @@ func (r *PostController) Store(ctx http.Context) {
 }
 ```
 
+> 注意，由于 `form` 传值默认为 `string` 类型，因此 request 中所有字段也都应为 `string` 类型，否则请使用 `JSON` 传值。
+
 ### 表单请求授权验证
 
-表单请求类内也包含了 `Authorize` 方法。在这个方法中，您可以检查经过身份验证的用户确定其是否具有更新给定资源的权限。例如，您可以判断用户是否拥有更新文章评论的权限。最有可能的是，您将通过以下方法与您的 [授权与策略](../digging-deeper/authorization.md) 进行交互：
+表单请求类内也包含了 `Authorize` 方法。在这个方法中，您可以检查经过身份验证的用户确定其是否具有更新给定资源的权限。例如，您可以判断用户是否拥有更新文章评论的权限。最有可能的是，您将通过以下方法与您的 [授权与策略](../security/authorization.md) 进行交互：
 
 ```go
 func (r *StorePostRequest) Authorize(ctx http.Context) error {

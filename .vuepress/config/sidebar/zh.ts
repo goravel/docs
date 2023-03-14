@@ -106,14 +106,6 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/digging-deeper/artisan-console",
         },
         {
-          text: "用户验证",
-          link: "/zh/digging-deeper/authentication",
-        },
-        {
-          text: "用户授权",
-          link: "/zh/digging-deeper/authorization",
-        },
-        {
           text: "缓存系统",
           link: "/zh/digging-deeper/cache",
         },
@@ -140,6 +132,28 @@ export function getZhSidebar(): SidebarConfigArray {
         {
           text: "Mock",
           link: "/zh/digging-deeper/mock",
+        },
+      ],
+    },
+    {
+      text: "安全相关",
+      // collapsible: true,
+      children: [
+        {
+          text: "用户验证",
+          link: "/zh/security/authentication",
+        },
+        {
+          text: "用户授权",
+          link: "/zh/security/authorization",
+        },
+        {
+          text: "加密解密",
+          link: "/zh/security/encryption",
+        },
+        {
+          text: "哈希",
+          link: "/zh/security/hashing",
         },
       ],
     },

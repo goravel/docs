@@ -106,14 +106,6 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/digging-deeper/artisan-console",
         },
         {
-          text: "Authentication",
-          link: "/digging-deeper/authentication",
-        },
-        {
-          text: "Authorization",
-          link: "/digging-deeper/authorization",
-        },
-        {
           text: "Cache",
           link: "/digging-deeper/cache",
         },
@@ -140,6 +132,28 @@ export function getEnSidebar(): SidebarConfigArray {
         {
           text: "Mock",
           link: "/digging-deeper/mock",
+        },
+      ],
+    },
+    {
+      text: "Security",
+      // collapsible: true,
+      children: [
+        {
+          text: "Authentication",
+          link: "/security/authentication",
+        },
+        {
+          text: "Authorization",
+          link: "/security/authorization",
+        },
+        {
+          text: "Encryption",
+          link: "/security/encryption",
+        },
+        {
+          text: "Hashing",
+          link: "/security/hashing",
         },
       ],
     },

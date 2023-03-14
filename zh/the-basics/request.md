@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## 介绍
+## 简介
 
 Goravel 的 `contracts/http/Request` 方法可以与应用程序处理的当前 HTTP 请求进行交互，以及检索与请求一起提交的输入内容和文件。
 
@@ -57,18 +57,26 @@ method := ctx.Request().Ip()
 
 ## 输入
 
-### 获取链接中的参数
+### 获取路由中的参数
 
 ```go
 // /users/{id}
-id := ctx.Request().Input("id")
+id := ctx.Request().Route("id")
+id := ctx.Request().RouteInt("id")
+id := ctx.Request().RouteInt64("id")
 ```
 
-### 获取链接传入的参数
+### 获取路由传入的参数
 
 ```go
 // /users?name=goravel
-name := ctx.Request().Query("name", "goravel")
+name := ctx.Request().Query("name")
+name := ctx.Request().Query("name", "default")
+
+// /users?id=1
+name := ctx.Request().QueryInt("id")
+name := ctx.Request().QueryInt64("id")
+name := ctx.Request().QueryBool("id")
 
 // /users?names=goravel1&names=goravel2
 names := ctx.Request().QueryArray("names")
@@ -80,7 +88,29 @@ names := ctx.Request().QueryMap("names")
 ### 获取 form
 
 ```go
-name := ctx.Request().Form("name", "goravel")
+name := ctx.Request().Form("name")
+name := ctx.Request().Form("name", "default")
+```
+
+### 获取 json
+
+```go
+name := ctx.Request().Json("name")
+name := ctx.Request().Json("name", "goravel")
+```
+
+> 注意：只能获取一维 Json 数据，否则将返回空。
+
+### 检索一个输入值
+
+获取所有的用户输入数据，而不用在意用户使用的是哪种 HTTP 动词，不管是什么 HTTP 动词。检索顺序为：`json`, `form`, `query`, `route`。
+
+```go
+name := ctx.Request().Input("name")
+name := ctx.Request().Json("name", "goravel")
+name := ctx.Request().InputInt("name")
+name := ctx.Request().InputInt64("name")
+name := ctx.Request().InputBool("name")
 ```
 
 ### json/form 绑定 struct
@@ -91,6 +121,11 @@ type User struct {
 }
 
 var user User
+err := ctx.Request().Bind(&user)
+```
+
+```go
+var user map[string]any
 err := ctx.Request().Bind(&user)
 ```
 

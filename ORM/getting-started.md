@@ -77,6 +77,27 @@ For example, the model name is `UserOrder`, the table name is `user_orders`.
 go run . artisan make:model User
 ```
 
+### Specify Table Name
+
+```go
+package models
+
+import (
+  "github.com/goravel/framework/database/orm"
+)
+
+type User struct {
+  orm.Model
+  Name   string
+  Avatar string
+  orm.SoftDeletes
+}
+
+func (r *User) TableName() string {
+  return "goravel_user"
+}
+```
+
 ## facades.Orm available functions
 
 | Name        | Action                                                      |
@@ -99,11 +120,14 @@ go run . artisan make:model User
 | Distinct      | [Filter Repetition](#Filter-Repetition)                 |
 | Driver        | [Get Driver](#Get-Driver)                               |
 | Exec          | [Execute native update SQL](#Execute-Native-Update-SQL) |
-| Find          | [Query one or multiple lines by ID](#Select)            |
-| First         | [Get one line](#Select)                                 |
-| FirstOrCreate | [Query or create](#Select)                              |
+| Find          | [Query one or multiple lines by ID](#Query-one-or-multiple-lines-by-ID)            |
+| First         | [Query one line](#Query-one-line)                       |
+| FirstOr | [Query or return data through callback](#Query-one-line)                     |
+| FirstOrCreate | [Retrieving Or Creating Models](#Retrieving-Or-Creating-Models)                     |
+| FirstOrNew | [Retrieving Or New Models](#Retrieving-Or-Creating-Models)                     |
+| FirstOrFail | [Not Found Error](#Not-Found-Error)                     |
 | ForceDelete   | [Force delete](#Delete)                                 |
-| Get           | [Query multiple lines](#Select)                         |
+| Get           | [Query multiple lines](#Query-multiple-lines)           |
 | Group         | [Group](#Group-By-&-Having)                             |
 | Having        | [Having](#Group-By-&-Having)                            |
 | Join          | [Join](#Join)                                           |
@@ -121,8 +145,9 @@ go run . artisan make:model User
 | Scopes        | [Scopes](#Execute-Native-SQL)                           |
 | Select        | [Specify Fields](#Specify-Fields)                       |
 | Table         | [Specify a table](#Specify-Table-Query)                 |
-| Update        | [Update a single column](#Save-Model)                   |
-| Updates       | [Update multiple columns](#Save-Model)                  |
+| Update        | [Update a single column](#Update-a-single-column)                   |
+| Updates       | [Update multiple columns](#Update-multiple-columns)                  |
+| UpdateOrCreate       | [Update or create](#Update-or-create)                  |
 | Where         | [Where](#Where)                                         |
 | WithTrashed   | [Query soft delete data](#Query-Soft-Delete-Data)       |
 
@@ -181,7 +206,7 @@ facades.Orm.WithContext(ctx).Query()
 
 ### Select
 
-Query one line
+#### Query one line
 
 ```go
 var user models.User
@@ -189,7 +214,17 @@ facades.Orm.Query().First(&user)
 // SELECT * FROM users WHERE id = 10;
 ```
 
-Query one or multiple lines by ID
+Sometimes you may wish to perform some other action if no results are found. The findOr and firstOr methods will return a single model instance or, if no results are found, execute the given closure. You can set values to model in closure:
+
+```go
+facades.Orm.Query().Where("name", "first_user").FirstOr(&user, func() error {
+  user.Name = "goravel"
+
+  return nil
+})
+```
+
+#### Query one or multiple lines by ID
 
 ```go
 var user models.User
@@ -201,7 +236,7 @@ facades.Orm.Query().Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-When the primary key of the user table is `string` type, you need to specify the primary key when calling `Find` method
+#### When the primary key of the user table is `string` type, you need to specify the primary key when calling `Find` method
 
 ```go
 var user models.User
@@ -209,7 +244,7 @@ facades.Orm.Query().Find(&user, "uuid=?" ,"a")
 // SELECT * FROM users WHERE uuid = "a";
 ```
 
-Query multiple lines
+#### Query multiple lines
 
 ```go
 var users []models.User
@@ -217,17 +252,38 @@ facades.Orm.Query().Where("id in ?", []int{1,2,3}).Get(&users)
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-Query or create
+#### Retrieving Or Creating Models
+
+The `FirstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the attributes resulting from merging the first argument with the optional second argument:
+
+The `FirstOrNew` method, like `FirstOrCreate`, will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `FirstOrNew` has not yet been persisted to the database. You will need to manually call the `Save` method to persist it:
 
 ```go
 var user models.User
-facades.Orm.Query().Where("sex = ?", 1).FirstOrCreate(&user, models.User{Name: "tom"})
+facades.Orm.Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"})
 // SELECT * FROM users where name="tom" and sex=1;
 // INSERT INTO users (name) VALUES ("tom");
 
-facades.Orm.Query().Where("sex = ?", 1).FirstOrCreate(&user, models.User{Name: "tom"}, , models.User{Avatar: "avatar"})
+facades.Orm.Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
 // SELECT * FROM users where name="tom" and sex=1;
 // INSERT INTO users (name,avatar) VALUES ("tom", "avatar");
+
+var user models.User
+facades.Orm.Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"})
+// SELECT * FROM users where name="tom" and sex=1;
+
+facades.Orm.Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
+// SELECT * FROM users where name="tom" and sex=1;
+```
+
+#### Not Found Error
+
+When not fount model, `First` doesn't return error, if you want return an error, you can use `FirstOrFail`:
+
+```go
+var user models.User
+err := facades.Orm.Query().FirstOrFail(&user)
+// err == orm.ErrRecordNotFound
 ```
 
 ### Where
@@ -367,7 +423,7 @@ result := facades.Orm.Query().Create(&users)
 
 ### Save Model
 
-Update a existing model
+#### Update a existing model
 
 ```go
 var user models.User
@@ -379,22 +435,32 @@ facades.Orm.Query().Save(&user)
 // UPDATE users SET name='tom', age=100, updated_at = '2022-09-28 16:28:22' WHERE id=1;
 ```
 
-Update a single column
+#### Update a single column
 
 ```go
-facades.Orm.Query().Model(&models.User{}).Where("name = ?", "tom").Update("name", "hello")
+facades.Orm.Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
 // UPDATE users SET name='tom', updated_at='2022-09-28 16:29:39' WHERE name="tom";
 ```
 
-Update multiple columns
+#### Update multiple columns
 
 ```go
-facades.Orm.Query().Model(&user).Where("name = ?", "tom").Updates(User{Name: "hello", Age: 18})
+facades.Orm.Query().Model(&user).Where("name", "tom").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
 ```
 
-> When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update.
+> When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
 
+#### Update or create
+
+Query by `name`, if not exist, create by `name`, `avatar`, if exists, update `avatar` based on `name`:
+
+```go
+facades.Orm.Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avatar"})
+// SELECT * FROM `users` WHERE `users`.`name` = 'name' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
+// INSERT INTO `users` (`created_at`,`updated_at`,`deleted_at`,`name`,`avatar`) VALUES ('2023-03-11 10:11:08.869','2023-03-11 10:11:08.869',NULL,'name','avatar')
+// UPDATE `users` SET `avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE `name` = 'name' AND `users`.`deleted_at` IS NULL AND `id` = 1
+```
 ### Delete
 
 Delete by model

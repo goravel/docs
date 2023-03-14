@@ -261,21 +261,27 @@ err := facades.Storage.DeleteDirectory(directory)
 
 ```go
 type Driver interface {
-  WithContext(ctx context.Context) Driver
+  AllDirectories(path string) ([]string, error)
+  AllFiles(path string) ([]string, error)
+  Copy(oldFile, newFile string) error
+  Delete(file ...string) error
+  DeleteDirectory(directory string) error
+  Directories(path string) ([]string, error)
+  Exists(file string) bool
+  Files(path string) ([]string, error)
+  Get(file string) (string, error)
+  MakeDirectory(directory string) error
+  Missing(file string) bool
+  Move(oldFile, newFile string) error
+  Path(file string) string
   Put(file, content string) error
   PutFile(path string, source File) (string, error)
   PutFileAs(path string, source File, name string) (string, error)
-  Get(file string) (string, error)
   Size(file string) (int64, error)
-  Path(file string) string
-  Exists(file string) bool
-  Missing(file string) bool
-  Url(file string) string
   TemporaryUrl(file string, time time.Time) (string, error)
-  Copy(oldFile, newFile string) error
-  Move(oldFile, newFile string) error
-  Delete(file ...string) error
-  MakeDirectory(directory string) error
-  DeleteDirectory(directory string) error
+  WithContext(ctx context.Context) Driver
+  Url(file string) string
 }
 ```
+
+> 注意：由于注册驱动时配置信息尚未加载完毕，所以在自定义驱动中，请使用 `facades.Config.Env` 获取配置信息。

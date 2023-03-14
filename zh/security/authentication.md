@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## 介绍
+## 简介
 
 用户认证是 Web 应用中不可或缺的功能，Goravel 的 `facades.Auth` 模块提供 JWT 功能的支持。
 
@@ -38,10 +38,19 @@ token, err := facades.Auth.LoginUsingID(ctx, 1)
 ## 解析 Token
 
 ```go
-err := facades.Auth.Parse(ctx, token)
+payload, err := facades.Auth.Parse(ctx, token)
 ```
 
-可以通过 err 来判断 Token 是否过期：
+可以通过 `payload` 获取：
+
+1. `Guard`: 当前 Guard；
+2. `Key`: 用户标识；
+3. `ExpireAt`: 过期时间；
+4. `IssuedAt`: 发行时间；
+
+> 当 `err` 为非 `ErrorTokenExpired` 的错误时，payload == nil
+
+可以通过 `err` 来判断 `Token` 是否过期：
 
 ```go
 "errors"

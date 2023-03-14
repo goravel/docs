@@ -260,21 +260,27 @@ You need to implement the `github.com/goravel/framework/contracts/filesystem/Dri
 
 ```go
 type Driver interface {
-  WithContext(ctx context.Context) Driver
+  AllDirectories(path string) ([]string, error)
+  AllFiles(path string) ([]string, error)
+  Copy(oldFile, newFile string) error
+  Delete(file ...string) error
+  DeleteDirectory(directory string) error
+  Directories(path string) ([]string, error)
+  Exists(file string) bool
+  Files(path string) ([]string, error)
+  Get(file string) (string, error)
+  MakeDirectory(directory string) error
+  Missing(file string) bool
+  Move(oldFile, newFile string) error
+  Path(file string) string
   Put(file, content string) error
   PutFile(path string, source File) (string, error)
   PutFileAs(path string, source File, name string) (string, error)
-  Get(file string) (string, error)
   Size(file string) (int64, error)
-  Path(file string) string
-  Exists(file string) bool
-  Missing(file string) bool
-  Url(file string) string
   TemporaryUrl(file string, time time.Time) (string, error)
-  Copy(oldFile, newFile string) error
-  Move(oldFile, newFile string) error
-  Delete(file ...string) error
-  MakeDirectory(directory string) error
-  DeleteDirectory(directory string) error
+  WithContext(ctx context.Context) Driver
+  Url(file string) string
 }
 ```
+
+> Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config.Env` to obtain the configuration in the custom driver.

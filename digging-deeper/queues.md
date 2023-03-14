@@ -192,6 +192,14 @@ err := facades.Queue.Chain([]queue.Jobs{
 }).Dispatch()
 ```
 
+### Delayed Dispatching
+
+If you would like to specify that a job should not be immediately available for processing by a queue worker, you may use the `Delay` method when dispatching the job. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:
+
+```go
+err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*time.Second)).Dispatch()
+```
+
 ### Customizing The Queue & Connection
 
 #### Dispatching To A Particular Queue
