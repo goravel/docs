@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## 介绍
+## 简介
 
 `facades` 为应用的核心功能提供一个「静态」接口，能够提供更加灵活、更加优雅、易于测试的语法。
 
@@ -39,13 +39,15 @@ func (database *ServiceProvider) Boot() {
 | Facade   | 文档                                               |
 | -------- | -------------------------------------------------- |
 | Artisan  | [命令行工具](../digging-deeper/artisan-console.md) |
-| Auth     | [用户认证](../digging-deeper/authentication.md)    |
-| Gate     | [用户授权](../digging-deeper/authorization.md)     |
+| Auth     | [用户认证](../security/authentication.md)    |
+| Gate     | [用户授权](../security/authorization.md)     |
 | Cache    | [缓存系统](../digging-deeper/cache.md)             |
 | Config   | [配置信息](../getting-started/configuration.md)    |
+| Crypt    | [加密解密](../security/encryption.md)    |
 | Orm      | [ORM](../orm/getting-started.md)                   |
 | Event    | [事件系统](../digging-deeper/event.md)             |
 | Grpc     | [Grpc](../the-basics/grpc.md)                      |
+| Hash     | [哈希](../security/hashing.md) 
 | Log      | [日志](../the-basics/logging.md)                   |
 | Queue    | [队列](../digging-deeper/queues.md)                |
 | Route    | [路由](../the-basics/routing.md)                   |

@@ -109,27 +109,25 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
 	return nil
 }
 
-func (r *StorePostRequest) Rules() map[string]string {
+func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
 	return map[string]string{
-    // The key are consistent with JSON key.
+    // The key are consistent with the incoming key.
     "name": "required|max_len:255",
   }
 }
 
-func (r *StorePostRequest) Messages() map[string]string {
+func (r *StorePostRequest) Messages(ctx http.Context) map[string]string {
 	return map[string]string{}
 }
 
-func (r *StorePostRequest) Attributes() map[string]string {
+func (r *StorePostRequest) Attributes(ctx http.Context) map[string]string {
 	return map[string]string{}
 }
 
-func (r *StorePostRequest) PrepareForValidation(data validation.Data) error {
+func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validation.Data) error {
 	return nil
 }
 ```
-
-> Note: The `key` in `Rules` needs to be consistent with the member variable name of struct.
 
 So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
 
@@ -140,9 +138,11 @@ func (r *PostController) Store(ctx http.Context) {
 }
 ```
 
+> Note that since `form` passed values ​​are of `string` type by default, all fields in request should also be of `string` type, otherwise please use `JSON` to pass values.
+
 ### Authorizing Form Requests
 
-The form request class also contains an `Authorize` method. Within this method, you may determine if the authenticated user actually has the authority to update a given resource. For example, you may determine if a user actually owns a blog comment they are attempting to update. Most likely, you will interact with your [authorization gates and policies](../digging-deeper/authorization.md) within this method:
+The form request class also contains an `Authorize` method. Within this method, you may determine if the authenticated user actually has the authority to update a given resource. For example, you may determine if a user actually owns a blog comment they are attempting to update. Most likely, you will interact with your [authorization gates and policies](../security/authorization.md) within this method:
 
 ```go
 func (r *StorePostRequest) Authorize(ctx http.Context) error {

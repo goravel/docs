@@ -6,7 +6,7 @@
 
 Middleware can filtering HTTP requests that enter the application. For example, `Goravel` provides a CORS middleware, which can implement requests across domains.
 
-## Define Middlewares
+## Define Middleware
 
 You can create your own middleware in the `app/http/middleware` directory, the structure is as follows.
 
@@ -43,18 +43,19 @@ func Cors() http.Middleware {
 
 There are some middleware available in Goravel:
 
-| Middlewares                                       | Action        |
+| Middleware                                       | Action        |
 | ------------------------------------------------- | ------------- |
 | github.com/goravel/framework/http/middleware/Cors | across domain |
+| github.com/goravel/framework/http/middleware/Throttle | Rate Limiting |
 
 ### Create Middleware By Command
 ```
 go run . artisan make:middleware Cors
 ```
 
-## Register Middlewares
+## Register Middleware
 
-### Global Middlewares
+### Global Middleware
 
 If you want to apply middleware for every HTTP request of your application, you only need to register the middleware in the `Middleware` in the `app/http/kernel.go` file.
 
@@ -77,7 +78,7 @@ func (kernel *Kernel) Middleware() []http.Middleware {
 }
 ```
 
-### Assign Middlewares for Routing
+### Assign Middleware for Routing
 
 You can register the middleware for some routing separately:
 

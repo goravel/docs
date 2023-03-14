@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## 介绍
+## 简介
 
 中间件可以过滤进入应用程序的 HTTP 请求。例如 `Goravel` 提供一个 CORS 中间件，可以实现请求跨域。
 
@@ -46,6 +46,7 @@ Goravel 中自带了一些中间件可供使用：
 | 中间件                                            | 作用     |
 | ------------------------------------------------- | -------- |
 | github.com/goravel/framework/http/middleware/Cors | 实现跨域 |
+| github.com/goravel/framework/http/middleware/Throttle | 限流器 |
 
 ### 命令创建中间件
 ```

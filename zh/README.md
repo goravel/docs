@@ -29,17 +29,12 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 - [x] 邮件
 - [x] 表单验证
 - [x] Mock
+- [x] Hash
+- [x] Crypt
 
 ## 路线图
 
-- [ ] Hash
-- [ ] Crypt
-- [ ] Websocket 支持
-- [ ] 广播系统
-- [ ] 延迟队列
-- [ ] 队列支持 DB 驱动
-- [ ] 消息通知
-- [ ] 完善单元测试
+[For Detail](https://github.com/goravel/goravel/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
 
 ## 文档
 
@@ -53,9 +48,11 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 这个项目的存在要归功于所有做出贡献的人。
 
-<a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48" style="border-radius: 50%"></a>
-<a href="https://github.com/merouanekhalili" target="_blank"><img src="https://avatars.githubusercontent.com/u/1122628?v=4" width="48" height="48" style="border-radius: 50%"></a>
-<a href="https://github.com/hongyukeji" target="_blank"><img src="https://avatars.githubusercontent.com/u/23145983?v=4" width="48" height="48" style="border-radius: 50%"></a>
+<a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
+<a href="https://github.com/merouanekhalili" target="_blank"><img src="https://avatars.githubusercontent.com/u/1122628?v=4" width="48" height="48"></a>
+<a href="https://github.com/hongyukeji" target="_blank"><img src="https://avatars.githubusercontent.com/u/23145983?v=4" width="48" height="48"></a>
+<a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
+<a href="https://github.com/sidshrivastav" target="_blank"><img src="https://avatars.githubusercontent.com/u/28773690?v=4" width="48" height="48"></a>
 
 ## 群组
 

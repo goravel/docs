@@ -192,6 +192,14 @@ err := facades.Queue.Chain([]queue.Jobs{
 }).Dispatch()
 ```
 
+### 延迟调度
+
+如果您想指定任务不应立即被队列处理，您可以在调度任务时使用 `Delay` 方法。例如，让我们指定一个任务在分派 10 分钟后处理：
+
+```go
+err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*time.Second)).Dispatch()
+```
+
 ### 自定义队列 & 连接
 
 #### 分派到特定队列

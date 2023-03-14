@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## 介绍
+## 简介
 
 Goravel 路由模块可以使用 `facades.Route` 进行操作。
 
@@ -187,6 +187,103 @@ facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 详见[中间件](./middleware.md)
+
+## 速率限制
+
+### 定义速率限制器
+
+Goravel 包含强大且可自定义的速率限制服务，你可以利用这些服务来限制给定路由或一组路由的流量。首先，你应该定义满足应用程序需求的速率限制器配置。通常，这应该在应用程序的 `app/providers/route_service_provider.go` 文件的 `configureRateLimiting` 方法中完成。
+
+速率限制器使用 `facades.RateLimiter` 的 `For` 方法进行定义。`For` 方法接受一个速率限制器名称和一个闭包，该闭包返回应该应用于分配给速率限制器的路由的限制配置。速率限制器名称可以是你希望的任何字符串：
+
+```go
+import (
+  contractshttp "github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/facades"
+	"github.com/goravel/framework/http/limit"
+)
+
+func (receiver *RouteServiceProvider) configureRateLimiting() {
+	facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+		return limit.PerMinute(1000)
+	})
+}
+```
+
+如果传入的请求超过指定的速率限制，Goravel 将自动返回一个带有 429 HTTP 状态码的响应。如果你想定义自己的响应，应该由速率限制返回，你可以使用 `Response` 方法：
+
+```go
+facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+  return limit.PerMinute(1000).Response(func(ctx contractshttp.Context) {
+    ctx.Response().String(429, "Custom response...")
+    return
+  })
+})
+```
+
+由于速率限制器回调接收传入的 HTTP 请求实例，你可以根据传入的请求或经过身份验证的用户动态构建适当的速率限制：
+
+```go
+facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+  // 假设
+  if is_vip() {
+    return limit.PerMinute(100)
+  }
+
+  return nil
+})
+```
+
+#### 分段速率限制
+
+有时你可能希望按某个任意值对速率限制进行分段。例如，你可能希望每个 IP 地址每分钟允许用户访问给定路由 100 次。为此，你可以在构建速率限制时使用 `By` 方法：
+
+```go
+facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+  if is_vip() {
+    return limit.PerMinute(100).By(ctx.Request().Ip())
+  }
+
+  return nil
+})
+```
+
+为了使用另一个示例来说明此功能，我们可以将每个经过身份验证的用户 ID 的路由访问限制为每分钟 100 次，或者对于访客来说，每个 IP 地址每分钟访问 10 次：
+
+```go
+facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+  if userID != 0 {
+    return limit.PerMinute(100).By(userID)
+  }
+
+  return limit.PerMinute(100).By(ctx.Request().Ip())
+})
+```
+
+#### 多个速率限制
+
+如果需要，你可以返回给定速率限制器配置的速率限制数组。将根据路由在数组中的放置顺序评估每个速率限制：
+
+```go
+facades.RateLimiter.ForWithLimits("login", func(ctx contractshttp.Context) []contractshttp.Limit {
+  return []contractshttp.Limit{
+    limit.PerMinute(500),
+    limit.PerMinute(100).By(ctx.Request().Ip()),
+  }
+})
+```
+
+### 将速率限制器附加到路由
+
+可以使用 `Throttle` middleware 将速率限制器附加到路由或路由组。路由中间件接受你希望分配给路由的速率限制器的名称：
+
+```go
+facades.Route.Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) {
+  ctx.Response().Json(200, http.Json{
+    "Hello": "Goravel",
+  })
+})
+```
 
 ## 跨域资源共享 (CORS)
 

@@ -39,13 +39,15 @@ func (database *ServiceProvider) Boot() {
 | Facade   | Document                                                |
 | -------- | ------------------------------------------------------- |
 | Artisan  | [Command Console](../digging-deeper/artisan-console.md) |
-| Auth     | [Authentication](../digging-deeper/authentication.md)   |
-| Gate     | [Authorization](../digging-deeper/authorization.md)     |
+| Auth     | [Authentication](../security/authentication.md)   |
+| Gate     | [Authorization](../security/authorization.md)     |
 | Cache    | [Cache](../digging-deeper/cache.md)                     |
 | Config   | [Configuration](../getting-started/configuration.md)    |
+| Crypt    | [Encryption](../security/encryption.md)    |
 | Orm      | [ORM](../orm/getting-started.md)                        |
 | Event    | [Event](../digging-deeper/event.md)                     |
 | Grpc     | [Grpc](../the-basics/grpc.md)                           |
+| Hash     | [Hashing](../security/hashing.md)                           |
 | Log      | [Log](../the-basics/logging.md)                         |
 | Queue    | [Queue](../digging-deeper/queues.md)                    |
 | Route    | [Route](../the-basics/routing.md)                       |

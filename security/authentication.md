@@ -45,8 +45,17 @@ token, err := facades.Auth.LoginUsingID(ctx, 1)
 ## Parse Token
 
 ```go
-err := facades.Auth.Parse(ctx, token)
+payload, err := facades.Auth.Parse(ctx, token)
 ```
+
+Through `payload` you can get:
+
+1. `Guard`: Current Guard;
+2. `Key`: User ID;
+3. `ExpireAt`: Expire time;
+4. `IssuedAt`: Issued time;
+
+> When `err` isn't nil other than `ErrorTokenExpired`, payload == nil
 
 You can judge whether the Token is expired by err:
 

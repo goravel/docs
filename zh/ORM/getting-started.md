@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## 介绍
+## 简介
 
 Goravel 提供了一套非常简单易用的数据库交互方式，开发者可以使用 `facades.Orm` 进行操作。目前，Goravel 为以下四种数据库提供了官方支持：
 
@@ -77,6 +77,27 @@ import "github.com/goravel/framework/contracts/database"
 go run . artisan make:model User
 ```
 
+### 指定表名
+
+```go
+package models
+
+import (
+	"github.com/goravel/framework/database/orm"
+)
+
+type User struct {
+	orm.Model
+	Name   string
+	Avatar string
+	orm.SoftDeletes
+}
+
+func (r *User) TableName() string {
+	return "goravel_user"
+}
+```
+
 ## facades.Orm 可用方法
 
 | 方法名       | 作用                              |
@@ -99,11 +120,14 @@ go run . artisan make:model User
 | Distinct      | [过滤重复](#过滤重复)                   |
 | Driver        | [获取当前驱动](#获取当前驱动)           |
 | Exec          | [执行原生更新 SQL](#执行原生更新SQL)    |
-| Find          | [获取一条数据](#查询)                   |
-| First         | [获取一条数据](#查询)                   |
-| FirstOrCreate | [获取或创建一条数据](#查询)             |
+| Find          | [查询一条或多条数据](#根据-ID-查询单条或多条数据)                   |
+| First         | [查询一条数据](#查询一条数据)                   |
+| FirstOr | [查询或通过回调返回一条数据](#查询一条数据)             |
+| FirstOrCreate | [查询或创建模型](#查询或创建模型)             |
+| FirstOrNew | [查询或实例化模型](#查询或创建模型)             |
+| FirstOrFail | [未找到时抛出错误](#未找到时抛出错误)             |
 | ForceDelete   | [强制删除](#删除)                       |
-| Get           | [获取多条数据](#查询)                   |
+| Get           | [查询多条数据](#查询多条数据)                   |
 | Group         | [Group 查询](#Group-By-&-Having)        |
 | Having        | [Having 查询](#Group-By-&-Having)       |
 | Join          | [Join 查询](#Join查询)                  |
@@ -114,15 +138,16 @@ go run . artisan make:model User
 | OrWhere       | [查询条件](#Where条件)                  |
 | Paginate      | [分页](#分页)                  |
 | Pluck         | [查询单列](#查询单列)                    |
-| Raw           | [执行原生查询 SQL](#执行原生查询SQL)    |
+| Raw           | [执行原生查询 SQL](#执行原生查询-SQL)    |
 | Rollback      | [手动回滚事务](#事务)                   |
 | Save          | [保存修改](#更新)                       |
-| Scan          | [将数据解析到 struct](#执行原生查询SQL) |
+| Scan          | [将数据解析到 struct](#执行原生查询-SQL) |
 | Scopes        | [Scopes](#Execute-Native-SQL)           |
 | Select        | [指定查询列](#指定查询列)               |
 | Table         | [指定表](#指定表查询)                   |
 | Update        | [更新单个字段](#更新)                   |
 | Updates       | [更新多个字段](#更新)                   |
+| UpdateOrCreate       | [更新或创建一条数据](#更新或创建一条数据)                   |
 | Where         | [查询条件](#Where条件)                  |
 | WithTrashed   | [查询软删除](#查询软删除)               |
 
@@ -181,7 +206,7 @@ facades.Orm.WithContext(ctx).Query()
 
 ### 查询
 
-查询单条数据
+#### 查询一条数据
 
 ```go
 var user models.User
@@ -189,7 +214,17 @@ facades.Orm.Query().First(&user)
 // SELECT * FROM users WHERE id = 10;
 ```
 
-根据 ID 查询单条或多条数据
+有时你可能希望检索查询的第一个结果或在未找到结果时执行一些其他操作。`firstOr` 方法将返回匹配查询的第一个结果，或者，如果没有找到结果，则执行给定的闭包。你可以在闭包中对模型进行赋值：
+
+```go
+facades.Orm.Query().Where("name", "first_user").FirstOr(&user, func() error {
+  user.Name = "goravel"
+
+  return nil
+})
+```
+
+#### 根据 ID 查询单条或多条数据
 
 ```go
 var user models.User
@@ -200,7 +235,7 @@ facades.Orm.Query().Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-当用户表主键为 `string` 类型，调用 `Find` 方法时需要指定主键
+#### 当用户表主键为 `string` 类型，调用 `Find` 方法时需要指定主键
 
 ```go
 var user models.User
@@ -208,7 +243,7 @@ facades.Orm.Query().Find(&user, "uuid=?" ,"a")
 // SELECT * FROM users WHERE uuid = "a";
 ```
 
-查询多条数据
+#### 查询多条数据
 
 ```go
 var users []models.User
@@ -216,17 +251,38 @@ facades.Orm.Query().Where("id in ?", []int{1,2,3}).Get(&users)
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-查找或创建
+#### 查询或创建模型
+
+`FirstOrCreate` 方法将尝试使用给定的列 / 值对来查找数据库记录。如果在数据库中找不到该模型，则将插入一条记录，其中包含将第二个参数与可选的第三个参数合并后产生的属性：
+
+`FirstOrNew` 方法，类似 `FirstOrCreate`，会尝试在数据库中找到与给定属性匹配的记录。如果没有找到，则会返回一个新的模型实例。请注意，由 `FirstOrNew` 返回的模型尚未持久化到数据库中。需要手动调用 `Save` 方法来保存它：
 
 ```go
 var user models.User
-facades.Orm.Query().Where("sex = ?", 1).FirstOrCreate(&user, models.User{Name: "tom"})
+facades.Orm.Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"})
 // SELECT * FROM users where name="tom" and sex=1;
 // INSERT INTO users (name) VALUES ("tom");
 
-facades.Orm.Query().Where("sex = ?", 1).FirstOrCreate(&user, models.User{Name: "tom"}, , models.User{Avatar: "avatar"})
+facades.Orm.Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
 // SELECT * FROM users where name="tom" and sex=1;
 // INSERT INTO users (name,avatar) VALUES ("tom", "avatar");
+
+var user models.User
+facades.Orm.Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"})
+// SELECT * FROM users where name="tom" and sex=1;
+
+facades.Orm.Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
+// SELECT * FROM users where name="tom" and sex=1;
+```
+
+#### 未找到时抛出错误
+
+当找不到模型时，`First` 方法不会抛出错误，如果想抛出，可以使用 `FirstOrFail`：
+
+```go
+var user models.User
+err := facades.Orm.Query().FirstOrFail(&user)
+// err == orm.ErrRecordNotFound
 ```
 
 ### Where 条件
@@ -366,7 +422,7 @@ result := facades.Orm.Query().Create(&users)
 
 ### 更新
 
-在现有模型基础上进行更新
+#### 在现有模型基础上进行更新
 
 ```go
 var user models.User
@@ -378,21 +434,32 @@ facades.Orm.Query().Save(&user)
 // UPDATE users SET name='tom', age=100, updated_at = '2022-09-28 16:28:22' WHERE id=1;
 ```
 
-更新单一字段
+#### 更新单一字段
 
 ```go
-facades.Orm.Query().Model(&models.User{}).Where("name = ?", "tom").Update("name", "hello")
+facades.Orm.Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
 // UPDATE users SET name='tom', updated_at='2022-09-28 16:29:39' WHERE name="tom";
 ```
 
-更新多个字段
+#### 更新多个字段
 
 ```go
-facades.Orm.Query().Model(&user).Where("name = ?", "tom").Updates(User{Name: "hello", Age: 18})
+facades.Orm.Query().Model(&user).Where("name", "tom").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
 ```
 
-> 当使用 `struct` 进行批量更新（Updates）时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。
+> 当使用 `struct` 进行批量更新（Updates）时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
+
+#### 更新或创建一条数据
+
+根据 `name` 查询，如果不存在，则根据 `name`, `avatar` 创建，如果存在，则根据 `name` 更新 `avatar`：
+
+```go
+facades.Orm.Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avatar"})
+// SELECT * FROM `users` WHERE `users`.`name` = 'name' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
+// INSERT INTO `users` (`created_at`,`updated_at`,`deleted_at`,`name`,`avatar`) VALUES ('2023-03-11 10:11:08.869','2023-03-11 10:11:08.869',NULL,'name','avatar')
+// UPDATE `users` SET `avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE `name` = 'name' AND `users`.`deleted_at` IS NULL AND `id` = 1
+```
 
 ### 删除
 

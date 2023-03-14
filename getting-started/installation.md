@@ -36,7 +36,7 @@ go run . --env=../.env
 
 ### Live reload
 
-Built-in [cosmtrek/air](https://github.com/cosmtrek/air) configuration file which can be used directly:
+Install [cosmtrek/air](https://github.com/cosmtrek/air), Goravel has a built-in configuration file that can be used directly:
 
 ```
 air
@@ -66,7 +66,7 @@ go run. artisan key:generate
 
 ### Generate JWT Token
 
-You need to generate JWT Token if you use [Authentication](../digging-deeper/authentication.md).
+You need to generate JWT Token if you use [Authentication](../security/authentication.md).
 
 ```
 go run . artisan jwt:secret

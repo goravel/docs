@@ -33,11 +33,22 @@ CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 
 ## Docker
 
-Goravel has a default Dockerfile file, you can use it directly.
+Goravel has a default `Dockerfile` and `docker-compose.yml` file, you can use it directly, note that `APP_HOST` should be `0.0.0.0` at this time.
 
 ```
 docker build .
 ```
+
+### Docker Compose
+
+You can also quickly start the service with the following command:
+
+```
+docker-compose build
+docker-compose up
+```
+
+> Note: If you need external access, you need to change APP_HOST to 0.0.0.0
 
 ## Reduce package size
 

@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## 介绍
+## 简介
 
 Goravel 应用的所有请求入口都是 `main.go` 文件，该文件中使用 `bootstrap.Boot()` 引导框架加载。
 

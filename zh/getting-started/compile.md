@@ -33,7 +33,7 @@ CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 
 ## Docker
 
-Goravel 默认自带一个 Dockerfile 文件，可以直接使用。
+Goravel 默认自带 `Dockerfile` 与 `docker-compose.yml` 文件，可以直接使用，注意此时 `APP_HOST` 应为 `0.0.0.0`。
 
 ```
 docker build .
@@ -70,6 +70,17 @@ COPY --from=builder /build/.env /www/.env
 
 ENTRYPOINT ["/www/main"]
 ```
+
+### Docker Compose
+
+您也可以使用以下命令快速启动服务：
+
+```
+docker-compose build
+docker-compose up
+```
+
+> 注意：如需外部访问，需要将 APP_HOST 改为 0.0.0.0
 
 ## 减小打包体积
 

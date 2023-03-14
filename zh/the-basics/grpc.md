@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## 介绍
+## 简介
 
 Grpc 模块可以使用 `facades.Grpc` 进行操作。
 
@@ -160,7 +160,8 @@ func init() {
     // Interceptors can be the group name of UnaryClientInterceptorGroups in app/grpc/kernel.go.
     "clients": map[string]any{
       "user": map[string]any{
-        "host":         config.Env("GRPC_HOST", ""),
+        "host":         config.Env("GRPC_USER_HOST", ""),
+        "port":         config.Env("GRPC_USER_PORT", ""),
         "interceptors": []string{"trace"},
       },
     },

@@ -38,7 +38,7 @@ go run . --env=../.env
 
 ### 热更新
 
-框架内置 [cosmtrek/air](https://github.com/cosmtrek/air) 配置文件，可直接使用：
+安装 [cosmtrek/air](https://github.com/cosmtrek/air)，框架内置配置文件，可直接使用：
 
 ```
 air
@@ -68,7 +68,7 @@ go run . artisan key:generate
 
 ### 生成 JWT Token
 
-如果使用到了 [用户认证](../digging-deeper/authentication.md) 功能，需要初始化 JWT Token。
+如果使用到了 [用户认证](../security/authentication.md) 功能，需要初始化 JWT Token。
 
 ```
 go run . artisan jwt:secret
