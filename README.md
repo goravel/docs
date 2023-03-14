@@ -1,6 +1,6 @@
 <p align="center"><img src="/logo.png" width="300"></p>
 
-English | [中文](../zh/README.md)
+English | [中文](zh/README.md)
 
 ## About Goravel
 
@@ -60,7 +60,7 @@ Welcome more discussion in Telegram.
 
 [https://t.me/goravel](https://t.me/goravel)
 
-<p align="left"><img src="/telegram.jpg" width="200"></p>
+<p align="left"><img src="https://www.goravel.dev/telegram.jpg" width="200"></p>
 
 <!-- [https://discord.gg/cFc5csczzS](https://discord.gg/cFc5csczzS) -->
 

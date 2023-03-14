@@ -64,7 +64,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## 赞赏
 
-<p align="left"><img src="/reward.jpg" width="200"></p>
+<p align="left"><img src="https://www.goravel.dev/reward.jpg" width="200"></p>
 
 ## 开源许可
 
