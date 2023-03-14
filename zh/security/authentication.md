@@ -44,7 +44,7 @@ payload, err := facades.Auth.Parse(ctx, token)
 可以通过 `payload` 获取：
 
 1. `Guard`: 当前 Guard；
-2. `Key`: 用户 ID；
+2. `Key`: 用户标识；
 3. `ExpireAt`: 过期时间；
 4. `IssuedAt`: 发行时间；
 

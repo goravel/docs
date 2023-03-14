@@ -51,7 +51,7 @@ payload, err := facades.Auth.Parse(ctx, token)
 Through `payload` you can get:
 
 1. `Guard`: Current Guard;
-2. `Key`: User ID;
+2. `Key`: User flag;
 3. `ExpireAt`: Expire time;
 4. `IssuedAt`: Issued time;
 
