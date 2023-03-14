@@ -51,9 +51,9 @@ Framework has a general middleware built in, you can also customize it according
 import "github.com/goravel/framework/http/middleware"
 
 func (kernel *Kernel) Middleware() []http.Middleware {
-	return []http.Middleware{
-		middleware.Tls(),
-	}
+  return []http.Middleware{
+    middleware.Tls(),
+  }
 }
 ```
 
@@ -170,14 +170,14 @@ Rate limiters are defined using the `facades.RateLimiter`s `For` method. The `Fo
 ```go
 import (
   contractshttp "github.com/goravel/framework/contracts/http"
-	"github.com/goravel/framework/facades"
-	"github.com/goravel/framework/http/limit"
+  "github.com/goravel/framework/facades"
+  "github.com/goravel/framework/http/limit"
 )
 
 func (receiver *RouteServiceProvider) configureRateLimiting() {
-	facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
-		return limit.PerMinute(1000)
-	})
+  facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+    return limit.PerMinute(1000)
+  })
 }
 ```
 

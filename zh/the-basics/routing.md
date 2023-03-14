@@ -51,9 +51,9 @@ func main() {
 import "github.com/goravel/framework/http/middleware"
 
 func (kernel *Kernel) Middleware() []http.Middleware {
-	return []http.Middleware{
-		middleware.Tls(),
-	}
+  return []http.Middleware{
+    middleware.Tls(),
+  }
 }
 ```
 
@@ -151,18 +151,18 @@ go get -u github.com/gin-contrib/static
 package middleware
 
 import (
-	"github.com/gin-contrib/static"
+  "github.com/gin-contrib/static"
 
-	contractshttp "github.com/goravel/framework/contracts/http"
-	frameworkhttp "github.com/goravel/framework/http"
+  contractshttp "github.com/goravel/framework/contracts/http"
+  frameworkhttp "github.com/goravel/framework/http"
 )
 
 func Static() contractshttp.Middleware {
-	return func(ctx contractshttp.Context) {
-		static.Serve("/", static.LocalFile("./public", false))(ctx.(*frameworkhttp.GinContext).Instance())
+  return func(ctx contractshttp.Context) {
+    static.Serve("/", static.LocalFile("./public", false))(ctx.(*frameworkhttp.GinContext).Instance())
 
-		ctx.Request().Next()
-	}
+    ctx.Request().Next()
+  }
 }
 ```
 
@@ -199,14 +199,14 @@ Goravel 包含强大且可自定义的速率限制服务，你可以利用这些
 ```go
 import (
   contractshttp "github.com/goravel/framework/contracts/http"
-	"github.com/goravel/framework/facades"
-	"github.com/goravel/framework/http/limit"
+  "github.com/goravel/framework/facades"
+  "github.com/goravel/framework/http/limit"
 )
 
 func (receiver *RouteServiceProvider) configureRateLimiting() {
-	facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
-		return limit.PerMinute(1000)
-	})
+  facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+    return limit.PerMinute(1000)
+  })
 }
 ```
 

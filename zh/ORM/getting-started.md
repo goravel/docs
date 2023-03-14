@@ -83,18 +83,18 @@ go run . artisan make:model User
 package models
 
 import (
-	"github.com/goravel/framework/database/orm"
+  "github.com/goravel/framework/database/orm"
 )
 
 type User struct {
-	orm.Model
-	Name   string
-	Avatar string
-	orm.SoftDeletes
+  orm.Model
+  Name   string
+  Avatar string
+  orm.SoftDeletes
 }
 
 func (r *User) TableName() string {
-	return "goravel_user"
+  return "goravel_user"
 }
 ```
 

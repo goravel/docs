@@ -97,35 +97,35 @@ go run . artisan make:request StorePostRequest
 package requests
 
 import (
-	"github.com/goravel/framework/contracts/http"
-	"github.com/goravel/framework/contracts/validation"
+  "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/contracts/validation"
 )
 
 type StorePostRequest struct {
-	Name string `form:"name" json:"name"`
+  Name string `form:"name" json:"name"`
 }
 
 func (r *StorePostRequest) Authorize(ctx http.Context) error {
-	return nil
+  return nil
 }
 
 func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
-	return map[string]string{
+  return map[string]string{
     // 键与传入的键保持一致
     "name": "required|max_len:255",
   }
 }
 
 func (r *StorePostRequest) Messages(ctx http.Context) map[string]string {
-	return map[string]string{}
+  return map[string]string{}
 }
 
 func (r *StorePostRequest) Attributes(ctx http.Context) map[string]string {
-	return map[string]string{}
+  return map[string]string{}
 }
 
 func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validation.Data) error {
-	return nil
+  return nil
 }
 ```
 

@@ -261,25 +261,25 @@ You need to implement the `github.com/goravel/framework/contracts/filesystem/Dri
 ```go
 type Driver interface {
   AllDirectories(path string) ([]string, error)
-	AllFiles(path string) ([]string, error)
-	Copy(oldFile, newFile string) error
-	Delete(file ...string) error
-	DeleteDirectory(directory string) error
-	Directories(path string) ([]string, error)
-	Exists(file string) bool
-	Files(path string) ([]string, error)
-	Get(file string) (string, error)
-	MakeDirectory(directory string) error
-	Missing(file string) bool
-	Move(oldFile, newFile string) error
-	Path(file string) string
-	Put(file, content string) error
-	PutFile(path string, source File) (string, error)
-	PutFileAs(path string, source File, name string) (string, error)
-	Size(file string) (int64, error)
-	TemporaryUrl(file string, time time.Time) (string, error)
-	WithContext(ctx context.Context) Driver
-	Url(file string) string
+  AllFiles(path string) ([]string, error)
+  Copy(oldFile, newFile string) error
+  Delete(file ...string) error
+  DeleteDirectory(directory string) error
+  Directories(path string) ([]string, error)
+  Exists(file string) bool
+  Files(path string) ([]string, error)
+  Get(file string) (string, error)
+  MakeDirectory(directory string) error
+  Missing(file string) bool
+  Move(oldFile, newFile string) error
+  Path(file string) string
+  Put(file, content string) error
+  PutFile(path string, source File) (string, error)
+  PutFileAs(path string, source File, name string) (string, error)
+  Size(file string) (int64, error)
+  TemporaryUrl(file string, time time.Time) (string, error)
+  WithContext(ctx context.Context) Driver
+  Url(file string) string
 }
 ```
 
