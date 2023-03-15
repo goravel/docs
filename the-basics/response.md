@@ -96,3 +96,5 @@ origin := ctx.Response().Origin()
 | Header       | Get response header |
 | Size         | Get response size     |
 | Status       | Get response status   |
+
+<CommentService/>

@@ -472,3 +472,5 @@ When using `ctx.Request().Validate(rules)` for validation, the incoming `int` ty
 Option 1: Add [`validation.PrepareForValidation`](#Format-Data-Before-Validation), format the data before validating the data;
 
 Option 2: Use `facades.Validation.Make()` for rule validation;
+
+<CommentService/>

@@ -1,6 +1,7 @@
 import { defineUserConfig } from "vuepress";
 import { defaultTheme } from "vuepress";
 import { docsearchPlugin } from "@vuepress/plugin-docsearch";
+import { commentPlugin } from "vuepress-plugin-comment2";
 import taskLists from "markdown-it-task-lists";
 import { getZhSidebar } from "./config/sidebar/zh";
 import { getEnSidebar } from "./config/sidebar/en";
@@ -64,6 +65,21 @@ export default defineUserConfig({
         },
       },
     }),
+    commentPlugin({
+      provider: "Giscus",
+      comment: true,
+      repo: "goravel/docs",
+      repoId: "R_kgDOGe927A",
+      category: "Announcements",
+      categoryId: "DIC_kwDOGe927M4CU5Kh",
+      mapping: "title",
+      strict: false,
+      reactionsEnabled: true,
+      lazyLoading: true,
+      darkTheme: "preferred_color_scheme",
+      lightTheme: "preferred_color_scheme",
+      inputPosition: "top",
+    })
   ],
   locales: {
     "/": {

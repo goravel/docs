@@ -93,3 +93,5 @@ token, err := facades.Auth.Guard("admin").User(ctx, &user)
 ```
 
 > 当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。
+
+<CommentService/>

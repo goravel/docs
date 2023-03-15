@@ -52,3 +52,5 @@ func (database *ServiceProvider) Boot() {
 | Queue    | [队列](../digging-deeper/queues.md)                |
 | Route    | [路由](../the-basics/routing.md)                   |
 | Schedule | [任务调度](../digging-deeper/task-scheduling.md)   |
+
+<CommentService/>

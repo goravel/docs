@@ -13,3 +13,5 @@ The `Service Provider` is the key in the life cycle of Goravel. They enables the
 You can also customize your own provider, it can be stored under `app/providers` and registered in the `providers` array in `config/app.go`.
 
 The framework defaults a blank service provider `app/providers/app_service_provider.go`, you can add some simple boot logic here. In large projects, you can create new service providers to gain finer granular control.
+
+<CommentService/>

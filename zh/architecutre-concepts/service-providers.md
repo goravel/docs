@@ -13,3 +13,5 @@
 你也可以自定义自己的 provider，可以存放在 `app/providers` 下面，并注册到 `config/app.go` 中的 `providers` 数组中。
 
 框架默认有一个空白的服务提供者 `app/providers/app_service_provider.go`，你可以在这里添加一些简单的引导逻辑。在大型项目中，你可以新建服务提供者以获得更细颗粒度的控制。
+
+<CommentService/>

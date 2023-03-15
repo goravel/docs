@@ -87,3 +87,5 @@ import "github.com/goravel/framework/http/middleware"
 
 facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
+
+<CommentService/>

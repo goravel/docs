@@ -27,3 +27,5 @@ secret, err := facades.Crypt.EncryptString("goravel")
 ```go
 str, err := facades.Crypt.DecryptString(secret)
 ```
+
+<CommentService/>
