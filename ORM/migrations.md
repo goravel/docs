@@ -60,3 +60,17 @@ _(to|from|in)_(\w+)$
 ```
 
 When the above conditions are not matched, the framework will generate an empty migration file.
+
+## Rolling Back Migrations
+
+To roll back the latest migration operation, you may use the `rollback` Artisan command. Note, the command only rolls back the last migration file:
+
+```
+go run . artisan migrate:rollback
+```
+
+You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:
+
+```
+go run . artisan migrate:rollback --step=5
+```
