@@ -43,7 +43,7 @@ export default defineUserConfig({
     }),
     docsearchPlugin({
       appId: "4J45WOFT67",
-      apiKey: "7792b58507cf7d450abb1f287f88e3bb",
+      apiKey: "2d8317ae404e2cdd64933b6dc5416b6a",
       indexName: "goravel",
       locales: {
         "/": {
