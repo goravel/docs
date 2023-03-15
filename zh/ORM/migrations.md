@@ -60,3 +60,18 @@ _(to|from|in)_(\w+)$
 ```
 
 未匹配到上述情况时，框架会生成一个空的迁移文件。
+
+## 回滚迁移
+
+如果要回滚最后一次迁移操作，可以使用 Artisan 命令 `rollback`。注意，该命令只会回滚最后一个迁移文件：
+
+```
+go run . artisan migrate:rollback
+```
+
+通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。例如，以下命令将回滚最后五个迁移文件：
+
+```
+go run . artisan migrate:rollback --step=5
+```
+
