@@ -619,3 +619,5 @@ func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
 
 facades.Orm.Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
 ```
+
+<CommentService/>

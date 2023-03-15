@@ -39,3 +39,5 @@ facades.Config.GetInt("app.int", 1)
 // Get the configuration of the bool type
 facades.Config.GetBool("app.debug", true)
 ```
+
+<CommentService/>

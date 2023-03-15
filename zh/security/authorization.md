@@ -186,3 +186,5 @@ func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) acces
 ```
 
 您可以继续根据需要为策略授权的各种操作定义其他方法。例如，您可以定义 `View` 或 `Delete` 方法来授权各种与 `models.Post` 相关的操作，但请记住，您可以自由地为策略方法命名任何您喜欢的名称。
+
+<CommentService/>

@@ -60,3 +60,5 @@ err := facades.Mail.To([]string{"example@example.com"}).
   Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
   Queue(&mail.Queue{Connection: "high", Queue: "mail"})
 ```
+
+<CommentService/>

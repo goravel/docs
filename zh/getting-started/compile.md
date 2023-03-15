@@ -85,3 +85,5 @@ docker-compose up
 ## 减小打包体积
 
 将 `config/app.go::providers` 中未用到的 `ServiceProvider` 注释掉将能有效地减少打包体积。
+
+<CommentService/>

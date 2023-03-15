@@ -39,3 +39,5 @@ if facades.Hash.NeedsRehash(hashed) {
      hashed = facades.Hash.Make('plain-text');
 }
 ```
+
+<CommentService/>

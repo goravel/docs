@@ -471,3 +471,5 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 方案一：添加 [`validation.PrepareForValidation`](#验证前格式化数据)，在验证数据前对数据进行格式化；
 
 方案二：使用 `facades.Validation.Make()` 进行规则校验；
+
+<CommentService/>

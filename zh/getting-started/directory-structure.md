@@ -57,3 +57,5 @@
 ### providers 目录
 
 `providers` 目录包含程序中所有的 [服务提供者](../architecutre-concepts/service-providers.md)。服务提供者通过绑定服务、注册事件或执行任何其他任务来引导应用程序以应对传入的请求。
+
+<CommentService/>

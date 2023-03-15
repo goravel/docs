@@ -166,3 +166,5 @@ facades.Route.GET("/", func(c *gin.Context) {
   facades.Artisan.Call("emails --lang chinese name") // With arguments and options
 })
 ```
+
+<CommentService/>

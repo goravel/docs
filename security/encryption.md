@@ -27,3 +27,5 @@ You may decrypt values using the `DecryptString` method provided by the `facades
 ```go
 str, err := facades.Crypt.DecryptString(secret)
 ```
+
+<CommentService/>
