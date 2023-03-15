@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 的加密机制使用的是 OpenSSL 所提供的 AES-256 加密。强烈建议你使用 Goravel 内建的加密工具，而不是用其它的加密算法。所有 Goravel 加密之后的结果都会使用消息认证码 (MAC) 签名，使其底层值不能在加密后再次修改。
+Goravel 的加密机制使用的是 OpenSSL 所提供的 AES-256 加密。强烈建议你使用 Goravel 内建的加密工具，而不是用其它的加密算法。所有 Goravel 加密之后的结果都会使用消息认证码 (GMAC) 签名，使其底层值不能在加密后再次修改。
 
 ## 配置
 
@@ -14,7 +14,7 @@ Goravel 的加密机制使用的是 OpenSSL 所提供的 AES-256 加密。强烈
 
 ### 加密一个值
 
-你可以使用 `facades.Crypt` 提供的 `EncryptString` 来加密一个值。所有加密的值都使用 OpenSSL 的 `AES-256-CBC` 来进行加密。此外，所有加密过的值都会使用消息认证码 (MAC) 来签名，以检测加密字符串是否被篡改过：
+你可以使用 `facades.Crypt` 提供的 `EncryptString` 来加密一个值。所有加密的值都使用 OpenSSL 的 `AES-256-GCM` 来进行加密。此外，所有加密过的值都会使用消息认证码 (GMAC) 来签名，以检测加密字符串是否被篡改过：
 
 ```go
 secret, err := facades.Crypt.EncryptString("goravel")
