@@ -106,6 +106,10 @@ export default defineUserConfig({
   },
   theme: defaultTheme({
     logo: "logo-mini.png",
+    contributors: false,
+    lastUpdated: false,
+    repo: 'goravel/docs',
+    docsBranch: 'master',
     locales: {
       "/": {
         selectLanguageName: "English",
