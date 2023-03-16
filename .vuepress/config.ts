@@ -68,10 +68,10 @@ export default defineUserConfig({
     commentPlugin({
       provider: "Giscus",
       comment: true,
-      repo: "goravel/docs",
-      repoId: "R_kgDOGe927A",
+      repo: "goravel/goravel",
+      repoId: "R_kgDOGR4SdA",
       category: "Announcements",
-      categoryId: "DIC_kwDOGe927M4CU5Kh",
+      categoryId: "DIC_kwDOGR4SdM4CUEsk",
       mapping: "title",
       strict: false,
       reactionsEnabled: true,
