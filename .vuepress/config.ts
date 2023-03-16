@@ -7,6 +7,7 @@ import { getZhSidebar } from "./config/sidebar/zh";
 import { getEnSidebar } from "./config/sidebar/en";
 import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
 import { getDirname, path } from "@vuepress/utils";
+import { seoPlugin } from "vuepress-plugin-seo2";
 
 const __dirname = getDirname(import.meta.url);
 
@@ -72,14 +73,21 @@ export default defineUserConfig({
       repoId: "R_kgDOGR4SdA",
       category: "Announcements",
       categoryId: "DIC_kwDOGR4SdM4CUEsk",
-      mapping: "title",
+      mapping: "og:title",
       strict: false,
       reactionsEnabled: true,
       lazyLoading: true,
       darkTheme: "preferred_color_scheme",
       lightTheme: "preferred_color_scheme",
       inputPosition: "top",
-    })
+    }),
+    seoPlugin({
+      hostname: "https://goravel.dev",
+      ogp: (ogp, page) => ({
+        ...ogp,
+        "og:title": page.path.replace("/zh", ""),
+      }),
+    }),
   ],
   locales: {
     "/": {
