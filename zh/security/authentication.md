@@ -87,7 +87,7 @@ err := facades.Auth.Logout(ctx)
 ## 多用户授权
 
 ```go
-token, err := facades.Auth.Guard("admin").LoginUsingID(ctx1)
+token, err := facades.Auth.Guard("admin").LoginUsingID(ctx, 1)
 err := facades.Auth.Guard("admin").Parse(ctx, token)
 token, err := facades.Auth.Guard("admin").User(ctx, &user)
 ```
