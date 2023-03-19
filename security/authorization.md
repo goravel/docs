@@ -185,6 +185,12 @@ func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) acces
 }
 ```
 
+Then we can register the policy to `app/providers/auth_service_provider.go`:
+
+```go
+facades.Gate.Define("update-post", policies.NewPostPolicy().Update)
+```
+
 You may continue to define additional methods on the policy as needed for the various actions it authorizes. For example, you might define `View` or `Delete` methods to authorize various `models.Post` related actions, but remember you are free to give your policy methods any name you like.
 
 <CommentService/>
