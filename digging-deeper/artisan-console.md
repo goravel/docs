@@ -16,17 +16,15 @@ Every command also includes a "help" which displays and describes the command's 
 go run . artisan help migrate
 ```
 
-### Tip
+Instead of repeating `go run . artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
 
-Instead of repeating go "run . artisan ..." command, you may want to add an alias to your shell configuration with the termnial command below.
-
-```
+```shell
 echo -e "\r\nalias artisan=\"/go run . artisan\"" >>~/.bashrc
 ```
 
 Then you could simply run your commands like this:
 
-```
+```shell
 artisan make:controller DemoController
 ```
 
