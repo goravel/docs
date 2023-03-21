@@ -16,6 +16,20 @@ Every command also includes a "help" which displays and describes the command's 
 go run . artisan help migrate
 ```
 
+### Tip
+
+Instead of repeating go "run . artisan ..." command, you may want to add an alias to your shell configuration with the termnial command below.
+
+```
+echo -e "\r\nalias artisan=\"/go run . artisan\"" >>~/.bashrc
+```
+
+Then you could simply run your commands like this:
+
+```
+artisan make:controller DemoController
+```
+
 ### Generating Commands
 
 You can use the `make:command` command to create a new command in the `app/console/commands` directory. Don't worry if this directory does not exist in your application, it will be created the first time you run the `make:command` command:
