@@ -19,7 +19,7 @@ go run . artisan help migrate
 Instead of repeating `go run . artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
 
 ```shell
-echo -e "\r\nalias artisan=\"/go run . artisan\"" >>~/.bashrc
+echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 ```
 
 Then you could simply run your commands like this:
