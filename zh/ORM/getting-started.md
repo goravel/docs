@@ -443,9 +443,13 @@ facades.Orm.Query().Model(&models.User{}).Where("name", "tom").Update("name", "h
 
 #### 更新多个字段
 
+该方法将返回受影响的行数：
+
 ```go
-facades.Orm.Query().Model(&user).Where("name", "tom").Updates(User{Name: "hello", Age: 18})
+res, err := facades.Orm.Query().Model(&user).Where("name", "tom").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
+
+num := res.RowsAffected
 ```
 
 > 当使用 `struct` 进行批量更新（Updates）时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
@@ -463,13 +467,15 @@ facades.Orm.Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avat
 
 ### 删除
 
-根据模型删除
+根据模型删除，该方法将返回受影响的行数：
 
 ```go
 var user models.User
-facades.Orm.Query().Find(&user, 1)
-facades.Orm.Query().Delete(&user)
+err := facades.Orm.Query().Find(&user, 1)
+res, err := facades.Orm.Query().Delete(&user)
 // DELETE FROM users where id = 1;
+
+num := res.RowsAffected
 ```
 
 根据 ID 删除
@@ -564,9 +570,13 @@ facades.Orm.Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom")
 
 ### 执行原生更新 SQL
 
+该方法将返回受影响的行数：
+
 ```go
-facades.Orm.Query().Exec("DROP TABLE users")
+res, err := facades.Orm.Query().Exec("DROP TABLE users")
 // DROP TABLE users;
+
+num := res.RowsAffected
 ```
 
 ### 事务

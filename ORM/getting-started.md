@@ -444,9 +444,13 @@ facades.Orm.Query().Model(&models.User{}).Where("name", "tom").Update("name", "h
 
 #### Update multiple columns
 
+The number of rows affected by the statement is returned by the method:
+
 ```go
-facades.Orm.Query().Model(&user).Where("name", "tom").Updates(User{Name: "hello", Age: 18})
+res, err := facades.Orm.Query().Model(&user).Where("name", "tom").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
+
+num := res.RowsAffected
 ```
 
 > When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
@@ -463,13 +467,15 @@ facades.Orm.Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avat
 ```
 ### Delete
 
-Delete by model
+Delete by model, the number of rows affected by the statement is returned by the method:
 
 ```go
 var user models.User
 facades.Orm.Query().Find(&user, 1)
-facades.Orm.Query().Delete(&user)
+res, err := facades.Orm.Query().Delete(&user)
 // DELETE FROM users where id = 1;
+
+num := res.RowsAffected
 ```
 
 Delete by ID
@@ -564,9 +570,13 @@ facades.Orm.Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom")
 
 ### Execute Native Update SQL
 
+The number of rows affected by the statement is returned by the method:
+
 ```go
-facades.Orm.Query().Exec("DROP TABLE users")
+res, err := facades.Orm.Query().Exec("DROP TABLE users")
 // DROP TABLE users;
+
+num := res.RowsAffected
 ```
 
 ### Transaction
