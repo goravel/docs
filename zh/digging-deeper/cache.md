@@ -26,6 +26,14 @@ Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache
 facades.Cache.WithContext(ctx)
 ```
 
+### 访问多个缓存存储
+
+您可以通过 `Store` 方法访问各种缓存存储。传递给 `Store` 方法的键应该对应于 `cache` 配置文件中的 `stores` 配置数组中列出的存储之一：
+
+```go
+value := facades.Cache.Store("redis").Get("foo")
+```
+
 ### 从缓存中获取数据
 
 ```go
@@ -48,6 +56,17 @@ value := facades.Cache.Get("goravel", func() interface{} {
 
 ```go
 bool := facades.Cache.Has("goravel")
+```
+
+### 递增 / 递减值
+
+`Increment` 和 `Decrement` 方法可用于调整缓存中整数项的值。这两种方法都接受一个可选的第二个参数，指示增加或减少项目值的数量：
+
+```go
+facades.Cache.Increment("key")
+facades.Cache.Increment("key", amount)
+facades.Cache.Decrement("key")
+facades.Cache.Decrement("key", amount)
 ```
 
 ### 获取和存储
@@ -114,6 +133,54 @@ bool := facades.Cache.Forget("goravel")
 
 ```go
 bool := facades.Cache.Flush()
+```
+
+## 原子锁
+
+### 管理锁
+
+原子锁允许操作分布式锁而不用担心竞争条件。您可以使用 `Lock` 方法创建和管理锁：
+
+```go
+lock := facades.Cache.Lock("foo", 10*time.Second)
+
+if (lock.Get()) {
+    // 锁定 10 秒...
+
+    lock.Release()
+}
+```
+
+`Get` 方法也接受一个闭包。闭包执行后，Goravel 会自动释放锁：
+
+```go
+facades.Cache.Lock("foo").Get(func () {
+    // 锁定无限期获得并自动释放...
+});
+```
+
+如果在您请求时锁不可用，您可以指示 Goravel 等待指定的秒数。如果在指定的时间限制内无法获取锁，则会返回 `false`：
+
+```go
+lock := facades.Cache.Lock("foo", 10*time.Second)
+// 等待最多 5 秒后获得锁定...
+if (lock.Block(5*time.Second)) {
+    lock.Release()
+}
+```
+
+上面的例子可以通过将闭包传递给 `Block` 方法来简化。当一个闭包被传递给这个方法时，Goravel 将尝试在指定的秒数内获取锁，并在闭包执行后自动释放锁：
+
+```go
+facades.Cache.Lock("foo", 10*time.Second).Block(5*time.Second, func () {
+    // 等待最多 5 秒后获得锁定...
+})
+```
+
+如果你想释放一个锁而不考虑它的当前所有者，你可以使用 `ForceRelease` 方法：
+
+```go
+facades.Cache.Lock("processing").ForceRelease();
 ```
 
 ## 添加自定义缓存驱动
