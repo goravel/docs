@@ -20,10 +20,15 @@ go run . artisan jwt:secret
 
 ## 根据用户生成 Token
 
-可以根据模型来生成 Token，如果模型使用了 `orm.Model` 则无需额外配置，否则，在模型主键字段上需要配置 Tag，例如：`ID uint `gorm:"primaryKey"``。
+可以根据模型来生成 Token，如果模型使用了 `orm.Model` 则无需额外配置，否则，在模型主键字段上需要配置 Tag，例如：
 
 ```go
-var user models.User
+type User struct {
+  ID uint `gorm:"primaryKey"`
+  Name string
+}
+
+var user User
 user.ID = 1
 
 token, err := facades.Auth.Login(ctx, &user)

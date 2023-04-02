@@ -212,6 +212,7 @@ func TestQueue(t *testing.T) {
 
 ## Mock facades.Storage
 
+```go
 import (
   "testing"
 
@@ -220,7 +221,6 @@ import (
   "github.com/goravel/framework/facades"
 )
 
-```go
 func Storage() (string, error) {
   file, _ := filesystem.NewFile("1.txt")
 

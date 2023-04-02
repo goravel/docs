@@ -27,10 +27,8 @@ type User struct {
   ID uint `gorm:"primaryKey"`
   Name string
 }
-```
 
-```go
-var user models.User
+var user User
 user.ID = 1
 
 token, err := facades.Auth.Login(ctx, &user)
