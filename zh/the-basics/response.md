@@ -9,24 +9,23 @@
 ## 字符串
 
 ```go
-import "net/http"
+import "github.com/goravel/framework/contracts/http"
 
-ctx.Response().String(http.OK, "Hello Goravel")
+ctx.Response().String(http.StatusOK, "Hello Goravel")
 ```
 
 ## JSON
 
 ```go
 import (
-  "net/http"
-  contracthttp "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/contracts/http"
 )
 
-ctx.Response().Json(http.OK, contracthttp.Json{
+ctx.Response().Json(http.StatusOK, http.Json{
   "Hello": "Goravel",
 })
 
-ctx.Response().Json(http.OK, struct {
+ctx.Response().Json(http.StatusOK, struct {
   ID       uint `json:"id"`
   Name     string `json:"name"`
 }{
@@ -60,16 +59,16 @@ ctx.Response().Download("./public/logo.png", "1.png")
 ## 附加 Header
 
 ```go
-import "net/http"
+import "github.com/goravel/framework/contracts/http"
 
-ctx.Response().Header("Content", "Goravel").String(http.OK, "Hello Goravel")
+ctx.Response().Header("Content", "Goravel").String(http.StatusOK, "Hello Goravel")
 ```
 
 ## 返回成功
 
 ```go
 ctx.Response().Success().String("Hello Goravel")
-ctx.Response().Success().Json(contracthttp.Json({
+ctx.Response().Success().Json(http.Json({
   "Hello": "Goravel",
 }))
 ```
