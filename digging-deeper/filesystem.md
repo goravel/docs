@@ -84,6 +84,18 @@ In addition to reading and writing files, Goravel can also provide information a
 size := facades.Storage.Size("file.jpg")
 ```
 
+The `LastModified` method returns the UNIX timestamp of the last time the file was modified:
+
+```go
+time, err := facades.Storage.LastModified("file.jpg")
+```
+
+The MIME type of a given file may be obtained via the `MimeType` method:
+
+```go
+mime, err := facades.Storage.MimeType("file.jpg")
+```
+
 ### File Paths
 
 You may use the `Path` method to get the path for a given file. If you are using the `local` driver, this will return the absolute path to the file. If you are using such as the `s3` driver, this method will return the relative path to the file in the bucket:
