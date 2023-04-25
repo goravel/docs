@@ -20,7 +20,7 @@ Goravel 框架所有配置文件都保存在 `config` 目录中。你可以进�
 
 使用如下方法，可获取 `.env` 文件中的配置项：
 
-```
+```go
 // 第一个参数为配置键，第二个参数为默认值
 facades.Config.Env("APP_NAME", "goravel")
 ```
@@ -29,13 +29,21 @@ facades.Config.Env("APP_NAME", "goravel")
 
 你可以轻松的在应用程序的任何位置使用全局 `facades.Config` 函数来访问 `config` 目录中的配置值。配置值的访问可以使用「点」语法。还可以指定默认值，如果配置选项不存在，则返回默认值：
 
-```
+```go
 // 获取字符串类型的配置
 facades.Config.GetString("app.name", "goravel")
 // 获取整形类型的配置
 facades.Config.GetInt("app.int", 1)
 // 获取布尔类型的配置
 facades.Config.GetBool("app.debug", true)
+```
+
+## 设置配置值
+
+```go
+facades.Config.Add("path", "value1")
+facades.Config.Add("path.with.dot.case1", "value1")
+facades.Config.Add("path.with.dot", map[string]any{"case3": "value3"})
 ```
 
 <CommentService/>

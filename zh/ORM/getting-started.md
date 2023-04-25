@@ -120,7 +120,8 @@ func (r *User) TableName() string {
 | Distinct      | [过滤重复](#过滤重复)                   |
 | Driver        | [获取当前驱动](#获取当前驱动)           |
 | Exec          | [执行原生更新 SQL](#执行原生更新SQL)    |
-| Find          | [查询一条或多条数据](#根据-ID-查询单条或多条数据)                   |
+| Find          | [查询一条或多条数据](#根据-ID-查询单条或多条数据) 
+| FindOrFail    | [未找到时抛出错误](#未找到时抛出错误)                  |
 | First         | [查询一条数据](#查询一条数据)                   |
 | FirstOr | [查询或通过回调返回一条数据](#查询一条数据)             |
 | FirstOrCreate | [查询或创建模型](#查询或创建模型)             |
@@ -132,23 +133,27 @@ func (r *User) TableName() string {
 | Having        | [Having 查询](#Group-By-&-Having)       |
 | Join          | [Join 查询](#Join查询)                  |
 | Limit         | [指定查询数量](#指定查询数量)           |
+| LockForUpdate | [悲观锁](#悲观锁)           |
 | Model         | [指定模型](#指定表查询)                 |
 | Offset        | [指定查询开始位置](#指定查询开始位置)   |
 | Order         | [排序](#排序)                           |
-| OrWhere       | [查询条件](#Where条件)                  |
+| OrWhere       | [查询条件](#Where-条件)                  |
 | Paginate      | [分页](#分页)                  |
 | Pluck         | [查询单列](#查询单列)                    |
 | Raw           | [执行原生查询 SQL](#执行原生查询-SQL)    |
 | Rollback      | [手动回滚事务](#事务)                   |
-| Save          | [保存修改](#更新)                       |
+| Save          | [保存修改](#在现有模型基础上进行更新)                       |
+| SaveQuietly   | [静默的保存单个模型](#静默的保存单个模型)                       |
 | Scan          | [将数据解析到 struct](#执行原生查询-SQL) |
 | Scopes        | [Scopes](#Execute-Native-SQL)           |
 | Select        | [指定查询列](#指定查询列)               |
+| SharedLock    | [悲观锁](#悲观锁)           |
 | Table         | [指定表](#指定表查询)                   |
 | Update        | [更新单个字段](#更新)                   |
 | Updates       | [更新多个字段](#更新)                   |
 | UpdateOrCreate       | [更新或创建一条数据](#更新或创建一条数据)                   |
-| Where         | [查询条件](#Where条件)                  |
+| Where         | [查询条件](#Where-条件)                  |
+| WithoutEvents | [静默事件](#静默事件)               |
 | WithTrashed   | [查询软删除](#查询软删除)               |
 
 ## 查询构造器
@@ -233,6 +238,13 @@ facades.Orm.Query().Find(&user, 1)
 
 facades.Orm.Query().Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
+```
+
+#### 未找到时抛出错误
+
+```go
+var user models.User
+err := facades.Orm.Query().FindOrFail(&user, 1)
 ```
 
 #### 当用户表主键为 `string` 类型，调用 `Find` 方法时需要指定主键
@@ -628,6 +640,226 @@ func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
 }
 
 facades.Orm.Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
+```
+
+### 原生表达式
+
+可以使用 `db.Raw` 方法进行字段的更新：
+
+```go
+import "github.com/goravel/framework/database/db"
+
+facades.Orm.Query().Model(&user).Update("age", db.Raw("age - ?", 1))
+```
+
+### 悲观锁 
+
+查询构建器还包括一些函数，可帮助您在执行 `select` 语句时实现「悲观锁」。
+
+您可以调用 `SharedLock` 方法使用「共享锁」执行语句，共享锁可防止选定的行被修改，直到您的事务被提交：
+
+```go
+var users []models.User
+facades.Orm.Query().where("votes", ">", 100).SharedLock().Get(&users)
+```
+
+或者，您可以使用 `LockForUpdate` 方法。该锁可防止所选记录被修改或被另一个共享锁选中：
+
+```go
+var users []models.User
+facades.Orm.Query().where("votes", ">", 100).LockForUpdate().Get(&users)
+```
+
+## Events
+
+Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节点：`Retrieved`、`Creating`、`Created`、`Updating`、`Updated`、`Saving`、`Saved`、`Deleting`、`Deleted`、`ForceDeleting`、`ForceDeleted`。
+
+当从数据库中检索到现有模型时，将调度 `Retrieved` 事件。当一个新模型第一次被保存时，`Creating` 和 `Created` 事件将被触发。 `Updating` / `Updated` 事件将在修改现有模型并调用 `Save` 方法时触发。`Saving` / `Saved` 事件将在创建或更新模型时触发 - 即使模型的属性没有更改。以「-ing」结尾的事件名称在模型的任何更改被持久化之前被调度，而以「-ed」结尾的事件在对模型的更改被持久化之后被调度。
+
+要开始监听模型事件，请在模型上定义一个 `DispatchesEvents` 方法。此方法将模型生命周期的各个点映射到您定义的事件类中。
+
+```go
+import (
+  contractsorm "github.com/goravel/framework/contracts/database/orm"
+	"github.com/goravel/framework/database/orm"
+)
+
+type User struct {
+	orm.Model
+	Name    string
+}
+
+func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.Event) error {
+	return map[contractsorm.EventType]func(contractsorm.Event) error{
+		contractsorm.EventCreating: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventCreated: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventSaving: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventSaved: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventUpdating: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventUpdated: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventDeleting: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventDeleted: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventForceDeleting: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventForceDeleted: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventRetrieved: func(event contractsorm.Event) error {
+			return nil
+		},
+	}
+}
+```
+
+> 注意：仅注册用到的事件即可。通过 Orm 进行批量操作时，不会调度模型事件。
+
+### 观察者
+
+#### 定义观察者
+
+如果在一个模型上监听了多个事件，可以使用观察者来将这些监听器组织到一个单独的类中。观察者类的方法名映射到你希望监听的事件。`make:observer` Artisan 命令可以快速建立新的观察者类：
+
+```shell
+go run . artisan make:observer UserObserver
+```
+
+此命令将在 `app/observers` 文件夹放置新的观察者类。如果这个目录不存在，Artisan 将替您创建：
+
+```go
+package observers
+
+import (
+	"fmt"
+
+	"github.com/goravel/framework/contracts/database/orm"
+)
+
+type UserObserver struct{}
+
+func (u *UserObserver) Retrieved(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Creating(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Created(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Updating(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Updated(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Saving(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Saved(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Deleting(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Deleted(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) ForceDeleting(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) ForceDeleted(event orm.Event) error {
+	return nil
+}
+```
+
+要注册观察者，需要将观察者与要观察的模型绑定。您可以在 `app/providers/event_service_provider.go::Boot` 方法中注册观察者：
+
+```go
+package providers
+
+import (
+	"github.com/goravel/framework/facades"
+
+	"goravel/app/models"
+	"goravel/app/observers"
+)
+
+type EventServiceProvider struct {
+}
+
+func (receiver *EventServiceProvider) Register() {
+	facades.Event.Register(receiver.listen())
+}
+
+func (receiver *EventServiceProvider) Boot() {
+	facades.Orm.Observe(models.User{}, &observers.UserObserver{})
+}
+
+func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
+	return map[event.Event][]event.Listener{}
+}
+```
+
+> 注意：如果同时使用了 `DispatchesEvents` 与 `Observer`，将只应用 `DispatchesEvents`。
+
+#### 观察者传参
+
+所有的事件默认传入 `event` 参数，包含以下方法：
+
+| 方法名   | 作用                                                |
+| -------- | ------------------------------------------------------- |
+| Context  | 获取 `facades.Orm.WithContext()` 传入的 context |
+| GetAttribute  | 获取修改的值，如未修改，获取原始值，如没有原始值，返回 nil |
+| GetOriginal  | 获取原始值，如没有原始值，返回 nil |
+| IsDirty  | 判断字段是否修改 |
+| IsClean  | IsDirty 取反   |
+| Query  | 获取一个新的 Query，可以配合事务使用   |
+| SetAttribute  | 为字段设置一个新值 |
+
+### 静默事件
+
+也许有时候你会需要暂时将所有由模型触发的事件「静默」处理，可以使用 `WithoutEvents` 方法：
+
+```go
+var user models.User
+facades.Orm.Query().WithoutEvents().Find(&user, 1)
+```
+
+#### 静默的保存单个模型
+
+有时候，你也许会想要「保存」一个已有的模型，且不触发任何事件。那么你可用 `SaveQuietly` 方法：
+
+```go
+var user models.User
+err := facades.Orm.Query().FindOrFail(&user, 1)
+user.Name = "Goravel"
+err := facades.Orm.Query().SaveQuietly(&user)
 ```
 
 <CommentService/>

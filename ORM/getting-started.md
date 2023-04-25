@@ -121,6 +121,7 @@ func (r *User) TableName() string {
 | Driver        | [Get Driver](#Get-Driver)                               |
 | Exec          | [Execute native update SQL](#Execute-Native-Update-SQL) |
 | Find          | [Query one or multiple lines by ID](#Query-one-or-multiple-lines-by-ID)            |
+| FindOrFail    | [Not found return error](#Not-found-return-error)            |
 | First         | [Query one line](#Query-one-line)                       |
 | FirstOr | [Query or return data through callback](#Query-one-line)                     |
 | FirstOrCreate | [Retrieving Or Creating Models](#Retrieving-Or-Creating-Models)                     |
@@ -132,6 +133,7 @@ func (r *User) TableName() string {
 | Having        | [Having](#Group-By-&-Having)                            |
 | Join          | [Join](#Join)                                           |
 | Limit         | [Limit](#Limit)                                         |
+| LockForUpdate | [Pessimistic Locking](#Pessimistic-Locking)           |
 | Model         | [Specify a model](#Specify-Table-Query)                 |
 | Offset        | [Offset](#Offset)                                       |
 | Order         | [Order](#Order)                                         |
@@ -140,15 +142,18 @@ func (r *User) TableName() string {
 | Pluck         | [Query single column](#Query-Single-Column)             |
 | Raw           | [Execute native SQL](#Execute-Native-SQL)               |
 | Rollback      | [Rollback transaction](#Transaction)                    |
-| Save          | [Update a existing model](#Save-Model)                  |
+| Save          | [Update a existing model](#Update-a-existing-model)                  |
+| SaveQuietly          | [Saving a single model without events](#Saving-A-Single-Model-Without-Events)                  |
 | Scan          | [Scan struct](#Execute-Native-SQL)                      |
 | Scopes        | [Scopes](#Execute-Native-SQL)                           |
 | Select        | [Specify Fields](#Specify-Fields)                       |
+| SharedLock | [Pessimistic Locking](#Pessimistic-Locking)           |
 | Table         | [Specify a table](#Specify-Table-Query)                 |
 | Update        | [Update a single column](#Update-a-single-column)                   |
 | Updates       | [Update multiple columns](#Update-multiple-columns)                  |
 | UpdateOrCreate       | [Update or create](#Update-or-create)                  |
 | Where         | [Where](#Where)                                         |
+| WithoutEvents | [Muting events](#Muting-Events)               |
 | WithTrashed   | [Query soft delete data](#Query-Soft-Delete-Data)       |
 
 ## Query Builder
@@ -234,6 +239,13 @@ facades.Orm.Query().Find(&user, 1)
 var users []models.User
 facades.Orm.Query().Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
+```
+
+#### Not found return error
+
+```go
+var user models.User
+err := facades.Orm.Query().FindOrFail(&user, 1)
 ```
 
 #### When the primary key of the user table is `string` type, you need to specify the primary key when calling `Find` method
@@ -628,6 +640,226 @@ func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
 }
 
 facades.Orm.Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
+```
+
+### Raw Expressions
+
+You can use the `db.Raw` method to update fields:
+
+```go
+import "github.com/goravel/framework/database/db"
+
+facades.Orm.Query().Model(&user).Update("age", db.Raw("age - ?", 1))
+```
+
+### Pessimistic Locking
+
+The query builder also includes a few functions to help you achieve "pessimistic locking" when executing your `select` statements. 
+
+To execute a statement with a "shared lock", you may call the `SharedLock` method. A shared lock prevents the selected rows from being modified until your transaction is committed:
+
+```go
+var users []models.User
+facades.Orm.Query().where("votes", ">", 100).SharedLock().Get(&users)
+```
+
+Alternatively, you may use the `LockForUpdate` method. A "for update" lock prevents the selected records from being modified or from being selected with another shared lock:
+
+```go
+var users []models.User
+facades.Orm.Query().where("votes", ">", 100).LockForUpdate().Get(&users)
+```
+
+## Events
+
+Orm models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `Retrieved`, `Creating`, `Created`, `Updating`, `Updated`, `Saving`, `Saved`, `Deleting`, `Deleted`, `ForceDeleting`, `ForceDeleted`.
+
+The `Retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `Creating` and `Created` events will dispatch. The `Updating` / `Updated` events will dispatch when an existing model is modified and the `Save` method is called. The `Saving` / `Saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
+
+To start listening to model events, define a `DispatchesEvents` method on your model. This property maps various points of the model's lifecycle to your own event classes.
+
+```go
+import (
+  contractsorm "github.com/goravel/framework/contracts/database/orm"
+	"github.com/goravel/framework/database/orm"
+)
+
+type User struct {
+	orm.Model
+	Name    string
+}
+
+func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.Event) error {
+	return map[contractsorm.EventType]func(contractsorm.Event) error{
+		contractsorm.EventCreating: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventCreated: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventSaving: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventSaved: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventUpdating: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventUpdated: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventDeleting: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventDeleted: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventForceDeleting: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventForceDeleted: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventRetrieved: func(event contractsorm.Event) error {
+			return nil
+		},
+	}
+}
+```
+
+> Note: Just register the events you need. Model events are not dispatched when doing batch operations through Orm.
+
+### Observers
+
+#### Defining Observers
+
+If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
+
+```shell
+go run . artisan make:observer UserObserver
+```
+
+This command will place the new observer in your `app/observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
+
+```go
+package observers
+
+import (
+	"fmt"
+
+	"github.com/goravel/framework/contracts/database/orm"
+)
+
+type UserObserver struct{}
+
+func (u *UserObserver) Retrieved(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Creating(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Created(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Updating(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Updated(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Saving(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Saved(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Deleting(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) Deleted(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) ForceDeleting(event orm.Event) error {
+	return nil
+}
+
+func (u *UserObserver) ForceDeleted(event orm.Event) error {
+	return nil
+}
+```
+
+To register an observer, you need to call the `Observe` method on the model you wish to observe. You may register observers in the `Boot` method of your application's `app/providers/event_service_provider.go::Boot` service provider:
+
+```go
+package providers
+
+import (
+	"github.com/goravel/framework/facades"
+
+	"goravel/app/models"
+	"goravel/app/observers"
+)
+
+type EventServiceProvider struct {
+}
+
+func (receiver *EventServiceProvider) Register() {
+	facades.Event.Register(receiver.listen())
+}
+
+func (receiver *EventServiceProvider) Boot() {
+	facades.Orm.Observe(models.User{}, &observers.UserObserver{})
+}
+
+func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
+	return map[event.Event][]event.Listener{}
+}
+```
+
+> Note: If you set `DispatchesEvents` and `Observer` at the same time, only `DispatchesEvents` will be applied.
+
+#### Parameter in Observer
+
+The `event` parameter will be passed to all observers:
+
+| Method   | Action                                                |
+| -------- | ------------------------------------------------------- |
+| Context  | Get context that passed by `facades.Orm.WithContext()` |
+| GetAttribute  | Get the modified value, if not modified, get the original value, if there is no original value, return nil |
+| GetOriginal  | Get the original value, if there is no original value, return nil |
+| IsDirty  | Determine whether the field is modified |
+| IsClean  | IsDirty reverse   |
+| Query  | Get a new Query, can be used with transaction   |
+| SetAttribute  | Set a new value for field |
+
+### Muting Events
+
+You may occasionally need to temporarily "mute" all events fired by a model. You may achieve this using the `WithoutEvents` method:
+
+```go
+var user models.User
+facades.Orm.Query().WithoutEvents().Find(&user, 1)
+```
+
+#### Saving A Single Model Without Events
+
+Sometimes you may wish to "save" a given model without dispatching any events. You may accomplish this using the `SaveQuietly` method:
+
+```go
+var user models.User
+err := facades.Orm.Query().FindOrFail(&user, 1)
+user.Name = "Goravel"
+err := facades.Orm.Query().SaveQuietly(&user)
 ```
 
 <CommentService/>

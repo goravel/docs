@@ -188,6 +188,16 @@ facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
 
 详见[中间件](./middleware.md)
 
+## Fallback 路由
+
+使用 `Fallback` 方法，您可以定义一个在没有其他路由匹配传入请求时将执行的路由。
+
+```go
+facades.Route.Fallback(func(ctx http.Context) {
+  ctx.Response().String(404, "not found")
+})
+```
+
 ## 速率限制
 
 ### 定义速率限制器
