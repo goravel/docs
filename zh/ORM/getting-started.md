@@ -119,8 +119,8 @@ func (r *User) TableName() string {
 | Delete        | [删除数据](#删除)                       |
 | Distinct      | [过滤重复](#过滤重复)                   |
 | Driver        | [获取当前驱动](#获取当前驱动)           |
-| Exec          | [执行原生更新 SQL](#执行原生更新SQL)    |
-| Find          | [查询一条或多条数据](#根据-ID-查询单条或多条数据) 
+| Exec          | [执行原生更新 SQL](#执行原生更新-sql)    |
+| Find          | [查询一条或多条数据](#根据-id-查询单条或多条数据) 
 | FindOrFail    | [未找到时抛出错误](#未找到时抛出错误)                  |
 | First         | [查询一条数据](#查询一条数据)                   |
 | FirstOr | [查询或通过回调返回一条数据](#查询一条数据)             |
@@ -129,30 +129,30 @@ func (r *User) TableName() string {
 | FirstOrFail | [未找到时抛出错误](#未找到时抛出错误)             |
 | ForceDelete   | [强制删除](#删除)                       |
 | Get           | [查询多条数据](#查询多条数据)                   |
-| Group         | [Group 查询](#Group-By-&-Having)        |
-| Having        | [Having 查询](#Group-By-&-Having)       |
-| Join          | [Join 查询](#Join查询)                  |
+| Group         | [Group 查询](#group-by-having)        |
+| Having        | [Having 查询](#group-by-having)       |
+| Join          | [Join 查询](#join-查询)                  |
 | Limit         | [指定查询数量](#指定查询数量)           |
 | LockForUpdate | [悲观锁](#悲观锁)           |
 | Model         | [指定模型](#指定表查询)                 |
 | Offset        | [指定查询开始位置](#指定查询开始位置)   |
 | Order         | [排序](#排序)                           |
-| OrWhere       | [查询条件](#Where-条件)                  |
+| OrWhere       | [查询条件](#where-条件)                  |
 | Paginate      | [分页](#分页)                  |
 | Pluck         | [查询单列](#查询单列)                    |
-| Raw           | [执行原生查询 SQL](#执行原生查询-SQL)    |
+| Raw           | [执行原生查询 SQL](#执行原生查询-sql)    |
 | Rollback      | [手动回滚事务](#事务)                   |
 | Save          | [保存修改](#在现有模型基础上进行更新)                       |
 | SaveQuietly   | [静默的保存单个模型](#静默的保存单个模型)                       |
-| Scan          | [将数据解析到 struct](#执行原生查询-SQL) |
-| Scopes        | [Scopes](#Execute-Native-SQL)           |
+| Scan          | [将数据解析到 struct](#执行原生查询-sql) |
+| Scopes        | [Scopes](#execute-native-sql)           |
 | Select        | [指定查询列](#指定查询列)               |
 | SharedLock    | [悲观锁](#悲观锁)           |
 | Table         | [指定表](#指定表查询)                   |
 | Update        | [更新单个字段](#更新)                   |
 | Updates       | [更新多个字段](#更新)                   |
 | UpdateOrCreate       | [更新或创建一条数据](#更新或创建一条数据)                   |
-| Where         | [查询条件](#Where-条件)                  |
+| Where         | [查询条件](#where-条件)                  |
 | WithoutEvents | [静默事件](#静默事件)               |
 | WithTrashed   | [查询软删除](#查询软删除)               |
 

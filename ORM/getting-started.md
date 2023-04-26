@@ -102,59 +102,59 @@ func (r *User) TableName() string {
 
 | Name        | Action                                                      |
 | ----------- | ----------------------------------------------------------- |
-| Connection  | [Specify Database Connection](#Specify-Database-Connection) |
-| DB          | [Generic Database Interface sql.DB](#Generic-Database-Interface-sql.DB) |
-| Query       | [Get Database Instance](#Get-Database-Instance)             |
-| Transaction | [Transaction](#Transaction)                                 |
-| WithContext | [Inject Context](#Inject-Context)                           |
+| Connection  | [Specify Database Connection](#specify-database-connection) |
+| DB          | [Generic Database Interface sql.DB](#generic-database-interface-sql-db) |
+| Query       | [Get Database Instance](#get-database-instance)             |
+| Transaction | [Transaction](#transaction)                                 |
+| WithContext | [Inject Context](#inject-context)                           |
 
 ## facades.Orm.Query & facades.Orm.Transaction available functions
 
 | Functions     | Action                                                  |
 | ------------- | ------------------------------------------------------- |
-| Begin         | [Begin transaction](#Transaction)                       |
-| Commit        | [Commit transaction](#Transaction)                      |
-| Count         | [Count](#Count)                                         |
-| Create        | [Create](#Create)                                       |
-| Delete        | [Delete](#Delete)                                       |
-| Distinct      | [Filter Repetition](#Filter-Repetition)                 |
-| Driver        | [Get Driver](#Get-Driver)                               |
-| Exec          | [Execute native update SQL](#Execute-Native-Update-SQL) |
-| Find          | [Query one or multiple lines by ID](#Query-one-or-multiple-lines-by-ID)            |
-| FindOrFail    | [Not found return error](#Not-found-return-error)            |
-| First         | [Query one line](#Query-one-line)                       |
-| FirstOr | [Query or return data through callback](#Query-one-line)                     |
-| FirstOrCreate | [Retrieving Or Creating Models](#Retrieving-Or-Creating-Models)                     |
-| FirstOrNew | [Retrieving Or New Models](#Retrieving-Or-Creating-Models)                     |
-| FirstOrFail | [Not Found Error](#Not-Found-Error)                     |
-| ForceDelete   | [Force delete](#Delete)                                 |
-| Get           | [Query multiple lines](#Query-multiple-lines)           |
-| Group         | [Group](#Group-By-&-Having)                             |
-| Having        | [Having](#Group-By-&-Having)                            |
-| Join          | [Join](#Join)                                           |
-| Limit         | [Limit](#Limit)                                         |
-| LockForUpdate | [Pessimistic Locking](#Pessimistic-Locking)           |
-| Model         | [Specify a model](#Specify-Table-Query)                 |
-| Offset        | [Offset](#Offset)                                       |
-| Order         | [Order](#Order)                                         |
-| OrWhere       | [OrWhere](#Where)                                       |
-| Paginate      | [Paginate](#Paginate)             |
-| Pluck         | [Query single column](#Query-Single-Column)             |
-| Raw           | [Execute native SQL](#Execute-Native-SQL)               |
-| Rollback      | [Rollback transaction](#Transaction)                    |
-| Save          | [Update a existing model](#Update-a-existing-model)                  |
-| SaveQuietly          | [Saving a single model without events](#Saving-A-Single-Model-Without-Events)                  |
-| Scan          | [Scan struct](#Execute-Native-SQL)                      |
-| Scopes        | [Scopes](#Execute-Native-SQL)                           |
-| Select        | [Specify Fields](#Specify-Fields)                       |
-| SharedLock | [Pessimistic Locking](#Pessimistic-Locking)           |
-| Table         | [Specify a table](#Specify-Table-Query)                 |
-| Update        | [Update a single column](#Update-a-single-column)                   |
-| Updates       | [Update multiple columns](#Update-multiple-columns)                  |
-| UpdateOrCreate       | [Update or create](#Update-or-create)                  |
-| Where         | [Where](#Where)                                         |
-| WithoutEvents | [Muting events](#Muting-Events)               |
-| WithTrashed   | [Query soft delete data](#Query-Soft-Delete-Data)       |
+| Begin         | [Begin transaction](#transaction)                       |
+| Commit        | [Commit transaction](#transaction)                      |
+| Count         | [Count](#count)                                         |
+| Create        | [Create](#create)                                       |
+| Delete        | [Delete](#delete)                                       |
+| Distinct      | [Filter Repetition](#filter-repetition)                 |
+| Driver        | [Get Driver](#get-driver)                               |
+| Exec          | [Execute native update SQL](#execute-native-update-sql) |
+| Find          | [Query one or multiple lines by ID](#query-one-or-multiple-lines-by-id)            |
+| FindOrFail    | [Not found return error](#not-found-return-error)            |
+| First         | [Query one line](#query-one-line)                       |
+| FirstOr | [Query or return data through callback](#query-one-line)                     |
+| FirstOrCreate | [Retrieving Or Creating Models](#retrieving-or-creating-models)                     |
+| FirstOrNew | [Retrieving Or New Models](#retrieving-or-creating-models)                     |
+| FirstOrFail | [Not Found Error](#not-found-error)                     |
+| ForceDelete   | [Force delete](#delete)                                 |
+| Get           | [Query multiple lines](#query-multiple-lines)           |
+| Group         | [Group](#group-by--having)                             |
+| Having        | [Having](#group-by-having)                            |
+| Join          | [Join](#join)                                           |
+| Limit         | [Limit](#limit)                                         |
+| LockForUpdate | [Pessimistic Locking](#pessimistic-locking)           |
+| Model         | [Specify a model](#specify-table-query)                 |
+| Offset        | [Offset](#offset)                                       |
+| Order         | [Order](#order)                                         |
+| OrWhere       | [OrWhere](#where)                                       |
+| Paginate      | [Paginate](#paginate)             |
+| Pluck         | [Query single column](#query-single-column)             |
+| Raw           | [Execute native SQL](#execute-native-sql)               |
+| Rollback      | [Rollback transaction](#transaction)                    |
+| Save          | [Update a existing model](#update-a-existing-model)                  |
+| SaveQuietly          | [Saving a single model without events](#saving-a-single-model-without-events)                  |
+| Scan          | [Scan struct](#execute-native-sql)                      |
+| Scopes        | [Scopes](#execute-native-sql)                           |
+| Select        | [Specify Fields](#specify-fields)                       |
+| SharedLock | [Pessimistic Locking](#pessimistic-locking)           |
+| Table         | [Specify a table](#specify-table-query)                 |
+| Update        | [Update a single column](#update-a-single-column)                   |
+| Updates       | [Update multiple columns](#update-multiple-columns)                  |
+| UpdateOrCreate       | [Update or create](#update-or-create)                  |
+| Where         | [Where](#where)                                         |
+| WithoutEvents | [Muting events](#muting-events)               |
+| WithTrashed   | [Query soft delete data](#query-soft-delete-data)       |
 
 ## Query Builder
 

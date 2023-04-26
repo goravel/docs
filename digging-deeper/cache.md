@@ -139,7 +139,6 @@ bool := facades.Cache.Flush()
 ### Managing Locks
 
 Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. You may create and manage locks using the `Lock` method:
-许操作分布式锁而不用担心竞争条件。您可以使用 `Lock` 方法创建和管理锁：
 
 ```go
 lock := facades.Cache.Lock("foo", 10*time.Second)
