@@ -40,4 +40,12 @@ facades.Config.GetInt("app.int", 1)
 facades.Config.GetBool("app.debug", true)
 ```
 
+## Set configuration
+
+```go
+facades.Config.Add("path", "value1")
+facades.Config.Add("path.with.dot.case1", "value1")
+facades.Config.Add("path.with.dot", map[string]any{"case3": "value3"})
+```
+
 <CommentService/>

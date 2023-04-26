@@ -159,6 +159,16 @@ facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
 
 Detail [Middleware](./middleware.md)
 
+## Fallback Routes
+
+Using the `Fallback` method, you may define a route that will be executed when no other route matches the incoming request.
+
+```go
+facades.Route.Fallback(func(ctx http.Context) {
+  ctx.Response().String(404, "not found")
+})
+```
+
 ## Rate Limiting
 
 ### Defining Rate Limiters

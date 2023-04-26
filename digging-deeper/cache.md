@@ -26,6 +26,14 @@ Make all custom configurations in `config/cache.go`. Different cache drivers are
 facades.Cache.WithContext(ctx)
 ```
 
+### Accessing Multiple Cache Stores
+
+You may access various cache stores via the store method. The key passed to the store method should correspond to one of the stores listed in the stores configuration array in your cache configuration file:
+
+```go
+value := facades.Cache.Store("redis").Get("foo")
+```
+
 ### Retrieving Items From The Cache
 
 ```go
@@ -47,6 +55,17 @@ value := facades.Cache.Get("goravel", func() interface{} {
 
 ```go
 bool := facades.Cache.Has("goravel")
+```
+
+### Incrementing / Decrementing Values
+
+The `Increment` and `Decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods accept an optional second argument indicating the amount by which to increment or decrement the item's value:
+
+```go
+facades.Cache.Increment("key")
+facades.Cache.Increment("key", amount)
+facades.Cache.Decrement("key")
+facades.Cache.Decrement("key", amount)
 ```
 
 ### Retrieve & Store
@@ -113,6 +132,54 @@ You can use the `Flush` method to clear all caches:
 
 ```go
 bool := facades.Cache.Flush()
+```
+
+## Atomic Locks
+
+### Managing Locks
+
+Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. You may create and manage locks using the `Lock` method:
+
+```go
+lock := facades.Cache.Lock("foo", 10*time.Second)
+
+if (lock.Get()) {
+    // Lock acquired for 10 seconds...
+
+    lock.Release()
+}
+```
+
+The `Get` method also accepts a closure. After the closure is executed, Goravel will automatically release the lock:
+
+```go
+facades.Cache.Lock("foo").Get(func () {
+    // Lock acquired for 10 seconds and automatically released...
+});
+```
+
+If the lock is not available at the moment you request it, you may instruct Goravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, will return `false`:
+
+```go
+lock := facades.Cache.Lock("foo", 10*time.Second)
+// Lock acquired after waiting a maximum of 5 seconds...
+if (lock.Block(5*time.Second)) {
+    lock.Release()
+}
+```
+
+The example above may be simplified by passing a closure to the `Block` method. When a closure is passed to this method, Goravel will attempt to acquire the lock for the specified number of seconds and will automatically release the lock once the closure has been executed:
+
+```go
+facades.Cache.Lock("foo", 10*time.Second).Block(5*time.Second, func () {
+    // Lock acquired after waiting a maximum of 5 seconds...
+})
+```
+
+If you would like to release a lock without respecting its current owner, you may use the `ForceRelease` method:
+
+```go
+facades.Cache.Lock("processing").ForceRelease();
 ```
 
 ## Adding Custom Cache Drivers
