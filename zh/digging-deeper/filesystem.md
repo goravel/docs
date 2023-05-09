@@ -58,7 +58,7 @@ if (facades.Storage.Disk("s3").Missing("file.jpg")) {
 
 ### 文件地址
 
-你可以使用 `Url` 方法来获取给定文件的 url。如果你使用的是 `local` 驱动程序，这通常会将 `/storage` 添加到给定的路径，并返回文件的相对 URL。如果你使用的是 `s3` 驱动程序，则会返回完全限定的远程 URL：
+你可以使用 `Url` 方法来获取给定文件的 url。如果你使用的是 `local` 驱动程序，这通常会将 `/storage` 添加到给定的路径，并返回文件的相对 URL。如果你使用的是 `s3` 驱动程序，则会返回完整路径的远程 URL：
 
 ```go
 url := facades.Storage.Url("file.jpg")
