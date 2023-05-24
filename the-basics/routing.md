@@ -81,23 +81,24 @@ if err := facades.Route.RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); er
 
 | Methods    | Action                                  |
 | ---------- | --------------------------------------- |
-| Run        | [Start HTTP Server](#Start-HTTP-Server) |
-| RunTLS        | [Start HTTPS Server](#Start-HTTPS-Server) |
-| RunTLSWithCert        | [Start HTTPS Server](#Start-HTTPS-Server) |
-| Group      | [Group Routing](#Group-Routing)         |
-| Prefix     | [Routing Prefix](#Routing-Prefix)       |
-| ServeHTTP  | [Testing Routing](#Testing-Routing)     |
-| Get        | [Basic Routing](#Basic-Routing)         |
-| Post       | [Basic Routing](#Basic-Routing)         |
-| Put        | [Basic Routing](#Basic-Routing)         |
-| Delete     | [Basic Routing](#Basic-Routing)         |
-| Patch      | [Basic Routing](#Basic-Routing)         |
-| Options    | [Basic Routing](#Basic-Routing)         |
-| Any        | [Basic Routing](#Basic-Routing)         |
-| Static     | [File Routing](#File-Routing)           |
-| StaticFile | [File Routing](#File-Routing)           |
-| StaticFS   | [File Routing](#File-Routing)           |
-| Middleware | [Middleware](#Middleware)               |
+| Run        | [Start HTTP Server](#start-http-server) |
+| RunTLS        | [Start HTTPS Server](#start-https-server) |
+| RunTLSWithCert        | [Start HTTPS Server](#start-https-server) |
+| Group      | [Group Routing](#group-routing)         |
+| Prefix     | [Routing Prefix](#routing-prefix)       |
+| ServeHTTP  | [Testing Routing](#testing-routing)     |
+| Get        | [Basic Routing](#basic-routing)         |
+| Post       | [Basic Routing](#basic-routing)         |
+| Put        | [Basic Routing](#basic-routing)         |
+| Delete     | [Basic Routing](#basic-routing)         |
+| Patch      | [Basic Routing](#basic-routing)         |
+| Options    | [Basic Routing](#basic-routing)         |
+| Any        | [Basic Routing](#basic-routing)         |
+| Resource   | [Resource Routing](#resource-routing)         |
+| Static     | [File Routing](#file-routing)           |
+| StaticFile | [File Routing](#file-routing)           |
+| StaticFS   | [File Routing](#file-routing)           |
+| Middleware | [Middleware](#middleware)               |
 
 ## Basic Routing
 
@@ -109,6 +110,30 @@ facades.Route.Delete("/", userController.Show)
 facades.Route.Patch("/", userController.Show)
 facades.Route.Options("/", userController.Show)
 facades.Route.Any("/", userController.Show)
+```
+
+## Resource Routing
+
+```go
+import "github.com/goravel/framework/contracts/http"
+
+resourceController := NewResourceController()
+facades.Route.Resource("/resource", resourceController)
+
+type ResourceController struct{}
+func NewResourceController () *ResourceController {
+  return &ResourceController{}
+}
+// GET /resource
+func (c *ResourceController) Index(ctx http.Context) {}
+// GET /resource/{id}
+func (c *ResourceController) Show(ctx http.Context) {}
+// POST /resource
+func (c *ResourceController) Store(ctx http.Context) {}
+// PUT /resource/{id}
+func (c *ResourceController) Update(ctx http.Context) {}
+// DELETE /resource/{id}
+func (c *ResourceController) Destroy(ctx http.Context) {}
 ```
 
 ## Group Routing

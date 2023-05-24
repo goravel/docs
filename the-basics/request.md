@@ -30,6 +30,12 @@ path := ctx.Request().Path() // /users
 url := ctx.Request().Url() // /users?name=Goravel
 ```
 
+### Retrieving The Request HOST
+
+```go
+url := ctx.Request().Host()
+```
+
 ### Retrieving The Full Request URL
 
 ```go
@@ -57,6 +63,14 @@ method := ctx.Request().Ip()
 
 ## Input
 
+### Retrieving All Input Data
+
+You may retrieve all of the incoming request's input data as `map[string]any` using the `All` method, is a collection of `json`, `form` and `query`(priority from front to back).
+
+```go
+data := ctx.Request().All()
+```
+
 ### Retrieving An Route Value
 
 ```go
@@ -83,6 +97,8 @@ names := ctx.Request().QueryArray("names")
 
 // /users?names[a]=goravel1&names[b]=goravel2
 names := ctx.Request().QueryMap("names")
+
+queries := ctx.Request().Queries()
 ```
 
 ### Retrieving Form

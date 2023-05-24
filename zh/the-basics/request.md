@@ -30,6 +30,12 @@ path := ctx.Request().Path() // /users
 url := ctx.Request().Url() // /users?name=Goravel
 ```
 
+### 获取请求 HOST
+
+```go
+url := ctx.Request().Host()
+```
+
 ### 获取完整 URL
 
 ```go
@@ -57,6 +63,14 @@ method := ctx.Request().Ip()
 
 ## 输入
 
+### 获取所有输入数据
+
+可以使用 `All` 方法以 `map[string]any` 的形式检索所有传入请求的输入数据，是 `json`， `form` 和 `query` 的合集（优先级由前到后）。
+
+```go
+data := ctx.Request().All()
+```
+
 ### 获取路由中的参数
 
 ```go
@@ -83,6 +97,8 @@ names := ctx.Request().QueryArray("names")
 
 // /users?names[a]=goravel1&names[b]=goravel2
 names := ctx.Request().QueryMap("names")
+
+queries := ctx.Request().Queries()
 ```
 
 ### 获取 form
