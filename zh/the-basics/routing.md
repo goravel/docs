@@ -81,9 +81,9 @@ if err := facades.Route.RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); er
 
 | 方法       | 作用                                  |
 | ---------- | ------------------------------------- |
-| Run        | [启动 HTTP 服务器](#启动-HTTP-服务器) |
-| RunTLS        | [启动 HTTPS 服务器](#启动-HTTPS-服务器) |
-| RunTLSWithCert        | [启动 HTTPS 服务器](#启动-HTTPS-服务器) |
+| Run        | [启动 HTTP 服务器](#启动-http-服务器) |
+| RunTLS        | [启动 HTTPS 服务器](#启动-https-服务器) |
+| RunTLSWithCert        | [启动 HTTPS 服务器](#启动-https-服务器) |
 | Group      | [路由分组](#路由分组)                 |
 | Prefix     | [路由前缀](#路由前缀)                 |
 | ServeHTTP  | [测试路由](#测试路由)                 |
@@ -94,6 +94,7 @@ if err := facades.Route.RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); er
 | Patch      | [基本路由](#基本路由)                 |
 | Options    | [基本路由](#基本路由)                 |
 | Any        | [基本路由](#基本路由)                 |
+| Resource   | [资源路由](#资源路由)                 |
 | Static     | [文件路由](#文件路由)                 |
 | StaticFile | [文件路由](#文件路由)                 |
 | StaticFS   | [文件路由](#文件路由)                 |
@@ -113,6 +114,30 @@ facades.Route.Delete("/", userController.Show)
 facades.Route.Patch("/", userController.Show)
 facades.Route.Options("/", userController.Show)
 facades.Route.Any("/", userController.Show)
+```
+
+## 资源路由
+
+```go
+import "github.com/goravel/framework/contracts/http"
+
+resourceController := NewResourceController()
+facades.Route.Resource("/resource", resourceController)
+
+type ResourceController struct{}
+func NewResourceController () *ResourceController {
+  return &ResourceController{}
+}
+// GET /resource
+func (c *ResourceController) Index(ctx http.Context) {}
+// GET /resource/{id}
+func (c *ResourceController) Show(ctx http.Context) {}
+// POST /resource
+func (c *ResourceController) Store(ctx http.Context) {}
+// PUT /resource/{id}
+func (c *ResourceController) Update(ctx http.Context) {}
+// DELETE /resource/{id}
+func (c *ResourceController) Destroy(ctx http.Context) {}
 ```
 
 ## 路由分组

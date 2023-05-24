@@ -78,10 +78,33 @@ url, err := facades.Storage.TemporaryUrl(
 
 ### 文件 Metadata 信息
 
-除了读写文件，Goravel 还可以提供有关文件自身的信息。例如，`Size` 方法可用于获取文件的大小 (以字节为单位)：
+除了读写文件，Goravel 还可以提供有关文件自身的信息：
 
 ```go
 size := facades.Storage.Size("file.jpg")
+```
+
+`LastModified` 方法返回上次修改文件时的时间：
+
+```go
+time, err := facades.Storage.LastModified("file.jpg")
+```
+
+`MimeType` 方法返回文件的 MINE 类型：
+
+```go
+mime, err := facades.Storage.MimeType("file.jpg")
+```
+
+也可以使用 `NewFile` 方法获取：
+
+```go
+import "github.com/goravel/framework/filesystem"
+
+file, err := filesystem.NewFile("./logo.png")
+size, err := file.Size()
+lastModified, err := file.LastModified()
+mime, err := file.MimeType()
 ```
 
 ### 文件路径
@@ -142,7 +165,9 @@ func (r *UserController) Show(ctx http.Context) {
 你还可以调用 `Storage` facade 上的 `PutFile` 方法来执行与上述示例相同的文件存储操作：
 
 ```go
-file, err := NewFile("./logo.png")
+import "github.com/goravel/framework/filesystem"
+
+file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage.PutFile("photos", file)
 ```
 
@@ -158,7 +183,9 @@ path, err := file.StoreAs("avatars", "name")
 你还可以在 `Storage` facade 上使用 `PutFileAs` 方法，该方法将执行与上述示例相同的文件存储操作：
 
 ```go
-file, err := NewFile("./logo.png")
+import "github.com/goravel/framework/filesystem"
+
+file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage.PutFileAs("photos", file, "name")
 ```
 

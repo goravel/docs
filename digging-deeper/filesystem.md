@@ -78,13 +78,13 @@ url, err := facades.Storage.TemporaryUrl(
 
 ### File Metadata
 
-In addition to reading and writing files, Goravel can also provide information about the files themselves. For example, the `Size` method may be used to get the size of a file in bytes:
+In addition to reading and writing files, Goravel can also provide information about the files themselves:
 
 ```go
 size := facades.Storage.Size("file.jpg")
 ```
 
-The `LastModified` method returns the UNIX timestamp of the last time the file was modified:
+The `LastModified` method returns the last modified time of file:
 
 ```go
 time, err := facades.Storage.LastModified("file.jpg")
@@ -94,6 +94,17 @@ The MIME type of a given file may be obtained via the `MimeType` method:
 
 ```go
 mime, err := facades.Storage.MimeType("file.jpg")
+```
+
+Also can use the `NewFile` method:
+
+```go
+import "github.com/goravel/framework/filesystem"
+
+file, err := filesystem.NewFile("./logo.png")
+size, err := file.Size()
+lastModified, err := file.LastModified()
+mime, err := file.MimeType()
 ```
 
 ### File Paths
@@ -154,7 +165,9 @@ There are a few important things to note about this example. Note that we only s
 You may also call the `PutFile` method on the `Storage` facade to perform the same file storage operation as the example above:
 
 ```go
-file, err := NewFile("./logo.png")
+import "github.com/goravel/framework/filesystem"
+
+file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage.PutFile("photos", file)
 ```
 
@@ -170,7 +183,9 @@ path, err := file.StoreAs("avatars", "name")
 You may also use the `PutFileAs` method on the Storage facade, which will perform the same file storage operation as the example above:
 
 ```go
-file, err := NewFile("./logo.png")
+import "github.com/goravel/framework/filesystem"
+
+file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage.PutFileAs("photos", file, "name")
 ```
 
