@@ -39,7 +39,7 @@ Goravel 默认自带 `Dockerfile` 与 `docker-compose.yml` 文件，可以直接
 docker build .
 ```
 
-国内会有下载依赖较慢与时区问题，可以将 Doockerfile 内容替换为下面脚本：
+国内会有下载依赖较慢与时区问题，可以将 Dockerfile 内容替换为下面脚本：
 
 ```
 FROM golang:1.18.3-alpine3.16 AS builder
