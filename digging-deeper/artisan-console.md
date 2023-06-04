@@ -106,7 +106,7 @@ Definition：
 func (receiver *ListCommand) Extend() command.Extend {
   return command.Extend{
     Flags: []command.Flag{
-      {
+      &command.StringFlag{
         Name:    "lang",
         Value:   "default",
         Aliases: []string{"l"},
@@ -142,6 +142,8 @@ go run . artisan emails --lang chinese name
 // Wrong
 go run . artisan emails name --lang chinese name
 ```
+
+Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
 
 ### Category
 

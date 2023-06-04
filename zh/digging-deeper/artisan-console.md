@@ -106,7 +106,7 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 func (receiver *ListCommand) Extend() command.Extend {
   return command.Extend{
     Flags: []command.Flag{
-      {
+      &command.StringFlag{
         Name:    "lang",
         Value:   "default",
         Aliases: []string{"l"},
@@ -142,6 +142,8 @@ go run . artisan emails --lang chinese name
 // 错误
 go run . artisan emails name --lang chinese name
 ```
+
+除了 `command.StringFlag`，我们还可以其他类型的 `Flag` 与 `Option*`：`StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`。
 
 ### 分类
 
