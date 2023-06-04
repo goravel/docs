@@ -94,3 +94,7 @@ If some of your class's dependencies are not resolvable via the container, you m
 ```go
 instance, err := app.MakeWith(key, map[string]any{"id": 1})
 ```
+
+### Other Methods
+
+The framework providers some convenient methods to quickly resolve various `facade`: `MakeArtisan`, `MakeAuth`, `MakeCache`, `MakeConfig`, `MakeCrypt`, `MakeEvent`, `MakeGate`, `MakeGrpc`, `MakeHash`, `MakeLog`, `MakeMail`, `MakeOrm`, `MakeQueue`, `MakeRateLimiter`, `MakeRoute`, `MakeSchedule`, `MakeStorage`, `MakeValidation`.
