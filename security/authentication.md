@@ -75,7 +75,7 @@ var user models.User
 err := facades.Auth.User(ctx, &user)// Must point
 ```
 
-## Refrech Token
+## Refresh Token
 
 You need to generate Token by `Parse` before refreshing user.
 
