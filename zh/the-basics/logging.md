@@ -4,7 +4,7 @@
 
 ## 简介
 
-为了了解应用程序的运行状况，Goravel 提供了强大的日志模块，可以通过 `facades.Log` 将日志消息、系统错误记录到文件或其他通道。
+为了了解应用程序的运行状况，Goravel 提供了强大的日志模块，可以通过 `facades.Log()` 将日志消息、系统错误记录到文件或其他通道。
 
 ## 配置
 
@@ -26,24 +26,24 @@
 ### 注入 Context
 
 ```go
-facades.Log.WithContext(ctx)
+facades.Log().WithContext(ctx)
 ```
 
 ## 写日志消息
 
 ```go
-facades.Log.Debug(message)
-facades.Log.Debugf(message, args)
-facades.Log.Info(message)
-facades.Log.Infof(message, args)
-facades.Log.Warning(message)
-facades.Log.Warningf(message, args)
-facades.Log.Error(message)
-facades.Log.Errorf(message, args)
-facades.Log.Fatal(message)
-facades.Log.Fatalf(message, args)
-facades.Log.Panic(message)
-facades.Log.Panicf(message, args)
+facades.Log().Debug(message)
+facades.Log().Debugf(message, args)
+facades.Log().Info(message)
+facades.Log().Infof(message, args)
+facades.Log().Warning(message)
+facades.Log().Warningf(message, args)
+facades.Log().Error(message)
+facades.Log().Errorf(message, args)
+facades.Log().Fatal(message)
+facades.Log().Fatalf(message, args)
+facades.Log().Panic(message)
+facades.Log().Panicf(message, args)
 ```
 
 ## 创建自定义通道

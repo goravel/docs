@@ -86,7 +86,7 @@ You can register the middleware for some routing separately:
 ```go
 import "github.com/goravel/framework/http/middleware"
 
-facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
+facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 <CommentService/>

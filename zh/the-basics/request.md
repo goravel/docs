@@ -13,7 +13,7 @@ Goravel 的 `contracts/http/Request` 方法可以与应用程序处理的当前 
 ```go
 import "github.com/goravel/framework/contracts/http"
 
-facades.Route.Get("/", func(ctx http.Context) {
+facades.Route().Get("/", func(ctx http.Context) {
 
 })
 ```

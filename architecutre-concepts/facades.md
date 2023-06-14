@@ -11,7 +11,7 @@ All `facades` of Goravel are defined under `github.com/goravel/framework/facades
 ```
 import "github.com/goravel/framework/facades"
 
-facades.Route.Run(facades.Config.GetString("app.host"))
+facades.Route().Run(facades.Config().GetString("app.host"))
 ```
 
 ## How Facades Work
@@ -48,11 +48,11 @@ func (database *ServiceProvider) Boot() {
 | Gate       | [Authorization](../security/authorization.md)     |
 | Grpc       | [Grpc](../the-basics/grpc.md)                           |
 | Hash       | [Hashing](../security/hashing.md)                           |
+| Log        | [Log](../the-basics/logging.md)                         |
 | Mail       | [Mail](../digging-deeper/mail.md)           |
 | Orm        | [ORM](../orm/getting-started.md)                        |
-| Hash       | [Hash](../security/hashing.md)           |
-| Log        | [Log](../the-basics/logging.md)                         |
 | Queue      | [Queue](../digging-deeper/queues.md)                    |
+| RateLimiter      | [RateLimiter](../the-basics/routing.md)                       |
 | Route      | [Route](../the-basics/routing.md)                       |
 | Schedule   | [Schedule](../digging-deeper/task-scheduling.md)        |
 | Storage    | [Storage](../digging-deeper/task-scheduling.md)        |

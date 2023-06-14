@@ -48,7 +48,7 @@ import (
 
 func Web() {
   userController := controllers.NewUserController()
-  facades.Route.Get("/{id}", userController.Show)
+  facades.Route().Get("/{id}", userController.Show)
 }
 ```
 

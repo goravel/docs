@@ -28,8 +28,8 @@ type Kernel struct {
 
 func (kernel Kernel) Schedule() []*support.Event {
   return []*support.Event{
-    facades.Schedule.Call(func() {
-      facades.Orm.Query().Where("1 = 1").Delete(&models.User{})
+    facades.Schedule().Call(func() {
+      facades.Orm().Query().Where("1 = 1").Delete(&models.User{})
     }).Daily(),
   }
 }
@@ -53,7 +53,7 @@ type Kernel struct {
 
 func (kernel *Kernel) Schedule() []*support.Event {
   return []*support.Event{
-    facades.Schedule.Command("send:emails name").Daily(),
+    facades.Schedule().Command("send:emails name").Daily(),
   }
 }
 ```
@@ -92,15 +92,15 @@ By default, scheduled tasks will be run even if the previous instance of the tas
 | `.DelayIfStillRunning()` | Delay if still running |
 
 ```go
-facades.Schedule.Command("send:emails name").EveryMinute().SkipIfStillRunning()
-facades.Schedule.Command("send:emails name").EveryMinute().DelayIfStillRunning()
+facades.Schedule().Command("send:emails name").EveryMinute().SkipIfStillRunning()
+facades.Schedule().Command("send:emails name").EveryMinute().DelayIfStillRunning()
 ```
 
 ## Running The Scheduler
 
 Now that we have learned how to define scheduled tasks, let's discuss how to actually run them on our server.
 
-Add `go facades.Schedule.Run()` to the root `main.go` file.
+Add `go facades.Schedule().Run()` to the root `main.go` file.
 
 ```go
 package main
@@ -116,7 +116,7 @@ func main() {
   bootstrap.Boot()
 
   //Start schedule by facades.Schedule
-  go facades.Schedule.Run()
+  go facades.Schedule().Run()
 
   select {}
 }

@@ -4,7 +4,7 @@
 
 ## Introduction
 
-While building your web application, you may have some tasks, such as parsing and storing an uploaded CSV file, that take too long to perform during a web request. Goravel allows you to easily create queued jobs that may be processed in the background. By moving time intensive tasks to a queue, your application can respond to web requests with blazing speed and provide a better user experience to your customers. We use `facades.Queue` to implement those functions.
+While building your web application, you may have some tasks, such as parsing and storing an uploaded CSV file, that take too long to perform during a web request. Goravel allows you to easily create queued jobs that may be processed in the background. By moving time intensive tasks to a queue, your application can respond to web requests with blazing speed and provide a better user experience to your customers. We use `facades.Queue()` to implement those functions.
 
 Goravel's queue configuration options are stored in your application's `config/queue.go` configuration file. Goravel supports two drivers: `redis` and `sync`.
 
@@ -16,12 +16,12 @@ Note that each connection configuration example in the queue configuration file 
 
 ```go
 // This job is sent to the default connection's default queue
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
   {Type: "int", Value: 1}
 }).Dispatch()
 
 // This job is sent to the default connection's "emails" queue
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
   {Type: "int", Value: 1}
 }).OnQueue("emails").Dispatch()
 ```
@@ -87,10 +87,10 @@ func main() {
   // This bootstraps the framework and gets it ready for use.
   bootstrap.Boot()
 
-  // Start queue server by facades.Queue.
+  // Start queue server by facades.Queue().
   go func() {
-    if err := facades.Queue.Worker(nil).Run(); err != nil {
-      facades.Log.Errorf("Queue run error: %v", err)
+    if err := facades.Queue().Worker(nil).Run(); err != nil {
+      facades.Log().Errorf("Queue run error: %v", err)
     }
   }()
 
@@ -98,24 +98,24 @@ func main() {
 }
 ```
 
-Different parameters can be passed in the `facades.Queue.Worker` method, you can monitor multiple queues by starting multiple `facades.Queue.Worker`.
+Different parameters can be passed in the `facades.Queue().Worker` method, you can monitor multiple queues by starting multiple `facades.Queue().Worker`.
 
 ```go
 // No parameters, default listens to the configuration in the `config/queue.go`, and the number of concurrency is 1
 go func() {
-  if err := facades.Queue.Worker(nil).Run(); err != nil {
-    facades.Log.Errorf("Queue run error: %v", err)
+  if err := facades.Queue().Worker(nil).Run(); err != nil {
+    facades.Log().Errorf("Queue run error: %v", err)
   }
 }()
 
 // Moniting processing queue for redis link, and the number of concurrency is 10
 go func() {
-  if err := facades.Queue.Worker(&queue.Args{
+  if err := facades.Queue().Worker(&queue.Args{
     Connection: "redis",
     Queue: "processing",
     Concurrent: 10,
   }).Run(); err != nil {
-    facades.Log.Errorf("Queue run error: %v", err)
+    facades.Log().Errorf("Queue run error: %v", err)
   }
 }()
 ```
@@ -139,7 +139,7 @@ type UserController struct {
 }
 
 func (r *UserController) Show(ctx http.Context) {
-  err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Dispatch()
+  err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).Dispatch()
   if err != nil {
     // do something
   }
@@ -165,7 +165,7 @@ type UserController struct {
 }
 
 func (r *UserController) Show(ctx http.Context) {
-  err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).DispatchSync()
+  err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).DispatchSync()
   if err != nil {
     // do something
   }
@@ -174,10 +174,10 @@ func (r *UserController) Show(ctx http.Context) {
 
 ### Job Chaining
 
-Job chaining allows you to specify a list of queued jobs that should be run in sequence. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you can use the `chain` method provided by the `facades.Queue`:
+Job chaining allows you to specify a list of queued jobs that should be run in sequence. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you can use the `chain` method provided by the `facades.Queue()`:
 
 ```go
-err := facades.Queue.Chain([]queue.Jobs{
+err := facades.Queue().Chain([]queue.Jobs{
   {
     Job: &jobs.Test{},
     Args: []queue.Arg{
@@ -198,7 +198,7 @@ err := facades.Queue.Chain([]queue.Jobs{
 If you would like to specify that a job should not be immediately available for processing by a queue worker, you may use the `Delay` method when dispatching the job. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:
 
 ```go
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*time.Second)).Dispatch()
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*time.Second)).Dispatch()
 ```
 
 ### Customizing The Queue & Connection
@@ -208,7 +208,7 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*t
 By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you assign to various queues.
 
 ```go
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Dispatch()
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Dispatch()
 ```
 
 #### Dispatching To A Particular Connection
@@ -216,13 +216,13 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Disp
 If your application interacts with multiple queue connections, you can use the `onConnection` method to specify the connection to which the task is pushed.
 
 ```go
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dispatch()
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dispatch()
 ```
 
 You may chain the `onConnection` and `onQueue` methods together to specify the connection and the queue for a job:
 
 ```go
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
 ```
 
 ## `queue.Arg.Type` Supported Types

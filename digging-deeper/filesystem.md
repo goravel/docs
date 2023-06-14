@@ -24,19 +24,19 @@ Goravel's filesystem configuration file is located at `config/filesystems.go`. W
 The `Storage` facade may be used to interact with any of your configured disks. For example, you may use the `Put` method on the facade to store an avatar on the default disk. If you call methods on the `Storage` facade without first calling the `Disk` method, the method will automatically be passed to the default disk:
 
 ```go
-facades.Storage.Put("avatars/1.png", "Contents")
+facades.Storage().Put("avatars/1.png", "Contents")
 ```
 
 If your application interacts with multiple disks, you may use the `Disk` method on the `Storage` facade to work with files on a particular disk:
 
 ```go
-facades.Storage.Disk("s3").Put("avatars/1.png", "Contents")
+facades.Storage().Disk("s3").Put("avatars/1.png", "Contents")
 ```
 
 ## Inject Context
 
 ```go
-facades.Storage.WithContext(ctx).Put("avatars/1.png", "Contents")
+facades.Storage().WithContext(ctx).Put("avatars/1.png", "Contents")
 ```
 
 ## Retrieving Files
@@ -44,13 +44,13 @@ facades.Storage.WithContext(ctx).Put("avatars/1.png", "Contents")
 The `Get` method may be used to retrieve the contents of a file. The raw string contents of the file will be returned by the method. Remember, all file paths should be specified relative to the disk's `root` location:
 
 ```go
-contents := facades.Storage.Get("file.jpg")
+contents := facades.Storage().Get("file.jpg")
 ```
 
 The `Exists` method may be used to determine if a file exists on the disk:
 
 ```go
-if (facades.Storage.Disk("s3").Exists("file.jpg")) {
+if (facades.Storage().Disk("s3").Exists("file.jpg")) {
     // ...
 }
 ```
@@ -58,7 +58,7 @@ if (facades.Storage.Disk("s3").Exists("file.jpg")) {
 The `Missing` method may be used to determine if a file is missing from the disk:
 
 ```go
-if (facades.Storage.Disk("s3").Missing("file.jpg")) {
+if (facades.Storage().Disk("s3").Missing("file.jpg")) {
     // ...
 }
 ```
@@ -68,7 +68,7 @@ if (facades.Storage.Disk("s3").Missing("file.jpg")) {
 You may use the `Url` method to get the URL for a given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` driver, the fully qualified remote URL will be returned:
 
 ```go
-url := facades.Storage.Url("file.jpg")
+url := facades.Storage().Url("file.jpg")
 ```
 
 > When using the `local` driver, the return value of `Url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
@@ -78,7 +78,7 @@ url := facades.Storage.Url("file.jpg")
 Using the `TemporaryUrl` method, you may create temporary URLs to files stored using the Non-local driver. This method accepts a path and a `Time` instance specifying when the URL should expire:
 
 ```go
-url, err := facades.Storage.TemporaryUrl(
+url, err := facades.Storage().TemporaryUrl(
     "file.jpg", time.Now().Add(5*time.Minute)
 )
 ```
@@ -88,19 +88,19 @@ url, err := facades.Storage.TemporaryUrl(
 In addition to reading and writing files, Goravel can also provide information about the files themselves:
 
 ```go
-size := facades.Storage.Size("file.jpg")
+size := facades.Storage().Size("file.jpg")
 ```
 
 The `LastModified` method returns the last modified time of file:
 
 ```go
-time, err := facades.Storage.LastModified("file.jpg")
+time, err := facades.Storage().LastModified("file.jpg")
 ```
 
 The MIME type of a given file may be obtained via the `MimeType` method:
 
 ```go
-mime, err := facades.Storage.MimeType("file.jpg")
+mime, err := facades.Storage().MimeType("file.jpg")
 ```
 
 Also can use the `NewFile` method:
@@ -119,7 +119,7 @@ mime, err := file.MimeType()
 You may use the `Path` method to get the path for a given file. If you are using the `local` driver, this will return the absolute path to the file. If you are using such as the `s3` driver, this method will return the relative path to the file in the bucket:
 
 ```go
-path := facades.Storage.Path("file.jpg")
+path := facades.Storage().Path("file.jpg")
 ```
 
 ## Storing Files
@@ -127,7 +127,7 @@ path := facades.Storage.Path("file.jpg")
 The `Put` method may be used to store file contents on a disk. Remember, all file paths should be specified relative to the "root" location configured for the disk:
 
 ```go
-err := facades.Storage.Put("file.jpg", contents)
+err := facades.Storage().Put("file.jpg", contents)
 ```
 
 You can also use `PutFile` and `PutFileAs` to save files directly on disk:
@@ -137,11 +137,11 @@ import "github.com/goravel/framework/filesystem"
 
 // Automatically generate a unique ID for filename...
 file, err := filesystem.NewFile("./logo.png")
-path := facades.Storage.PutFile("photos", file)
+path := facades.Storage().PutFile("photos", file)
 
 // Manually specify a filename...
 file, err := filesystem.NewFile("./logo.png")
-path := facades.Storage.PutFileAs("photos", file, "photo.jpg")
+path := facades.Storage().PutFileAs("photos", file, "photo.jpg")
 ```
 
 There are a few important things to note about the `PutFile` method. Note that we only specified a directory name and not a filename. By default, the `PutFile` method will generate a unique ID to serve as the filename. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `PutFile` method so you can store the path, including the generated filename, in your database.
@@ -151,9 +151,9 @@ There are a few important things to note about the `PutFile` method. Note that w
 The `Copy` method may be used to copy an existing file to a new location on the disk, while the `Move` method may be used to rename or move an existing file to a new location:
 
 ```go
-err := facades.Storage.Copy("old/file.jpg", "new/file.jpg")
+err := facades.Storage().Copy("old/file.jpg", "new/file.jpg")
 
-err := facades.Storage.Move("old/file.jpg", "new/file.jpg")
+err := facades.Storage().Move("old/file.jpg", "new/file.jpg")
 ```
 
 ### File Uploads
@@ -175,7 +175,7 @@ You may also call the `PutFile` method on the `Storage` facade to perform the sa
 import "github.com/goravel/framework/filesystem"
 
 file, err := filesystem.NewFile("./logo.png")
-path := facades.Storage.PutFile("photos", file)
+path := facades.Storage().PutFile("photos", file)
 ```
 
 ### Specifying A File Name
@@ -193,7 +193,7 @@ You may also use the `PutFileAs` method on the Storage facade, which will perfor
 import "github.com/goravel/framework/filesystem"
 
 file, err := filesystem.NewFile("./logo.png")
-path := facades.Storage.PutFileAs("photos", file, "name")
+path := facades.Storage().PutFileAs("photos", file, "name")
 ```
 
 > If the file name specified by `StoreAs` and `PutFileAs` don't have a suffix, the suffix is automatically added based on the MIME of the file; otherwise, the specified file name is used directly.
@@ -234,14 +234,14 @@ extension, err := file.Extension()// Determine the file's extension based on the
 The `Delete` method accepts a single filename or an array of files to delete:
 
 ```go
-err := facades.Storage.Delete("file.jpg")
-err := facades.Storage.Delete("file.jpg", "file2.jpg")
+err := facades.Storage().Delete("file.jpg")
+err := facades.Storage().Delete("file.jpg", "file2.jpg")
 ```
 
 If necessary, you may specify the disk that the file should be deleted from:
 
 ```go
-err := facades.Storage.Disk("s3").Delete("file.jpg")
+err := facades.Storage().Disk("s3").Delete("file.jpg")
 ```
 
 ## Directories
@@ -250,8 +250,8 @@ err := facades.Storage.Disk("s3").Delete("file.jpg")
 The `Files` method returns an slice of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `AllFiles` method:
 
 ```go
-files, err := facades.Storage.Disk("s3").Files("directory")
-files, err := facades.Storage.Disk("s3").AllFiles("directory")
+files, err := facades.Storage().Disk("s3").Files("directory")
+files, err := facades.Storage().Disk("s3").AllFiles("directory")
 ```
 
 ### Get All Directories Within A Directory
@@ -259,8 +259,8 @@ files, err := facades.Storage.Disk("s3").AllFiles("directory")
 The `Directories` method returns an slice of all the directories within a given directory. Additionally, you may use the `AllDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
 
 ```go
-directories, err := facades.Storage.Disk("s3").Directories("directory")
-directories, err := facades.Storage.Disk("s3").AllDirectories("directory")
+directories, err := facades.Storage().Disk("s3").Directories("directory")
+directories, err := facades.Storage().Disk("s3").AllDirectories("directory")
 ```
 
 ### Create A Directory
@@ -268,7 +268,7 @@ directories, err := facades.Storage.Disk("s3").AllDirectories("directory")
 The `MakeDirectory` method will create the given directory, including any needed subdirectories:
 
 ```go
-err := facades.Storage.MakeDirectory(directory)
+err := facades.Storage().MakeDirectory(directory)
 ```
 
 ### Delete A Directory
@@ -276,7 +276,7 @@ err := facades.Storage.MakeDirectory(directory)
 Finally, the `DeleteDirectory` method may be used to remove a directory and all of its files:
 
 ```go 
-err := facades.Storage.DeleteDirectory(directory)
+err := facades.Storage().DeleteDirectory(directory)
 ```
 
 ## Custom Filesystems
@@ -317,6 +317,6 @@ type Driver interface {
 }
 ```
 
-> Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config.Env` to obtain the configuration in the custom driver.
+> Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config().Env` to obtain the configuration in the custom driver.
 
 <CommentService/>

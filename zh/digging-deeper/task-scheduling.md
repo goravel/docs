@@ -28,8 +28,8 @@ type Kernel struct {
 
 func (kernel Kernel) Schedule() []*support.Event {
   return []*support.Event{
-    facades.Schedule.Call(func() {
-      facades.Orm.Query().Where("1 = 1").Delete(&models.User{})
+    facades.Schedule().Call(func() {
+      facades.Orm().Query().Where("1 = 1").Delete(&models.User{})
     }).Daily(),
   }
 }
@@ -53,7 +53,7 @@ type Kernel struct {
 
 func (kernel *Kernel) Schedule() []*support.Event {
   return []*support.Event{
-    facades.Schedule.Command("send:emails name").Daily(),
+    facades.Schedule().Command("send:emails name").Daily(),
   }
 }
 ```
@@ -92,15 +92,15 @@ func (kernel *Kernel) Schedule() []*support.Event {
 | `.DelayIfStillRunning()` | 如果有正在执行的相同任务，则本次等待正在执行的任务结束后再执行 |
 
 ```go
-facades.Schedule.Command("send:emails name").EveryMinute().SkipIfStillRunning()
-facades.Schedule.Command("send:emails name").EveryMinute().DelayIfStillRunning()
+facades.Schedule().Command("send:emails name").EveryMinute().SkipIfStillRunning()
+facades.Schedule().Command("send:emails name").EveryMinute().DelayIfStillRunning()
 ```
 
 ## 运行调度程序
 
 现在，我们已经学会了如何定义计划任务，接下来让我们讨论如何真正在服务器上运行它们。
 
-在根目录 `main.go` 文件中增加 `go facades.Schedule.Run()`。
+在根目录 `main.go` 文件中增加 `go facades.Schedule().Run()`。
 
 ```go
 package main
@@ -116,7 +116,7 @@ func main() {
   bootstrap.Boot()
 
   //Start schedule by facades.Schedule
-  go facades.Schedule.Run()
+  go facades.Schedule().Run()
 
   select {}
 }

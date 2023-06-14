@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Artisan is the command line interface included with Goravel, the module can be operated using `facades.Artisan`. It provide a number of helpful commands that can assist you while you build your application. You can use the command blow to get all commands:
+Artisan is the command line interface included with Goravel, the module can be operated using `facades.Artisan()`. It provide a number of helpful commands that can assist you while you build your application. You can use the command blow to get all commands:
 
 ```go
 go run . artisan list
@@ -173,12 +173,12 @@ func (kernel Kernel) Commands() []console.Command {
 
 ## Programmatically Executing Commands
 
-Sometimes you may wish to execute an Artisan command outside of the CLI, you can use the `Call` method on the `facades.Artisan` to operation this.
+Sometimes you may wish to execute an Artisan command outside of the CLI, you can use the `Call` method on the `facades.Artisan()` to operation this.
 
 ```go
-facades.Route.GET("/", func(c *gin.Context) {
-  facades.Artisan.Call("emails")
-  facades.Artisan.Call("emails --lang chinese name") // With arguments and options
+facades.Route().GET("/", func(c *gin.Context) {
+  facades.Artisan().Call("emails")
+  facades.Artisan().Call("emails --lang chinese name") // With arguments and options
 })
 ```
 

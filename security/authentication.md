@@ -4,7 +4,7 @@
 
 ## Introdution
 
-Authentication is an indispensable feature in Web Applications, the `facades.Auth` module of Goravel provides support for JWT.
+Authentication is an indispensable feature in Web Applications, the `facades.Auth()` module of Goravel provides support for JWT.
 
 ## Configration
 
@@ -31,19 +31,19 @@ type User struct {
 var user User
 user.ID = 1
 
-token, err := facades.Auth.Login(ctx, &user)
+token, err := facades.Auth().Login(ctx, &user)
 ```
 
 ## Generate Token Using ID
 
 ```go
-token, err := facades.Auth.LoginUsingID(ctx, 1)
+token, err := facades.Auth().LoginUsingID(ctx, 1)
 ```
 
 ## Parse Token
 
 ```go
-payload, err := facades.Auth.Parse(ctx, token)
+payload, err := facades.Auth().Parse(ctx, token)
 ```
 
 Through `payload` you can get:
@@ -72,7 +72,7 @@ You need to generate Token by `Parse` before getting user, the process can be ha
 
 ```go
 var user models.User
-err := facades.Auth.User(ctx, &user)// Must point
+err := facades.Auth().User(ctx, &user)// Must point
 ```
 
 ## Refrech Token
@@ -80,21 +80,21 @@ err := facades.Auth.User(ctx, &user)// Must point
 You need to generate Token by `Parse` before refreshing user.
 
 ```go
-token, err := facades.Auth.Refresh(ctx)
+token, err := facades.Auth().Refresh(ctx)
 ```
 
 ## Logout
 
 ```go
-err := facades.Auth.Logout(ctx)
+err := facades.Auth().Logout(ctx)
 ```
 
 ## Multiple Guards
 
 ```go
-token, err := facades.Auth.Guard("admin").LoginUsingID(ctx, 1)
-err := facades.Auth.Guard("admin").Parse(ctx, token)
-token, err := facades.Auth.Guard("admin").User(ctx, &user)
+token, err := facades.Auth().Guard("admin").LoginUsingID(ctx, 1)
+err := facades.Auth().Guard("admin").Parse(ctx, token)
+token, err := facades.Auth().Guard("admin").User(ctx, &user)
 ```
 
 > When don't use default guard, the `Guard` method needs to be called beforehand when calling the above methods.

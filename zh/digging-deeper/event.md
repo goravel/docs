@@ -131,7 +131,7 @@ func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
 
 ## 调度事件
 
-可以使用 `facades.Event.Job().Dispatch()` 方法进行事件调度。
+可以使用 `facades.Event().Job().Dispatch()` 方法进行事件调度。
 
 ```go
 package controllers
@@ -148,7 +148,7 @@ type UserController struct {
 }
 
 func (r UserController) Show(ctx http.Context) {
-  err := facades.Event.Job(&event.OrderShipped{}, []event.Arg{
+  err := facades.Event().Job(&event.OrderShipped{}, []event.Arg{
     {Type: "string", Value: "Goravel"},
     {Type: "int", Value: 1},
   }).Dispatch()

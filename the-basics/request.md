@@ -13,7 +13,7 @@ The `http.Context` instance is automatically injected into the controller:
 ```go
 import "github.com/goravel/framework/contracts/http"
 
-facades.Route.Get("/", func(ctx http.Context) {
+facades.Route().Get("/", func(ctx http.Context) {
 
 })
 ```

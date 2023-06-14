@@ -86,7 +86,7 @@ func (kernel *Kernel) Middleware() []http.Middleware {
 ```go
 import "github.com/goravel/framework/http/middleware"
 
-facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
+facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 <CommentService/>

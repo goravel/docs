@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Grpc module can be operated by `facades.Grpc`.
+Grpc module can be operated by `facades.Grpc()`.
 
 ## Controllers
 
@@ -51,7 +51,7 @@ import (
 )
 
 func Grpc() {
-  protos.RegisterUserServer(facades.Grpc.Server(), controllers.NewUserController())
+  protos.RegisterUserServer(facades.Grpc().Server(), controllers.NewUserController())
 }
 ```
 
@@ -85,8 +85,8 @@ Start Grpc in the `main.go` file.
 
 ```go
 go func() {
-  if err := facades.Grpc.Run(facades.Config.GetString("grpc.host")); err != nil {
-    facades.Log.Errorf("Grpc run error: %v", err)
+  if err := facades.Grpc().Run(facades.Config().GetString("grpc.host")); err != nil {
+    facades.Log().Errorf("Grpc run error: %v", err)
   }
 }()
 ```

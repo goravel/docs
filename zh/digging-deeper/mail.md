@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 可以使用 `facades.Mail` 便捷的在本地发送邮件。
+Goravel 可以使用 `facades.Mail()` 便捷的在本地发送邮件。
 
 ## 配置
 
@@ -15,7 +15,7 @@ Goravel 可以使用 `facades.Mail` 便捷的在本地发送邮件。
 ```go
 import "github.com/goravel/framework/contracts/mail"
 
-err := facades.Mail.To([]string{"example@example.com"}).
+err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
@@ -26,7 +26,7 @@ err := facades.Mail.To([]string{"example@example.com"}).
 ## 以队列发送邮件
 
 ```go
-err := facades.Mail.To([]string{"example@example.com"}).
+err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
@@ -39,7 +39,7 @@ err := facades.Mail.To([]string{"example@example.com"}).
 ```go
 import "github.com/goravel/framework/contracts/mail"
 
-err := facades.Mail.To([]string{"example@example.com"}).
+err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
@@ -54,7 +54,7 @@ err := facades.Mail.To([]string{"example@example.com"}).
 ```go
 import "github.com/goravel/framework/contracts/mail"
 
-err := facades.Mail.To([]string{"example@example.com"}).
+err := facades.Mail().To([]string{"example@example.com"}).
   From(mail.From{Address: "example@example.com", Name: "example"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).

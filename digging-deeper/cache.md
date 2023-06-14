@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Goravel provides an expandable cache module, this module can be operated using `facades.Cache`. Goravel comes with `memory` driver, for other drivers, please check the corresponding independent extension packages:
+Goravel provides an expandable cache module, this module can be operated using `facades.Cache()`. Goravel comes with `memory` driver, for other drivers, please check the corresponding independent extension packages:
 
 | Driver       | Link           |
 | -----------  | -------------- |
@@ -19,7 +19,7 @@ Make all custom configurations in `config/cache.go`.
 ### Inject Context
 
 ```go
-facades.Cache.WithContext(ctx)
+facades.Cache().WithContext(ctx)
 ```
 
 ### Accessing Multiple Cache Stores
@@ -27,22 +27,22 @@ facades.Cache.WithContext(ctx)
 You may access various cache stores via the store method. The key passed to the store method should correspond to one of the stores listed in the stores configuration array in your cache configuration file:
 
 ```go
-value := facades.Cache.Store("redis").Get("foo")
+value := facades.Cache().Store("redis").Get("foo")
 ```
 
 ### Retrieving Items From The Cache
 
 ```go
-value := facades.Cache.Get("goravel", "default")
-value := facades.Cache.GetBool("goravel", true)
-value := facades.Cache.GetInt("goravel", 1)
-value := facades.Cache.GetString("goravel", "default")
+value := facades.Cache().Get("goravel", "default")
+value := facades.Cache().GetBool("goravel", true)
+value := facades.Cache().GetInt("goravel", 1)
+value := facades.Cache().GetString("goravel", "default")
 ```
 
 You can pass a `func` as the default value. If the specified data does not exist in the cache, the result of `func` will be returned. The transitive closure method allows you to obtain default values from the database or other external services. Note the closure structure `func() interface()`.
 
 ```go
-value := facades.Cache.Get("goravel", func() interface{} {
+value := facades.Cache().Get("goravel", func() interface{} {
     return "default"
 })
 ```
@@ -50,7 +50,7 @@ value := facades.Cache.Get("goravel", func() interface{} {
 ### Checking For Item Existence
 
 ```go
-bool := facades.Cache.Has("goravel")
+bool := facades.Cache().Has("goravel")
 ```
 
 ### Incrementing / Decrementing Values
@@ -58,10 +58,10 @@ bool := facades.Cache.Has("goravel")
 The `Increment` and `Decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods accept an optional second argument indicating the amount by which to increment or decrement the item's value:
 
 ```go
-facades.Cache.Increment("key")
-facades.Cache.Increment("key", amount)
-facades.Cache.Decrement("key")
-facades.Cache.Decrement("key", amount)
+facades.Cache().Increment("key")
+facades.Cache().Increment("key", amount)
+facades.Cache().Decrement("key")
+facades.Cache().Decrement("key", amount)
 ```
 
 ### Retrieve & Store
@@ -69,7 +69,7 @@ facades.Cache.Decrement("key", amount)
 Sometimes you may want to get data from the cache, and when the requested cache item does not exist, the program can store a default value for you.
 
 ```go
-value, err := facades.Cache.Remember("goravel", 5 * time.Second, func() interface{} {
+value, err := facades.Cache().Remember("goravel", 5 * time.Second, func() interface{} {
     return "goravel"
 })
 ```
@@ -79,7 +79,7 @@ If the data you want does not exist in the cache, the closure passed to the `Rem
 You can use the `RememberForever` method to retrieve data from the cache or store it permanently:
 
 ```go
-value, err := facades.Cache.RememberForever("goravel", func() interface{} {
+value, err := facades.Cache().RememberForever("goravel", func() interface{} {
     return "default"
 })
 ```
@@ -87,19 +87,19 @@ value, err := facades.Cache.RememberForever("goravel", func() interface{} {
 ### Retrieve & Delete
 
 ```go
-value := facades.Cache.Pull("goravel", "default")
+value := facades.Cache().Pull("goravel", "default")
 ```
 
 ### Storing Items In The Cache
 
 ```go
-err := facades.Cache.Put("goravel", "value", 5 * time.Second)
+err := facades.Cache().Put("goravel", "value", 5 * time.Second)
 ```
 
 If the expiration time of the cache is set to `0`, the cache will be valid forever:
 
 ```go
-err := facades.Cache.Put("goravel", "value", 0)
+err := facades.Cache().Put("goravel", "value", 0)
 ```
 
 ### Store If Not Present
@@ -107,7 +107,7 @@ err := facades.Cache.Put("goravel", "value", 0)
 The `Add` method will only store data that does not exist in the cache. If the storage is successful, it will return `true`, otherwise it will return `false`:
 
 ```go
-bool := facades.Cache.Add("goravel", "value", 5 * time.Second)
+bool := facades.Cache().Add("goravel", "value", 5 * time.Second)
 ```
 
 ### Storing Items Forever
@@ -115,19 +115,19 @@ bool := facades.Cache.Add("goravel", "value", 5 * time.Second)
 The `Forever` method can be used to store data persistently in the cache. Because these data will not expire, they must be manually deleted from the cache through the `Forget` method:
 
 ```go
-bool := facades.Cache.Forever("goravel", "value")
+bool := facades.Cache().Forever("goravel", "value")
 ```
 
 ### Removing Items From The Cache
 
 ```go
-bool := facades.Cache.Forget("goravel")
+bool := facades.Cache().Forget("goravel")
 ```
 
 You can use the `Flush` method to clear all caches:
 
 ```go
-bool := facades.Cache.Flush()
+bool := facades.Cache().Flush()
 ```
 
 ## Atomic Locks
@@ -137,7 +137,7 @@ bool := facades.Cache.Flush()
 Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. You may create and manage locks using the `Lock` method:
 
 ```go
-lock := facades.Cache.Lock("foo", 10*time.Second)
+lock := facades.Cache().Lock("foo", 10*time.Second)
 
 if (lock.Get()) {
     // Lock acquired for 10 seconds...
@@ -149,7 +149,7 @@ if (lock.Get()) {
 The `Get` method also accepts a closure. After the closure is executed, Goravel will automatically release the lock:
 
 ```go
-facades.Cache.Lock("foo").Get(func () {
+facades.Cache().Lock("foo").Get(func () {
     // Lock acquired for 10 seconds and automatically released...
 });
 ```
@@ -157,7 +157,7 @@ facades.Cache.Lock("foo").Get(func () {
 If the lock is not available at the moment you request it, you may instruct Goravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, will return `false`:
 
 ```go
-lock := facades.Cache.Lock("foo", 10*time.Second)
+lock := facades.Cache().Lock("foo", 10*time.Second)
 // Lock acquired after waiting a maximum of 5 seconds...
 if (lock.Block(5*time.Second)) {
     lock.Release()
@@ -167,7 +167,7 @@ if (lock.Block(5*time.Second)) {
 The example above may be simplified by passing a closure to the `Block` method. When a closure is passed to this method, Goravel will attempt to acquire the lock for the specified number of seconds and will automatically release the lock once the closure has been executed:
 
 ```go
-facades.Cache.Lock("foo", 10*time.Second).Block(5*time.Second, func () {
+facades.Cache().Lock("foo", 10*time.Second).Block(5*time.Second, func () {
     // Lock acquired after waiting a maximum of 5 seconds...
 })
 ```
@@ -175,7 +175,7 @@ facades.Cache.Lock("foo", 10*time.Second).Block(5*time.Second, func () {
 If you would like to release a lock without respecting its current owner, you may use the `ForceRelease` method:
 
 ```go
-facades.Cache.Lock("processing").ForceRelease();
+facades.Cache().Lock("processing").ForceRelease();
 ```
 
 ## Adding Custom Cache Drivers

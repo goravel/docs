@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Goravel routing module can operated by `facades.Route`.
+Goravel routing module can operated by `facades.Route()`.
 
 ## Default Routing File
 
@@ -14,7 +14,7 @@ You can add routing files under the `routes` directory to perform more fine-grai
 
 ## Start HTTP Server
 
-Start the HTTP server in `main.go` in the root directory. `facades.Route.Run()` will automatically fetch the `route.host` configuration.
+Start the HTTP server in `main.go` in the root directory. `facades.Route().Run()` will automatically fetch the `route.host` configuration.
 
 ```go
 package main
@@ -29,10 +29,10 @@ func main() {
   //This bootstraps the framework and gets it ready for use.
   bootstrap.Boot()
 
-  //Start http server by facades.Route.
+  //Start http server by facades.Route().
   go func() {
-    if err := facades.Route.Run(); err != nil {
-      facades.Log.Errorf("Route run error: %v", err)
+    if err := facades.Route().Run(); err != nil {
+      facades.Log().Errorf("Route run error: %v", err)
     }
   }()
 
@@ -59,21 +59,21 @@ func (kernel *Kernel) Middleware() []http.Middleware {
 
 ### Start Server
 
-`facades.Route.RunTLS()` will automatically fetch the `route.tls` configuration:
+`facades.Route().RunTLS()` will automatically fetch the `route.tls` configuration:
 
 ```go
 // main.go
-if err := facades.Route.RunTLS(); err != nil {
-  facades.Log.Errorf("Route run error: %v", err)
+if err := facades.Route().RunTLS(); err != nil {
+  facades.Log().Errorf("Route run error: %v", err)
 }
 ```
 
-You can also use `facades.Route.RunTLSWithCert()` method to customize host and certificate.
+You can also use `facades.Route().RunTLSWithCert()` method to customize host and certificate.
 
 ```go
 // main.go
-if err := facades.Route.RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
-  facades.Log.Errorf("Route run error: %v", err)
+if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
+  facades.Log().Errorf("Route run error: %v", err)
 }
 ```
 
@@ -103,13 +103,13 @@ if err := facades.Route.RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); er
 ## Basic Routing
 
 ```go
-facades.Route.Get("/", userController.Show)
-facades.Route.Post("/", userController.Show)
-facades.Route.Put("/", userController.Show)
-facades.Route.Delete("/", userController.Show)
-facades.Route.Patch("/", userController.Show)
-facades.Route.Options("/", userController.Show)
-facades.Route.Any("/", userController.Show)
+facades.Route().Get("/", userController.Show)
+facades.Route().Post("/", userController.Show)
+facades.Route().Put("/", userController.Show)
+facades.Route().Delete("/", userController.Show)
+facades.Route().Patch("/", userController.Show)
+facades.Route().Options("/", userController.Show)
+facades.Route().Any("/", userController.Show)
 ```
 
 ## Resource Routing
@@ -118,7 +118,7 @@ facades.Route.Any("/", userController.Show)
 import "github.com/goravel/framework/contracts/http"
 
 resourceController := NewResourceController()
-facades.Route.Resource("/resource", resourceController)
+facades.Route().Resource("/resource", resourceController)
 
 type ResourceController struct{}
 func NewResourceController () *ResourceController {
@@ -139,7 +139,7 @@ func (c *ResourceController) Destroy(ctx http.Context) {}
 ## Group Routing
 
 ```go
-facades.Route.Group(func(route route.Route) {
+facades.Route().Group(func(route route.Route) {
   route.Get("group/{id}", func(ctx http.Context) {
     ctx.Response().Success().String(ctx.Request().Query("id", "1"))
   })
@@ -149,7 +149,7 @@ facades.Route.Group(func(route route.Route) {
 ## Routing Prefix
 
 ```go
-facades.Route.Prefix("users").Get("/", userController.Show)
+facades.Route().Prefix("users").Get("/", userController.Show)
 ```
 
 ## File Routing
@@ -157,15 +157,15 @@ facades.Route.Prefix("users").Get("/", userController.Show)
 ```go
 import "net/http"
 
-facades.Route.Static("static", "./public")
-facades.Route.StaticFile("static-file", "./public/logo.png")
-facades.Route.StaticFS("static-fs", http.Dir("./public"))
+facades.Route().Static("static", "./public")
+facades.Route().StaticFile("static-file", "./public/logo.png")
+facades.Route().StaticFS("static-fs", http.Dir("./public"))
 ```
 
 ## Routing Parameters
 
 ```go
-facades.Route.Get("/input/{id}", func(ctx http.Context) {
+facades.Route().Get("/input/{id}", func(ctx http.Context) {
   ctx.Response().Success().Json(http.Json{
     "id": ctx.Request().Input("id"),
   })
@@ -179,7 +179,7 @@ Detail [Request](./request.md)
 ```go
 import "github.com/goravel/framework/http/middleware"
 
-facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
+facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 Detail [Middleware](./middleware.md)
@@ -189,7 +189,7 @@ Detail [Middleware](./middleware.md)
 Using the `Fallback` method, you may define a route that will be executed when no other route matches the incoming request.
 
 ```go
-facades.Route.Fallback(func(ctx http.Context) {
+facades.Route().Fallback(func(ctx http.Context) {
   ctx.Response().String(404, "not found")
 })
 ```
@@ -200,7 +200,7 @@ facades.Route.Fallback(func(ctx http.Context) {
 
 Goravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `app/providers/route_service_provider.go` class.
 
-Rate limiters are defined using the `facades.RateLimiter`s `For` method. The `For` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. The rate limiter name may be any string you wish:
+Rate limiters are defined using the `facades.RateLimiter()`s `For` method. The `For` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. The rate limiter name may be any string you wish:
 
 ```go
 import (
@@ -210,7 +210,7 @@ import (
 )
 
 func (receiver *RouteServiceProvider) configureRateLimiting() {
-  facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+  facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
     return limit.PerMinute(1000)
   })
 }
@@ -219,7 +219,7 @@ func (receiver *RouteServiceProvider) configureRateLimiting() {
 If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Goravel. If you would like to define your own response that should be returned by a rate limit, you may use the response method:
 
 ```go
-facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
   return limit.PerMinute(1000).Response(func(ctx contractshttp.Context) {
     ctx.Response().String(429, "Custom response...")
     return
@@ -230,7 +230,7 @@ facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.
 Since rate limiter callbacks receive the incoming HTTP request instance, you may build the appropriate rate limit dynamically based on the incoming request or authenticated user:
 
 ```go
-facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
   // Suppose
   if is_vip() {
     return limit.PerMinute(100)
@@ -245,7 +245,7 @@ facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.
 Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `By` method when building your rate limit:
 
 ```go
-facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
   if is_vip() {
     return limit.PerMinute(100).By(ctx.Request().Ip())
   }
@@ -257,7 +257,7 @@ facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.
 To illustrate this feature using another example, we can limit access to the route to 100 times per minute per authenticated user ID or 10 times per minute per IP address for guests:
 
 ```go
-facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
   if userID != 0 {
     return limit.PerMinute(100).By(userID)
   }
@@ -271,7 +271,7 @@ facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.
 If needed, you may return an array of rate limits for a given rate limiter configuration. Each rate limit will be evaluated for the route based on the order they are placed within the array:
 
 ```go
-facades.RateLimiter.ForWithLimits("login", func(ctx contractshttp.Context) []contractshttp.Limit {
+facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []contractshttp.Limit {
   return []contractshttp.Limit{
     limit.PerMinute(500),
     limit.PerMinute(100).By(ctx.Request().Ip()),
@@ -284,7 +284,7 @@ facades.RateLimiter.ForWithLimits("login", func(ctx contractshttp.Context) []con
 Rate limiters may be attached to routes or route groups using the throttle middleware. The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
 
 ```go
-facades.Route.Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) {
+facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) {
   ctx.Response().Json(200, http.Json{
     "Hello": "Goravel",
   })
@@ -304,7 +304,7 @@ func TestHttp(t *testing.T) {
   w := httptest.NewRecorder()
   req, err := http.NewRequest("GET", "/users", nil)
   assert.Nil(t, err)
-  facades.Route.ServeHTTP(w, req)
+  facades.Route().ServeHTTP(w, req)
   assert.Equal(t, 200, w.Code)
   assert.Equal(t, "1", w.Body.String())
 }

@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 路由模块可以使用 `facades.Route` 进行操作。
+Goravel 路由模块可以使用 `facades.Route()` 进行操作。
 
 ## 默认路由文件
 
@@ -14,7 +14,7 @@ Goravel 路由模块可以使用 `facades.Route` 进行操作。
 
 ## 启动 HTTP 服务器
 
-在根目录下 `main.go` 中启动 HTTP 服务器，`facades.Route.Run()` 将会自动获取 `route.host` 的配置。
+在根目录下 `main.go` 中启动 HTTP 服务器，`facades.Route().Run()` 将会自动获取 `route.host` 的配置。
 
 ```go
 package main
@@ -29,10 +29,10 @@ func main() {
   //This bootstraps the framework and gets it ready for use.
   bootstrap.Boot()
 
-  //Start http server by facades.Route.
+  //Start http server by facades.Route().
   go func() {
-    if err := facades.Route.Run(); err != nil {
-      facades.Log.Errorf("Route run error: %v", err)
+    if err := facades.Route().Run(); err != nil {
+      facades.Log().Errorf("Route run error: %v", err)
     }
   }()
 
@@ -59,21 +59,21 @@ func (kernel *Kernel) Middleware() []http.Middleware {
 
 ### 启动服务器
 
-`facades.Route.RunTLS()` 将会自动获取 `route.tls` 的配置：
+`facades.Route().RunTLS()` 将会自动获取 `route.tls` 的配置：
 
 ```go
 // main.go
-if err := facades.Route.RunTLS(); err != nil {
-  facades.Log.Errorf("Route run error: %v", err)
+if err := facades.Route().RunTLS(); err != nil {
+  facades.Log().Errorf("Route run error: %v", err)
 }
 ```
 
-您也可以使用 `facades.Route.RunTLSWithCert()` 方法，自定义 host 与 证书：
+您也可以使用 `facades.Route().RunTLSWithCert()` 方法，自定义 host 与 证书：
 
 ```go
 // main.go
-if err := facades.Route.RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
-  facades.Log.Errorf("Route run error: %v", err)
+if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
+  facades.Log().Errorf("Route run error: %v", err)
 }
 ```
 
@@ -103,17 +103,17 @@ if err := facades.Route.RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); er
 ## 基本路由
 
 ```go
-facades.Route.Get("/", func(ctx http.Context) {
+facades.Route().Get("/", func(ctx http.Context) {
   ctx.Response().Json(nethttp.StatusOK, http.Json{
     "Hello": "Goravel",
   })
 })
-facades.Route.Post("/", userController.Show)
-facades.Route.Put("/", userController.Show)
-facades.Route.Delete("/", userController.Show)
-facades.Route.Patch("/", userController.Show)
-facades.Route.Options("/", userController.Show)
-facades.Route.Any("/", userController.Show)
+facades.Route().Post("/", userController.Show)
+facades.Route().Put("/", userController.Show)
+facades.Route().Delete("/", userController.Show)
+facades.Route().Patch("/", userController.Show)
+facades.Route().Options("/", userController.Show)
+facades.Route().Any("/", userController.Show)
 ```
 
 ## 资源路由
@@ -122,7 +122,7 @@ facades.Route.Any("/", userController.Show)
 import "github.com/goravel/framework/contracts/http"
 
 resourceController := NewResourceController()
-facades.Route.Resource("/resource", resourceController)
+facades.Route().Resource("/resource", resourceController)
 
 type ResourceController struct{}
 func NewResourceController () *ResourceController {
@@ -143,7 +143,7 @@ func (c *ResourceController) Destroy(ctx http.Context) {}
 ## 路由分组
 
 ```go
-facades.Route.Group(func(route route.Route) {
+facades.Route().Group(func(route route.Route) {
   route.Get("group/{id}", func(ctx http.Context) {
     ctx.Response().Success().String(ctx.Request().Query("id", "1"))
   })
@@ -153,7 +153,7 @@ facades.Route.Group(func(route route.Route) {
 ## 路由前缀
 
 ```go
-facades.Route.Prefix("users").Get("/", userController.Show)
+facades.Route().Prefix("users").Get("/", userController.Show)
 ```
 
 ## 文件路由
@@ -161,9 +161,9 @@ facades.Route.Prefix("users").Get("/", userController.Show)
 ```go
 import "net/http"
 
-facades.Route.Static("static", "./public")
-facades.Route.StaticFile("static-file", "./public/logo.png")
-facades.Route.StaticFS("static-fs", http.Dir("./public"))
+facades.Route().Static("static", "./public")
+facades.Route().StaticFile("static-file", "./public/logo.png")
+facades.Route().StaticFS("static-fs", http.Dir("./public"))
 ```
 
 一般情况下，我们无法将文件路由定向到根目录 `/`，如果您真的想这么做，可以使用如下方式：
@@ -194,7 +194,7 @@ func Static() contractshttp.Middleware {
 ## 路由传参
 
 ```go
-facades.Route.Get("/input/{id}", func(ctx http.Context) {
+facades.Route().Get("/input/{id}", func(ctx http.Context) {
   ctx.Response().Success().Json(http.Json{
     "id": ctx.Request().Input("id"),
   })
@@ -208,7 +208,7 @@ facades.Route.Get("/input/{id}", func(ctx http.Context) {
 ```go
 import "github.com/goravel/framework/http/middleware"
 
-facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
+facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 详见[中间件](./middleware.md)
@@ -218,7 +218,7 @@ facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
 使用 `Fallback` 方法，您可以定义一个在没有其他路由匹配传入请求时将执行的路由。
 
 ```go
-facades.Route.Fallback(func(ctx http.Context) {
+facades.Route().Fallback(func(ctx http.Context) {
   ctx.Response().String(404, "not found")
 })
 ```
@@ -229,7 +229,7 @@ facades.Route.Fallback(func(ctx http.Context) {
 
 Goravel 包含强大且可自定义的速率限制服务，你可以利用这些服务来限制给定路由或一组路由的流量。首先，你应该定义满足应用程序需求的速率限制器配置。通常，这应该在应用程序的 `app/providers/route_service_provider.go` 文件的 `configureRateLimiting` 方法中完成。
 
-速率限制器使用 `facades.RateLimiter` 的 `For` 方法进行定义。`For` 方法接受一个速率限制器名称和一个闭包，该闭包返回应该应用于分配给速率限制器的路由的限制配置。速率限制器名称可以是你希望的任何字符串：
+速率限制器使用 `facades.RateLimiter()` 的 `For` 方法进行定义。`For` 方法接受一个速率限制器名称和一个闭包，该闭包返回应该应用于分配给速率限制器的路由的限制配置。速率限制器名称可以是你希望的任何字符串：
 
 ```go
 import (
@@ -239,7 +239,7 @@ import (
 )
 
 func (receiver *RouteServiceProvider) configureRateLimiting() {
-  facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+  facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
     return limit.PerMinute(1000)
   })
 }
@@ -248,7 +248,7 @@ func (receiver *RouteServiceProvider) configureRateLimiting() {
 如果传入的请求超过指定的速率限制，Goravel 将自动返回一个带有 429 HTTP 状态码的响应。如果你想定义自己的响应，应该由速率限制返回，你可以使用 `Response` 方法：
 
 ```go
-facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
   return limit.PerMinute(1000).Response(func(ctx contractshttp.Context) {
     ctx.Response().String(429, "Custom response...")
     return
@@ -259,7 +259,7 @@ facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.
 由于速率限制器回调接收传入的 HTTP 请求实例，你可以根据传入的请求或经过身份验证的用户动态构建适当的速率限制：
 
 ```go
-facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
   // 假设
   if is_vip() {
     return limit.PerMinute(100)
@@ -274,7 +274,7 @@ facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.
 有时你可能希望按某个任意值对速率限制进行分段。例如，你可能希望每个 IP 地址每分钟允许用户访问给定路由 100 次。为此，你可以在构建速率限制时使用 `By` 方法：
 
 ```go
-facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
   if is_vip() {
     return limit.PerMinute(100).By(ctx.Request().Ip())
   }
@@ -286,7 +286,7 @@ facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.
 为了使用另一个示例来说明此功能，我们可以将每个经过身份验证的用户 ID 的路由访问限制为每分钟 100 次，或者对于访客来说，每个 IP 地址每分钟访问 10 次：
 
 ```go
-facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
   if userID != 0 {
     return limit.PerMinute(100).By(userID)
   }
@@ -300,7 +300,7 @@ facades.RateLimiter.For("global", func(ctx contractshttp.Context) contractshttp.
 如果需要，你可以返回给定速率限制器配置的速率限制数组。将根据路由在数组中的放置顺序评估每个速率限制：
 
 ```go
-facades.RateLimiter.ForWithLimits("login", func(ctx contractshttp.Context) []contractshttp.Limit {
+facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []contractshttp.Limit {
   return []contractshttp.Limit{
     limit.PerMinute(500),
     limit.PerMinute(100).By(ctx.Request().Ip()),
@@ -313,7 +313,7 @@ facades.RateLimiter.ForWithLimits("login", func(ctx contractshttp.Context) []con
 可以使用 `Throttle` middleware 将速率限制器附加到路由或路由组。路由中间件接受你希望分配给路由的速率限制器的名称：
 
 ```go
-facades.Route.Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) {
+facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) {
   ctx.Response().Json(200, http.Json{
     "Hello": "Goravel",
   })
@@ -333,7 +333,7 @@ func TestHttp(t *testing.T) {
   w := httptest.NewRecorder()
   req, err := http.NewRequest("GET", "/users", nil)
   assert.Nil(t, err)
-  facades.Route.ServeHTTP(w, req)
+  facades.Route().ServeHTTP(w, req)
   assert.Equal(t, 200, w.Code)
   assert.Equal(t, "1", w.Body.String())
 }

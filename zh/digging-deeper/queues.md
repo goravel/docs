@@ -4,7 +4,7 @@
 
 ## 简介
 
-在构建 Web 应用程序时，你可能需要执行一些比较耗时的任务（例如解析和存储上传的 CSV 文件），Goravel 可以让你轻松地创建可在后台排队处理的任务。通过将耗时的任务移到队列中，你的应用程序可以以超快的速度响应 Web 请求，并为客户提供更好的用户体验。我们使用 `facades.Queue` 实现这些功能。
+在构建 Web 应用程序时，你可能需要执行一些比较耗时的任务（例如解析和存储上传的 CSV 文件），Goravel 可以让你轻松地创建可在后台排队处理的任务。通过将耗时的任务移到队列中，你的应用程序可以以超快的速度响应 Web 请求，并为客户提供更好的用户体验。我们使用 `facades.Queue()` 实现这些功能。
 
 队列配置文件存储在 `config/queue.go` 中。目前框架支持两种队列驱动： `redis` 和 `sync`。
 
@@ -16,12 +16,12 @@
 
 ```go
 // 这个任务将被推送到默认队列
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
   {Type: "int", Value: 1},
 }).Dispatch()
 
 // 这个任务将被推送到 "emails" 队列
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
   {Type: "int", Value: 1}
 }).OnQueue("emails").Dispatch()
 ```
@@ -87,10 +87,10 @@ func main() {
   // This bootstraps the framework and gets it ready for use.
   bootstrap.Boot()
 
-  // Start queue server by facades.Queue.
+  // Start queue server by facades.Queue().
   go func() {
-    if err := facades.Queue.Worker(nil).Run(); err != nil {
-      facades.Log.Errorf("Queue run error: %v", err)
+    if err := facades.Queue().Worker(nil).Run(); err != nil {
+      facades.Log().Errorf("Queue run error: %v", err)
     }
   }()
 
@@ -98,24 +98,24 @@ func main() {
 }
 ```
 
-`facades.Queue.Worker` 方法中可以传入不同的参数，通过启动多个 `facades.Queue.Worker`，可以达到监听多个队列的目的。
+`facades.Queue().Worker` 方法中可以传入不同的参数，通过启动多个 `facades.Queue().Worker`，可以达到监听多个队列的目的。
 
 ```go
 // 不传参数，默认监听 `config/queue.go` 中的配置，并发数为 1
 go func() {
-  if err := facades.Queue.Worker(nil).Run(); err != nil {
-    facades.Log.Errorf("Queue run error: %v", err)
+  if err := facades.Queue().Worker(nil).Run(); err != nil {
+    facades.Log().Errorf("Queue run error: %v", err)
   }
 }()
 
 // 监听 redis 链接的 processing 队列，并发数 10
 go func() {
-  if err := facades.Queue.Worker(&queue.Args{
+  if err := facades.Queue().Worker(&queue.Args{
     Connection: "redis",
     Queue: "processing",
     Concurrent: 10,
   }).Run(); err != nil {
-    facades.Log.Errorf("Queue run error: %v", err)
+    facades.Log().Errorf("Queue run error: %v", err)
   }
 }()
 ```
@@ -139,7 +139,7 @@ type UserController struct {
 }
 
 func (r *UserController) Show(ctx http.Context) {
-  err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Dispatch()
+  err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).Dispatch()
   if err != nil {
     // do something
   }
@@ -165,7 +165,7 @@ type UserController struct {
 }
 
 func (r *serController) Show(ctx http.Context) {
-  err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).DispatchSync()
+  err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).DispatchSync()
   if err != nil {
     // do something
   }
@@ -174,10 +174,10 @@ func (r *serController) Show(ctx http.Context) {
 
 ### 任务链
 
-任务链允许你指定一组按顺序运行的排队任务。如果序列中的一个任务失败，其余的任务将不会运行。要执行一个排队的任务链，你可以使用 `facades.Queue` 提供的 `chain` 方法：
+任务链允许你指定一组按顺序运行的排队任务。如果序列中的一个任务失败，其余的任务将不会运行。要执行一个排队的任务链，你可以使用 `facades.Queue()` 提供的 `chain` 方法：
 
 ```go
-err := facades.Queue.Chain([]queue.Jobs{
+err := facades.Queue().Chain([]queue.Jobs{
   {
     Job: &jobs.Test{},
     Args: []queue.Arg{
@@ -198,7 +198,7 @@ err := facades.Queue.Chain([]queue.Jobs{
 如果您想指定任务不应立即被队列处理，您可以在调度任务时使用 `Delay` 方法。例如，让我们指定一个任务在分派 10 分钟后处理：
 
 ```go
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*time.Second)).Dispatch()
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*time.Second)).Dispatch()
 ```
 
 ### 自定义队列 & 连接
@@ -208,7 +208,7 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*t
 通过将任务推送到不同的队列，你可以对排队的任务进行「分类」，甚至可以优先考虑分配给各个队列的 worker 数量。
 
 ```go
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Dispatch()
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Dispatch()
 ```
 
 #### 调度到特定连接
@@ -216,13 +216,13 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Disp
 如果你的应用程序与多个队列连接交互，你可以使用 `onConnection` 方法指定将任务推送到哪个连接：
 
 ```go
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dispatch()
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dispatch()
 ```
 
 你可以将 onConnection 和 onQueue 方法链接在一起，以指定任务的连接和队列：
 
 ```go
-err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
+err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
 ```
 
 ## `queue.Arg.Type` 支持的类型

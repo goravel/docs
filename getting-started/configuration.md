@@ -22,30 +22,30 @@ Use the following method to obtain the configuration items in the `.env` file:
 
 ```
 // The first parameter is the configuration key, and the second parameter is the default value
-facades.Config.Env("APP_NAME", "goravel")
+facades.Config().Env("APP_NAME", "goravel")
 ```
 
 ## Access Configuration Calues
 
-You can easily use the global `facades.Config` function anywhere in the application to access the configuration values in the `config` directory. The access to the configuration value can use the "." syntax. You can also specify a default value, if the configuration option does not exist, the default value is returned:
+You can easily use the global `facades.Config()` function anywhere in the application to access the configuration values in the `config` directory. The access to the configuration value can use the "." syntax. You can also specify a default value, if the configuration option does not exist, the default value is returned:
 
 ```
 // Get the configuration of the string type
-facades.Config.GetString("app.name", "goravel")
+facades.Config().GetString("app.name", "goravel")
 
 // Get the configuration of the int type
-facades.Config.GetInt("app.int", 1)
+facades.Config().GetInt("app.int", 1)
 
 // Get the configuration of the bool type
-facades.Config.GetBool("app.debug", true)
+facades.Config().GetBool("app.debug", true)
 ```
 
 ## Set configuration
 
 ```go
-facades.Config.Add("path", "value1")
-facades.Config.Add("path.with.dot.case1", "value1")
-facades.Config.Add("path.with.dot", map[string]any{"case3": "value3"})
+facades.Config().Add("path", "value1")
+facades.Config().Add("path.with.dot.case1", "value1")
+facades.Config().Add("path.with.dot", map[string]any{"case3": "value3"})
 ```
 
 <CommentService/>

@@ -313,19 +313,19 @@ type Post struct {
 user := User{Name: "user", Post: &Post{Name: "post"}}
 
 // 创建 User 的同时创建所有子关联
-facades.Orm.Query().Select(orm.Associations).Create(&user)
+facades.Orm().Query().Select(orm.Associations).Create(&user)
 
 // 创建 User 的同时只创建 Post 子关联。注意：如果不使用 `orm.Associations`，而是单独自定义特定子关联，则此时也应将所有父模型中的字段列出。
-facades.Orm.Query().Select("Name", "Post").Create(&user)
+facades.Orm().Query().Select("Name", "Post").Create(&user)
 
 // 创建 User 时，忽略 Post 关联，但创建其他所有子关联
-facades.Orm.Query().Omit("Post").Create(&user)
+facades.Orm().Query().Omit("Post").Create(&user)
 
 // 创建 User 时，忽略 Name 字段，但创建所有子关联
-facades.Orm.Query().Omit("Name").Create(&user)
+facades.Orm().Query().Omit("Name").Create(&user)
 
 // 创建 User 时，忽略 Name 字段与所有子关联
-facades.Orm.Query().Omit("Name", orm.Associations).Create(&user)
+facades.Orm().Query().Omit("Name", orm.Associations).Create(&user)
 ```
 
 ### 查找关联
@@ -333,10 +333,10 @@ facades.Orm.Query().Omit("Name", orm.Associations).Create(&user)
 ```go
 // 查找所有匹配的关联记录
 var posts []models.Post
-facades.Orm.Query().Model(&user).Association("Posts").Find(&posts)
+facades.Orm().Query().Model(&user).Association("Posts").Find(&posts)
 
 // 查找带条件的关联
-facades.Orm.Query().Model(&user).Where("name = ?", "goravel").Order("id desc").Association("Posts").Find(&posts)
+facades.Orm().Query().Model(&user).Where("name = ?", "goravel").Order("id desc").Association("Posts").Find(&posts)
 ```
 
 ### 添加关联
@@ -344,9 +344,9 @@ facades.Orm.Query().Model(&user).Where("name = ?", "goravel").Order("id desc").A
 为 `manyToMany`, `hasMany` 添加新的关联；为 `hasOne`, `belongsTo` 替换当前的关联:
 
 ```go
-facades.Orm.Query().Model(&user).Association("Posts").Append([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Append([]*Post{Post1, Post2})
 
-facades.Orm.Query().Model(&user).Association("Posts").Append(&Post{Name: "goravel"})
+facades.Orm().Query().Model(&user).Association("Posts").Append(&Post{Name: "goravel"})
 ```
 
 ### 替换关联
@@ -354,9 +354,9 @@ facades.Orm.Query().Model(&user).Association("Posts").Append(&Post{Name: "gorave
 用一个新的关联替换当前的关联：
 
 ```go
-facades.Orm.Query().Model(&user).Association("Posts").Replace([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Replace([]*Post{Post1, Post2})
 
-facades.Orm.Query().Model(&user).Association("Posts").Replace(Post{Name: "goravel"}, Post2)
+facades.Orm().Query().Model(&user).Association("Posts").Replace(Post{Name: "goravel"}, Post2)
 ```
 
 ### 删除关联
@@ -364,9 +364,9 @@ facades.Orm.Query().Model(&user).Association("Posts").Replace(Post{Name: "gorave
 如果关联存在，则删除父模型与子模型之间的关系，注意，只会删除引用，不会从数据库中删除这些对象，外键需要允许为 NULL：
 
 ```go
-facades.Orm.Query().Model(&user).Association("Posts").Delete([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Delete([]*Post{Post1, Post2})
 
-facades.Orm.Query().Model(&user).Association("Posts").Delete(Post1, Post2)
+facades.Orm().Query().Model(&user).Association("Posts").Delete(Post1, Post2)
 ```
 
 ### 清空关联
@@ -374,7 +374,7 @@ facades.Orm.Query().Model(&user).Association("Posts").Delete(Post1, Post2)
 删除父模型与子模型之间的所有引用，但不会删除这些关联：
 
 ```go
-facades.Orm.Query().Model(&user).Association("Posts").Clear()
+facades.Orm().Query().Model(&user).Association("Posts").Clear()
 ```
 
 ### 关联计数
@@ -382,32 +382,32 @@ facades.Orm.Query().Model(&user).Association("Posts").Clear()
 返回当前关联的数量：
 
 ```go
-facades.Orm.Query().Model(&user).Association("Posts").Count()
+facades.Orm().Query().Model(&user).Association("Posts").Count()
 
 // 条件计数
-facades.Orm.Query().Model(&user).Where("name = ?", "goravel").Association("Posts").Count()
+facades.Orm().Query().Model(&user).Where("name = ?", "goravel").Association("Posts").Count()
 ```
 
 ### 批量处理数据
 
 ```go
 // 查询所有用户的所有文章
-facades.Orm.Query().Model(&users).Association("Posts").Find(&posts)
+facades.Orm().Query().Model(&users).Association("Posts").Find(&posts)
 
 // 从所有 Post 中删除 user A
-facades.Orm.Query().Model(&users).Association("Posts").Delete(&userA)
+facades.Orm().Query().Model(&users).Association("Posts").Delete(&userA)
 
 // 获取去重的用户所属 Post 数量
-facades.Orm.Query().Model(&users).Association("Posts").Count()
+facades.Orm().Query().Model(&users).Association("Posts").Count()
 
 // 对于批量数据的 `Append`、`Replace`，参数的长度必须与数据的长度相同，否则会返回 error
 var users = []User{user1, user2, user3}
 
 // 有三个 user，Append userA 到 user1 的 team，Append userB 到 user2 的 team，Append userA、userB 和 userC 到 user3 的 team
-facades.Orm.Query().Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
+facades.Orm().Query().Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
 
 // 重置 user1 team 为 userA，重置 user2 的 team 为 userB，重置 user3 的 team 为 userA、 userB 和 userC
-facades.Orm.Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
+facades.Orm().Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## 预加载
@@ -432,11 +432,11 @@ type Book struct {
 
 ```go
 var books models.Book
-facades.Orm.Query().Find(&books)
+facades.Orm().Query().Find(&books)
 
 for _, book := range books {
   var author models.Author
-  facades.Orm.Query().Find(&author, book.AuthorID)
+  facades.Orm().Query().Find(&author, book.AuthorID)
 }
 ```
 
@@ -446,7 +446,7 @@ for _, book := range books {
 
 ```go
 var books models.Book
-facades.Orm.Query().With("Author").Find(&books)
+facades.Orm().Query().With("Author").Find(&books)
 
 for _, book := range books {
   fmt.Println(book.Author)
@@ -467,7 +467,7 @@ select * from authors where id in (1, 2, 3, 4, 5, ...)
 
 ```go
 var book models.Book
-facades.Orm.Query().With("Author").With("Publisher").Find(&book)
+facades.Orm().Query().With("Author").With("Publisher").Find(&book)
 ```
 
 ### 嵌套预加载
@@ -476,7 +476,7 @@ facades.Orm.Query().With("Author").With("Publisher").Find(&book)
 
 ```go
 var book models.Book
-facades.Orm.Query().With("Author").With("Author.Contacts").Find(&book)
+facades.Orm().Query().With("Author").With("Author.Contacts").Find(&book)
 ```
 
 ### 为预加载添加约束
@@ -487,9 +487,9 @@ facades.Orm.Query().With("Author").With("Author.Contacts").Find(&book)
 import "github.com/goravel/framework/contracts/database/orm"
 
 var book models.Book
-facades.Orm.Query().With("Author", "name = ?", "author").Find(&book)
+facades.Orm().Query().With("Author", "name = ?", "author").Find(&book)
 
-facades.Orm.Query().With("Author", func(query orm.Query) orm.Query {
+facades.Orm().Query().With("Author", func(query orm.Query) orm.Query {
   return query.Where("name = ?", "author")
 }).Find(&book)
 ```
@@ -502,11 +502,11 @@ facades.Orm.Query().With("Author", func(query orm.Query) orm.Query {
 
 ```go
 var books models.Book
-facades.Orm.Query().Find(&books)
+facades.Orm().Query().Find(&books)
 
 for _, book := range books {
   if someCondition {
-    err := facades.Orm.Query().Load(&book, "Author")
+    err := facades.Orm().Query().Load(&book, "Author")
   }
 }
 ```
@@ -517,9 +517,9 @@ for _, book := range books {
 import "github.com/goravel/framework/contracts/database/orm"
 
 var book models.Book
-facades.Orm.Query().Load(&book, "Author", "name = ?", "author").Find(&book)
+facades.Orm().Query().Load(&book, "Author", "name = ?", "author").Find(&book)
 
-facades.Orm.Query().Load(&book, "Author", func(query orm.Query) orm.Query {
+facades.Orm().Query().Load(&book, "Author", func(query orm.Query) orm.Query {
   return query.Where("name = ?", "author")
 }).Find(&book)
 ```
@@ -527,7 +527,7 @@ facades.Orm.Query().Load(&book, "Author", func(query orm.Query) orm.Query {
 如果希望仅加载未被加载的关联关系时，你可以使用 `LoadMissing` 方法：
 
 ```go
-facades.Orm.Query().LoadMissing(&book, "Author")
+facades.Orm().Query().LoadMissing(&book, "Author")
 ```
 
 <CommentService/>
