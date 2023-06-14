@@ -51,6 +51,7 @@ Goravel 中自带了一些中间件可供使用：
 ### 命令创建中间件
 ```
 go run . artisan make:middleware Cors
+go run . artisan make:middleware user/Cors
 ```
 
 ## 注册中间件

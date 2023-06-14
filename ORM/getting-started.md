@@ -75,6 +75,7 @@ For example, the model name is `UserOrder`, the table name is `user_orders`.
 
 ```
 go run . artisan make:model User
+go run . artisan make:model user/User
 ```
 
 ### Specify Table Name
@@ -736,8 +737,9 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 
 If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
-```shell
+```
 go run . artisan make:observer UserObserver
+go run . artisan make:observer user/UserObserver
 ```
 
 This command will place the new observer in your `app/observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:

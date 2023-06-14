@@ -34,6 +34,7 @@ By default, all of the jobs for your application are stored in the `app/jobs` di
 
 ```
 go run . artisan make:job ProcessPodcast
+go run . artisan make:job user/ProcessPodcast
 ```
 
 ### Class Structure

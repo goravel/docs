@@ -43,8 +43,10 @@ You can use the `make:event` and `make:listener` Artisan commands to generate in
 
 ```go
 go run . artisan make:event PodcastProcessed
+go run . artisan make:event user/PodcastProcessed
 
 go run . artisan make:listener SendPodcastNotification
+go run . artisan make:listener user/SendPodcastNotification
 ```
 
 ## Defining Events

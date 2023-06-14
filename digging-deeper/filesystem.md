@@ -4,11 +4,18 @@
 
 ## Introduction
 
-The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS and Tencent COS. Even better, it's amazingly simple to switch between these storage options between your local development machine and production server as the API remains the same for each system.
+The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS and Tencent COS. Even better, it's amazingly simple to switch between these storage options between your local development machine and production server as the API remains the same for each system. Goravel comes with `local` driver, for other drivers, please check the corresponding independent extension package:
+
+| Driver       | Link           |
+| -----------  | -------------- |
+| S3           | https://github.com/goravel/s3     |
+| OSS          | https://github.com/goravel/oss     |
+| COS          | https://github.com/goravel/cos     |
+| Minio        | https://github.com/goravel/minio     |
 
 ## Configuration
 
-Goravel's filesystem configuration file is located at `config/filesystems.go`. Within this file, you may configure all of your filesystem "disks", each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file so you can modify the configuration to reflect your storage preferences and credentials.
+Goravel's filesystem configuration file is located at `config/filesystems.go`. Within this file, you may configure all of your filesystem "disks", each disk represents a particular storage driver and storage location.
 
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
 

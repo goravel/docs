@@ -34,6 +34,7 @@ You can use the `make:command` command to create a new command in the `app/conso
 
 ```go
 go run . artisan make:command SendEmails
+go run . artisan make:command user/SendEmails
 ```
 
 ### Command Structure

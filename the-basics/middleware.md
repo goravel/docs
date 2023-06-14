@@ -51,6 +51,7 @@ There are some middleware available in Goravel:
 ### Create Middleware By Command
 ```
 go run . artisan make:middleware Cors
+go run . artisan make:middleware user/Cors
 ```
 
 ## Register Middleware

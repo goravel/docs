@@ -4,11 +4,15 @@
 
 ## 简介
 
-Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache` 进行操作。
+Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache` 进行操作。框架默认自带 `memory` 驱动，如需其他驱动，请查看对应的独立扩展包：
+
+| 驱动          | 地址           |
+| -----------  | -------------- |
+| Redis        | https://github.com/goravel/redis     |
 
 ## 配置
 
-在 `config/cache.go` 中进行所有自定义配置。允许配置不同的缓存驱动，默认使用 `memory`，你也可以自定义驱动。
+在 `config/cache.go` 中进行所有自定义配置。
 
 ## 可用的缓存驱动
 
@@ -183,7 +187,7 @@ facades.Cache.Lock("foo", 10*time.Second).Block(5*time.Second, func () {
 facades.Cache.Lock("processing").ForceRelease();
 ```
 
-## 添加自定义缓存驱动
+## 自定义缓存驱动
 
 ### 配置
 

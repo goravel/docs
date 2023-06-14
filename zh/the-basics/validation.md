@@ -87,6 +87,7 @@ validator, err := ctx.Request().Validate(map[string]string{
 
 ```go
 go run . artisan make:request StorePostRequest
+go run . artisan make:request user/StorePostRequest
 ```
 
 该命令生成的表单请求类将被置于 `app/http/requests` 目录中。如果这个目录不存在，在您运行 `make:request` 命令后将会创建这个目录。Goravel 生成的每个表单请求都有五个方法：`Authorize`, `Rules`, `Messages`, `Attributes` 和 `PrepareForValidation`。
@@ -394,6 +395,7 @@ Goravel 提供了各种有用的验证规则，但是，您可能希望指定一
 
 ```go
 go run . artisan make:rule Uppercase
+go run . artisan make:rule user/Uppercase
 ```
 
 创建规则后，我们就可以定义其行为了。 一个规则对象包含两个方法：`Passes` 和 `Message`。`Passes` 方法接收所有数据、待验证的数据与验证参数，应该根据属性值是否有效返回 `true` 或 `false`。`Message` 方法应该返回验证失败时应该使用的验证错误消息：

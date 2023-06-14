@@ -14,8 +14,10 @@ Goravel 的事件系统提供了一个简单的观察者模式的实现，允许
 
 ```go
 go run . artisan make:event OrderShipped
+go run . artisan make:event user/OrderShipped
 
 go run . artisan make:listener SendShipmentNotification
+go run . artisan make:listener user/SendShipmentNotification
 ```
 
 ## 注册事件和监听器

@@ -151,6 +151,7 @@ You may generate a policy using the `make:policy` Artisan command. The generated
 
 ```go
 go run . artisan make:policy PostPolicy
+go run . artisan make:policy user/PostPolicy
 ```
 
 ### Writing Policies

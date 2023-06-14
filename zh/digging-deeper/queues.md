@@ -34,6 +34,7 @@ err := facades.Queue.Job(&jobs.Test{}, []queue.Arg{
 
 ```go
 go run . artisan make:job ProcessPodcast
+go run . artisan make:job user/ProcessPodcast
 ```
 
 ### 类结构

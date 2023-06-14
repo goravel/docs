@@ -4,19 +4,15 @@
 
 ## Introduction
 
-Goravel provides an expandable cache module, this module can be operated using `facades.Cache`.
+Goravel provides an expandable cache module, this module can be operated using `facades.Cache`. Goravel comes with `memory` driver, for other drivers, please check the corresponding independent extension packages:
+
+| Driver       | Link           |
+| -----------  | -------------- |
+| Redis        | https://github.com/goravel/redis     |
 
 ## Configuration
 
-Make all custom configurations in `config/cache.go`. Different cache drivers are allowed to be configured. By default, `memory` is used. You can also customize the driver.
-
-## Available Cache Drivers
-
-| Name     | Description  |
-| -------- | ------------ |
-| `memory` | Memory drive, restarting service will clear cache |
-| `redis`  | Redis drive  |
-| `custom` | Custom drive |
+Make all custom configurations in `config/cache.go`.
 
 ## Cache Usage
 
@@ -203,7 +199,7 @@ Then include a `via` option to implement a `framework\contracts\cache\Store` int
 },
 ```
 
-### Implement Driver
+### Implement Custom Driver
 
 Implement the `framework\contracts\cache\Store` interface, files can be stored in the `app/extensions` folder (modifiable).
 

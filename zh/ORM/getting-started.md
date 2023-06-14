@@ -75,6 +75,7 @@ import "github.com/goravel/framework/contracts/database"
 
 ```
 go run . artisan make:model User
+go run . artisan make:model user/User
 ```
 
 ### 指定表名
@@ -736,8 +737,8 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 
 如果在一个模型上监听了多个事件，可以使用观察者来将这些监听器组织到一个单独的类中。观察者类的方法名映射到你希望监听的事件。`make:observer` Artisan 命令可以快速建立新的观察者类：
 
-```shell
-go run . artisan make:observer UserObserver
+```
+go run . artisan make:observer user/UserObserver
 ```
 
 此命令将在 `app/observers` 文件夹放置新的观察者类。如果这个目录不存在，Artisan 将替您创建：

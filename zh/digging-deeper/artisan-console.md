@@ -34,6 +34,7 @@ artisan make:controller DemoController
 
 ```go
 go run . artisan make:command SendEmails
+go run . artisan make:command user/SendEmails
 ```
 
 ### 命令结构

@@ -151,6 +151,7 @@ facades.Gate.WithContext(ctx).Allows("update-post", map[string]any{
 
 ```go
 go run . artisan make:policy PostPolicy
+go run . artisan make:policy user/PostPolicy
 ```
 
 ### 编写策略

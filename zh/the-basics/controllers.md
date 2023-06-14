@@ -56,6 +56,7 @@ func Web() {
 
 ```
 go run . artisan make:controller UserController
+go run . artisan make:controller user/UserController
 ```
 
 <CommentService/>
