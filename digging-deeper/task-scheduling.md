@@ -17,7 +17,7 @@ package console
 
 import (
   "github.com/goravel/framework/contracts/console"
-  "github.com/goravel/framework/schedule/support"
+  "github.com/goravel/framework/contracts/schedule"
   "github.com/goravel/framework/facades"
 
   "goravel/app/models"
@@ -26,8 +26,8 @@ import (
 type Kernel struct {
 }
 
-func (kernel Kernel) Schedule() []*support.Event {
-  return []*support.Event{
+func (kernel Kernel) Schedule() []schedule.Event {
+  return []schedule.Event{
     facades.Schedule().Call(func() {
       facades.Orm().Query().Where("1 = 1").Delete(&models.User{})
     }).Daily(),
@@ -44,15 +44,15 @@ package console
 
 import (
   "github.com/goravel/framework/contracts/console"
-  "github.com/goravel/framework/schedule/support"
+  "github.com/goravel/framework/contracts/schedule"
   "github.com/goravel/framework/facades"
 )
 
 type Kernel struct {
 }
 
-func (kernel *Kernel) Schedule() []*support.Event {
-  return []*support.Event{
+func (kernel *Kernel) Schedule() []schedule.Event {
+  return []schedule.Event{
     facades.Schedule().Command("send:emails name").Daily(),
   }
 }

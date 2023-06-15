@@ -151,7 +151,6 @@ func (r *User) TableName() string {
 | SharedLock    | [悲观锁](#悲观锁)           |
 | Table         | [指定表](#指定表查询)                   |
 | Update        | [更新单个字段](#更新)                   |
-| Updates       | [更新多个字段](#更新)                   |
 | UpdateOrCreate       | [更新或创建一条数据](#更新或创建一条数据)                   |
 | Where         | [查询条件](#where-条件)                  |
 | WithoutEvents | [静默事件](#静默事件)               |
@@ -452,20 +451,12 @@ facades.Orm().Query().Save(&user)
 ```go
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
 // UPDATE users SET name='tom', updated_at='2022-09-28 16:29:39' WHERE name="tom";
-```
 
-#### 更新多个字段
-
-该方法将返回受影响的行数：
-
-```go
-res, err := facades.Orm().Query().Model(&user).Where("name", "tom").Updates(User{Name: "hello", Age: 18})
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(User{Name: "hello", Age: 18})
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
-
-num := res.RowsAffected
 ```
 
-> 当使用 `struct` 进行批量更新（Updates）时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
+> 当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
 
 #### 更新或创建一条数据
 

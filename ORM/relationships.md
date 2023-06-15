@@ -308,7 +308,7 @@ type Post struct {
 
 ### Create or Update Associations
 
-You can use the `Select`, `Omit` methods to to control the create and update of associations. These two method cannot be used at the same time and the associated control functions are only applicable to `Create`, `Updates`, `Save`:
+You can use the `Select`, `Omit` methods to to control the create and update of associations. These two method cannot be used at the same time and the associated control functions are only applicable to `Create`, `Update`, `Save`:
 
 ```go
 user := User{Name: "user", Post: &Post{Name: "post"}}

@@ -151,7 +151,6 @@ func (r *User) TableName() string {
 | SharedLock | [Pessimistic Locking](#pessimistic-locking)           |
 | Table         | [Specify a table](#specify-table-query)                 |
 | Update        | [Update a single column](#update-a-single-column)                   |
-| Updates       | [Update multiple columns](#update-multiple-columns)                  |
 | UpdateOrCreate       | [Update or create](#update-or-create)                  |
 | Where         | [Where](#where)                                         |
 | WithoutEvents | [Muting events](#muting-events)               |
@@ -453,17 +452,9 @@ facades.Orm().Query().Save(&user)
 ```go
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
 // UPDATE users SET name='tom', updated_at='2022-09-28 16:29:39' WHERE name="tom";
-```
 
-#### Update multiple columns
-
-The number of rows affected by the statement is returned by the method:
-
-```go
-res, err := facades.Orm().Query().Model(&user).Where("name", "tom").Updates(User{Name: "hello", Age: 18})
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(User{Name: "hello", Age: 18})
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
-
-num := res.RowsAffected
 ```
 
 > When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.

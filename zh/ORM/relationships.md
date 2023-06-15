@@ -307,7 +307,7 @@ type Post struct {
 
 ### 创建/更新关联
 
-可以使用 `Select`, `Omit` 方法，对关联的创建和更新进行更细颗粒度控制。这两个方法不可同时使用，且对关联的控制功能只适用于 `Create`, `Updates`, `Save`：
+可以使用 `Select`, `Omit` 方法，对关联的创建和更新进行更细颗粒度控制。这两个方法不可同时使用，且对关联的控制功能只适用于 `Create`, `Update`, `Save`：
 
 ```go
 user := User{Name: "user", Post: &Post{Name: "post"}}
