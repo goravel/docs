@@ -729,6 +729,7 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 如果在一个模型上监听了多个事件，可以使用观察者来将这些监听器组织到一个单独的类中。观察者类的方法名映射到你希望监听的事件。`make:observer` Artisan 命令可以快速建立新的观察者类：
 
 ```
+go run . artisan make:observer UserObserver
 go run . artisan make:observer user/UserObserver
 ```
 
