@@ -1,8 +1,10 @@
 # Mail
 
+[[toc]]
+
 ## Introduction
 
-Goravel can use `facades.Mail` to easily send mail locally.
+Goravel can use `facades.Mail()` to easily send mail locally.
 
 ## Configuration
 
@@ -13,7 +15,7 @@ Before sending an email, you need to configure the `config/mail.go` configuratio
 ```go
 import "github.com/goravel/framework/contracts/mail"
 
-err := facades.Mail.To([]string{"example@example.com"}).
+err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
@@ -26,7 +28,7 @@ err := facades.Mail.To([]string{"example@example.com"}).
 ```go
 import "github.com/goravel/framework/contracts/mail"
 
-err := facades.Mail.To([]string{"example@example.com"}).
+err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
@@ -39,7 +41,7 @@ You can also customize the queue:
 ```go
 import "github.com/goravel/framework/contracts/mail"
 
-err := facades.Mail.To([]string{"example@example.com"}).
+err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
@@ -54,7 +56,7 @@ Framework uses `MAIL_FROM_ ADDRESS` and `MAIL_FROM_ NAME` in the `config/mail.go
 ```go
 import "github.com/goravel/framework/contracts/mail"
 
-err := facades.Mail.To([]string{"example@example.com"}).
+err := facades.Mail().To([]string{"example@example.com"}).
   From(mail.From{Address: "example@example.com", Name: "example"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).

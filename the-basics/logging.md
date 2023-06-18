@@ -4,7 +4,7 @@
 
 ## Introduction
 
-In order to understand the running status of the application, Goravel provides a powerful log service that can record log messages and system errors to a file or other channels through `facades.Log`.
+In order to understand the running status of the application, Goravel provides a powerful log service that can record log messages and system errors to a file or other channels through `facades.Log()`.
 
 ## Configuration
 
@@ -26,24 +26,24 @@ The `print` configuration in `single` and `daily` drivers can control log output
 ### Inject Context
 
 ```go
-facades.Log.WithContext(ctx)
+facades.Log().WithContext(ctx)
 ```
 
 ## Write log messages
 
 ```go
-facades.Log.Debug(message)
-facades.Log.Debugf(message, args)
-facades.Log.Info(message)
-facades.Log.Infof(message, args)
-facades.Log.Warning(message)
-facades.Log.Warningf(message, args)
-facades.Log.Error(message)
-facades.Log.Errorf(message, args)
-facades.Log.Fatal(message)
-facades.Log.Fatalf(message, args)
-facades.Log.Panic(message)
-facades.Log.Panicf(message, args)
+facades.Log().Debug(message)
+facades.Log().Debugf(message, args)
+facades.Log().Info(message)
+facades.Log().Infof(message, args)
+facades.Log().Warning(message)
+facades.Log().Warningf(message, args)
+facades.Log().Error(message)
+facades.Log().Errorf(message, args)
+facades.Log().Fatal(message)
+facades.Log().Fatalf(message, args)
+facades.Log().Panic(message)
+facades.Log().Panicf(message, args)
 ```
 
 ## Create a custom channel

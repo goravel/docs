@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Goravel provides a very easy-to-use way to interact with databases, Developers can use `facades.Orm` to operate. Currently, Goravel provides official support for the following four databases:
+Goravel provides a very easy-to-use way to interact with databases, Developers can use `facades.Orm()` to operate. Currently, Goravel provides official support for the following four databases:
 
 - MySQL 5.7+
 - PostgreSQL 9.6+
@@ -75,6 +75,7 @@ For example, the model name is `UserOrder`, the table name is `user_orders`.
 
 ```
 go run . artisan make:model User
+go run . artisan make:model user/User
 ```
 
 ### Specify Table Name
@@ -108,7 +109,7 @@ func (r *User) TableName() string {
 | Transaction | [Transaction](#transaction)                                 |
 | WithContext | [Inject Context](#inject-context)                           |
 
-## facades.Orm.Query & facades.Orm.Transaction available functions
+## facades.Orm().Query & facades.Orm().Transaction available functions
 
 | Functions     | Action                                                  |
 | ------------- | ------------------------------------------------------- |
@@ -150,7 +151,6 @@ func (r *User) TableName() string {
 | SharedLock | [Pessimistic Locking](#pessimistic-locking)           |
 | Table         | [Specify a table](#specify-table-query)                 |
 | Update        | [Update a single column](#update-a-single-column)                   |
-| Updates       | [Update multiple columns](#update-multiple-columns)                  |
 | UpdateOrCreate       | [Update or create](#update-or-create)                  |
 | Where         | [Where](#where)                                         |
 | WithoutEvents | [Muting events](#muting-events)               |
@@ -161,15 +161,15 @@ func (r *User) TableName() string {
 ### Inject Context
 
 ```go
-facades.Orm.WithContext(ctx)
+facades.Orm().WithContext(ctx)
 ```
 
 ### Specify Database Connection
 
-If you define multiple database connections in the `config/database.go` file, you can use them through the `Connection` function of `facades.Orm`. The connection name passed to `Connection` should be one of the connections configured in `config/database.go`:
+If you define multiple database connections in the `config/database.go` file, you can use them through the `Connection` function of `facades.Orm()`. The connection name passed to `Connection` should be one of the connections configured in `config/database.go`:
 
 ```go
-facades.Orm.Connection("mysql")
+facades.Orm().Connection("mysql")
 ```
 
 ### Generic Database Interface sql.DB
@@ -177,8 +177,8 @@ facades.Orm.Connection("mysql")
 Generic database interface sql.DB, then use the functionality it provides:
 
 ```go
-db, err := facades.Orm.DB()
-db, err := facades.Orm.Connection("mysql").DB()
+db, err := facades.Orm().DB()
+db, err := facades.Orm().Connection("mysql").DB()
 
 // Ping
 db.Ping()
@@ -204,9 +204,9 @@ db.SetConnMaxLifetime(time.Hour)
 Before each specific database operation, it's necessary to obtain an instance of the database.
 
 ```go
-facades.Orm.Query()
-facades.Orm.Connection("mysql").Query()
-facades.Orm.WithContext(ctx).Query()
+facades.Orm().Query()
+facades.Orm().Connection("mysql").Query()
+facades.Orm().WithContext(ctx).Query()
 ```
 
 ### Select
@@ -215,14 +215,14 @@ facades.Orm.WithContext(ctx).Query()
 
 ```go
 var user models.User
-facades.Orm.Query().First(&user)
+facades.Orm().Query().First(&user)
 // SELECT * FROM users WHERE id = 10;
 ```
 
 Sometimes you may wish to perform some other action if no results are found. The findOr and firstOr methods will return a single model instance or, if no results are found, execute the given closure. You can set values to model in closure:
 
 ```go
-facades.Orm.Query().Where("name", "first_user").FirstOr(&user, func() error {
+facades.Orm().Query().Where("name", "first_user").FirstOr(&user, func() error {
   user.Name = "goravel"
 
   return nil
@@ -233,11 +233,11 @@ facades.Orm.Query().Where("name", "first_user").FirstOr(&user, func() error {
 
 ```go
 var user models.User
-facades.Orm.Query().Find(&user, 1)
+facades.Orm().Query().Find(&user, 1)
 // SELECT * FROM users WHERE id = 1;
 
 var users []models.User
-facades.Orm.Query().Find(&users, []int{1,2,3})
+facades.Orm().Query().Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
@@ -245,14 +245,14 @@ facades.Orm.Query().Find(&users, []int{1,2,3})
 
 ```go
 var user models.User
-err := facades.Orm.Query().FindOrFail(&user, 1)
+err := facades.Orm().Query().FindOrFail(&user, 1)
 ```
 
 #### When the primary key of the user table is `string` type, you need to specify the primary key when calling `Find` method
 
 ```go
 var user models.User
-facades.Orm.Query().Find(&user, "uuid=?" ,"a")
+facades.Orm().Query().Find(&user, "uuid=?" ,"a")
 // SELECT * FROM users WHERE uuid = "a";
 ```
 
@@ -260,7 +260,7 @@ facades.Orm.Query().Find(&user, "uuid=?" ,"a")
 
 ```go
 var users []models.User
-facades.Orm.Query().Where("id in ?", []int{1,2,3}).Get(&users)
+facades.Orm().Query().Where("id in ?", []int{1,2,3}).Get(&users)
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
@@ -272,19 +272,19 @@ The `FirstOrNew` method, like `FirstOrCreate`, will attempt to locate a record i
 
 ```go
 var user models.User
-facades.Orm.Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"})
+facades.Orm().Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"})
 // SELECT * FROM users where name="tom" and sex=1;
 // INSERT INTO users (name) VALUES ("tom");
 
-facades.Orm.Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
+facades.Orm().Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
 // SELECT * FROM users where name="tom" and sex=1;
 // INSERT INTO users (name,avatar) VALUES ("tom", "avatar");
 
 var user models.User
-facades.Orm.Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"})
+facades.Orm().Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"})
 // SELECT * FROM users where name="tom" and sex=1;
 
-facades.Orm.Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
+facades.Orm().Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
 // SELECT * FROM users where name="tom" and sex=1;
 ```
 
@@ -294,25 +294,25 @@ When not fount model, `First` doesn't return error, if you want return an error,
 
 ```go
 var user models.User
-err := facades.Orm.Query().FirstOrFail(&user)
+err := facades.Orm().Query().FirstOrFail(&user)
 // err == orm.ErrRecordNotFound
 ```
 
 ### Where
 
 ```go
-facades.Orm.Query().Where("name", "tom")
-facades.Orm.Query().Where("name = 'tom'")
-facades.Orm.Query().Where("name = ?", "tom")
+facades.Orm().Query().Where("name", "tom")
+facades.Orm().Query().Where("name = 'tom'")
+facades.Orm().Query().Where("name = ?", "tom")
 
-facades.Orm.Query().OrWhere("name = ?", "tom")
+facades.Orm().Query().OrWhere("name = ?", "tom")
 ```
 
 ### Limit
 
 ```go
 var users []models.User
-facades.Orm.Query().Where("name = ?", "tom").Limit(3).Get(&users)
+facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
 // SELECT * FROM users WHERE name = "tom" LIMIT 3;
 ```
 
@@ -320,7 +320,7 @@ facades.Orm.Query().Where("name = ?", "tom").Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm.Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
+facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 // SELECT * FROM users WHERE name = "tom" OFFSET 5 LIMIT 3;
 ```
 
@@ -328,7 +328,7 @@ facades.Orm.Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm.Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
+facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM users WHERE name = "tom" order sort asc, id desc;
 ```
 
@@ -337,7 +337,7 @@ facades.Orm.Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").
 ```go
 var users []models.User
 var total int64
-facades.Orm.Query().Paginate(1, 10, &users, &total)
+facades.Orm().Query().Paginate(1, 10, &users, &total)
 // SELECT count(*) FROM `users`;
 // SELECT * FROM `users` LIMIT 10;
 ```
@@ -346,7 +346,7 @@ facades.Orm.Query().Paginate(1, 10, &users, &total)
 
 ```go
 var ages []int64
-facades.Orm.Query().Model(&models.User{}).Pluck("age", &ages)
+facades.Orm().Query().Model(&models.User{}).Pluck("age", &ages)
 // SELECT `name` FROM `users`;
 ```
 
@@ -358,7 +358,7 @@ Specify a model
 
 ```go
 var count int64
-facades.Orm.Query().Model(&models.User{}).Count(&count)
+facades.Orm().Query().Model(&models.User{}).Count(&count)
 // SELECT count(1) where users
 ```
 
@@ -366,7 +366,7 @@ Specify a table
 
 ```go
 var count int
-facades.Orm.Query().Table("users").Count(&count)
+facades.Orm().Query().Table("users").Count(&count)
 // SELECT count(1) where users
 ```
 
@@ -374,7 +374,7 @@ facades.Orm.Query().Table("users").Count(&count)
 
 ```go
 var count int64
-facades.Orm.Query().Where("name = ?", "tom").Count(&count)
+facades.Orm().Query().Where("name = ?", "tom").Count(&count)
 // SELECT count(1) FROM users WHERE name = 'tom'
 ```
 
@@ -383,10 +383,10 @@ facades.Orm.Query().Where("name = ?", "tom").Count(&count)
 `Select` allows you to specify which fields to retrieve from the database, by default the ORM retrieves all fields.
 
 ```go
-facades.Orm.Query().Select("name", "age").Get(&users)
+facades.Orm().Query().Select("name", "age").Get(&users)
 // SELECT name, age FROM users;
 
-facades.Orm.Query().Select([]string{"name", "age"}).Get(&users)
+facades.Orm().Query().Select([]string{"name", "age"}).Get(&users)
 // SELECT name, age FROM users;
 ```
 
@@ -399,7 +399,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm.Query().Model(&models.User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
+facades.Orm().Query().Model(&models.User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
 // SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "tom"
 ```
 
@@ -412,7 +412,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm.Query().Model(&models.User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result)
+facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result)
 // SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
 ```
 
@@ -420,7 +420,7 @@ facades.Orm.Query().Model(&models.User{}).Select("users.name, emails.email").Joi
 
 ```go
 user := User{Name: "tom", Age: 18}
-result := facades.Orm.Query().Create(&user)
+result := facades.Orm().Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
 ```
 
@@ -428,7 +428,7 @@ Multiple create
 
 ```go
 users := []User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
-result := facades.Orm.Query().Create(&users)
+result := facades.Orm().Query().Create(&users)
 ```
 
 > `created_at` and `updated_at` will be filled automatically.
@@ -439,30 +439,22 @@ result := facades.Orm.Query().Create(&users)
 
 ```go
 var user models.User
-facades.Orm.Query().First(&user)
+facades.Orm().Query().First(&user)
 
 user.Name = "tom"
 user.Age = 100
-facades.Orm.Query().Save(&user)
+facades.Orm().Query().Save(&user)
 // UPDATE users SET name='tom', age=100, updated_at = '2022-09-28 16:28:22' WHERE id=1;
 ```
 
 #### Update a single column
 
 ```go
-facades.Orm.Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
 // UPDATE users SET name='tom', updated_at='2022-09-28 16:29:39' WHERE name="tom";
-```
 
-#### Update multiple columns
-
-The number of rows affected by the statement is returned by the method:
-
-```go
-res, err := facades.Orm.Query().Model(&user).Where("name", "tom").Updates(User{Name: "hello", Age: 18})
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(User{Name: "hello", Age: 18})
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
-
-num := res.RowsAffected
 ```
 
 > When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
@@ -472,7 +464,7 @@ num := res.RowsAffected
 Query by `name`, if not exist, create by `name`, `avatar`, if exists, update `avatar` based on `name`:
 
 ```go
-facades.Orm.Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avatar"})
+facades.Orm().Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avatar"})
 // SELECT * FROM `users` WHERE `users`.`name` = 'name' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
 // INSERT INTO `users` (`created_at`,`updated_at`,`deleted_at`,`name`,`avatar`) VALUES ('2023-03-11 10:11:08.869','2023-03-11 10:11:08.869',NULL,'name','avatar')
 // UPDATE `users` SET `avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE `name` = 'name' AND `users`.`deleted_at` IS NULL AND `id` = 1
@@ -483,8 +475,8 @@ Delete by model, the number of rows affected by the statement is returned by the
 
 ```go
 var user models.User
-facades.Orm.Query().Find(&user, 1)
-res, err := facades.Orm.Query().Delete(&user)
+facades.Orm().Query().Find(&user, 1)
+res, err := facades.Orm().Query().Delete(&user)
 // DELETE FROM users where id = 1;
 
 num := res.RowsAffected
@@ -493,53 +485,53 @@ num := res.RowsAffected
 Delete by ID
 
 ```go
-facades.Orm.Query().Delete(&models.User{}, 10)
+facades.Orm().Query().Delete(&models.User{}, 10)
 // DELETE FROM users WHERE id = 10;
 
-facades.Orm.Query().Delete(&models.User{}, []int{1, 2, 3})
+facades.Orm().Query().Delete(&models.User{}, []int{1, 2, 3})
 // DELETE FROM users WHERE id in (1, 2, 3);
 ```
 
 Multiple delete
 
 ```go
-facades.Orm.Query().Where("name = ?", "tom").Delete(&models.User{})
+facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
 // DELETE FROM users where name = "tom";
 ```
 
 Want to force delete a soft-delete data.
 
 ```go
-facades.Orm.Query().Where("name = ?", "tom").ForceDelete(&models.User{})
+facades.Orm().Query().Where("name = ?", "tom").ForceDelete(&models.User{})
 ```
 
 You can delete records with model associations via `Select`:
 
 ```go
 // Delete Account of user when deleting user
-facades.Orm.Query().Select("Account").Delete(&user)
+facades.Orm().Query().Select("Account").Delete(&user)
 
 // Delete Orders and CreditCards of user when deleting user
-facades.Orm.Query().Select("Orders", "CreditCards").Delete(&user)
+facades.Orm().Query().Select("Orders", "CreditCards").Delete(&user)
 
 // Delete all child associations of user when deleting user
-facades.Orm.Query().Select(orm.Associations).Delete(&user)
+facades.Orm().Query().Select(orm.Associations).Delete(&user)
 
 // Delete all Account of users when deleting users
-facades.Orm.Query().Select("Account").Delete(&users)
+facades.Orm().Query().Select("Account").Delete(&users)
 ```
 
 Note: The associations will be deleted only if the primary key of the record is not empty, and Orm uses these primary keys as conditions to delete associated records:
 
 ```go
 // Delete user that name=`jinzhu`, but don't delete account of user
-facades.Orm.Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
+facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
 
 // Delete user that name=`jinzhu` and id = `1`, and delete account of user
-facades.Orm.Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
+facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
 
 // Delete user that id = `1` and delete account that user
-facades.Orm.Query().Select("Account").Delete(&User{ID: 1})
+facades.Orm().Query().Select("Account").Delete(&User{ID: 1})
 ```
 
 If execute batch delete without any conditions, ORM doesn't do that and returns an error. So you have to add some conditions, or use native SQL.
@@ -548,20 +540,20 @@ If execute batch delete without any conditions, ORM doesn't do that and returns 
 
 ```go
 var user models.User
-facades.Orm.Query().WithTrashed().First(&user)
+facades.Orm().Query().WithTrashed().First(&user)
 ```
 
 ### Filter Repetition
 
 ```go
 var users []models.User
-facades.Orm.Query().Distinct("name").Find(&users)
+facades.Orm().Query().Distinct("name").Find(&users)
 ```
 
 ### Get Driver
 
 ```go
-driver := facades.Orm.Query().Driver()
+driver := facades.Orm().Query().Driver()
 
 // Judge driver
 if driver == orm.DriverMysql {}
@@ -577,7 +569,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm.Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom").Scan(&result)
+facades.Orm().Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom").Scan(&result)
 ```
 
 ### Execute Native Update SQL
@@ -585,7 +577,7 @@ facades.Orm.Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom")
 The number of rows affected by the statement is returned by the method:
 
 ```go
-res, err := facades.Orm.Query().Exec("DROP TABLE users")
+res, err := facades.Orm().Query().Exec("DROP TABLE users")
 // DROP TABLE users;
 
 num := res.RowsAffected
@@ -605,7 +597,7 @@ import (
 
 ...
 
-return facades.Orm.Transaction(func(tx orm.Transaction) error {
+return facades.Orm().Transaction(func(tx orm.Transaction) error {
   var user models.User
 
   return tx.Find(&user, user.ID)
@@ -615,7 +607,7 @@ return facades.Orm.Transaction(func(tx orm.Transaction) error {
 You can also manually control the flow of the transaction yourself:
 
 ```go
-tx, err := facades.Orm.Query().Begin()
+tx, err := facades.Orm().Query().Begin()
 user := models.User{Name: "Goravel"}
 if err := tx.Create(&user); err != nil {
   err := tx.Rollback()
@@ -639,7 +631,7 @@ func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
   }
 }
 
-facades.Orm.Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
+facades.Orm().Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
 ```
 
 ### Raw Expressions
@@ -649,7 +641,7 @@ You can use the `db.Raw` method to update fields:
 ```go
 import "github.com/goravel/framework/database/db"
 
-facades.Orm.Query().Model(&user).Update("age", db.Raw("age - ?", 1))
+facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
 ```
 
 ### Pessimistic Locking
@@ -660,14 +652,14 @@ To execute a statement with a "shared lock", you may call the `SharedLock` metho
 
 ```go
 var users []models.User
-facades.Orm.Query().where("votes", ">", 100).SharedLock().Get(&users)
+facades.Orm().Query().where("votes", ">", 100).SharedLock().Get(&users)
 ```
 
 Alternatively, you may use the `LockForUpdate` method. A "for update" lock prevents the selected records from being modified or from being selected with another shared lock:
 
 ```go
 var users []models.User
-facades.Orm.Query().where("votes", ">", 100).LockForUpdate().Get(&users)
+facades.Orm().Query().where("votes", ">", 100).LockForUpdate().Get(&users)
 ```
 
 ## Events
@@ -736,8 +728,9 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 
 If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
-```shell
+```
 go run . artisan make:observer UserObserver
+go run . artisan make:observer user/UserObserver
 ```
 
 This command will place the new observer in your `app/observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
@@ -814,11 +807,11 @@ type EventServiceProvider struct {
 }
 
 func (receiver *EventServiceProvider) Register() {
-	facades.Event.Register(receiver.listen())
+	facades.Event().Register(receiver.listen())
 }
 
 func (receiver *EventServiceProvider) Boot() {
-	facades.Orm.Observe(models.User{}, &observers.UserObserver{})
+	facades.Orm().Observe(models.User{}, &observers.UserObserver{})
 }
 
 func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
@@ -834,7 +827,7 @@ The `event` parameter will be passed to all observers:
 
 | Method   | Action                                                |
 | -------- | ------------------------------------------------------- |
-| Context  | Get context that passed by `facades.Orm.WithContext()` |
+| Context  | Get context that passed by `facades.Orm().WithContext()` |
 | GetAttribute  | Get the modified value, if not modified, get the original value, if there is no original value, return nil |
 | GetOriginal  | Get the original value, if there is no original value, return nil |
 | IsDirty  | Determine whether the field is modified |
@@ -848,7 +841,7 @@ You may occasionally need to temporarily "mute" all events fired by a model. You
 
 ```go
 var user models.User
-facades.Orm.Query().WithoutEvents().Find(&user, 1)
+facades.Orm().Query().WithoutEvents().Find(&user, 1)
 ```
 
 #### Saving A Single Model Without Events
@@ -857,9 +850,9 @@ Sometimes you may wish to "save" a given model without dispatching any events. Y
 
 ```go
 var user models.User
-err := facades.Orm.Query().FindOrFail(&user, 1)
+err := facades.Orm().Query().FindOrFail(&user, 1)
 user.Name = "Goravel"
-err := facades.Orm.Query().SaveQuietly(&user)
+err := facades.Orm().Query().SaveQuietly(&user)
 ```
 
 <CommentService/>

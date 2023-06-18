@@ -14,18 +14,18 @@ Goravel 的加密机制使用的是 OpenSSL 所提供的 AES-256 加密。强烈
 
 ### 加密一个值
 
-你可以使用 `facades.Crypt` 提供的 `EncryptString` 来加密一个值。所有加密的值都使用 OpenSSL 的 `AES-256-GCM` 来进行加密。此外，所有加密过的值都会使用消息认证码 (GMAC) 来签名，以检测加密字符串是否被篡改过：
+你可以使用 `facades.Crypt()` 提供的 `EncryptString` 来加密一个值。所有加密的值都使用 OpenSSL 的 `AES-256-GCM` 来进行加密。此外，所有加密过的值都会使用消息认证码 (GMAC) 来签名，以检测加密字符串是否被篡改过：
 
 ```go
-secret, err := facades.Crypt.EncryptString("goravel")
+secret, err := facades.Crypt().EncryptString("goravel")
 ```
 
 ### 解密一个值
 
-您可以使用 `facades.Crypt` 提供的 `DecryptString` 来进行解密。如果该值不能被正确解密，例如消息认证码 (MAC) 无效，会返回错误：
+您可以使用 `facades.Crypt()` 提供的 `DecryptString` 来进行解密。如果该值不能被正确解密，例如消息认证码 (MAC) 无效，会返回错误：
 
 ```go
-str, err := facades.Crypt.DecryptString(secret)
+str, err := facades.Crypt().DecryptString(secret)
 ```
 
 <CommentService/>

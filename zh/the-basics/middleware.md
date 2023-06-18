@@ -51,6 +51,7 @@ Goravel 中自带了一些中间件可供使用：
 ### 命令创建中间件
 ```
 go run . artisan make:middleware Cors
+go run . artisan make:middleware user/Cors
 ```
 
 ## 注册中间件
@@ -85,7 +86,7 @@ func (kernel *Kernel) Middleware() []http.Middleware {
 ```go
 import "github.com/goravel/framework/http/middleware"
 
-facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
+facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 <CommentService/>

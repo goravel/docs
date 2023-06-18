@@ -35,7 +35,7 @@ func (receiver *AuthServiceProvider) Register() {
 }
 
 func (receiver *AuthServiceProvider) Boot() {
-  facades.Gate.Define("update-post", func(ctx context.Context, arguments map[string]any) access.Response {
+  facades.Gate().Define("update-post", func(ctx context.Context, arguments map[string]any) access.Response {
     user := ctx.Value("user").(models.User)
     post := arguments["post"].(models.Post)
     
@@ -63,7 +63,7 @@ type UserController struct {
 
 func (r *UserController) Show(ctx http.Context) {
   var post models.Post
-  if facades.Gate.Allows("update-post", map[string]any{
+  if facades.Gate().Allows("update-post", map[string]any{
     "post": post,
   }) {
     
@@ -74,13 +74,13 @@ func (r *UserController) Show(ctx http.Context) {
 您还可以通过 `any` 或 `none` 方法来一次性授权多个行为:
 
 ```go
-if facades.Gate.Any([]string{"update-post", "delete-post"}, map[string]any{
+if facades.Gate().Any([]string{"update-post", "delete-post"}, map[string]any{
   "post": post,
 }) {
   // 用户可以提交update或delete...
 }
 
-if facades.Gate.None([]string{"update-post", "delete-post"}, map[string]any{
+if facades.Gate().None([]string{"update-post", "delete-post"}, map[string]any{
   "post": post,
 }) {
   // 用户不可以提交update和delete...
@@ -92,7 +92,7 @@ if facades.Gate.None([]string{"update-post", "delete-post"}, map[string]any{
 使用 `Allows` 方法，将仅返回一个简单的布尔值，您也还可以使用 `Inspect` 方法来返回拦截器（Gates）中的所有响应值：
 
 ```go
-response := facades.Gate.Inspect("edit-settings", nil);
+response := facades.Gate().Inspect("edit-settings", nil);
 
 if (response.Allowed()) {
     // 行为进行授权...
@@ -106,7 +106,7 @@ if (response.Allowed()) {
 有时，您可能希望将所有权限授予特定用户。您可以使用 `Before` 方法。该方法将定义该授权拦截规则，优先于所有其他授权拦截规则前执行：
 
 ```go
-facades.Gate.Before(func(ctx context.Context, ability string, arguments map[string]any) access.Response {
+facades.Gate().Before(func(ctx context.Context, ability string, arguments map[string]any) access.Response {
   user := ctx.Value("user").(models.User)
   if isAdministrator(user) {
     return access.NewAllowResponse()
@@ -121,7 +121,7 @@ facades.Gate.Before(func(ctx context.Context, ability string, arguments map[stri
 您还可以使用 `After` 方法，来定义在所有授权拦截规则执行后，再次进行授权拦截规则判定：
 
 ```go
-facades.Gate.After(func(ctx context.Context, ability string, arguments map[string]any, result access.Response) access.Response {
+facades.Gate().After(func(ctx context.Context, ability string, arguments map[string]any, result access.Response) access.Response {
   user := ctx.Value("user").(models.User)
   if isAdministrator(user) {
     return access.NewAllowResponse()
@@ -131,14 +131,14 @@ facades.Gate.After(func(ctx context.Context, ability string, arguments map[strin
 })
 ```
 
-> 注意：只有当 `facades.Gate.Define` 返回 nil 时，才会应用 `After` 的返回结果。
+> 注意：只有当 `facades.Gate().Define` 返回 nil 时，才会应用 `After` 的返回结果。
 
 ### 注入 Context
 
 `context` 将被传入到 `Before`, `After`, `Define` 方法中。
 
 ```go
-facades.Gate.WithContext(ctx).Allows("update-post", map[string]any{
+facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
   "post": post,
 })
 ```
@@ -151,6 +151,7 @@ facades.Gate.WithContext(ctx).Allows("update-post", map[string]any{
 
 ```go
 go run . artisan make:policy PostPolicy
+go run . artisan make:policy user/PostPolicy
 ```
 
 ### 编写策略
@@ -188,7 +189,7 @@ func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) acces
 然后我们就可以在 `app/providers/auth_service_provider.go` 中注册策略：
 
 ```go
-facades.Gate.Define("update-post", policies.NewPostPolicy().Update)
+facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
 ```
 
 您可以继续根据需要为策略授权的各种操作定义其他方法。例如，您可以定义 `View` 或 `Delete` 方法来授权各种与 `models.Post` 相关的操作，但请记住，您可以自由地为策略方法命名任何您喜欢的名称。

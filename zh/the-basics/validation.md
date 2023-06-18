@@ -18,8 +18,8 @@ Goravel 提供了几种不同的方法来验证传入应用程序的数据。最
 import "goravel/app/http/controllers"
 
 postController := controllers.NewPostController()
-facades.Route.Get("/post/create", postController.Create)
-facades.Route.Post("/post", postController.Store)
+facades.Route().Get("/post/create", postController.Create)
+facades.Route().Post("/post", postController.Store)
 ```
 
 `GET` 路由会显示一个供用户创建新博客文章的表单，而 `POST` 路由会将新的博客文章存储到数据库中。
@@ -87,6 +87,7 @@ validator, err := ctx.Request().Validate(map[string]string{
 
 ```go
 go run . artisan make:request StorePostRequest
+go run . artisan make:request user/StorePostRequest
 ```
 
 该命令生成的表单请求类将被置于 `app/http/requests` 目录中。如果这个目录不存在，在您运行 `make:request` 命令后将会创建这个目录。Goravel 生成的每个表单请求都有五个方法：`Authorize`, `Rules`, `Messages`, `Attributes` 和 `PrepareForValidation`。
@@ -147,12 +148,12 @@ func (r *PostController) Store(ctx http.Context) {
 ```go
 func (r *StorePostRequest) Authorize(ctx http.Context) error {
   var comment models.Comment
-  facades.Orm.Query().First(&comment)
+  facades.Orm().Query().First(&comment)
   if comment.ID == 0 {
     return errors.New("no comment is found")
   }
 
-  if !facades.Gate.Allows("update", map[string]any{
+  if !facades.Gate().Allows("update", map[string]any{
     "comment": comment,
   }) {
     return errors.New("can't update comment")
@@ -207,7 +208,7 @@ func (r *StorePostRequest) PrepareForValidation(data validation.Data) {
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
-  validator, err := facades.Validation.Make(map[string]any{
+  validator, err := facades.Validation().Make(map[string]any{
     "name": "Goravel",
   }, map[string]string{
     "title": "required|max_len:255",
@@ -230,7 +231,7 @@ func (r *PostController) Store(ctx http.Context) {
 如果需要，您可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。您可以将自定义消息作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
 
 ```go
-validator, err := facades.Validation.Make(input, rules, validation.Messages(map[string]string{
+validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
   "required": "The :attribute field is required.",
 }))
 ```
@@ -240,7 +241,7 @@ validator, err := facades.Validation.Make(input, rules, validation.Messages(map[
 有时您可能希望只为特定属性指定自定义错误消息。您可以使用 `.` 表示法。首先指定属性名称，然后指定规则(也适用于`ctx.Request().Validate()`)：
 
 ```go
-validator, err := facades.Validation.Make(input, rules, validation.Messages(map[string]string{
+validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
   "email.required": "We need to know your email address!",
 }))
 ```
@@ -250,7 +251,7 @@ validator, err := facades.Validation.Make(input, rules, validation.Messages(map[
 Goravel 的许多内置错误消息都包含一个 `:attribute` 占位符，该占位符已被验证中的字段或属性的名称替换。为了自定义用于替换特定字段的这些占位符的值，您可以将自定义属性的数组作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
 
 ```go
-validator, err := facades.Validation.Make(input, rules, validation.Attributes(map[string]string{
+validator, err := facades.Validation().Make(input, rules, validation.Attributes(map[string]string{
   "email": "email address",
 }))
 ```
@@ -265,7 +266,7 @@ import (
   "github.com/goravel/framework/validation"
 )
 
-validator, err := facades.Validation.Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data) error {
+validator, err := facades.Validation().Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data) error {
   if name, exist := data.Get("name"); exist {
     return data.Set("name", name)
   }
@@ -285,7 +286,7 @@ validator, err := ctx.Request().Validate(rules)
 var user models.User
 err := validator.Bind(&user)
 
-validator, err := facades.Validation.Make(input, rules)
+validator, err := facades.Validation().Make(input, rules)
 var user models.User
 err := validator.Bind(&user)
 ```
@@ -304,7 +305,7 @@ fmt.Println(storePost.Name)
 
 ```go
 validator, err := ctx.Request().Validate(rules)
-validator, err := facades.Validation.Make(input, rules)
+validator, err := facades.Validation().Make(input, rules)
 
 message := validator.Errors().One("email")
 ```
@@ -394,6 +395,7 @@ Goravel 提供了各种有用的验证规则，但是，您可能希望指定一
 
 ```go
 go run . artisan make:rule Uppercase
+go run . artisan make:rule user/Uppercase
 ```
 
 创建规则后，我们就可以定义其行为了。 一个规则对象包含两个方法：`Passes` 和 `Message`。`Passes` 方法接收所有数据、待验证的数据与验证参数，应该根据属性值是否有效返回 `true` 或 `false`。`Message` 方法应该返回验证失败时应该使用的验证错误消息：
@@ -447,8 +449,8 @@ func (receiver *ValidationServiceProvider) Register() {
 }
 
 func (receiver *ValidationServiceProvider) Boot() {
-  if err := facades.Validation.AddRules(receiver.rules()); err != nil {
-    facades.Log.Errorf("add rules error: %+v", err)
+  if err := facades.Validation().AddRules(receiver.rules()); err != nil {
+    facades.Log().Errorf("add rules error: %+v", err)
   }
 }
 
@@ -470,6 +472,6 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 
 方案一：添加 [`validation.PrepareForValidation`](#验证前格式化数据)，在验证数据前对数据进行格式化；
 
-方案二：使用 `facades.Validation.Make()` 进行规则校验；
+方案二：使用 `facades.Validation().Make()` 进行规则校验；
 
 <CommentService/>

@@ -20,8 +20,58 @@ The migration command will generate two migration files at the same time: `***.u
 
 ## Run Migrations
 
+To run all of your outstanding migrations, execute the `migrate` Artisan command:
+
 ```
 go run . artisan migrate
+```
+
+If you would like to see which migrations have run thus far, you may use the `migrate:status` Artisan command:
+
+```
+go run . artisan migrate:status
+```
+
+## Rolling Back Migrations
+
+To roll back the latest migration operation, you may use the `rollback` Artisan command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
+
+```
+go run . artisan migrate:rollback
+```
+
+You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:
+
+```
+go run . artisan migrate:rollback --step=5
+```
+
+The `migrate:reset` command will roll back all of your application's migrations:
+
+```
+go run . artisan migrate:reset
+```
+
+### Roll Back & Migrate Using A Single Command
+
+The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
+
+```
+go run . artisan migrate:refresh
+```
+
+You may roll back and re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will roll back and re-migrate the last five migrations:
+
+```
+go run . artisan migrate:refresh --step=5
+```
+
+### Drop All Tables & Migrate
+
+The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:
+
+```
+go run . artisan migrate:fresh
 ```
 
 ## Quickly Create
@@ -60,19 +110,5 @@ _(to|from|in)_(\w+)$
 ```
 
 When the above conditions are not matched, the framework will generate an empty migration file.
-
-## Rolling Back Migrations
-
-To roll back the latest migration operation, you may use the `rollback` Artisan command. Note, the command only rolls back the last migration file:
-
-```
-go run . artisan migrate:rollback
-```
-
-You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:
-
-```
-go run . artisan migrate:rollback --step=5
-```
 
 <CommentService/>

@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 提供了一套非常简单易用的数据库交互方式，开发者可以使用 `facades.Orm` 进行操作。目前，Goravel 为以下四种数据库提供了官方支持：
+Goravel 提供了一套非常简单易用的数据库交互方式，开发者可以使用 `facades.Orm()` 进行操作。目前，Goravel 为以下四种数据库提供了官方支持：
 
 - MySQL 5.7+
 - PostgreSQL 9.6+
@@ -75,6 +75,7 @@ import "github.com/goravel/framework/contracts/database"
 
 ```
 go run . artisan make:model User
+go run . artisan make:model user/User
 ```
 
 ### 指定表名
@@ -108,7 +109,7 @@ func (r *User) TableName() string {
 | Transaction | [事务](#事务)                     |
 | WithContext | [注入 Context](#注入-Context)     |
 
-## facades.Orm.Query & facades.Orm.Transaction 可用方法
+## facades.Orm().Query & facades.Orm().Transaction 可用方法
 
 | 方法名        | 作用                                    |
 | ------------- | --------------------------------------- |
@@ -150,7 +151,6 @@ func (r *User) TableName() string {
 | SharedLock    | [悲观锁](#悲观锁)           |
 | Table         | [指定表](#指定表查询)                   |
 | Update        | [更新单个字段](#更新)                   |
-| Updates       | [更新多个字段](#更新)                   |
 | UpdateOrCreate       | [更新或创建一条数据](#更新或创建一条数据)                   |
 | Where         | [查询条件](#where-条件)                  |
 | WithoutEvents | [静默事件](#静默事件)               |
@@ -161,15 +161,15 @@ func (r *User) TableName() string {
 ### 注入 Context
 
 ```go
-facades.Orm.WithContext(ctx)
+facades.Orm().WithContext(ctx)
 ```
 
 ### 指定数据库链接
 
-如果你在配置文件 `config/database.go` 中定义了多个数据库连接，你可以通过 `facades.Orm` 的 `Connection` 方法来使用它们。传递给 `Connection` 方法的连接名称应该是在 `config/database.go` 配置的连接之一：
+如果你在配置文件 `config/database.go` 中定义了多个数据库连接，你可以通过 `facades.Orm()` 的 `Connection` 方法来使用它们。传递给 `Connection` 方法的连接名称应该是在 `config/database.go` 配置的连接之一：
 
 ```go
-facades.Orm.Connection("mysql")
+facades.Orm().Connection("mysql")
 ```
 
 ### 获取通用数据库接口
@@ -177,8 +177,8 @@ facades.Orm.Connection("mysql")
 获取通用数据库对象 sql.DB，然后使用其提供的功能：
 
 ```go
-db, err := facades.Orm.DB()
-db, err := facades.Orm.Connection("mysql").DB()
+db, err := facades.Orm().DB()
+db, err := facades.Orm().Connection("mysql").DB()
 
 // Ping
 db.Ping()
@@ -204,9 +204,9 @@ db.SetConnMaxLifetime(time.Hour)
 每次进行具体数据库操作前，都需要先获取数据库的实例。
 
 ```go
-facades.Orm.Query()
-facades.Orm.Connection("mysql").Query()
-facades.Orm.WithContext(ctx).Query()
+facades.Orm().Query()
+facades.Orm().Connection("mysql").Query()
+facades.Orm().WithContext(ctx).Query()
 ```
 
 ### 查询
@@ -215,14 +215,14 @@ facades.Orm.WithContext(ctx).Query()
 
 ```go
 var user models.User
-facades.Orm.Query().First(&user)
+facades.Orm().Query().First(&user)
 // SELECT * FROM users WHERE id = 10;
 ```
 
 有时你可能希望检索查询的第一个结果或在未找到结果时执行一些其他操作。`firstOr` 方法将返回匹配查询的第一个结果，或者，如果没有找到结果，则执行给定的闭包。你可以在闭包中对模型进行赋值：
 
 ```go
-facades.Orm.Query().Where("name", "first_user").FirstOr(&user, func() error {
+facades.Orm().Query().Where("name", "first_user").FirstOr(&user, func() error {
   user.Name = "goravel"
 
   return nil
@@ -233,10 +233,10 @@ facades.Orm.Query().Where("name", "first_user").FirstOr(&user, func() error {
 
 ```go
 var user models.User
-facades.Orm.Query().Find(&user, 1)
+facades.Orm().Query().Find(&user, 1)
 // SELECT * FROM users WHERE id = 1;
 
-facades.Orm.Query().Find(&users, []int{1,2,3})
+facades.Orm().Query().Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
@@ -244,14 +244,14 @@ facades.Orm.Query().Find(&users, []int{1,2,3})
 
 ```go
 var user models.User
-err := facades.Orm.Query().FindOrFail(&user, 1)
+err := facades.Orm().Query().FindOrFail(&user, 1)
 ```
 
 #### 当用户表主键为 `string` 类型，调用 `Find` 方法时需要指定主键
 
 ```go
 var user models.User
-facades.Orm.Query().Find(&user, "uuid=?" ,"a")
+facades.Orm().Query().Find(&user, "uuid=?" ,"a")
 // SELECT * FROM users WHERE uuid = "a";
 ```
 
@@ -259,7 +259,7 @@ facades.Orm.Query().Find(&user, "uuid=?" ,"a")
 
 ```go
 var users []models.User
-facades.Orm.Query().Where("id in ?", []int{1,2,3}).Get(&users)
+facades.Orm().Query().Where("id in ?", []int{1,2,3}).Get(&users)
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
@@ -271,19 +271,19 @@ facades.Orm.Query().Where("id in ?", []int{1,2,3}).Get(&users)
 
 ```go
 var user models.User
-facades.Orm.Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"})
+facades.Orm().Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"})
 // SELECT * FROM users where name="tom" and sex=1;
 // INSERT INTO users (name) VALUES ("tom");
 
-facades.Orm.Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
+facades.Orm().Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
 // SELECT * FROM users where name="tom" and sex=1;
 // INSERT INTO users (name,avatar) VALUES ("tom", "avatar");
 
 var user models.User
-facades.Orm.Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"})
+facades.Orm().Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"})
 // SELECT * FROM users where name="tom" and sex=1;
 
-facades.Orm.Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
+facades.Orm().Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
 // SELECT * FROM users where name="tom" and sex=1;
 ```
 
@@ -293,25 +293,25 @@ facades.Orm.Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"}, 
 
 ```go
 var user models.User
-err := facades.Orm.Query().FirstOrFail(&user)
+err := facades.Orm().Query().FirstOrFail(&user)
 // err == orm.ErrRecordNotFound
 ```
 
 ### Where 条件
 
 ```go
-facades.Orm.Query().Where("name", "tom")
-facades.Orm.Query().Where("name = 'tom'")
-facades.Orm.Query().Where("name = ?", "tom")
+facades.Orm().Query().Where("name", "tom")
+facades.Orm().Query().Where("name = 'tom'")
+facades.Orm().Query().Where("name = ?", "tom")
 
-facades.Orm.Query().OrWhere("name = ?", "tom")
+facades.Orm().Query().OrWhere("name = ?", "tom")
 ```
 
 ### 指定查询数量
 
 ```go
 var users []models.User
-facades.Orm.Query().Where("name = ?", "tom").Limit(3).Get(&users)
+facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
 // SELECT * FROM users WHERE name = "tom" LIMIT 3;
 ```
 
@@ -319,7 +319,7 @@ facades.Orm.Query().Where("name = ?", "tom").Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm.Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
+facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 // SELECT * FROM users WHERE name = "tom" OFFSET 5 LIMIT 3;
 ```
 
@@ -327,7 +327,7 @@ facades.Orm.Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm.Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
+facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM users WHERE name = "tom" order sort asc, id desc;
 ```
 
@@ -336,7 +336,7 @@ facades.Orm.Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").
 ```go
 var users []models.User
 var total int64
-facades.Orm.Query().Paginate(1, 10, &users, &total)
+facades.Orm().Query().Paginate(1, 10, &users, &total)
 // SELECT count(*) FROM `users`;
 // SELECT * FROM `users` LIMIT 10;
 ```
@@ -345,7 +345,7 @@ facades.Orm.Query().Paginate(1, 10, &users, &total)
 
 ```go
 var ages []int64
-facades.Orm.Query().Model(&models.User{}).Pluck("age", &ages)
+facades.Orm().Query().Model(&models.User{}).Pluck("age", &ages)
 // SELECT `name` FROM `users`;
 ```
 
@@ -357,7 +357,7 @@ facades.Orm.Query().Model(&models.User{}).Pluck("age", &ages)
 
 ```go
 var count int64
-facades.Orm.Query().Model(&models.User{}).Count(&count)
+facades.Orm().Query().Model(&models.User{}).Count(&count)
 // SELECT count(1) where users
 ```
 
@@ -365,7 +365,7 @@ facades.Orm.Query().Model(&models.User{}).Count(&count)
 
 ```go
 var count int64
-facades.Orm.Query().Table("users").Count(&count)
+facades.Orm().Query().Table("users").Count(&count)
 // SELECT count(1) where users
 ```
 
@@ -373,7 +373,7 @@ facades.Orm.Query().Table("users").Count(&count)
 
 ```go
 var count int
-facades.Orm.Query().Where("name = ?", "tom").Count(&count)
+facades.Orm().Query().Where("name = ?", "tom").Count(&count)
 // SELECT count(1) FROM users WHERE name = 'tom'
 ```
 
@@ -382,10 +382,10 @@ facades.Orm.Query().Where("name = ?", "tom").Count(&count)
 `Select` 允许你指定从数据库中检索哪些字段，默认情况下，ORM 会检索所有字段。
 
 ```go
-facades.Orm.Query().Select("name", "age").Get(&users)
+facades.Orm().Query().Select("name", "age").Get(&users)
 // SELECT name, age FROM users;
 
-facades.Orm.Query().Select([]string{"name", "age"}).Get(&users)
+facades.Orm().Query().Select([]string{"name", "age"}).Get(&users)
 // SELECT name, age FROM users;
 ```
 
@@ -398,7 +398,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm.Query().Model(&models.User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
+facades.Orm().Query().Model(&models.User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
 // SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "tom"
 ```
 
@@ -411,7 +411,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm.Query().Model(&models.User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result)
+facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result)
 // SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
 ```
 
@@ -419,7 +419,7 @@ facades.Orm.Query().Model(&models.User{}).Select("users.name, emails.email").Joi
 
 ```go
 user := User{Name: "tom", Age: 18}
-result := facades.Orm.Query().Create(&user)
+result := facades.Orm().Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
 ```
 
@@ -427,7 +427,7 @@ result := facades.Orm.Query().Create(&user)
 
 ```go
 users := []User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
-result := facades.Orm.Query().Create(&users)
+result := facades.Orm().Query().Create(&users)
 ```
 
 > `created_at` 和 `updated_at` 字段将会被自动填充。
@@ -438,40 +438,32 @@ result := facades.Orm.Query().Create(&users)
 
 ```go
 var user models.User
-facades.Orm.Query().First(&user)
+facades.Orm().Query().First(&user)
 
 user.Name = "tom"
 user.Age = 100
-facades.Orm.Query().Save(&user)
+facades.Orm().Query().Save(&user)
 // UPDATE users SET name='tom', age=100, updated_at = '2022-09-28 16:28:22' WHERE id=1;
 ```
 
 #### 更新单一字段
 
 ```go
-facades.Orm.Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
 // UPDATE users SET name='tom', updated_at='2022-09-28 16:29:39' WHERE name="tom";
-```
 
-#### 更新多个字段
-
-该方法将返回受影响的行数：
-
-```go
-res, err := facades.Orm.Query().Model(&user).Where("name", "tom").Updates(User{Name: "hello", Age: 18})
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(User{Name: "hello", Age: 18})
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
-
-num := res.RowsAffected
 ```
 
-> 当使用 `struct` 进行批量更新（Updates）时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
+> 当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
 
 #### 更新或创建一条数据
 
 根据 `name` 查询，如果不存在，则根据 `name`, `avatar` 创建，如果存在，则根据 `name` 更新 `avatar`：
 
 ```go
-facades.Orm.Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avatar"})
+facades.Orm().Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avatar"})
 // SELECT * FROM `users` WHERE `users`.`name` = 'name' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
 // INSERT INTO `users` (`created_at`,`updated_at`,`deleted_at`,`name`,`avatar`) VALUES ('2023-03-11 10:11:08.869','2023-03-11 10:11:08.869',NULL,'name','avatar')
 // UPDATE `users` SET `avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE `name` = 'name' AND `users`.`deleted_at` IS NULL AND `id` = 1
@@ -483,8 +475,8 @@ facades.Orm.Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avat
 
 ```go
 var user models.User
-err := facades.Orm.Query().Find(&user, 1)
-res, err := facades.Orm.Query().Delete(&user)
+err := facades.Orm().Query().Find(&user, 1)
+res, err := facades.Orm().Query().Delete(&user)
 // DELETE FROM users where id = 1;
 
 num := res.RowsAffected
@@ -493,53 +485,53 @@ num := res.RowsAffected
 根据 ID 删除
 
 ```go
-facades.Orm.Query().Delete(&models.User{}, 10)
+facades.Orm().Query().Delete(&models.User{}, 10)
 // DELETE FROM users WHERE id = 10;
 
-facades.Orm.Query().Delete(&models.User{}, []uint{1, 2, 3})
+facades.Orm().Query().Delete(&models.User{}, []uint{1, 2, 3})
 // DELETE FROM users WHERE id in (1, 2, 3);
 ```
 
 批量删除
 
 ```go
-facades.Orm.Query().Where("name = ?", "tom").Delete(&models.User{})
+facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
 // DELETE FROM users where name = "tom";
 ```
 
 如果模型开启了软删除功能，想要强制删除某数据
 
 ```go
-facades.Orm.Query().Where("name = ?", "tom").ForceDelete(&models.User{})
+facades.Orm().Query().Where("name = ?", "tom").ForceDelete(&models.User{})
 ```
 
 您可以通过 `Select` 来删除具有模型关联的记录：
 
 ```go
 // 删除 user 时，也删除 user 的 account
-facades.Orm.Query().Select("Account").Delete(&user)
+facades.Orm().Query().Select("Account").Delete(&user)
 
 // 删除 user 时，也删除 user 的 Orders、CreditCards 记录
-facades.Orm.Query().Select("Orders", "CreditCards").Delete(&user)
+facades.Orm().Query().Select("Orders", "CreditCards").Delete(&user)
 
 // 删除 user 时，也删除用户所有子关联
-facades.Orm.Query().Select(orm.Associations).Delete(&user)
+facades.Orm().Query().Select(orm.Associations).Delete(&user)
 
 // 删除 users 时，也删除每一个 user 的 account
-facades.Orm.Query().Select("Account").Delete(&users)
+facades.Orm().Query().Select("Account").Delete(&users)
 ```
 
 注意：只有当记录的主键不为空时，关联才会被删除，Orm 会使用这些主键作为条件来删除关联记录：
 
 ```go
 // 会删除所有 name=`jinzhu` 的 user，但这些 user 的 account 不会被删除
-facades.Orm.Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
+facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
 
 // 会删除 name = `jinzhu` 且 id = `1` 的 user，并且 user `1` 的 account 也会被删除
-facades.Orm.Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
+facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
 
 // 会删除 id = `1` 的 user，并且 account 也会被删除
-facades.Orm.Query().Select("Account").Delete(&User{ID: 1})
+facades.Orm().Query().Select("Account").Delete(&User{ID: 1})
 ```
 
 如果在没有任何条件的情况下执行批量删除，ORM 不会执行该操作，并返回错误。对此，你必须加一些条件，或者使用原生 SQL。
@@ -548,20 +540,20 @@ facades.Orm.Query().Select("Account").Delete(&User{ID: 1})
 
 ```go
 var user models.User
-facades.Orm.Query().WithTrashed().First(&user)
+facades.Orm().Query().WithTrashed().First(&user)
 ```
 
 ### 过滤重复
 
 ```go
 var users []models.User
-facades.Orm.Query().Distinct("name").Find(&users)
+facades.Orm().Query().Distinct("name").Find(&users)
 ```
 
 ### 获取当前驱动
 
 ```go
-driver := facades.Orm.Query().Driver()
+driver := facades.Orm().Query().Driver()
 
 // 判断驱动
 if driver == orm.DriverMysql {}
@@ -577,7 +569,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm.Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom").Scan(&result)
+facades.Orm().Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom").Scan(&result)
 ```
 
 ### 执行原生更新 SQL
@@ -585,7 +577,7 @@ facades.Orm.Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom")
 该方法将返回受影响的行数：
 
 ```go
-res, err := facades.Orm.Query().Exec("DROP TABLE users")
+res, err := facades.Orm().Query().Exec("DROP TABLE users")
 // DROP TABLE users;
 
 num := res.RowsAffected
@@ -605,7 +597,7 @@ import (
 
 ...
 
-return facades.Orm.Transaction(func(tx orm.Transaction) error {
+return facades.Orm().Transaction(func(tx orm.Transaction) error {
   var user models.User
 
   return tx.Find(&user, user.ID)
@@ -615,7 +607,7 @@ return facades.Orm.Transaction(func(tx orm.Transaction) error {
 也可以自己手动控制事务的流程：
 
 ```go
-tx, err := facades.Orm.Query().Begin()
+tx, err := facades.Orm().Query().Begin()
 user := models.User{Name: "Goravel"}
 if err := tx.Create(&user); err != nil {
   err := tx.Rollback()
@@ -639,7 +631,7 @@ func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
   }
 }
 
-facades.Orm.Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
+facades.Orm().Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
 ```
 
 ### 原生表达式
@@ -649,7 +641,7 @@ facades.Orm.Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
 ```go
 import "github.com/goravel/framework/database/db"
 
-facades.Orm.Query().Model(&user).Update("age", db.Raw("age - ?", 1))
+facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
 ```
 
 ### 悲观锁 
@@ -660,14 +652,14 @@ facades.Orm.Query().Model(&user).Update("age", db.Raw("age - ?", 1))
 
 ```go
 var users []models.User
-facades.Orm.Query().where("votes", ">", 100).SharedLock().Get(&users)
+facades.Orm().Query().where("votes", ">", 100).SharedLock().Get(&users)
 ```
 
 或者，您可以使用 `LockForUpdate` 方法。该锁可防止所选记录被修改或被另一个共享锁选中：
 
 ```go
 var users []models.User
-facades.Orm.Query().where("votes", ">", 100).LockForUpdate().Get(&users)
+facades.Orm().Query().where("votes", ">", 100).LockForUpdate().Get(&users)
 ```
 
 ## Events
@@ -736,8 +728,9 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 
 如果在一个模型上监听了多个事件，可以使用观察者来将这些监听器组织到一个单独的类中。观察者类的方法名映射到你希望监听的事件。`make:observer` Artisan 命令可以快速建立新的观察者类：
 
-```shell
+```
 go run . artisan make:observer UserObserver
+go run . artisan make:observer user/UserObserver
 ```
 
 此命令将在 `app/observers` 文件夹放置新的观察者类。如果这个目录不存在，Artisan 将替您创建：
@@ -814,11 +807,11 @@ type EventServiceProvider struct {
 }
 
 func (receiver *EventServiceProvider) Register() {
-	facades.Event.Register(receiver.listen())
+	facades.Event().Register(receiver.listen())
 }
 
 func (receiver *EventServiceProvider) Boot() {
-	facades.Orm.Observe(models.User{}, &observers.UserObserver{})
+	facades.Orm().Observe(models.User{}, &observers.UserObserver{})
 }
 
 func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
@@ -834,7 +827,7 @@ func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener 
 
 | 方法名   | 作用                                                |
 | -------- | ------------------------------------------------------- |
-| Context  | 获取 `facades.Orm.WithContext()` 传入的 context |
+| Context  | 获取 `facades.Orm().WithContext()` 传入的 context |
 | GetAttribute  | 获取修改的值，如未修改，获取原始值，如没有原始值，返回 nil |
 | GetOriginal  | 获取原始值，如没有原始值，返回 nil |
 | IsDirty  | 判断字段是否修改 |
@@ -848,7 +841,7 @@ func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener 
 
 ```go
 var user models.User
-facades.Orm.Query().WithoutEvents().Find(&user, 1)
+facades.Orm().Query().WithoutEvents().Find(&user, 1)
 ```
 
 #### 静默的保存单个模型
@@ -857,9 +850,9 @@ facades.Orm.Query().WithoutEvents().Find(&user, 1)
 
 ```go
 var user models.User
-err := facades.Orm.Query().FindOrFail(&user, 1)
+err := facades.Orm().Query().FindOrFail(&user, 1)
 user.Name = "Goravel"
-err := facades.Orm.Query().SaveQuietly(&user)
+err := facades.Orm().Query().SaveQuietly(&user)
 ```
 
 <CommentService/>

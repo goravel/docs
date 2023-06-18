@@ -48,7 +48,7 @@ import (
 
 func Web() {
   userController := controllers.NewUserController()
-  facades.Route.Get("/{id}", userController.Show)
+  facades.Route().Get("/{id}", userController.Show)
 }
 ```
 
@@ -56,6 +56,7 @@ func Web() {
 
 ```
 go run . artisan make:controller UserController
+go run . artisan make:controller user/UserController
 ```
 
 <CommentService/>

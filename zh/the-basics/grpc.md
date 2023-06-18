@@ -4,7 +4,7 @@
 
 ## 简介
 
-Grpc 模块可以使用 `facades.Grpc` 进行操作。
+Grpc 模块可以使用 `facades.Grpc()` 进行操作。
 
 ## 配置
 
@@ -55,7 +55,7 @@ import (
 )
 
 func Grpc() {
-  protos.RegisterUserServer(facades.Grpc.Server(), controllers.NewUserController())
+  protos.RegisterUserServer(facades.Grpc().Server(), controllers.NewUserController())
 }
 ```
 
@@ -89,8 +89,8 @@ func (router *GrpcServiceProvider) Boot() {
 
 ```go
 go func() {
-  if err := facades.Grpc.Run(facades.Config.GetString("grpc.host")); err != nil {
-    facades.Log.Errorf("Grpc run error: %v", err)
+  if err := facades.Grpc().Run(facades.Config().GetString("grpc.host")); err != nil {
+    facades.Log().Errorf("Grpc run error: %v", err)
   }
 }()
 ```

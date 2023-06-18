@@ -11,7 +11,7 @@ All `facades` of Goravel are defined under `github.com/goravel/framework/facades
 ```
 import "github.com/goravel/framework/facades"
 
-facades.Route.Run(facades.Config.GetString("app.host"))
+facades.Route().Run(facades.Config().GetString("app.host"))
 ```
 
 ## How Facades Work
@@ -36,21 +36,26 @@ func (database *ServiceProvider) Boot() {
 
 ## Facade Class Reference
 
-| Facade   | Document                                                |
-| -------- | ------------------------------------------------------- |
-| Artisan  | [Command Console](../digging-deeper/artisan-console.md) |
-| Auth     | [Authentication](../security/authentication.md)   |
-| Gate     | [Authorization](../security/authorization.md)     |
-| Cache    | [Cache](../digging-deeper/cache.md)                     |
-| Config   | [Configuration](../getting-started/configuration.md)    |
-| Crypt    | [Encryption](../security/encryption.md)    |
-| Orm      | [ORM](../orm/getting-started.md)                        |
-| Event    | [Event](../digging-deeper/event.md)                     |
-| Grpc     | [Grpc](../the-basics/grpc.md)                           |
-| Hash     | [Hashing](../security/hashing.md)                           |
-| Log      | [Log](../the-basics/logging.md)                         |
-| Queue    | [Queue](../digging-deeper/queues.md)                    |
-| Route    | [Route](../the-basics/routing.md)                       |
-| Schedule | [Schedule](../digging-deeper/task-scheduling.md)        |
+| Facade     | Document                                                |
+| --------   | ------------------------------------------------------- |
+| App        | [Container](../architecutre-concepts/service-container.md) |
+| Artisan    | [Command Console](../digging-deeper/artisan-console.md) |
+| Auth       | [Authentication](../security/authentication.md)   |
+| Cache      | [Cache](../digging-deeper/cache.md)                     |
+| Config     | [Configuration](../getting-started/configuration.md)    |
+| Crypt      | [Encryption](../security/encryption.md)    |
+| Event      | [Event](../digging-deeper/event.md)                     |
+| Gate       | [Authorization](../security/authorization.md)     |
+| Grpc       | [Grpc](../the-basics/grpc.md)                           |
+| Hash       | [Hashing](../security/hashing.md)                           |
+| Log        | [Log](../the-basics/logging.md)                         |
+| Mail       | [Mail](../digging-deeper/mail.md)           |
+| Orm        | [ORM](../orm/getting-started.md)                        |
+| Queue      | [Queue](../digging-deeper/queues.md)                    |
+| RateLimiter      | [RateLimiter](../the-basics/routing.md)                       |
+| Route      | [Route](../the-basics/routing.md)                       |
+| Schedule   | [Schedule](../digging-deeper/task-scheduling.md)        |
+| Storage    | [Storage](../digging-deeper/task-scheduling.md)        |
+| Validation | [Validation](../digging-deeper/task-scheduling.md)        |
 
 <CommentService/>

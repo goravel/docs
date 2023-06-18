@@ -18,10 +18,60 @@ go run . artisan make:migration create_users_table
 
 迁移命令会同时生成两个迁移文件：`***.up.sql`、`***.down.sql`，分别对应执行、回滚。
 
-## 运行迁移
+## 执行迁移
+
+执行 Artisan 命令 `migrate`，来运行所有未执行过的迁移：
 
 ```
 go run . artisan migrate
+```
+
+如果你想查看目前的迁移状态，可以使用 `migrate:status` Artisan 命令：
+
+```
+go run . artisan migrate:status
+```
+
+## 回滚迁移
+
+如果要回滚最后一次迁移操作，可以使用 Artisan 命令 `rollback`。该命令会回滚最后「一批」的迁移，这可能包含多个迁移文件：
+
+```
+go run . artisan migrate:rollback
+```
+
+通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。例如，以下命令将回滚最后五个迁移：
+
+```
+go run . artisan migrate:rollback --step=5
+```
+
+命令 `migrate:reset` 会回滚应用已运行过的所有迁移：
+
+```
+go run . artisan migrate:reset
+```
+
+### 使用单个命令同时进行回滚和迁移操作
+
+命令 `migrate:refresh` 首先会回滚已运行过的所有迁移，随后会执行 `migrate`。这一命令可以高效地重建你的整个数据库：
+
+```
+go run . artisan migrate:refresh
+```
+
+通过在命令 `refresh` 中使用 `step` 参数，你可以回滚并重新执行指定数量的迁移操作。例如，下列命令会回滚并重新执行最后五个迁移操作：
+
+```
+go run . artisan migrate:refresh --step=5
+```
+
+### 删除所有表然后执行迁移
+
+命令 `migrate:fresh` 会删去数据库中的所有表，随后执行命令 `migrate`：
+
+```
+go run . artisan migrate:fresh
 ```
 
 ## 快捷生成
@@ -60,19 +110,5 @@ _(to|from|in)_(\w+)$
 ```
 
 未匹配到上述情况时，框架会生成一个空的迁移文件。
-
-## 回滚迁移
-
-如果要回滚最后一次迁移操作，可以使用 Artisan 命令 `rollback`。注意，该命令只会回滚最后一个迁移文件：
-
-```
-go run . artisan migrate:rollback
-```
-
-通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。例如，以下命令将回滚最后五个迁移文件：
-
-```
-go run . artisan migrate:rollback --step=5
-```
 
 <CommentService/>

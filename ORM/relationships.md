@@ -308,25 +308,25 @@ type Post struct {
 
 ### Create or Update Associations
 
-You can use the `Select`, `Omit` methods to to control the create and update of associations. These two method cannot be used at the same time and the associated control functions are only applicable to `Create`, `Updates`, `Save`:
+You can use the `Select`, `Omit` methods to to control the create and update of associations. These two method cannot be used at the same time and the associated control functions are only applicable to `Create`, `Update`, `Save`:
 
 ```go
 user := User{Name: "user", Post: &Post{Name: "post"}}
 
 // Create all child associations while creating User
-facades.Orm.Query().Select(orm.Associations).Create(&user)
+facades.Orm().Query().Select(orm.Associations).Create(&user)
 
 // Only create Post while creating User. Note: If you don't use `orm.Associations`, but customize specific child associations separately, all fields in the parent model should also be listed at this time.
-facades.Orm.Query().Select("Name", "Post").Create(&user)
+facades.Orm().Query().Select("Name", "Post").Create(&user)
 
 // When creating a User, ignore the Post, but create all other child associations
-facades.Orm.Query().Omit("Post").Create(&user)
+facades.Orm().Query().Omit("Post").Create(&user)
 
 // When creating User, ignore Name field, but create all child associations
-facades.Orm.Query().Omit("Name").Create(&user)
+facades.Orm().Query().Omit("Name").Create(&user)
 
 // When creating User, ignore Name field and all child associations
-facades.Orm.Query().Omit("Name", orm.Associations).Create(&user)
+facades.Orm().Query().Omit("Name", orm.Associations).Create(&user)
 ```
 
 ### Find Associations
@@ -334,10 +334,10 @@ facades.Orm.Query().Omit("Name", orm.Associations).Create(&user)
 ```go
 // Find all matching related records
 var posts []models.Post
-facades.Orm.Query().Model(&user).Association("Posts").Find(&posts)
+facades.Orm().Query().Model(&user).Association("Posts").Find(&posts)
 
 // Find associations with conditions
-facades.Orm.Query().Model(&user).Where("name = ?", "goravel").Order("id desc").Association("Posts").Find(&posts)
+facades.Orm().Query().Model(&user).Where("name = ?", "goravel").Order("id desc").Association("Posts").Find(&posts)
 ```
 
 ### Append Associations
@@ -345,9 +345,9 @@ facades.Orm.Query().Model(&user).Where("name = ?", "goravel").Order("id desc").A
 Append new associations for `Many To Many`, `One To Many`, replace current association for `One To One`, `One To One(revers)`:
 
 ```go
-facades.Orm.Query().Model(&user).Association("Posts").Append([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Append([]*Post{Post1, Post2})
 
-facades.Orm.Query().Model(&user).Association("Posts").Append(&Post{Name: "goravel"})
+facades.Orm().Query().Model(&user).Association("Posts").Append(&Post{Name: "goravel"})
 ```
 
 ### Replace Associations
@@ -355,9 +355,9 @@ facades.Orm.Query().Model(&user).Association("Posts").Append(&Post{Name: "gorave
 Replace current associations with new ones:
 
 ```go
-facades.Orm.Query().Model(&user).Association("Posts").Replace([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Replace([]*Post{Post1, Post2})
 
-facades.Orm.Query().Model(&user).Association("Posts").Replace(Post{Name: "goravel"}, Post2)
+facades.Orm().Query().Model(&user).Association("Posts").Replace(Post{Name: "goravel"}, Post2)
 ```
 
 ### Delete Associations
@@ -365,9 +365,9 @@ facades.Orm.Query().Model(&user).Association("Posts").Replace(Post{Name: "gorave
 Remove the relationship between source & arguments if exists, only delete the reference, won’t delete those objects from DB, the foreign key must be NULL:
 
 ```go
-facades.Orm.Query().Model(&user).Association("Posts").Delete([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Delete([]*Post{Post1, Post2})
 
-facades.Orm.Query().Model(&user).Association("Posts").Delete(Post1, Post2)
+facades.Orm().Query().Model(&user).Association("Posts").Delete(Post1, Post2)
 ```
 
 ### Clear Associations
@@ -375,7 +375,7 @@ facades.Orm.Query().Model(&user).Association("Posts").Delete(Post1, Post2)
 Remove all reference between source & association, won’t delete those associations:
 
 ```go
-facades.Orm.Query().Model(&user).Association("Posts").Clear()
+facades.Orm().Query().Model(&user).Association("Posts").Clear()
 ```
 
 ### Count Associations
@@ -383,32 +383,32 @@ facades.Orm.Query().Model(&user).Association("Posts").Clear()
 Return the count of current associations:
 
 ```go
-facades.Orm.Query().Model(&user).Association("Posts").Count()
+facades.Orm().Query().Model(&user).Association("Posts").Count()
 
 // Count with conditions
-facades.Orm.Query().Model(&user).Where("name = ?", "goravel").Association("Posts").Count()
+facades.Orm().Query().Model(&user).Where("name = ?", "goravel").Association("Posts").Count()
 ```
 
 ### Batch Data
 
 ```go
 // Find all roles for all users
-facades.Orm.Query().Model(&users).Association("Posts").Find(&posts)
+facades.Orm().Query().Model(&users).Association("Posts").Find(&posts)
 
 // Delete User A from all user's Posts
-facades.Orm.Query().Model(&users).Association("Posts").Delete(&userA)
+facades.Orm().Query().Model(&users).Association("Posts").Delete(&userA)
 
 // Get distinct count of all users' Posts
-facades.Orm.Query().Model(&users).Association("Posts").Count()
+facades.Orm().Query().Model(&users).Association("Posts").Count()
 
 // For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
 var users = []User{user1, user2, user3}
 
 // We have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
-facades.Orm.Query().Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
+facades.Orm().Query().Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
 
 // Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
-facades.Orm.Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
+facades.Orm().Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## Eager Loading
@@ -433,11 +433,11 @@ Now, let's retrieve all books and their authors:
 
 ```go
 var books models.Book
-facades.Orm.Query().Find(&books)
+facades.Orm().Query().Find(&books)
 
 for _, book := range books {
   var author models.Author
-  facades.Orm.Query().Find(&author, book.AuthorID)
+  facades.Orm().Query().Find(&author, book.AuthorID)
 }
 ```
 
@@ -447,7 +447,7 @@ Thankfully, we can use eager loading to reduce this operation to just two querie
 
 ```go
 var books models.Book
-facades.Orm.Query().With("Author").Find(&books)
+facades.Orm().Query().With("Author").Find(&books)
 
 for _, book := range books {
   fmt.Println(book.Author)
@@ -468,7 +468,7 @@ Sometimes you may need to eager load several different relationships. To do so, 
 
 ```go
 var book models.Book
-facades.Orm.Query().With("Author").With("Publisher").Find(&book)
+facades.Orm().Query().With("Author").With("Publisher").Find(&book)
 ```
 
 ### Nested Eager Loading
@@ -477,7 +477,7 @@ To eager load a relationship's relationships, you may use "dot" syntax. For exam
 
 ```go
 var book models.Book
-facades.Orm.Query().With("Author.Contacts").Find(&book)
+facades.Orm().Query().With("Author.Contacts").Find(&book)
 ```
 
 ### Constraining Eager Loads
@@ -488,9 +488,9 @@ Sometimes you may wish to eager load a relationship but also specify additional 
 import "github.com/goravel/framework/contracts/database/orm"
 
 var book models.Book
-facades.Orm.Query().With("Author", "name = ?", "author").Find(&book)
+facades.Orm().Query().With("Author", "name = ?", "author").Find(&book)
 
-facades.Orm.Query().With("Author", func(query orm.Query) orm.Query {
+facades.Orm().Query().With("Author", func(query orm.Query) orm.Query {
   return query.Where("name = ?", "author")
 }).Find(&book)
 ```
@@ -503,11 +503,11 @@ Sometimes you may need to eager load a relationship after the parent model has a
 
 ```go
 var books models.Book
-facades.Orm.Query().Find(&books)
+facades.Orm().Query().Find(&books)
 
 for _, book := range books {
   if someCondition {
-    err := facades.Orm.Query().Load(&book, "Author")
+    err := facades.Orm().Query().Load(&book, "Author")
   }
 }
 ```
@@ -518,9 +518,9 @@ If you need to set additional query constraints on the eager loading query, you 
 import "github.com/goravel/framework/contracts/database/orm"
 
 var book models.Book
-facades.Orm.Query().Load(&book, "Author", "name = ?", "author").Find(&book)
+facades.Orm().Query().Load(&book, "Author", "name = ?", "author").Find(&book)
 
-facades.Orm.Query().Load(&book, "Author", func(query orm.Query) orm.Query {
+facades.Orm().Query().Load(&book, "Author", func(query orm.Query) orm.Query {
   return query.Where("name = ?", "author")
 }).Find(&book)
 ```
@@ -528,7 +528,7 @@ facades.Orm.Query().Load(&book, "Author", func(query orm.Query) orm.Query {
 To load a relationship only when it has not already been loaded, use the `LoadMissing` method:
 
 ```go
-facades.Orm.Query().LoadMissing(&book, "Author")
+facades.Orm().Query().LoadMissing(&book, "Author")
 ```
 
 <CommentService/>

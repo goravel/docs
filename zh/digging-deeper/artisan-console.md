@@ -4,7 +4,7 @@
 
 ## 简介
 
-Artisan 是 Goravel 自带的命令行工具，该模块可以使用 `facades.Artisan` 进行操作。它提供了许多有用的命令，这些命令可以在构建应用时为你提供帮助。你可以通过命令查看所有可用的 Artisan 命令：
+Artisan 是 Goravel 自带的命令行工具，该模块可以使用 `facades.Artisan()` 进行操作。它提供了许多有用的命令，这些命令可以在构建应用时为你提供帮助。你可以通过命令查看所有可用的 Artisan 命令：
 
 ```go
 go run . artisan list
@@ -34,6 +34,7 @@ artisan make:controller DemoController
 
 ```go
 go run . artisan make:command SendEmails
+go run . artisan make:command user/SendEmails
 ```
 
 ### 命令结构
@@ -106,7 +107,7 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 func (receiver *ListCommand) Extend() command.Extend {
   return command.Extend{
     Flags: []command.Flag{
-      {
+      &command.StringFlag{
         Name:    "lang",
         Value:   "default",
         Aliases: []string{"l"},
@@ -143,6 +144,8 @@ go run . artisan emails --lang chinese name
 go run . artisan emails name --lang chinese name
 ```
 
+除了 `command.StringFlag`，我们还可以其他类型的 `Flag` 与 `Option*`：`StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`。
+
 ### 分类
 
 可以将一组命令设置为同一个分类，方便在 `go run . artisan list` 中查看：
@@ -170,12 +173,12 @@ func (kernel Kernel) Commands() []console.Command {
 
 ## 以编程方式执行命令
 
-有时你可能希望在 CLI 之外执行 Artisan 命令，可以使用 `facades.Artisan` 上的 `Call` 方法来完成此操作。
+有时你可能希望在 CLI 之外执行 Artisan 命令，可以使用 `facades.Artisan()` 上的 `Call` 方法来完成此操作。
 
 ```go
-facades.Route.GET("/", func(c *gin.Context) {
-  facades.Artisan.Call("emails")
-  facades.Artisan.Call("emails --lang chinese name") // 携带参数与选项
+facades.Route().GET("/", func(c *gin.Context) {
+  facades.Artisan().Call("emails")
+  facades.Artisan().Call("emails --lang chinese name") // 携带参数与选项
 })
 ```
 

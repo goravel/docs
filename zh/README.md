@@ -12,29 +12,22 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## 主要功能
 
-- [x] 自定义配置
-- [x] HTTP 服务
-- [x] 用户认证
-- [x] 用户授权
-- [x] 数据库 ORM
-- [x] 数据库迁移
-- [x] 日志
-- [x] 缓存
-- [x] Grpc
-- [x] Artisan 命令行
-- [x] 任务调度
-- [x] 队列
-- [x] 事件系统
-- [x] 文件存储
-- [x] 邮件
-- [x] 表单验证
-- [x] Mock
-- [x] Hash
-- [x] Crypt
+|             |                      |                      |                      |
+| ----------  | --------------       | --------------       | --------------       |
+| [自定义配置](/getting-started/configuration.html)   | [HTTP 服务](/the-basics/routing.html)  | [用户认证](/security/authentication.html)  | [用户授权](/security/authorization.html)  |
+| [数据库 ORM](/ORM/getting-started.html)   | [数据库迁移](/ORM/migrations.html)  | [日志](/the-basics/logging.html)  | [缓存](/digging-deeper/cache.html)  |
+| [Grpc](/the-basics/grpc.html)   | [Artisan 命令行](/digging-deeper/artisan-console.html)  | [任务调度](/digging-deeper/task-scheduling.html)  | [队列](/digging-deeper/queues.html)  |
+| [事件系统](/digging-deeper/event.html)   | [文件存储](/digging-deeper/filesystem.html)  | [邮件](/digging-deeper/mail.html)  | [表单验证](/the-basics/validation.html)  |
+| [Mock](/digging-deeper/mock.html)   | [Hash](/security/hashing.html)  | [Crypt](/security/encryption.html)  | [Carbon](/digging-deeper/helpers.html)  |
+| [扩展包开发](/digging-deeper/package-development.html)   |  |   |   |
 
 ## 路线图
 
 [For Detail](https://github.com/goravel/goravel/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+
+## 优秀扩展包
+
+[查看详情](/zh/prologue/packages.html)
 
 ## 文档
 
@@ -56,6 +49,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 <a href="https://github.com/Juneezee" target="_blank"><img src="https://avatars.githubusercontent.com/u/20135478?v=4" width="48" height="48"></a>
 <a href="https://github.com/dragoonchang" target="_blank"><img src="https://avatars.githubusercontent.com/u/1432336?v=4" width="48" height="48"></a>
 <a href="https://github.com/dhanusaputra" target="_blank"><img src="https://avatars.githubusercontent.com/u/35093673?v=4" width="48" height="48"></a>
+<a href="https://github.com/mauri870" target="_blank"><img src="https://avatars.githubusercontent.com/u/10168637?v=4" width="48" height="48"></a>
 
 ## 群组
 

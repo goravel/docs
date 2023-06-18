@@ -4,11 +4,18 @@
 
 ## 简介 
 
-Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS 和 Tencent COS 提供了简单易用的驱动程序。 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。
+Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、 Tencent COS 和 Minio 提供了简单易用的驱动程序。 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。框架自带 `local` 驱动，如需其他驱动，请查看对应的独立扩展包：
+
+| 驱动          | 地址           |
+| -----------  | -------------- |
+| S3           | https://github.com/goravel/s3     |
+| OSS          | https://github.com/goravel/oss     |
+| COS          | https://github.com/goravel/cos     |
+| Minio        | https://github.com/goravel/minio     |
 
 ## 配置
 
-配置文件位于 `config/filesystems.go`。在这个文件中你可以配置所有的「磁盘」，每个磁盘代表特定的存储驱动及存储位置。每种支持的驱动程序的示例配置都包含在配置文件中。因此，只需要修改配置即可应用你的存储偏好和凭据。
+配置文件位于 `config/filesystems.go`。在这个文件中你可以配置所有的「磁盘」，每个磁盘代表特定的存储驱动及存储位置。
 
 > 技巧：你可以配置任意数量的磁盘，甚至可以添加多个使用相同驱动的磁盘。
 
@@ -17,19 +24,19 @@ Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS 和 Tencent COS 提
 `Storage` Facade 可用于与所有已配置的磁盘进行交互。例如，你可以使用 Facade 中的 `Put` 方法将头像存储到默认磁盘。如果你使用 `Storage` Facade 时并没有使用 `Disk` 方法，那么所有的方法调用将会自动传递给默认的磁盘：
 
 ```go
-facades.Storage.Put("avatars/1.png", "Contents")
+facades.Storage().Put("avatars/1.png", "Contents")
 ```
 
 如果应用要与多个磁盘进行交互，可使用 `Storage` Facade 中的 `Disk` 方法对特定磁盘上的文件进行操作：
 
 ```go
-facades.Storage.Disk("s3").Put("avatars/1.png", "Contents")
+facades.Storage().Disk("s3").Put("avatars/1.png", "Contents")
 ```
 
 ## 注入 Context
 
 ```go
-facades.Storage.WithContext(ctx).Put("avatars/1.png", "Contents")
+facades.Storage().WithContext(ctx).Put("avatars/1.png", "Contents")
 ```
 
 ## 检索文件
@@ -37,13 +44,13 @@ facades.Storage.WithContext(ctx).Put("avatars/1.png", "Contents")
 `Get` 方法可以用于获取文件的内容，此方法返回该文件的原始字符串内容。切记，所有文件路径的指定都应该相对于该磁盘所配置的 `root` 目录：
 
 ```go
-contents := facades.Storage.Get("file.jpg")
+contents := facades.Storage().Get("file.jpg")
 ```
 
 `Exists` 方法可以用来判断磁盘上是否存在指定的文件：
 
 ```go
-if (facades.Storage.Disk("s3").Exists("file.jpg")) {
+if (facades.Storage().Disk("s3").Exists("file.jpg")) {
     // ...
 }
 ```
@@ -51,7 +58,7 @@ if (facades.Storage.Disk("s3").Exists("file.jpg")) {
 `Missing` 方法可以用来判断磁盘上是否缺少指定的文件：
 
 ```go
-if (facades.Storage.Disk("s3").Missing("file.jpg")) {
+if (facades.Storage().Disk("s3").Missing("file.jpg")) {
     // ...
 }
 ```
@@ -61,7 +68,7 @@ if (facades.Storage.Disk("s3").Missing("file.jpg")) {
 你可以使用 `Url` 方法来获取给定文件的 url。如果你使用的是 `local` 驱动程序，这通常会将 `/storage` 添加到给定的路径，并返回文件的相对 URL。如果你使用的是 `s3` 驱动程序，则会返回完整路径的远程 URL：
 
 ```go
-url := facades.Storage.Url("file.jpg")
+url := facades.Storage().Url("file.jpg")
 ```
 
 > 注意：当使用 `local` 驱动时， `Url` 的返回值不是 url 编码的。因此，我们建议总是使用可以创建有效 url 的名称来存储文件。
@@ -71,7 +78,7 @@ url := facades.Storage.Url("file.jpg")
 使用 `TemporaryUrl` 方法，你可以为使用非本地驱动程序存储的文件创建临时 URL。此方法接受一个路径和一个 `time` 实例，指定 URL 何时过期：
 
 ```go
-url, err := facades.Storage.TemporaryUrl(
+url, err := facades.Storage().TemporaryUrl(
     "file.jpg", time.Now().Add(5*time.Minute)
 )
 ```
@@ -81,19 +88,19 @@ url, err := facades.Storage.TemporaryUrl(
 除了读写文件，Goravel 还可以提供有关文件自身的信息：
 
 ```go
-size := facades.Storage.Size("file.jpg")
+size := facades.Storage().Size("file.jpg")
 ```
 
 `LastModified` 方法返回上次修改文件时的时间：
 
 ```go
-time, err := facades.Storage.LastModified("file.jpg")
+time, err := facades.Storage().LastModified("file.jpg")
 ```
 
 `MimeType` 方法返回文件的 MINE 类型：
 
 ```go
-mime, err := facades.Storage.MimeType("file.jpg")
+mime, err := facades.Storage().MimeType("file.jpg")
 ```
 
 也可以使用 `NewFile` 方法获取：
@@ -112,7 +119,7 @@ mime, err := file.MimeType()
 可以使用 `Path` 方法获取给定文件的路径。如果你使用的是 `local` 驱动程序，这将返回文件的绝对路径。如果你使用的是 `s3` 等驱动程序，此方法将返回 bucket 中文件的相对路径：
 
 ```go
-path := facades.Storage.Path("file.jpg")
+path := facades.Storage().Path("file.jpg")
 ```
 
 ## 储存文件
@@ -120,7 +127,7 @@ path := facades.Storage.Path("file.jpg")
 可以使用 `Put` 方法将文件内容存储在磁盘上。请记住，应相对于为磁盘配置的根目录指定所有文件路径：
 
 ```go
-err := facades.Storage.Put("file.jpg", contents)
+err := facades.Storage().Put("file.jpg", contents)
 ```
 
 也可以使用 `PutFile` 和 `PutFileAs` 直接将文件保存在磁盘上：
@@ -130,11 +137,11 @@ import "github.com/goravel/framework/filesystem"
 
 // 自动生成一个唯一文件名 ...
 file, err := filesystem.NewFile("./logo.png")
-path := facades.Storage.PutFile("photos", file)
+path := facades.Storage().PutFile("photos", file)
 
 // 手动指定文件名 ...
 file, err := filesystem.NewFile("./logo.png")
-path := facades.Storage.PutFileAs("photos", file, "photo.jpg")
+path := facades.Storage().PutFileAs("photos", file, "photo.jpg")
 ```
 
 关于 `PutFile` 和 `PutFileAs` 方法，有一些重要的事情需要注意。那就是，我们只指定了一个目录名，而没有指定文件名。默认情况下，`PutFile` 方法将生成一个唯一的 ID 作为文件名。文件的扩展名将通过检查文件的 MIME 类型来确定。这两个方法将返回文件的路径，以便你可以将路径（包括生成的文件名）存储在数据库中。
@@ -144,9 +151,9 @@ path := facades.Storage.PutFileAs("photos", file, "photo.jpg")
 `Copy` 方法可用于将现有文件复制到磁盘上的新位置，而 `Move` 方法可用于重命名现有文件或将其移动到新位置：
 
 ```go
-err := facades.Storage.Copy("old/file.jpg", "new/file.jpg")
+err := facades.Storage().Copy("old/file.jpg", "new/file.jpg")
 
-err := facades.Storage.Move("old/file.jpg", "new/file.jpg")
+err := facades.Storage().Move("old/file.jpg", "new/file.jpg")
 ```
 
 ### 文件上传
@@ -168,7 +175,7 @@ func (r *UserController) Show(ctx http.Context) {
 import "github.com/goravel/framework/filesystem"
 
 file, err := filesystem.NewFile("./logo.png")
-path := facades.Storage.PutFile("photos", file)
+path := facades.Storage().PutFile("photos", file)
 ```
 
 ### 指定一个文件名
@@ -186,7 +193,7 @@ path, err := file.StoreAs("avatars", "name")
 import "github.com/goravel/framework/filesystem"
 
 file, err := filesystem.NewFile("./logo.png")
-path := facades.Storage.PutFileAs("photos", file, "name")
+path := facades.Storage().PutFileAs("photos", file, "name")
 ```
 
 > `StoreAs` 与 `PutFileAs` 指定的文件名如果不带后缀，将根据文件的 MIME 自动添加后缀；否则，直接使用指定的文件名。
@@ -227,14 +234,14 @@ extension, err := file.Extension()// 根据文件的 MIME 类型确定文件的�
 `Delete` 方法接收一个文件名或一个文件名数组来将其从磁盘中删除：
 
 ```go
-err := facades.Storage.Delete("file.jpg")
-err := facades.Storage.Delete("file.jpg", "file2.jpg")
+err := facades.Storage().Delete("file.jpg")
+err := facades.Storage().Delete("file.jpg", "file2.jpg")
 ```
 
 如果有必要，你可以指定删除的文件的磁盘：
 
 ```go
-err := facades.Storage.Disk("s3").Delete("file.jpg")
+err := facades.Storage().Disk("s3").Delete("file.jpg")
 ```
 
 ## 目录
@@ -244,8 +251,8 @@ err := facades.Storage.Disk("s3").Delete("file.jpg")
 `Files` 将以数组的形式返回给定目录下所有的文件。如果你想要检索给定目录的所有文件及其子目录的所有文件，你可以使用 `AllFiles` 方法：
 
 ```go
-files, err := facades.Storage.Disk("s3").Files("directory")
-files, err := facades.Storage.Disk("s3").AllFiles("directory")
+files, err := facades.Storage().Disk("s3").Files("directory")
+files, err := facades.Storage().Disk("s3").AllFiles("directory")
 ```
 
 ### 获取特定目录下的子目录
@@ -253,8 +260,8 @@ files, err := facades.Storage.Disk("s3").AllFiles("directory")
 `Directories` 方法以数组的形式返回给定目录中的所有目录。此外，你还可以使用 `AllDirectories` 方法递归地获取给定目录中的所有目录及其子目录中的目录：
 
 ```go
-directories, err := facades.Storage.Disk("s3").Directories("directory")
-directories, err := facades.Storage.Disk("s3").AllDirectories("directory")
+directories, err := facades.Storage().Disk("s3").Directories("directory")
+directories, err := facades.Storage().Disk("s3").AllDirectories("directory")
 ```
 
 ### 创建一个目录
@@ -262,7 +269,7 @@ directories, err := facades.Storage.Disk("s3").AllDirectories("directory")
 `MakeDirectory` 方法可递归的创建指定的目录：
 
 ```go
-err := facades.Storage.MakeDirectory(directory)
+err := facades.Storage().MakeDirectory(directory)
 ```
 
 ### 删除一个目录
@@ -270,7 +277,7 @@ err := facades.Storage.MakeDirectory(directory)
 最后，`DeleteDirectory` 方法可用于删除一个目录及其下所有的文件：
 
 ```go 
-err := facades.Storage.DeleteDirectory(directory)
+err := facades.Storage().DeleteDirectory(directory)
 ```
 
 ## 自定义文件系统
@@ -311,6 +318,6 @@ type Driver interface {
 }
 ```
 
-> 注意：由于注册驱动时配置信息尚未加载完毕，所以在自定义驱动中，请使用 `facades.Config.Env` 获取配置信息。
+> 注意：由于注册驱动时配置信息尚未加载完毕，所以在自定义驱动中，请使用 `facades.Config().Env` 获取配置信息。
 
 <CommentService/>

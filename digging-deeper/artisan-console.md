@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Artisan is the command line interface included with Goravel, the module can be operated using `facades.Artisan`. It provide a number of helpful commands that can assist you while you build your application. You can use the command blow to get all commands:
+Artisan is the command line interface included with Goravel, the module can be operated using `facades.Artisan()`. It provide a number of helpful commands that can assist you while you build your application. You can use the command blow to get all commands:
 
 ```go
 go run . artisan list
@@ -34,6 +34,7 @@ You can use the `make:command` command to create a new command in the `app/conso
 
 ```go
 go run . artisan make:command SendEmails
+go run . artisan make:command user/SendEmails
 ```
 
 ### Command Structure
@@ -106,7 +107,7 @@ Definition：
 func (receiver *ListCommand) Extend() command.Extend {
   return command.Extend{
     Flags: []command.Flag{
-      {
+      &command.StringFlag{
         Name:    "lang",
         Value:   "default",
         Aliases: []string{"l"},
@@ -143,6 +144,8 @@ go run . artisan emails --lang chinese name
 go run . artisan emails name --lang chinese name
 ```
 
+Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
+
 ### Category
 
 You can set a set of commands to the same category, convenient in `go run . artisan list`:
@@ -170,12 +173,12 @@ func (kernel Kernel) Commands() []console.Command {
 
 ## Programmatically Executing Commands
 
-Sometimes you may wish to execute an Artisan command outside of the CLI, you can use the `Call` method on the `facades.Artisan` to operation this.
+Sometimes you may wish to execute an Artisan command outside of the CLI, you can use the `Call` method on the `facades.Artisan()` to operation this.
 
 ```go
-facades.Route.GET("/", func(c *gin.Context) {
-  facades.Artisan.Call("emails")
-  facades.Artisan.Call("emails --lang chinese name") // With arguments and options
+facades.Route().GET("/", func(c *gin.Context) {
+  facades.Artisan().Call("emails")
+  facades.Artisan().Call("emails --lang chinese name") // With arguments and options
 })
 ```
 

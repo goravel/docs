@@ -35,7 +35,7 @@ func (receiver *AuthServiceProvider) Register() {
 }
 
 func (receiver *AuthServiceProvider) Boot() {
-  facades.Gate.Define("update-post", func(ctx context.Context, arguments map[string]any) access.Response {
+  facades.Gate().Define("update-post", func(ctx context.Context, arguments map[string]any) access.Response {
     user := ctx.Value("user").(models.User)
     post := arguments["post"].(models.Post)
     
@@ -63,7 +63,7 @@ type UserController struct {
 
 func (r *UserController) Show(ctx http.Context) {
   var post models.Post
-  if facades.Gate.Allows("update-post", map[string]any{
+  if facades.Gate().Allows("update-post", map[string]any{
     "post": post,
   }) {
     
@@ -74,13 +74,13 @@ func (r *UserController) Show(ctx http.Context) {
 You may authorize multiple actions at a time using the `Any` or `None` methods:
 
 ```go
-if facades.Gate.Any([]string{"update-post", "delete-post"}, map[string]any{
+if facades.Gate().Any([]string{"update-post", "delete-post"}, map[string]any{
   "post": post,
 }) {
   // The user can update or delete the post...
 }
 
-if facades.Gate.None([]string{"update-post", "delete-post"}, map[string]any{
+if facades.Gate().None([]string{"update-post", "delete-post"}, map[string]any{
   "post": post,
 }) {
   // The user can't update or delete the post...
@@ -92,7 +92,7 @@ if facades.Gate.None([]string{"update-post", "delete-post"}, map[string]any{
 The `Allows` method will return a simple boolean value, you can use the `Inspect` method to get the full authorization response returned by the gate:
 
 ```go
-response := facades.Gate.Inspect("edit-settings", nil);
+response := facades.Gate().Inspect("edit-settings", nil);
 
 if (response.Allowed()) {
     // The action is authorized...
@@ -106,7 +106,7 @@ if (response.Allowed()) {
 Sometimes, you may wish to grant all abilities to a specific user. You may use the `Before` method to define a closure that is run before all other authorization checks:
 
 ```go
-facades.Gate.Before(func(ctx context.Context, ability string, arguments map[string]any) access.Response {
+facades.Gate().Before(func(ctx context.Context, ability string, arguments map[string]any) access.Response {
   user := ctx.Value("user").(models.User)
   if isAdministrator(user) {
     return access.NewAllowResponse()
@@ -121,7 +121,7 @@ If the before closure returns a non-nil result that result will be considered th
 You may use the `After` method to define a closure to be executed after all other authorization checks:
 
 ```go
-facades.Gate.After(func(ctx context.Context, ability string, arguments map[string]any, result access.Response) access.Response {
+facades.Gate().After(func(ctx context.Context, ability string, arguments map[string]any, result access.Response) access.Response {
   user := ctx.Value("user").(models.User)
   if isAdministrator(user) {
     return access.NewAllowResponse()
@@ -131,14 +131,14 @@ facades.Gate.After(func(ctx context.Context, ability string, arguments map[strin
 })
 ```
 
-> Notice: The returned result of `After` will be applied only when `facades.Gate.Define` returns nil.
+> Notice: The returned result of `After` will be applied only when `facades.Gate().Define` returns nil.
 
 ### Inject Context
 
 The `context` will be passed to the `Before`, `After`, `Define` methods.
 
 ```go
-facades.Gate.WithContext(ctx).Allows("update-post", map[string]any{
+facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
   "post": post,
 })
 ```
@@ -151,6 +151,7 @@ You may generate a policy using the `make:policy` Artisan command. The generated
 
 ```go
 go run . artisan make:policy PostPolicy
+go run . artisan make:policy user/PostPolicy
 ```
 
 ### Writing Policies
@@ -188,7 +189,7 @@ func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) acces
 Then we can register the policy to `app/providers/auth_service_provider.go`:
 
 ```go
-facades.Gate.Define("update-post", policies.NewPostPolicy().Update)
+facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
 ```
 
 You may continue to define additional methods on the policy as needed for the various actions it authorizes. For example, you might define `View` or `Delete` methods to authorize various `models.Post` related actions, but remember you are free to give your policy methods any name you like.

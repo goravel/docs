@@ -51,6 +51,7 @@ There are some middleware available in Goravel:
 ### Create Middleware By Command
 ```
 go run . artisan make:middleware Cors
+go run . artisan make:middleware user/Cors
 ```
 
 ## Register Middleware
@@ -85,7 +86,7 @@ You can register the middleware for some routing separately:
 ```go
 import "github.com/goravel/framework/http/middleware"
 
-facades.Route.Middleware(middleware.Cors()).Get("users", userController.Show)
+facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 <CommentService/>
