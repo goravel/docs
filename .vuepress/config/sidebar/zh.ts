@@ -3,19 +3,29 @@ import { SidebarConfigArray } from "vuepress";
 export function getZhSidebar(): SidebarConfigArray {
   return [
     {
-      text: "升级指南",
+      text: "前言",
+      // collapsible: true,
       children: [
         {
-          text: "从 v1.10 升级到 v1.11",
-          link: "/zh/upgrade/v1.11",
+          text: "升级指南",
+          children: [
+            {
+              text: "从 v1.11 升级到 v1.12",
+              link: "/zh/upgrade/v1.12",
+            },
+            {
+              text: "从 v1.10 升级到 v1.11",
+              link: "/zh/upgrade/v1.11",
+            },
+            {
+              text: "历史版本升级",
+              link: "/zh/upgrade/history",
+            },
+          ],
         },
         {
-          text: "从 v1.9 升级到 v1.10",
-          link: "/zh/upgrade/v1.10",
-        },
-        {
-          text: "历史版本升级",
-          link: "/zh/upgrade/history",
+          text: "优秀扩展包",
+          link: "/zh/prologue/packages",
         },
       ],
     },

@@ -3,19 +3,29 @@ import { SidebarConfigArray } from "vuepress";
 export function getEnSidebar(): SidebarConfigArray {
   return [
     {
-      text: "Upgrade Guide",
+      text: "Prologue",
+      // collapsible: true,
       children: [
         {
-          text: "Upgrading To v1.11 From v1.10",
-          link: "/upgrade/v1.11",
+          text: "Upgrade Guide",
+          children: [
+            {
+              text: "Upgrading To v1.12 From v1.11",
+              link: "/upgrade/v1.12",
+            },
+            {
+              text: "Upgrading To v1.11 From v1.10",
+              link: "/upgrade/v1.11",
+            },
+            {
+              text: "History Upgrade",
+              link: "/upgrade/history",
+            },
+          ],
         },
         {
-          text: "Upgrading To v1.10 From v1.9",
-          link: "/upgrade/v1.10",
-        },
-        {
-          text: "History Upgrade",
-          link: "/upgrade/history",
+          text: "Excellent Extend Packages",
+          link: "/prologue/packages",
         },
       ],
     },
