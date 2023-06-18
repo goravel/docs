@@ -50,6 +50,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/architecutre-concepts/request-lifecycle",
         },
         {
+          text: "服务容器",
+          link: "/zh/architecutre-concepts/service-container",
+        },
+        {
           text: "服务提供者",
           link: "/zh/architecutre-concepts/service-providers",
         },
@@ -128,6 +132,14 @@ export function getZhSidebar(): SidebarConfigArray {
         {
           text: "任务调度",
           link: "/zh/digging-deeper/task-scheduling",
+        },
+        {
+          text: "扩展包开发",
+          link: "/zh/digging-deeper/package-development",
+        },
+        {
+          text: "服务函数",
+          link: "/zh/digging-deeper/helpers",
         },
         {
           text: "Mock",

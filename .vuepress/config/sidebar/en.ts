@@ -50,6 +50,10 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/architecutre-concepts/request-lifecycle",
         },
         {
+          text: "Service Container",
+          link: "/architecutre-concepts/service-container",
+        },
+        {
           text: "Service Providers",
           link: "/architecutre-concepts/service-providers",
         },
@@ -128,6 +132,14 @@ export function getEnSidebar(): SidebarConfigArray {
         {
           text: "Task Scheduling",
           link: "/digging-deeper/task-scheduling",
+        },
+        {
+          text: "Package Development",
+          link: "/digging-deeper/package-development",
+        },
+        {
+          text: "Helpers",
+          link: "/digging-deeper/helpers",
         },
         {
           text: "Mock",
