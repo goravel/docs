@@ -148,7 +148,7 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/digging-deeper/package-development",
         },
         {
-          text: "服务函数",
+          text: "辅助函数",
           link: "/zh/digging-deeper/helpers",
         },
         {
