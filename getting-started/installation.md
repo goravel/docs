@@ -61,7 +61,7 @@ All configuration files of the Goravel framework are placed in the `config` dire
 You need to generate the application key after Goravel is installed locally. Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
 
 ```
-go run. artisan key:generate
+go run . artisan key:generate
 ```
 
 ### Generate JWT Token
