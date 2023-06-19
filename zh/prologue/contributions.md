@@ -2,7 +2,24 @@
 
 [[toc]]
 
-Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、文章、教程等。
+Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、文章、教程等。完成两个 `Feature`（不包含 `Good First Issue`）后，您将成为核心贡献者。之后每三个月至少完成一个 `Feature`，可以保持这个头衔。核心贡献者将可以在未来从 Goravel 中获得收益。
+
+让我们一起将 Goravel 变得更高效！
+
+## 核心贡献者
+
+<a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
+<a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
+
+## 贡献者
+
+<a href="https://github.com/merouanekhalili" target="_blank"><img src="https://avatars.githubusercontent.com/u/1122628?v=4" width="48" height="48"></a>
+<a href="https://github.com/hongyukeji" target="_blank"><img src="https://avatars.githubusercontent.com/u/23145983?v=4" width="48" height="48"></a>
+<a href="https://github.com/sidshrivastav" target="_blank"><img src="https://avatars.githubusercontent.com/u/28773690?v=4" width="48" height="48"></a>
+<a href="https://github.com/Juneezee" target="_blank"><img src="https://avatars.githubusercontent.com/u/20135478?v=4" width="48" height="48"></a>
+<a href="https://github.com/dragoonchang" target="_blank"><img src="https://avatars.githubusercontent.com/u/1432336?v=4" width="48" height="48"></a>
+<a href="https://github.com/dhanusaputra" target="_blank"><img src="https://avatars.githubusercontent.com/u/35093673?v=4" width="48" height="48"></a>
+<a href="https://github.com/mauri870" target="_blank"><img src="https://avatars.githubusercontent.com/u/10168637?v=4" width="48" height="48"></a>
 
 ## Bug 报告
 
@@ -16,7 +33,7 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过�
 - [Telegram](https://github.com/goravel/goravel/tree/master#group)
 - [微信群](https://github.com/goravel/goravel/blob/master/README_zh.md#%E7%BE%A4%E7%BB%84)
 
-## 核心开发讨论
+## 开发讨论
 
 您可以在 Goravel 仓库的 [GitHub 讨论区](https://github.com/goravel/goravel/discussions) 中提出新功能或对现有 Goravel 行为的改进。也可以在 Telegram 或微信群中进行有关错误、新功能和现有功能实现的非正式讨论。Goravel 的维护者 Bowen 通常在工作日的上午 9 点至下午 6 点（UTC+08:00）出现在频道中，并在其他时间偶尔出现在频道中。
 
