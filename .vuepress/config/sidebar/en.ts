@@ -24,6 +24,10 @@ export function getEnSidebar(): SidebarConfigArray {
           ],
         },
         {
+          text: "Contribution Guide",
+          link: "/prologue/contributions",
+        },
+        {
           text: "Excellent Extend Packages",
           link: "/prologue/packages",
         },

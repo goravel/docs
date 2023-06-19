@@ -39,7 +39,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## Contributors
 
-这个项目的存在要归功于所有做出贡献的人。
+这个项目的存在要归功于所有做出贡献的人，参与贡献请查看[贡献指南](/zh/prologue/contributions.html)。
 
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>

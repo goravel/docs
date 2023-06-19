@@ -24,6 +24,10 @@ export function getZhSidebar(): SidebarConfigArray {
           ],
         },
         {
+          text: "贡献指南",
+          link: "/zh/prologue/contributions",
+        },
+        {
           text: "优秀扩展包",
           link: "/zh/prologue/packages",
         },
