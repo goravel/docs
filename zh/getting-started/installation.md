@@ -10,7 +10,7 @@
 
 ```shell
 // 下载框架
-git clone git@github.com:goravel/goravel.git goravel && rm -rf goravel/.git
+git clone git@github.com:goravel/goravel.git goravel && rm -rf goravel/.git*
 
 // 安装依赖
 cd goravel && go mod tidy

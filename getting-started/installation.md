@@ -10,7 +10,7 @@
 
 ```shell
 // Download framework
-git clone git@github.com:goravel/goravel.git && rm -rf goravel/.git
+git clone git@github.com:goravel/goravel.git && rm -rf goravel/.git*
 
 // Installation dependencies
 cd goravel && go mod tidy
