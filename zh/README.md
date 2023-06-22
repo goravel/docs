@@ -23,7 +23,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## 路线图
 
-[For Detail](https://github.com/goravel/goravel/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+[For Detail](https://github.com/goravel/goravel/issues?q=is%3Aissue+is%3Aopen)
 
 ## 优秀扩展包
 

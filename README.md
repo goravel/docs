@@ -23,7 +23,7 @@ Welcome star, PR and issues！
 
 ## Roadmap
 
-[For Detail](https://github.com/goravel/goravel/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+[For Detail](https://github.com/goravel/goravel/issues?q=is%3Aissue+is%3Aopen)
 
 ## Excellent Extend Packages
 
