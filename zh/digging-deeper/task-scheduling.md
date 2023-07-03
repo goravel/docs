@@ -96,6 +96,27 @@ facades.Schedule().Command("send:emails name").EveryMinute().SkipIfStillRunning(
 facades.Schedule().Command("send:emails name").EveryMinute().DelayIfStillRunning()
 ```
 
+### 任务只运行在一台服务器上
+
+> **注意**
+> 要使用此功能，你的应用程序必须使用 memcached, dynamodb, 或 redis 缓存驱动程序作为应用程序的默认缓存驱动程序。此外，所有服务器必须和同一个中央缓存服务器通信。
+
+如果您的应用运行在多台服务器上，可能需要限制调度任务只在某台服务器上运行。例如，假设您有一个每个星期五晚上生成新报告的调度任务，如果任务调度器运行在三台服务器上，调度任务会在三台服务器上运行并且生成三次报告，不够优雅！
+
+要指示任务应仅在一台服务器上运行，请在定义计划任务时使用 `OnOneServer` 方法。第一台获取到该任务的服务器会给任务上一把原子锁以阻止其他服务器同时运行该任务:
+
+```go
+facades.Schedule().Command("report:generate").Daily().OnOneServer()
+```
+
+如果你使用闭包来定义单服务器作业，则必须为他们定义一个名字：
+
+```go
+facades.Schedule().Call(func() {
+  fmt.Println("goravel")
+}).Daily().OnOneServer().Name("goravel")
+```
+
 ## 运行调度程序
 
 现在，我们已经学会了如何定义计划任务，接下来让我们讨论如何真正在服务器上运行它们。

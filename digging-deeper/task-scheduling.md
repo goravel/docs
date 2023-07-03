@@ -96,6 +96,26 @@ facades.Schedule().Command("send:emails name").EveryMinute().SkipIfStillRunning(
 facades.Schedule().Command("send:emails name").EveryMinute().DelayIfStillRunning()
 ```
 
+### Running Tasks On One Server
+
+> To utilize this feature, your application must be using the memcached, dynamodb, or redis cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+
+If your application's scheduler is running on multiple servers, you may limit a scheduled job to only execute on a single server. For instance, assume you have a scheduled task that generates a new report every Friday night. If the task scheduler is running on three worker servers, the scheduled task will run on all three servers and generate the report three times. Not good!
+
+To indicate that the task should run on only one server, use the `OnOneServer` method when defining the scheduled task. The first server to obtain the task will secure an atomic lock on the job to prevent other servers from running the same task at the same time:
+
+```go
+facades.Schedule().Command("report:generate").Daily().OnOneServer()
+```
+
+Scheduled closures must be assigned a name if they are intended to be run on one server:
+
+```go
+facades.Schedule().Call(func() {
+  fmt.Println("goravel")
+}).Daily().OnOneServer().Name("goravel")
+```
+
 ## Running The Scheduler
 
 Now that we have learned how to define scheduled tasks, let's discuss how to actually run them on our server.
