@@ -20,6 +20,12 @@
 | [carbon.FromTime()](#carbon-fromtime)   | [carbon.FromStdTime()](#carbon-fromstdtime)     | [carbon.IsTestNow()](#istestnow-fromdate)     |
 | [carbon.SetTestNow()](#carbon-settestnow)     | [carbon.UnsetTestNow()](#carbon-unsettestnow)     |      |
 
+### Debug
+
+|                           |                               |             |
+| -----------               | --------------                | -------------- |
+| [debug.Dump()](#debug-dump)   | [debug.SDump()](#debug-sdump)     | [debug.FDump()](#debug-fdump)     |
+
 ## Paths
 
 ### `path.App()`
@@ -170,4 +176,36 @@ Restore the time to a normal value:
 
 ```go
 carbon.UnsetTestNow()
+```
+
+## Debug
+
+### `debug.Dump()`
+
+`debug.Dump()` can print any variable:
+
+```go
+import "github.com/goravel/framework/support/debug"
+
+debug.Dump(myVar1, myVar2, ...)
+```
+
+### `debug.FDump()`
+
+`debug.FDump()` can print any variable to `io.Writer`:
+
+```go
+import "github.com/goravel/framework/support/debug"
+
+debug.FDump(someWriter, myVar1, myVar2, ...)
+```
+
+### `debug.SDump()`
+
+`debug.SDump()` can print any variable to `string`:
+
+```go
+import "github.com/goravel/framework/support/debug"
+
+debug.SDump(myVar1, myVar2, ...)
 ```
