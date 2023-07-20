@@ -12,7 +12,7 @@
 
 </div>
 
-English | [中文](zh/README.md)
+English | [中文](zh/README.md) | [Русский](ru/README.md)
 
 ## About Goravel
 
@@ -65,6 +65,7 @@ This project exists thanks to all the people who contribute, to participate in t
 <a href="https://github.com/mauri870" target="_blank"><img src="https://avatars.githubusercontent.com/u/10168637?v=4" width="48" height="48"></a>
 <a href="https://github.com/Marian0" target="_blank"><img src="https://avatars.githubusercontent.com/u/624592?v=4" width="48" height="48"></a>
 <a href="https://github.com/ahmed3mar" target="_blank"><img src="https://avatars.githubusercontent.com/u/12982325?v=4" width="48" height="48"></a>
+<a href="https://github.com/idevmans" target="_blank"><img src="https://avatars.githubusercontent.com/u/13575865?v=4" width="48" height="48"></a>
 
 ## Group
 
