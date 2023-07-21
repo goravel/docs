@@ -346,9 +346,6 @@ carbon.SetTestNow(carbon.Now())
 carbon.UnsetTestNow()
 ```
 
-
-Here's the translation into Russian:
-
 # Помощники
 
 [[toc]]
