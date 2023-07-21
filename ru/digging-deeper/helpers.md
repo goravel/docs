@@ -520,10 +520,6 @@ carbon.SetTestNow(carbon.Now())
 carbon.UnsetTestNow()
 ```
 
-
-Here's the translation of the given text into Russian:
-
-```plaintext
 # Помощники
 
 [[toc]]
