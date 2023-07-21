@@ -188,9 +188,7 @@ db.Ping()
 db.Close()
 
 // Возвращает статистику базы данных
-db.St
-
-ats()
+db.Stats()
 
 // SetMaxIdleConns устанавливает максимальное количество простаивающих соединений в пуле
 db.SetMaxIdleConns(10)

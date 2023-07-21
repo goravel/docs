@@ -65,6 +65,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 <a href="https://github.com/mauri870" target="_blank"><img src="https://avatars.githubusercontent.com/u/10168637?v=4" width="48" height="48"></a>
 <a href="https://github.com/Marian0" target="_blank"><img src="https://avatars.githubusercontent.com/u/624592?v=4" width="48" height="48"></a>
 <a href="https://github.com/ahmed3mar" target="_blank"><img src="https://avatars.githubusercontent.com/u/12982325?v=4" width="48" height="48"></a>
+<a href="https://github.com/idevmans" target="_blank"><img src="https://avatars.githubusercontent.com/u/13575865?v=4" width="48" height="48"></a>
 
 ## 群组
 
