@@ -520,8 +520,6 @@ carbon.SetTestNow(carbon.Now())
 carbon.UnsetTestNow()
 ```
 
-
-```plaintext
 # Помощники
 
 [[toc]]
