@@ -117,6 +117,7 @@ func (r *User) TableName() string {
 | Commit        | [提交事务](#事务)                       |
 | Count         | [数据库事务](#事务)                     |
 | Create        | [创建数据](#创建)                       |
+| Cursor        | [游标](#游标)                       |
 | Delete        | [删除数据](#删除)                       |
 | Distinct      | [过滤重复](#过滤重复)                   |
 | Driver        | [获取当前驱动](#获取当前驱动)           |
@@ -149,6 +150,7 @@ func (r *User) TableName() string {
 | Scopes        | [Scopes](#execute-native-sql)           |
 | Select        | [指定查询列](#指定查询列)               |
 | SharedLock    | [悲观锁](#悲观锁)           |
+| Sum           | [求和](#求和)           |
 | Table         | [指定表](#指定表查询)                   |
 | Update        | [更新单个字段](#更新)                   |
 | UpdateOrCreate       | [更新或创建一条数据](#更新或创建一条数据)                   |
@@ -432,6 +434,24 @@ result := facades.Orm().Query().Create(&users)
 
 > `created_at` 和 `updated_at` 字段将会被自动填充。
 
+### 游标
+
+可用于在查询数万条模型记录时减少内存的使用。
+
+```go
+cursor, err := facades.Orm().Query().Model(models.User{}).Cursor()
+if err != nil {
+  return err
+}
+for row := range cursor {
+  var user models.User
+  if err := row.Scan(&user); err != nil {
+    return err
+  }
+  fmt.Println(user)
+}
+```
+
 ### 更新
 
 #### 在现有模型基础上进行更新
@@ -662,6 +682,16 @@ var users []models.User
 facades.Orm().Query().where("votes", ">", 100).LockForUpdate().Get(&users)
 ```
 
+### 求和
+
+```go
+var sum int
+if err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum); err != nil {
+  return err
+}
+fmt.Println(sum)
+```
+
 ## Events
 
 Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节点：`Retrieved`、`Creating`、`Created`、`Updating`、`Updated`、`Saving`、`Saved`、`Deleting`、`Deleted`、`ForceDeleting`、`ForceDeleted`。
@@ -673,50 +703,50 @@ Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节�
 ```go
 import (
   contractsorm "github.com/goravel/framework/contracts/database/orm"
-	"github.com/goravel/framework/database/orm"
+  "github.com/goravel/framework/database/orm"
 )
 
 type User struct {
-	orm.Model
-	Name    string
+  orm.Model
+  Name    string
 }
 
 func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.Event) error {
-	return map[contractsorm.EventType]func(contractsorm.Event) error{
-		contractsorm.EventCreating: func(event contractsorm.Event) error {
-			return nil
-		},
-		contractsorm.EventCreated: func(event contractsorm.Event) error {
-			return nil
-		},
-		contractsorm.EventSaving: func(event contractsorm.Event) error {
-			return nil
-		},
-		contractsorm.EventSaved: func(event contractsorm.Event) error {
-			return nil
-		},
-		contractsorm.EventUpdating: func(event contractsorm.Event) error {
-			return nil
-		},
-		contractsorm.EventUpdated: func(event contractsorm.Event) error {
-			return nil
-		},
-		contractsorm.EventDeleting: func(event contractsorm.Event) error {
-			return nil
-		},
-		contractsorm.EventDeleted: func(event contractsorm.Event) error {
-			return nil
-		},
-		contractsorm.EventForceDeleting: func(event contractsorm.Event) error {
-			return nil
-		},
-		contractsorm.EventForceDeleted: func(event contractsorm.Event) error {
-			return nil
-		},
-		contractsorm.EventRetrieved: func(event contractsorm.Event) error {
-			return nil
-		},
-	}
+  return map[contractsorm.EventType]func(contractsorm.Event) error{
+    contractsorm.EventCreating: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventCreated: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventSaving: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventSaved: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventUpdating: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventUpdated: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventDeleting: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventDeleted: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventForceDeleting: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventForceDeleted: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventRetrieved: func(event contractsorm.Event) error {
+      return nil
+    },
+  }
 }
 ```
 
@@ -739,55 +769,55 @@ go run . artisan make:observer user/UserObserver
 package observers
 
 import (
-	"fmt"
+  "fmt"
 
-	"github.com/goravel/framework/contracts/database/orm"
+  "github.com/goravel/framework/contracts/database/orm"
 )
 
 type UserObserver struct{}
 
 func (u *UserObserver) Retrieved(event orm.Event) error {
-	return nil
+  return nil
 }
 
 func (u *UserObserver) Creating(event orm.Event) error {
-	return nil
+  return nil
 }
 
 func (u *UserObserver) Created(event orm.Event) error {
-	return nil
+  return nil
 }
 
 func (u *UserObserver) Updating(event orm.Event) error {
-	return nil
+  return nil
 }
 
 func (u *UserObserver) Updated(event orm.Event) error {
-	return nil
+  return nil
 }
 
 func (u *UserObserver) Saving(event orm.Event) error {
-	return nil
+  return nil
 }
 
 func (u *UserObserver) Saved(event orm.Event) error {
-	return nil
+  return nil
 }
 
 func (u *UserObserver) Deleting(event orm.Event) error {
-	return nil
+  return nil
 }
 
 func (u *UserObserver) Deleted(event orm.Event) error {
-	return nil
+  return nil
 }
 
 func (u *UserObserver) ForceDeleting(event orm.Event) error {
-	return nil
+  return nil
 }
 
 func (u *UserObserver) ForceDeleted(event orm.Event) error {
-	return nil
+  return nil
 }
 ```
 
@@ -797,25 +827,25 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 package providers
 
 import (
-	"github.com/goravel/framework/facades"
+  "github.com/goravel/framework/facades"
 
-	"goravel/app/models"
-	"goravel/app/observers"
+  "goravel/app/models"
+  "goravel/app/observers"
 )
 
 type EventServiceProvider struct {
 }
 
 func (receiver *EventServiceProvider) Register() {
-	facades.Event().Register(receiver.listen())
+  facades.Event().Register(receiver.listen())
 }
 
 func (receiver *EventServiceProvider) Boot() {
-	facades.Orm().Observe(models.User{}, &observers.UserObserver{})
+  facades.Orm().Observe(models.User{}, &observers.UserObserver{})
 }
 
 func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
-	return map[event.Event][]event.Listener{}
+  return map[event.Event][]event.Listener{}
 }
 ```
 

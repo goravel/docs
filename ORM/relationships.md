@@ -89,7 +89,7 @@ A one-to-many relationship is used to define relationships where a single model 
 type Post struct {
   orm.Model
   Name   string
-  Comments []*Comments
+  Comments []*Comment
 }
 
 type Comment struct {
@@ -109,7 +109,7 @@ Now that we can access all of a post's comments, let's define a relationship to 
 type Post struct {
   orm.Model
   Name   string
-  Comments []*Comments
+  Comments []*Comment
 }
 
 type Comment struct {

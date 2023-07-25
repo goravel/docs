@@ -59,4 +59,16 @@ go run . artisan make:controller UserController
 go run . artisan make:controller user/UserController
 ```
 
+## 资源型控制器
+
+如果你将应用程序中的每个模型都视为资源，那么通常对应用程序中的每个资源都执行相同的操作。例如，假设你的应用程序中包含一个 `Photo` 模型和一个 `Movie` 模型。用户可能可以创建，读取，更新或者删除这些资源。
+
+Goravel 的资源路由通过单行代码即可将典型的「CURD (增删改查)」路由分配给控制器。首先，我们可以使用 Artisan 命令 `make:controller` 的 `--resource` 选项来快速创建一个控制器：
+
+```
+go run . artisan make:controller PhotoController --resource
+```
+
+这个命令将会生成一个控制器 `app/http/controllers/photo_controller.go`。其中包括每个可用资源操作的方法。接下来，你可以给控制器注册一个资源路由：
+
 <CommentService/>

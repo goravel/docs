@@ -89,7 +89,7 @@ type Phone struct {
 type Post struct {
   orm.Model
   Name   string
-  Comments []*Comments
+  Comments []*Comment
 }
 
 type Comment struct {
@@ -109,7 +109,7 @@ type Comment struct {
 type Post struct {
   orm.Model
   Name   string
-  Comments []*Comments
+  Comments []*Comment
 }
 
 type Comment struct {

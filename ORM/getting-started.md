@@ -117,6 +117,7 @@ func (r *User) TableName() string {
 | Commit        | [Commit transaction](#transaction)                      |
 | Count         | [Count](#count)                                         |
 | Create        | [Create](#create)                                       |
+| Cursor        | [Cursor](#cursor)                                       |
 | Delete        | [Delete](#delete)                                       |
 | Distinct      | [Filter Repetition](#filter-repetition)                 |
 | Driver        | [Get Driver](#get-driver)                               |
@@ -149,6 +150,7 @@ func (r *User) TableName() string {
 | Scopes        | [Scopes](#execute-native-sql)                           |
 | Select        | [Specify Fields](#specify-fields)                       |
 | SharedLock | [Pessimistic Locking](#pessimistic-locking)           |
+| Sum | [Sum](#sum)           |
 | Table         | [Specify a table](#specify-table-query)                 |
 | Update        | [Update a single column](#update-a-single-column)                   |
 | UpdateOrCreate       | [Update or create](#update-or-create)                  |
@@ -433,6 +435,24 @@ result := facades.Orm().Query().Create(&users)
 
 > `created_at` and `updated_at` will be filled automatically.
 
+### Cursor
+
+Can be used to significantly reduce your application's memory consumption when iterating through tens of thousands of Eloquent model records.
+
+```go
+cursor, err := facades.Orm().Query().Model(models.User{}).Cursor()
+if err != nil {
+  return err
+}
+for row := range cursor {
+  var user models.User
+  if err := row.Scan(&user); err != nil {
+    return err
+  }
+  fmt.Println(user)
+}
+```
+
 ### Save Model
 
 #### Update a existing model
@@ -660,6 +680,16 @@ Alternatively, you may use the `LockForUpdate` method. A "for update" lock preve
 ```go
 var users []models.User
 facades.Orm().Query().where("votes", ">", 100).LockForUpdate().Get(&users)
+```
+
+### Sum
+
+```go
+var sum int
+if err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum); err != nil {
+  return err
+}
+fmt.Println(sum)
 ```
 
 ## Events
