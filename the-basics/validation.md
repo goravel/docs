@@ -279,7 +279,7 @@ validator, err := facades.Validation().Make(input, rules, validation.PrepareForV
 
 After validating incoming request data using form reuqests or manually created calidator instances, you still want tot bind the request data to `struct`, there are two ways to do this:
 
-1. Use the `Bind` methed, this will bind all incoming data, including unvalidated data:
+1. Use the `Bind` method, this will bind all incoming data, including unvalidated data:
 
 ```go
 validator, err := ctx.Request().Validate(rules)
