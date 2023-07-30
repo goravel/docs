@@ -6,7 +6,7 @@ Goravel welcomes rich and diverse contributions from different talents, such as 
 
 Let's make Goravel more efficient together!
 
-## Core Contributors
+## Core Developers
 
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
