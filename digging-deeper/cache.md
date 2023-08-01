@@ -188,9 +188,8 @@ Then include a `via` option to implement a `framework\contracts\cache\Store` int
 ```go
 //config/cache.go
 "stores": map[string]interface{}{
-    "redis": map[string]interface{}{
-        "driver":     "redis",
-        "connection": "default",
+    "memory": map[string]any{
+        "driver": "memory",
     },
     "custom": map[string]interface{}{
         "driver": "custom",

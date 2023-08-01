@@ -197,9 +197,8 @@ facades.Cache().Lock("processing").ForceRelease();
 ```go
 //config/cache.go
 "stores": map[string]interface{}{
-    "redis": map[string]interface{}{
-        "driver":     "redis",
-        "connection": "default",
+    "memory": map[string]any{
+        "driver": "memory",
     },
     "custom": map[string]interface{}{
         "driver": "custom",
