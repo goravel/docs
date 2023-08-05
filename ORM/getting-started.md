@@ -412,7 +412,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result)
+facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").Join("left join emails on emails.user_id = users.id").Scan(&result)
 // SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
 ```
 
