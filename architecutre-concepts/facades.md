@@ -52,10 +52,12 @@ func (database *ServiceProvider) Boot() {
 | Mail       | [Mail](../digging-deeper/mail.md)           |
 | Orm        | [ORM](../orm/getting-started.md)                        |
 | Queue      | [Queue](../digging-deeper/queues.md)                    |
-| RateLimiter      | [RateLimiter](../the-basics/routing.md)                       |
+| RateLimiter| [RateLimiter](../the-basics/routing.md)                       |
 | Route      | [Route](../the-basics/routing.md)                       |
+| Seeder     | [Seeder](../orm/seeding.md)                   |
 | Schedule   | [Schedule](../digging-deeper/task-scheduling.md)        |
 | Storage    | [Storage](../digging-deeper/task-scheduling.md)        |
+| Testing    | [Testing](../testing/getting-started.md)   |
 | Validation | [Validation](../digging-deeper/task-scheduling.md)        |
 
 <CommentService/>

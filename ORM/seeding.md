@@ -75,8 +75,6 @@ You may execute the `db:seed` Artisan command to seed your database. By default,
 
 ```
 go run . artisan db:seed
-
-go run . artisan db:seed --seeder=UserSeeder // The signature of seeder
 ```
 
 If you want to execute other seeder when run the `db:seed` command, you can register the seeder in `app/providers/database_service_provider.go`:
@@ -87,20 +85,23 @@ func (receiver *DatabaseServiceProvider) Boot(app foundation.Application) {
 	facades.Seeder().Register([]seeder.Seeder{
 		&seeders.DatabaseSeeder{},
         &seeders.UserSeeder{},
+        &seeders.PhotoSeeder{},
 	})
 }
+
+go run . artisan db:seed --seeder=UserSeeder PhotoSeeder // The signature of seeder
 ```
 
 You may also seed your database using the `migrate:fresh` and `migrate:refresh` command in combination with the `--seed` option, which will drop all tables and re-run all of your migrations. This command is useful for completely re-building your database. The `--seeder` option may be used to specify a specific seeder to run:
 
 ```
-php artisan migrate:fresh --seed
+go run . artisan migrate:fresh --seed
 
-php artisan migrate:fresh --seed --seeder=UserSeeder
+go run . artisan migrate:fresh --seed --seeder=UserSeeder
 
-php artisan migrate:refresh --seed
+go run . artisan migrate:refresh --seed
 
-php artisan migrate:refresh --seed --seeder=UserSeeder
+go run . artisan migrate:refresh --seed --seeder=UserSeeder
 ```
 
 ### Forcing Seeders To Run In Production

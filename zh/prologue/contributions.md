@@ -6,7 +6,7 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 
 让我们一起将 Goravel 变得更高效！
 
-## 核心贡献者
+## 核心开发者
 
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>

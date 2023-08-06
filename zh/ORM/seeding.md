@@ -75,11 +75,9 @@ func (s *DatabaseSeeder) Run() error {
 
 ```
 go run . artisan db:seed
-
-go run . artisan db:seed --seeder=UserSeeder // The signature of seeder
 ```
 
-如果您想在运行 `db:seed` 命令时同时执行其他 seeder，可以在 `app/providers/database_service_provider.go` 中注册该 seeder：
+如果您想在运行 `db:seed` 命令时执行其他 seeder，可以在 `app/providers/database_service_provider.go` 中注册该 seeder：
 
 ```go
 // app/providers/database_service_provider.go
@@ -87,20 +85,23 @@ func (receiver *DatabaseServiceProvider) Boot(app foundation.Application) {
 	facades.Seeder().Register([]seeder.Seeder{
 		&seeders.DatabaseSeeder{},
         &seeders.UserSeeder{},
+        &seeders.PhotoSeeder{},
 	})
 }
+
+go run . artisan db:seed --seeder=UserSeeder PhotoSeeder // The signature of seeder
 ```
 
 您还可以使用 `migrate:fresh` 或 `migrate:refresh` 命令结合 `--seed` 选项，这将删除数据库中所有表并重新运行所有迁移。此命令对于完全重建数据库非常有用。也可以使用 `--seeder` 运行一个指定的 seeder：
 
 ```
-php artisan migrate:fresh --seed
+go run . artisan migrate:fresh --seed
 
-php artisan migrate:fresh --seed --seeder=UserSeeder
+go run . artisan migrate:fresh --seed --seeder=UserSeeder
 
-php artisan migrate:refresh --seed
+go run . artisan migrate:refresh --seed
 
-php artisan migrate:refresh --seed --seeder=UserSeeder
+go run . artisan migrate:refresh --seed --seeder=UserSeeder
 ```
 
 ### 在生产环境中强制运行填充
