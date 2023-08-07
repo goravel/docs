@@ -24,6 +24,10 @@ go run . artisan make:package sms --root=pkg
 
 [服务提供者](../architecutre-concepts/service-providers.md)是您的包和 Goravel 之间的连接点，通常位于包的根目录中：`service_provider.go`。服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecutre-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
 
+## 使用
+
+将包内的 `ServiceProvider` 注册到 `config/app.go::providers`，然后将 `facades` 导出到应用中即可，详细步骤可以参考：[goravel/example-package](https://github.com/goravel/example-package)。
+
 ## 资源
 
 ### 配置
@@ -61,7 +65,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-## 命令
+### 命令
 
 可以在服务提供者中使用 `Commands` 方法注册 `Artisan` 命令，注册命令后，您可以使用[Artisan CLI](../digging-deeper/artisan-console.md)执行它们：
 
@@ -73,7 +77,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-## 公共资源
+### 公共资源
 
 您的包可能包含 JavaScript、CSS 和图像等资产。要将这些资产发布到应用程序的 `public` 目录，请使用服务提供者的 `Publishes` 方法。：
 
@@ -85,7 +89,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-## 发布文件组
+### 发布文件组
 
 您可能希望单独发布包资产和资源组。例如，您可能希望允许用户发布包的配置文件，而不是被迫发布包的全部资产。您可以在包的服务提供者中调用 `Publishes` 方法时定义「标签」来做到这一点。例如，让我们使用标签在包的服务提供者的 `Boot` 方法中为 `sms` 包定义两个发布组（`sms-config` 和 `sms-migrations`）：
 
@@ -100,7 +104,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-## 发布资源
+### 发布资源
 
 在项目中，您可以使用 Artisan 命令 `vendor:publish` 发布包中注册的资源：
 

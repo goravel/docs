@@ -24,6 +24,10 @@ go run . artisan make:package sms --root=pkg
 
 [Service providers](../architecutre-concepts/service-providers.md) are the connection point between your package and Goravel, it usually located in the root of the package: `service_provider.go`. A service provider is responsible for binding things into Goravel's service container and informing Goravel where to load package resources.
 
+## Using
+
+Register the `ServiceProvider` in the package to `config/app.go::providers`, then export `facades` to the application, detailed steps can refer to [goravel/example-package](https://github.com/goravel/example-package).
+
 ## Resources
 
 ### Configuration
