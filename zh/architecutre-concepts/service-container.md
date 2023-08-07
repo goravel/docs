@@ -25,7 +25,7 @@ type ServiceProvider struct {
 }
 
 func (route *ServiceProvider) Register(app foundation.Application) {
-	app.Bind(Binding, func() (any, error) {
+	app.Bind(Binding, func(app foundation.Application) (any, error) {
 		return NewRoute(app.MakeConfig()), nil
 	})
 }
@@ -38,7 +38,7 @@ func (route *ServiceProvider) Boot(app foundation.Application) {
 如前所述，您通常会在服务提供者内部与容器进行交互；但是，如果您希望在服务提供者外部与容器进行交互，则可以通过 `App` facade 进行：
 
 ```go
-facades.App().Bind("key", func() (any, error) {
+facades.App().Bind("key", func(app foundation.Application) (any, error) {
     ...
 })
 ```
@@ -48,7 +48,7 @@ facades.App().Bind("key", func() (any, error) {
 `Singleton` 方法将类或接口绑定到只应解析一次的容器中。解析单例绑定后，后续调用容器时将返回相同的对象实例：
 
 ```go
-app.Singleton(key, func() (any, error) {
+app.Singleton(key, func(app foundation.Application) (any, error) {
     return NewGin(app.MakeConfig()), nil
 })
 ```
@@ -66,7 +66,7 @@ app.Instance(key, instance)
 如果您需要一些额外的参数来构建服务实例，可以使用 `BindWith` 方法向闭包传递参数：
 
 ```go
-app.BindWith(Binding, func(parameters map[string]any) (any, error) {
+app.BindWith(Binding, func(app foundation.Application, parameters map[string]any) (any, error) {
     return NewRoute(app.MakeConfig()), nil
 })
 ```

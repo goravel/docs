@@ -25,7 +25,7 @@ type ServiceProvider struct {
 }
 
 func (route *ServiceProvider) Register(app foundation.Application) {
-	app.Bind(Binding, func() (any, error) {
+	app.Bind(Binding, func(app foundation.Application) (any, error) {
 		return NewRoute(app.MakeConfig()), nil
 	})
 }
@@ -38,7 +38,7 @@ func (route *ServiceProvider) Boot(app foundation.Application) {
 As mentioned, you will typically be interacting with the container within service providers; however, if you would like to interact with the container outside of a service provider, you may do so via the `App` facade:
 
 ```go
-facades.App().Bind("key", func() (any, error) {
+facades.App().Bind("key", func(app foundation.Application) (any, error) {
     ...
 })
 ```
@@ -48,7 +48,7 @@ facades.App().Bind("key", func() (any, error) {
 The `Singleton` method binds a class or interface into the container that should only be resolved one time. Once a singleton binding is resolved, the same object instance will be returned on subsequent calls into the container:
 
 ```go
-app.Singleton(key, func() (any, error) {
+app.Singleton(key, func(app foundation.Application) (any, error) {
     return NewGin(app.MakeConfig()), nil
 })
 ```
@@ -66,7 +66,7 @@ app.Instance(key, instance)
 If you need some extra parameters to construct the service provider, you can use the `BindWith` method to pass parameters to the closure:
 
 ```go
-app.BindWith(Binding, func(parameters map[string]any) (any, error) {
+app.BindWith(Binding, func(app foundation.Application, parameters map[string]any) (any, error) {
     return NewRoute(app.MakeConfig()), nil
 })
 ```
