@@ -6,6 +6,15 @@
 
 Goravel routing module can operated by `facades.Route()`.
 
+## HTTP Driver
+
+Goravel uses [gin](https://github.com/gin-gonic/gin) as the HTTP driver by default, if you want to use other drivers, you can configure it in the `config/http.go` file. Currently, the official default supports [gin](https://github.com/gin-gonic/gin) and [fiber](https://github.com/gofiber/fiber) two drivers:
+
+| Driver     | Link                                  |
+| ---------- | ------------------------------------- |
+| gin        | [https://github.com/gin-gonic/gin](https://github.com/gin-gonic/gin) |
+| fiber      | [https://github.com/gofiber/fiber](https://github.com/gofiber/fiber) |
+
 ## Default Routing File
 
 All routing files are defined in the `/routes` directory. The framework defaults to a sample route `/routes/web.go`, in which the `func Web()` method is registered in the `app/providers/route_service_provider.go` file to achieve routing binding.
@@ -42,24 +51,7 @@ func main() {
 
 ## Start HTTPS Server
 
-### Register Middleware
-
-Framework has a general middleware built in, you can also customize it according to your own needs.
-
-```go
-// app/http/kernel.go
-import "github.com/goravel/framework/http/middleware"
-
-func (kernel *Kernel) Middleware() []http.Middleware {
-  return []http.Middleware{
-    middleware.Tls(),
-  }
-}
-```
-
-### Start Server
-
-`facades.Route().RunTLS()` will automatically fetch the `route.tls` configuration:
+Please complete the configuration of `http.tls` in `config/http.go` before using HTTPS, the `facades.Route().RunTLS()` method will start the HTTPS server according to the relevant configuration:
 
 ```go
 // main.go
@@ -293,7 +285,7 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 
 ## Cross-Origin Resource Sharing (CORS)
 
-Goravel has CORS enabled by default, the configuration can be modified in `config/cors.go`, the funciton is registered in `app/http/kernel.go` as global middleware.
+Goravel has CORS enabled by default, the configuration can be modified in `config/cors.go`.
 
 > For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
 

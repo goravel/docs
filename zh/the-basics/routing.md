@@ -6,6 +6,15 @@
 
 Goravel 路由模块可以使用 `facades.Route()` 进行操作。
 
+## HTTP 驱动
+
+Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动，如果想使用其他驱动，可以到 `config/http.go` 中进行配置，目前官方默认支持 [gin](https://github.com/gin-gonic/gin) 与 [fiber](https://github.com/gofiber/fiber) 两种驱动：
+
+| 驱动       | 地址                                  |
+| ---------- | ------------------------------------- |
+| gin        | [https://github.com/gin-gonic/gin](https://github.com/gin-gonic/gin) |
+| fiber      | [https://github.com/gofiber/fiber](https://github.com/gofiber/fiber) |
+
 ## 默认路由文件
 
 所有路由文件都在 `/routes` 目录中进行定义。框架默认有一个示例路由 `/routes/web.go`，其中 `func Web()` 方法被注册到 `app/providers/route_service_provider.go` 文件中，以实现路由的绑定。
@@ -42,24 +51,7 @@ func main() {
 
 ## 启动 HTTPS 服务器
 
-### 注册中间件
-
-框架内置了一个通用的中间件，您也可以根据自己需求进行自定义。
-
-```go
-// app/http/kernel.go
-import "github.com/goravel/framework/http/middleware"
-
-func (kernel *Kernel) Middleware() []http.Middleware {
-  return []http.Middleware{
-    middleware.Tls(),
-  }
-}
-```
-
-### 启动服务器
-
-`facades.Route().RunTLS()` 将会自动获取 `route.tls` 的配置：
+使用前请先完善 `config/http.go` 中的 `http.tls` 配置，`facades.Route().RunTLS()` 方法将会根据相关配置启动 HTTPS 服务：
 
 ```go
 // main.go
@@ -322,7 +314,7 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 
 ## 跨域资源共享 (CORS)
 
-Goravel 已默认启用 CORS，详细配置可以到 `config/cors.go` 文件中进行修改，该功能被作为全局中间件注册在 `app/http/kernel.go` 中。
+Goravel 已默认启用 CORS，详细配置可以到 `config/cors.go` 文件中进行修改。
 
 > 有关 CORS 和 CORS 标头的更多信息，请参阅 [MDN 关于 CORS 的 Web 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
 

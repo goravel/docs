@@ -31,7 +31,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 | [Grpc](/the-basics/grpc.html)   | [Artisan 命令行](/digging-deeper/artisan-console.html)  | [任务调度](/digging-deeper/task-scheduling.html)  | [队列](/digging-deeper/queues.html)  |
 | [事件系统](/digging-deeper/event.html)   | [文件存储](/digging-deeper/filesystem.html)  | [邮件](/digging-deeper/mail.html)  | [表单验证](/the-basics/validation.html)  |
 | [Mock](/digging-deeper/mock.html)   | [Hash](/security/hashing.html)  | [Crypt](/security/encryption.html)  | [Carbon](/digging-deeper/helpers.html)  |
-| [扩展包开发](/digging-deeper/package-development.html)   |  |   |   |
+| [扩展包开发](/digging-deeper/package-development.html)   | [测试](/testing/getting-started.html) |   |   |
 
 ## 路线图
 

@@ -2,7 +2,7 @@
 
 [[toc]]
 
-Goravel welcomes rich and diverse contributions from different talents, such as coding, translations, articles, tutorials, etc. After completing two enhancements(not containing good first issue), you will be recognized as a core contributor. By completing one enhancement every three months, you can maintain this status. Core contributors will be eligible for benefits when Goravel benefits in the future.
+Goravel welcomes rich and diverse contributions from different talents, such as coding, translations, articles, tutorials, etc. After completing two enhancements(not containing good first issue), you will be recognized as a core contributor. By completing one enhancement every three months, you can maintain this status. Core developers will be eligible for benefits when Goravel benefits in the future.
 
 Let's make Goravel more efficient together!
 
@@ -65,7 +65,7 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 
 | Software                                                 | Action                                |
 | -------------------------------------------------        | --------------                        |
-| Golang v1.18                                             | The minimum version                   |
+| Golang v1.20                                             | The minimum version                   |
 | [vektra/mockery](https://github.com/vektra/mockery)      | Provider mock files for unit tests    |
 
 ## Goravel Repository
@@ -85,6 +85,8 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 | [goravel/cos](https://github.com/goravel/cos)                          | The COS driver of Storage module    |
 | [goravel/minio](https://github.com/goravel/minio)                      | The Minio driver of Storage module  |
 | [goravel/redis](https://github.com/goravel/redis)                      | The Redis driver of Cache module    |
+| [goravel/gin](https://github.com/goravel/gin)                          | The Gin driver of Route module    |
+| [goravel/fiber](https://github.com/goravel/fiber)                      | The Fiber driver of Route module    |
 | [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs)  | Providers log splitting functionality for Log module |
 | [goravel/.github](https://github.com/goravel/.github)                  | [Community health file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file)    |
 
