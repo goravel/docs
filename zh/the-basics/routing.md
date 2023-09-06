@@ -305,6 +305,8 @@ facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []c
 可以使用 `Throttle` middleware 将速率限制器附加到路由或路由组。路由中间件接受你希望分配给路由的速率限制器的名称：
 
 ```go
+import github.com/goravel/framework/http/middleware
+
 facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) {
   ctx.Response().Json(200, http.Json{
     "Hello": "Goravel",

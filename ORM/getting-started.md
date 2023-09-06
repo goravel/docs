@@ -99,6 +99,29 @@ func (r *User) TableName() string {
 }
 ```
 
+### Database Connections
+
+By default, all models will use the default database connection that is configured for your application. If you would like to specify a different connection that should be used when interacting with a particular model, you should define a `Connection` method on the model:
+
+```go
+package models
+
+import (
+  "github.com/goravel/framework/database/orm"
+)
+
+type User struct {
+  orm.Model
+  Name   string
+  Avatar string
+  orm.SoftDeletes
+}
+
+func (r *User) TableName() string {
+  return "postgresql"
+}
+```
+
 ## facades.Orm available functions
 
 | Name        | Action                                                      |

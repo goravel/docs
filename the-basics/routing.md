@@ -276,6 +276,8 @@ facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []c
 Rate limiters may be attached to routes or route groups using the throttle middleware. The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
 
 ```go
+import github.com/goravel/framework/http/middleware
+
 facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) {
   ctx.Response().Json(200, http.Json{
     "Hello": "Goravel",

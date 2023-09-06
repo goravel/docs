@@ -26,7 +26,7 @@
 ```
 facades.Route().Get("/", func(ctx http.Context) {
   ctx.Response().View().Make("welcome.tmpl", map[string]any{
-    "Name": "Goravel",
+    "name": "Goravel",
   })
 })
 ```
@@ -47,7 +47,7 @@ ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
 
 ```
 ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[string]any{
-  "Name": "Goravel",
+  "name": "Goravel",
 })
 ```
 
@@ -68,7 +68,7 @@ if facades.View().Exist("welcome.tmpl") {
 ```
 facades.Route().Get("/", func(ctx http.Context) {
   ctx.Response().View().Make("welcome.tmpl", map[string]any{
-    "Name": "Goravel",
+    "name": "Goravel",
   })
 })
 ```

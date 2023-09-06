@@ -30,10 +30,15 @@ facades.Config().Env("APP_NAME", "goravel")
 你可以轻松的在应用程序的任何位置使用全局 `facades.Config()` 函数来访问 `config` 目录中的配置值。配置值的访问可以使用「点」语法。还可以指定默认值，如果配置选项不存在，则返回默认值：
 
 ```go
+// 通过断言获取配置
+facades.Config().Get("app.name", "goravel")
+
 // 获取字符串类型的配置
 facades.Config().GetString("app.name", "goravel")
+
 // 获取整形类型的配置
 facades.Config().GetInt("app.int", 1)
+
 // 获取布尔类型的配置
 facades.Config().GetBool("app.debug", true)
 ```

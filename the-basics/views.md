@@ -26,7 +26,7 @@ After creating view, you can use the `View` method to return the view from a rou
 ```
 facades.Route().Get("/", func(ctx http.Context) {
   ctx.Response().View().Make("welcome.tmpl", map[string]any{
-    "Name": "Goravel",
+    "name": "Goravel",
   })
 })
 ```
@@ -37,7 +37,7 @@ Views may also be nested within subdirectories of the `resources/views` director
 
 ```
 ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
-  "Name": "Goravel",
+  "name": "Goravel",
 })
 ```
 
@@ -47,7 +47,7 @@ Using the `First` method, you can use the first view that exists in a given arra
 
 ```
 ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[string]any{
-  "Name": "Goravel",
+  "name": "Goravel",
 })
 ```
 
@@ -68,7 +68,7 @@ As you saw in the previous examples, you may pass an array of data to views to m
 ```
 facades.Route().Get("/", func(ctx http.Context) {
   ctx.Response().View().Make("welcome.tmpl", map[string]any{
-    "Name": "Goravel",
+    "name": "Goravel",
   })
 })
 ```

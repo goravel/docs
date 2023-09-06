@@ -99,6 +99,29 @@ func (r *User) TableName() string {
 }
 ```
 
+### 数据库连接
+
+默认情况下，所有模型使用的是应用程序配置的默认数据库连接。如果想指定在与特定模型交互时应该使用的不同连接，可以在模型上定义 `Connection` 方法：
+
+```go
+package models
+
+import (
+  "github.com/goravel/framework/database/orm"
+)
+
+type User struct {
+  orm.Model
+  Name   string
+  Avatar string
+  orm.SoftDeletes
+}
+
+func (r *User) TableName() string {
+  return "postgresql"
+}
+```
+
 ## facades.Orm 可用方法
 
 | 方法名       | 作用                              |
