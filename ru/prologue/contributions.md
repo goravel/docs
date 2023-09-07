@@ -32,9 +32,7 @@ Goravel приветствует разнообразные и богатые в
 Трекеры проблем Goravel на GitHub не предназначены для предоставления помощи или поддержки Goravel. Вместо этого используйте один из следующих каналов:
 
 - [Обсуждения GitHub](https://github.com/goravel/goravel/discussions)
-- [
-
-Telegram](https://github.com/goravel/goravel/tree/master#group)
+- [Telegram](https://github.com/goravel/goravel/tree/master#group)
 - [Wechat](https://github.com/goravel/goravel/blob/master/README_zh.md#%E7%BE%A4%E7%BB%84)
 
 ## Обсуждение разработки
