@@ -46,6 +46,26 @@ facades.Log().Panic(message)
 facades.Log().Panicf(message, args)
 ```
 
+## Chain Methods
+
+Goravel provides a convenient chain methods, make it easy to insert more useful information into the log:
+
+```go
+facades.Log().User("John").Debug(message)
+```
+
+| Method       | Action           |
+| -----------  | -------------- |
+| Code         | Set a code or slug that describes the log.     |
+| Hint         | Set a hint for faster debugging.     |
+| In           | Set the feature category or domain in which the log entry is relevant.     |
+| Owner        | Useful for alerting purpose.     |
+| Request      | Supplies a http.Request.     |
+| Response     | Supplies a http.Response.     |
+| Tags         | Add multiple tags, describing the feature returning an error.     |
+| User         | Set the user associated with the log entry.     |
+| With         | Add key-value pairs to the context of the log entry.    |
+
 ## Create a custom channel
 
 If you want to define a completely custom channel, you can specify the `custom` driver type in the `config/logging.go` configuration file.

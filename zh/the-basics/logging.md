@@ -46,6 +46,26 @@ facades.Log().Panic(message)
 facades.Log().Panicf(message, args)
 ```
 
+## 链式方法
+
+Goravel 提供有便捷的链式方式，方便在日志中插入更多有用信息：
+
+```go
+facades.Log().User("John").Debug(message)
+```
+
+| Method       | Action           |
+| -----------  | -------------- |
+| Code         | 设置日志代码。     |
+| Hint         | 设置提示，方便调试。     |
+| In           | 设置日志相关的分类。     |
+| Owner        | 设置日志归属人。     |
+| Request      | 记录重要的 Request。     |
+| Response     | 记录重要的 Response。     |
+| Tags         | 为日志添加标签。     |
+| User         | 记录触发日志的用户。     |
+| With         | 为日志附加数据。   |
+
 ## 创建自定义通道
 
 如果你想定义一个完全自定义的驱动，可以在 `config/logging.go` 配置文件中指定 `custom` 驱动类型。

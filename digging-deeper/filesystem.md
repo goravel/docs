@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS and Tencent COS. Even better, it's amazingly simple to switch between these storage options between your local development machine and production server as the API remains the same for each system. Goravel comes with `local` driver, for other drivers, please check the corresponding independent extension package:
+The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS, Tencent COS, Minio and Cloudinary. Even better, it's amazingly simple to switch between these storage options between your local development machine and production server as the API remains the same for each system. Goravel comes with `local` driver, for other drivers, please check the corresponding independent extension package:
 
 | Driver       | Link           |
 | -----------  | -------------- |
@@ -12,6 +12,7 @@ The Goravel provides simple drivers for working with local filesystems, Amazon S
 | OSS          | https://github.com/goravel/oss     |
 | COS          | https://github.com/goravel/cos     |
 | Minio        | https://github.com/goravel/minio     |
+| Cloudinary   | https://github.com/goravel/cloudinary     |
 
 ## Configuration
 
