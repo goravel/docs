@@ -86,6 +86,7 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过�
 | [goravel/oss](https://github.com/goravel/oss)                          | Storage 模块 OSS 驱动    |
 | [goravel/cos](https://github.com/goravel/cos)                          | Storage 模块 COS 驱动    |
 | [goravel/minio](https://github.com/goravel/minio)                      | Storage 模块 Minio 驱动  |
+| [goravel/cloudinary](https://github.com/goravel/cloudinary)            | Storage 模块 Cloudinary 驱动  |
 | [goravel/redis](https://github.com/goravel/redis)                      | Cache 模块 Redis 驱动    |
 | [goravel/gin](https://github.com/goravel/gin)                          | Route 模块 Gin 驱动    |
 | [goravel/fiber](https://github.com/goravel/fiber)                      | Route 模块 Fiber 驱动    |

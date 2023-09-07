@@ -1,4 +1,3 @@
-
 # Factories
 
 [[toc]]

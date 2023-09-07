@@ -84,6 +84,7 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 | [goravel/oss](https://github.com/goravel/oss)                          | The OSS driver of Storage module    |
 | [goravel/cos](https://github.com/goravel/cos)                          | The COS driver of Storage module    |
 | [goravel/minio](https://github.com/goravel/minio)                      | The Minio driver of Storage module  |
+| [goravel/cloudinary](https://github.com/goravel/cloudinary)            | The Cloudinary driver of Storage module  |
 | [goravel/redis](https://github.com/goravel/redis)                      | The Redis driver of Cache module    |
 | [goravel/gin](https://github.com/goravel/gin)                          | The Gin driver of Route module    |
 | [goravel/fiber](https://github.com/goravel/fiber)                      | The Fiber driver of Route module    |
