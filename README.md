@@ -31,7 +31,7 @@ Welcome star, PR and issues！
 | [Grpc](/the-basics/grpc.html)   | [Artisan Console](/digging-deeper/artisan-console.html)  | [Task Scheduling](/digging-deeper/task-scheduling.html)  | [Queue](/digging-deeper/queues.html)  |
 | [Event](/digging-deeper/event.html)   | [FileStorage](/digging-deeper/filesystem.html)  | [Mail](/digging-deeper/mail.html)  | [Validation](/the-basics/validation.html)  |
 | [Mock](/digging-deeper/mock.html)   | [Hash](/security/hashing.html)  | [Crypt](/security/encryption.html)  | [Carbon](/digging-deeper/helpers.html)  |
-| [Package Development](/digging-deeper/package-development.html)   | [测试](/testing/getting-started.html) |   |   |
+| [Package Development](/digging-deeper/package-development.html)   | [Testing](/testing/getting-started.html) |   |   |
 
 ## Roadmap
 
