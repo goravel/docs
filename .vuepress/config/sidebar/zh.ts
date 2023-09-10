@@ -102,6 +102,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/the-basics/response",
         },
         {
+          text: "视图",
+          link: "/zh/the-basics/views",
+        },
+        {
           text: "Grpc",
           link: "/zh/the-basics/grpc",
         },

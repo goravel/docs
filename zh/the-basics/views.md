@@ -23,7 +23,7 @@
 
 创建视图后，可以使用 `View` 方法从应用程序的某个路由或控制器返回视图：
 
-```
+```go
 facades.Route().Get("/", func(ctx http.Context) {
   ctx.Response().View().Make("welcome.tmpl", map[string]any{
     "name": "Goravel",
@@ -35,7 +35,7 @@ facades.Route().Get("/", func(ctx http.Context) {
 
 视图也可以嵌套在目录 `resources/views` 的子目录中。例如，如果视图存储在 `resources/views/admin/profile.tmpl`，您可以从应用程序的路由或控制器中返回它，如下所示：
 
-```
+```go
 ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
   "Name": "Goravel",
 })
@@ -45,7 +45,7 @@ ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
 
 使用 `View` 的 `First` 方法，您可以使用给定数组视图中第一个存在的视图。如果您的应用程序或开发的第三方包允许定制或覆盖视图，这会非常有用：
 
-```
+```go
 ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[string]any{
   "name": "Goravel",
 })
@@ -55,7 +55,7 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 
 如果需要判断视图文件是否存在，可以使用 `facades.View()`：
 
-```
+```go
 if facades.View().Exist("welcome.tmpl") {
   // ...
 }
@@ -65,7 +65,7 @@ if facades.View().Exist("welcome.tmpl") {
 
 正如您在前面的示例中看到的，您可以将数据数组传递给视图，以使该数据可用于视图。请注意，传递的数据格式需要根据所使用的模版驱动而变化，在下面例子中，使用默认的 `html/template` 驱动：
 
-```
+```go
 facades.Route().Get("/", func(ctx http.Context) {
   ctx.Response().View().Make("welcome.tmpl", map[string]any{
     "name": "Goravel",
@@ -77,7 +77,7 @@ facades.Route().Get("/", func(ctx http.Context) {
 
 有时，您可能需要与应用程序呈现的所有视图共享数据，可以使用 `facades.View()` 的 `Share` 方法。您可以在服务提供器的 `Boot` 方法中调用视图 `Share` 方法。例如，可以将它们添加到 `app/providers/app_service_provider.go` 或者为它们生成一个单独的服务提供器：
 
-```
+```go
 package providers
 
 import (
@@ -89,7 +89,6 @@ type AppServiceProvider struct {
 }
 
 func (receiver *AppServiceProvider) Register(app foundation.Application) {
-
 }
 
 func (receiver *AppServiceProvider) Boot(app foundation.Application) {

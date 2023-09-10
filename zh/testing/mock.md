@@ -6,6 +6,50 @@
 
 Goravel 所有功能都使用 `facades` 实现，而所有的 `facades` 均由接口构成。因此配合 [stretchr/testify](http://github.com/stretchr/testify) 的 mock 功能，Goravel 可以提供优秀的测试体验。
 
+## Mock facades.Artisan
+
+```go
+import "github.com/goravel/framework/testing/mock"
+
+func ArtisanCall() {
+  facades.Artisan().Call("list")
+}
+
+func TestArtisan(t *testing.T) {
+  mockArticle := mock.Artisan()
+  mockArticle.On("Call", "list").Once()
+
+  assert.NotPanics(t, func() {
+    ArtisanCall()
+  })
+}
+```
+
+## Mock facades.Auth
+
+```go
+import (
+  "testing"
+
+  "github.com/goravel/framework/http"
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+  "github.com/goravel/framework/facades"
+)
+
+func Auth() error {
+  return facades.Auth().Logout(http.Background())
+}
+
+func TestAuth(t *testing.T) {
+  mockAuth := mock.Auth()
+  mockAuth.On("Logout", http.Background()).Return(nil).Once()
+  err := Auth()
+
+  assert.Nil(t, err)
+}
+```
+
 ## Mock facades.Cache
 
 ```go
@@ -47,22 +91,184 @@ func TestConfig(t *testing.T) {
 }
 ```
 
-## Mock facades.Artisan
+## Mock facades.Crypt
+
+```go
+import (
+  "testing"
+
+  "github.com/goravel/framework/facades"
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+)
+
+func Crypt(str string) (string, error) {
+	res, err := facades.Crypt().EncryptString(str)
+	if err != nil {
+		return "", err
+	}
+
+	return facades.Crypt().DecryptString(res)
+}
+
+func TestCrypt(t *testing.T) {
+	mockCrypt := mock.Crypt()
+	mockCrypt.On("EncryptString", "Goravel").Return("test", nil).Once()
+	mockCrypt.On("DecryptString", "test").Return("Goravel", nil).Once()
+
+	res, err := Crypt("Goravel")
+	assert.Equal(t, "Goravel", res)
+	assert.Nil(t, err)
+
+	mockCrypt.AssertExpectations(t)
+}
+```
+
+## Mock facades.Event
 
 ```go
 import "github.com/goravel/framework/testing/mock"
 
-func ArtisanCall() {
-  facades.Artisan().Call("list")
+func Event() error {
+  return facades.Event().Job(&events.TestEvent{}, []contractevent.Arg{
+    {Type: "string", Value: "abcc"},
+    {Type: "int", Value: 1234},
+  }).Dispatch()
 }
 
-func TestArtisan(t *testing.T) {
-  mockArticle := mock.Artisan()
-  mockArticle.On("Call", "list").Once()
+func TestEvent(t *testing.T) {
+  mockEvent, mockTask := mock.Event()
+  mockEvent.On("Job", mock.Anything, mock.Anything).Return(mockTask).Once()
+  mockTask.On("Dispatch").Return(nil).Once()
 
-  assert.NotPanics(t, func() {
-    ArtisanCall()
-  })
+  assert.Nil(t, Event())
+}
+```
+
+## Mock facades.Gate
+```go
+import (
+  "testing"
+
+  "github.com/goravel/framework/facades"
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+)
+
+func Gate() bool {
+	return facades.Gate().Allows("update-post", map[string]any{
+		"post": "test",
+	})
+}
+
+func TestGate(t *testing.T) {
+	mockGate := mock.Gate()
+	mockGate.On("Allows", "update-post", map[string]any{
+		"post": "test",
+	}).Return(true).Once()
+
+	assert.True(t, Gate())
+
+	mockGate.AssertExpectations(t)
+}
+```
+
+## Mock facades.Grpc
+
+```go
+
+import (
+  "context"
+  "errors"
+  "testing"
+
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+  "google.golang.org/grpc"
+  "github.com/goravel/framework/facades"
+)
+
+func Grpc() (*grpc.ClientConn, error) {
+  return facades.Grpc().Client(context.Background(), "user")
+}
+
+func TestGrpc(t *testing.T) {
+  mockGrpc := mock.Grpc()
+  mockGrpc.On("Client", context.Background(), "user").Return(nil, errors.New("error")).Once()
+  conn, err := Grpc()
+
+  assert.Nil(t, conn)
+  assert.EqualError(t, err, "error")
+}
+```
+
+## Mock facades.Hash
+
+```go
+import (
+  "errors"
+  "testing"
+
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+  "google.golang.org/grpc"
+  "github.com/goravel/framework/facades"
+)
+
+func Hash() (string, error) {
+	return facades.Hash().Make("Goravel")
+}
+
+func TestHash(t *testing.T) {
+  mockHash := mock.Hash()
+	mockHash.On("Make", "Goravel").Return("test", nil).Once()
+
+	res, err := Hash()
+	assert.Equal(t, "test", res)
+	assert.Nil(t, err)
+
+	mockHash.AssertExpectations(t)
+}
+```
+
+## Mock facades.Log
+
+`facades.Log()` 没有实现 mock，而是使用 `fmt` 代替了实际的日志输出，便于测试过程中调试。
+
+```go
+import "github.com/goravel/framework/testing/mock"
+
+func Log() {
+  facades.Log().Debug("test")
+}
+
+func TestLog(t *testing.T) {
+  mock.Log()
+
+  Log()
+}
+```
+
+## Mock facades.Mail
+
+```go
+import "github.com/goravel/framework/testing/mock"
+
+func Mail() error {
+  return facades.Mail().From(mail.From{Address: "example@example.com", Name: "example"}).
+    To([]string{"example@example.com"}).
+    Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
+    Send()
+}
+
+func TestMail(t *testing.T) {
+  mockMail := mock.Mail()
+  mockMail.On("From", mail.From{Address: "example@example.com", Name: "example"}).Return(mockMail)
+  mockMail.On("To", []string{"example@example.com"}).Return(mockMail)
+  mockMail.On("Content", mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).Return(mockMail)
+  mockMail.On("Send").Return(nil)
+
+  assert.Nil(t, Mail())
 }
 ```
 
@@ -132,68 +338,6 @@ func Begin() error {
 }
 ```
 
-## Mock facades.Event
-
-```go
-import "github.com/goravel/framework/testing/mock"
-
-func Event() error {
-  return facades.Event().Job(&events.TestEvent{}, []contractevent.Arg{
-    {Type: "string", Value: "abcc"},
-    {Type: "int", Value: 1234},
-  }).Dispatch()
-}
-
-func TestEvent(t *testing.T) {
-  mockEvent, mockTask := mock.Event()
-  mockEvent.On("Job", mock.Anything, mock.Anything).Return(mockTask).Once()
-  mockTask.On("Dispatch").Return(nil).Once()
-
-  assert.Nil(t, Event())
-}
-```
-
-## Mock facades.Log
-
-`facades.Log()` 没有实现 mock，而是使用 `fmt` 代替了实际的日志输出，便于测试过程中调试。
-
-```go
-import "github.com/goravel/framework/testing/mock"
-
-func Log() {
-  facades.Log().Debug("test")
-}
-
-func TestLog(t *testing.T) {
-  mock.Log()
-
-  Log()
-}
-```
-
-## Mock facades.Mail
-
-```go
-import "github.com/goravel/framework/testing/mock"
-
-func Mail() error {
-  return facades.Mail().From(mail.From{Address: "example@example.com", Name: "example"}).
-    To([]string{"example@example.com"}).
-    Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
-    Send()
-}
-
-func TestMail(t *testing.T) {
-  mockMail := mock.Mail()
-  mockMail.On("From", mail.From{Address: "example@example.com", Name: "example"}).Return(mockMail)
-  mockMail.On("To", []string{"example@example.com"}).Return(mockMail)
-  mockMail.On("Content", mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).Return(mockMail)
-  mockMail.On("Send").Return(nil)
-
-  assert.Nil(t, Mail())
-}
-```
-
 ## Mock facades.Queue
 
 ```go
@@ -246,7 +390,6 @@ func TestStorage(t *testing.T) {
 ## Mock facades.Validation
 
 ```go
-
 import (
   "testing"
 
@@ -281,35 +424,9 @@ func TestValidation(t *testing.T) {
 }
 ```
 
-## Mock facades.Auth
+## Mock facades.View
 
 ```go
-import (
-  "testing"
-
-  "github.com/goravel/framework/http"
-  "github.com/goravel/framework/testing/mock"
-  "github.com/stretchr/testify/assert"
-  "github.com/goravel/framework/facades"
-)
-
-func Auth() error {
-  return facades.Auth().Logout(http.Background())
-}
-
-func TestAuth(t *testing.T) {
-  mockAuth := mock.Auth()
-  mockAuth.On("Logout", http.Background()).Return(nil).Once()
-  err := Auth()
-
-  assert.Nil(t, err)
-}
-```
-
-## Mock facades.Gate
-
-```go
-
 import (
   "testing"
 
@@ -318,50 +435,17 @@ import (
   "github.com/goravel/framework/facades"
 )
 
-func Gate() bool {
-  return facades.Gate().Allows("create", map[string]any{
-    "a": "b",
-  })
+func View() bool {
+  return facades.View().Exists("welcome.tmpl")
 }
 
-func TestGate(t *testing.T) {
-  mockGate := mock.Gate()
-  mockGate.On("Allows", "create", map[string]any{
-    "a": "b",
-  }).Return(true).Once()
-  res := Gate()
+func TestView(t *testing.T) {
+  mockView := mock.View()
+	mockView.On("Exists", "welcome.tmpl").Return(true).Once()
 
-  assert.True(t, res)
+	assert.True(t, View())
+
+	mockView.AssertExpectations(t)
 }
 ```
-
-## Mock facades.Grpc
-
-```go
-
-import (
-  "context"
-  "errors"
-  "testing"
-
-  "github.com/goravel/framework/testing/mock"
-  "github.com/stretchr/testify/assert"
-  "google.golang.org/grpc"
-  "github.com/goravel/framework/facades"
-)
-
-func Grpc() (*grpc.ClientConn, error) {
-  return facades.Grpc().Client(context.Background(), "user")
-}
-
-func TestGrpc(t *testing.T) {
-  mockGrpc := mock.Grpc()
-  mockGrpc.On("Client", context.Background(), "user").Return(nil, errors.New("error")).Once()
-  conn, err := Grpc()
-
-  assert.Nil(t, conn)
-  assert.EqualError(t, err, "error")
-}
-```
-
 <CommentService/>

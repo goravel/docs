@@ -102,6 +102,10 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/the-basics/response",
         },
         {
+          text: "Views",
+          link: "/the-basics/views",
+        },
+        {
           text: "Grpc",
           link: "/the-basics/grpc",
         },
