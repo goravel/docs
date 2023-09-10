@@ -54,8 +54,10 @@ func (database *ServiceProvider) Boot() {
 | Queue       | [队列](../digging-deeper/queues.md)                |
 | RateLimiter | [限流器](../the-basics/routing.md)                   |
 | Route       | [路由](../the-basics/routing.md)                   |
+| Seeder      | [数据填充](../orm/seeding.md)                   |
 | Schedule    | [任务调度](../digging-deeper/task-scheduling.md)   |
 | Storage     | [文件系统](../digging-deeper/filesystem.md)   |
+| Testing     | [测试](../testing/getting-started.md)   |
 | Validation  | [表单验证](../the-basics/validation.md)   |
 
 <CommentService/>

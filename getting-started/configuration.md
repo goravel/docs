@@ -30,6 +30,9 @@ facades.Config().Env("APP_NAME", "goravel")
 You can easily use the global `facades.Config()` function anywhere in the application to access the configuration values in the `config` directory. The access to the configuration value can use the "." syntax. You can also specify a default value, if the configuration option does not exist, the default value is returned:
 
 ```
+// Get the configuration through assertion
+facades.Config().Get("app.name", "goravel")
+
 // Get the configuration of the string type
 facades.Config().GetString("app.name", "goravel")
 

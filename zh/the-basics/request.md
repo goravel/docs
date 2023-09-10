@@ -101,22 +101,6 @@ names := ctx.Request().QueryMap("names")
 queries := ctx.Request().Queries()
 ```
 
-### 获取 form
-
-```go
-name := ctx.Request().Form("name")
-name := ctx.Request().Form("name", "default")
-```
-
-### 获取 json
-
-```go
-name := ctx.Request().Json("name")
-name := ctx.Request().Json("name", "goravel")
-```
-
-> 注意：只能获取一维 Json 数据，否则将返回空。
-
 ### 检索一个输入值
 
 获取所有的用户输入数据，而不用在意用户使用的是哪种 HTTP 动词，不管是什么 HTTP 动词。检索顺序为：`json`, `form`, `query`, `route`。
@@ -127,6 +111,8 @@ name := ctx.Request().Json("name", "goravel")
 name := ctx.Request().InputInt("name")
 name := ctx.Request().InputInt64("name")
 name := ctx.Request().InputBool("name")
+name := ctx.Request().InputArray("name")
+name := ctx.Request().InputMap("name")
 ```
 
 ### json/form 绑定 struct

@@ -6,7 +6,7 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 
 让我们一起将 Goravel 变得更高效！
 
-## 核心贡献者
+## 核心开发者
 
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
@@ -67,7 +67,7 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过�
 
 | 软件                                                      | 作用                      |
 | -------------------------------------------------        | --------------            |
-| Golang v1.18                                             | 最低版本                   |
+| Golang v1.20                                             | 最低版本                   |
 | [vektra/mockery](https://github.com/vektra/mockery)      | 为单元测试提供 mock 文件     |
 
 ## Goravel 仓库
@@ -86,7 +86,10 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过�
 | [goravel/oss](https://github.com/goravel/oss)                          | Storage 模块 OSS 驱动    |
 | [goravel/cos](https://github.com/goravel/cos)                          | Storage 模块 COS 驱动    |
 | [goravel/minio](https://github.com/goravel/minio)                      | Storage 模块 Minio 驱动  |
+| [goravel/cloudinary](https://github.com/goravel/cloudinary)            | Storage 模块 Cloudinary 驱动  |
 | [goravel/redis](https://github.com/goravel/redis)                      | Cache 模块 Redis 驱动    |
+| [goravel/gin](https://github.com/goravel/gin)                          | Route 模块 Gin 驱动    |
+| [goravel/fiber](https://github.com/goravel/fiber)                      | Route 模块 Fiber 驱动    |
 | [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs)  | 为 Log 模块提供日志分割功能 |
 | [goravel/.github](https://github.com/goravel/.github)                  | [社区健康文件](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file)    |
 

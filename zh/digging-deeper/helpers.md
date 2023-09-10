@@ -20,6 +20,12 @@
 | [carbon.FromTime()](#carbon-fromtime)   | [carbon.FromStdTime()](#carbon-fromstdtime)     | [carbon.IsTestNow()](#istestnow-fromdate)     |
 | [carbon.SetTestNow()](#carbon-settestnow)     | [carbon.UnsetTestNow()](#carbon-unsettestnow)     |      |
 
+### Debug
+
+|                           |                               |             |
+| -----------               | --------------                | -------------- |
+| [debug.Dump()](#debug-dump)   | [debug.SDump()](#debug-sdump)     | [debug.FDump()](#debug-fdump)     |
+
 ## 路径
 
 ### `path.App()`
@@ -171,3 +177,37 @@ carbon.SetTestNow(carbon.Now())
 ```go
 carbon.UnsetTestNow()
 ```
+
+## Debug
+
+### `debug.Dump()`
+
+`debug.Dump()` 可以打印任意对象：
+
+```go
+import "github.com/goravel/framework/support/debug"
+
+debug.Dump(myVar1, myVar2, ...)
+```
+
+### `debug.FDump()`
+
+`debug.FDump()` 可以打印任意对象输出到一个 `io.Writer`：
+
+```go
+import "github.com/goravel/framework/support/debug"
+
+debug.FDump(someWriter, myVar1, myVar2, ...)
+```
+
+### `debug.SDump()`
+
+`debug.SDump()` 可以将打印输出至字符串：
+
+```go
+import "github.com/goravel/framework/support/debug"
+
+debug.SDump(myVar1, myVar2, ...)
+```
+
+<CommentService/>

@@ -101,20 +101,6 @@ names := ctx.Request().QueryMap("names")
 queries := ctx.Request().Queries()
 ```
 
-### Retrieving Form
-
-```go
-name := ctx.Request().Form("name")
-name := ctx.Request().Form("name", "goravel")
-```
-
-### Retrieving Json
-
-```go
-name := ctx.Request().Json("name")
-name := ctx.Request().Json("name", "goravel")
-```
-
 > Note: Only one-dimensional Json data can be obtained, otherwise it will return empty.
 
 ### Retrieving An Input Value
@@ -127,6 +113,8 @@ name := ctx.Request().Json("name", "goravel")
 name := ctx.Request().InputInt("name")
 name := ctx.Request().InputInt64("name")
 name := ctx.Request().InputBool("name")
+name := ctx.Request().InputArray("name")
+name := ctx.Request().InputMap("name")
 ```
 
 ### Json/Form Bind Struct

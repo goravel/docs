@@ -10,12 +10,12 @@ export function getZhSidebar(): SidebarConfigArray {
           text: "升级指南",
           children: [
             {
-              text: "从 v1.11 升级到 v1.12",
-              link: "/zh/upgrade/v1.12",
+              text: "从 v1.12 升级到 v1.13",
+              link: "/zh/upgrade/v1.13",
             },
             {
-              text: "从 v1.10 升级到 v1.11",
-              link: "/zh/upgrade/v1.11",
+              text: "从 v1.11 升级到 v1.12",
+              link: "/zh/upgrade/v1.12",
             },
             {
               text: "历史版本升级",
@@ -102,6 +102,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/the-basics/response",
         },
         {
+          text: "视图",
+          link: "/zh/the-basics/views",
+        },
+        {
           text: "Grpc",
           link: "/zh/the-basics/grpc",
         },
@@ -155,10 +159,6 @@ export function getZhSidebar(): SidebarConfigArray {
           text: "辅助函数",
           link: "/zh/digging-deeper/helpers",
         },
-        {
-          text: "Mock",
-          link: "/zh/digging-deeper/mock",
-        },
       ],
     },
     {
@@ -198,6 +198,28 @@ export function getZhSidebar(): SidebarConfigArray {
         {
           text: "数据库迁移",
           link: "/zh/orm/migrations",
+        },
+        {
+          text: "数据填充",
+          link: "/zh/orm/seeding",
+        },
+        {
+          text: "模型工厂",
+          link: "/zh/orm/factories",
+        },
+      ],
+    },
+    {
+      text: "测试相关",
+      // collapsible: true,
+      children: [
+        {
+          text: "快速入门",
+          link: "/zh/testing/getting-started",
+        },
+        {
+          text: "Mock",
+          link: "/zh/testing/mock",
         },
       ],
     },

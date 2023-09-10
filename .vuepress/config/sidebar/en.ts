@@ -10,12 +10,12 @@ export function getEnSidebar(): SidebarConfigArray {
           text: "Upgrade Guide",
           children: [
             {
-              text: "Upgrading To v1.12 From v1.11",
-              link: "/upgrade/v1.12",
+              text: "Upgrading To v1.13 From v1.12",
+              link: "/upgrade/v1.13",
             },
             {
-              text: "Upgrading To v1.11 From v1.10",
-              link: "/upgrade/v1.11",
+              text: "Upgrading To v1.12 From v1.11",
+              link: "/upgrade/v1.12",
             },
             {
               text: "History Upgrade",
@@ -102,6 +102,10 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/the-basics/response",
         },
         {
+          text: "Views",
+          link: "/the-basics/views",
+        },
+        {
           text: "Grpc",
           link: "/the-basics/grpc",
         },
@@ -155,10 +159,6 @@ export function getEnSidebar(): SidebarConfigArray {
           text: "Helpers",
           link: "/digging-deeper/helpers",
         },
-        {
-          text: "Mock",
-          link: "/digging-deeper/mock",
-        },
       ],
     },
     {
@@ -198,6 +198,28 @@ export function getEnSidebar(): SidebarConfigArray {
         {
           text: "Migrations",
           link: "/orm/migrations",
+        },
+        {
+          text: "Seeding",
+          link: "/orm/seeding",
+        },
+        {
+          text: "Factories",
+          link: "/orm/factories",
+        },
+      ],
+    },
+    {
+      text: "Testing",
+      // collapsible: true,
+      children: [
+        {
+          text: "Getting Started",
+          link: "/testing/getting-started",
+        },
+        {
+          text: "Mock",
+          link: "/testing/mock",
         },
       ],
     },

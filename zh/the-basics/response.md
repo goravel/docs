@@ -73,6 +73,14 @@ ctx.Response().Success().Json(http.Json({
 }))
 ```
 
+## 自定义 Code
+
+```go
+ctx.Response().Status(http.StatusOK).Json(http.Json{
+  "hello": "Goravel",
+})
+```
+
 ## 重定向
 
 ```go

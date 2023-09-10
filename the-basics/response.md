@@ -73,6 +73,14 @@ ctx.Response().Success().Json(http.Json({
 }))
 ```
 
+## Custom Code
+
+```go
+ctx.Response().Status(http.StatusOK).Json(http.Json{
+  "hello": "Goravel",
+})
+```
+
 ## Redirect
 
 ```go
