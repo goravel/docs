@@ -158,31 +158,6 @@ facades.Route().StaticFile("static-file", "./public/logo.png")
 facades.Route().StaticFS("static-fs", http.Dir("./public"))
 ```
 
-一般情况下，我们无法将文件路由定向到根目录 `/`，如果您真的想这么做，可以使用如下方式：
-
-```go
-// 安装依赖 
-go get -u github.com/gin-contrib/static
-
-// 定义中间件 app/http/middleware/static.go，然后将其注册到 app/http/kernel.go
-package middleware
-
-import (
-  "github.com/gin-contrib/static"
-
-  contractshttp "github.com/goravel/framework/contracts/http"
-  frameworkhttp "github.com/goravel/framework/http"
-)
-
-func Static() contractshttp.Middleware {
-  return func(ctx contractshttp.Context) {
-    static.Serve("/", static.LocalFile("./public", false))(ctx.(*frameworkhttp.GinContext).Instance())
-
-    ctx.Request().Next()
-  }
-}
-```
-
 ## 路由传参
 
 ```go
@@ -319,18 +294,5 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 Goravel 已默认启用 CORS，详细配置可以到 `config/cors.go` 文件中进行修改。
 
 > 有关 CORS 和 CORS 标头的更多信息，请参阅 [MDN 关于 CORS 的 Web 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
-
-## 测试路由
-
-```go
-func TestHttp(t *testing.T) {
-  w := httptest.NewRecorder()
-  req, err := http.NewRequest("GET", "/users", nil)
-  assert.Nil(t, err)
-  facades.Route().ServeHTTP(w, req)
-  assert.Equal(t, 200, w.Code)
-  assert.Equal(t, "1", w.Body.String())
-}
-```
 
 <CommentService/>

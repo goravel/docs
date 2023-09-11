@@ -291,17 +291,4 @@ Goravel has CORS enabled by default, the configuration can be modified in `confi
 
 > For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
 
-## Testing Routing
-
-```go
-func TestHttp(t *testing.T) {
-  w := httptest.NewRecorder()
-  req, err := http.NewRequest("GET", "/users", nil)
-  assert.Nil(t, err)
-  facades.Route().ServeHTTP(w, req)
-  assert.Equal(t, 200, w.Code)
-  assert.Equal(t, "1", w.Body.String())
-}
-```
-
 <CommentService/>
