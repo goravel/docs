@@ -28,6 +28,10 @@ The `database` directory contains database migration files.
 
 The `public` directory contains some static resources, such as images, certificates, etc.
 
+### `resources` Directory
+
+The `resources` directory contains your [views](../the-basics/views.md) as well as your raw, un-compiled assets such as CSS or JavaScript.
+
 ### `routes` Directory
 
 The `routes` directory contains all the route definitions of the application.
@@ -35,6 +39,10 @@ The `routes` directory contains all the route definitions of the application.
 ### `storage` Directory
 
 The `storage` directory contains the `logs` directory, and the `logs` directory contains the application log files.
+
+### `tests` Directory
+
+The `tests` directory contains your automated tests. 
 
 ## `app` Directory
 

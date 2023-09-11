@@ -28,6 +28,10 @@
 
 `public` 目录包含一些静态资源，如图像、证书等。
 
+### resources 目录
+
+`resources` 目录包含您的[视图](../the-basics/views.md)，以及原始的、未编译的资源文件，例如 CSS 或 JavaScript。
+
 ### routes 目录
 
 `routes` 目录包含应用程序的所有路由定义。
@@ -35,6 +39,10 @@
 ### storage 目录
 
 `storage` 目录包含 `logs` 等目录，`logs` 目录包含应用程序的日志文件。
+
+### tests 目录
+
+`tests` 目录包含你的自动化测试。
 
 ## app 目录
 
