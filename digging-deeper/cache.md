@@ -69,8 +69,8 @@ facades.Cache().Decrement("key", amount)
 Sometimes you may want to get data from the cache, and when the requested cache item does not exist, the program can store a default value for you.
 
 ```go
-value, err := facades.Cache().Remember("goravel", 5 * time.Second, func() interface{} {
-    return "goravel"
+value, err := facades.Cache().Remember("goravel", 5 * time.Second, func() (any, error) {
+    return "goravel", nil
 })
 ```
 
@@ -79,8 +79,8 @@ If the data you want does not exist in the cache, the closure passed to the `Rem
 You can use the `RememberForever` method to retrieve data from the cache or store it permanently:
 
 ```go
-value, err := facades.Cache().RememberForever("goravel", func() interface{} {
-    return "default"
+value, err := facades.Cache().RememberForever("goravel", func() (any, error) {
+    return "default", nil
 })
 ```
 

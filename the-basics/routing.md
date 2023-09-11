@@ -95,7 +95,11 @@ if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); 
 ## Basic Routing
 
 ```go
-facades.Route().Get("/", userController.Show)
+facades.Route().Get("/", func(ctx http.Context) http.Response {
+  return ctx.Response().Json(http.StatusOK, http.Json{
+    "Hello": "Goravel",
+  })
+})
 facades.Route().Post("/", userController.Show)
 facades.Route().Put("/", userController.Show)
 facades.Route().Delete("/", userController.Show)
@@ -131,9 +135,9 @@ func (c *ResourceController) Destroy(ctx http.Context) {}
 ## Group Routing
 
 ```go
-facades.Route().Group(func(route route.Route) {
-  route.Get("group/{id}", func(ctx http.Context) {
-    ctx.Response().Success().String(ctx.Request().Query("id", "1"))
+facades.Route().Group(func(router route.Router) {
+  router.Get("group/{id}", func(ctx http.Context) http.Response {
+    return ctx.Response().Success().String(ctx.Request().Query("id", "1"))
   })
 })
 ```
@@ -157,8 +161,8 @@ facades.Route().StaticFS("static-fs", http.Dir("./public"))
 ## Routing Parameters
 
 ```go
-facades.Route().Get("/input/{id}", func(ctx http.Context) {
-  ctx.Response().Success().Json(http.Json{
+facades.Route().Get("/input/{id}", func(ctx http.Context) http.Response {
+  return ctx.Response().Success().Json(http.Json{
     "id": ctx.Request().Input("id"),
   })
 })
@@ -181,8 +185,8 @@ Detail [Middleware](./middleware.md)
 Using the `Fallback` method, you may define a route that will be executed when no other route matches the incoming request.
 
 ```go
-facades.Route().Fallback(func(ctx http.Context) {
-  ctx.Response().String(404, "not found")
+facades.Route().Fallback(func(ctx http.Context) http.Response {
+  return ctx.Response().String(404, "not found")
 })
 ```
 
@@ -211,10 +215,9 @@ func (receiver *RouteServiceProvider) configureRateLimiting() {
 If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Goravel. If you would like to define your own response that should be returned by a rate limit, you may use the response method:
 
 ```go
-facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
-  return limit.PerMinute(1000).Response(func(ctx contractshttp.Context) {
-    ctx.Response().String(429, "Custom response...")
-    return
+facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
+  return limit.PerMinute(1000).Response(func(ctx http.Context) http.Response {
+    return ctx.Response().String(429, "Custom response...")
   })
 })
 ```
@@ -278,8 +281,8 @@ Rate limiters may be attached to routes or route groups using the throttle middl
 ```go
 import github.com/goravel/framework/http/middleware
 
-facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) {
-  ctx.Response().Json(200, http.Json{
+facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) http.Response {
+  return ctx.Response().Json(200, http.Json{
     "Hello": "Goravel",
   })
 })

@@ -109,7 +109,7 @@ Access all of the user input without worrying about which HTTP verb was used for
 
 ```go
 name := ctx.Request().Input("name")
-name := ctx.Request().Json("name", "goravel")
+name := ctx.Request().Input("name", "goravel")
 name := ctx.Request().InputInt("name")
 name := ctx.Request().InputInt64("name")
 name := ctx.Request().InputBool("name")
