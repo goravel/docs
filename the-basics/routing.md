@@ -4,7 +4,13 @@
 
 ## Introduction
 
-Goravel routing module can operated by `facades.Route()`.
+Goravel routing module can operated by `facades.Route()`. The newly installed framework uses `gin` as the routing driver
+by default. If you need other drivers, please check the corresponding independent extension package:
+
+| Driver | Link                             |
+|--------|----------------------------------|
+| Gin    | https://github.com/goravel/gin   |
+| Fiber  | https://github.com/goravel/fiber |
 
 ## HTTP Driver
 

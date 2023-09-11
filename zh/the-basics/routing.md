@@ -4,7 +4,12 @@
 
 ## 简介
 
-Goravel 路由模块可以使用 `facades.Route()` 进行操作。
+Goravel 路由模块可以使用 `facades.Route()` 进行操作，新安装的框架默认使用 `gin` 作为路由驱动，如需其他驱动，请查看对应的独立扩展包：
+
+| 驱动    | 地址                               |
+|-------|----------------------------------|
+| Gin   | https://github.com/goravel/gin   |
+| Fiber | https://github.com/goravel/fiber |
 
 ## HTTP 驱动
 
