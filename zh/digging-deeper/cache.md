@@ -78,8 +78,8 @@ facades.Cache().Decrement("key", amount)
 有时你可能想从缓存中获取一个数据，而当请求的缓存项不存在时，程序能为你存储一个默认值。
 
 ```go
-value, err := facades.Cache().Remember("goravel", 5 * time.Second, func() interface{} {
-    return "goravel"
+value, err := facades.Cache().Remember("goravel", 5 * time.Second, func() (any, error) {
+    return "goravel", nil
 })
 ```
 
@@ -88,8 +88,8 @@ value, err := facades.Cache().Remember("goravel", 5 * time.Second, func() interf
 你可以使用 `RememberForever` 方法从缓存中获取数据或者永久存储它：
 
 ```go
-value, err := facades.Cache().RememberForever("goravel", func() interface{} {
-    return "default"
+value, err := facades.Cache().RememberForever("goravel", func() (any, error) {
+    return "default", nil
 })
 ```
 

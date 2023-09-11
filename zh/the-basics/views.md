@@ -24,8 +24,8 @@
 创建视图后，可以使用 `View` 方法从应用程序的某个路由或控制器返回视图：
 
 ```go
-facades.Route().Get("/", func(ctx http.Context) {
-  ctx.Response().View().Make("welcome.tmpl", map[string]any{
+facades.Route().Get("/", func(ctx http.Context) http.Response {
+  return ctx.Response().View().Make("welcome.tmpl", map[string]any{
     "name": "Goravel",
   })
 })
@@ -66,8 +66,8 @@ if facades.View().Exist("welcome.tmpl") {
 正如您在前面的示例中看到的，您可以将数据数组传递给视图，以使该数据可用于视图。请注意，传递的数据格式需要根据所使用的模版驱动而变化，在下面例子中，使用默认的 `html/template` 驱动：
 
 ```go
-facades.Route().Get("/", func(ctx http.Context) {
-  ctx.Response().View().Make("welcome.tmpl", map[string]any{
+facades.Route().Get("/", func(ctx http.Context) http.Response {
+  return ctx.Response().View().Make("welcome.tmpl", map[string]any{
     "name": "Goravel",
   })
 })

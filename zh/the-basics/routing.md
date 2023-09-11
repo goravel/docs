@@ -95,8 +95,8 @@ if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); 
 ## 基本路由
 
 ```go
-facades.Route().Get("/", func(ctx http.Context) {
-  ctx.Response().Json(nethttp.StatusOK, http.Json{
+facades.Route().Get("/", func(ctx http.Context) http.Response {
+  return ctx.Response().Json(http.StatusOK, http.Json{
     "Hello": "Goravel",
   })
 })
@@ -135,9 +135,9 @@ func (c *ResourceController) Destroy(ctx http.Context) {}
 ## 路由分组
 
 ```go
-facades.Route().Group(func(route route.Route) {
-  route.Get("group/{id}", func(ctx http.Context) {
-    ctx.Response().Success().String(ctx.Request().Query("id", "1"))
+facades.Route().Group(func(router route.Router) {
+  router.Get("group/{id}", func(ctx http.Context) http.Response {
+    return ctx.Response().Success().String(ctx.Request().Query("id", "1"))
   })
 })
 ```
@@ -161,8 +161,8 @@ facades.Route().StaticFS("static-fs", http.Dir("./public"))
 ## 路由传参
 
 ```go
-facades.Route().Get("/input/{id}", func(ctx http.Context) {
-  ctx.Response().Success().Json(http.Json{
+facades.Route().Get("/input/{id}", func(ctx http.Context) http.Response {
+  return ctx.Response().Success().Json(http.Json{
     "id": ctx.Request().Input("id"),
   })
 })
@@ -185,8 +185,8 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 使用 `Fallback` 方法，您可以定义一个在没有其他路由匹配传入请求时将执行的路由。
 
 ```go
-facades.Route().Fallback(func(ctx http.Context) {
-  ctx.Response().String(404, "not found")
+facades.Route().Fallback(func(ctx http.Context) http.Response {
+  return ctx.Response().String(404, "not found")
 })
 ```
 
@@ -215,10 +215,9 @@ func (receiver *RouteServiceProvider) configureRateLimiting() {
 如果传入的请求超过指定的速率限制，Goravel 将自动返回一个带有 429 HTTP 状态码的响应。如果你想定义自己的响应，应该由速率限制返回，你可以使用 `Response` 方法：
 
 ```go
-facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
-  return limit.PerMinute(1000).Response(func(ctx contractshttp.Context) {
-    ctx.Response().String(429, "Custom response...")
-    return
+facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
+  return limit.PerMinute(1000).Response(func(ctx http.Context) http.Response {
+    return ctx.Response().String(429, "Custom response...")
   })
 })
 ```
@@ -282,8 +281,8 @@ facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []c
 ```go
 import github.com/goravel/framework/http/middleware
 
-facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) {
-  ctx.Response().Json(200, http.Json{
+facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http.Context) http.Response {
+  return ctx.Response().Json(200, http.Json{
     "Hello": "Goravel",
   })
 })

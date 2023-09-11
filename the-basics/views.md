@@ -24,8 +24,8 @@ When using the Goravel default template `html/template`, you can create views by
 After creating view, you can use the `View` method to return the view from a route or controller in the application:
 
 ```go
-facades.Route().Get("/", func(ctx http.Context) {
-  ctx.Response().View().Make("welcome.tmpl", map[string]any{
+facades.Route().Get("/", func(ctx http.Context) http.Response {
+  return ctx.Response().View().Make("welcome.tmpl", map[string]any{
     "name": "Goravel",
   })
 })
@@ -66,8 +66,8 @@ if facades.View().Exist("welcome.tmpl") {
 As you saw in the previous examples, you may pass an array of data to views to make that data available to the view. Please note, the format of the passed data needs to change according to the template driver used, in the following example, using the default `html/template` driver:
 
 ```go
-facades.Route().Get("/", func(ctx http.Context) {
-  ctx.Response().View().Make("welcome.tmpl", map[string]any{
+facades.Route().Get("/", func(ctx http.Context) http.Response {
+  return ctx.Response().View().Make("welcome.tmpl", map[string]any{
     "name": "Goravel",
   })
 })

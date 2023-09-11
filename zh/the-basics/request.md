@@ -107,7 +107,7 @@ queries := ctx.Request().Queries()
 
 ```go
 name := ctx.Request().Input("name")
-name := ctx.Request().Json("name", "goravel")
+name := ctx.Request().Input("name", "goravel")
 name := ctx.Request().InputInt("name")
 name := ctx.Request().InputInt64("name")
 name := ctx.Request().InputBool("name")
