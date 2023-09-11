@@ -10,10 +10,10 @@ Goravel routing module can operated by `facades.Route()`.
 
 Goravel uses [gin](https://github.com/gin-gonic/gin) as the HTTP driver by default, if you want to use other drivers, you can configure it in the `config/http.go` file. Currently, the official default supports [gin](https://github.com/gin-gonic/gin) and [fiber](https://github.com/gofiber/fiber) two drivers:
 
-| Driver     | Link                                  |
-| ---------- | ------------------------------------- |
-| gin        | [https://github.com/gin-gonic/gin](https://github.com/gin-gonic/gin) |
-| fiber      | [https://github.com/gofiber/fiber](https://github.com/gofiber/fiber) |
+| Driver | Link                             |
+|--------|----------------------------------|
+| Gin    | https://github.com/goravel/gin   |
+| Fiber  | https://github.com/goravel/fiber |
 
 ## Default Routing File
 

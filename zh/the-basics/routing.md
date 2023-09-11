@@ -10,10 +10,10 @@ Goravel 路由模块可以使用 `facades.Route()` 进行操作。
 
 Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动，如果想使用其他驱动，可以到 `config/http.go` 中进行配置，目前官方默认支持 [gin](https://github.com/gin-gonic/gin) 与 [fiber](https://github.com/gofiber/fiber) 两种驱动：
 
-| 驱动       | 地址                                  |
-| ---------- | ------------------------------------- |
-| gin        | [https://github.com/gin-gonic/gin](https://github.com/gin-gonic/gin) |
-| fiber      | [https://github.com/gofiber/fiber](https://github.com/gofiber/fiber) |
+| 驱动    | 地址                               |
+|-------|----------------------------------|
+| Gin   | https://github.com/goravel/gin   |
+| Fiber | https://github.com/goravel/fiber |
 
 ## 默认路由文件
 

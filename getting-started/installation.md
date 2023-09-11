@@ -8,12 +8,32 @@
 
 ## Installation
 
+Linux / MacOS
+
 ```shell
 // Download framework
-git clone git@github.com:goravel/goravel.git && rm -rf goravel/.git*
+git clone https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
 // Installation dependencies
 cd goravel && go mod tidy
+
+// Create .env environment configuration file
+cp .env.example .env
+
+// Generate application key
+go run . artisan key:generate
+```
+
+Windows
+
+```shell
+// Download framework
+git clone https://github.com/goravel/goravel.git
+rm -rf goravel/.git*
+
+// Installation dependencies
+cd goravel
+go mod tidy
 
 // Create .env environment configuration file
 cp .env.example .env

@@ -8,12 +8,32 @@
 
 ## 安装 Goravel
 
+Linux / MacOS
+
 ```shell
 // 下载框架
-git clone git@github.com:goravel/goravel.git goravel && rm -rf goravel/.git*
+git clone https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
 // 安装依赖
 cd goravel && go mod tidy
+
+// 创建 .env 环境配置文件
+cp .env.example .env
+
+// 生成应用密钥
+go run . artisan key:generate
+```
+
+Windows
+
+```shell
+// 下载框架
+git clone https://github.com/goravel/goravel.git
+rm -rf goravel/.git*
+
+// 安装依赖
+cd goravel
+go mod tidy
 
 // 创建 .env 环境配置文件
 cp .env.example .env
