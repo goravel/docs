@@ -459,7 +459,7 @@ result := facades.Orm().Query().Create(&users)
 
 ### 游标
 
-可用于在查询数万条模型记录时减少内存的使用。
+可用于在查询数万条模型记录时减少内存的使用。注意，`Cursor` 无法与预加载 `With` 一同使用，请在 `for` 循环中使用[延迟预加载](./relationships.md#延迟预加载)实现加载关联数据。
 
 ```go
 cursor, err := facades.Orm().Query().Model(models.User{}).Cursor()
