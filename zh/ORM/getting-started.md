@@ -23,7 +23,7 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 
 为了弄明白如何配置读写分离，我们先来看个例子：
 
-```
+```go
 import "github.com/goravel/framework/contracts/database"
 
 // config/database.go
@@ -73,7 +73,7 @@ import "github.com/goravel/framework/contracts/database"
 
 ### 创建模型
 
-```
+```bash
 go run . artisan make:model User
 go run . artisan make:model user/User
 ```
@@ -94,7 +94,7 @@ type User struct {
   orm.SoftDeletes
 }
 
-func (r *User) TableName() string {
+func (r *User) Connection() string {
   return "goravel_user"
 }
 ```
@@ -241,7 +241,7 @@ facades.Orm().WithContext(ctx).Query()
 ```go
 var user models.User
 facades.Orm().Query().First(&user)
-// SELECT * FROM users WHERE id = 10;
+// SELECT * FROM users ORDER BY id LIMIT 1;
 ```
 
 有时你可能希望检索查询的第一个结果或在未找到结果时执行一些其他操作。`firstOr` 方法将返回匹配查询的第一个结果，或者，如果没有找到结果，则执行给定的闭包。你可以在闭包中对模型进行赋值：
@@ -296,20 +296,20 @@ facades.Orm().Query().Where("id in ?", []int{1,2,3}).Get(&users)
 
 ```go
 var user models.User
-facades.Orm().Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"})
-// SELECT * FROM users where name="tom" and sex=1;
+facades.Orm().Query().Where("gender", 1).FirstOrCreate(&user, models.User{Name: "tom"})
+// SELECT * FROM users WHERE name="tom" AND gender=1 ORDER BY id LIMIT 1;
 // INSERT INTO users (name) VALUES ("tom");
 
-facades.Orm().Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
-// SELECT * FROM users where name="tom" and sex=1;
+facades.Orm().Query().Where("gender", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
+// SELECT * FROM users WHERE name="tom" and gender=1 ORDER BY id LIMIT 1;
 // INSERT INTO users (name,avatar) VALUES ("tom", "avatar");
 
 var user models.User
-facades.Orm().Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"})
-// SELECT * FROM users where name="tom" and sex=1;
+facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "tom"})
+// SELECT * FROM users WHERE name="tom" and gender=1 ORDER BY id LIMIT 1;
 
-facades.Orm().Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
-// SELECT * FROM users where name="tom" and sex=1;
+facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
+// SELECT * FROM users WHERE name="tom" and gender=1 ORDER BY id LIMIT 1;
 ```
 
 #### 未找到时抛出错误
@@ -353,7 +353,7 @@ facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 ```go
 var users []models.User
 facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
-// SELECT * FROM users WHERE name = "tom" order sort asc, id desc;
+// SELECT * FROM users WHERE name = "tom" ORDER BY sort asc, id desc;
 ```
 
 ### 分页
@@ -371,7 +371,7 @@ facades.Orm().Query().Paginate(1, 10, &users, &total)
 ```go
 var ages []int64
 facades.Orm().Query().Model(&models.User{}).Pluck("age", &ages)
-// SELECT `name` FROM `users`;
+// SELECT `age` FROM `users`;
 ```
 
 ### 指定表查询
@@ -383,7 +383,7 @@ facades.Orm().Query().Model(&models.User{}).Pluck("age", &ages)
 ```go
 var count int64
 facades.Orm().Query().Model(&models.User{}).Count(&count)
-// SELECT count(1) where users
+// SELECT count(*) FROM users WHERE deleted_at IS NULL;
 ```
 
 使用表名指定
@@ -391,7 +391,7 @@ facades.Orm().Query().Model(&models.User{}).Count(&count)
 ```go
 var count int64
 facades.Orm().Query().Table("users").Count(&count)
-// SELECT count(1) where users
+// SELECT count(*) FROM users; // get all records, whether deleted or not
 ```
 
 ### 检索聚合
@@ -399,7 +399,7 @@ facades.Orm().Query().Table("users").Count(&count)
 ```go
 var count int
 facades.Orm().Query().Where("name = ?", "tom").Count(&count)
-// SELECT count(1) FROM users WHERE name = 'tom'
+// SELECT count(*) FROM users WHERE name = 'tom';
 ```
 
 ### 指定查询列
@@ -437,13 +437,13 @@ type Result struct {
 
 var result Result
 facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").Join("left join emails on emails.user_id = users.id").Scan(&result)
-// SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
+// SELECT users.name, emails.email FROM `users` LEFT JOIN emails ON emails.user_id = users.id;
 ```
 
 ### 创建
 
 ```go
-user := User{Name: "tom", Age: 18}
+user := models.User{Name: "tom", Age: 18}
 result := facades.Orm().Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
 ```
@@ -451,7 +451,7 @@ result := facades.Orm().Query().Create(&user)
 批量创建
 
 ```go
-users := []User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
+users := []models.User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
 result := facades.Orm().Query().Create(&users)
 ```
 
@@ -493,9 +493,9 @@ facades.Orm().Query().Save(&user)
 
 ```go
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
-// UPDATE users SET name='tom', updated_at='2022-09-28 16:29:39' WHERE name="tom";
+// UPDATE users SET name='hello', updated_at='2022-09-28 16:29:39' WHERE name="tom";
 
-facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(User{Name: "hello", Age: 18})
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(models.User{Name: "hello", Age: 18})
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
 ```
 
@@ -506,10 +506,10 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(User{Nam
 根据 `name` 查询，如果不存在，则根据 `name`, `avatar` 创建，如果存在，则根据 `name` 更新 `avatar`：
 
 ```go
-facades.Orm().Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avatar"})
-// SELECT * FROM `users` WHERE `users`.`name` = 'name' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
-// INSERT INTO `users` (`created_at`,`updated_at`,`deleted_at`,`name`,`avatar`) VALUES ('2023-03-11 10:11:08.869','2023-03-11 10:11:08.869',NULL,'name','avatar')
-// UPDATE `users` SET `avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE `name` = 'name' AND `users`.`deleted_at` IS NULL AND `id` = 1
+facades.Orm().Query().UpdateOrCreate(&user, models.User{Name: "name"}, models.User{Avatar: "avatar"})
+// SELECT * FROM `users` WHERE `users`.`name` = 'name' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1;
+// INSERT INTO `users` (`created_at`,`updated_at`,`deleted_at`,`name`,`avatar`) VALUES ('2023-03-11 10:11:08.869','2023-03-11 10:11:08.869',NULL,'name','avatar');
+// UPDATE `users` SET `name`='name',avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE users`.`deleted_at` IS NULL AND `id` = 1;
 ```
 
 ### 删除
@@ -520,7 +520,7 @@ facades.Orm().Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "av
 var user models.User
 err := facades.Orm().Query().Find(&user, 1)
 res, err := facades.Orm().Query().Delete(&user)
-// DELETE FROM users where id = 1;
+// DELETE FROM users WHERE id = 1;
 
 num := res.RowsAffected
 ```
@@ -532,7 +532,7 @@ facades.Orm().Query().Delete(&models.User{}, 10)
 // DELETE FROM users WHERE id = 10;
 
 facades.Orm().Query().Delete(&models.User{}, []uint{1, 2, 3})
-// DELETE FROM users WHERE id in (1, 2, 3);
+// DELETE FROM users WHERE id IN (1, 2, 3);
 ```
 
 批量删除
@@ -568,13 +568,13 @@ facades.Orm().Query().Select("Account").Delete(&users)
 
 ```go
 // 会删除所有 name=`jinzhu` 的 user，但这些 user 的 account 不会被删除
-facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
+facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&models.User{})
 
 // 会删除 name = `jinzhu` 且 id = `1` 的 user，并且 user `1` 的 account 也会被删除
-facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
+facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&models.User{ID: 1})
 
 // 会删除 id = `1` 的 user，并且 account 也会被删除
-facades.Orm().Query().Select("Account").Delete(&User{ID: 1})
+facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
 
 如果在没有任何条件的情况下执行批量删除，ORM 不会执行该操作，并返回错误。对此，你必须加一些条件，或者使用原生 SQL。
@@ -685,6 +685,7 @@ facades.Orm().Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
 import "github.com/goravel/framework/database/db"
 
 facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
+// UPDATE `users` SET `age`=age - 1,`updated_at`='2023-09-14 14:03:20.899' WHERE `users`.`deleted_at` IS NULL AND `id` = 1;
 ```
 
 ### 悲观锁 
@@ -695,14 +696,14 @@ facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
 
 ```go
 var users []models.User
-facades.Orm().Query().where("votes", ">", 100).SharedLock().Get(&users)
+facades.Orm().Query().Where("votes", ">", 100).SharedLock().Get(&users)
 ```
 
 或者，您可以使用 `LockForUpdate` 方法。该锁可防止所选记录被修改或被另一个共享锁选中：
 
 ```go
 var users []models.User
-facades.Orm().Query().where("votes", ">", 100).LockForUpdate().Get(&users)
+facades.Orm().Query().Where("votes", ">", 100).LockForUpdate().Get(&users)
 ```
 
 ### 求和
