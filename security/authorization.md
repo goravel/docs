@@ -6,7 +6,7 @@
 
 In addition to providing built-in [authentication](./authentication.md) services, Goravel also provides a simple way to authorize user actions against a given resource. For example, even though a user is authenticated, they may not be authorized to update or delete certain Eloquent models or database records managed by your application. Goravel's authorization features provide an easy, organized way of managing these types of authorization checks.
 
-Laravel provides two primary ways of authorizing actions: [gates](#Gates) and [policies](#Policies). Think of gates and policies like routes and controllers. Gates provide a simple, closure-based approach to authorization while policies, like controllers, group logic around a particular model or resource. In this documentation, we'll explore gates first and then examine policies.
+Goravel provides two primary ways of authorizing actions: [gates](#Gates) and [policies](#Policies). Think of gates and policies like routes and controllers. Gates provide a simple, closure-based approach to authorization while policies, like controllers, group logic around a particular model or resource. In this documentation, we'll explore gates first and then examine policies.
 
 You do not need to choose between exclusively using gates or exclusively using policies when building an application. Most applications will most likely contain some mixture of gates and policies, and that is perfectly fine!
 
