@@ -23,7 +23,7 @@ Sometimes you may wish to use one database connection for `SELECT` statements, a
 
 To see how read / write connections should be configured, let's look at this example:
 
-```
+```go
 import "github.com/goravel/framework/contracts/database"
 
 // config/database.go
@@ -73,7 +73,7 @@ For example, the model name is `UserOrder`, the table name is `user_orders`.
 
 ### Create Model
 
-```
+```bash
 go run . artisan make:model User
 go run . artisan make:model user/User
 ```
@@ -117,7 +117,7 @@ type User struct {
   orm.SoftDeletes
 }
 
-func (r *User) TableName() string {
+func (r *User) Connection() string {
   return "postgresql"
 }
 ```
@@ -241,7 +241,7 @@ facades.Orm().WithContext(ctx).Query()
 ```go
 var user models.User
 facades.Orm().Query().First(&user)
-// SELECT * FROM users WHERE id = 10;
+// SELECT * FROM users ORDER BY id LIMIT 1;
 ```
 
 Sometimes you may wish to perform some other action if no results are found. The findOr and firstOr methods will return a single model instance or, if no results are found, execute the given closure. You can set values to model in closure:
@@ -297,20 +297,20 @@ The `FirstOrNew` method, like `FirstOrCreate`, will attempt to locate a record i
 
 ```go
 var user models.User
-facades.Orm().Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"})
-// SELECT * FROM users where name="tom" and sex=1;
+facades.Orm().Query().Where("gender", 1).FirstOrCreate(&user, models.User{Name: "tom"})
+// SELECT * FROM users WHERE name="tom" AND gender=1 ORDER BY id LIMIT 1;
 // INSERT INTO users (name) VALUES ("tom");
 
-facades.Orm().Query().Where("sex", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
-// SELECT * FROM users where name="tom" and sex=1;
+facades.Orm().Query().Where("gender", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
+// SELECT * FROM users WHERE name="tom" and gender=1 ORDER BY id LIMIT 1;
 // INSERT INTO users (name,avatar) VALUES ("tom", "avatar");
 
 var user models.User
-facades.Orm().Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"})
-// SELECT * FROM users where name="tom" and sex=1;
+facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "tom"})
+// SELECT * FROM users WHERE name="tom" and gender=1 ORDER BY id LIMIT 1;
 
-facades.Orm().Query().Where("sex", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
-// SELECT * FROM users where name="tom" and sex=1;
+facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
+// SELECT * FROM users WHERE name="tom" and gender=1 ORDER BY id LIMIT 1;
 ```
 
 #### Not Found Error
@@ -354,7 +354,7 @@ facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 ```go
 var users []models.User
 facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
-// SELECT * FROM users WHERE name = "tom" order sort asc, id desc;
+// SELECT * FROM users WHERE name = "tom" ORDER BY sort asc, id desc;
 ```
 
 ### Paginate
@@ -372,7 +372,7 @@ facades.Orm().Query().Paginate(1, 10, &users, &total)
 ```go
 var ages []int64
 facades.Orm().Query().Model(&models.User{}).Pluck("age", &ages)
-// SELECT `name` FROM `users`;
+// SELECT `age` FROM `users`;
 ```
 
 ### Specify Table Query
@@ -384,7 +384,7 @@ Specify a model
 ```go
 var count int64
 facades.Orm().Query().Model(&models.User{}).Count(&count)
-// SELECT count(1) where users
+// SELECT count(*) FROM users WHERE deleted_at IS NULL;
 ```
 
 Specify a table
@@ -392,7 +392,7 @@ Specify a table
 ```go
 var count int
 facades.Orm().Query().Table("users").Count(&count)
-// SELECT count(1) where users
+// SELECT count(*) FROM users; // get all records, whether deleted or not
 ```
 
 ### Count
@@ -400,7 +400,7 @@ facades.Orm().Query().Table("users").Count(&count)
 ```go
 var count int64
 facades.Orm().Query().Where("name = ?", "tom").Count(&count)
-// SELECT count(1) FROM users WHERE name = 'tom'
+// SELECT count(*) FROM users WHERE name = 'tom';
 ```
 
 ### Specify Fields
@@ -438,13 +438,13 @@ type Result struct {
 
 var result Result
 facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").Join("left join emails on emails.user_id = users.id").Scan(&result)
-// SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
+// SELECT users.name, emails.email FROM `users` LEFT JOIN emails ON emails.user_id = users.id;
 ```
 
 ### Create
 
 ```go
-user := User{Name: "tom", Age: 18}
+user := models.User{Name: "tom", Age: 18}
 result := facades.Orm().Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
 ```
@@ -452,7 +452,7 @@ result := facades.Orm().Query().Create(&user)
 Multiple create
 
 ```go
-users := []User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
+users := []models.User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
 result := facades.Orm().Query().Create(&users)
 ```
 
@@ -494,9 +494,9 @@ facades.Orm().Query().Save(&user)
 
 ```go
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
-// UPDATE users SET name='tom', updated_at='2022-09-28 16:29:39' WHERE name="tom";
+// UPDATE users SET name='hello', updated_at='2022-09-28 16:29:39' WHERE name="tom";
 
-facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(User{Name: "hello", Age: 18})
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(models.User{Name: "hello", Age: 18})
 // UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
 ```
 
@@ -507,10 +507,10 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(User{Nam
 Query by `name`, if not exist, create by `name`, `avatar`, if exists, update `avatar` based on `name`:
 
 ```go
-facades.Orm().Query().UpdateOrCreate(&user, User{Name: "name"}, User{Avatar: "avatar"})
+facades.Orm().Query().UpdateOrCreate(&user, models.User{Name: "name"}, models.User{Avatar: "avatar"})
 // SELECT * FROM `users` WHERE `users`.`name` = 'name' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
 // INSERT INTO `users` (`created_at`,`updated_at`,`deleted_at`,`name`,`avatar`) VALUES ('2023-03-11 10:11:08.869','2023-03-11 10:11:08.869',NULL,'name','avatar')
-// UPDATE `users` SET `avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE `name` = 'name' AND `users`.`deleted_at` IS NULL AND `id` = 1
+// UPDATE `users` SET `name`='name',avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE users`.`deleted_at` IS NULL AND `id` = 1;
 ```
 ### Delete
 
@@ -520,7 +520,7 @@ Delete by model, the number of rows affected by the statement is returned by the
 var user models.User
 facades.Orm().Query().Find(&user, 1)
 res, err := facades.Orm().Query().Delete(&user)
-// DELETE FROM users where id = 1;
+// DELETE FROM users WHERE id = 1;
 
 num := res.RowsAffected
 ```
@@ -532,7 +532,7 @@ facades.Orm().Query().Delete(&models.User{}, 10)
 // DELETE FROM users WHERE id = 10;
 
 facades.Orm().Query().Delete(&models.User{}, []int{1, 2, 3})
-// DELETE FROM users WHERE id in (1, 2, 3);
+// DELETE FROM users WHERE id IN (1, 2, 3);
 ```
 
 Multiple delete
@@ -568,13 +568,13 @@ Note: The associations will be deleted only if the primary key of the record is 
 
 ```go
 // Delete user that name=`jinzhu`, but don't delete account of user
-facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
+facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&models.User{})
 
 // Delete user that name=`jinzhu` and id = `1`, and delete account of user
-facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
+facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&models.User{ID: 1})
 
-// Delete user that id = `1` and delete account that user
-facades.Orm().Query().Select("Account").Delete(&User{ID: 1})
+// Delete user that id = `1` and delete account of that user
+facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
 
 If execute batch delete without any conditions, ORM doesn't do that and returns an error. So you have to add some conditions, or use native SQL.
@@ -685,6 +685,7 @@ You can use the `db.Raw` method to update fields:
 import "github.com/goravel/framework/database/db"
 
 facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
+// UPDATE `users` SET `age`=age - 1,`updated_at`='2023-09-14 14:03:20.899' WHERE `users`.`deleted_at` IS NULL AND `id` = 1;
 ```
 
 ### Pessimistic Locking
@@ -695,14 +696,14 @@ To execute a statement with a "shared lock", you may call the `SharedLock` metho
 
 ```go
 var users []models.User
-facades.Orm().Query().where("votes", ">", 100).SharedLock().Get(&users)
+facades.Orm().Query().Where("votes", ">", 100).SharedLock().Get(&users)
 ```
 
 Alternatively, you may use the `LockForUpdate` method. A "for update" lock prevents the selected records from being modified or from being selected with another shared lock:
 
 ```go
 var users []models.User
-facades.Orm().Query().where("votes", ">", 100).LockForUpdate().Get(&users)
+facades.Orm().Query().Where("votes", ">", 100).LockForUpdate().Get(&users)
 ```
 
 ### Sum
