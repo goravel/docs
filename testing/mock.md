@@ -4,12 +4,13 @@
 
 ## Description
 
-All functions of Goravel are implemented using `facades`, and all `facades` are made up of interfaces. So with the mock fucntion of [stretchr/testify](http://github.com/stretchr/testify), Goravel can provide an excellent testing experience.
+All functions of Goravel are implemented using `facades`, and all `facades` are made up of interfaces. So with the mock function from [stretchr/testify](http://github.com/stretchr/testify), Goravel can deliver an exceptional testing experience.
 
 ## Mock facades.Artisan
 
 ```go
 import "github.com/goravel/framework/testing/mock"
+
 func ArtisanCall() {
   facades.Artisan().Call("list")
 }
@@ -63,7 +64,7 @@ func Cache() string {
 }
 
 func TestCache(t *testing.T) {
-  mockCache := mock.Cache()
+  mockCache, _, _ := mock.Cache()
   mockCache.On("Put", "name", "goravel", mock.Anything).Return(nil).Once()
   mockCache.On("Get", "name", "test").Return("Goravel").Once()
 
@@ -76,6 +77,7 @@ func TestCache(t *testing.T) {
 
 ```go
 import "github.com/goravel/framework/testing/mock"
+
 func Config() string {
   return facades.Config().GetString("app.name", "test")
 }
@@ -126,6 +128,7 @@ func TestCrypt(t *testing.T) {
 
 ```go
 import "github.com/goravel/framework/testing/mock"
+
 func Event() error {
   return facades.Event().Job(&events.TestEvent{}, []contractevent.Arg{
     {Type: "string", Value: "abcc"},
@@ -234,6 +237,7 @@ func TestHash(t *testing.T) {
 
 ```go
 import "github.com/goravel/framework/testing/mock"
+
 func Log() {
   facades.Log().Debug("test")
 }
@@ -249,6 +253,7 @@ func TestLog(t *testing.T) {
 
 ```go
 import "github.com/goravel/framework/testing/mock"
+
 func Mail() error {
   return facades.Mail().From(mail.From{Address: "example@example.com", Name: "example"}).
     To([]string{"example@example.com"}).
@@ -271,6 +276,7 @@ func TestMail(t *testing.T) {
 
 ```go
 import "github.com/goravel/framework/testing/mock"
+
 func Orm() error {
   if err := facades.Orm().Query().Create(&Test{}); err != nil {
     return err

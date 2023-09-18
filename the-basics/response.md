@@ -89,7 +89,7 @@ ctx.Response().Redirect(http.StatusMovedPermanently, "https://goravel.dev")
 
 ## Get Response
 
-You can get all information of `ctx.Response()`, commonly used in HTTP middleware:
+You can obtain all the information from `ctx.Response()`, which is commonly used in HTTP middleware:
 
 ```go
 origin := ctx.Response().Origin()

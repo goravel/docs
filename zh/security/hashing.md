@@ -25,7 +25,7 @@ password, err := facades.Hash().Make(password)
 `Check` 方法能为你验证一段给定的未加密字符串与给定的散列 / 哈希值是否一致：
 
 ```go
-if facades.Hash().Check('plain-text', hashedPassword) {
+if facades.Hash().Check("plain-text", hashedPassword) {
     // 密码匹配...
 }
 ```
@@ -36,7 +36,7 @@ if facades.Hash().Check('plain-text', hashedPassword) {
 
 ```go
 if facades.Hash().NeedsRehash(hashed) {
-     hashed = facades.Hash().Make('plain-text');
+     hashed = facades.Hash().Make("plain-text");
 }
 ```
 

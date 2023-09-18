@@ -8,7 +8,7 @@ Goravel provides several different approaches to validate your application's inc
 
 ## Validation Quickstart
 
-To learn about Goravel's powerful validation features, let's look at a complete example of validating a form and displaying the error messages back to the user. By reading this high-level overview, you'll be able to gain a good general understanding of how to validate incoming request data using Goravel:
+Let's take a closer look at Goravel's powerful validation features by examining a complete example of how to validate a form and return error messages to the user. This overview will provide you with a general understanding of how to validate incoming request data using Goravel.
 
 ### Defining The Routes
 
@@ -22,7 +22,7 @@ facades.Route().Get("/post/create", postController.Create)
 facades.Route().Post("/post", postController.Store)
 ```
 
-The `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database.
+The `GET` route displays a form for creating a new blog post. The `POST` route stores the new post in the database.
 
 ### Creating The Controller
 
@@ -36,12 +36,12 @@ import (
 )
 
 type PostController struct {
-  //Dependent services
+  // Dependent services
 }
 
 func NewPostController() *PostController {
   return &PostController{
-    //Inject services
+    // Inject services
   }
 }
 
@@ -69,7 +69,7 @@ func (r *PostController) Store(ctx http.Context) {
 
 ### A Note On Nested Attributes
 
-If the incoming HTTP request contains "nested" field data, you may specify these fields in your validation rules using "dot" syntax:
+If the incoming HTTP request contains "nested" field data, you may specify these fields in your validation rules using the "dot" syntax:
 
 ```go
 validator, err := ctx.Request().Validate(map[string]string{
@@ -112,7 +112,7 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
 
 func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
   return map[string]string{
-    // The key are consistent with the incoming key.
+    // The keys are consistent with the incoming keys.
     "name": "required|max_len:255",
   }
 }
@@ -197,38 +197,42 @@ If you need to prepare or sanitize any data from the request before you apply yo
 ```go
 func (r *StorePostRequest) PrepareForValidation(data validation.Data) {
   if name, exist := data.Get("name"); exist {
-    _, _ = data.Set("name", name.(string)+"1")
+    _ = data.Set("name", name.(string)+"1")
   }
+  return nil
 }
 ```
 
 ## Manually Creating Validators
 
-If you do not want to use the `Validate` method on the request, you may create a validator instance manually using the `facades.Validator`. The make method on the facade generates a new validator instance:
+If you do not want to use the `Validate` method on the request, you may create a validator instance manually using the `facades.Validator`. The `Make` method of the facade generates a new validator instance:
 
 ```go
-func (r *PostController) Store(ctx http.Context) {
-  validator, err := facades.Validation().Make(map[string]any{
-    "name": "Goravel",
-  }, map[string]string{
-    "title": "required|max_len:255",
-    "body":  "required",
-  })
+func (r *PostController) Store(ctx http.Context) http.Response {
+	validator, _ := facades.Validation().Make(
+		map[string]any{
+			"name": "Goravel",
+		},
+		map[string]string{
+			"title": "required|max_len:255",
+			"body":  "required",
+		})
 
-  if validator.Fails() {
-    // Return fail
-  }
+	if validator.Fails() {
+		// Return fail
+	}
 
-  var user models.User
-  err := validator.Bind(&user)
+	var user models.User
+	err := validator.Bind(&user)
+  ...
 }
 ```
 
-The first argument passed to the `Make` method is the data under validation that can be `map[string]any` or `struct`. The second argument is an array of the validation rules that should be applied to the data.
+The first argument passed to the `Make` method is the data under validation which can be `map[string]any` or `struct`. The second argument is an array of validation rules to be applied to the data.
 
 ### Customizing The Error Messages
 
-If needed, you may provide custom error messages that a validator instance should use instead of the default error messages provided by Goravel. You may pass the custom messages as the third argument to the `Make` method(also applicable to `ctx.Request().Validate()`):
+If needed, you may provide custom error messages that a validator instance should use instead of the default error messages provided by Goravel. You may pass the custom messages as the third argument to the `Make` method (also applicable to `ctx.Request().Validate()`):
 
 ```go
 validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
@@ -238,7 +242,7 @@ validator, err := facades.Validation().Make(input, rules, validation.Messages(ma
 
 ### Specifying A Custom Message For A Given Attribute
 
-Sometimes you may wish to specify a custom error message only for a specific attribute. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule(also applicable to `ctx.Request().Validate()`):
+Sometimes you may wish to specify a custom error message only for a specific attribute. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule (also applicable to `ctx.Request().Validate()`):
 
 ```go
 validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
@@ -248,7 +252,7 @@ validator, err := facades.Validation().Make(input, rules, validation.Messages(ma
 
 ### Specifying Custom Attribute Values
 
-Many of Goravel's built-in error messages include an `:attribute` placeholder that is replaced with the name of the field or attribute under validation. To customize the values used to replace these placeholders for specific fields, you may pass an array of custom attributes as the third argument to the `Make` method(also applicable to `ctx.Request().Validate()`):
+Many of Goravel's built-in error messages include an `:attribute` placeholder that is replaced with the name of the field or attribute under validation. To customize the values used to replace these placeholders for specific fields, you may pass an array of custom attributes as the third argument to the `Make` method (also applicable to `ctx.Request().Validate()`):
 
 ```go
 validator, err := facades.Validation().Make(input, rules, validation.Attributes(map[string]string{
@@ -266,18 +270,23 @@ import (
   "github.com/goravel/framework/validation"
 )
 
-validator, err := facades.Validation().Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data) error {
-  if name, exist := data.Get("name"); exist {
-    return data.Set("name", name)
-  }
+func (r *PostController) Store(ctx http.Context) http.Response {
+	validator, err := facades.Validation().Make(input, rules,
+		validation.PrepareForValidation(func(data validationcontract.Data) error {
+			if name, exist := data.Get("name"); exist {
+				return data.Set("name", name)
+			}
 
-  return nil
-}))
+			return nil
+		}))
+
+	...
+}
 ```
 
 ## Working With Validated Input
 
-After validating incoming request data using form reuqests or manually created calidator instances, you still want tot bind the request data to `struct`, there are two ways to do this:
+After validating incoming request data using form requests or manually created validator instances, you still want to bind the request data to a `struct`, there are two ways to do this:
 
 1. Use the `Bind` method, this will bind all incoming data, including unvalidated data:
 
@@ -291,7 +300,7 @@ var user models.User
 err := validator.Bind(&user)
 ```
 
-2. The incoming data is automatically bound to the form when you are use request for validation:
+2. The incoming data is automatically bound to the form when you use request for validation:
 
 ```go
 var storePost requests.StorePostRequest
@@ -301,7 +310,7 @@ fmt.Println(storePost.Name)
 
 ## Working With Error Messages
 
-### Retrieving one Error Message For A Field(Random)
+### Retrieving one Error Message For A Field (Random)
 
 ```go
 validator, err := ctx.Request().Validate(rules)
@@ -322,7 +331,7 @@ messages := validator.Errors().Get("email")
 messages := validator.Errors().All()
 ```
 
-### Determining If Messages Exist For A Field
+### Determining If Error Messages Exist For A Field
 
 ```go
 if validator.Errors().Has("email") {
@@ -391,14 +400,16 @@ Below is a list of all available validation rules and their function:
 
 ## Custom Validation Rules
 
-Goravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you may use the `make:rule` Artisan command. Let's use this command to generate a rule that verifies a string is uppercase. Goravel will place the new rule in the `app/rules` directory. If this directory does not exist, Goravel will create it when you execute the Artisan command to create your rule:
+Goravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you can simply use the `make:rule` Artisan command. 
+
+For instance, if you want to verify that a string is uppercase, you can create a rule with this command. Goravel will then save this new rule in the `app/rules` directory. If this directory does not exist, Goravel will create it when you run the Artisan command to create your rule.
 
 ```go
 go run . artisan make:rule Uppercase
 go run . artisan make:rule user/Uppercase
 ```
 
-Once the rule has been created, we are ready to define its behavior. A rule object contains two method: `Passes` and `Message`. This `Passes` method receives the all data, data to be validated and validate parameters, it should return `true` or `false` based on whether the attribute value is valid. The `Message` method should return the validation error message that should be used when validation fails:
+After creating the rule, we need to define its behavior. A rule object has two methods: `Passes` and `Message`. The Passes method receives all data, including the data to be validated and the validation parameters. It should return `true` or `false` depending on whether the attribute value is valid. The `Message` method should return the error message for validation that should be used when the validation fails.
 
 ```go
 package rules
@@ -412,17 +423,17 @@ import (
 type Uppercase struct {
 }
 
-//Signature The name of the rule.
+// Signature The name of the rule.
 func (receiver *Uppercase) Signature() string {
   return "uppercase"
 }
 
-//Passes Determine if the validation rule passes.
+// Passes Determine if the validation rule passes.
 func (receiver *Uppercase) Passes(data validation.Data, val any, options ...any) bool {
   return strings.ToUpper(val.(string)) == val.(string)
 }
 
-//Message Get the validation error message.
+// Message Get the validation error message.
 func (receiver *Uppercase) Message() string {
   return "The :attribute must be uppercase."
 }

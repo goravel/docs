@@ -4,24 +4,24 @@
 
 ## Introduction
 
-Goravel provides a very easy-to-use way to interact with databases, Developers can use `facades.Orm()` to operate. Currently, Goravel provides official support for the following four databases:
+Goravel makes it easy for developers to interact with databases using `facades.Orm()`. Currently, it supports four official databases:
 
 - MySQL 5.7+
 - PostgreSQL 9.6+
 - SQLite 3.8.8+
 - SQL Server 2017+
 
-Before starting, please configure the database in the `.env` file and confirm the default configuration of `config/database.go`.
+Before you start, configure the database in the `.env` file and confirm the `default` configuration in `config/database.go`.
 
 # Configuration
 
-The configuration of databases is in the `config/database.go` file. You can configure all database connections in this file and specify the default database connection. Most of configuration in this file is based on the project's environment variables, and provides examples of database configurations supported by Goravel.
+To configure databases, navigate to the `config/database.go` file. This is where you can customize all database connections and choose a `default` connection. The configuration in this file relies on the project's environment variables and showcases various database configurations that Goravel supports.
 
 ### Read & Write Connections
 
 Sometimes you may wish to use one database connection for `SELECT` statements, and another for `INSERT`, `UPDATE`, and `DELETE` statements. Goravel makes this a breeze.
 
-To see how read / write connections should be configured, let's look at this example:
+To see how read/write connections should be configured, let's look at this example:
 
 ```go
 import "github.com/goravel/framework/contracts/database"
@@ -47,11 +47,11 @@ import "github.com/goravel/framework/contracts/database"
 }
 ```
 
-Two keys have been added to the configuration array: `read` and `write`, `192.168.1.1` will be used as the host for the "read" connection, while `192.168.1.2` will be used for the "write" connection. The database prefix, character set, and all other options in the main `mysql` array will be shared across both connections. When multiple values exist in the `host` configuration array, a database host will be randomly chosen for each request.
+We have updated the configuration array with two new keys - `read` and `write`. The `read` connection will use `192.168.1.1` as the host, while the `write` connection will use `192.168.1.2`. Both connections will share the same database prefix, character set, and other options specified in the main mysql array. In case of multiple values in the `host` configuration array, a database host will be selected randomly for each request.
 
 ### Connection Pool
 
-You can configure connection pool in the configuration file, reasonable configuration of connection pool parameters can greatly improve concurrency performance:
+You can configure a connection pool in the configuration file, reasonable configuration of connection pool parameters can greatly improve concurrency performance:
 
 | Key        | Action           |
 | -----------  | -------------- |
@@ -62,18 +62,18 @@ You can configure connection pool in the configuration file, reasonable configur
 
 ## Model Definition
 
-You can create a custom model based on the model file `app/models/user.go` that comes with the framework. In the `app/models/user.go` file, `struct` has nested two frameworks, `orm.Model` and `orm.SoftDeletes`, they define `id, created_at, updated_at` and `deleted_at` respectively, `orm.SoftDeletes` means that soft deletion is enabled for the model.
+To create a custom model, you can use the model file `app/models/user.go` that is included in the framework. The `struct` in the `app/models/user.go` file contains two embedded frameworks: `orm.Model` and `orm.SoftDeletes`. These frameworks define `id`, `created_at`, `updated_at`, and `deleted_at` properties respectively. With `orm.SoftDeletes`, you can enable soft deletion for the model.
 
 ### Model Convention
 
 1. The model is named with a big hump;
 2. Use the plural form of the model "snake naming" as the table name;
 
-For example, the model name is `UserOrder`, the table name is `user_orders`.
+For example, the model name is `UserOrder`, and the table name is `user_orders`.
 
 ### Create Model
 
-```bash
+```shell
 go run . artisan make:model User
 go run . artisan make:model user/User
 ```
@@ -101,7 +101,7 @@ func (r *User) TableName() string {
 
 ### Database Connections
 
-By default, all models will use the default database connection that is configured for your application. If you would like to specify a different connection that should be used when interacting with a particular model, you should define a `Connection` method on the model:
+By default, all models utilize the default database connection which is configured for your application. If you wish to specify a distinct connection to be used when interacting with a specific model, you need to define a `Connection` method on the model.
 
 ```go
 package models
@@ -191,7 +191,7 @@ facades.Orm().WithContext(ctx)
 
 ### Specify Database Connection
 
-If you define multiple database connections in the `config/database.go` file, you can use them through the `Connection` function of `facades.Orm()`. The connection name passed to `Connection` should be one of the connections configured in `config/database.go`:
+If you define multiple database connections in `config/database.go`, you can use them through the `Connection` function of `facades.Orm()`. The connection name passed to `Connection` should be one of the connections configured in `config/database.go`:
 
 ```go
 facades.Orm().Connection("mysql")
@@ -241,10 +241,10 @@ facades.Orm().WithContext(ctx).Query()
 ```go
 var user models.User
 facades.Orm().Query().First(&user)
-// SELECT * FROM users ORDER BY id LIMIT 1;
+// SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1;
 ```
 
-Sometimes you may wish to perform some other action if no results are found. The findOr and firstOr methods will return a single model instance or, if no results are found, execute the given closure. You can set values to model in closure:
+Sometimes you may wish to perform some other action if no results are found. The `findOr` and `firstOr` methods will return a single model instance or, if no results are found, execute the given closure. You can set values to model in closure:
 
 ```go
 facades.Orm().Query().Where("name", "first_user").FirstOr(&user, func() error {
@@ -259,11 +259,11 @@ facades.Orm().Query().Where("name", "first_user").FirstOr(&user, func() error {
 ```go
 var user models.User
 facades.Orm().Query().Find(&user, 1)
-// SELECT * FROM users WHERE id = 1;
+// SELECT * FROM `users` WHERE `users`.`id` = 1;
 
 var users []models.User
 facades.Orm().Query().Find(&users, []int{1,2,3})
-// SELECT * FROM users WHERE id IN (1,2,3);
+// SELECT * FROM `users` WHERE `users`.`id` IN (1,2,3);
 ```
 
 #### Not found return error
@@ -278,7 +278,7 @@ err := facades.Orm().Query().FindOrFail(&user, 1)
 ```go
 var user models.User
 facades.Orm().Query().Find(&user, "uuid=?" ,"a")
-// SELECT * FROM users WHERE uuid = "a";
+// SELECT * FROM `users` WHERE `users`.`uuid` = "a";
 ```
 
 #### Query multiple lines
@@ -286,36 +286,36 @@ facades.Orm().Query().Find(&user, "uuid=?" ,"a")
 ```go
 var users []models.User
 facades.Orm().Query().Where("id in ?", []int{1,2,3}).Get(&users)
-// SELECT * FROM users WHERE id IN (1,2,3);
+// SELECT * FROM `users` WHERE id in (1,2,3);
 ```
 
 #### Retrieving Or Creating Models
 
-The `FirstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the attributes resulting from merging the first argument with the optional second argument:
+When using the `FirstOrCreate` method, it searches for a database record using the specified column/value pairs. If the model cannot be found in the database, it creates a new record with the attributes from merging the first argument with the optional second argument. 
 
-The `FirstOrNew` method, like `FirstOrCreate`, will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `FirstOrNew` has not yet been persisted to the database. You will need to manually call the `Save` method to persist it:
+Similarly, the `FirstOrNew` method also tries to locate a record in the database based on the attributes given. However, if it is not found, a new instance of the model is returned. It's important to note that this new model has not been saved to the database yet and you need to manually call the `Save` method to do so.
 
 ```go
 var user models.User
 facades.Orm().Query().Where("gender", 1).FirstOrCreate(&user, models.User{Name: "tom"})
-// SELECT * FROM users WHERE name="tom" AND gender=1 ORDER BY id LIMIT 1;
-// INSERT INTO users (name) VALUES ("tom");
+// SELECT * FROM `users` WHERE `gender` = 1 AND `users`.`name` = 'tom' ORDER BY `users`.`id` LIMIT 1;
+// INSERT INTO `users` (`created_at`,`updated_at`,`name`) VALUES ('2023-09-18 12:51:32.556','2023-09-18 12:51:32.556','tom');
 
 facades.Orm().Query().Where("gender", 1).FirstOrCreate(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
-// SELECT * FROM users WHERE name="tom" and gender=1 ORDER BY id LIMIT 1;
-// INSERT INTO users (name,avatar) VALUES ("tom", "avatar");
+// SELECT * FROM `users` WHERE `gender` = 1 AND `users`.`name` = 'tom' ORDER BY `users`.`id` LIMIT 1;
+// INSERT INTO `users` (`created_at`,`updated_at`,`name`,`avatar`) VALUES ('2023-09-18 12:52:59.913','2023-09-18 12:52:59.913','tom','avatar');
 
 var user models.User
 facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "tom"})
-// SELECT * FROM users WHERE name="tom" and gender=1 ORDER BY id LIMIT 1;
+// SELECT * FROM `users` WHERE `gender` = 1 AND `users`.`name` = 'tom' ORDER BY `users`.`id` LIMIT 1;
 
 facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "tom"}, models.User{Avatar: "avatar"})
-// SELECT * FROM users WHERE name="tom" and gender=1 ORDER BY id LIMIT 1;
+// SELECT * FROM `users` WHERE `gender` = 1 AND `users`.`name` = 'tom' ORDER BY `users`.`id` LIMIT 1;
 ```
 
 #### Not Found Error
 
-When not fount model, `First` doesn't return error, if you want return an error, you can use `FirstOrFail`:
+When the requested item is not found, using the `First` method does not generate an error. To generate an error, use the `FirstOrFail` method:
 
 ```go
 var user models.User
@@ -338,7 +338,7 @@ facades.Orm().Query().OrWhere("name = ?", "tom")
 ```go
 var users []models.User
 facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
-// SELECT * FROM users WHERE name = "tom" LIMIT 3;
+// SELECT * FROM `users` WHERE name = 'tom' LIMIT 3;
 ```
 
 ### Offset
@@ -346,7 +346,7 @@ facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
 ```go
 var users []models.User
 facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
-// SELECT * FROM users WHERE name = "tom" OFFSET 5 LIMIT 3;
+// SELECT * FROM `users` WHERE name = 'tom' LIMIT 3 OFFSET 5;
 ```
 
 ### Order
@@ -354,7 +354,7 @@ facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 ```go
 var users []models.User
 facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
-// SELECT * FROM users WHERE name = "tom" ORDER BY sort asc, id desc;
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc,id desc;
 ```
 
 ### Paginate
@@ -384,7 +384,7 @@ Specify a model
 ```go
 var count int64
 facades.Orm().Query().Model(&models.User{}).Count(&count)
-// SELECT count(*) FROM users WHERE deleted_at IS NULL;
+// SELECT count(*) FROM `users` WHERE deleted_at IS NULL;
 ```
 
 Specify a table
@@ -392,15 +392,15 @@ Specify a table
 ```go
 var count int
 facades.Orm().Query().Table("users").Count(&count)
-// SELECT count(*) FROM users; // get all records, whether deleted or not
+// SELECT count(*) FROM `users`; // get all records, whether deleted or not
 ```
 
 ### Count
 
 ```go
 var count int64
-facades.Orm().Query().Where("name = ?", "tom").Count(&count)
-// SELECT count(*) FROM users WHERE name = 'tom';
+facades.Orm().Query().Table("users").Where("name = ?", "tom").Count(&count)
+// SELECT count(*) FROM `users` WHERE name = 'tom';
 ```
 
 ### Specify Fields
@@ -409,10 +409,10 @@ facades.Orm().Query().Where("name = ?", "tom").Count(&count)
 
 ```go
 facades.Orm().Query().Select("name", "age").Get(&users)
-// SELECT name, age FROM users;
+// SELECT `name`,age FROM `users`;
 
 facades.Orm().Query().Select([]string{"name", "age"}).Get(&users)
-// SELECT name, age FROM users;
+// SELECT `name`,age FROM `users`;
 ```
 
 ### Group By & Having
@@ -425,7 +425,7 @@ type Result struct {
 
 var result Result
 facades.Orm().Query().Model(&models.User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
-// SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "tom"
+// SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "tom";
 ```
 
 ### Join
@@ -449,7 +449,7 @@ result := facades.Orm().Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
 ```
 
-Multiple create
+### Multiple create
 
 ```go
 users := []models.User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
@@ -478,7 +478,7 @@ for row := range cursor {
 
 ### Save Model
 
-#### Update a existing model
+#### Update an existing model
 
 ```go
 var user models.User
@@ -487,17 +487,17 @@ facades.Orm().Query().First(&user)
 user.Name = "tom"
 user.Age = 100
 facades.Orm().Query().Save(&user)
-// UPDATE users SET name='tom', age=100, updated_at = '2022-09-28 16:28:22' WHERE id=1;
+// UPDATE `users` SET `created_at`='2023-09-14 16:03:29.454',`updated_at`='2023-09-18 21:05:59.896',`name`='tom',`age`=100,`avatar`='' WHERE `id` = 1;
 ```
 
-#### Update a single column
+#### Update columns
 
 ```go
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
-// UPDATE users SET name='hello', updated_at='2022-09-28 16:29:39' WHERE name="tom";
+// UPDATE `users` SET `name`='hello',`updated_at`='2023-09-18 21:06:30.373' WHERE `name` = 'tom';
 
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(models.User{Name: "hello", Age: 18})
-// UPDATE users SET name="hello", age=18, updated_at = '2022-09-28 16:30:12' WHERE name = "tom";
+// UPDATE `users` SET `updated_at`='2023-09-18 21:07:06.489',`name`='hello',`age`=18 WHERE `name` = 'tom';
 ```
 
 > When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
@@ -508,8 +508,8 @@ Query by `name`, if not exist, create by `name`, `avatar`, if exists, update `av
 
 ```go
 facades.Orm().Query().UpdateOrCreate(&user, models.User{Name: "name"}, models.User{Avatar: "avatar"})
-// SELECT * FROM `users` WHERE `users`.`name` = 'name' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
-// INSERT INTO `users` (`created_at`,`updated_at`,`deleted_at`,`name`,`avatar`) VALUES ('2023-03-11 10:11:08.869','2023-03-11 10:11:08.869',NULL,'name','avatar')
+// SELECT * FROM `users` WHERE `users`.`name` = 'name' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1;
+// INSERT INTO `users` (`created_at`,`updated_at`,`deleted_at`,`name`,`avatar`) VALUES ('2023-03-11 10:11:08.869','2023-03-11 10:11:08.869',NULL,'name','avatar');
 // UPDATE `users` SET `name`='name',avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE users`.`deleted_at` IS NULL AND `id` = 1;
 ```
 ### Delete
@@ -520,7 +520,7 @@ Delete by model, the number of rows affected by the statement is returned by the
 var user models.User
 facades.Orm().Query().Find(&user, 1)
 res, err := facades.Orm().Query().Delete(&user)
-// DELETE FROM users WHERE id = 1;
+// DELETE FROM `users` WHERE `users`.`id` = 1;
 
 num := res.RowsAffected
 ```
@@ -529,17 +529,17 @@ Delete by ID
 
 ```go
 facades.Orm().Query().Delete(&models.User{}, 10)
-// DELETE FROM users WHERE id = 10;
+// DELETE FROM `users` WHERE `users`.`id` = 10;
 
 facades.Orm().Query().Delete(&models.User{}, []int{1, 2, 3})
-// DELETE FROM users WHERE id IN (1, 2, 3);
+// DELETE FROM `users` WHERE `users`.`id` IN (1,2,3);
 ```
 
 Multiple delete
 
 ```go
 facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
-// DELETE FROM users where name = "tom";
+// DELETE FROM `users` WHERE name = 'tom';
 ```
 
 Want to force delete a soft-delete data.
@@ -567,13 +567,13 @@ facades.Orm().Query().Select("Account").Delete(&users)
 Note: The associations will be deleted only if the primary key of the record is not empty, and Orm uses these primary keys as conditions to delete associated records:
 
 ```go
-// Delete user that name=`jinzhu`, but don't delete account of user
+// Delete user that name='jinzhu', but don't delete account of user
 facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&models.User{})
 
-// Delete user that name=`jinzhu` and id = `1`, and delete account of user
+// Delete user that name='jinzhu' and id = 1, and delete account of user
 facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&models.User{ID: 1})
 
-// Delete user that id = `1` and delete account of that user
+// Delete user that id = 1 and delete account of that user
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
 
@@ -621,7 +621,7 @@ The number of rows affected by the statement is returned by the method:
 
 ```go
 res, err := facades.Orm().Query().Exec("DROP TABLE users")
-// DROP TABLE users;
+// DROP TABLE `users`;
 
 num := res.RowsAffected
 ```
@@ -780,9 +780,9 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 
 #### Defining Observers
 
-If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
+If you are listening to many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names that reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
-```
+```shell
 go run . artisan make:observer UserObserver
 go run . artisan make:observer user/UserObserver
 ```
@@ -860,11 +860,11 @@ import (
 type EventServiceProvider struct {
 }
 
-func (receiver *EventServiceProvider) Register() {
+func (receiver *EventServiceProvider) Register(app foundation.Application) {
 	facades.Event().Register(receiver.listen())
 }
 
-func (receiver *EventServiceProvider) Boot() {
+func (receiver *EventServiceProvider) Boot(app foundation.Application) {
 	facades.Orm().Observe(models.User{}, &observers.UserObserver{})
 }
 
@@ -886,8 +886,8 @@ The `event` parameter will be passed to all observers:
 | GetOriginal  | Get the original value, if there is no original value, return nil |
 | IsDirty  | Determine whether the field is modified |
 | IsClean  | IsDirty reverse   |
-| Query  | Get a new Query, can be used with transaction   |
-| SetAttribute  | Set a new value for field |
+| Query  | Get a new Query, which can be used with transaction |
+| SetAttribute  | Set a new value for a field |
 
 ### Muting Events
 
@@ -900,7 +900,7 @@ facades.Orm().Query().WithoutEvents().Find(&user, 1)
 
 #### Saving A Single Model Without Events
 
-Sometimes you may wish to "save" a given model without dispatching any events. You may accomplish this using the `SaveQuietly` method:
+Sometimes you may wish to "save" a given model without dispatching any events. You may accomplish this with the `SaveQuietly` method:
 
 ```go
 var user models.User

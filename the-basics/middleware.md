@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Middleware can filtering HTTP requests that enter the application. For example, `Goravel` provides a CORS middleware, which can implement requests across domains.
+Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. For example, `Goravel` provides a CORS middleware, which can implement requests across domains.
 
 ## Define Middleware
 

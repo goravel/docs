@@ -4,11 +4,11 @@
 
 ## Introduction
 
-Goravel routing module can operated by `facades.Route()`.
+The Goravel routing module can be operated by `facades.Route()`.
 
 ## HTTP Driver
 
-Goravel uses [gin](https://github.com/gin-gonic/gin) as the HTTP driver by default, if you want to use other drivers, you can configure it in the `config/http.go` file. Currently, the official default supports [gin](https://github.com/gin-gonic/gin) and [fiber](https://github.com/gofiber/fiber) two drivers:
+Goravel uses [gin](https://github.com/gin-gonic/gin) as its default HTTP driver. To use other drivers, configure them in the `config/http.go` file. The official default supports [gin](https://github.com/gin-gonic/gin) and [fiber](https://github.com/gofiber/fiber).
 
 | Driver | Link                             |
 |--------|----------------------------------|
@@ -17,13 +17,14 @@ Goravel uses [gin](https://github.com/gin-gonic/gin) as the HTTP driver by defau
 
 ## Default Routing File
 
-All routing files are defined in the `/routes` directory. The framework defaults to a sample route `/routes/web.go`, in which the `func Web()` method is registered in the `app/providers/route_service_provider.go` file to achieve routing binding.
+To define routing files, simply navigate to the `/routes` directory. By default, the framework utilizes a sample route located in `/routes/web.go`. To establish routing binding, the `func Web()` method is registered in the `app/providers/route_service_provider.go` file. 
 
-You can add routing files under the `routes` directory to perform more fine-grained management, then register them in the `app/providers/route_service_provider.go` file.
+If you require more precise management, you can add routing files to the `/routes` directory and register them in the `app/providers/route_service_provider.go` file.
+
 
 ## Start HTTP Server
 
-Start the HTTP server in `main.go` in the root directory. `facades.Route().Run()` will automatically fetch the `route.host` configuration.
+Start the HTTP server in `main.go` in the root directory by calling `facades.Route().Run()`. This will automatically fetch the `route.host` configuration.
 
 ```go
 package main
@@ -35,10 +36,10 @@ import (
 )
 
 func main() {
-  //This bootstraps the framework and gets it ready for use.
+  // This bootstraps the framework and gets it ready for use.
   bootstrap.Boot()
 
-  //Start http server by facades.Route().
+  // Start http server by facades.Route().
   go func() {
     if err := facades.Route().Run(); err != nil {
       facades.Log().Errorf("Route run error: %v", err)
@@ -60,7 +61,7 @@ if err := facades.Route().RunTLS(); err != nil {
 }
 ```
 
-You can also use `facades.Route().RunTLSWithCert()` method to customize host and certificate.
+You can also use `facades.Route().RunTLSWithCert()` method to customize the host and certificate.
 
 ```go
 // main.go
@@ -194,9 +195,9 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 
 ### Defining Rate Limiters
 
-Goravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `app/providers/route_service_provider.go` class.
+Goravel includes powerful and customizable rate-limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `app/providers/route_service_provider.go` class.
 
-Rate limiters are defined using the `facades.RateLimiter()`s `For` method. The `For` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. The rate limiter name may be any string you wish:
+Rate limiters are defined using the `facades.RateLimiter()`'s `For` method. The `For` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. The rate limiter name may be any string you wish:
 
 ```go
 import (
@@ -257,7 +258,7 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
     return limit.PerMinute(100).By(userID)
   }
 
-  return limit.PerMinute(100).By(ctx.Request().Ip())
+  return limit.PerMinute(10).By(ctx.Request().Ip())
 })
 ```
 

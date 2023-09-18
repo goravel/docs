@@ -4,9 +4,9 @@
 
 ## Introduction
 
-When testing your application or seeding your database, you may need to insert a few records into your database. Instead of manually specifying the value of each column, Goravel allows you to define a set of default attributes for each of your models using model factories.
+When testing your application or seeding your database, it might be necessary to insert a few records into your database beforehand. Instead of manually inputting values for each column, Goravel allows you to define a set of default attributes for each of your models by creating model factories.
 
-To see an example of how to write a factory, take a look at the `database/factories/user_factory.go` file in your application. 
+To see an example of how to write a factory, you can check out the `user_factory.go` file located in your application's `database/factories` directory.
 
 ```go
 package factories
@@ -22,17 +22,17 @@ func (f *UserFactory) Definition() map[string]any {
 }
 ```
 
-As you can see, in their most basic form, factories are struct that define a `Definition` method. The `Definition` method returns the default set of attribute values that should be applied when creating a model using the factory. You can use [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit) to generate a variety of random data.
+As you can see, in their most basic form, factories are `struct` that have a `Definition` method. The method returns the default set of attribute values that should be used when creating a model with the factory. To generate a range of random data, you can rely on [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit).
 
 ## Generating Factories
 
-To create a factory, execute the `make:factory` Artisan command:
+To create a factory, run the `make:factory` Artisan command:
 
 ```
 go run . artisan make:factory PostFactory
 ```
 
-The new factory struct will be placed in your `database/factories` directory.
+The new factory `struct` will be placed in your `database/factories` directory.
 
 ### Model & Factory Discovery Conventions
 
@@ -64,14 +64,14 @@ func (u *User) Factory() factory.Factory {
 
 ### Instantiating Models
 
-We can use the `Make` method to create models without persisting them to the database:
+We can use the `Make` method to create models without persisting them in the database:
 
 ```go
 var user models.User
 err := facades.Orm().Factory().Make(&user)
 ```
 
-You may create a collection of many models using the `Count` method:
+You may create a collection of models using the `Count` method:
 
 ```go
 var users []models.User
@@ -89,7 +89,7 @@ err := facades.Orm().Factory().Make(&user, map[string]any{
 
 ### Persisting Models
 
-The `Create` method instantiates model instances and persists them to the database using Orm's `Save` method:
+The `Create` method creates and saves model instances to the database using Orm's `Save` method.
 
 ```go
 var user models.User
@@ -99,7 +99,7 @@ var users []models.User
 err := facades.Orm().Factory().Count(2).Create(&users)
 ```
 
-You may override the factory's default model attributes by passing `map[string]any` of attributes to the `Create` method:
+You may override the factory's default model attributes by passing `map[string]any` of the attributes to the `Create` method:
 
 ```go
 var user models.User
@@ -110,7 +110,7 @@ err := facades.Orm().Factory().Create(&user, map[string]any{
 
 ### Ignore Model Event
 
-There may be [model event](../orm/getting-started.md#events) defined on the model, you can ignore those events using the `CreateQuietly` method:
+There may be [model event](../orm/getting-started.md#events) defined on the model, you can ignore those events with the `CreateQuietly` method:
 
 ```go
 var user models.User

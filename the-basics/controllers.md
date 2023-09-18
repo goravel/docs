@@ -19,12 +19,12 @@ import (
 )
 
 type UserController struct {
-  //Dependent services
+  // Dependent services
 }
 
 func NewUserController() *UserController {
   return &UserController{
-    //Inject services
+    // Inject services
   }
 }
 
@@ -46,7 +46,7 @@ import (
   "goravel/app/http/controllers"
 )
 
-func Web() {
+func Api() {
   userController := controllers.NewUserController()
   facades.Route().Get("/{id}", userController.Show)
 }
@@ -54,7 +54,7 @@ func Web() {
 
 ### Create Controller
 
-```
+```shell
 go run . artisan make:controller UserController
 go run . artisan make:controller user/UserController
 ```
@@ -65,7 +65,7 @@ If you think of each Eloquent model in your application as a "resource", it is t
 
 Because of this common use case, Goravel resource routing assigns the typical create, read, update, and delete ("CRUD") routes to a controller with a single line of code. To get started, we can use the `make:controller` Artisan command's `--resource` option to quickly create a controller to handle these actions:
 
-```
+```shell
 go run . artisan make:controller --resource PhotoController
 ```
 

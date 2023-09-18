@@ -64,7 +64,7 @@ func (kernel *Kernel) Schedule() []schedule.Event {
 
 | 方法                     | 描述                           |
 | ------------------------ | ------------------------------ |
-| `.Cron('* * * * *')`     | 自定义 Crone 计划执行任务      |
+| `.Cron("* * * * *")`     | 自定义 Crone 计划执行任务      |
 | `.EveryMinute()`         | 每分钟执行一次任务             |
 | `.EveryTwoMinutes()`     | 每两分钟执行一次任务           |
 | `.EveryThreeMinutes()`   | 每三分钟执行一次任务           |
@@ -80,7 +80,7 @@ func (kernel *Kernel) Schedule() []schedule.Event {
 | `.EveryFourHours()`      | 每四小时执行一次任务           |
 | `.EverySixHours()`       | 每六小时执行一次任务           |
 | `.Daily()`               | 每天 00:00 执行一次任务        |
-| `.DailyAt('13:00')`      | 每天 13:00 执行一次任务        |
+| `.DailyAt("13:00")`      | 每天 13:00 执行一次任务        |
 
 ### 避免任务重复
 

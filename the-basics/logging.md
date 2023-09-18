@@ -8,11 +8,11 @@ In order to understand the running status of the application, Goravel provides a
 
 ## Configuration
 
-Make custom configurations in `config/logging.go`, allows to configure different log channels.
+To configure various log channels, custom configurations can be made in the file `config/logging.go`.
 
 `Goravel` uses `stack` channel to record logs by default, `stack` allows logs to be forwarded to multiple channels.
 
-The `print` configuration in `single` and `daily` drivers can control log output to console.
+The `print` configuration in `single` and `daily` drivers can control log output to the console.
 
 ## Available channel drivers
 
@@ -48,7 +48,7 @@ facades.Log().Panicf(message, args)
 
 ## Chain Methods
 
-Goravel provides a convenient chain methods, make it easy to insert more useful information into the log:
+Goravel provides convenient chain methods, that make it easy to insert more useful information into the log:
 
 ```go
 facades.Log().User("John").Debug(message)
@@ -59,7 +59,7 @@ facades.Log().User("John").Debug(message)
 | Code         | Set a code or slug that describes the log.     |
 | Hint         | Set a hint for faster debugging.     |
 | In           | Set the feature category or domain in which the log entry is relevant.     |
-| Owner        | Useful for alerting purpose.     |
+| Owner        | Useful for alerting purposes.    |
 | Request      | Supplies a http.Request.     |
 | Response     | Supplies a http.Response.     |
 | Tags         | Add multiple tags, describing the feature returning an error.     |
@@ -71,8 +71,8 @@ facades.Log().User("John").Debug(message)
 If you want to define a completely custom channel, you can specify the `custom` driver type in the `config/logging.go` configuration file.
 Then include a `via` option to implement a `framework\contracts\log\Logger` structure:
 
-```
-//config/logging.go
+```go
+// config/logging.go
 "custom": map[string]interface{}{
     "driver": "custom",
     "via":    &CustomTest{},
@@ -83,8 +83,8 @@ Then include a `via` option to implement a `framework\contracts\log\Logger` stru
 
 Implement `framework\contracts\log\Logger` interface.
 
-```
-//framework\contracts\log\Logger
+```go
+// framework\contracts\log\Logger
 package log
 
 type Logger interface {

@@ -22,9 +22,9 @@ Let's make Goravel more efficient together!
 <a href="https://github.com/dhanusaputra" target="_blank"><img src="https://avatars.githubusercontent.com/u/35093673?v=4" width="48" height="48"></a>
 <a href="https://github.com/mauri870" target="_blank"><img src="https://avatars.githubusercontent.com/u/10168637?v=4" width="48" height="48"></a>
 
-## Bug Reports
+## Bug Feedback
 
-You can report a Bug reports [here](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+), please search [Issue List](https://github.com/goravel/goravel/issues?q=is%3Aissue) for similar questions before submitting. The report should contains a title and a clear description of the problem, as much relevant information as possible, and a code sample that demonstrates the problem. The goal of the Bug report is to make it easy for yourself and other persons to reproduce the Bug and develop fixes. Goravel encourages committers to create a PR for the Bug repair at the same time, making the open source project more actively developed.
+You can report Bug Feedback [here](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+), please search [Issue List](https://github.com/goravel/goravel/issues?q=is%3Aissue) for similar questions before submitting. The report should contain a title and a clear description of the problem, as much relevant information as possible, and a code sample that demonstrates the problem. The goal of Bug Feedback is to make it easy for yourself and other persons to reproduce the Bug and develop fixes. Goravel encourages committers to create a PR for the Bug repair at the same time, making the open-source project more actively developed.
 
 ## Support Questions
 
@@ -32,11 +32,11 @@ Goravel's GitHub issue trackers are not intended to provide Goravel help or supp
 
 - [GitHub Discussions](https://github.com/goravel/goravel/discussions)
 - [Telegram](https://github.com/goravel/goravel/tree/master#group)
-- [Wechat](https://github.com/goravel/goravel/blob/master/README_zh.md#%E7%BE%A4%E7%BB%84)
+- [WeChat](https://github.com/goravel/goravel/blob/master/README_zh.md#%E7%BE%A4%E7%BB%84)
 
 ## Development Discussion
 
-You may propose new features or improvements of existing Goravel behavior in the Goravel framework repository's [GitHub discussion board](https://github.com/goravel/goravel/discussions). Informal discussion regarding bugs, new features, and implementation of existing features takes place in Telegram or Wechat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
+You may propose new features or improvements to existing Goravel behavior in the Goravel framework repository's [GitHub discussion board](https://github.com/goravel/goravel/discussions). Informal discussion regarding bugs, new features, and implementation of existing features takes place in Telegram or WeChat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
 
 ## Contribution
 
@@ -46,12 +46,12 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 
 ### Create PR
 
-- You can check out [this artisan](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) if you are new to the process;
+- You can check out [this article](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) if you are new to the process;
 - During the development process, if you encounter a problem, you can describe the problem in detail in issue at any time for future communication, but before that, please make sure that you have tried to solve the problem through Google and other methods as much as possible;
-- Before creating a PR, please improve the unit test coverage as much as possible to provider more stable functions;
-- When the PR is developed, please add the `Review Ready `, the maintainer will review in a timely manner.
+- Before creating a PR, please improve the unit test coverage as much as possible to provide more stable functions;
+- When the PR is developed, please add the `Review Ready `, the maintainer will review it in a timely manner.
 - After the PR is merged, the issue will be closed automatically if the description in the PR is set correctly;
-- Goravel greatly appreciates your contribution and will add you ro the home contribution list at the next release; ❤️
+- Goravel greatly appreciates your contribution and will add you to the home contribution list at the next release; ❤️
 
 ## Which Branch?
 

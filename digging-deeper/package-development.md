@@ -4,13 +4,15 @@
 
 ## Introduction
 
-Packages are the primary way of adding functionality to Goravel, these packages may have routes, controllers, and configuration specifically intended to enhance a Goravel application. This guide primarily covers the development of those packages that are Goravel specific. There is an example for building a third package: [goravel/example-package](https://github.com/goravel/example-package)
+Packages are the primary way of adding functionality to Goravel. These packages may contain routes, controllers, and configurations that are specifically designed to enhance a Goravel application. This guide focuses on developing Goravel-specific packages. 
+
+Here is an example for building a third package: [goravel/example-package](https://github.com/goravel/example-package)
 
 ## Creating A Package
 
 You can use easily create a package template using the Artisan command:
 
-```
+```shell
 go run . artisan make:package sms
 ```
 
@@ -22,17 +24,17 @@ go run . artisan make:package sms --root=pkg
 
 ## Service Providers
 
-[Service providers](../architecutre-concepts/service-providers.md) are the connection point between your package and Goravel, it usually located in the root of the package: `service_provider.go`. A service provider is responsible for binding things into Goravel's service container and informing Goravel where to load package resources.
+[Service provider](../architecutre-concepts/service-providers.md) acts as the bridge between your package and Goravel. It is typically located in the root of the package as a `service_provider.go` file. Its main function is to bind items into Goravel's service container and guide Goravel in loading package resources.
 
-## Using
+## Usage
 
-Register the `ServiceProvider` in the package to `config/app.go::providers`, then export `facades` to the application, detailed steps can refer to [goravel/example-package](https://github.com/goravel/example-package).
+Register the `ServiceProvider` in the package to `config/app.go::providers`, then export `facades` to the application. For detailed steps, refer to [goravel/example-package](https://github.com/goravel/example-package).
 
 ## Resources
 
 ### Configuration
 
-Typically, you will need to publish your package's configuration file to the application's `config` directory. This will allow users of your package to easily override your default configuration options. To allow your configuration files to be published, call the `Publishes` method from the `Boot` method of your service provider, the first parameter of this method is the package name, and the second parameter is the mapping between the current package file path and the project path:
+Typically, you will need to publish your package's configuration file to the application's `config` directory. This will allow users of your package to easily override your default configuration options. To allow your configuration files to be published, call the `Publishes` method from the `Boot` method of your service provider, the first parameter is the package name, and the second parameter is the mapping between the current package file path and the project path:
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -44,7 +46,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ### Routes
 
-If there are [routes](../the-basics/routing.md) in your package, you can use `app.MakeRoute()` to resolve `facades.Route()`, then add the routes to project:
+If there are [routes](../the-basics/routing.md) in your package, you can use `app.MakeRoute()` to resolve `facades.Route()`, then add the routes to the project:
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -91,7 +93,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ## Publishing File Groups
 
-You may want to publish groups of package assets and resources separately. For instance, you might want to allow your users to publish your package's configuration files without being forced to publish your package's assets. You may do this by "tagging" them when calling the `Publishes` method from a package's service provider. For example, let's use tags to define two publish groups for the `sms` package (`sms-config` and `sms-migrations`) in the boot method of the package's service provider:
+If you want to publish specific groups of package assets and resources separately, you can use tags when calling the `Publishes` method from the package's service provider. This allows you to give users the option to publish certain files, like configuration files, without having to publish all the package's assets. To illustrate, you can define two publish groups for the `sms` package (`sms-config` and `sms-migrations`) using tags in the `Boot` method of the package's service provider.
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -108,7 +110,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 In the project, You can publish the resources registered in a package using `vendor:publish` Artisan command:
 
-```
+```shell
 go run . artisan vendor:publish --package={You package name}
 ```
 
@@ -116,7 +118,7 @@ The command can use the following options:
 
 | Option Name  | Alias  | Action           |
 | -----------  | ------ | -------------- |
-| --package    | -p     | Package name, can be a remote package: `github.com/goravel/example-package`, can also be a local package: `./packages/example-package`, note that when using a local package name, it needs to start with `./`.     |
-| --tag        | -t     | Resource group     |
+| --package    | -p     | Package name, can be a remote package: `github.com/goravel/example-package`, and also can be a local package: `./packages/example-package`, note that when using a local package name, it needs to start with `./`. |
+| --tag        | -t     | Resource Group     |
 | --force      | -f     | Overwrite any existing files     |
 | --existing   | -e     | Publish and overwrite only the files that have already been published     |

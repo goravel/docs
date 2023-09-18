@@ -14,7 +14,7 @@ Linux / MacOS
 // Download framework
 git clone https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
-// Installation dependencies
+// Install dependencies
 cd goravel && go mod tidy
 
 // Create .env environment configuration file
@@ -31,7 +31,7 @@ Windows
 git clone https://github.com/goravel/goravel.git
 rm -rf goravel/.git*
 
-// Installation dependencies
+// Install dependencies
 cd goravel
 go mod tidy
 
@@ -44,14 +44,14 @@ go run . artisan key:generate
 
 ## Start HTTP Service
 
-```
+```shell
 go run .
 ```
 
 ## Specify .env File To Start Service
 
-```
-go run . --env=../.env
+```shell
+go run . --env=./.env
 ```
 
 ### Live reload
@@ -62,9 +62,9 @@ Install [cosmtrek/air](https://github.com/cosmtrek/air), Goravel has a built-in 
 air
 ```
 
-If you are using Windows system, you need to modify the `.air.toml` file in the root directory, add the `.exe` suffix to the following two lines:
+If you are using Windows system, you need to modify the `.air.toml` file in the root directory, and add the `.exe` suffix to the following two lines:
 
-```
+```shell
 [build]
   bin = "./storage/temp/main.exe"
   cmd = "go build -o ./storage/temp/main.exe ."
@@ -74,13 +74,13 @@ If you are using Windows system, you need to modify the `.air.toml` file in the 
 
 ### Configuration files
 
-All configuration files of the Goravel framework are placed in the `config` directory. All configuration items has annotations, you can adjust it according to your needs.
+All configuration files of the Goravel framework are placed in the `config` directory. All configuration items have annotations, you can adjust them according to your needs.
 
 ### Generate Application key
 
 You need to generate the application key after Goravel is installed locally. Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
 
-```
+```shell
 go run . artisan key:generate
 ```
 
@@ -88,7 +88,7 @@ go run . artisan key:generate
 
 You need to generate JWT Token if you use [Authentication](../security/authentication.md).
 
-```
+```shell
 go run . artisan jwt:secret
 ```
 

@@ -4,7 +4,7 @@
 
 ## Introduction
 
-All request entries of the Goravel application are the `main.go` file, which use the `bootstrap.Boot()` to boot the framework to load.
+All request entries of the Goravel application are the `main.go` file, which uses the `bootstrap.Boot()` to boot the framework to load.
 
 Then create a Goravel instance by `app := foundation.Application{}` in the `bootstrap/app.go` script.
 
