@@ -22,7 +22,7 @@ func (f *UserFactory) Definition() map[string]any {
 }
 ```
 
-As you can see, in their most basic form, factories are `struct` that have a `Definition` method. The method returns the default set of attribute values that should be used when creating a model with the factory. To generate a range of random data, you can rely on [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit).
+As you can see, in their most basic form, factories are structs that have a `Definition` method. The method returns the default set of attribute values that should be used when creating a model with the factory. To generate a range of random data, you can rely on [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit).
 
 ## Generating Factories
 
@@ -71,7 +71,7 @@ var user models.User
 err := facades.Orm().Factory().Make(&user)
 ```
 
-You may create a collection of models using the `Count` method:
+You may create a collection of many models using the `Count` method:
 
 ```go
 var users []models.User

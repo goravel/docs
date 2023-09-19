@@ -4,13 +4,13 @@
 
 ## Introduction
 
-Artisan is the command line interface included with Goravel, the module can be operated using `facades.Artisan()`. It provides a number of helpful commands that can assist you while you build your application. You can use the command below to get all the commands:
+Artisan is the CLI tool that comes with Goravel for interacting with the command line. You can access it using `facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
 
 ```shell
 go run . artisan list
 ```
 
-Every command also includes a "help" which displays and describes the command's available arguments and options. To view a help screen, precede the name of the command with help:
+Each command also has a "help" feature that shows and explains the arguments and options associated with the command. To see the help screen, just add "help" before the command name.
 
 ```shell
 go run . artisan help migrate
@@ -75,7 +75,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 
 ## Defining Input Expectations
 
-When writing console commands, it is common to gather input from the user through arguments or options. Goravel makes it very convenient to get arguments and options that user input.
+When you write console commands, it's typical to collect user input through arguments or options. With Goravel, it's extremely easy to retrieve the arguments and options that the user provides.
 
 ### Arguments
 
@@ -91,7 +91,7 @@ Get arguments:
 func (receiver *SendEmails) Handle(ctx console.Context) error {
   name := ctx.Argument(0)
   email := ctx.Argument(1)
-all := ctx.Arguments()
+  all := ctx.Arguments()
 
   return nil
 }
@@ -161,7 +161,7 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 
 ## Registering Commands
 
-All of your console commands need to be registered within the `Commands` function of the `app\console\kernel.go` file.
+All of your console commands need to be registered within the `Commands` function in  `app\console\kernel.go`.
 
 ```go
 func (kernel Kernel) Commands() []console.Command {

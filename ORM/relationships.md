@@ -4,7 +4,7 @@
 
 ## Introduction
 
-It's common for database tables to be interconnected. For instance, a blog post may have numerous comments, or an order may be linked to the user who made it. `Orm` simplifies managing and dealing with such relationships, and it can handle various common relationships:
+It's common for database tables to be interconnected. For instance, a blog post may have many comments, or an order may be linked to the user who placed it. `Orm` simplifies managing and dealing with such relationships, and it can handle various common relationships:
 
 - [One To One](#One-To-One)
 - [One To Many](#One-To-Many)
@@ -31,7 +31,7 @@ type Phone struct {
 }
 ```
 
-When using `Orm`, it automatically assigns the foreign key to the relationship based on the parent model name. For instance, the `Phone` model is assumed to have a `UserID` foreign key by default. However, if you wish to change this convention, you can add a `foreignKey` tag to the `Phone` field in User` model. (This also applies to other relationships.)
+When using `Orm`, it automatically assigns the foreign key to the relationship based on the parent model name. For instance, the `Phone` model is assumed to have a `UserID` foreign key by default. However, if you wish to change this convention, you can add a `foreignKey` tag to the `Phone` field in `User` model. (This also applies to other relationships.)
 
 ```go
 type User struct {
@@ -47,11 +47,7 @@ type Phone struct {
 }
 ```
 
-Additionally, Orm assumes that the foreign key should have a value matching the primary key column of the parent. In other words, Orm will look for the value of the user's ID column in the `UserId` column of the `Phone` record. If you would like the relationship to use a primary key value other than `id`, you can add `references` Tag to the `Phone` field in `User` model. pass a third argument to the hasOne method(Other relationships are similar):
-
-
-
-Additionally, when using Orm, it is assumed that the foreign key should match the primary key column of the parent. This means that `Orm` will search for the user's `ID` column value in the `UserId` column of the `Phone` record. If you wish to use a primary key value other than `ID`, you can add a "Tag" reference to the `Phone` field in `User` model. To do this, simply pass a third argument to the `hasOne` method. (Other relationship setups are similar.)
+Additionally, when using `Orm`, it is assumed that the foreign key should match the primary key column of the parent. This means that `Orm` will search for the user's `ID` column value in the `UserId` column of the `Phone` record. If you wish to use a primary key value other than `ID`, you can add a "Tag" reference to the `Phone` field in `User` model. To do this, simply pass a third argument to the `hasOne` method. (Other relationship setups are similar.)
 
 ```go
 type User struct {
@@ -69,7 +65,7 @@ type Phone struct {
 
 #### Defining The Inverse Of The Relationship
 
-We can access the `Phone` model from our `User` model. Now, we need to establish a relationship on  `Phone` model that allows us to access the phone's owner. To do this, we can define a `User` field in `Phone` model.
+We can access the `Phone` model from our `User` model. Now, we need to establish a relationship on `Phone` model that allows us to access the phone's owner. To do this, we can define a `User` field in `Phone` model.
 
 ```go
 type User struct {

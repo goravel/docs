@@ -10,7 +10,7 @@ Goravel's queue configuration options are saved in your application's `config/qu
 
 ### Connections Vs. Queues
 
-Before delving into Goravel queues, it's important to comprehend the difference between "connections" and "queues". In the configuration file, `config/queue.go`, you'll find an array for `connections` configuration. This option specifies the connections to backend queue services like Redis. However, every queue connection can have multiple "queues," which can be thought of as different stacks or piles of queued jobs. 
+Before delving into Goravel queues, it's important to understand the difference between "connections" and "queues". In the configuration file, `config/queue.go`, you'll find an array for `connections` configuration. This option specifies the connections to backend queue services like Redis. However, every queue connection can have multiple "queues", which can be thought of as different stacks or piles of queued jobs. 
 
 It's essential to note that each connection configuration example in the queue configuration file includes a `queue` attribute. This attribute is the default queue to which jobs will be dispatched when they are sent to a given connection. In simpler terms, if you dispatch a job without explicitly defining which queue it should be dispatched to, the job will be placed in the queue defined in the queue attribute of the connection configuration.
 
@@ -41,7 +41,7 @@ go run . artisan make:job user/ProcessPodcast
 
 ### Class Structure
 
-Job classes are very simple, consisting of two methods: `Signature` and `Handle`. `Signature` serves as a task's distinct identifier, while `Handle` method executes when the queue processes the task. Additionally, the `[]queue.Arg{}` passed when the task executes will be transmitted into `Handle`:
+Job classes are very simple, consisting of two methods: `Signature` and `Handle`. `Signature` serves as a task's distinct identifier, while `Handle` executes when the queue processes the task. Additionally, the `[]queue.Arg{}` passed when the task executes will be transmitted into `Handle`:
 
 ```go
 package jobs
@@ -110,7 +110,7 @@ go func() {
   }
 }()
 
-// Monitoring processing queue for redis link, and the number of concurrency is 10
+// Monitor processing queue for redis link, and the number of concurrency is 10
 go func() {
   if err := facades.Queue().Worker(&queue.Args{
     Connection: "redis",

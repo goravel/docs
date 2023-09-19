@@ -14,7 +14,7 @@ To generate a seeder, run the `make:seeder` [Artisan command](../digging-deeper/
 go run . artisan make:seeder UserSeeder
 ```
 
-By default, a seeder struct has two methods: `Signature` and `Run`. The Signature method sets the name of the seeder, while the Run method is triggered when the `db:seed` Artisan command is executed. You can use the Run method to insert data into your database in any way you prefer.
+By default, a seeder struct has two methods: `Signature` and `Run`. The `Signature` method sets the name of the seeder, while the `Run` method is triggered when the `db:seed` Artisan command is executed. You can use the `Run` method to insert data into your database in any way you prefer.
 
 To illustrate, we can customize the `DatabaseSeeder` struct by adding a database insert statement to the `Run` method.
 
@@ -47,7 +47,7 @@ func (s *DatabaseSeeder) Run() error {
 
 ## Calling Additional Seeders
 
-Within the `DatabaseSeeder` struct, you may use the `Call` method to execute additional seed struct. Using the `Call` method allows you to break up your database seeding into multiple files so that no single seeder struct becomes too large. The `Call` method accepts an array of seeder structs that should be executed:
+Within the `DatabaseSeeder` struct, you may use the `Call` method to execute additional seed structs. Using the `Call` method allows you to break up your database seeding into multiple files so that no single seeder struct becomes too large. The `Call` method accepts an array of seeder structs that should be executed:
 
 ```go
 // Run executes the seeder logic.
@@ -58,7 +58,7 @@ func (s *DatabaseSeeder) Run() error {
 }
 ```
 
-Framework also provides a `CallOnce` method, a seeder can be executed only once in the `db:seed` command:
+Framework also provides a `CallOnce` method, a seeder will be executed only once in the `db:seed` command:
 
 ```go
 // Run executes the seeder logic.

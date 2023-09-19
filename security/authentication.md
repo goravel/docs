@@ -20,7 +20,7 @@ go run . artisan jwt:secret
 
 ## Generate Token Using User
 
-You can generate a Token by Model, there is no extra configuration if the model uses `orm.Model`, otherwise, you need to configure Tag on the model primary key field, for example:
+You can generate a token by Model, there is no extra configuration if the model uses `orm.Model`, otherwise, you need to configure Tag on the model primary key field, for example:
 
 ```go
 type User struct {
@@ -53,7 +53,7 @@ Through `payload` you can get:
 3. `ExpireAt`: Expire time;
 4. `IssuedAt`: Issued time;
 
-> If the value of err is anything other than ErrorTokenExpired, then the payload should be nil.
+> If the value of err is anything other than `ErrorTokenExpired`, the payload should be nil.
 
 You can judge whether the Token is expired by err:
 
@@ -97,6 +97,6 @@ err := facades.Auth().Guard("admin").Parse(ctx, token)
 token, err := facades.Auth().Guard("admin").User(ctx, &user)
 ```
 
-> When the default guard is not used, the Guard method must be called before calling the above methods.
+> When the default guard is not used, the `Guard` method must be called before calling the above methods.
 
 <CommentService/>

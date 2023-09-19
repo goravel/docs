@@ -4,13 +4,13 @@
 
 ## Introduction
 
-In the past, you might have created a cron configuration entry for every task that needed scheduling on your server. However, this approach can can quickly become a pain as your task schedule is no longer in source control, and you have to SSH into your server to view or add cron entries. 
+In the past, you might need to create a cron configuration entry for each task that needed scheduling on your server. However, this approach can quickly become a pain as your task schedule is not in source control, and you have to SSH into your server to view or add/edit cron entries. 
 
 Goravel's command scheduler offers a fresh approach to managing scheduled tasks on your server. With the scheduler, you can easily and clearly define your command schedule within your Goravel application. Using the scheduler, you only need to create a single cron entry on your server.
 
 ## Defining Schedules
 
-To schedule tasks for your application, you can define them in the `Schedule` method of the `app\console\kernel.go` file. Let's consider an example to understand this better. In this case, we want to schedule a closure that will run every day at midnight. Inside this closure, we will execute a database query to clear a table:
+To schedule tasks for your application, you can define them in the `Schedule` method in `app\console\kernel.go`. Let's consider an example to understand this better. In this case, we want to schedule a closure that will run every day at midnight. Inside this closure, we will execute a database query to clear a table:
 
 ```go
 package console
@@ -37,7 +37,7 @@ func (kernel Kernel) Schedule() []schedule.Event {
 
 ### Scheduling Artisan Commands
 
-In addition to scheduling closures, you can also schedule [Artisan commands](./Artisan%E5%91%BD%E4%BB%A4%E8%A1%8C.md). For example, you may use the `Command` method to schedule an Artisan command using either the command's name or class.
+In addition to scheduling closures, you can also schedule [Artisan commands](./artisan-console.md). For example, you may use the `Command` method to schedule an Artisan command using either the command's name or class.
 
 ```go
 package console

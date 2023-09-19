@@ -209,21 +209,21 @@ If you do not want to use the `Validate` method on the request, you may create a
 
 ```go
 func (r *PostController) Store(ctx http.Context) http.Response {
-	validator, _ := facades.Validation().Make(
-		map[string]any{
-			"name": "Goravel",
-		},
-		map[string]string{
-			"title": "required|max_len:255",
-			"body":  "required",
-		})
+  validator, _ := facades.Validation().Make(
+    map[string]any{
+      "name": "Goravel",
+    },
+    map[string]string{
+      "title": "required|max_len:255",
+      "body":  "required",
+    })
 
-	if validator.Fails() {
-		// Return fail
-	}
+  if validator.Fails() {
+    // Return fail
+  }
 
-	var user models.User
-	err := validator.Bind(&user)
+  var user models.User
+  err := validator.Bind(&user)
   ...
 }
 ```
@@ -271,16 +271,16 @@ import (
 )
 
 func (r *PostController) Store(ctx http.Context) http.Response {
-	validator, err := facades.Validation().Make(input, rules,
-		validation.PrepareForValidation(func(data validationcontract.Data) error {
-			if name, exist := data.Get("name"); exist {
-				return data.Set("name", name)
-			}
+  validator, err := facades.Validation().Make(input, rules,
+    validation.PrepareForValidation(func(data validationcontract.Data) error {
+      if name, exist := data.Get("name"); exist {
+        return data.Set("name", name)
+      }
 
-			return nil
-		}))
+      return nil
+    }))
 
-	...
+  ...
 }
 ```
 

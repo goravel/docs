@@ -6,7 +6,7 @@
 
 Packages are the primary way of adding functionality to Goravel. These packages may contain routes, controllers, and configurations that are specifically designed to enhance a Goravel application. This guide focuses on developing Goravel-specific packages. 
 
-Here is an example for building a third package: [goravel/example-package](https://github.com/goravel/example-package)
+Here is an example for building a third-party package: [goravel/example-package](https://github.com/goravel/example-package)
 
 ## Creating A Package
 
@@ -24,7 +24,7 @@ go run . artisan make:package sms --root=pkg
 
 ## Service Providers
 
-[Service provider](../architecutre-concepts/service-providers.md) acts as the bridge between your package and Goravel. It is typically located in the root of the package as a `service_provider.go` file. Its main function is to bind items into Goravel's service container and guide Goravel in loading package resources.
+[Service providers](../architecutre-concepts/service-providers.md) act as the bridge between your package and Goravel. They are typically located in the root of the package as a `service_provider.go` file. Their main function is to bind items into Goravel's service container and guide Goravel in loading package resources.
 
 ## Usage
 

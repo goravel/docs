@@ -4,7 +4,7 @@
 
 ## Introduction
 
-When multiple people collaborate to develop applications, it's crucial to have a standardized database structure for synchronization. Without this, there could be chaos as everyone's individual data won't match up. Database migration is the solution to this problem. The database structure is version-controlled to ensure the consistency of the database structure of all developers.
+When multiple people collaborate to develop applications, it's crucial to have a standardized database structure for synchronization. Without this, there could be chaos as everyone's individual data won't match up. Database migration is the solution to this problem. The database structure is version-controlled to ensure its consistency within all developers.
 
 ## Create Migrations
 

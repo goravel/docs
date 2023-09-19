@@ -8,7 +8,7 @@ In order to understand the running status of the application, Goravel provides a
 
 ## Configuration
 
-To configure various log channels, custom configurations can be made in the file `config/logging.go`.
+To configure various log channels, custom configurations can be made in `config/logging.go`.
 
 `Goravel` uses `stack` channel to record logs by default, `stack` allows logs to be forwarded to multiple channels.
 

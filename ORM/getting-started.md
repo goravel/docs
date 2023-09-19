@@ -4,18 +4,18 @@
 
 ## Introduction
 
-Goravel makes it easy for developers to interact with databases using `facades.Orm()`. Currently, it supports four official databases:
+Goravel makes it easy for developers to interact with databases using `facades.Orm()`. Currently, it provides official support for the following four databases:
 
 - MySQL 5.7+
 - PostgreSQL 9.6+
 - SQLite 3.8.8+
 - SQL Server 2017+
 
-Before you start, configure the database in the `.env` file and confirm the `default` configuration in `config/database.go`.
+Before you start, configure the database in `.env` and confirm the `default` configuration in `config/database.go`.
 
 # Configuration
 
-To configure databases, navigate to the `config/database.go` file. This is where you can customize all database connections and choose a `default` connection. The configuration in this file relies on the project's environment variables and showcases various database configurations that Goravel supports.
+To configure databases, navigate to `config/database.go`. This is where you can customize all database connections and choose a `default` connection. The configuration in this file relies on the project's environment variables and showcases various database configurations that Goravel supports.
 
 ### Read & Write Connections
 
@@ -62,7 +62,7 @@ You can configure a connection pool in the configuration file, reasonable config
 
 ## Model Definition
 
-To create a custom model, you can use the model file `app/models/user.go` that is included in the framework. The `struct` in the `app/models/user.go` file contains two embedded frameworks: `orm.Model` and `orm.SoftDeletes`. These frameworks define `id`, `created_at`, `updated_at`, and `deleted_at` properties respectively. With `orm.SoftDeletes`, you can enable soft deletion for the model.
+To create a custom model, refer to the model file `app/models/user.go` that is included in the framework. The `struct` in `app/models/user.go` contains two embedded frameworks: `orm.Model` and `orm.SoftDeletes`. These frameworks define `id`, `created_at`, `updated_at`, and `deleted_at` properties respectively. With `orm.SoftDeletes`, you can enable soft deletion for the model.
 
 ### Model Convention
 
@@ -101,7 +101,7 @@ func (r *User) TableName() string {
 
 ### Database Connections
 
-By default, all models utilize the default database connection which is configured for your application. If you wish to specify a distinct connection to be used when interacting with a specific model, you need to define a `Connection` method on the model.
+By default, all models utilize the default database connection configured for your application. If you wish to specify a distinct connection to be used when interacting with a particular model, you need to define a `Connection` method on the model.
 
 ```go
 package models
@@ -191,7 +191,7 @@ facades.Orm().WithContext(ctx)
 
 ### Specify Database Connection
 
-If you define multiple database connections in `config/database.go`, you can use them through the `Connection` function of `facades.Orm()`. The connection name passed to `Connection` should be one of the connections configured in `config/database.go`:
+If multiple database connections are defined in `config/database.go`, you can use them through the `Connection` function of `facades.Orm()`. The connection name passed to `Connection` should be one of the connections configured in `config/database.go`:
 
 ```go
 facades.Orm().Connection("mysql")
@@ -291,7 +291,7 @@ facades.Orm().Query().Where("id in ?", []int{1,2,3}).Get(&users)
 
 #### Retrieving Or Creating Models
 
-When using the `FirstOrCreate` method, it searches for a database record using the specified column/value pairs. If the model cannot be found in the database, it creates a new record with the attributes from merging the first argument with the optional second argument. 
+The `FirstOrCreate` method searches for a database record using the specified column/value pairs. If the model cannot be found in the database, it creates a new record with the attributes from merging the first argument with the optional second argument. 
 
 Similarly, the `FirstOrNew` method also tries to locate a record in the database based on the attributes given. However, if it is not found, a new instance of the model is returned. It's important to note that this new model has not been saved to the database yet and you need to manually call the `Save` method to do so.
 
@@ -315,7 +315,7 @@ facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "to
 
 #### Not Found Error
 
-When the requested item is not found, using the `First` method does not generate an error. To generate an error, use the `FirstOrFail` method:
+When the requested item is not found, the `First` method does not generate an error. To generate an error, use the `FirstOrFail` method:
 
 ```go
 var user models.User

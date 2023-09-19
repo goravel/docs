@@ -6,7 +6,7 @@
 
 Goravel offers built-in [authentication](./authentication.md) services and an easy-to-use authorization feature to manage user actions on resources. Even if a user is authenticated, they may not have the authority to modify or delete certain Eloquent models or database records. Goravel's authorization feature allows for a systematic way of managing these authorization checks. 
 
-There are two ways to authorize actions in Goravel: [gates](#Gates) and [policies](#policies). Gates are based on closures and provide a simple approach to authorization, whereas policies group logic around a specific resource, similar to controllers. This documentation will first cover gates and then delve into policies. 
+There are two ways to authorize actions in Goravel: [gates](#Gates) and [policies](#Policies). Imagine gates and policies as similar to routes and controllers. Gates are based on closures and provide a simple approach to authorization, whereas policies group logic around a specific resource, similar to controllers. This documentation will first cover gates and then delve into policies.
 
 It's not necessary to exclusively use gates or policies when building an application. Most applications will use a combination of both, which is perfectly acceptable!
 
@@ -14,9 +14,9 @@ It's not necessary to exclusively use gates or policies when building an applica
 
 ### Writing Gates
 
-Gates serve as closures that verify whether a user is authorized to perform a specific action. They are commonly set up in the `app/providers/auth_service_provider.go` file's `Boot` method using the Gate facade. 
+Gates serve as closures that verify whether a user is authorized to perform a specific action. They are commonly set up in the `app/providers/auth_service_provider.go` file's `Boot` method using the Gate facade.
 
-In this scenario, we will establish a gate to check if a user can modify a particular Post model by comparing their ID to the user_id of the post's creator.
+In this scenario, we will establish a gate to check if a user can modify a particular Post model by comparing its ID to the user_id of the post's creator.
 
 ```go
 package providers
@@ -37,18 +37,18 @@ func (receiver *AuthServiceProvider) Register(app foundation.Application) {
 }
 
 func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
-	facades.Gate().Define("update-post",
-		func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
-			user := ctx.Value("user").(models.User)
-			post := arguments["post"].(models.Post)
+  facades.Gate().Define("update-post",
+    func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
+      user := ctx.Value("user").(models.User)
+      post := arguments["post"].(models.Post)
 
-			if user.ID == post.UserID {
-				return access.NewAllowResponse()
-			} else {
-				return access.NewDenyResponse("error")
-			}
-		},
-	)
+      if user.ID == post.UserID {
+        return access.NewAllowResponse()
+      } else {
+        return access.NewDenyResponse("error")
+      }
+    },
+  )
 }
 ```
 
@@ -151,7 +151,7 @@ facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
 
 ### Generating Policies
 
-You can use `the make:policy` Artisan command to generate a policy. The generated policy will be saved in the `app/policies` directory. If the directory does not exist in your application, Goravel will create it for you.
+You can use the `make:policy` Artisan command to generate a policy. The generated policy will be saved in the `app/policies` directory. If the directory does not exist in your application, Goravel will create it for you.
 
 ```go
 go run . artisan make:policy PostPolicy
@@ -166,31 +166,30 @@ Let's define an `Update` method on `PostPolicy` to check if a `User` can update 
 package policies
 
 import (
-	"context"
-	"goravel/app/models"
+  "context"
+  "goravel/app/models"
 
-	"github.com/goravel/framework/auth/access"
-	contractsaccess "github.com/goravel/framework/contracts/auth/access"
+  "github.com/goravel/framework/auth/access"
+  contractsaccess "github.com/goravel/framework/contracts/auth/access"
 )
 
 type PostPolicy struct {
 }
 
 func NewPostPolicy() *PostPolicy {
-	return &PostPolicy{}
+  return &PostPolicy{}
 }
 
 func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contractsaccess.Response {
-	user := ctx.Value("user").(models.User)
-	post := arguments["post"].(models.Post)
+  user := ctx.Value("user").(models.User)
+  post := arguments["post"].(models.Post)
 
-	if user.ID == post.UserID {
-		return access.NewAllowResponse()
-	} else {
-		return access.NewDenyResponse("You do not own this post.")
-	}
+  if user.ID == post.UserID {
+    return access.NewAllowResponse()
+  } else {
+    return access.NewDenyResponse("You do not own this post.")
+  }
 }
-
 ```
 
 Then we can register the policy to `app/providers/auth_service_provider.go`:
