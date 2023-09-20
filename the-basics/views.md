@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory.
+Of course, it's not practical to return entire HTML document strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory.
 
 ## Creating & Rendering Views
 
@@ -21,7 +21,7 @@ When using the Goravel default template `html/template`, you can create views by
 {{ end }}
 ```
 
-After creating view, you can use the `View` method to return the view from a route or controller in the application:
+After creating the view, you can use the `View` method to return the view from a route or controller in the application:
 
 ```go
 facades.Route().Get("/", func(ctx http.Context) http.Response {

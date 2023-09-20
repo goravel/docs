@@ -4,7 +4,7 @@
 
 ## Regular compilation
 
-```
+```shell
 go build .
 ```
 
@@ -12,7 +12,7 @@ go build .
 
 The package by regular compilation also needs to rely on the support of the deployment environment, the statically compiled files can be freely put to run on the specified platform without environment configuration.
 
-```
+```shell
 go build --ldflags "-extldflags -static" -o main .
 ```
 
@@ -20,7 +20,7 @@ go build --ldflags "-extldflags -static" -o main .
 
 Compilation is differentiated by platform, you need to select a matching compilation method according to the deployment situation.
 
-```
+```shell
 // Compile Linux environment
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build .
 
@@ -35,7 +35,7 @@ CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 
 Goravel has a default `Dockerfile` and `docker-compose.yml` file, you can use it directly, note that `APP_HOST` should be `0.0.0.0` at this time.
 
-```
+```shell
 docker build .
 ```
 
@@ -43,7 +43,7 @@ docker build .
 
 You can also quickly start the service with the following command:
 
-```
+```shell
 docker-compose build
 docker-compose up
 ```
@@ -52,6 +52,6 @@ docker-compose up
 
 ## Reduce package size
 
-Commenting out the unused `ServiceProvider` in `ServiceProviders` will effectively reduce the packaging volume.
+Commenting out the unused `ServiceProvider` in `config/app.go` will effectively reduce the packaging volume.
 
 <CommentService/>

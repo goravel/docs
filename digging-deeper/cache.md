@@ -4,11 +4,11 @@
 
 ## Introduction
 
-Goravel provides an expandable cache module, this module can be operated using `facades.Cache()`. Goravel comes with `memory` driver, for other drivers, please check the corresponding independent extension packages:
+Goravel provides an expandable cache module that can be operated using `facades.Cache()`. Goravel comes with a `memory` driver, for other drivers, please check the corresponding independent extension packages:
 
-| Driver       | Link           |
-| -----------  | -------------- |
-| Redis        | https://github.com/goravel/redis     |
+| Driver | Link                             |
+| ------ | -------------------------------- |
+| Redis  | https://github.com/goravel/redis |
 
 ## Configuration
 
@@ -24,7 +24,7 @@ facades.Cache().WithContext(ctx)
 
 ### Accessing Multiple Cache Stores
 
-You may access various cache stores via the store method. The key passed to the store method should correspond to one of the stores listed in the stores configuration array in your cache configuration file:
+You may access various cache stores via the `Store` method. The key passed to the `Store` method should correspond to one of the stores listed in the "stores" configuration array in your cache configuration file:
 
 ```go
 value := facades.Cache().Store("redis").Get("foo")
@@ -39,10 +39,10 @@ value := facades.Cache().GetInt("goravel", 1)
 value := facades.Cache().GetString("goravel", "default")
 ```
 
-You can pass a `func` as the default value. If the specified data does not exist in the cache, the result of `func` will be returned. The transitive closure method allows you to obtain default values from the database or other external services. Note the closure structure `func() interface()`.
+You can pass a `func` as the default value. If the specified data does not exist in the cache, the result of `func` will be returned. The transitive closure method allows you to obtain default values from the database or other external services. Note the closure structure `func() any`.
 
 ```go
-value := facades.Cache().Get("goravel", func() interface{} {
+value := facades.Cache().Get("goravel", func() any {
     return "default"
 })
 ```
@@ -55,7 +55,7 @@ bool := facades.Cache().Has("goravel")
 
 ### Incrementing / Decrementing Values
 
-The `Increment` and `Decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods accept an optional second argument indicating the amount by which to increment or decrement the item's value:
+The `Increment` and `Decrement` methods may be used to adjust the value of integer items in the cache. Both methods accept an optional second argument indicating the amount by which to increment or decrement the item's value:
 
 ```go
 facades.Cache().Increment("key")
@@ -69,7 +69,7 @@ facades.Cache().Decrement("key", amount)
 Sometimes you may want to get data from the cache, and when the requested cache item does not exist, the program can store a default value for you.
 
 ```go
-value, err := facades.Cache().Remember("goravel", 5 * time.Second, func() (any, error) {
+value, err := facades.Cache().Remember("goravel", 5*time.Second, func() (any, error) {
     return "goravel", nil
 })
 ```
@@ -93,7 +93,7 @@ value := facades.Cache().Pull("goravel", "default")
 ### Storing Items In The Cache
 
 ```go
-err := facades.Cache().Put("goravel", "value", 5 * time.Second)
+err := facades.Cache().Put("goravel", "value", 5*time.Second)
 ```
 
 If the expiration time of the cache is set to `0`, the cache will be valid forever:
@@ -104,10 +104,10 @@ err := facades.Cache().Put("goravel", "value", 0)
 
 ### Store If Not Present
 
-The `Add` method will only store data that does not exist in the cache. If the storage is successful, it will return `true`, otherwise it will return `false`:
+The `Add` method stores data only if it's not in the cache. It returns `true` if storage is successful and `false` if it's not.
 
 ```go
-bool := facades.Cache().Add("goravel", "value", 5 * time.Second)
+bool := facades.Cache().Add("goravel", "value", 5*time.Second)
 ```
 
 ### Storing Items Forever
@@ -200,39 +200,43 @@ Then include a `via` option to implement a `framework\contracts\cache\Store` int
 
 ### Implement Custom Driver
 
-Implement the `framework\contracts\cache\Store` interface, files can be stored in the `app/extensions` folder (modifiable).
+Implement the `framework\contracts\cache\Driver` interface, files can be stored in the `app/extensions` folder (modifiable).
 
 ```go
-//framework\contracts\cache\Store
+// framework\contracts\cache\Driver
 package cache
 
 import "time"
 
-type Store interface {
-    WithContext(ctx context.Context) Store
-    //Get Retrieve an item from the cache by key.
-    Get(key string, defaults interface{}) interface{}
-    GetBool(key string, defaults bool) bool
-    GetInt(key string, defaults interface{}) int
-    GetString(key string, defaults interface{}) string
-    //Has Determine if an item exists in the cache.
-    Has(key string) bool
-    //Put Store an item in the cache for a given number of seconds.
-    Put(key string, value interface{}, seconds time.Duration) error
-    //Pull Retrieve an item from the cache and delete it.
-    Pull(key string, defaults interface{}) interface{}
-    //Add Store an item in the cache if the key does not exist.
-    Add(key string, value interface{}, seconds time.Duration) bool
-    //Remember Get an item from the cache, or execute the given Closure and store the result.
-    Remember(key string, ttl time.Duration, callback func() interface{}) (interface{}, error)
-    //RememberForever Get an item from the cache, or execute the given Closure and store the result forever.
-    RememberForever(key string, callback func() interface{}) (interface{}, error)
-    //Forever Store an item in the cache indefinitely.
-    Forever(key string, value interface{}) bool
-    //Forget Remove an item from the cache.
+type Driver interface {
+    // Add Driver an item in the cache if the key does not exist.
+    Add(key string, value any, t time.Duration) bool
+    Decrement(key string, value ...int) (int, error)
+    // Forever Driver an item in the cache indefinitely.
+    Forever(key string, value any) bool
+    // Forget Remove an item from the cache.
     Forget(key string) bool
-    //Flush Remove all items from the cache.
+    // Flush Remove all items from the cache.
     Flush() bool
+    // Get Retrieve an item from the cache by key.
+    Get(key string, def ...any) any
+    GetBool(key string, def ...bool) bool
+    GetInt(key string, def ...int) int
+    GetInt64(key string, def ...int64) int64
+    GetString(key string, def ...string) string
+    // Has Check an item exists in the cache.
+    Has(key string) bool
+    Increment(key string, value ...int) (int, error)
+    Lock(key string, t ...time.Duration) Lock
+    // Put Driver an item in the cache for a given time.
+    Put(key string, value any, t time.Duration) error
+    // Pull Retrieve an item from the cache and delete it.
+    Pull(key string, def ...any) any
+    // Remember Get an item from the cache, or execute the given Closure and store the result.
+    Remember(key string, ttl time.Duration, callback func() (any, error)) (any, error)
+    // RememberForever Get an item from the cache, or execute the given Closure and store the result forever.
+    RememberForever(key string, callback func() (any, error)) (any, error)
+    WithContext(ctx context.Context) Driver
 }
 ```
 

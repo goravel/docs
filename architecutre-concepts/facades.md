@@ -8,7 +8,7 @@
 
 All `facades` of Goravel are defined under `github.com/goravel/framework/facades`. We can easily use `facades`:
 
-```
+```go
 import "github.com/goravel/framework/facades"
 
 facades.Route().Run(facades.Config().GetString("app.host"))
@@ -18,7 +18,7 @@ facades.Route().Run(facades.Config().GetString("app.host"))
 
 `facades` are generally instantiated in the `Register` or `Boot` stage of each module `ServerProvider`.
 
-```
+```go
 func (config *ServiceProvider) Register() {
   app := Application{}
   facades.Config = app.Init()
@@ -27,7 +27,7 @@ func (config *ServiceProvider) Register() {
 
 If the `facades` use other `facades`, then instantiate them in the `Boot` phase of the `ServerProvider`:
 
-```
+```go
 func (database *ServiceProvider) Boot() {
   app := Application{}
   facades.DB = app.Init()

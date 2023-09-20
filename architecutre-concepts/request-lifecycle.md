@@ -4,12 +4,12 @@
 
 ## Introduction
 
-All request entries of the Goravel application are the `main.go` file, which use the `bootstrap.Boot()` to boot the framework to load.
+The `main.go` file serves as the entry point for all requests in the Goravel application. It utilizes the `bootstrap.Boot()` function to initialize the framework.
 
-Then create a Goravel instance by `app := foundation.Application{}` in the `bootstrap/app.go` script.
+Then a Goravel instance is created by `app := foundation.NewApplication()` in `bootstrap/app.go`.
 
-Use `app.Boot()` to load the [Service Provider](service-providers.md) registered, and use `config.Boot()` to load the configuration file under the config directory.
+After this, use `app.Boot()` to load the [Service Provider](service-providers.md) registered, and `config.Boot()` to load the configuration files under the config directory.
 
-Finally, use `facades.Route().Run(facades.Config().GetString("app.host"))` in the `main.go` file to start the HTTP server.
+Finally, start the HTTP server by using  `facades.Route().Run(facades.Config().GetString("app.host"))` in `main.go`.
 
 <CommentService/>

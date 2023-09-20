@@ -2,25 +2,25 @@
 
 [[toc]]
 
-## Introdution
+## Introduction
 
 Authentication is an indispensable feature in Web Applications, the `facades.Auth()` module of Goravel provides support for JWT.
 
-## Configration
+## Configuration
 
-You can configure default guard and multiple guards in the `config/auth.go` file to switch different user identities in the application.
+You can configure `defaults` guard and multiple `guards` in the `config/auth.go` file to switch different user identities in the application.
 
-You can configure parameters of JWT in the `config/jwt.go` file, such as `secret`, `ttl`, `refresh_ttl`.
+You can configure the parameters of JWT in the `config/jwt.go` file, such as `secret`, `ttl`, `refresh_ttl`.
 
 ## Generate JWT Token
 
-```
+```shell
 go run . artisan jwt:secret
 ```
 
 ## Generate Token Using User
 
-You can generate Token by Model, there is no extra configuration if the model use `orm.Model`, otherwise, you need to configure Tag on the model permary key filed, for example:
+You can generate a token by Model, there is no extra configuration if the model uses `orm.Model`, otherwise, you need to configure Tag on the model primary key field, for example:
 
 ```go
 type User struct {
@@ -28,7 +28,7 @@ type User struct {
   Name string
 }
 
-var user User
+var user models.User
 user.ID = 1
 
 token, err := facades.Auth().Login(ctx, &user)
@@ -53,7 +53,7 @@ Through `payload` you can get:
 3. `ExpireAt`: Expire time;
 4. `IssuedAt`: Issued time;
 
-> When `err` isn't nil other than `ErrorTokenExpired`, payload == nil
+> If `err` isn't nil other than `ErrorTokenExpired`, the payload should be nil.
 
 You can judge whether the Token is expired by err:
 
@@ -64,20 +64,20 @@ You can judge whether the Token is expired by err:
 errors.Is(err, auth.ErrorTokenExpired)
 ```
 
-> Token can be parsed normally with or without Bearer prefix.
+> The token can be parsed normally with or without the Bearer prefix.
 
 ## Get User
 
-You need to generate Token by `Parse` before getting user, the process can be handled in HTTP middleware.
+You need to generate a Token by `Parse` before getting a user, the process can be handled in HTTP middleware.
 
 ```go
 var user models.User
-err := facades.Auth().User(ctx, &user)// Must point
+err := facades.Auth().User(ctx, &user) // Must point
 ```
 
 ## Refresh Token
 
-You need to generate Token by `Parse` before refreshing user.
+You need to generate a Token by `Parse` before refreshing the user.
 
 ```go
 token, err := facades.Auth().Refresh(ctx)
@@ -97,6 +97,6 @@ err := facades.Auth().Guard("admin").Parse(ctx, token)
 token, err := facades.Auth().Guard("admin").User(ctx, &user)
 ```
 
-> When don't use default guard, the `Guard` method needs to be called beforehand when calling the above methods.
+> When the default guard is not used, the `Guard` method must be called before calling the above methods.
 
 <CommentService/>

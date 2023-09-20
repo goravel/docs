@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Database tables are often related to one another. For example, a blog post may have many comments or an order could be related to the user who placed it. Orm makes managing and working with these relationships easy, and supports a variety of common relationships:
+It's common for database tables to be interconnected. For instance, a blog post may have many comments, or an order may be linked to the user who placed it. `Orm` simplifies managing and dealing with such relationships, and it can handle various common relationships:
 
 - [One To One](#One-To-One)
 - [One To Many](#One-To-Many)
@@ -31,7 +31,7 @@ type Phone struct {
 }
 ```
 
-Orm determines the foreign key of the relationship based on the parent model name. In this case, the `Phone` model is automatically assumed to have a `UserID` foreign key. If you want to override this convention, you can add `foreignKey` Tag to the `Phone` field in `User` model(Other relationships are similar):
+When using `Orm`, it automatically assigns the foreign key to the relationship based on the parent model name. For instance, the `Phone` model is assumed to have a `UserID` foreign key by default. However, if you wish to change this convention, you can add a `foreignKey` tag to the `Phone` field in `User` model. (This also applies to other relationships.)
 
 ```go
 type User struct {
@@ -47,7 +47,7 @@ type Phone struct {
 }
 ```
 
-Additionally, Orm assumes that the foreign key should have a value matching the primary key column of the parent. In other words, Orm will look for the value of the user's `id` column in the `UserId` column of the `Phone` record. If you would like the relationship to use a primary key value other than `id`, you can add `references` Tag to the `Phone` field in `User` model. pass a third argument to the hasOne method(Other relationships are similar):
+Additionally, when using `Orm`, it is assumed that the foreign key should match the primary key column of the parent. This means that `Orm` will search for the user's `ID` column value in the `UserId` column of the `Phone` record. If you wish to use a primary key value other than `ID`, you can add a "Tag" reference to the `Phone` field in `User` model. To do this, simply pass a third argument to the `hasOne` method. (Other relationship setups are similar.)
 
 ```go
 type User struct {
@@ -65,7 +65,7 @@ type Phone struct {
 
 #### Defining The Inverse Of The Relationship
 
-So, we can access the `Phone` model from our `User` model. Next, let's define a relationship on the `Phone` model that will let us access the user that owns the phone. We can define a `User` field in `Phone` model:
+We can access the `Phone` model from our `User` model. Now, we need to establish a relationship on `Phone` model that allows us to access the phone's owner. To do this, we can define a `User` field in `Phone` model.
 
 ```go
 type User struct {
@@ -83,7 +83,7 @@ type Phone struct {
 
 ### One To Many
 
-A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a blog post may have an infinite number of comments. Like all other Orm relationships, one-to-many relationships are defined by defining a field on your Orm model:
+A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a blog post may have an infinite number of comments. Like all other `Orm` relationships, one-to-many relationships are defined by defining a field on your `Orm` model:
 
 ```go
 type Post struct {
@@ -99,11 +99,11 @@ type Comment struct {
 }
 ```
 
-Remember, Orm will automatically determine the proper foreign key column for the `Comment` model. By convention, Orm will take the "hump case" name of the parent model and suffix it with `ID`. So, in this example, Orm will assume the foreign key column on the `Comment` model is `PostID`.
+Remember, `Orm` will automatically determine the proper foreign key column for the `Comment` model. By convention, Orm will take the "hump case" name of the parent model and suffix it with `ID`. So, in this example, Orm will assume the foreign key column on the `Comment` model is `PostID`.
 
 ### One To Many (Inverse) / Belongs To
 
-Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `One To Many` relationship, define a relationship method on the child model which calls the belongsTo method:
+Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `One To Many` relationship, define a relationship method on the child model which calls the `belongsTo` method:
 
 ```go
 type Post struct {
@@ -126,7 +126,7 @@ Many-to-many relations are slightly more complicated than `One To One` and `One 
 
 ### Table Structure
 
-To define this relationship, three database tables are needed: `users`, `roles`, and `role_user`. The `role_user` table naming can be customized and it contains `user_id` and `role_id` columns. This table is used as an intermediate table linking the users and roles.
+To define this relationship, three database tables are needed: `users`, `roles`, and `role_user`. The `role_user` table naming can be customized and it contains `user_id` and `role_id` columns. This table is used as an intermediate table linking users and roles.
 
 Remember, since a role can belong to many users, we cannot simply place a `user_id` column on the `roles` table. This would mean that a role could only belong to a single user. In order to provide support for roles being assigned to multiple users, the `role_user` table is needed. We can summarize the relationship's table structure like so:
 
@@ -181,7 +181,7 @@ type Role struct {
 
 ### Custom intermediate table
 
-In general, the intermediate table foreign key are named by the "snake case" of parent model name, you can override them by `joinForeignKey`, `joinReferences`:
+In general, the intermediate table foreign key is named by the "snake case" of the parent model name, you can override them by `joinForeignKey`, `joinReferences`:
 
 ```go
 type User struct {
@@ -311,7 +311,7 @@ type Post struct {
 You can use the `Select`, `Omit` methods to to control the create and update of associations. These two method cannot be used at the same time and the associated control functions are only applicable to `Create`, `Update`, `Save`:
 
 ```go
-user := User{Name: "user", Post: &Post{Name: "post"}}
+user := models.User{Name: "user", Posts: []*models.Post{{Name: "post"}}}
 
 // Create all child associations while creating User
 facades.Orm().Query().Select(orm.Associations).Create(&user)
@@ -345,9 +345,9 @@ facades.Orm().Query().Model(&user).Where("name = ?", "goravel").Order("id desc")
 Append new associations for `Many To Many`, `One To Many`, replace current association for `One To One`, `One To One(revers)`:
 
 ```go
-facades.Orm().Query().Model(&user).Association("Posts").Append([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Append([]*models.Post{Post1, Post2})
 
-facades.Orm().Query().Model(&user).Association("Posts").Append(&Post{Name: "goravel"})
+facades.Orm().Query().Model(&user).Association("Posts").Append(&models.Post{Name: "goravel"})
 ```
 
 ### Replace Associations
@@ -355,9 +355,9 @@ facades.Orm().Query().Model(&user).Association("Posts").Append(&Post{Name: "gora
 Replace current associations with new ones:
 
 ```go
-facades.Orm().Query().Model(&user).Association("Posts").Replace([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Replace([]*models.Post{Post1, Post2})
 
-facades.Orm().Query().Model(&user).Association("Posts").Replace(Post{Name: "goravel"}, Post2)
+facades.Orm().Query().Model(&user).Association("Posts").Replace(models.Post{Name: "goravel"}, Post2)
 ```
 
 ### Delete Associations
@@ -365,7 +365,7 @@ facades.Orm().Query().Model(&user).Association("Posts").Replace(Post{Name: "gora
 Remove the relationship between source & arguments if exists, only delete the reference, won’t delete those objects from DB, the foreign key must be NULL:
 
 ```go
-facades.Orm().Query().Model(&user).Association("Posts").Delete([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Delete([]*models.Post{Post1, Post2})
 
 facades.Orm().Query().Model(&user).Association("Posts").Delete(Post1, Post2)
 ```
@@ -402,18 +402,18 @@ facades.Orm().Query().Model(&users).Association("Posts").Delete(&userA)
 facades.Orm().Query().Model(&users).Association("Posts").Count()
 
 // For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
-var users = []User{user1, user2, user3}
+var users = []models.User{user1, user2, user3}
 
 // We have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
-facades.Orm().Query().Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
+facades.Orm().Query().Model(&users).Association("Team").Append(&userA, &userB, &[]models.User{userA, userB, userC})
 
 // Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
-facades.Orm().Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
+facades.Orm().Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]models.User{userA, userB, userC})
 ```
 
 ## Eager Loading
 
-Eager loading conveniences for querying multiple models, and alleviates the "N + 1" query problem. To illustrate the N + 1 query problem, consider a `Book` model that "belongs to" to an `Author` model:
+Eager loading conveniences for querying multiple models, and alleviates the "N + 1" query problem. To illustrate the N + 1 query problem, consider a `Book` model that "belongs to" an `Author` model:
 
 ```go
 type Author struct {
@@ -441,9 +441,9 @@ for _, book := range books {
 }
 ```
 
-This loop will execute one query to retrieve all of the books within the database table, then another query for each book in order to retrieve the book's author. So, if we have 25 books, the code above would run 26 queries: one for the original book, and 25 additional queries to retrieve the author of each book.
+To retrieve all the books in the database table along with their authors, the loop code executes a query for each book. This means that for a collection of 25 books, the loop would run 26 queries - one for the collection of books and 25 more to get the author of each book. 
 
-Thankfully, we can use eager loading to reduce this operation to just two queries. When building a query, you may specify which relationships should be eager loaded using the `With` method:
+However, we can simplify this process using eager loading. By using the `With` method, we can specify which relationships need to be eagerly loaded and reduce the number of queries to just two.
 
 ```go
 var books models.Book
@@ -454,12 +454,12 @@ for _, book := range books {
 }
 ```
 
-For this operation, only two queries will be executed - one query to retrieve all of the books and one query to retrieve all of the authors for all of the books:
+For this operation, only two queries will be executed - one query to retrieve all books and one query to retrieve authors for all of the books:
 
 ```sql
-select * from books
+select * from `books`;
 
-select * from authors where id in (1, 2, 3, 4, 5, ...)
+select * from `authors` where `id` in (1, 2, 3, 4, 5, ...)
 ```
 
 ### Eager Loading Multiple Relationships
@@ -495,7 +495,7 @@ facades.Orm().Query().With("Author", func(query orm.Query) orm.Query {
 }).Find(&book)
 ```
 
-In this example, Orm will only eager load posts where the post's `name` column equal the word `author`. 
+In this example, Orm will only eager load posts where the post's `name` column equals the word `author`. 
 
 ### Lazy Eager Loading
 
@@ -512,7 +512,7 @@ for _, book := range books {
 }
 ```
 
-If you need to set additional query constraints on the eager loading query, you can use the code as below:
+If you need to set additional query constraints on the eager loading query, you can use the code below:
 
 ```go
 import "github.com/goravel/framework/contracts/database/orm"

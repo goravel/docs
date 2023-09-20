@@ -4,9 +4,9 @@
 
 ## Introduction
 
-Goravel's events provide a simple observer pattern implementation, allowing you to subscribe and listen for various events that occur within your application. Event classes are typically stored in the `app/events` directory, while their listeners are stored in `app/listeners`. Don't worry if you don't see these directories in your application as they will be created for you as you generate events and listeners using Artisan console commands.
+Goravel's events provide a simple observer pattern implementation, allowing you to subscribe and listen to various events that occur within your application. Event classes are typically stored in the `app/events` directory, while their listeners are stored in `app/listeners`. Don't worry if you don't see these directories in your application as they will be created for you as you generate events and listeners using Artisan console commands.
 
-Events serve as a great way to decouple various aspects of your application, since a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order has shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `app\events\OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
+Events serve as a great way to decouple various aspects of your application, as a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order is shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `app\events\OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
 
 ## Registering Events & Listeners
 
@@ -51,7 +51,7 @@ go run . artisan make:listener user/SendPodcastNotification
 
 ## Defining Events
 
-An event class is essentially a data container which holds the information related to the event, the Handle method of `event` passes in and returns the `[]event.Arg` structure, you can process data here, the processed data will be passed into all associated `listeners` For example, let's assume an `app\events\OrderShipped` event:
+An event class is essentially a data container that holds the information related to the event, the `Handle` method of `event` passes in and returns the `[]event.Arg` structure, which can be used to process data. The processed data will then be passed on to all associated `listeners`. For example, let's assume an `app\events\OrderShipped` event:
 
 ```go
 package events
@@ -84,7 +84,7 @@ func (receiver *SendShipmentNotification) Signature() string {
   return "send_shipment_notification"
 }
 
-func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue {
+func (receiver *SendShipmentNotification) Queue(args ...any) event.Queue {
   return event.Queue{
     Enable:     false,
     Connection: "",
@@ -92,14 +92,14 @@ func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue
   }
 }
 
-func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
+func (receiver *SendShipmentNotification) Handle(args ...any) error {
   return nil
 }
 ```
 
 ### Stopping The Propagation Of An Event
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning error from your listener's `Handle` method.
+Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning an error from your listener's `Handle` method.
 
 ## Queued Event Listeners
 
@@ -110,7 +110,7 @@ package listeners
 
 ...
 
-func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue {
+func (receiver *SendShipmentNotification) Queue(args ...any) event.Queue {
   return event.Queue{
     Enable:     false,
     Connection: "",
@@ -118,7 +118,7 @@ func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue
   }
 }
 
-func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
+func (receiver *SendShipmentNotification) Handle(args ...any) error {
   name := args[0]
 
   return nil
@@ -127,11 +127,11 @@ func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
 
 ### Queued Event Listeners & Database Transactions
 
-When queued listeners are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can occur when the job that dispatches the queued listener is processed. At this time, the event needs to be placed outside the database transactions.
+When queued listeners are dispatched within database transactions, the queue may process them before the database transaction has been committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can occur when the job that dispatches the queued listener is processed. At this time, the event needs to be placed outside the database transactions.
 
 ## Dispatching Events
 
-We can dispatching Events by `facades.Event().Job().Dispatch()` method.
+We can dispatch Events by `facades.Event().Job().Dispatch()` method.
 
 ```go
 package controllers

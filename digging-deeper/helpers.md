@@ -45,7 +45,7 @@ The `path.Base()` function returns the path to your application's root directory
 
 ```go
 path := path.Base()
-path := path.Base("'vendor/bin'")
+path := path.Base("vendor/bin")
 ```
 
 ### `path.Config()`
@@ -86,7 +86,7 @@ path := path.Public("css/app.css")
 
 ## Time
 
-The `carbon` module of Goravel is an expansion by [golang-module/carbon](https://github.com/golang-module/carbon), the main feature is the realization of time backtracking, please look into the official documentation for detail.
+The `carbon` module of Goravel is an expansion by [golang-module/carbon](https://github.com/golang-module/carbon), the main feature is the realization of time backtracking, please refer to the official documentation for details.
 
 ### `carbon.Now()`
 

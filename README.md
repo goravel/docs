@@ -16,11 +16,11 @@ English | [中文](zh/README.md)
 
 ## About Goravel
 
-Goravel is a web application framework with complete functions and good scalability. As a starting scaffolding to help Gophper quickly build their own applications.
+Goravel is a web application framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications.
 
-The framework style is consistent with [Laravel](https://github.com/laravel/laravel), let PHPer don't need to learn a new framework, but also happy to play around Golang! Tribute Laravel!
+The framework's design is consistent with [Laravel](https://github.com/laravel/laravel), simplifying the learning curve for PHPers. Kudos to Laravel!
 
-Welcome star, PR and issues！
+We are open to receiving stars, PRs, and issues!
 
 ## Main Function
 
@@ -51,7 +51,7 @@ Example [https://github.com/goravel/example](https://github.com/goravel/example)
 
 ## Contributors
 
-This project exists thanks to all the people who contribute, to participate in the contribution, please see [Contribution Guide](/prologue/contributions.html).
+This project is made possible by everyone who contributes. To contribute, please consult the [Contribution Guide](/prologue/contributions.html).
 
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>

@@ -4,19 +4,19 @@
 
 ## Introduction
 
-In addition to providing built-in [authentication](./authentication.md) services, Goravel also provides a simple way to authorize user actions against a given resource. For example, even though a user is authenticated, they may not be authorized to update or delete certain Eloquent models or database records managed by your application. Goravel's authorization features provide an easy, organized way of managing these types of authorization checks.
+Goravel offers built-in [authentication](./authentication.md) services and an easy-to-use authorization feature to manage user actions on resources. Even if a user is authenticated, they may not have the authority to modify or delete certain Eloquent models or database records. Goravel's authorization feature allows for a systematic way of managing these authorization checks. 
 
-Goravel provides two primary ways of authorizing actions: [gates](#Gates) and [policies](#Policies). Think of gates and policies like routes and controllers. Gates provide a simple, closure-based approach to authorization while policies, like controllers, group logic around a particular model or resource. In this documentation, we'll explore gates first and then examine policies.
+There are two ways to authorize actions in Goravel: [gates](#Gates) and [policies](#Policies). Imagine gates and policies as similar to routes and controllers. Gates are based on closures and provide a simple approach to authorization, whereas policies group logic around a specific resource, similar to controllers. This documentation will first cover gates and then delve into policies.
 
-You do not need to choose between exclusively using gates or exclusively using policies when building an application. Most applications will most likely contain some mixture of gates and policies, and that is perfectly fine!
+It's not necessary to exclusively use gates or policies when building an application. Most applications will use a combination of both, which is perfectly acceptable!
 
 ## Gates
 
 ### Writing Gates
 
-Gates are simply closures that determine if a user is authorized to perform a given action. Typically, gates are defined within the `Boot` method of the `app/providers/auth_service_provider.go` file using the Gate facade. 
+Gates serve as closures that verify whether a user is authorized to perform a specific action. They are commonly set up in the `app/providers/auth_service_provider.go` file's `Boot` method using the Gate facade.
 
-In this example, we'll define a gate to determine if a user can update a given Post model by comparing the user's id against the user_id of the user that created the post:
+In this scenario, we will establish a gate to check if a user can modify a particular Post model by comparing its ID to the user_id of the post's creator.
 
 ```go
 package providers
@@ -32,20 +32,23 @@ import (
 type AuthServiceProvider struct {
 }
 
-func (receiver *AuthServiceProvider) Register() {
+func (receiver *AuthServiceProvider) Register(app foundation.Application) {
+
 }
 
-func (receiver *AuthServiceProvider) Boot() {
-  facades.Gate().Define("update-post", func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
-    user := ctx.Value("user").(models.User)
-    post := arguments["post"].(models.Post)
-    
-    if user.ID == post.UserID {
-      return access.NewAllowResponse()
-    } else {
-      return access.NewDenyResponse("error")
-    }
-  })
+func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
+  facades.Gate().Define("update-post",
+    func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
+      user := ctx.Value("user").(models.User)
+      post := arguments["post"].(models.Post)
+
+      if user.ID == post.UserID {
+        return access.NewAllowResponse()
+      } else {
+        return access.NewDenyResponse("error")
+      }
+    },
+  )
 }
 ```
 
@@ -62,7 +65,7 @@ import (
 
 type UserController struct {
 
-func (r *UserController) Show(ctx http.Context) {
+func (r *UserController) Show(ctx http.Context) http.Response {
   var post models.Post
   if facades.Gate().Allows("update-post", map[string]any{
     "post": post,
@@ -72,7 +75,7 @@ func (r *UserController) Show(ctx http.Context) {
 }
 ```
 
-You may authorize multiple actions at a time using the `Any` or `None` methods:
+You can authorize multiple actions simultaneously using the `Any` or `None` methods.
 
 ```go
 if facades.Gate().Any([]string{"update-post", "delete-post"}, map[string]any{
@@ -90,21 +93,21 @@ if facades.Gate().None([]string{"update-post", "delete-post"}, map[string]any{
 
 ### Gate Responses
 
-The `Allows` method will return a simple boolean value, you can use the `Inspect` method to get the full authorization response returned by the gate:
+The `Allows` method returns a boolean value. To get the full authorization response, use the `Inspect` method.
 
 ```go
 response := facades.Gate().Inspect("edit-settings", nil);
 
-if (response.Allowed()) {
+if response.Allowed() {
     // The action is authorized...
 } else {
-    fmt.Println($response->message());
+    fmt.Println(response.Message())
 }
 ```
 
 ### Intercepting Gate Checks
 
-Sometimes, you may wish to grant all abilities to a specific user. You may use the `Before` method to define a closure that is run before all other authorization checks:
+Sometimes, you may wish to grant all abilities to a specific user. You can define a closure using the `Before` method, which runs before any other authorization checks:
 
 ```go
 facades.Gate().Before(func(ctx context.Context, ability string, arguments map[string]any) contractsaccess.Response {
@@ -117,9 +120,9 @@ facades.Gate().Before(func(ctx context.Context, ability string, arguments map[st
 })
 ```
 
-If the before closure returns a non-nil result that result will be considered the result of the authorization check.
+If the `Before` closure returns a non-nil result, that result will be considered the result of the authorization check.
 
-You may use the `After` method to define a closure to be executed after all other authorization checks:
+The `After` method can be used to define a closure that will be executed after all other authorization checks.
 
 ```go
 facades.Gate().After(func(ctx context.Context, ability string, arguments map[string]any, result contractsaccess.Response) contractsaccess.Response {
@@ -132,11 +135,11 @@ facades.Gate().After(func(ctx context.Context, ability string, arguments map[str
 })
 ```
 
-> Notice: The returned result of `After` will be applied only when `facades.Gate().Define` returns nil.
+> Notice: The return result of `After` will be applied only when `facades.Gate().Define` returns nil.
 
 ### Inject Context
 
-The `context` will be passed to the `Before`, `After`, `Define` methods.
+The `context` will be passed to the `Before`, `After`, and `Define` methods.
 
 ```go
 facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
@@ -148,7 +151,7 @@ facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
 
 ### Generating Policies
 
-You may generate a policy using the `make:policy` Artisan command. The generated policy will be placed in the `app/policies` directory. If this directory does not exist in your application, Goravel will create it for you:
+You can use the `make:policy` Artisan command to generate a policy. The generated policy will be saved in the `app/policies` directory. If the directory does not exist in your application, Goravel will create it for you.
 
 ```go
 go run . artisan make:policy PostPolicy
@@ -157,15 +160,17 @@ go run . artisan make:policy user/PostPolicy
 
 ### Writing Policies
 
-You can add methods for the policy, for example, let's define an `Update` method on our `PostPolicy` which determines if a `models.User` can update a `models.Post`.
+Let's define an `Update` method on `PostPolicy` to check if a `User` can update a `Post`.
 
 ```go
 package policies
 
 import (
   "context"
+  "goravel/app/models"
 
-  "github.com/goravel/framework/contracts/auth/access"
+  "github.com/goravel/framework/auth/access"
+  contractsaccess "github.com/goravel/framework/contracts/auth/access"
 )
 
 type PostPolicy struct {
@@ -178,7 +183,7 @@ func NewPostPolicy() *PostPolicy {
 func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contractsaccess.Response {
   user := ctx.Value("user").(models.User)
   post := arguments["post"].(models.Post)
-    
+
   if user.ID == post.UserID {
     return access.NewAllowResponse()
   } else {
@@ -193,6 +198,6 @@ Then we can register the policy to `app/providers/auth_service_provider.go`:
 facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
 ```
 
-You may continue to define additional methods on the policy as needed for the various actions it authorizes. For example, you might define `View` or `Delete` methods to authorize various `models.Post` related actions, but remember you are free to give your policy methods any name you like.
+As you work on authorizing different actions, you can add more methods to your policy. For instance, you can create `View` or `Delete` methods to authorize various model-related actions. Feel free to name your policy methods as you see fit.
 
 <CommentService/>

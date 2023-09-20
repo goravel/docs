@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS, Tencent COS, Minio and Cloudinary. Even better, it's amazingly simple to switch between these storage options between your local development machine and production server as the API remains the same for each system. Goravel comes with `local` driver, for other drivers, please check the corresponding independent extension package:
+The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS, Tencent COS, Minio and Cloudinary. Even better, switching between these storage options between your local development machine and production server is amazingly simple as the API remains the same for each system. Goravel comes with a `local` driver, for other drivers, please check the corresponding independent extension package:
 
 | Driver       | Link           |
 | -----------  | -------------- |
@@ -92,7 +92,7 @@ In addition to reading and writing files, Goravel can also provide information a
 size := facades.Storage().Size("file.jpg")
 ```
 
-The `LastModified` method returns the last modified time of file:
+The `LastModified` method returns the last modified time of the file:
 
 ```go
 time, err := facades.Storage().LastModified("file.jpg")
@@ -117,7 +117,7 @@ mime, err := file.MimeType()
 
 ### File Paths
 
-You may use the `Path` method to get the path for a given file. If you are using the `local` driver, this will return the absolute path to the file. If you are using such as the `s3` driver, this method will return the relative path to the file in the bucket:
+To obtain the path for a specific file, you can utilize the `Path` method. When using the `local` driver, this will provide you with the absolute path to the file. However, if you are using a driver like `s3`, the method will give you the file's relative path within the bucket:
 
 ```go
 path := facades.Storage().Path("file.jpg")
@@ -159,7 +159,7 @@ err := facades.Storage().Move("old/file.jpg", "new/file.jpg")
 
 ### File Uploads
 
-In web applications, one of the most common use-cases for storing files is storing user uploaded files such as photos and documents. Goravel makes it very easy to store uploaded files using the `Store` method on an uploaded file instance. Call the `Store` method with the path at which you wish to store the uploaded file:
+In web applications, one of the most common use cases for storing files is storing user-uploaded files such as photos and documents. Goravel makes it very easy to store uploaded files using the `Store` method on an uploaded file instance. Call the `Store` method with the path at which you wish to store the uploaded file:
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
@@ -197,7 +197,7 @@ file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFileAs("photos", file, "name")
 ```
 
-> If the file name specified by `StoreAs` and `PutFileAs` don't have a suffix, the suffix is automatically added based on the MIME of the file; otherwise, the specified file name is used directly.
+> If the file name specified by `StoreAs` and `PutFileAs` doesn't have a suffix, the suffix is automatically added based on the MIME of the file; otherwise, the specified file name is used directly.
 
 ### Specifying A Disk
 
@@ -226,8 +226,8 @@ However, keep in mind that the `GetClientOriginalName` and `GetClientOriginalExt
 ```go
 file, err := ctx.Request().File("avatar")
 
-name := file.HashName()// Generate a unique, random name...
-extension, err := file.Extension()// Determine the file's extension based on the file's MIME type...
+name := file.HashName() // Generate a unique, random name...
+extension, err := file.Extension() // Determine the file's extension based on the file's MIME type...
 ```
 
 ## Deleting Files
@@ -248,7 +248,7 @@ err := facades.Storage().Disk("s3").Delete("file.jpg")
 ## Directories
 
 ### Get All Files Within A Directory
-The `Files` method returns an slice of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `AllFiles` method:
+The `Files` method returns a slice of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `AllFiles` method:
 
 ```go
 files, err := facades.Storage().Disk("s3").Files("directory")
@@ -257,7 +257,7 @@ files, err := facades.Storage().Disk("s3").AllFiles("directory")
 
 ### Get All Directories Within A Directory
 
-The `Directories` method returns an slice of all the directories within a given directory. Additionally, you may use the `AllDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
+The `Directories` method returns a slice of all the directories within a given directory. Additionally, you may use the `AllDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
 
 ```go
 directories, err := facades.Storage().Disk("s3").Directories("directory")

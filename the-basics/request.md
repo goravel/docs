@@ -51,27 +51,27 @@ method := ctx.Request().Method()
 ### Request Headers
 
 ```go
-header := ctx.Request().Header('X-Header-Name', 'default')
+header := ctx.Request().Header("X-Header-Name", "default")
 headers := ctx.Request().Headers()
 ```
 
 ### Request IP Address
 
 ```go
-method := ctx.Request().Ip()
+ip := ctx.Request().Ip()
 ```
 
 ## Input
 
 ### Retrieving All Input Data
 
-You may retrieve all of the incoming request's input data as `map[string]any` using the `All` method, is a collection of `json`, `form` and `query`(priority from front to back).
+You may retrieve all of the incoming request's input data as `map[string]any` using the `All` method, which is a collection of `json`, `form` and `query`(priority from front to back).
 
 ```go
 data := ctx.Request().All()
 ```
 
-### Retrieving An Route Value
+### Retrieving a Route Value
 
 ```go
 // /users/{id}

@@ -4,32 +4,32 @@
 
 ## Introduction
 
-The testing function of Goravel depends on the official test component that comes with Golang, is an extension of unit testing, make Goravel application support integration testing and make application more robust.
+The testing function of Goravel relies on Golang's official test component, extending unit testing to support integration testing and improve application robustness.
 
 ## Environment
 
-### The .env.testing Environment File
+### The `.env.testing` Environment File
 
-In addition, you may create a `.env.testing` file in the root of your project. This file will be used instead of the `.env` file when running `go test` with the `--env` option, note, this option needs to follow the test directory, for example:
+In addition, you may create a `.env.testing` file at the root of your project. This file will be used instead of the `.env` file when running `go test` with the `--env` option, note that this option needs to follow the test directory, for example:
 
-```
+```shell
 go test ./... --env=.env.testing
 go test ./... -e=.env.testing
 ```
 
 ### `TestCase` Struct
 
-There is a `TestCase` Struct in Goravel, the Struct will provider some convenient test methods in the future, in addition, there is an `init` method in the same file, this method guides the registration of the Goravel application before running the test, and you can add logic to this method that needs to be run before running the test.
+There is a `TestCase` Struct in Goravel, and the Struct will provide some convenient test methods in the future, in addition, there is an `init` method in the same file, this method guides the registration of the Goravel application before running the test. You may include any necessary logic in this method that needs to be executed before the test.
 
 ## Creating Tests
 
 To create a new test case, use the `make:test` Artisan command:
 
-```go
+```shell
 go run . artisan make:test feature/UserTest
 ```
 
-By default we write our test cases using the `suit` function of the [stretchr/testify](https://github.com/stretchr/testify) package, this function supports the configuration of pre-test, post-test, sub-test and assertion, etc., which can make test cases more organized. For more details, please see the official documentation.
+Our test cases are written using the suite function of the [stretchr/testify](https://github.com/stretchr/testify) package by default. This function enables us to configure pre-test, post-test, sub-test, and assertion, among other things, which results in more organized test cases. For further information, kindly refer to the official documentation.
 
 ```go
 package feature
@@ -66,7 +66,7 @@ func (s *ExampleTestSuite) TestIndex() {
 
 ## HTTP Tests
 
-Please use third-party packages such as `net/http` to initiate HTTP request during testing, in the future, Goravel plans to extend `Get`, `Post` and other methods in `TestCase` Struct to facilitate requests and assertions.
+Please use third-party packages such as `net/http` to initiate HTTP requests during testing, in the future, Goravel plans to extend `Get`, `Post` and other methods in `TestCase` Struct to facilitate requests and assertions.
 
 ## Database Testing
 
@@ -74,7 +74,7 @@ Goravel model factories and Seeders can easily create test database records for 
 
 ### Factories
 
-When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Goravel allows you to define a set of default attributes for each of your models using [factories](../orm/factories.md).
+If you're conducting tests, it might be necessary to add some records to your database before running the test. You don't have to manually input the values of each column for the test data creation. With Goravel, you can set default attributes for your models via [factories](../orm/factories.md).
 
 ```go
 var user models.User
@@ -83,7 +83,7 @@ err := facades.Orm().Factory().Create(&user)
 
 ### Running Seeders
 
-If you would like to use [database seeders](../orm/seeding.md) to populate your database during a feature test, you may invoke the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder struct to the `Seed` method:
+If you would like to use [database seeders](../orm/seeding.md) to populate your database during a feature test, you may invoke the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
 
 ```go
 package feature
@@ -125,7 +125,7 @@ func (s *ExampleTestSuite) TestIndex() {
 
 ### Using Docker
 
-Because `go test` is tested in parallel between different packages, therefore, so you can't refresh database in a test cases when using a local database for testing, otherwise, it may have an impact on other test cases running in parallel. For this situation, Goravel supports testing with Docker, the database image created by Docker can be used independently between different packages.
+When using `go test`, multiple packages are tested in parallel. As a result, refreshing the database in a test case using a local database can potentially affect other parallel test cases. To address this, Goravel offers Docker-based testing. With Docker, a database image can be created and used independently across different packages.
 
 > Due to the limited support of the Docker image for the windows system, currently, the Docker test can only be run in non-windows environments.
 
@@ -171,7 +171,7 @@ After the image is initiated, you can use the `Build` method to build the image:
 err := database.Build()
 ```
 
-At this time, you can use the `docker ps` command to see that the image is already running on the system, and you can obtain the configuration information of database through the `Config` method to facilitate connection debugging:
+At this time, you can use the `docker ps` command to see that the image is already running on the system, and you can obtain the configuration information of the database through the `Config` method to facilitate connection debugging:
 
 ```go
 config := database.Config()
@@ -179,7 +179,7 @@ config := database.Config()
 
 #### Running Seeders
 
-If you wish to use [seeder](../orm/seeding.md) to populate the database during testing, you can call the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder struct to the `Seed` method:
+If you wish to use [seeder](../orm/seeding.md) to populate the database during testing, you can call the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
 
 ```go
 err := database.Seed()

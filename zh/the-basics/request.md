@@ -51,7 +51,7 @@ method := ctx.Request().Method()
 ### 获取请求头
 
 ```go
-header := ctx.Request().Header('X-Header-Name', 'default')
+header := ctx.Request().Header("X-Header-Name", "default")
 headers := ctx.Request().Headers()
 ```
 
