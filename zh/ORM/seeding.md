@@ -10,7 +10,7 @@ Goravel 内置了一个可为您的数据库填充测试数据的 struct。所�
 
 运行 [Artisan 命令](../digging-deeper/artisan-console.md) `make:seeder` 可以生成 Seeder，框架生成的 seeders 都放在 `database/seeders` 目录下：
 
-```
+```shell
 go run . artisan make:seeder UserSeeder
 ```
 
@@ -73,7 +73,7 @@ func (s *DatabaseSeeder) Run() error {
 
 您可以使用 Artisan 命令 `db:seed` 来填充数据库。默认情况下，`db:seed` 命令将运行 `database/seeders/database_seeder.go`，这个 struct 又可以调用其他 seed。不过，你也可以使用 `--seeder` 选项来指定一个特定的 seeder：
 
-```
+```shell
 go run . artisan db:seed
 ```
 
@@ -94,7 +94,7 @@ go run . artisan db:seed --seeder=UserSeeder PhotoSeeder // The signature of see
 
 您还可以使用 `migrate:fresh` 或 `migrate:refresh` 命令结合 `--seed` 选项，这将删除数据库中所有表并重新运行所有迁移。此命令对于完全重建数据库非常有用。也可以使用 `--seeder` 运行一个指定的 seeder：
 
-```
+```shell
 go run . artisan migrate:fresh --seed
 
 go run . artisan migrate:fresh --seed --seeder=UserSeeder
@@ -108,6 +108,6 @@ go run . artisan migrate:refresh --seed --seeder=UserSeeder
 
 一些填充操作可能会导致原有数据的更新或丢失。为了保护生产环境数据库的数据，在生产环境中运行填充命令前会进行确认。可以添加 `--force` 选项来强制运行填充命令：
 
-```
+```shell
 go run . artisan db:seed --force
 ```

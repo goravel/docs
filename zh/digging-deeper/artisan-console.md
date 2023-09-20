@@ -6,13 +6,13 @@
 
 Artisan 是 Goravel 自带的命令行工具，该模块可以使用 `facades.Artisan()` 进行操作。它提供了许多有用的命令，这些命令可以在构建应用时为你提供帮助。你可以通过命令查看所有可用的 Artisan 命令：
 
-```go
+```shell
 go run . artisan list
 ```
 
 每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。只需要在命令前加上 help 即可查看命令帮助界面：
 
-```go
+```shell
 go run . artisan help migrate
 ```
 
@@ -52,22 +52,22 @@ import (
 type SendEmails struct {
 }
 
-//Signature The name and signature of the console command.
+// Signature The name and signature of the console command.
 func (receiver *SendEmails) Signature() string {
   return "emails"
 }
 
-//Description The console command description.
+// Description The console command description.
 func (receiver *SendEmails) Description() string {
   return "Send emails"
 }
 
-//Extend The console command extend.
+// Extend The console command extend.
 func (receiver *SendEmails) Extend() command.Extend {
   return command.Extend{}
 }
 
-//Handle Execute the console command.
+// Handle Execute the console command.
 func (receiver *SendEmails) Handle(ctx console.Context) error {
   return nil
 }
@@ -81,7 +81,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 
 直接在命令后跟参数：
 
-```
+```shell
 go run . artisan send:emails NAME EMAIL
 ```
 
@@ -130,18 +130,18 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 
 使用：
 
-```
-go run . artisan emails --lang chinese
-go run . artisan emails -l chinese
+```shell
+go run . artisan emails --lang Chinese
+go run . artisan emails -l Chinese
 ```
 
 注意：同时使用参数与选项时，选项要在参数之前定义，例如：
 
-```
+```shell
 // 正确
-go run . artisan emails --lang chinese name
+go run . artisan emails --lang Chinese name
 // 错误
-go run . artisan emails name --lang chinese name
+go run . artisan emails name --lang Chinese name
 ```
 
 除了 `command.StringFlag`，我们还可以其他类型的 `Flag` 与 `Option*`：`StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`。
@@ -178,7 +178,7 @@ func (kernel Kernel) Commands() []console.Command {
 ```go
 facades.Route().GET("/", func(c *gin.Context) {
   facades.Artisan().Call("emails")
-  facades.Artisan().Call("emails --lang chinese name") // 携带参数与选项
+  facades.Artisan().Call("emails --lang Chinese name") // 携带参数与选项
 })
 ```
 

@@ -32,10 +32,10 @@ import (
 type AuthServiceProvider struct {
 }
 
-func (receiver *AuthServiceProvider) Register() {
+func (receiver *AuthServiceProvider) Register(app foundation.Application) {
 }
 
-func (receiver *AuthServiceProvider) Boot() {
+func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
   facades.Gate().Define("update-post", func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
     user := ctx.Value("user").(models.User)
     post := arguments["post"].(models.Post)
@@ -62,7 +62,7 @@ import (
 
 type UserController struct {
 
-func (r *UserController) Show(ctx http.Context) {
+func (r *UserController) Show(ctx http.Context) http.Response {
   var post models.Post
   if facades.Gate().Allows("update-post", map[string]any{
     "post": post,
@@ -98,7 +98,7 @@ response := facades.Gate().Inspect("edit-settings", nil);
 if (response.Allowed()) {
     // 行为进行授权...
 } else {
-    fmt.Println($response->message());
+    fmt.Println(response.Message());
 }
 ```
 
@@ -166,6 +166,7 @@ import (
   "context"
 
   "github.com/goravel/framework/contracts/auth/access"
+  contractsaccess "github.com/goravel/framework/contracts/auth/access"
 )
 
 type PostPolicy struct {

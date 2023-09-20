@@ -459,7 +459,7 @@ For this operation, only two queries will be executed - one query to retrieve al
 ```sql
 select * from `books`;
 
-select * from `authors` where `id` in (1, 2, 3, 4, 5, ...)
+select * from `authors` where `id` in (1, 2, 3, 4, 5, ...);
 ```
 
 ### Eager Loading Multiple Relationships

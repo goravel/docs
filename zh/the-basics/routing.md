@@ -35,10 +35,10 @@ import (
 )
 
 func main() {
-  //This bootstraps the framework and gets it ready for use.
+  // This bootstraps the framework and gets it ready for use.
   bootstrap.Boot()
 
-  //Start http server by facades.Route().
+  // Start http server by facades.Route().
   go func() {
     if err := facades.Route().Run(); err != nil {
       facades.Log().Errorf("Route run error: %v", err)
@@ -257,7 +257,7 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
     return limit.PerMinute(100).By(userID)
   }
 
-  return limit.PerMinute(100).By(ctx.Request().Ip())
+  return limit.PerMinute(10).By(ctx.Request().Ip())
 })
 ```
 

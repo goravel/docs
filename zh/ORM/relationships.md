@@ -310,7 +310,7 @@ type Post struct {
 可以使用 `Select`, `Omit` 方法，对关联的创建和更新进行更细颗粒度控制。这两个方法不可同时使用，且对关联的控制功能只适用于 `Create`, `Update`, `Save`：
 
 ```go
-user := User{Name: "user", Post: &Post{Name: "post"}}
+user := models.User{Name: "user", Post: &models.Post{Name: "post"}}
 
 // 创建 User 的同时创建所有子关联
 facades.Orm().Query().Select(orm.Associations).Create(&user)
@@ -344,9 +344,9 @@ facades.Orm().Query().Model(&user).Where("name = ?", "goravel").Order("id desc")
 为 `manyToMany`, `hasMany` 添加新的关联；为 `hasOne`, `belongsTo` 替换当前的关联:
 
 ```go
-facades.Orm().Query().Model(&user).Association("Posts").Append([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Append([]*models.Post{Post1, Post2})
 
-facades.Orm().Query().Model(&user).Association("Posts").Append(&Post{Name: "goravel"})
+facades.Orm().Query().Model(&user).Association("Posts").Append(&models.Post{Name: "goravel"})
 ```
 
 ### 替换关联
@@ -354,9 +354,9 @@ facades.Orm().Query().Model(&user).Association("Posts").Append(&Post{Name: "gora
 用一个新的关联替换当前的关联：
 
 ```go
-facades.Orm().Query().Model(&user).Association("Posts").Replace([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Replace([]*models.Post{Post1, Post2})
 
-facades.Orm().Query().Model(&user).Association("Posts").Replace(Post{Name: "goravel"}, Post2)
+facades.Orm().Query().Model(&user).Association("Posts").Replace(models.Post{Name: "goravel"}, Post2)
 ```
 
 ### 删除关联
@@ -364,7 +364,7 @@ facades.Orm().Query().Model(&user).Association("Posts").Replace(Post{Name: "gora
 如果关联存在，则删除父模型与子模型之间的关系，注意，只会删除引用，不会从数据库中删除这些对象，外键需要允许为 NULL：
 
 ```go
-facades.Orm().Query().Model(&user).Association("Posts").Delete([]*Post{Post1, Post2})
+facades.Orm().Query().Model(&user).Association("Posts").Delete([]*models.Post{Post1, Post2})
 
 facades.Orm().Query().Model(&user).Association("Posts").Delete(Post1, Post2)
 ```
@@ -401,13 +401,13 @@ facades.Orm().Query().Model(&users).Association("Posts").Delete(&userA)
 facades.Orm().Query().Model(&users).Association("Posts").Count()
 
 // 对于批量数据的 `Append`、`Replace`，参数的长度必须与数据的长度相同，否则会返回 error
-var users = []User{user1, user2, user3}
+var users = []models.User{user1, user2, user3}
 
 // 有三个 user，Append userA 到 user1 的 team，Append userB 到 user2 的 team，Append userA、userB 和 userC 到 user3 的 team
-facades.Orm().Query().Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
+facades.Orm().Query().Model(&users).Association("Team").Append(&userA, &userB, &[]models.User{userA, userB, userC})
 
 // 重置 user1 team 为 userA，重置 user2 的 team 为 userB，重置 user3 的 team 为 userA、 userB 和 userC
-facades.Orm().Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
+facades.Orm().Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]models.User{userA, userB, userC})
 ```
 
 ## 预加载
@@ -456,9 +456,9 @@ for _, book := range books {
 对于此操作，将只执行两个查询 - 一个查询检索所有书籍，一个查询检索所有书籍的所有作者：
 
 ```sql
-select * from books
+select * from `books`;
 
-select * from authors where id in (1, 2, 3, 4, 5, ...)
+select * from `authors` where `id` in (1, 2, 3, 4, 5, ...);
 ```
 
 ### 预加载多个关联

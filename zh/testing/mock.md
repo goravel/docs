@@ -64,7 +64,7 @@ func Cache() string {
 }
 
 func TestCache(t *testing.T) {
-  mockCache := mock.Cache()
+  mockCache, _, _ := mock.Cache()
   mockCache.On("Put", "name", "goravel", mock.Anything).Return(nil).Once()
   mockCache.On("Get", "name", "test").Return("Goravel").Once()
 

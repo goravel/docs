@@ -10,13 +10,13 @@
 
 您可以使用 Artisan 命令便捷的创建一个包模板：
 
-```
+```shell
 go run . artisan make:package sms
 ```
 
 创建的文件默认保存在根目录 `packages` 文件夹中，您可以使用 `--root` 选项自定义：
 
-```
+```shell
 go run . artisan make:package sms --root=pkg
 ```
 
@@ -108,7 +108,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 在项目中，您可以使用 Artisan 命令 `vendor:publish` 发布包中注册的资源：
 
-```
+```shell
 go run . artisan vendor:publish --package={您的包名}
 ```
 

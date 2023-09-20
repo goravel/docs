@@ -84,7 +84,7 @@ Then include a `via` option to implement a `framework\contracts\log\Logger` stru
 Implement `framework\contracts\log\Logger` interface.
 
 ```go
-// framework\contracts\log\Logger
+// framework/contracts/log/Logger
 package log
 
 type Logger interface {

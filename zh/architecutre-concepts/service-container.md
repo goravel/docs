@@ -97,4 +97,4 @@ instance, err := app.MakeWith(key, map[string]any{"id": 1})
 
 ### 其他方法
 
-框架提供有一些便捷的方法可以快速解析出各种 `facade`: `MakeArtisan`, `MakeAuth`, `MakeCache`, `MakeConfig`, `MakeCrypt`, `MakeEvent`, `MakeGate`, `MakeGrpc`, `MakeHash`, `MakeLog`, `MakeMail`, `MakeOrm`, `MakeQueue`, `MakeRateLimiter`, `MakeRoute`, `MakeSchedule`, `MakeStorage`, `MakeValidation`.
+框架提供有一些便捷的方法可以快速解析出各种 `facades`: `MakeArtisan`, `MakeAuth`, `MakeCache`, `MakeConfig`, `MakeCrypt`, `MakeEvent`, `MakeGate`, `MakeGrpc`, `MakeHash`, `MakeLog`, `MakeMail`, `MakeOrm`, `MakeQueue`, `MakeRateLimiter`, `MakeRoute`, `MakeSchedule`, `MakeStorage`, `MakeValidation`.

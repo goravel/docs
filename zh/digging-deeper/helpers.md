@@ -45,7 +45,7 @@ path := path.App("http/controllers/controller.go")
 
 ```go
 path := path.Base()
-path := path.Base("'vendor/bin'")
+path := path.Base("vendor/bin")
 ```
 
 ### `path.Config()`

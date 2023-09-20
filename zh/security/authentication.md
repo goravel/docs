@@ -14,7 +14,7 @@
 
 ## 生成 JWT Token
 
-```
+```shell
 go run . artisan jwt:secret
 ```
 
@@ -28,7 +28,7 @@ type User struct {
   Name string
 }
 
-var user User
+var user models.User
 user.ID = 1
 
 token, err := facades.Auth().Login(ctx, &user)
@@ -72,7 +72,7 @@ errors.Is(err, auth.ErrorTokenExpired)
 
 ```go
 var user models.User
-err := facades.Auth().User(ctx, &user)// 必须是指针
+err := facades.Auth().User(ctx, &user) // 必须是指针
 ```
 
 ## 刷新 Token

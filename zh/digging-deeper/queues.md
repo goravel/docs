@@ -22,7 +22,7 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 
 // 这个任务将被推送到 "emails" 队列
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
-  {Type: "int", Value: 1}
+  {Type: "int", Value: 1},
 }).OnQueue("emails").Dispatch()
 ```
 
@@ -32,7 +32,7 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 
 默认情况下，应用程序的所有的任务都被存储在了 `app/jobs` 目录中。如果 `app/jobs` 目录不存在，当你运行 `make:job` Artisan 命令时，将会自动创建该目录：
 
-```go
+```shell
 go run . artisan make:job ProcessPodcast
 go run . artisan make:job user/ProcessPodcast
 ```
@@ -47,12 +47,12 @@ package jobs
 type ProcessPodcast struct {
 }
 
-//Signature The name and signature of the job.
+// Signature The name and signature of the job.
 func (receiver *ProcessPodcast) Signature() string {
   return "process_podcast"
 }
 
-//Handle Execute the job.
+// Handle Execute the job.
 func (receiver *ProcessPodcast) Handle(args ...interface{}) error {
   return nil
 }
@@ -122,7 +122,7 @@ go func() {
 
 ## 调度任务
 
-一旦写好了任务类，你可以使用任务本身的 `dispatch` 方法来调度它：
+一旦写好了任务类，你可以使用任务本身的 `Dispatch` 方法来调度它：
 
 ```go
 package controllers
@@ -148,7 +148,7 @@ func (r *UserController) Show(ctx http.Context) {
 
 ### 同步调度
 
-如果你想立即（同步）调度任务，你可以使用 `dispatchSync` 方法。使用此方法时，任务不会排队，会在当前进程内立即执行：
+如果你想立即（同步）调度任务，你可以使用 `DispatchSync` 方法。使用此方法时，任务不会排队，会在当前进程内立即执行：
 
 ```go
 package controllers
@@ -174,7 +174,7 @@ func (r *serController) Show(ctx http.Context) {
 
 ### 任务链
 
-任务链允许你指定一组按顺序运行的排队任务。如果序列中的一个任务失败，其余的任务将不会运行。要执行一个排队的任务链，你可以使用 `facades.Queue()` 提供的 `chain` 方法：
+任务链允许你指定一组按顺序运行的排队任务。如果序列中的一个任务失败，其余的任务将不会运行。要执行一个排队的任务链，你可以使用 `facades.Queue()` 提供的 `Chain` 方法：
 
 ```go
 err := facades.Queue().Chain([]queue.Jobs{
@@ -213,13 +213,13 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Di
 
 #### 调度到特定连接
 
-如果你的应用程序与多个队列连接交互，你可以使用 `onConnection` 方法指定将任务推送到哪个连接：
+如果你的应用程序与多个队列连接交互，你可以使用 `OnConnection` 方法指定将任务推送到哪个连接：
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dispatch()
 ```
 
-你可以将 onConnection 和 onQueue 方法链接在一起，以指定任务的连接和队列：
+你可以将 `OnConnection` 和 `OnQueue` 方法链接在一起，以指定任务的连接和队列：
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
