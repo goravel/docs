@@ -41,7 +41,6 @@ value := facades.Cache().Store("redis").Get("foo")
 ### 从缓存中获取数据
 
 ```go
-
 value := facades.Cache().Get("goravel", "default")
 value := facades.Cache().GetBool("goravel", true)
 value := facades.Cache().GetInt("goravel", 1)
@@ -192,15 +191,15 @@ facades.Cache().Lock("processing").ForceRelease();
 ### 配置
 
 如果你想定义一个完全自定义的驱动，可以在 `config/cache.go` 配置文件中指定 `custom` 驱动类型。
-然后包含一个 `via` 选项，实现一个 `framework\contracts\cache\Store` 接口：
+然后包含一个 `via` 选项，实现一个 `framework/contracts/cache/Driver` 接口：
 
 ```go
 //config/cache.go
-"stores": map[string]interface{}{
+"stores": map[string]any{
     "memory": map[string]any{
         "driver": "memory",
     },
-    "custom": map[string]interface{}{
+    "custom": map[string]any{
         "driver": "custom",
         "via":    &Logger{},
     },
@@ -209,10 +208,10 @@ facades.Cache().Lock("processing").ForceRelease();
 
 ### 实现驱动
 
-实现 `framework\contracts\cache\Driver` 接口，文件可以统一储存到 `app/extensions` 文件夹中（可修改）。
+实现 `framework/contracts/cache/Driver` 接口，文件可以统一储存到 `app/extensions` 文件夹中（可修改）。
 
 ```go
-// framework\contracts\cache\Driver
+// framework/contracts/cache/Driver
 package cache
 
 import "time"

@@ -8,7 +8,7 @@
 
 Goravel 所有的 `facades` 都定义在 `github.com/goravel/framework/facades` 下。我们可以很轻松的使用 `facades`：
 
-```
+```go
 import "github.com/goravel/framework/facades"
 
 facades.Route().Run(facades.Config().GetString("app.host"))
@@ -18,7 +18,7 @@ facades.Route().Run(facades.Config().GetString("app.host"))
 
 `facades` 一般会在各模块 `ServerProvider` 的 `Register` 或 `Boot` 阶段进行实例化。
 
-```
+```go
 func (config *ServiceProvider) Register() {
   app := Application{}
   facades.Config = app.Init()
@@ -27,7 +27,7 @@ func (config *ServiceProvider) Register() {
 
 如果该 `facades` 使用了其他 `facades`，那么就在 `ServerProvider` 的 `Boot` 阶段进行实例化：
 
-```
+```go
 func (database *ServiceProvider) Boot() {
   app := Application{}
   facades.DB = app.Init()

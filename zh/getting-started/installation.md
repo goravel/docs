@@ -46,13 +46,13 @@ go run . artisan key:generate
 
 ## 启动 HTTP 服务
 
-```
+```shell
 go run .
 ```
 
 ## 指定 .env 文件启动服务
 
-```
+```shell
 go run . --env=../.env
 ```
 
@@ -60,7 +60,7 @@ go run . --env=../.env
 
 安装 [cosmtrek/air](https://github.com/cosmtrek/air)，框架内置配置文件，可直接使用：
 
-```
+```shell
 air
 ```
 
@@ -82,7 +82,7 @@ Goravel 框架所有的配置文件都放在 `config` 目录中。每个配置�
 
 Goravel 安装到本地后，要生成应用程序的密钥。运行下面命令后会在 `.env` 文件的 `APP_KEY` 键上生成 32 位字符串，该密钥主要作用于数据加解密等功能。
 
-```
+```shell
 go run . artisan key:generate
 ```
 
@@ -90,7 +90,7 @@ go run . artisan key:generate
 
 如果使用到了 [用户认证](../security/authentication.md) 功能，需要初始化 JWT Token。
 
-```
+```shell
 go run . artisan jwt:secret
 ```
 

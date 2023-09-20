@@ -12,7 +12,7 @@ Goravel 的事件系统提供了一个简单的观察者模式的实现，允许
 
 你可以使用 `make:event` 以及 `make:listener` 用于生成单个事件和监听器的 `Artisan` 命令：
 
-```go
+```shell
 go run . artisan make:event OrderShipped
 go run . artisan make:event user/OrderShipped
 
@@ -84,7 +84,7 @@ func (receiver *SendShipmentNotification) Signature() string {
   return "send_shipment_notification"
 }
 
-func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue {
+func (receiver *SendShipmentNotification) Queue(args ...any) event.Queue {
   return event.Queue{
     Enable:     false,
     Connection: "",
@@ -92,7 +92,7 @@ func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue
   }
 }
 
-func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
+func (receiver *SendShipmentNotification) Handle(args ...any) error {
   return nil
 }
 ```
@@ -110,7 +110,7 @@ package listeners
 
 ...
 
-func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue {
+func (receiver *SendShipmentNotification) Queue(args ...any) event.Queue {
   return event.Queue{
     Enable:     false,
     Connection: "",
@@ -118,7 +118,7 @@ func (receiver *SendShipmentNotification) Queue(args ...interface{}) event.Queue
   }
 }
 
-func (receiver *SendShipmentNotification) Handle(args ...interface{}) error {
+func (receiver *SendShipmentNotification) Handle(args ...any) error {
   name := args[0]
 
   return nil

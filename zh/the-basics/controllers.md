@@ -19,12 +19,12 @@ import (
 )
 
 type UserController struct {
-  //Dependent services
+  // Dependent services
 }
 
 func NewUserController() *UserController {
   return &UserController{
-    //Inject services
+    // Inject services
   }
 }
 
@@ -54,7 +54,7 @@ func Web() {
 
 ### 创建控制器
 
-```
+```shell
 go run . artisan make:controller UserController
 go run . artisan make:controller user/UserController
 ```
@@ -65,7 +65,7 @@ go run . artisan make:controller user/UserController
 
 Goravel 的资源路由通过单行代码即可将典型的「CURD (增删改查)」路由分配给控制器。首先，我们可以使用 Artisan 命令 `make:controller` 的 `--resource` 选项来快速创建一个控制器：
 
-```
+```shell
 go run . artisan make:controller --resource PhotoController
 ```
 

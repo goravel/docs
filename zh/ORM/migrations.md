@@ -10,7 +10,7 @@
 
 使用 `make:migration` 命令来创建迁移：
 
-```
+```shell
 go run . artisan make:migration create_users_table
 ```
 
@@ -22,13 +22,13 @@ go run . artisan make:migration create_users_table
 
 执行 Artisan 命令 `migrate`，来运行所有未执行过的迁移：
 
-```
+```shell
 go run . artisan migrate
 ```
 
 如果你想查看目前的迁移状态，可以使用 `migrate:status` Artisan 命令：
 
-```
+```shell
 go run . artisan migrate:status
 ```
 
@@ -36,19 +36,19 @@ go run . artisan migrate:status
 
 如果要回滚最后一次迁移操作，可以使用 Artisan 命令 `rollback`。该命令会回滚最后「一批」的迁移，这可能包含多个迁移文件：
 
-```
+```shell
 go run . artisan migrate:rollback
 ```
 
 通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。例如，以下命令将回滚最后五个迁移：
 
-```
+```shell
 go run . artisan migrate:rollback --step=5
 ```
 
 命令 `migrate:reset` 会回滚应用已运行过的所有迁移：
 
-```
+```shell
 go run . artisan migrate:reset
 ```
 
@@ -56,13 +56,13 @@ go run . artisan migrate:reset
 
 命令 `migrate:refresh` 首先会回滚已运行过的所有迁移，随后会执行 `migrate`。这一命令可以高效地重建你的整个数据库：
 
-```
+```shell
 go run . artisan migrate:refresh
 ```
 
 通过在命令 `refresh` 中使用 `step` 参数，你可以回滚并重新执行指定数量的迁移操作。例如，下列命令会回滚并重新执行最后五个迁移操作：
 
-```
+```shell
 go run . artisan migrate:refresh --step=5
 ```
 
@@ -70,7 +70,7 @@ go run . artisan migrate:refresh --step=5
 
 命令 `migrate:fresh` 会删去数据库中的所有表，随后执行命令 `migrate`：
 
-```
+```shell
 go run . artisan migrate:fresh
 ```
 
@@ -100,6 +100,7 @@ CREATE TABLE users (
 
 ```sql
 ALTER TABLE users ADD column varchar(255) COMMENT '';
+-- ALTER TABLE users ADD `avatar` varchar(255) NOT NULL DEFAULT '' AFTER `id` COMMENT 'avatar';
 ```
 
 实现原理是根据正则进行匹配：

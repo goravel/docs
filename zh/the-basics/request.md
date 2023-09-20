@@ -58,7 +58,7 @@ headers := ctx.Request().Headers()
 ### 获取 IP 地址
 
 ```go
-method := ctx.Request().Ip()
+ip := ctx.Request().Ip()
 ```
 
 ## 输入

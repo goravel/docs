@@ -18,7 +18,7 @@ go run . artisan make:package sms
 
 The created files are saved by default in the root `packages` folder, you can use `--root` option to customize:
 
-```
+```shell
 go run . artisan make:package sms --root=pkg
 ```
 

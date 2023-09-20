@@ -37,7 +37,7 @@ func (kernel Kernel) Schedule() []schedule.Event {
 
 ### Artisan 命令调度
 
-调度方式不仅有闭包调用，还可以使用 [Artisan commands](./Artisan%E5%91%BD%E4%BB%A4%E8%A1%8C.md)。例如，你可以给 `command` 方法传递命令名称或类来调度一个 Artisan 命令：
+调度方式不仅有闭包调用，还可以使用 [Artisan commands](./artisan-console.md)。例如，你可以给 `Command` 方法传递命令名称或类来调度一个 Artisan 命令：
 
 ```go
 package console
@@ -133,10 +133,10 @@ import (
 )
 
 func main() {
-  //This bootstraps the framework and gets it ready for use.
+  // This bootstraps the framework and gets it ready for use.
   bootstrap.Boot()
 
-  //Start schedule by facades.Schedule
+  // Start schedule by facades.Schedule
   go facades.Schedule().Run()
 
   select {}

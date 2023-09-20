@@ -72,7 +72,7 @@ facades.Log().User("John").Debug(message)
 然后包含 `via` 选项，实现 `framework\contracts\log\Logger` 接口：
 
 ```
-//config/logging.go 配置
+// config/logging.go 配置
 "custom": map[string]interface{}{
     "driver": "custom",
     "via":    &Logger{},
@@ -84,7 +84,7 @@ facades.Log().User("John").Debug(message)
 实现 `github.com/goravel/framework/contracts/log/Logger` 接口。
 
 ```
-//framework\contracts\log\Logger
+// framework/contracts/log/Logger
 package log
 
 type Logger interface {

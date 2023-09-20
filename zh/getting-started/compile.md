@@ -4,7 +4,7 @@
 
 ## 常规编译
 
-```
+```shell
 go build .
 ```
 
@@ -12,7 +12,7 @@ go build .
 
 常规编译后的包还需要依赖部署环境的支持，静态编译出的文件可以任意放到指定平台下运行，不需要环境配置。
 
-```
+```shell
 go build --ldflags "-extldflags -static" -o main .
 ```
 
@@ -20,7 +20,7 @@ go build --ldflags "-extldflags -static" -o main .
 
 编译有平台区分，需要根据部署情况，选择匹配的编译方式。
 
-```
+```shell
 // 编译 Linux 环境
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build .
 
@@ -35,7 +35,7 @@ CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 
 Goravel 默认自带 `Dockerfile` 与 `docker-compose.yml` 文件，可以直接使用，注意此时 `APP_HOST` 应为 `0.0.0.0`。
 
-```
+```shell
 docker build .
 ```
 
@@ -76,7 +76,7 @@ ENTRYPOINT ["/www/main"]
 
 您也可以使用以下命令快速启动服务：
 
-```
+```shell
 docker-compose build
 docker-compose up
 ```

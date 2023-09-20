@@ -36,12 +36,12 @@ import (
 )
 
 type PostController struct {
-  //Dependent services
+  // Dependent services
 }
 
 func NewPostController() *PostController {
   return &PostController{
-    //Inject services
+    // Inject services
   }
 }
 
@@ -197,7 +197,7 @@ func (r *StorePostRequest) Attributes() map[string]string {
 ```go
 func (r *StorePostRequest) PrepareForValidation(data validation.Data) {
   if name, exist := data.Get("name"); exist {
-    _, _ = data.Set("name", name.(string)+"1")
+    _ = data.Set("name", name.(string)+"1")
   }
 }
 ```
@@ -210,7 +210,8 @@ func (r *StorePostRequest) PrepareForValidation(data validation.Data) {
 func (r *PostController) Store(ctx http.Context) {
   validator, err := facades.Validation().Make(map[string]any{
     "name": "Goravel",
-  }, map[string]string{
+  }, 
+  map[string]string{
     "title": "required|max_len:255",
     "body":  "required",
   })
@@ -221,6 +222,7 @@ func (r *PostController) Store(ctx http.Context) {
 
   var user models.User
   err := validator.Bind(&user)
+  ...
 }
 ```
 
@@ -266,13 +268,16 @@ import (
   "github.com/goravel/framework/validation"
 )
 
-validator, err := facades.Validation().Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data) error {
-  if name, exist := data.Get("name"); exist {
-    return data.Set("name", name)
-  }
+func (r *PostController) Store(ctx http.Context) http.Response {
+  validator, err := facades.Validation().Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data) error {
+    if name, exist := data.Get("name"); exist {
+      return data.Set("name", name)
+    }
 
-  return nil
-}))
+    return nil
+  }))
+  ...
+}
 ```
 
 ## 处理验证字段
@@ -412,17 +417,17 @@ import (
 type Uppercase struct {
 }
 
-//Signature The name of the rule.
+// Signature The name of the rule.
 func (receiver *Uppercase) Signature() string {
   return "uppercase"
 }
 
-//Passes Determine if the validation rule passes.
+// Passes Determine if the validation rule passes.
 func (receiver *Uppercase) Passes(data validation.Data, val any, options ...any) bool {
   return strings.ToUpper(val.(string)) == val.(string)
 }
 
-//Message Get the validation error message.
+// Message Get the validation error message.
 func (receiver *Uppercase) Message() string {
   return "The :attribute must be uppercase."
 }

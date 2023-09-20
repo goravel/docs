@@ -183,7 +183,7 @@ facades.Cache().Lock("processing").ForceRelease();
 ### Configuration
 
 If you want to define a completely custom driver, you can specify the `custom` driver type in the `config/cache.go` configuration file.
-Then include a `via` option to implement a `framework\contracts\cache\Store` interface:
+Then include a `via` option to implement a `framework/contracts/cache/Driver` interface:
 
 ```go
 //config/cache.go
@@ -200,10 +200,10 @@ Then include a `via` option to implement a `framework\contracts\cache\Store` int
 
 ### Implement Custom Driver
 
-Implement the `framework\contracts\cache\Driver` interface, files can be stored in the `app/extensions` folder (modifiable).
+Implement the `framework/contracts/cache/Driver` interface, files can be stored in the `app/extensions` folder (modifiable).
 
 ```go
-// framework\contracts\cache\Driver
+// framework/contracts/cache/Driver
 package cache
 
 import "time"
