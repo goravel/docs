@@ -567,11 +567,11 @@ facades.Orm().Query().Select("Account").Delete(&users)
 注意：只有当记录的主键不为空时，关联才会被删除，Orm 会使用这些主键作为条件来删除关联记录：
 
 ```go
-// 会删除所有 name=`jinzhu` 的 user，但这些 user 的 account 不会被删除
-facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&models.User{})
+// 会删除所有 name=`goravel` 的 user，但这些 user 的 account 不会被删除
+facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{})
 
-// 会删除 name = `jinzhu` 且 id = `1` 的 user，并且 user `1` 的 account 也会被删除
-facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&models.User{ID: 1})
+// 会删除 name = `goravel` 且 id = `1` 的 user，并且 user `1` 的 account 也会被删除
+facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{ID: 1})
 
 // 会删除 id = `1` 的 user，并且 account 也会被删除
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})

@@ -567,11 +567,11 @@ facades.Orm().Query().Select("Account").Delete(&users)
 Note: The associations will be deleted only if the primary key of the record is not empty, and Orm uses these primary keys as conditions to delete associated records:
 
 ```go
-// Delete user that name='jinzhu', but don't delete account of user
-facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&models.User{})
+// Delete user that name='goravel', but don't delete account of user
+facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{})
 
-// Delete user that name='jinzhu' and id = 1, and delete account of user
-facades.Orm().Query().Select("Account").Where("name = ?", "jinzhu").Delete(&models.User{ID: 1})
+// Delete user that name='goravel' and id = 1, and delete account of user
+facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{ID: 1})
 
 // Delete user that id = 1 and delete account of that user
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})

@@ -16,9 +16,9 @@ English | [中文](zh/README.md)
 
 ## About Goravel
 
-Goravel is a web application framework with complete functions and excellent scalability. It serves as an ideal kick-start for Gophper to rapidly build their own web applications.
+Goravel is a web application framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications.
 
-The framework's design is consistent with [Laravel](https://github.com/laravel/laravel), simplifying the learning curve for PHPers. Moreover, it encourages experimentation with Golang. Kudos to Laravel!
+The framework's design is consistent with [Laravel](https://github.com/laravel/laravel), simplifying the learning curve for PHPers. Kudos to Laravel!
 
 We are open to receiving stars, PRs, and issues!
 

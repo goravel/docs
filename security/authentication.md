@@ -53,7 +53,7 @@ Through `payload` you can get:
 3. `ExpireAt`: Expire time;
 4. `IssuedAt`: Issued time;
 
-> If the value of err is anything other than `ErrorTokenExpired`, the payload should be nil.
+> If `err` isn't nil other than `ErrorTokenExpired`, the payload should be nil.
 
 You can judge whether the Token is expired by err:
 
