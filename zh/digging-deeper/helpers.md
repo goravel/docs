@@ -93,7 +93,7 @@ Goravel 的 `carbon` 是 [golang-module/carbon](https://github.com/golang-module
 获取当前时间：
 
 ```go
-import "github.com/goravel/framework/carbon"
+import "github.com/goravel/framework/support/carbon"
 
 carbon.Now()
 ```

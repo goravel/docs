@@ -93,7 +93,7 @@ The `carbon` module of Goravel is an expansion by [golang-module/carbon](https:/
 Get current time:
 
 ```go
-import "github.com/goravel/framework/carbon"
+import "github.com/goravel/framework/support/carbon"
 
 carbon.Now()
 ```

@@ -94,7 +94,7 @@ type User struct {
   orm.SoftDeletes
 }
 
-func (r *User) Connection() string {
+func (r *User) TableName() string {
   return "goravel_user"
 }
 ```
@@ -117,7 +117,7 @@ type User struct {
   orm.SoftDeletes
 }
 
-func (r *User) TableName() string {
+func (r *User) Connection() string {
   return "postgresql"
 }
 ```
