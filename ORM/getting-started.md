@@ -244,7 +244,7 @@ facades.Orm().Query().First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1;
 ```
 
-Sometimes you may wish to perform some other action if no results are found. The `findOr` and `firstOr` methods will return a single model instance or, if no results are found, execute the given closure. You can set values to model in closure:
+Sometimes you may wish to perform some other action if no results are found. The `FindOr` and `FirstOr` methods will return a single model instance or, if no results are found, execute the given closure. You can set values to model in closure:
 
 ```go
 facades.Orm().Query().Where("name", "first_user").FirstOr(&user, func() error {
