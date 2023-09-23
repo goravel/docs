@@ -195,10 +195,11 @@ func (r *StorePostRequest) Attributes() map[string]string {
 如果您需要在应用验证规则之前修改或清理请求中的任何数据，您可以使用 `PrepareForValidation` 方法：
 
 ```go
-func (r *StorePostRequest) PrepareForValidation(data validation.Data) {
+func (r *StorePostRequest) PrepareForValidation(data validation.Data) error {
   if name, exist := data.Get("name"); exist {
-    _ = data.Set("name", name.(string)+"1")
+    return data.Set("name", name.(string)+"1")
   }
+  return nil
 }
 ```
 
@@ -273,7 +274,6 @@ func (r *PostController) Store(ctx http.Context) http.Response {
     if name, exist := data.Get("name"); exist {
       return data.Set("name", name)
     }
-
     return nil
   }))
   ...

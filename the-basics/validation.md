@@ -195,9 +195,9 @@ func (r *StorePostRequest) Attributes() map[string]string {
 If you need to prepare or sanitize any data from the request before you apply your validation rules, you may use the `PrepareForValidation` method:
 
 ```go
-func (r *StorePostRequest) PrepareForValidation(data validation.Data) {
+func (r *StorePostRequest) PrepareForValidation(data validation.Data) error {
   if name, exist := data.Get("name"); exist {
-    _ = data.Set("name", name.(string)+"1")
+    return data.Set("name", name.(string)+"1")
   }
   return nil
 }
