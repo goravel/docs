@@ -70,6 +70,8 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## 打赏
 
+开源项目的发展离不开您的支持，感谢微信打赏。
+
 <p align="left"><img src="https://www.goravel.dev/reward-wechat.jpg" width="200"></p>
 
 ## 群组

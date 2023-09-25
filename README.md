@@ -70,6 +70,8 @@ This project is made possible by everyone who contributes. To contribute, please
 
 ## Sponsor
 
+Better development of the project is inseparable from your support, reward us by [Open Collective](https://opencollective.com/goravel).
+
 <p align="left"><img src="https://www.goravel.dev/reward.png" width="200"></p>
 
 ## Group
