@@ -68,6 +68,10 @@ This project is made possible by everyone who contributes. To contribute, please
 <a href="https://github.com/flc1125" target="_blank"><img src="https://avatars.githubusercontent.com/u/14297703?v=4" width="48" height="48"></a>
 <a href="https://github.com/zzpwestlife" target="_blank"><img src="https://avatars.githubusercontent.com/u/12382180?v=4" width="48" height="48"></a>
 
+## Sponsor
+
+<p align="left"><img src="https://www.goravel.dev/reward.png" width="200"></p>
+
 ## Group
 
 Welcome more discussion in Telegram.
