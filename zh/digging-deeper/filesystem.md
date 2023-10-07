@@ -20,6 +20,22 @@ Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Min
 
 > 技巧：你可以配置任意数量的磁盘，甚至可以添加多个使用相同驱动的磁盘。
 
+### 本地驱动
+
+使用 `local` 驱动时，所有文件操作都与 `filesystems` 配置文件中定义的 `root` 目录相关。 默认情况下，此值设置为 `storage/app` 目录。因此，以下方法会把文件存储在 `storage/app/example.txt` 中：
+
+```go
+facades.Storage().Put("example.txt", "Contents")
+```
+
+### 公共磁盘
+
+在 `filesystems` 配置文件中定义的 `public` 磁盘适用于要公开访问的文件。默认情况下，`public` 磁盘使用 `local` 驱动，并且将这些文件存储在 `storage/app/public` 目录下。要使这些文件可从 web 访问，可以创建一个文件路由：
+
+```go
+facades.Route().Static("storage", "./storage/app/public")
+```
+
 ## 获取磁盘实例
 
 `Storage` Facade 可用于与所有已配置的磁盘进行交互。例如，你可以使用 Facade 中的 `Put` 方法将头像存储到默认磁盘。如果你使用 `Storage` Facade 时并没有使用 `Disk` 方法，那么所有的方法调用将会自动传递给默认的磁盘：
@@ -305,7 +321,10 @@ type Driver interface {
   Exists(file string) bool
   Files(path string) ([]string, error)
   Get(file string) (string, error)
+  GetBytes(file string) ([]byte, error)
+  LastModified(file string) (time.Time, error)
   MakeDirectory(directory string) error
+  MimeType(file string) (string, error)
   Missing(file string) bool
   Move(oldFile, newFile string) error
   Path(file string) string
