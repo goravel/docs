@@ -20,6 +20,22 @@ Goravel's filesystem configuration file is located at `config/filesystems.go`. W
 
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
 
+### The Local Driver
+
+When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would write to `storage/app/example.txt`:
+
+```go
+facades.Storage().Put("example.txt", "Contents")
+```
+
+### The Public Disk
+
+The `public`` disk included in your application's `filesystems` configuration file is intended for files that are going to be publicly accessible. By default, the `public` disk uses the `local` driver and stores its files in `storage/app/public`. If you want to visit these file from web, you can create a file routing:
+
+```go
+facades.Route().Static("storage", "./storage/app/public")
+```
+
 ## Obtaining Disk Instances
 
 The `Storage` facade may be used to interact with any of your configured disks. For example, you may use the `Put` method on the facade to store an avatar on the default disk. If you call methods on the `Storage` facade without first calling the `Disk` method, the method will automatically be passed to the default disk:
@@ -304,7 +320,10 @@ type Driver interface {
   Exists(file string) bool
   Files(path string) ([]string, error)
   Get(file string) (string, error)
+  GetBytes(file string) ([]byte, error)
+  LastModified(file string) (time.Time, error)
   MakeDirectory(directory string) error
+  MimeType(file string) (string, error)
   Missing(file string) bool
   Move(oldFile, newFile string) error
   Path(file string) string
