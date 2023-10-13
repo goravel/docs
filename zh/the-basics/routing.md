@@ -216,8 +216,8 @@ func (receiver *RouteServiceProvider) configureRateLimiting() {
 
 ```go
 facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
-  return limit.PerMinute(1000).Response(func(ctx http.Context) http.Response {
-    return ctx.Response().String(429, "Custom response...")
+  return limit.PerMinute(1000).Response(func(ctx http.Context) {
+    ctx.Request().AbortWithStatus(http.StatusTooManyRequests)
   })
 })
 ```
