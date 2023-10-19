@@ -8,6 +8,19 @@
 go build .
 ```
 
+### Deploy Server
+
+The Following files and folders need to be uploaded to the server during deployment:
+
+```
+./main // Compile the resulting binary file
+.env
+./database
+./public
+./storage
+./resources
+```
+
 ## Static compilation
 
 The package by regular compilation also needs to rely on the support of the deployment environment, the statically compiled files can be freely put to run on the specified platform without environment configuration.
