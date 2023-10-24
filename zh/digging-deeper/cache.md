@@ -8,7 +8,7 @@ Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache
 
 | 驱动  | 地址                             |
 | ----- | -------------------------------- |
-| Redis | https://github.com/goravel/redis |
+| Redis | [https://github.com/goravel/redis](https://github.com/goravel/redis) |
 
 ## 配置
 

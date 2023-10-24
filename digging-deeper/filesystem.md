@@ -8,11 +8,11 @@ The Goravel provides simple drivers for working with local filesystems, Amazon S
 
 | Driver       | Link           |
 | -----------  | -------------- |
-| S3           | https://github.com/goravel/s3     |
-| OSS          | https://github.com/goravel/oss     |
-| COS          | https://github.com/goravel/cos     |
-| Minio        | https://github.com/goravel/minio     |
-| Cloudinary   | https://github.com/goravel/cloudinary     |
+| S3           | [https://github.com/goravel/s3](https://github.com/goravel/s3)     |
+| OSS          | [https://github.com/goravel/oss](https://github.com/goravel/oss)     |
+| COS          | [https://github.com/goravel/cos](https://github.com/goravel/cos)     |
+| Minio        | [https://github.com/goravel/minio](https://github.com/goravel/minio)     |
+| Cloudinary   | [https://github.com/goravel/cloudinary](https://github.com/goravel/cloudinary)     |
 
 ## Configuration
 

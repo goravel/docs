@@ -8,7 +8,7 @@ Goravel provides an expandable cache module that can be operated using `facades.
 
 | Driver | Link                             |
 | ------ | -------------------------------- |
-| Redis  | https://github.com/goravel/redis |
+| Redis  | [https://github.com/goravel/redis](https://github.com/goravel/redis) |
 
 ## Configuration
 
