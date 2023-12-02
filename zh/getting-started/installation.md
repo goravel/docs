@@ -4,7 +4,7 @@
 
 ## 服务器要求
 
-- Golang >= 1.18
+- Golang >= 1.20
 
 ## 安装 Goravel
 

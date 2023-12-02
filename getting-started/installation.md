@@ -4,7 +4,7 @@
 
 ## Server Requirements
 
-- Golang >= 1.18
+- Golang >= 1.20
 
 ## Installation
 
