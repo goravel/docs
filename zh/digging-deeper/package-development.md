@@ -17,7 +17,7 @@ go run . artisan make:package sms
 创建的文件默认保存在根目录 `packages` 文件夹中，您可以使用 `--root` 选项自定义：
 
 ```shell
-go run . artisan make:package sms --root=pkg
+go run . artisan make:package --root=pkg sms
 ```
 
 ## 服务提供者
