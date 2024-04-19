@@ -170,7 +170,7 @@ func (r *User) Connection() string {
 | Save          | [Update a existing model](#update-a-existing-model)                  |
 | SaveQuietly          | [Saving a single model without events](#saving-a-single-model-without-events)                  |
 | Scan          | [Scan struct](#execute-native-sql)                      |
-| Scopes        | [Scopes](#execute-native-sql)                           |
+| Scopes        | [Scopes](#scopes)                           |
 | Select        | [Specify Fields](#specify-fields)                       |
 | SharedLock | [Pessimistic Locking](#pessimistic-locking)           |
 | Sum | [Sum](#sum)           |
@@ -674,6 +674,7 @@ func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
   }
 }
 
+// scopes.Paginator is a custom function: func(ormcontract.Query) ormcontract.Query
 facades.Orm().Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
 ```
 

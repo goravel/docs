@@ -170,7 +170,7 @@ func (r *User) Connection() string {
 | Save          | [保存修改](#在现有模型基础上进行更新)                       |
 | SaveQuietly   | [静默的保存单个模型](#静默的保存单个模型)                       |
 | Scan          | [将数据解析到 struct](#执行原生查询-sql) |
-| Scopes        | [Scopes](#execute-native-sql)           |
+| Scopes        | [Scopes](#scopes)           |
 | Select        | [指定查询列](#指定查询列)               |
 | SharedLock    | [悲观锁](#悲观锁)           |
 | Sum           | [求和](#求和)           |
@@ -674,6 +674,7 @@ func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
   }
 }
 
+// scopes.Paginator 是一个自定义的 func(ormcontract.Query) ormcontract.Query
 facades.Orm().Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
 ```
 
