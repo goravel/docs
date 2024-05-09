@@ -82,7 +82,7 @@ package providers
 
 import (
 	"github.com/goravel/framework/contracts/foundation"
-    "github.com/goravel/framework/facades
+    "github.com/goravel/framework/facades"
 )
 
 type AppServiceProvider struct {
