@@ -1,13 +1,14 @@
 import { defineUserConfig } from "vuepress";
-import { defaultTheme } from "vuepress";
 import { docsearchPlugin } from "@vuepress/plugin-docsearch";
-import { commentPlugin } from "vuepress-plugin-comment2";
 import taskLists from "markdown-it-task-lists";
 import { getZhSidebar } from "./config/sidebar/zh";
 import { getEnSidebar } from "./config/sidebar/en";
 import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
 import { getDirname, path } from "@vuepress/utils";
-import { seoPlugin } from "vuepress-plugin-seo2";
+import { defaultTheme } from '@vuepress/theme-default'
+import { seoPlugin } from '@vuepress/plugin-seo'
+import { commentPlugin } from '@vuepress/plugin-comment'
+import { viteBundler } from '@vuepress/bundler-vite'
 
 const __dirname = getDirname(import.meta.url);
 
@@ -37,6 +38,10 @@ export default defineUserConfig({
       "window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-HJQNEG5H69');",
     ],
   ],
+  bundler: viteBundler({
+    viteOptions: {},
+    vuePluginOptions: {},
+  }),
   plugins: [
     registerComponentsPlugin({
       components: {

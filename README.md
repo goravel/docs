@@ -27,7 +27,7 @@ We are open to receiving stars, PRs, and issues!
 |                                                               |                      |                      |                      |
 |---------------------------------------------------------------| --------------       | --------------       | --------------       |
 | [Config](/getting-started/configuration.md)                   | [Http](/the-basics/routing.md)  | [Authentication](/security/authentication.md)  | [Authorization](/security/authorization.md)  |
-| [Orm](/ORM/getting-started.md)                                | [Migrate](/ORM/migrations.md)  | [Logger](/the-basics/logging.md)  | [Cache](/digging-deeper/cache.md)  |
+| [Orm](/orm/getting-started.md)                                | [Migrate](/orm/migrations.md)  | [Logger](/the-basics/logging.md)  | [Cache](/digging-deeper/cache.md)  |
 | [Grpc](/the-basics/grpc.md)                                   | [Artisan Console](/digging-deeper/artisan-console.md)  | [Task Scheduling](/digging-deeper/task-scheduling.md)  | [Queue](/digging-deeper/queues.md)  |
 | [Event](/digging-deeper/event.md)                             | [FileStorage](/digging-deeper/filesystem.md)  | [Mail](/digging-deeper/mail.md)  | [Validation](/the-basics/validation.md)  |
 | [Mock](/testing/mock.md)                                      | [Hash](/security/hashing.md)  | [Crypt](/security/encryption.md)  | [Carbon](/digging-deeper/helpers.md)  |

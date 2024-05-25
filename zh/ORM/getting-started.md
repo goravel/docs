@@ -175,6 +175,8 @@ func (r *User) Connection() string {
 | SharedLock    | [悲观锁](#悲观锁)           |
 | Sum           | [求和](#求和)           |
 | Table         | [指定表](#指定表查询)                   |
+| ToSql         | [获取 SQL](#获取-sql)                   |
+| ToRawSql      | [获取 SQL](#获取-sql)                   |
 | Update        | [更新单个字段](#更新)                   |
 | UpdateOrCreate       | [更新或创建一条数据](#更新或创建一条数据)                   |
 | Where         | [查询条件](#where-条件)                  |
@@ -393,6 +395,24 @@ var count int64
 facades.Orm().Query().Table("users").Count(&count)
 // SELECT count(*) FROM `users`; // get all records, whether deleted or not
 ```
+
+### 获取 SQL
+
+带占位符的 SQL：
+
+```go
+facades.Orm().Query().ToSql().Get(models.User{})
+// SELECT * FROM "users" WHERE "id" = $1 AND "users"."deleted_at" IS NULL
+```
+
+带绑定值的 SQL：
+
+```go
+facades.Orm().Query().ToRawSql().Get(models.User{})
+// SELECT * FROM "users" WHERE "id" = 1 AND "users"."deleted_at" IS NULL
+```
+
+`ToSql` 与 `ToRawSql` 后可以调用的方法：`Count`, `Create`, `Delete`, `Find`, `First`, `Get`, `Pluck`, `Save`, `Sum`, `Update`。
 
 ### 检索聚合
 
