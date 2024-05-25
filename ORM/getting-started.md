@@ -175,6 +175,8 @@ func (r *User) Connection() string {
 | SharedLock | [Pessimistic Locking](#pessimistic-locking)           |
 | Sum | [Sum](#sum)           |
 | Table         | [Specify a table](#specify-table-query)                 |
+| ToSql         | [Get SQL](#get-sql)                   |
+| ToRawSql      | [Get SQL](#get-sql)                   |
 | Update        | [Update a single column](#update-a-single-column)                   |
 | UpdateOrCreate       | [Update or create](#update-or-create)                  |
 | Where         | [Where](#where)                                         |
@@ -394,6 +396,24 @@ var count int
 facades.Orm().Query().Table("users").Count(&count)
 // SELECT count(*) FROM `users`; // get all records, whether deleted or not
 ```
+
+### Get SQL
+
+Get SQL with placeholder:
+
+```go
+facades.Orm().Query().ToSql().Get(models.User{})
+// SELECT * FROM "users" WHERE "id" = $1 AND "users"."deleted_at" IS NULL
+```
+
+Get SQL with value:
+
+```go
+facades.Orm().Query().ToRawSql().Get(models.User{})
+// SELECT * FROM "users" WHERE "id" = 1 AND "users"."deleted_at" IS NULL
+```
+
+The methods can be called after `ToSql` and `ToRawSql`: `Count`, `Create`, `Delete`, `Find`, `First`, `Get`, `Pluck`, `Save`, `Sum`, `Update`.
 
 ### Count
 

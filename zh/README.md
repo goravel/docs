@@ -27,7 +27,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 |                                                |                      |                      |                      |
 |------------------------------------------------| --------------       | --------------       | --------------       |
 | [自定义配置](/getting-started/configuration.md)     | [HTTP 服务](/the-basics/routing.md)  | [用户认证](/security/authentication.md)  | [用户授权](/security/authorization.md)  |
-| [数据库 ORM](/ORM/getting-started.md)             | [数据库迁移](/ORM/migrations.md)  | [日志](/the-basics/logging.md)  | [缓存](/digging-deeper/cache.md)  |
+| [数据库 ORM](/orm/getting-started.md)             | [数据库迁移](/orm/migrations.md)  | [日志](/the-basics/logging.md)  | [缓存](/digging-deeper/cache.md)  |
 | [Grpc](/the-basics/grpc.md)                    | [Artisan 命令行](/digging-deeper/artisan-console.md)  | [任务调度](/digging-deeper/task-scheduling.md)  | [队列](/digging-deeper/queues.md)  |
 | [事件系统](/digging-deeper/event.md)               | [文件存储](/digging-deeper/filesystem.md)  | [邮件](/digging-deeper/mail.md)  | [表单验证](/the-basics/validation.md)  |
 | [Mock](/testing/mock.md)                       | [Hash](/security/hashing.md)  | [Crypt](/security/encryption.md)  | [Carbon](/digging-deeper/helpers.md)  |
