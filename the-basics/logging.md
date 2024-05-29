@@ -65,6 +65,7 @@ facades.Log().User("John").Debug(message)
 | Tags         | Add multiple tags, describing the feature returning an error.     |
 | User         | Set the user associated with the log entry.     |
 | With         | Add key-value pairs to the context of the log entry.    |
+| WithTrace    | Add stack information to the log entry.   |
 
 ## Create a custom channel
 
