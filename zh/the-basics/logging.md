@@ -65,6 +65,7 @@ facades.Log().User("John").Debug(message)
 | Tags         | 为日志添加标签。     |
 | User         | 记录触发日志的用户。     |
 | With         | 为日志附加数据。   |
+| WithTrace    | 为日志附加堆栈信息。   |
 
 ## 创建自定义通道
 
