@@ -162,7 +162,11 @@ func (r *User) Connection() string {
 | Model         | [指定模型](#指定表查询)                 |
 | Offset        | [指定查询开始位置](#指定查询开始位置)   |
 | Order         | [排序](#排序)                           |
+| OrderBy       | [排序](#排序)                           |
+| OrderByDesc   | [排序](#排序)                           |
 | OrWhere       | [查询条件](#where-条件)                  |
+| OrWhereNotIn  | [查询条件](#where-条件)                  |
+| OrWhereIn     | [查询条件](#where-条件)                  |
 | Paginate      | [分页](#分页)                  |
 | Pluck         | [查询单列](#查询单列)                    |
 | Raw           | [执行原生查询 SQL](#执行原生查询-sql)    |
@@ -180,6 +184,9 @@ func (r *User) Connection() string {
 | Update        | [更新单个字段](#更新)                   |
 | UpdateOrCreate       | [更新或创建一条数据](#更新或创建一条数据)                   |
 | Where         | [查询条件](#where-条件)                  |
+| WhereBetween  | [查询条件](#where-条件)                  |
+| WhereNotIn    | [查询条件](#where-条件)                  |
+| WhereIn       | [查询条件](#where-条件)                  |
 | WithoutEvents | [静默事件](#静默事件)               |
 | WithTrashed   | [查询软删除](#查询软删除)               |
 
@@ -330,8 +337,13 @@ err := facades.Orm().Query().FirstOrFail(&user)
 facades.Orm().Query().Where("name", "tom")
 facades.Orm().Query().Where("name = 'tom'")
 facades.Orm().Query().Where("name = ?", "tom")
+facades.Orm().Query().WhereBetween("age", 1, 10)
+facades.Orm().Query().WhereNotIn("name", []any{"a"})
+facades.Orm().Query().WhereIn("name", []any{"a"})
 
 facades.Orm().Query().OrWhere("name = ?", "tom")
+facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
+facades.Orm().Query().OrWhereIn("name", []any{"a"})
 ```
 
 ### 指定查询数量
@@ -356,6 +368,15 @@ facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 var users []models.User
 facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc,id desc;
+
+facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc;
+
+facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort", "desc").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
+
+facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 ```
 
 ### 分页
