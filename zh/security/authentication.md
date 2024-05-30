@@ -31,19 +31,19 @@ type User struct {
 var user models.User
 user.ID = 1
 
-token, err := facades.Auth().Login(ctx, &user)
+token, err := facades.Auth(ctx).Login(&user)
 ```
 
 ## 根据用户 ID 生成 Token
 
 ```go
-token, err := facades.Auth().LoginUsingID(ctx, 1)
+token, err := facades.Auth(ctx).LoginUsingID(1)
 ```
 
 ## 解析 Token
 
 ```go
-payload, err := facades.Auth().Parse(ctx, token)
+payload, err := facades.Auth(ctx).Parse(token)
 ```
 
 可以通过 `payload` 获取：
@@ -72,7 +72,7 @@ errors.Is(err, auth.ErrorTokenExpired)
 
 ```go
 var user models.User
-err := facades.Auth().User(ctx, &user) // 必须是指针
+err := facades.Auth(ctx).User(&user) // 必须是指针
 ```
 
 ## 刷新 Token
@@ -80,21 +80,21 @@ err := facades.Auth().User(ctx, &user) // 必须是指针
 刷新 Token 前需要先调用 `Parse` 解析 Token。
 
 ```go
-token, err := facades.Auth().Refresh(ctx)
+token, err := facades.Auth(ctx).Refresh()
 ```
 
 ## 登出
 
 ```go
-err := facades.Auth().Logout(ctx)
+err := facades.Auth(ctx).Logout()
 ```
 
 ## 多用户授权
 
 ```go
-token, err := facades.Auth().Guard("admin").LoginUsingID(ctx, 1)
+token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
 err := facades.Auth().Guard("admin").Parse(ctx, token)
-token, err := facades.Auth().Guard("admin").User(ctx, &user)
+token, err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
 > 当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。
