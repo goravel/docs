@@ -387,7 +387,7 @@ facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 
 facades.Orm().Query().Where("name = ?", "tom").InRandomOrder().Get(&users)
-// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY RAND();
 ```
 
 ### Paginate

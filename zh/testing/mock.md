@@ -6,6 +6,23 @@
 
 Goravel 所有功能都使用 `facades` 实现，而所有的 `facades` 均由接口构成。因此配合 [stretchr/testify](http://github.com/stretchr/testify) 的 mock 功能，Goravel 可以提供优秀的测试体验。
 
+## Mock facades.App
+
+```go
+func CurrentLocale() string {
+  return facades.App().CurrentLocale(context.Background())
+}
+
+func TestCurrentLocale(t *testing.T) {
+  mockFactory := mock.Factory()
+  mockApp := mockFactory.App()
+  mockApp.On("CurrentLocale", context.Background()).Return("en").Once()
+
+  assert.Equal(t, "en", CurrentLocale())
+  mockApp.AssertExpectations(t)
+}
+```
+
 ## Mock facades.Artisan
 
 ```go
@@ -16,12 +33,15 @@ func ArtisanCall() {
 }
 
 func TestArtisan(t *testing.T) {
-  mockArticle := mock.Artisan()
+  mockFactory := mock.Factory()
+  mockArticle := mockFactory.Artisan()
   mockArticle.On("Call", "list").Once()
 
   assert.NotPanics(t, func() {
     ArtisanCall()
   })
+
+  mockArticle.AssertExpectations(t)
 }
 ```
 
@@ -42,11 +62,14 @@ func Auth() error {
 }
 
 func TestAuth(t *testing.T) {
-  mockAuth := mock.Auth()
+  mockFactory := mock.Factory()
+  mockAuth := mockFactory.Auth()
   mockAuth.On("Logout", http.Background()).Return(nil).Once()
   err := Auth()
 
   assert.Nil(t, err)
+
+  mockAuth.AssertExpectations(t)
 }
 ```
 
@@ -64,12 +87,16 @@ func Cache() string {
 }
 
 func TestCache(t *testing.T) {
-  mockCache, _, _ := mock.Cache()
+  mockFactory := mock.Factory()
+  mockCache := mockFactory.Cache()
+  
   mockCache.On("Put", "name", "goravel", mock.Anything).Return(nil).Once()
   mockCache.On("Get", "name", "test").Return("Goravel").Once()
 
   res := Cache()
   assert.Equal(t, res, "Goravel")
+
+  mockCache.AssertExpectations(t)
 }
 ```
 
@@ -83,11 +110,14 @@ func Config() string {
 }
 
 func TestConfig(t *testing.T) {
-  mockConfig := mock.Config()
+  mockFactory := mock.Factory()
+  mockConfig := mockFactory.Config()
   mockConfig.On("GetString", "app.name", "test").Return("Goravel").Once()
 
   res := Config()
   assert.Equal(t, res, "Goravel")
+
+  mockConfig.AssertExpectations(t)
 }
 ```
 
@@ -112,7 +142,8 @@ func Crypt(str string) (string, error) {
 }
 
 func TestCrypt(t *testing.T) {
-	mockCrypt := mock.Crypt()
+  mockFactory := mock.Factory()
+	mockCrypt := mockFactory.Crypt()
 	mockCrypt.On("EncryptString", "Goravel").Return("test", nil).Once()
 	mockCrypt.On("DecryptString", "test").Return("Goravel", nil).Once()
 
@@ -137,11 +168,16 @@ func Event() error {
 }
 
 func TestEvent(t *testing.T) {
-  mockEvent, mockTask := mock.Event()
+  mockFactory := mock.Factory()
+  mockEvent := mockFactory.Event()
+  mockTask := mockFactory.EventTask()
   mockEvent.On("Job", mock.Anything, mock.Anything).Return(mockTask).Once()
   mockTask.On("Dispatch").Return(nil).Once()
 
   assert.Nil(t, Event())
+
+  mockEvent.AssertExpectations(t)
+  mockTask.AssertExpectations(t)
 }
 ```
 
@@ -162,7 +198,8 @@ func Gate() bool {
 }
 
 func TestGate(t *testing.T) {
-	mockGate := mock.Gate()
+  mockFactory := mock.Factory()
+	mockGate := mockFactory.Gate()
 	mockGate.On("Allows", "update-post", map[string]any{
 		"post": "test",
 	}).Return(true).Once()
@@ -193,12 +230,15 @@ func Grpc() (*grpc.ClientConn, error) {
 }
 
 func TestGrpc(t *testing.T) {
-  mockGrpc := mock.Grpc()
+  mockFactory := mock.Factory()
+  mockGrpc := mockFactory.Grpc()
   mockGrpc.On("Client", context.Background(), "user").Return(nil, errors.New("error")).Once()
   conn, err := Grpc()
 
   assert.Nil(t, conn)
   assert.EqualError(t, err, "error")
+
+  mockGrpc.AssertExpectations(t)
 }
 ```
 
@@ -220,7 +260,8 @@ func Hash() (string, error) {
 }
 
 func TestHash(t *testing.T) {
-  mockHash := mock.Hash()
+  mockFactory := mock.Factory()
+  mockHash := mockFactory.Hash()
 	mockHash.On("Make", "Goravel").Return("test", nil).Once()
 
 	res, err := Hash()
@@ -228,6 +269,23 @@ func TestHash(t *testing.T) {
 	assert.Nil(t, err)
 
 	mockHash.AssertExpectations(t)
+}
+```
+
+## Mock facades.Lang
+
+```go
+func Lang() string {
+  return facades.Lang(context.Background()).Get("name")
+}
+
+func TestLang(t *testing.T) {
+  mockFactory := mock.Factory()
+  mockLang := mockFactory.Lang()
+  mockLang.On("Get", "name").Return("Goravel").Once()
+
+  assert.Equal(t, "Goravel", Lang())
+  mockLang.AssertExpectations(t)
 }
 ```
 
@@ -243,7 +301,8 @@ func Log() {
 }
 
 func TestLog(t *testing.T) {
-  mock.Log()
+  mockFactory := mock.Factory()
+  mockFactory.Log()
 
   Log()
 }
@@ -262,13 +321,16 @@ func Mail() error {
 }
 
 func TestMail(t *testing.T) {
-  mockMail := mock.Mail()
+  mockFactory := mock.Factory()
+  mockMail := mockFactory.Mail()
   mockMail.On("From", mail.From{Address: "example@example.com", Name: "example"}).Return(mockMail)
   mockMail.On("To", []string{"example@example.com"}).Return(mockMail)
   mockMail.On("Content", mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).Return(mockMail)
   mockMail.On("Send").Return(nil)
 
   assert.Nil(t, Mail())
+
+  mockMail.AssertExpectations(t)
 }
 ```
 
@@ -287,14 +349,19 @@ func Orm() error {
 }
 
 func TestOrm(t *testing.T) {
-  mockOrm, mockOrmDB, _ := mock.Orm()
-  mockOrm.On("Query").Return(mockOrmDB)
+  mockFactory := mock.Factory()
+  mockOrm := mockFactory.Orm()
+  mockOrmQuery := mockFactory.OrmQuery()
+  mockOrm.On("Query").Return(mockOrmQuery)
 
-  mockOrmDB.On("Create", mock.Anything).Return(nil).Once()
-  mockOrmDB.On("Where", "id = ?", 1).Return(mockOrmDB).Once()
-  mockOrmDB.On("Find", mock.Anything).Return(nil).Once()
+  mockOrmQuery.On("Create", mock.Anything).Return(nil).Once()
+  mockOrmQuery.On("Where", "id = ?", 1).Return(mockOrmDB).Once()
+  mockOrmQuery.On("Find", mock.Anything).Return(nil).Once()
 
   assert.Nil(t, Orm())
+
+  mockOrm.AssertExpectations(t)
+  mockOrmQuery.AssertExpectations(t)
 }
 
 func Transaction() error {
@@ -310,7 +377,9 @@ func Transaction() error {
 }
 
 func TestTransaction(t *testing.T) {
-  mockOrm, _, mockOrmTransaction := mock.Orm()
+  mockFactory := mock.Factory()
+  mockOrm := mockFactory.Orm()
+  mockOrmTransaction := mockFactory.OrmTransaction()
   mockOrm.On("Transaction", mock.Anything).Return(func(txFunc func(tx orm.Transaction) error) error {
     return txFunc(mockOrmTransaction)
   })
@@ -325,6 +394,9 @@ func TestTransaction(t *testing.T) {
   mockOrmTransaction.On("Find", mock.Anything).Return(nil).Once()
 
   assert.Nil(t, Transaction())
+
+  mockOrm.AssertExpectations(t)
+  mockOrmTransaction.AssertExpectations(t)
 }
 
 func Begin() error {
@@ -348,11 +420,16 @@ func Queue() error {
 }
 
 func TestQueue(t *testing.T) {
-  mockQueue, mockTask := mock.Queue()
+  mockFactory := mock.Factory()
+  mockQueue := mockFactory.Queue()
+  mockTask := mockFactory.QueueTask()
   mockQueue.On("Job", mock.Anything, mock.Anything).Return(mockTask).Once()
   mockTask.On("Dispatch").Return(nil).Once()
 
   assert.Nil(t, Queue())
+
+  mockQueue.AssertExpectations(t)
+  mockTask.AssertExpectations(t)
 }
 ```
 
@@ -375,7 +452,9 @@ func Storage() (string, error) {
 }
 
 func TestStorage(t *testing.T) {
-  mockStorage, mockDriver, _ := mock.Storage()
+  mockFactory := mock.Factory()
+  mockStorage := mockFactory.Storage()
+  mockDriver := mockFactory.StorageDriver()
   mockStorage.On("WithContext", context.Background()).Return(mockDriver).Once()
   file, _ := filesystem.NewFile("1.txt")
   mockDriver.On("PutFile", "file", file).Return("", nil).Once()
@@ -383,6 +462,9 @@ func TestStorage(t *testing.T) {
 
   assert.Equal(t, "", path)
   assert.Nil(t, err)
+
+  mockStorage.AssertExpectations(t)
+  mockDriver.AssertExpectations(t)
 }
 
 ```
@@ -410,7 +492,10 @@ func Validation() string {
 }
 
 func TestValidation(t *testing.T) {
-  mockValidation, mockValidator, mockErrors := mock.Validation()
+  mockFactory := mock.Factory()
+  mockValidation := mockFactory.Validation()
+  mockValidator := mockFactory.ValidationValidator()
+  mockErrors := mockFactory.ValidationErrors()
   mockValidation.On("Make", map[string]string{
     "a": "b",
   }, map[string]string{
@@ -421,6 +506,10 @@ func TestValidation(t *testing.T) {
   err := Validation()
 
   assert.Equal(t, "error", err)
+
+  mockValidation.AssertExpectations(t)
+  mockValidator.AssertExpectations(t)
+  mockErrors.AssertExpectations(t)
 }
 ```
 
@@ -440,7 +529,8 @@ func View() bool {
 }
 
 func TestView(t *testing.T) {
-  mockView := mock.View()
+  mockFactory := mock.Factory()
+  mockView := mockFactory.View()
 	mockView.On("Exists", "welcome.tmpl").Return(true).Once()
 
 	assert.True(t, View())
