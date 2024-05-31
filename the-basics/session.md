@@ -4,7 +4,26 @@
 
 ## Introduction
 
-Sessions help you to store user information across multiple requests, giving you experience of stateful application with stateless HTTP protocol. User information is stored on the persistent server side. Goravel provides a unified Interface for interacting with different persistent storage mechanisms.
+Sessions enable you to store user information across multiple requests, providing a stateful experience within the inherently stateless HTTP protocol. This user information is stored persistently on the server side. Goravel offers a unified interface for interacting with various persistent storage mechanisms.
+
+## Register Middleware
+
+By default, Goravel does not start a session automatically. However, it provides middleware to start a session. You can register the session middleware in the `app/http/kernel.go` file to apply it to all routes, or you can add it to specific routes:
+
+```go
+import (
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/session/middleware"
+)
+
+...
+
+func (kernel Kernel) Middleware() []http.Middleware {
+	return []http.Middleware{
+		middleware.StartSession(),
+	}
+}
+```
 
 ## Configuration
 
@@ -144,18 +163,88 @@ If you would like to keep specific data around for immediate use, you may use th
 ctx.Request().Session().Now("status", "Task was successful!")
 ```
 
+## Interacting With Session Manager
+
+### Building A Custom Session
+
+To build a custom session, use the `Session` facade. The `Session` facade provides the `BuildSession` method, which takes a driver instance and an optional session ID if you want to specify a custom session ID:
+
+```go
+import "github.com/goravel/framework/facades"
+
+session := facades.Session().BuildSession(driver, "sessionID")
+```
+
+### Retrieving driver instance
+
+To retrieve the driver instance from the session manager, use the `Driver` method. It accepts an optional driver name; if not provided, it returns the default driver instance:
+
+```go
+driver, err := facades.Session().Driver("file")
+```
+
+### Starting A New Session
+
+To start a new session, use the `Start` method:
+
+```go
+session := facades.Session().BuildSession(driver)
+session.Start()
+```
+
+### Saving The Session Data
+
+To save the session data, use the `Save` method:
+
+```go
+session := facades.Session().BuildSession(driver)
+session.Start()
+session.Save()
+```
+
+### Attaching the Session to the Request
+
+To attach the session to the request, use the `SetSession` method:
+
+```go
+session := facades.Session().BuildSession(driver)
+session.Start()
+ctx.Request().SetSession(session)
+```
+
+### Checking if request has session
+
+To check if the request has a session, use the `HasSession` method:
+
+```go
+if ctx.Request().HasSession() {
+    //
+}
+```
+
 ## Add Custom Session Drivers
 
 ### Implementing The Driver
 
-To implement a custom session driver, you need to implement the `contracts/session/driver` interface. The interface requires you to implement several methods:
+To implement a custom session driver, driver must implement the `contracts/session/driver` interface.
 
-- `Close`: close method is typically used to close the connection to the session storage. It is mostly used for file-based sessions.
-- `Destroy`: destroy method is used to delete the session data from the storage for the given session ID.
-- `Gc`: gc method is used to delete all data that is older than the given session lifetime.
-- `Open`: open method is typically used for file-based sessions. It is used to open the session storage.
-- `Read`: read method is used to read the session data from the storage for the given session ID.
-- `Write`: write method is used to write the session data to the storage for the given session ID.
+```go
+// Driver is the interface for Session handlers.
+type Driver interface {
+	// Close closes the session handler.
+	Close() error
+	// Destroy destroys the session with the given ID.
+	Destroy(id string) error
+	// Gc performs garbage collection on the session handler with the given maximum lifetime.
+	Gc(maxLifetime int) error
+	// Open opens a session with the given path and name.
+	Open(path string, name string) error
+	// Read reads the session data associated with the given ID.
+	Read(id string) (string, error)
+	// Write writes the session data associated with the given ID.
+	Write(id string, data string) error
+}
+```
 
 ### Registering The Driver
 
