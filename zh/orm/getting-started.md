@@ -134,7 +134,7 @@ func (r *User) Connection() string {
 
 ## facades.Orm().Query & facades.Orm().Transaction 可用方法
 
-| 方法名        | 作用                                    |
+| 方法名         | 作用                                    |
 | ------------- | --------------------------------------- |
 | Begin         | [手动开始事务](#事务)                   |
 | Commit        | [提交事务](#事务)                       |
@@ -148,10 +148,10 @@ func (r *User) Connection() string {
 | Find          | [查询一条或多条数据](#根据-id-查询单条或多条数据) 
 | FindOrFail    | [未找到时抛出错误](#未找到时抛出错误)                  |
 | First         | [查询一条数据](#查询一条数据)                   |
-| FirstOr | [查询或通过回调返回一条数据](#查询一条数据)             |
+| FirstOr       | [查询或通过回调返回一条数据](#查询一条数据)             |
 | FirstOrCreate | [查询或创建模型](#查询或创建模型)             |
-| FirstOrNew | [查询或实例化模型](#查询或创建模型)             |
-| FirstOrFail | [未找到时抛出错误](#未找到时抛出错误)             |
+| FirstOrNew    | [查询或实例化模型](#查询或创建模型)             |
+| FirstOrFail   | [未找到时抛出错误](#未找到时抛出错误)             |
 | ForceDelete   | [强制删除](#删除)                       |
 | Get           | [查询多条数据](#查询多条数据)                   |
 | Group         | [Group 查询](#group-by-having)        |
@@ -164,8 +164,10 @@ func (r *User) Connection() string {
 | Order         | [排序](#排序)                           |
 | OrderBy       | [排序](#排序)                           |
 | OrderByDesc   | [排序](#排序)                           |
+| InRandomOrder | [排序](#排序)       |
 | OrWhere       | [查询条件](#where-条件)                  |
 | OrWhereNotIn  | [查询条件](#where-条件)                  |
+| OrWhereNull   | [查询条件](#where-条件)                  |
 | OrWhereIn     | [查询条件](#where-条件)                  |
 | Paginate      | [分页](#分页)                  |
 | Pluck         | [查询单列](#查询单列)                    |
@@ -182,10 +184,12 @@ func (r *User) Connection() string {
 | ToSql         | [获取 SQL](#获取-sql)                   |
 | ToRawSql      | [获取 SQL](#获取-sql)                   |
 | Update        | [更新单个字段](#更新)                   |
-| UpdateOrCreate       | [更新或创建一条数据](#更新或创建一条数据)                   |
+| UpdateOrCreate| [更新或创建一条数据](#更新或创建一条数据)                   |
 | Where         | [查询条件](#where-条件)                  |
 | WhereBetween  | [查询条件](#where-条件)                  |
+| WhereNotBetween | [查询条件](#where-条件)                  |
 | WhereNotIn    | [查询条件](#where-条件)                  |
+| WhereNull     | [查询条件](#where-条件)                  |
 | WhereIn       | [查询条件](#where-条件)                  |
 | WithoutEvents | [静默事件](#静默事件)               |
 | WithTrashed   | [查询软删除](#查询软删除)               |
@@ -338,11 +342,14 @@ facades.Orm().Query().Where("name", "tom")
 facades.Orm().Query().Where("name = 'tom'")
 facades.Orm().Query().Where("name = ?", "tom")
 facades.Orm().Query().WhereBetween("age", 1, 10)
+facades.Orm().Query().WhereNotBetween("age", 1, 10)
 facades.Orm().Query().WhereNotIn("name", []any{"a"})
+facades.Orm().Query().WhereNull("name")
 facades.Orm().Query().WhereIn("name", []any{"a"})
 
 facades.Orm().Query().OrWhere("name = ?", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
+facades.Orm().Query().OrWhereNUll("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
 ```
 
@@ -376,6 +383,9 @@ facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort", "desc").Get(&user
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 
 facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
+
+facades.Orm().Query().Where("name = ?", "tom").InRandomOrder().Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 ```
 

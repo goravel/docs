@@ -164,8 +164,10 @@ func (r *User) Connection() string {
 | Order         | [Order](#order)                                         |
 | OrderBy       | [Order](#order)                           |
 | OrderByDesc   | [Order](#order)                           |
+| InRandomOrder | [Order](#order)                           |
 | OrWhere       | [OrWhere](#where)                                       |
 | OrWhereNotIn  | [OrWhereNotIn](#where)                  |
+| OrWhereNull   | [OrWhereNull](#where)                  |
 | OrWhereIn     | [OrWhereIn](#where)                  |
 | Paginate      | [Paginate](#paginate)             |
 | Pluck         | [Query single column](#query-single-column)             |
@@ -182,10 +184,12 @@ func (r *User) Connection() string {
 | ToSql         | [Get SQL](#get-sql)                   |
 | ToRawSql      | [Get SQL](#get-sql)                   |
 | Update        | [Update a single column](#update-a-single-column)                   |
-| UpdateOrCreate       | [Update or create](#update-or-create)                  |
+| UpdateOrCreate | [Update or create](#update-or-create)                  |
 | Where         | [Where](#where)                                         |
 | WhereBetween  | [WhereBetween](#where)                  |
+| WhereNotBetween | [WhereNotBetween](#where)                  |
 | WhereNotIn    | [WhereNotIn](#where)                  |
+| WhereNull     | [WhereNull](#where)                  |
 | WhereIn       | [WhereIn](#where)                  |
 | WithoutEvents | [Muting events](#muting-events)               |
 | WithTrashed   | [Query soft delete data](#query-soft-delete-data)       |
@@ -339,11 +343,14 @@ facades.Orm().Query().Where("name", "tom")
 facades.Orm().Query().Where("name = 'tom'")
 facades.Orm().Query().Where("name = ?", "tom")
 facades.Orm().Query().WhereBetween("age", 1, 10)
+facades.Orm().Query().WhereNotBetween("age", 1, 10)
 facades.Orm().Query().WhereNotIn("name", []any{"a"})
+facades.Orm().Query().WhereNull("name")
 facades.Orm().Query().WhereIn("name", []any{"a"})
 
 facades.Orm().Query().OrWhere("name = ?", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
+facades.Orm().Query().OrWhereNull("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
 ```
 
@@ -377,6 +384,9 @@ facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort", "desc").Get(&user
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 
 facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
+
+facades.Orm().Query().Where("name = ?", "tom").InRandomOrder().Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 ```
 
