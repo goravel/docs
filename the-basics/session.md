@@ -106,12 +106,6 @@ Regenerating the session ID is often done in order to prevent malicious users fr
 ctx.Request().Session().Regenerate()
 ```
 
-If you need to regenerate the session ID but maintain the current session data, you may use the `Migrate` method:
-
-```go
-ctx.Request().Session().Migrate()
-```
-
 If you would like to regenerate the session ID and forget all data that was in the session, you may use the `Invalidate` method:
 
 ```go
