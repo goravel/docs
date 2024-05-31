@@ -133,6 +133,19 @@ var user map[string]any
 err := ctx.Request().Bind(&user)
 ```
 
+## Cookie
+
+### Retrieving a Cookie Value
+
+Goravel provides a simple way to work with cookies. To retrieve a cookie value, use the `Cookie` method on the request instance. It will return the value of the cookie, or an empty string if the cookie is not present. If a default value is set, it will return the default value instead.
+
+```go
+value := ctx.Request().Cookie("name")
+
+// returns "default" if the cookie is not present
+value := ctx.Request().Cookie("name", "default") 
+```
+
 ## File
 
 ### Retrieving File
