@@ -33,7 +33,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
-  Queue(nil)
+  Queue()
 ```
 
 You can also customize the queue:
@@ -46,7 +46,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
-  Queue(&mail.Queue{Connection: "high", Queue: "mail"})
+  Queue(mail.Queue{Connection: "high", Queue: "mail"})
 ```
 
 ## Setting Sender
@@ -62,7 +62,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
-  Queue(&mail.Queue{Connection: "high", Queue: "mail"})
+  Queue(mail.Queue{Connection: "high", Queue: "mail"})
 ```
 
 <CommentService/>

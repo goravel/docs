@@ -162,7 +162,11 @@ func (r *User) Connection() string {
 | Model         | [Specify a model](#specify-table-query)                 |
 | Offset        | [Offset](#offset)                                       |
 | Order         | [Order](#order)                                         |
+| OrderBy       | [Order](#order)                           |
+| OrderByDesc   | [Order](#order)                           |
 | OrWhere       | [OrWhere](#where)                                       |
+| OrWhereNotIn  | [OrWhereNotIn](#where)                  |
+| OrWhereIn     | [OrWhereIn](#where)                  |
 | Paginate      | [Paginate](#paginate)             |
 | Pluck         | [Query single column](#query-single-column)             |
 | Raw           | [Execute native SQL](#execute-native-sql)               |
@@ -180,6 +184,9 @@ func (r *User) Connection() string {
 | Update        | [Update a single column](#update-a-single-column)                   |
 | UpdateOrCreate       | [Update or create](#update-or-create)                  |
 | Where         | [Where](#where)                                         |
+| WhereBetween  | [WhereBetween](#where)                  |
+| WhereNotIn    | [WhereNotIn](#where)                  |
+| WhereIn       | [WhereIn](#where)                  |
 | WithoutEvents | [Muting events](#muting-events)               |
 | WithTrashed   | [Query soft delete data](#query-soft-delete-data)       |
 
@@ -331,8 +338,13 @@ err := facades.Orm().Query().FirstOrFail(&user)
 facades.Orm().Query().Where("name", "tom")
 facades.Orm().Query().Where("name = 'tom'")
 facades.Orm().Query().Where("name = ?", "tom")
+facades.Orm().Query().WhereBetween("age", 1, 10)
+facades.Orm().Query().WhereNotIn("name", []any{"a"})
+facades.Orm().Query().WhereIn("name", []any{"a"})
 
 facades.Orm().Query().OrWhere("name = ?", "tom")
+facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
+facades.Orm().Query().OrWhereIn("name", []any{"a"})
 ```
 
 ### Limit
@@ -357,6 +369,15 @@ facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 var users []models.User
 facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc,id desc;
+
+facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc;
+
+facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort", "desc").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
+
+facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 ```
 
 ### Paginate
