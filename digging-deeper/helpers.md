@@ -26,6 +26,15 @@
 | -----------               | --------------                | -------------- |
 | [debug.Dump()](#debug-dump)   | [debug.SDump()](#debug-sdump)     | [debug.FDump()](#debug-fdump)     |
 
+### Maps
+
+|                             |                               |                               |
+|-----------------------------|-------------------------------|-------------------------------|
+| [maps.Add()](#maps-add)     | [maps.Exists()](#maps-exists) | [maps.Forget()](#maps-forget) |
+| [maps.Get()](#maps-get)     | [maps.Has()](#maps-has)       | [maps.HasAny()](#maps-hasany) |
+| [maps.Only()](#maps-only)   | [maps.Pull()](#maps-pull)     | [maps.Set()](#maps-set)       |
+| [maps.Where()](#maps-where) |                               |                               |
+
 ## Paths
 
 ### `path.App()`
@@ -208,6 +217,170 @@ debug.FDump(someWriter, myVar1, myVar2, ...)
 import "github.com/goravel/framework/support/debug"
 
 debug.SDump(myVar1, myVar2, ...)
+```
+
+## Maps
+
+### `maps.Add()`
+
+The `maps.Add()` function adds a new key-value pair to the given map if the key does not already exist in the map:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]any{"name": "Krishan"}
+maps.Add(mp, "age", 22)
+// map[string]any{"name": "Krishan", "age": 22}
+
+mp2 := map[string]string{}
+maps.Add(mp2, "name", "Bowen")
+maps.Add(mp2, "name", "Krishan")
+// map[string]string{"name": "Bowen"}
+```
+
+### `maps.Exists()`
+
+The `maps.Exists()` function determines if the given key exists in the provided map:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]any{"name": "Krishan", "age": 22}
+
+exists := maps.Exists(mp, "name") // true
+
+exists = maps.Exists(mp, "email") // false
+```
+
+### `maps.Forget()`
+
+The `maps.Forget()` function removes the given key(s) from the provided map:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]string{"name": "Krishan", "age": "22"}
+
+maps.Forget(mp, "name", "age")
+// map[string]string{}
+```
+
+### `maps.Get()`
+
+The `maps.Get()` function retrieves the value of the given key from the provided map. If the key does not exist, the default value will be returned:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]any{"name": "Bowen"}
+
+value := maps.Get(mp, "name", "Krishan")
+// Bowen
+
+value = maps.Get(mp, "age", 22)
+// 22
+```
+
+### `maps.Has()`
+
+The `maps.Has()` function determines if the given key(s) exists in the provided map:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]any{"name": "Goravel", "language": "Go"}
+
+exists := maps.Has(mp, "name", "language")
+// true
+
+exists = maps.Has(mp, "name", "age")
+// false
+```
+
+### `maps.HasAny()`
+
+The `maps.HasAny()` function determines if any of the given key(s) exists in the provided map:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]any{"name": "Goravel", "language": "Go"}
+
+exists := maps.HasAny(mp, "name", "age")
+// true
+
+exists = maps.HasAny(mp, "age", "email")
+// false
+```
+
+### `maps.Only()`
+
+The `maps.Only()` function retrieves only the given key(s) from the provided map:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]any{"name": "Goravel", "language": "Go"}
+
+newMap := maps.Only(mp, "name")
+// map[string]any{"name": "Goravel"}
+
+newMap = maps.Only(mp, "name", "age")
+// map[string]any{"name": "Goravel"}
+```
+
+### `maps.Pull()`
+
+The `maps.Pull()` function retrieves and removes the given key from the provided map:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]any{"name": "Goravel", "language": "Go"}
+
+name := maps.Pull(mp, "name")
+// name = "Goravel"
+// mp = map[string]any{"language": "Go"}
+```
+
+A default value can be provided as the third argument to the `maps.Pull()` function. This value will be returned if the key does not exist in the map:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]any{"name": "Goravel", "language": "Go"}
+
+name := maps.Pull(mp, "age", "default")
+// name = "default"
+// mp = map[string]any{"name": "Goravel", "language": "Go"}
+```
+
+### `maps.Set()`
+
+The `maps.Set()` function sets the given key and value in the provided map:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]any{"name": "Goravel"}
+
+maps.Set(mp, "language", "Go")
+// map[string]any{"name": "Goravel", "language": "Go"}
+```
+
+### `maps.Where()`
+
+The `maps.Where()` function filters the provided map using the given callback:
+
+```go
+import "github.com/goravel/framework/support/maps"
+
+mp := map[string]string{"name": "Goravel", "language": "Go"}
+
+newMap := maps.Where(mp, func(key string, value string) bool {
+    return key == "name"
+})
+// map[string]string{"name": "Goravel"}
 ```
 
 <CommentService/>
