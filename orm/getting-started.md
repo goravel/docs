@@ -145,6 +145,7 @@ func (r *User) Connection() string {
 | Distinct      | [Filter Repetition](#filter-repetition)                 |
 | Driver        | [Get Driver](#get-driver)                               |
 | Exec          | [Execute native update SQL](#execute-native-update-sql) |
+| Exists        | [Exists](#exists) |
 | Find          | [Query one or multiple lines by ID](#query-one-or-multiple-lines-by-id)            |
 | FindOrFail    | [Not found return error](#not-found-return-error)            |
 | First         | [Query one line](#query-one-line)                       |
@@ -677,6 +678,13 @@ res, err := facades.Orm().Query().Exec("DROP TABLE users")
 num := res.RowsAffected
 ```
 
+### Exists
+
+```go
+var exists bool
+facades.Orm().Query().Where("name", "tom").Exists(&exists)
+```
+
 ### Transaction
 
 You can execute a transaction by `Transaction` function.
@@ -712,7 +720,7 @@ if err := tx.Create(&user); err != nil {
 
 ### Scopes
 
-Allows you to specify commonly used queries that can be referenced when methoed are called.
+Allows you to specify commonly used queries that can be referenced when method are called.
 
 ```go
 func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
