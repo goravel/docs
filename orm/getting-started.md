@@ -145,6 +145,7 @@ func (r *User) Connection() string {
 | Distinct      | [Filter Repetition](#filter-repetition)                 |
 | Driver        | [Get Driver](#get-driver)                               |
 | Exec          | [Execute native update SQL](#execute-native-update-sql) |
+| Exists        | [Exists](#exists) |
 | Find          | [Query one or multiple lines by ID](#query-one-or-multiple-lines-by-id)            |
 | FindOrFail    | [Not found return error](#not-found-return-error)            |
 | First         | [Query one line](#query-one-line)                       |
@@ -675,6 +676,13 @@ res, err := facades.Orm().Query().Exec("DROP TABLE users")
 // DROP TABLE `users`;
 
 num := res.RowsAffected
+```
+
+### Exists
+
+```go
+var exists bool
+facades.Orm().Query().Where("name", "tom").Exists(&exists)
 ```
 
 ### Transaction

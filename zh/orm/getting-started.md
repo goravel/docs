@@ -145,6 +145,7 @@ func (r *User) Connection() string {
 | Distinct      | [过滤重复](#过滤重复)                   |
 | Driver        | [获取当前驱动](#获取当前驱动)           |
 | Exec          | [执行原生更新 SQL](#执行原生更新-sql)    |
+| Exists        | [数据是否存在](#数据是否存在)    |
 | Find          | [查询一条或多条数据](#根据-id-查询单条或多条数据) 
 | FindOrFail    | [未找到时抛出错误](#未找到时抛出错误)                  |
 | First         | [查询一条数据](#查询一条数据)                   |
@@ -675,6 +676,13 @@ res, err := facades.Orm().Query().Exec("DROP TABLE users")
 // DROP TABLE `users`;
 
 num := res.RowsAffected
+```
+
+### 数据是否存在
+
+```go
+var exists bool
+facades.Orm().Query().Where("name", "tom").Exists(&exists)
 ```
 
 ### 事务
