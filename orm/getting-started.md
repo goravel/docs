@@ -720,7 +720,7 @@ if err := tx.Create(&user); err != nil {
 
 ### Scopes
 
-Allows you to specify commonly used queries that can be referenced when methoed are called.
+Allows you to specify commonly used queries that can be referenced when method are called.
 
 ```go
 func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
