@@ -42,6 +42,17 @@
 | [convert.Tap()](#convert-tap)         | [convert.With()](#convert-with)       | [convert.Transform()](#convert-transform) |
 | [convert.Default()](#convert-default) | [convert.Pointer()](#convert-pointer) |                                           |
 
+### Collections
+
+|                                             |                                               |                                               |
+|---------------------------------------------|-----------------------------------------------|-----------------------------------------------|
+| [collections.Count()](#collections-count)   | [collections.CountBy()](#collections-countby) | [collections.Each()](#collections-each)       |
+| [collections.Filter()](#collections-filter) | [collections.GroupBy()](#collections-groupby) | [collections.Keys()](#collections-keys)       |
+| [collections.Map()](#collections-map)       | [collections.Max()](#collections-max)         | [collections.Merge()](#collections-merge)     |
+| [collections.Min()](#collections-min)       | [collections.Reverse()](#collections-reverse) | [collections.Shuffle()](#collections-shuffle) |
+| [collections.Split()](#collections-split)   | [collections.Sum()](#collections-sum)         | [collections.Unique()](#collections-unique)   |
+| [collections.Values()](#collections-values) |                                               |                                               |
+
 ## Paths
 
 ### `path.App()`
@@ -467,6 +478,214 @@ import "github.com/goravel/framework/support/convert"
 convert.Pointer("foo") // *string("foo")
 
 convert.Pointer(1) // *int(1)
+```
+
+## Collections
+
+### `collections.Count()`
+
+The `collections.Count()` function returns the number of items in the given collection:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+collect.Count([]string{"Goravel", "Framework"})
+// 2
+```
+
+### `collections.CountBy()`
+
+The `collections.CountBy()` function counts the occurrences for which the predicate is true:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
+    return strings.Contains(value, "Goravel")
+})
+// 1
+```
+
+### `collections.Each()`
+
+The `collections.Each()` function iterates over the items in the given collection and passes each item to the given callback:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
+    fmt.Println(index + 1, value)
+})
+// 1 Goravel
+// 2 Framework
+```
+
+### `collections.Filter()`
+
+The `collections.Filter()` function filters the items in the collection using the given callback:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+newCollection := collect.Filter([]string{"Goravel", "Framework"}, func(value string) bool {
+    return strings.Contains(value, "Goravel")
+})
+
+// []string{"Goravel"}
+```
+
+### `collections.GroupBy()`
+
+The `collections.GroupBy()` function groups the items in the collection by the result of the given callback:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+// use example of complex map slice (use different example)
+newCollection := collect.GroupBy([]map[string]string{
+    {"class": "1", "Name": "Rohan"},
+    {"class": "2", "Name": "Bowen"},
+    {"class": "2", "Name": "Krishan"},
+}, func(value map[string]string) string {
+    return value["class"]
+})
+
+// map[string][]map[string]string{
+//     "1": []map[string]string{{"class": "1", "Name": "Rohan"}},
+//     "2": []map[string]string{{"class": "2", "Name": "Bowen"}, {"class": "2", "Name": "Krishan"}},
+// }
+```
+
+### `collections.Keys()`
+
+The `collections.Keys()` function returns all the keys for the items in the collection:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+keys := collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
+// []string{"name", "language"}
+```
+
+### `collections.Map()`
+
+The `collections.Map()` function converts one type of collection into another using the given iteratee:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+newCollection := collect.Map([]string{"Goravel", "Framework"}, func(value string,  _ int) string {
+    return strings.ToUpper(value)
+})
+
+// []string{"GORAVEL", "FRAMEWORK"}
+```
+
+### `collections.Max()`
+
+The `collections.Max()` function returns the maximum value of the given collection:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+max := collect.Max([]int{1, 2, 3, 4, 5})
+// 5
+```
+
+### `collections.Merge()`
+
+The `collections.Merge()` function merges the given maps into a single map:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+newMap := collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"language": "Go"})
+// map[string]string{"name": "Goravel", "language": "Go"}
+
+newMap = collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"name": "Framework"})
+// map[string]string{"name": "Framework"}
+```
+
+### `collections.Min()`
+
+The `collections.Min()` function returns the minimum value of the given collection:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+min := collect.Min([]int{1, 2, 3, 4, 5})
+// 1
+```
+
+### `collections.Reverse()`
+
+The `collections.Reverse()` function reverses the items in the collection:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+newCollection := collect.Reverse([]string{"Goravel", "Framework"})
+
+// []string{"Framework", "Goravel"}
+```
+
+### `collections.Shuffle()`
+
+The `collections.Shuffle()` function shuffles the items in the collection:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+newCollection := collect.Shuffle([]int{1, 2, 3, 4, 5})
+
+// []int{3, 1, 5, 2, 4}(example)
+```
+
+### `collections.Split()`
+
+The `collections.Split()` function splits a collection into the groups of the given length. If the collection can't be split evenly, the final chunk will contain the remaining items:
+```go
+import "github.com/goravel/framework/support/collect"
+
+newCollection := collect.Split([]int{1, 2, 3, 4, 5}, 2)
+
+// [][]int{{1, 2}, {3, 4}, {5}}
+```
+
+### `collections.Sum()`
+
+The `collections.Sum()` function returns the sum of all items in the collection:
+
+```go
+
+import "github.com/goravel/framework/support/collect"
+
+sum := collect.Sum([]int{1, 2, 3, 4, 5})
+
+// 15
+```
+
+### `collections.Unique()`
+
+The `collections.Unique()` method returns the duplicate-free collection where in case of duplicate values, only the first occurrence will be kept:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+newCollection := collect.Unique([]string{"Goravel", "Framework", "Goravel"})
+
+// []string{"Goravel", "Framework"}
+```
+
+### `collections.Values()`
+
+The `collections.Values()` function returns all the values of the given collection:
+
+```go
+import "github.com/goravel/framework/support/collect"
+
+values := collect.Values(map[string]string{"name": "Goravel", "language": "Go"})
+// []string{"Goravel", "Go"}
 ```
 
 <CommentService/>
