@@ -46,6 +46,20 @@ facades.Log().Panic(message)
 facades.Log().Panicf(message, args)
 ```
 
+### Write to a specific channel
+
+Sometimes, you may want to record messages to a channel other than the application's default channel:
+
+```go
+facades.Log().Channel("single").Info(message)
+```
+
+If you want to write to multiple channels at the same time, you can use the `Stack` method:
+
+```go
+facades.Log().Stack([]string{"single", "slack"}).Info(message)
+```
+
 ## Chain Methods
 
 Goravel provides convenient chain methods, that make it easy to insert more useful information into the log:
