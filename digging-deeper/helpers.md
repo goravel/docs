@@ -35,6 +35,13 @@
 | [maps.Only()](#maps-only)   | [maps.Pull()](#maps-pull)     | [maps.Set()](#maps-set)       |
 | [maps.Where()](#maps-where) |                               |                               |
 
+### Convert
+
+|                                       |                                       |                                           |
+|---------------------------------------|---------------------------------------|-------------------------------------------|
+| [convert.Tap()](#convert-tap)         | [convert.With()](#convert-with)       | [convert.Transform()](#convert-transform) |
+| [convert.Default()](#convert-default) | [convert.Pointer()](#convert-pointer) |                                           |
+
 ## Paths
 
 ### `path.App()`
@@ -381,6 +388,85 @@ newMap := maps.Where(mp, func(key string, value string) bool {
     return key == "name"
 })
 // map[string]string{"name": "Goravel"}
+```
+
+## Convert
+
+### `convert.Tap()`
+
+The `convert.Tap()` function passes the given value to the provided callback and returns the value:
+
+```go
+import "github.com/goravel/framework/support/convert"
+
+value := convert.Tap("Goravel", func(value string) {
+    fmt.Println(value + " Framework")
+})
+// Goravel
+
+mp := map[string]string{"name": "Goravel"}
+val := convert.Tap(mp, func(value map[string]string) {
+    mp["language"] = "Go"
+})
+// map[string]string{"name": "Goravel", "language": "Go"}
+```
+
+### `convert.Transform()`
+
+The `convert.Transform()` transforms the given value using the provided callback and returns the result:
+
+```go
+import "github.com/goravel/framework/support/convert"
+
+value := convert.Transform(1, strconv.Itoa)
+// "1"
+
+val := convert.Transform("foo", func(s string) *foo {
+      return &foo{Name: s}
+})
+// &foo{Name: "foo"}
+```
+
+### `convert.With()`
+
+The `convert.With()` executes the given callback with the provided value and returns the resul of the callback:
+
+```go
+import "github.com/goravel/framework/support/convert"
+
+value := convert.With("Goravel", func(value string) string {
+    return value + " Framework"
+})
+// Goravel Framework
+```
+
+### `convert.Default()`
+
+The `convert.Default()` method returns first non-zero value. If all values are zero, it returns zero value.
+
+```go
+import "github.com/goravel/framework/support/convert"
+
+value := convert.Default("", "foo")
+// foo
+
+value = convert.Default("bar", "foo")
+// bar
+
+value = convert.Default(0, 1)
+// 1
+```
+
+### `convert.Pointer()`
+
+The `convert.Pointer()` method returns the pointer of the given value.
+
+```go
+import "github.com/goravel/framework/support/convert"
+
+convert.Pointer("foo") // *string("foo")
+
+convert.Pointer(1) // *int(1)
 ```
 
 <CommentService/>
