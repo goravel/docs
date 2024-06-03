@@ -4,9 +4,13 @@
 
 ## Introduction
 
-Sessions enable you to store user information across multiple requests, providing a stateful experience within the inherently stateless HTTP protocol. This user information is stored persistently on the server side. Goravel offers a unified interface for interacting with various persistent storage mechanisms.
+Session enables you to store user information across multiple requests, providing a stateful experience within the inherently stateless HTTP protocol. This user information is stored persistently on the server side. Goravel offers a unified interface for interacting with various persistent storage drivers.
 
-## Register Middleware
+## Configuration
+
+The `session` configuration file is located at `config/session.go`. The default driver is `file`, which stores sessions in the `storage/framework/sessions` directory. Goravel allows you to create a custom `session` driver by implementing the `contracts/session/driver` interface.
+
+### Register Middleware
 
 By default, Goravel does not start a session automatically. However, it provides middleware to start a session. You can register the session middleware in the `app/http/kernel.go` file to apply it to all routes, or you can add it to specific routes:
 
@@ -16,8 +20,6 @@ import (
 	"github.com/goravel/framework/session/middleware"
 )
 
-...
-
 func (kernel Kernel) Middleware() []http.Middleware {
 	return []http.Middleware{
 		middleware.StartSession(),
@@ -25,19 +27,11 @@ func (kernel Kernel) Middleware() []http.Middleware {
 }
 ```
 
-## Configuration
-
-The session configuration file is located at `config/session.go`. Be sure to review the options available to you in this file.
-
-The driver option specifies the session storage mechanism. Goravel supports the following session drivers:
-
-- `file`: sessions are stored in `storage/framework/sessions` directory.
-
 ## Interacting With The Session
 
 ### Retrieving Data
 
-You can access session instance via the `Request` instance. You can use the `Get` method of the session instance to retrieve data from the session. If the value does not exist, `nil` will be returned.
+You can use the `Get` method to retrieve data from the session. If the value does not exist, `nil` will be returned.
 
 ```go
 value := ctx.Request().Session().Get("key")
@@ -62,7 +56,7 @@ data := ctx.Request().Session().All()
 If you would like to retrieve a subset of the session data, you may use the `Only` method:
 
 ```go
-data := ctx.Request().Session().Only("username", "email")
+data := ctx.Request().Session().Only([]string{"username", "email"})
 ```
 
 ### Determining If An Item Exists In The Session
@@ -93,7 +87,7 @@ if ctx.Request().Session().Missing("user") {
 
 ### Storing Data
 
-You may use the `Put` method to store data in the session. You may pass a key and a value to the `Put` method:
+You can use the `Put` method to store data in the session:
 
 ```go
 ctx.Request().Session().Put("key", "value")
@@ -109,7 +103,7 @@ value := ctx.Request().Session().Pull("key")
 
 ### Deleting Data
 
-The `Forget` method can be used to remove a piece of data from the session. If you would like to remove all data from the session, you may use the `Flush` method:
+The `Forget` method can be used to remove a piece of data from the session. If you would like to remove all data from the session, you can use the `Flush` method:
 
 ```go
 ctx.Request().Session().Forget("username", "email")
@@ -139,23 +133,17 @@ Flash data is session data that will only be available during the subsequent HTT
 ctx.Request().Session().Flash("status", "Task was successful!")
 ```
 
-### Reflash Data
-
 If you would like to keep your flash data around for an additional request, you may use the `Reflash` method:
 
 ```go
 ctx.Request().Session().Reflash()
 ```
 
-### Keep specific flash data
-
 If you would like to keep specific flash data around for an additional request, you may use the `Keep` method:
 
 ```go
 ctx.Request().Session().Keep("status", "username")
 ```
-
-### Keep data for immediate use
 
 If you would like to keep specific data around for immediate use, you may use the `Now` method:
 
@@ -167,7 +155,7 @@ ctx.Request().Session().Now("status", "Task was successful!")
 
 ### Building A Custom Session
 
-To build a custom session, use the `Session` facade. The `Session` facade provides the `BuildSession` method, which takes a driver instance and an optional session ID if you want to specify a custom session ID:
+Use the `Session` facade to build a custom session. The `Session` facade provides the `BuildSession` method, which takes a driver instance and an optional session ID if you want to specify a custom session ID:
 
 ```go
 import "github.com/goravel/framework/facades"
@@ -175,56 +163,9 @@ import "github.com/goravel/framework/facades"
 session := facades.Session().BuildSession(driver, "sessionID")
 ```
 
-### Retrieving driver instance
+### Add Custom Session Drivers
 
-To retrieve the driver instance from the session manager, use the `Driver` method. It accepts an optional driver name; if not provided, it returns the default driver instance:
-
-```go
-driver, err := facades.Session().Driver("file")
-```
-
-### Starting A New Session
-
-To start a new session, use the `Start` method:
-
-```go
-session := facades.Session().BuildSession(driver)
-session.Start()
-```
-
-### Saving The Session Data
-
-To save the session data, use the `Save` method:
-
-```go
-session := facades.Session().BuildSession(driver)
-session.Start()
-session.Save()
-```
-
-### Attaching the Session to the Request
-
-To attach the session to the request, use the `SetSession` method:
-
-```go
-session := facades.Session().BuildSession(driver)
-session.Start()
-ctx.Request().SetSession(session)
-```
-
-### Checking if request has session
-
-To check if the request has a session, use the `HasSession` method:
-
-```go
-if ctx.Request().HasSession() {
-    //
-}
-```
-
-## Add Custom Session Drivers
-
-### Implementing The Driver
+#### Implementing The Driver
 
 To implement a custom session driver, driver must implement the `contracts/session/driver` interface.
 
@@ -246,16 +187,55 @@ type Driver interface {
 }
 ```
 
-### Registering The Driver
+#### Registering The Driver
 
-After implementing the driver, you need to register it in Goravel. You can do this using `Extend` method of the `facades.Session` facade. You should call the `Extend` method in the `boot` method of your service provider:
+After implementing the driver, you need to register it in Goravel. You can do this using `Extend` method of the `facades.Session`. You should call the `Extend` method in the `boot` method of `app/providers/app_service_provider.go`:
 
 ```go
 import "github.com/goravel/framework/contracts/session"
 
-facades.Session().Extend("custom", func() session.Driver {
-	return &CustomDriver{}
+facades.Session().Extend("redis", func() session.Driver {
+	return &RedisDriver{}
 })
 ```
 
-Once the driver is registered, you can use it by setting the `driver` option in the session configuration file to `custom` or by setting the `SESSION_DRIVER` environment variable to `custom`.
+Once the driver is registered, you can use it by setting the `driver` option in the session configuration file to `redis` or by setting the `SESSION_DRIVER` environment variable to `redis`.
+
+### Retrieving driver instance
+
+Use the `Driver` method to retrieve the driver instance from the session manager. It accepts an optional driver name, if not provided, it returns the default driver instance:
+
+```go
+driver, err := facades.Session().Driver("file")
+```
+
+### Starting A New Session
+
+```go
+session := facades.Session().BuildSession(driver)
+session.Start()
+```
+
+### Saving The Session Data
+
+```go
+session := facades.Session().BuildSession(driver)
+session.Start()
+session.Save()
+```
+
+### Attaching the Session to the Request
+
+```go
+session := facades.Session().BuildSession(driver)
+session.Start()
+ctx.Request().SetSession(session)
+```
+
+### Checking if request has session
+
+```go
+if ctx.Request().HasSession() {
+    //
+}
+```

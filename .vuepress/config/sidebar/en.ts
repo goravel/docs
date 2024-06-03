@@ -110,6 +110,10 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/the-basics/grpc",
         },
         {
+          text: "Session",
+          link: "/the-basics/session",
+        },
+        {
           text: "Validation",
           link: "/the-basics/validation",
         },

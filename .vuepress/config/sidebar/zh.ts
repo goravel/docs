@@ -110,6 +110,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/the-basics/grpc",
         },
         {
+          text: "Session",
+          link: "/zh/the-basics/session",
+        },
+        {
           text: "表单验证",
           link: "/zh/the-basics/validation",
         },

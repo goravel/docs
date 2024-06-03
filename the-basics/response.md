@@ -68,14 +68,13 @@ ctx.Response().Header("Content", "Goravel").String(http.StatusOK, "Hello Goravel
 
 ### Set Cookie
 
-To set a cookie, use the `Cookie` method on the response instance. The `Cookie` method accepts a `http.Cookie` instance, which allows you to set various cookie options.
+Use the `Cookie` method on the `response` instance to set a `cookie`. The `Cookie` method accepts a `http.Cookie` instance, which allows you to set various cookie options.
 
 ```go
 import (
-   "time"
-   "github.com/goravel/framework/contracts/http"
+  "time"
+  "github.com/goravel/framework/contracts/http"
 )
-
 
 ctx.Response().Cookie(http.Cookie{
   Name: "name",
@@ -90,7 +89,7 @@ ctx.Response().Cookie(http.Cookie{
 
 ### Expire Cookie
 
-To remove a cookie, you can set its maximum age to a negative value using the `WithoutCookie` method.
+Use the `WithoutCookie` method to remove a cookie.
 
 ```go
 ctx.Response().WithoutCookie("name")
