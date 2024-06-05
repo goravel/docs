@@ -73,11 +73,13 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
-## Defining Input Expectations
+## Command I/O
 
-When you write console commands, it's typical to collect user input through arguments or options. With Goravel, it's extremely easy to retrieve the arguments and options that the user provides.
+### Retrieving Input
 
-### Arguments
+When you write console commands, it's typical to collect user input through `arguments` or `options`. With Goravel, it's extremely easy to retrieve the arguments and options that the user provides.
+
+#### Arguments
 
 Follow the arguments after the command:
 
@@ -97,7 +99,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
-### Options
+#### Options
 
 Options, like arguments, are another form of user input. Options are prefixed by two hyphens (--) when they are provided via the command line.
 
@@ -146,22 +148,9 @@ go run . artisan emails name --lang Chinese name
 
 Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
 
-### Category
+### Prompting For Input
 
-You can set a set of commands to the same category, convenient in `go run . artisan list`:
-
-```go
-// Extend The console command extend.
-func (receiver *ConsoleMakeCommand) Extend() command.Extend {
-  return command.Extend{
-    Category: "make",
-  }
-}
-```
-
-## Prompting For Input
-
-### Asking Questions
+#### Asking Questions
 
 In addition to arguments and options, you may also prompt the user for input during the execution of a command. The `Ask` method will prompt the user with the given question and return their response:
 
@@ -237,7 +226,7 @@ type SecretOption struct {
 }
  ```
 
-### Confirming Actions
+#### Confirming Actions
 
 If you need to ask the user to confirm an action before proceeding, you may use the `Confirm` method. By default, this method will return `false` unless the user select affirmative option.
 
@@ -269,7 +258,7 @@ type ConfirmOption struct {
 }
 ```
 
-## Single Select Questions
+#### Single Select Questions
 
 If you need to ask the user to select an option from a list of options, you may use the `Choice` method. The `Choice` method will return the value of the selected option:
 
@@ -310,7 +299,7 @@ type ChoiceOption struct {
 }
 ```
 
-### Multiple Select Questions
+#### Multiple Select Questions
 
 If you need to ask the user to select multiple options from a list of options, you may use the `MultiSelect` method. The `MultiSelect` method will return the values of the selected options:
 
@@ -355,7 +344,7 @@ type MultiSelectOption struct {
 }
 ```
 
-## Writing Output
+### Writing Output
 
 Sometimes you may need to write output to the console. Goravel provides several methods to assist you in writing output to the console. Each of the method have their appropriate colorized output. For example, `Error` will display the text in red.
 
@@ -370,7 +359,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
-You may use the `NewLine` method to write a new line to the console:
+You can use the `NewLine` method to write a new line to the console:
 
 ```go
 // write single blank line
@@ -380,7 +369,7 @@ ctx.NewLine()
 ctx.NewLine(2)
 ```
 
-## Progress Bars
+#### Progress Bars
 
 For long-running tasks, it is often helpful to provide the user with some indication of how much time the task will take. You may use the `WithProgressBar` method to display a progress bar. 
 
@@ -411,7 +400,7 @@ for _, user := range users {
 err = bar.Finish()
 ```
 
-## Spinner
+#### Spinner
 
 If you need to display a spinner while a task is running, you may use the `Spinner` method.
 
@@ -423,6 +412,19 @@ err := ctx.Spinner("Loading...", console.SpinnerOption{
         return nil
     },
 })
+```
+
+## Category
+
+You can set a set of commands to the same category, convenient in `go run . artisan list`:
+
+```go
+// Extend The console command extend.
+func (receiver *ConsoleMakeCommand) Extend() command.Extend {
+  return command.Extend{
+    Category: "make",
+  }
+}
 ```
 
 ## Registering Commands
