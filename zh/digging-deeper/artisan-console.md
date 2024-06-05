@@ -382,7 +382,7 @@ _, err := ctx.WithProgressBar(items, func(item any) error {
 
 ```go
 users := []string{"user1", "user2", "user3"}
-bar := ctx.ProgressBar(len(users))
+bar := ctx.CreateProgressBar(len(users))
 
 err := bar.Start()
 
@@ -391,7 +391,7 @@ for _, user := range users {
     bar.Advance()
 	
 	// sleep for a while to simulate processing
-	time.Sleep(time.Millisecond * 50)
+    time.Sleep(time.Millisecond * 50)
 }
 
 err = bar.Finish()
