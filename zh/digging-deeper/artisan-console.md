@@ -335,7 +335,7 @@ type MultiSelectOption struct {
     Default []string
     // 描述
     Description string
-    // Filterable determines if the choices can be filtered.
+    // 过滤选项，输入 `/` 开始过滤
     Filterable bool
     // 字数限制
     Limit int

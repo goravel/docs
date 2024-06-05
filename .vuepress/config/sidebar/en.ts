@@ -160,6 +160,10 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/digging-deeper/package-development",
         },
         {
+          text: "Color",
+          link: "/digging-deeper/color",
+        },
+        {
           text: "Helpers",
           link: "/digging-deeper/helpers",
         },

@@ -160,6 +160,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/digging-deeper/package-development",
         },
         {
+          text: "颜色",
+          link: "/zh/digging-deeper/color",
+        },
+        {
           text: "辅助函数",
           link: "/zh/digging-deeper/helpers",
         },

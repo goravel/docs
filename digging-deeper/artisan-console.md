@@ -335,7 +335,7 @@ type MultiSelectOption struct {
     Default []string
     // Description the input description.
     Description string
-    // Filterable determines if the choices can be filtered.
+    // Filterable determines if the choices can be filtered, type `/` to starting filter.
     Filterable bool
     // Limit the number of choices that can be selected.
     Limit int
