@@ -2,9 +2,9 @@
 
 [[toc]]
 
-## Introduction
+## 简介
 
-Goravel provides a fluent string manipulation library that allows you to easily manipulate strings. Fluent Strings provides an object-oriented way to manipulate strings, allowing you to chain multiple string operations together. Every method returns the current string instance, allowing you to chain multiple methods together. So to get in String, you can use the `String` method on the response instance. The `String` method accepts a `string` instance, which allows you to set various string options.
+Goravel 提供了一个流畅的字符串操作库，允许您轻松地操作字符串。流畅的字符串提供了一种面向对象的方式来操作字符串，允许您将多个字符串操作链接在一起。每个方法都会返回当前字符串实例，允许您将多个方法链接在一起。因此，要获取字符串，您可以在响应实例上使用 `String` 方法。`String` 方法接受一个 `string` 实例，允许您设置各种字符串选项。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -12,11 +12,11 @@ import "github.com/goravel/framework/support/str"
 str.Of("  Goravel  ").Trim().Lower().UpperFirst().String() // "Goravel"
 ```
 
-## Available Methods
+## 可用方法
 
 ### `Of`
 
-The `Of` method creates a new fluent string instance from a given string.
+`Of` 方法从给定的字符串创建一个新的流畅字符串实例。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -26,7 +26,7 @@ str.Of("Goravel")
 
 ### `After`
 
-The `After` method returns the portion of a string that appears after a specified value. If the value is an empty string or does not exist within the original string, the full string is returned.
+`After` 方法返回字符串中指定值之后的部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -36,7 +36,7 @@ str.Of("Hello World!").After("Hello").String() // " World!"
 
 ### `AfterLast`
 
-The `AfterLast` method returns the portion of a string that appears after the last occurrence of a specified value. If the value is an empty string or does not exist within the original string, the full string is returned.
+`AfterLast` 方法返回字符串中指定值最后一次出现之后的部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -46,7 +46,7 @@ str.Of("docs.goravel.dev").AfterLast(".").String() // "dev"
 
 ### `Append`
 
-The `Append` method appends the specified value to the end of the string.
+`Append` 方法将指定的值附加到字符串的末尾。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -56,7 +56,7 @@ str.Of("Bowen").Append(" Han").String() // "Bowen Han"
 
 ### `Basename`
 
-The `Basename` method returns the trailing name component of a path, optionally removing a specified suffix from the base name.
+`Basename` 方法返回路径的尾部名称组件，可选择从基本名称中删除指定的后缀。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -68,7 +68,7 @@ str.Of("framework/support/str.go").Basename(".go").String() // "str"
 
 ### `Before`
 
-The `Before` method returns the portion of a string that appears before a specified value. If the value is an empty string or does not exist within the original string, the full string is returned.
+`Before` 方法返回指定值之前的字符串部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -78,7 +78,7 @@ str.Of("Hello World!").Before("World").String() // "Hello "
 
 ### `BeforeLast`
 
-The `BeforeLast` method returns the portion of a string that appears before the last occurrence of a specified value. If the value is an empty string or does not exist within the original string, the full string is returned.
+`BeforeLast` 方法返回指定值最后一次出现之前的字符串部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -88,7 +88,7 @@ str.Of("docs.goravel.dev").BeforeLast(".").String() // "docs.goravel"
 
 ### `Between`
 
-The `Between` method returns the portion of a string between two given values.
+`Between` 方法返回两个给定值之间的字符串部分。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -98,7 +98,7 @@ str.Of("[Hello] World!").Between("[", "]").String() // "Hello"
 
 ### `BetweenFirst`
 
-The `BetweenFirst` method returns the portion of a string between the first occurrence of two given values.
+`BetweenFirst` 方法返回两个给定值之间首次匹配的字符串部分。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -108,7 +108,7 @@ str.Of("[Hello] [World]!").BetweenFirst("[", "]").String() // "Hello"
 
 ### `Camel`
 
-The `Camel` method converts the string to `camelCase`.
+`Camel` 方法将字符串转换为 `camelCase`。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -118,7 +118,7 @@ str.Of("hello_world").Camel().String() // "helloWorld"
 
 ### `CharAt`
 
-The `CharAt` method returns the character at the given index. If the index is out of bounds, an empty string will be returned.
+`CharAt` 方法返回给定索引处的字符。如果索引超出范围，则返回空字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -128,7 +128,7 @@ str.Of("Goravel").CharAt(1) // "o"
 
 ### `Contains`
 
-The `Contains` method determines if the given string contains the given value. The method is case-sensitive. If multiple values are provided, it will return `true` if the string contains any of the values.
+`Contains` 方法确定给定字符串是否包含给定值。该方法区分大小写。如果提供多个值，则如果字符串包含任何值，则返回 `true`。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -140,7 +140,7 @@ str.Of("Hello World").Contains("Gor", "Hello") // true
 
 ### `ContainsAll`
 
-The `ContainsAll` method determines if the given string contains all of the given values. The method is case-sensitive.
+`ContainsAll` 方法确定给定字符串是否包含所有给定值。该方法区分大小写。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -152,7 +152,7 @@ str.Of("Hello World").ContainsAll("Hello", "Gor") // false
 
 ### `Dirname`
 
-The `Dirname` method returns the parent portion of a path.
+`Dirname` 方法返回路径的父部分。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -160,7 +160,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("framework/support/str").Dirname().String() // "framework/support"
 ```
 
-Optionally, you may provide the directory level to trim from the path.
+可选，您可以提供要从路径中删除的目录级别。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -170,7 +170,7 @@ str.Of("framework/support/str").Dirname(2).String() // "framework"
 
 ### `EndsWith`
 
-The `EndsWith` method determines if the given string ends with the given value. The method is case-sensitive.
+`EndsWith` 方法确定给定字符串是否以给定值结尾。该方法区分大小写。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -178,7 +178,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("Goravel").EndsWith("vel") // true
 ```
 
-You may pass multiple values to the method to determine if the string ends with any of the values.
+你可以传递多个值给方法，以确定字符串是否以任何值结尾。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -188,7 +188,7 @@ str.Of("Goravel").EndsWith("vel", "lie") // true
 
 ### `Exactly`
 
-The `Exactly` method determines if the given string is exactly equal to the given value. The method is case-sensitive.
+`Exactly` 方法确定给定字符串是否与给定值完全相等。该方法区分大小写。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -198,7 +198,7 @@ str.Of("Goravel").Exactly("Goravel") // true
 
 ### `Except`
 
-The `Except` method extracts an excerpt from the string that matches the first occurrence of the given value.
+`Except` 方法从字符串中提取与给定值的第一次出现匹配的摘录。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -209,7 +209,7 @@ str.Of("This is a beautiful morning").
     }).String() // "...is a beautiful morn...
 ```
 
-Additionally, you may use `Omission` option to change the string that is used to indicate the excerpt.
+可选，您可以使用 `Omission` 选项更改用于指示摘录的字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -223,7 +223,7 @@ str.Of("This is a beautiful morning").
 
 ### `Explode`
 
-The `Explode` method splits the string into an array of strings using the given delimiter.
+`Explode` 方法使用给定的分隔符将字符串拆分为字符串数组。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -233,7 +233,7 @@ str.Of("Hello World").Explode(" ") // []string{"Hello", "World"}
 
 ### `Finish`
 
-The `Finish` method ensures that the given string ends with the given value. If the string already ends with the value, it will not be added again.
+`Finish` 方法确保给定字符串以给定值结尾。如果字符串已经以该值结尾，则不会再次添加。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -245,7 +245,7 @@ str.Of("framework/").Finish("/").String() // "framework/"
 
 ### `Headline`
 
-The `Headline` method converts the string to a headline.
+`Headline` 方法将字符串转换为标题。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -257,7 +257,7 @@ str.Of("HelloWorld").Headline().String() // "Hello World"
 
 ### `Is`
 
-The `Is` method determines if the given string matches the given pattern. The method is case-sensitive.
+`Is` 方法确定给定字符串是否与给定模式匹配。该方法区分大小写。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -267,7 +267,7 @@ str.Of("foo123").Is("bar*", "baz*", "foo*") // true
 
 ### `IsEmpty`
 
-The `IsEmpty` method determines if the given string is empty.
+`IsEmpty` 方法确定给定字符串是否为空。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -277,7 +277,7 @@ str.Of("").IsEmpty() // true
 
 ### `IsNotEmpty`
 
-The `IsNotEmpty` method determines if the given string is not empty.
+`IsNotEmpty` 方法确定给定字符串是否不为空。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -287,7 +287,7 @@ str.Of("Goravel").IsNotEmpty() // true
 
 ### `IsAscii`
 
-The `IsAscii` method determines if the given string contains only ASCII characters.
+`IsAscii` 方法确定给定字符串是否仅包含 ASCII 字符。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -299,7 +299,7 @@ str.Of("你好").IsAscii() // false
 
 ### `IsSlice`
 
-The `IsSlice` method determines if the given string is a slice.
+`IsSlice` 方法确定给定字符串是否是切片。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -311,7 +311,7 @@ str.Of(`{"name": "John"}`).IsSlice() // false
 
 ### `IsMap`
 
-The `IsMap` method determines if the given string is a map.
+`IsMap` 方法确定给定字符串是否是 map。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -323,7 +323,7 @@ str.Of(`[{"name": "John"}, {"name": "Alice"}]`).IsMap() // false
 
 ### `IsUlid`
 
-The `IsUlid` method determines if the given string is a ULID.
+`IsUlid` 方法确定给定字符串是否是 ULID。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -335,7 +335,7 @@ str.Of("krishan").IsUlid() // false
 
 ### `IsUuid`
 
-The `IsUuid` method determines if the given string is a UUID.
+`IsUuid` 方法确定给定字符串是否是 UUID。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -347,7 +347,7 @@ str.Of("krishan").IsUuid() // false
 
 ### `Kebab`
 
-The `Kebab` method converts the string to `kebab-case`.
+`Kebab` 方法将字符串转换为 `kebab-case`。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -357,7 +357,7 @@ str.Of("GoravelFramework").Kebab().String() // "goravel-framework"
 
 ### `LcFirst`
 
-The `LcFirst` method converts the first character of the string to lowercase.
+`LcFirst` 方法将字符串的第一个字符转换为小写。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -367,7 +367,7 @@ str.Of("Goravel Framework").LcFirst().String() // "goravel Framework"
 
 ### `Length`
 
-The `Length` method returns the length of the string.
+`Length` 方法返回字符串的长度。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -377,7 +377,7 @@ str.Of("Goravel").Length() // 7
 
 ### `Limit`
 
-The `Limit` method truncates the string to the given length.
+`Limit` 方法将字符串截断到给定长度。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -385,7 +385,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("This is a beautiful morning").Limit(7).String() // "This is..."
 ```
 
-Optionally, you may provide the second argument to change the string that is used to indicate the truncation.
+可选，你可以提供第二个参数来更改用于指示截断的字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -395,7 +395,7 @@ str.Of("This is a beautiful morning").Limit(7, " (****)").String() // "This is (
 
 ### `Lower`
 
-The `Lower` method converts the string to lowercase.
+`Lower` 方法将字符串转换为小写。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -405,7 +405,7 @@ str.Of("GORAVEL").Lower().String() // "goravel"
 
 ### `LTrim`
 
-The `LTrim` method trims the left side of the string.
+`LTrim` 方法修剪字符串的左侧。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -417,7 +417,7 @@ str.Of("/framework/").LTrim("/").String() // "framework/"
 
 ### `Mask`
 
-The `Mask` method masks the string with the given mask character.
+`Mask` 方法使用给定的掩码字符掩盖字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -425,7 +425,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("krishan@email.com").Mask("*", 3).String() // "kri**************"
 ```
 
-If needed, you may provide negative number to mask method which instruct the method to begin masking from the end of the string.
+如果需要，可以向方法提供负数，该方法指示从字符串的末尾开始掩码。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -437,7 +437,7 @@ str.Of("krishan@email.com").Mask("*", -13).String() // "kris**************"
 
 ### `Match`
 
-The `Match` method determines if the given string matches the given regular expression.
+`Match` 方法确定给定字符串是否与给定的正则表达式匹配。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -447,7 +447,7 @@ str.Of("This is a (test) string").Match(`\([^)]+\)`).String() // (test)
 
 ### `MatchAll`
 
-The `MatchAll` method determines if the given string matches all of the given regular expressions.
+`MatchAll` 方法确定给定字符串是否与所有给定的正则表达式匹配。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -457,7 +457,7 @@ str.Of("abc123def456def").MatchAll(`\d+`) // []string{"123", "456"}
 
 ### `IsMatch` 
 
-The `IsMatch` method determines if the given string matches (any of) the given regular expression.
+`IsMatch` 方法确定给定字符串是否与给定的正则表达式匹配。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -467,7 +467,7 @@ str.Of("Hello, Goravel!").IsMatch(`(?i)goravel`, `goravel!(.*)`) // true
 
 ### `NewLine`
 
-The `NewLine` method appends a newline character to the string.
+`NewLine` 方法将换行符附加到字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -477,7 +477,7 @@ str.Of("Goravel").NewLine(2).Append("Framework").String() // "Goravel\n\nFramewo
 
 ### `PadBoth`
 
-The `PadBoth` method pads both sides of the string.
+`PadBoth` 方法在字符串的两侧填充。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -487,7 +487,7 @@ str.Of("Hello").PadBoth(10, "_").String() // "__Hello___"
 
 ### `PadLeft`
 
-The `PadLeft` method pads the left side of the string.
+`PadLeft` 方法在字符串的左侧填充。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -497,7 +497,7 @@ str.Of("Hello").PadLeft(10, "_").String() // "_____Hello"
 
 ### `PadRight`
 
-The `PadRight` method pads the right side of the string.
+`PadRight` 方法在字符串的右侧填充。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -507,7 +507,7 @@ str.Of("Hello").PadRight(10, "_").String() // "Hello_____"
 
 ### `Pipe`
 
-The `Pipe` method allows you to transform the string using a given closure.
+`Pipe` 方法允许您使用给定的闭包转换字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -519,7 +519,7 @@ str.Of("Goravel").Pipe(func(s string) string {
 
 ### `Prepend`
 
-The `Prepend` method prepends the given value to the string.
+`Prepend` 方法将给定值添加到字符串的开头。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -529,7 +529,7 @@ str.Of("Framework").Prepend("Goravel ").String() // "Goravel Framework"
 
 ### `Remove`
 
-The `Remove` method removes the given value(s) from the string.
+`Remove` 方法从字符串中删除给定的值。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -541,7 +541,7 @@ str.Of("Hello World").Remove("World", "Hello").String() // " "
 
 ### `Repeat`
 
-The `Repeat` method repeats the string a given number of times.
+`Repeat` 方法重复字符串指定次数。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -551,7 +551,7 @@ str.Of("a").Repeat(2).String() // "aa"
 
 ### `Replace`
 
-The `Replace` method replaces the given value in the string.
+`Replace` 方法替换字符串中的给定值。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -559,7 +559,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello World").Replace("World", "Krishan").String() // "Hello Krishan"
 ```
 
-By default, the `Replace` method is case-sensitive. If you would like the method to be case-insensitive, you may pass `false` as the third argument.
+`Replace` 方法默认区分大小写。如果您希望方法不区分大小写，可以将 `false` 作为第三个参数传递。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -569,7 +569,7 @@ str.Of("Hello World").Replace("world", "Krishan", false).String() // "Hello Kris
 
 ### `ReplaceEnd`
 
-The `ReplaceEnd` method replaces the last occurrence of the given value in the string only if it is at the end of the string.
+`ReplaceEnd` 方法仅在字符串的末尾替换给定值的最后一个出现。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -581,7 +581,7 @@ str.Of("Hello World").ReplaceEnd("Hello", "Goravel").String() // "Hello World"
 
 ### `ReplaceFirst`
 
-The `ReplaceFirst` method replaces the first occurrence of the given value in the string.
+`ReplaceFirst` 方法替换字符串中的第一个给定值。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -591,7 +591,7 @@ str.Of("Hello World").ReplaceFirst("World", "Goravel").String() // "Hello Gorave
 
 ### `ReplaceLast`
 
-The `ReplaceLast` method replaces the last occurrence of the given value in the string.
+`ReplaceLast` 方法替换字符串中的最后一个给定值。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -601,7 +601,7 @@ str.Of("Hello World").ReplaceLast("World", "Goravel").String() // "Hello Goravel
 
 ### `ReplaceMatches`
 
-The `ReplaceMatches` method replaces the given regular expression matches in the string.
+`ReplaceMatches` 方法替换字符串中的给定正则表达式匹配。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -611,7 +611,7 @@ str.Of("Hello, Goravel!").ReplaceMatches(`goravel!(.*)`, "Krishan") // "Hello, K
 
 ### `ReplaceStart`
 
-The `ReplaceStart` method replaces the first occurrence of the given value in the string only if it is at the start of the string.
+`ReplaceStart` 方法仅在字符串的开头替换给定值的第一次出现。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -623,7 +623,7 @@ str.Of("Hello World").ReplaceStart("World", "Goravel").String() // "Hello World"
 
 ### `RTrim`
 
-The `RTrim` method trims the right side of the string.
+`RTrim` 方法修剪字符串的右侧。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -635,7 +635,7 @@ str.Of("/framework/").RTrim("/").String() // "/framework"
 
 ### `Snake`
 
-The `Snake` method converts the string to `snake_case`.
+`Snake` 方法将字符串转换为 `snake_case`。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -645,7 +645,7 @@ str.Of("GoravelFramework").Snake().String() // "goravel_framework"
 
 ### `Split`
 
-The `Split` method splits the string into an array of strings using the given delimiter.
+`Split` 方法使用给定的分隔符将字符串拆分为字符串数组。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -655,7 +655,7 @@ str.Of("Hello World").Split(" ") // []string{"Hello", "World"}
 
 ### `Squish`
 
-The `Squish` method replaces consecutive whitespace characters with a single space.
+`Squish` 方法将连续的空白字符替换为单个空格。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -665,7 +665,7 @@ str.Of("Hello    World").Squish().String() // "Hello World"
 
 ### `Start`
 
-The `Start` method adds a single instance of the given value to the beginning of the string if it does not already start with the value.
+`Start` 方法在字符串的开头添加给定值的一个实例，如果字符串尚未以该值开头。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -677,7 +677,7 @@ str.Of("/framework").Start("/").String() // "/framework"
 
 ### `StartsWith`
 
-The `StartsWith` method determines if the given string starts with (any) given value(s). The method is case-sensitive.
+`StartsWith` 方法确定给定字符串是否以给定值开头。该方法区分大小写。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -689,7 +689,7 @@ str.Of("Hello World").StartsWith("Gor", "Hello") // true
 
 ### `String`
 
-The `String` method returns the string.
+`String` 方法返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -699,7 +699,7 @@ str.Of("Goravel").String() // "Goravel"
 
 ### `Studly`
 
-The `Studly` method converts the string to `StudlyCase`.
+`Studly` 方法将字符串转换为 `StudlyCase`。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -709,7 +709,7 @@ str.Of("goravel_framework").Studly().String() // "GoravelFramework"
 
 ### `Substr`
 
-The `Substr` method returns the portion of the string starting at the given index and continuing for the given length.
+`Substr` 方法返回从给定索引开始并持续给定长度的字符串部分。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -719,7 +719,7 @@ str.Of("Goravel").Substr(1, 3) // "ora"
 
 ### `Swap`
 
-The `Swap` method swaps multiple values in the string.
+`Swap` 方法交换字符串中的多个值。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -732,7 +732,7 @@ str.Of("Golang is awesome").Swap(map[string]string{
 
 ### `Tap`
 
-The `Tap` method passes the string to the given closure and returns the string.
+`Tap` 方法将字符串传递给给定的闭包，并返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -744,7 +744,7 @@ str.Of("Goravel").Tap(func(s string) {
 
 ### `Test`
 
-The `Test` method determines if the given string matches the given regular expression.
+`Test` 方法确定给定字符串是否与给定的正则表达式匹配。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -754,7 +754,7 @@ str.Of("Hello, Goravel!").Test(`goravel!(.*)`) // true
 
 ### `Title`
 
-The `Title` method converts the string to `Title Case`.
+`Title` 方法将字符串转换为 `Title Case`。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -764,7 +764,7 @@ str.Of("goravel framework").Title().String() // "Goravel Framework"
 
 ### `Trim`
 
-The `Trim` method trims the string.
+`Trim` 方法修剪字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -776,7 +776,7 @@ str.Of("/framework/").Trim("/").String() // "framework"
 
 ### `UcFirst`
 
-The `UcFirst` method converts the first character of the string to uppercase.
+`UcFirst` 方法将字符串的第一个字符转换为大写。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -786,7 +786,7 @@ str.Of("goravel framework").UcFirst().String() // "Goravel framework"
 
 ### `UcSplit`
 
-The `UcSplit` method splits the string into an array of strings using uppercase characters.
+`UcSplit` 方法使用大写字符将字符串拆分为字符串数组。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -796,7 +796,7 @@ str.Of("GoravelFramework").UcSplit() // []string{"Goravel", "Framework"}
 
 ### `Unless`
 
-The `Unless` method passes the string to the given closure and returns the string if the given condition is `false`.
+`Unless` 方法将字符串传递给给定的闭包，并在给定条件为 `false` 时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -810,7 +810,7 @@ str.Of("Goravel").Unless(func(s *String) bool {
 
 ### `Upper`
 
-The `Upper` method converts the string to uppercase.
+`Upper` 方法将字符串转换为大写。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -820,7 +820,7 @@ str.Of("goravel").Upper().String() // "GORAVEL"
 
 ### `When`
 
-The `When` method passes the string to the given closure and returns the string if the given condition is `true`.
+`When` 方法将字符串传递给给定的闭包，并在给定条件为 `true` 时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -830,11 +830,11 @@ str.Of("Bowen").When(true, func(s *str.String) *str.String {
 }).String() // "Bowen Han"
 ```
 
-If necessary, you may provide the third argument to the `When` method which is a closure that will be executed when the condition is `false`.
+如果需要，您可以提供第三个参数给 `When` 方法，该方法在条件为 `false` 时执行。
 
 ### `WhenContains`
 
-The `WhenContains` method passes the string to the given closure and returns the string if the given string contains the given value.
+`WhenContains` 方法将字符串传递给给定的闭包，并在给定字符串包含给定值时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -844,11 +844,11 @@ str.Of("Hello Bowen").WhenContains("Hello", func(s *str.String) *str.String {
 }).String() // "Hello Bowen Han"
 ```
 
-If necessary, you may provide the third argument to the `WhenContains` method which is a closure that will be executed when the string does not contain the given value.
+如果需要，您可以提供第三个参数给 `WhenContains` 方法，该方法在字符串不包含给定值时执行。
 
 ### `WhenContainsAll`
 
-The `WhenContainsAll` method passes the string to the given closure and returns the string if the given string contains all of the given values.
+`WhenContainsAll` 方法将字符串传递给给定的闭包，并在给定字符串包含所有给定值时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -858,11 +858,11 @@ str.Of("Hello Bowen").WhenContainsAll([]string{"Hello", "Bowen"}, func(s *str.St
 }).String() // "Hello Bowen Han"
 ```
 
-If necessary, you may provide the third argument to the `WhenContainsAll` method which is a closure that will be executed when the string does not contain all the given values.
+如果需要，您可以提供第三个参数给 `WhenContainsAll` 方法，该方法在字符串不包含所有给定值时执行。
 
 ### `WhenEmpty`
 
-The `WhenEmpty` method passes the string to the given closure and returns the string if the given string is empty.
+`WhenEmpty` 方法将字符串传递给给定的闭包，并在给定字符串为空时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -874,7 +874,7 @@ str.Of("").WhenEmpty(func(s *str.String) *str.String {
 
 ### `WhenIsAscii`
 
-The `WhenIsAscii` method passes the string to the given closure and returns the string if the given string contains only ASCII characters.
+`WhenIsAscii` 方法将字符串传递给给定的闭包，并在给定字符串仅包含 ASCII 字符时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -890,7 +890,7 @@ str.Of("你好").WhenIsAscii(func(s *str.String) *str.String {
 
 ### `WhenNotEmpty`
 
-The `WhenNotEmpty` method passes the string to the given closure and returns the string if the given string is not empty.
+`WhenNotEmpty` 方法将字符串传递给给定的闭包，并在给定字符串不为空时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -902,7 +902,7 @@ str.Of("Goravel").WhenNotEmpty(func(s *str.String) *str.String {
 
 ### `WhenStartsWith`
 
-The `WhenStartsWith` method passes the string to the given closure and returns the string if the given string starts with the given value.
+`WhenStartsWith` 方法将字符串传递给给定的闭包，并在给定字符串以给定值开头时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -914,7 +914,7 @@ str.Of("hello world").WhenStartsWith("hello", func(s *str.String) *str.String {
 
 ### `WhenEndsWith`
 
-The `WhenEndsWith` method passes the string to the given closure and returns the string if the given string ends with the given value.
+`WhenEndsWith` 方法将字符串传递给给定的闭包，并在给定字符串以给定值结尾时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -926,7 +926,7 @@ str.Of("hello world").WhenEndsWith("world", func(s *str.String) *str.String {
 
 ### `WhenExactly`
 
-The `WhenExactly` method passes the string to the given closure and returns the string if the given string is exactly equal to the given value.
+`WhenExactly` 方法将字符串传递给给定的闭包，并在给定字符串与给定值完全相等时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -938,7 +938,7 @@ str.Of("Goravel").WhenExactly("Goravel", func(s *str.String) *str.String {
 
 ### `WhenNotExactly`
 
-The `WhenNotExactly` method passes the string to the given closure and returns the string if the given string is not exactly equal to the given value.
+`WhenNotExactly` 方法将字符串传递给给定的闭包，并在给定字符串不完全等于给定值时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -950,7 +950,7 @@ str.Of("Goravel").WhenNotExactly("Goravel", func(s *str.String) *str.String {
 
 ### `WhenIs`
 
-The `WhenIs` method passes the string to the given closure and returns the string if the given string matches the given pattern.
+`WhenIs` 方法将字符串传递给给定的闭包，并在给定字符串与给定模式匹配时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -962,7 +962,7 @@ str.Of("foo/bar").WhenIs("foo/*", func(s *str.String) *str.String {
 
 ### `WhenIsUlid`
 
-The `WhenIsUlid` method passes the string to the given closure and returns the string if the given string is a ULID.
+`WhenIsUlid` 方法将字符串传递给给定的闭包，并在给定字符串是 ULID 时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -974,7 +974,7 @@ str.Of("01E5Z6Z1Z6Z1Z6Z1Z6Z1Z6Z1Z6").WhenIsUlid(func(s *str.String) *str.String 
 
 ### `WhenIsUuid`
 
-The `WhenIsUuid` method passes the string to the given closure and returns the string if the given string is a UUID.
+`WhenIsUuid` 方法将字符串传递给给定的闭包，并在给定字符串是 UUID 时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -986,7 +986,7 @@ str.Of("550e8400-e29b-41d4-a716-446655440000").WhenIsUuid(func(s *str.String) *s
 
 ### `WhenTest`
 
-The `WhenTest` method passes the string to the given closure and returns the string if the given string matches the given regular expression.
+`WhenTest` 方法将字符串传递给给定的闭包，并在给定字符串与给定正则表达式匹配时返回字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -998,7 +998,7 @@ str.Of("goravel framework").WhenTest(`goravel(.*)`, func(s *str.String) *str.Str
 
 ### `WordCount`
 
-The `WordCount` method returns the number of words in the string.
+`WordCount` 方法返回字符串中的单词数。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -1008,7 +1008,7 @@ str.Of("Hello, World!").WordCount() // 2
 
 ### `Words`
 
-The `Words` method limits the number of words in the string. If necessary, you may provide the second argument to change the string that is used to indicate the truncation.
+`Words` 方法限制字符串中的单词数。如果需要，您可以提供第二个参数来更改用于指示截断的字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
