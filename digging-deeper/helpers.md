@@ -440,7 +440,7 @@ val := convert.Transform("foo", func(s string) *foo {
 
 ### `convert.With()`
 
-The `convert.With()` executes the given callback with the provided value and returns the resul of the callback:
+The `convert.With()` executes the given callback with the provided value and returns the result of the callback:
 
 ```go
 import "github.com/goravel/framework/support/convert"
@@ -644,6 +644,7 @@ newCollection := collect.Shuffle([]int{1, 2, 3, 4, 5})
 ### `collections.Split()`
 
 The `collections.Split()` function splits a collection into the groups of the given length. If the collection can't be split evenly, the final chunk will contain the remaining items:
+
 ```go
 import "github.com/goravel/framework/support/collect"
 
