@@ -4,16 +4,17 @@
 
 ## Server Requirements
 
-- Golang >= 1.20
+- Golang >= 1.21
 
 ## Installation
 
 
 ### Using Goravel Installer
 
+Initialize the installer according to the [documentation](https://github.com/goravel/installer), and then initialize a new Goravel project using the following command:
+
 ```shell
 // Enter the directory where you want to install the project
-go install -u github.com/goravel/installer
 goravel new blog
 ```
 
