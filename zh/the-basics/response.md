@@ -119,6 +119,13 @@ ctx.Response().Status(http.StatusOK).Json(http.Json{
 ctx.Response().Redirect(http.StatusMovedPermanently, "https://goravel.dev")
 ```
 
+## 空响应
+
+```go
+ctx.Response().NoContent()
+ctx.Response().NoContent(http.StatusOk)
+```
+
 ## 获取响应
 
 可以获取响应的各种信息，一般用在 HTTP 中间件中：

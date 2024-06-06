@@ -118,6 +118,13 @@ ctx.Response().Status(http.StatusOK).Json(http.Json{
 ctx.Response().Redirect(http.StatusMovedPermanently, "https://goravel.dev")
 ```
 
+## No Content
+
+```go
+ctx.Response().NoContent()
+ctx.Response().NoContent(http.StatusOk)
+```
+
 ## Get Response
 
 You can obtain all the information from `ctx.Response()`, which is commonly used in HTTP middleware:
