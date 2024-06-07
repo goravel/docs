@@ -381,7 +381,7 @@ _, err := ctx.WithProgressBar(items, func(item any) error {
 })
 ```
 
-Sometimes you may need to update the progress bar manually. You can use the `ProgressBar` method to update the progress bar:
+Sometimes you may need to update the progress bar manually. You can use the `CreateProgressBar` method to update the progress bar:
 
 ```go
 users := []string{"user1", "user2", "user3"}

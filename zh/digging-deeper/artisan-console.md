@@ -378,7 +378,7 @@ _, err := ctx.WithProgressBar(items, func(item any) error {
 })
 ```
 
-有时你可能需要手动更新进度条。你可以使用 `ProgressBar` 方法来更新进度条：
+有时你可能需要手动更新进度条。你可以使用 `CreateProgressBar` 方法来更新进度条：
 
 ```go
 users := []string{"user1", "user2", "user3"}
