@@ -24,14 +24,13 @@ We are open to receiving stars, PRs, and issues!
 
 ## Main Function
 
-|                                                               |                      |                      |                      |
-|---------------------------------------------------------------| --------------       | --------------       | --------------       |
-| [Config](/getting-started/configuration.md)                   | [Http](/the-basics/routing.md)  | [Authentication](/security/authentication.md)  | [Authorization](/security/authorization.md)  |
-| [Orm](/orm/getting-started.md)                                | [Migrate](/orm/migrations.md)  | [Logger](/the-basics/logging.md)  | [Cache](/digging-deeper/cache.md)  |
-| [Grpc](/the-basics/grpc.md)                                   | [Artisan Console](/digging-deeper/artisan-console.md)  | [Task Scheduling](/digging-deeper/task-scheduling.md)  | [Queue](/digging-deeper/queues.md)  |
-| [Event](/digging-deeper/event.md)                             | [FileStorage](/digging-deeper/filesystem.md)  | [Mail](/digging-deeper/mail.md)  | [Validation](/the-basics/validation.md)  |
-| [Mock](/testing/mock.md)                                      | [Hash](/security/hashing.md)  | [Crypt](/security/encryption.md)  | [Carbon](/digging-deeper/helpers.md)  |
-| [Package Development](/digging-deeper/package-development.md) | [Testing](/testing/getting-started.md) |   |   |
+|                    |                      |                      |                      |                      |
+| --------------     | --------------       | --------------       | --------------       | --------------       |
+| [Config](/getting-started/configuration.md)                   | [Http](/the-basics/routing.md)  | [Authentication](/security/authentication.md)  | [Authorization](/security/authorization.md)  | [Orm](/orm/getting-started.md)                                |
+| [Migrate](/orm/migrations.md)  | [Logger](/the-basics/logging.md)  | [Cache](/digging-deeper/cache.md)  | [Grpc](/the-basics/grpc.md)                                   | [Artisan Console](/digging-deeper/artisan-console.md)  |
+| [Task Scheduling](/digging-deeper/task-scheduling.md)  | [Queue](/digging-deeper/queues.md)  | [Event](/digging-deeper/event.md)                             | [FileStorage](/digging-deeper/filesystem.md)  | [Mail](/digging-deeper/mail.md)  |
+| [Validation](/the-basics/validation.md)  | [Mock](/testing/mock.md)                                      | [Hash](/security/hashing.md)  | [Crypt](/security/encryption.md)  | [Carbon](/digging-deeper/helpers.md)  |
+| [Package Development](/digging-deeper/package-development.md) | [Testing](/testing/getting-started.md) | [Localization](/digging-deeper/localization.md)  | [Session](/the-basics/session.md)  |   |
 
 ## Roadmap
 
