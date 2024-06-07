@@ -156,12 +156,20 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/digging-deeper/task-scheduling",
         },
         {
+          text: "Localization",
+          link: "/zh/digging-deeper/localization",
+        },
+        {
           text: "Package Development",
           link: "/digging-deeper/package-development",
         },
         {
           text: "Color",
           link: "/digging-deeper/color",
+        },
+        {
+          text: "Strings",
+          link: "/zh/digging-deeper/strings",
         },
         {
           text: "Helpers",

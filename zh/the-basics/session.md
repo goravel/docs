@@ -127,8 +127,6 @@ ctx.Request().Session().Invalidate()
 
 ### 闪存数据
 
-Flash data is session data that will only be available during the subsequent HTTP request, and then will be deleted. Flash data is useful for storing temporary messages such as status messages. You may use the `Flash` method to store flash data in the session:
-
 闪存数据一种仅在随后的 HTTP 请求中可用的数据，请求结束后将被删除。闪存数据对于存储临时消息（如状态消息）非常有用。你可以使用 `Flash` 方法将闪存数据存储在会话中：
 
 ```go

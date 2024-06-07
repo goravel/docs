@@ -405,8 +405,6 @@ newMap := maps.Where(mp, func(key string, value string) bool {
 
 ### `convert.Tap()`
 
-The `convert.Tap()` function passes the given value to the provided callback and returns the value:
-
 `convert.Tap()` 函数将给定的值传递给提供的回调函数，并返回该值：
 
 ```go

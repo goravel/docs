@@ -93,7 +93,7 @@ err := facades.Auth(ctx).Logout()
 
 ```go
 token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
-err := facades.Auth().Guard("admin").Parse(ctx, token)
+err := facades.Auth(ctx).Guard("admin").Parse(token)
 token, err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 

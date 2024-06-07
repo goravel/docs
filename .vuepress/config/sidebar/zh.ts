@@ -156,12 +156,20 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/digging-deeper/task-scheduling",
         },
         {
+          text: "本地化",
+          link: "/zh/digging-deeper/localization",
+        },
+        {
           text: "扩展包开发",
           link: "/zh/digging-deeper/package-development",
         },
         {
           text: "颜色",
           link: "/zh/digging-deeper/color",
+        },
+        {
+          text: "Strings",
+          link: "/zh/digging-deeper/strings",
         },
         {
           text: "辅助函数",
