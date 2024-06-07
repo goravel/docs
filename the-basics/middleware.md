@@ -43,9 +43,9 @@ func Cors() http.Middleware {
 
 There are some middleware available in Goravel:
 
-| Middleware                                       | Action        |
-| ------------------------------------------------- | ------------- |
-| github.com/goravel/framework/http/middleware/Cors | across domain |
+| Middleware                                            | Action        |
+|-------------------------------------------------------|---------------|
+| github.com/goravel/framework/http/middleware/Cors     | across domain |
 | github.com/goravel/framework/http/middleware/Throttle | Rate Limiting |
 
 ### Create Middleware By Command
@@ -66,7 +66,8 @@ package http
 
 import (
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/http/middleware"
+  
+  "goravel/app/http/middleware"
 )
 
 type Kernel struct {

@@ -4,7 +4,7 @@
 
 ## Introduction
 
-updaGoravel provides a fluent string manipulation library that allows you to easily manipulate strings. Fluent Strings allows you to combine multiple string operations through method chaining, where most of the methods returns an instance of `support/str.String`, letting you chain additional methods. To get the final string value after applying the chained operations, you can call the `String` method, which returns the underlying `string` value.
+Goravel provides a fluent string manipulation library that allows you to easily manipulate strings. Fluent Strings allows you to combine multiple string operations through method chaining, where most of the methods returns an instance of `support/str.String`, letting you chain additional methods. To get the final string value after applying the chained operations, you can call the `String` method, which returns the underlying `string` value.
 
 ```go
 import "github.com/goravel/framework/support/str"
