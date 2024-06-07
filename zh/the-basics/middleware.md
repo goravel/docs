@@ -66,7 +66,8 @@ package http
 
 import (
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/http/middleware"
+
+  "goravel/app/http/middleware"
 )
 
 type Kernel struct {
