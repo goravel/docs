@@ -4,11 +4,21 @@
 
 ## Server Requirements
 
-- Golang >= 1.20
+- Golang >= 1.21
 
 ## Installation
 
-Linux / MacOS
+
+### Using Goravel Installer
+
+Initialize the installer according to the [documentation](https://github.com/goravel/installer), and then initialize a new Goravel project using the following command:
+
+```shell
+// Enter the directory where you want to install the project
+goravel new blog
+```
+
+### Manual Installation
 
 ```shell
 // Download framework
@@ -24,34 +34,24 @@ cp .env.example .env
 go run . artisan key:generate
 ```
 
-Windows
-
-```shell
-// Download framework
-git clone https://github.com/goravel/goravel.git
-rm -rf goravel/.git*
-
-// Install dependencies
-cd goravel
-go mod tidy
-
-// Create .env environment configuration file
-cp .env.example .env
-
-// Generate application key
-go run . artisan key:generate
-```
-
 ## Start HTTP Service
+
+### Start Service According To .env File In The Root Directory
 
 ```shell
 go run .
 ```
 
-## Specify .env File To Start Service
+### Specify .env File To Start Service
 
 ```shell
 go run . --env=./.env
+```
+
+### Start Service Using Environment Variables
+
+```shell
+APP_ENV=production APP_DEBUG=true go run .
 ```
 
 ### Live reload

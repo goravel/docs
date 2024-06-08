@@ -143,7 +143,7 @@ database, err := facades.Testing().Docker().Database("postgresql")
 | 数据库       | 镜像地址                                               | 版本      |
 | --------    | -------------------------------------------------- | --------- |
 | Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql) | latest      |
-| Postgresql  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres) | latest      |
+| Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres) | latest      |
 | Sqlserver   | [https://hub.docker.com/_/microsoft-mssql-server](https://hub.docker.com/_/microsoft-mssql-server) | latest      |
 | Sqlite      | [https://hub.docker.com/r/nouchka/sqlite3](https://hub.docker.com/r/nouchka/sqlite3) | latest      |
 
@@ -159,7 +159,7 @@ database.Image(contractstesting.Image{
     "MYSQL_ROOT_PASSWORD=123123",
     "MYSQL_DATABASE=goravel",
   },
-  Timeout: 1000,
+  ExposedPorts: []string{"3306"},
 })
 ```
 
@@ -188,7 +188,13 @@ err := database.Seed(&seeders.UserSeeder{}, &seeders.PhotoSeeder{})
 
 #### 重置数据库
 
-由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库将不会产生负面影响，我们可以使用 `RefreshDatabase` 方法执行该操作：
+由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库将不会产生负面影响，可以使用 `Fresh` 方法：
+
+```go
+err := database.Fresh()
+```
+
+也可以使用 `RefreshDatabase` 方法执行该操作：
 
 ```go
 package feature
@@ -225,10 +231,10 @@ func (s *ExampleTestSuite) TestIndex() {
 
 #### 卸载镜像
 
-子包内测试用例执行完毕后，镜像将在一小时后自动卸载，您也可以使用 `Clear` 方法手动卸载镜像。
+子包内测试用例执行完毕后，镜像将在一小时后自动卸载，您也可以使用 `Stop` 方法手动卸载镜像。
 
 ```go
-err := database.Clear()
+err := database.Stop()
 ```
 
 #### 示例

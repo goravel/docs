@@ -2,13 +2,36 @@
 
 [[toc]]
 
-## 常规编译
+## 编译命令
+
+Goravel 项目可以通过以下命令编译：
+
+```
+// 选择系统进行编译
+go run . artisan build
+
+// 指定系统进行编译
+go run . artisan build --os=linux
+go run . artisan build -o=linux
+
+// 静态编译
+go run . artisan build --static
+go run . artisan build -s
+
+// 指定输出文件名 
+go run . artisan build --name=goravel
+go run . artisan build -n=goravel
+```
+
+## 手动编译
+
+### 常规编译
 
 ```shell
 go build .
 ```
 
-### 部署服务器
+#### 部署服务器
 
 部署时需要将下列文件与文件夹上传至服务器：
 
@@ -21,7 +44,7 @@ go build .
 ./resources
 ```
 
-## 静态编译
+### 静态编译
 
 常规编译后的包还需要依赖部署环境的支持，静态编译出的文件可以任意放到指定平台下运行，不需要环境配置。
 
@@ -29,7 +52,7 @@ go build .
 go build --ldflags "-extldflags -static" -o main .
 ```
 
-## 交叉编译
+### 交叉编译
 
 编译有平台区分，需要根据部署情况，选择匹配的编译方式。
 

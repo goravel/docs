@@ -64,6 +64,38 @@ import "github.com/goravel/framework/contracts/http"
 ctx.Response().Header("Content", "Goravel").String(http.StatusOK, "Hello Goravel")
 ```
 
+## Cookie
+
+### 设置 Cookie
+
+使用 `response` 实例中的 `Cookie` 方法设置 `cookie`。`Cookie` 方法接受一个 `http.Cookie` 实例，允许您设置各种 `cookie` 选项。
+
+```go
+import (
+  "time"
+  "github.com/goravel/framework/contracts/http"
+)
+
+
+ctx.Response().Cookie(http.Cookie{
+  Name: "name",
+  Value: "Goravel",
+  Path: "/",
+  Domain: "goravel.dev",
+  Expires: time.Now().Add(24 * time.Hour),
+  Secure: true,
+  HttpOnly: true,
+})
+```
+
+### 过期 Cookie
+
+使用 `WithoutCookie` 方法删除 `cookie`。
+
+```go
+ctx.Response().WithoutCookie("name")
+```
+
 ## 返回成功
 
 ```go
@@ -85,6 +117,13 @@ ctx.Response().Status(http.StatusOK).Json(http.Json{
 
 ```go
 ctx.Response().Redirect(http.StatusMovedPermanently, "https://goravel.dev")
+```
+
+## 空响应
+
+```go
+ctx.Response().NoContent()
+ctx.Response().NoContent(http.StatusOk)
 ```
 
 ## 获取响应
