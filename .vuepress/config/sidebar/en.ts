@@ -157,7 +157,7 @@ export function getEnSidebar(): SidebarConfigArray {
         },
         {
           text: "Localization",
-          link: "/zh/digging-deeper/localization",
+          link: "/digging-deeper/localization",
         },
         {
           text: "Package Development",
@@ -169,7 +169,7 @@ export function getEnSidebar(): SidebarConfigArray {
         },
         {
           text: "Strings",
-          link: "/zh/digging-deeper/strings",
+          link: "/digging-deeper/strings",
         },
         {
           text: "Helpers",
