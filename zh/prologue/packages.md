@@ -12,3 +12,4 @@
 | [goravel/oss](https://github.com/goravel/oss)      | `facades.Storage()` 模块 Oss 驱动                    | 76.5%           |
 | [goravel/redis](https://github.com/goravel/redis)  | `facades.Cache()` 模块 Redis 驱动                    | 79.1%           |
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)  | `facades.Cache()` 模块 Cloudinary 驱动     | 75.4%           |
+| [wcz0/goravel-authz](https://github.com/wcz0/goravel-authz)| goravel `Casbin` 扩展包, 类似Laravel-authz| 0%            |
