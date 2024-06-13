@@ -16,14 +16,14 @@ By default, Goravel does not start a session automatically. However, it provides
 
 ```go
 import (
-	"github.com/goravel/framework/contracts/http"
-	"github.com/goravel/framework/session/middleware"
+  "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/session/middleware"
 )
 
 func (kernel Kernel) Middleware() []http.Middleware {
-	return []http.Middleware{
-		middleware.StartSession(),
-	}
+  return []http.Middleware{
+    middleware.StartSession(),
+  }
 }
 ```
 
@@ -125,6 +125,21 @@ If you would like to regenerate the session ID and forget all data that was in t
 ctx.Request().Session().Invalidate()
 ```
 
+Then, you need to save the new session to the cookie:
+
+```go
+ctx.Response().Cookie(http.Cookie{
+  Name:     ctx.Request().Session().GetName(),
+  Value:    ctx.Request().Session().GetID(),
+  MaxAge:   facades.Config().GetInt("session.lifetime") * 60,
+  Path:     facades.Config().GetString("session.path"),
+  Domain:   facades.Config().GetString("session.domain"),
+  Secure:   facades.Config().GetBool("session.secure"),
+  HttpOnly: facades.Config().GetBool("session.http_only"),
+  SameSite: facades.Config().GetString("session.same_site"),
+})
+```
+
 ### Flash Data
 
 Flash data is session data that will only be available during the subsequent HTTP request, and then will be deleted. Flash data is useful for storing temporary messages such as status messages. You may use the `Flash` method to store flash data in the session:
@@ -172,18 +187,18 @@ To implement a custom session driver, driver must implement the `contracts/sessi
 ```go
 // Driver is the interface for Session handlers.
 type Driver interface {
-	// Close closes the session handler.
-	Close() error
-	// Destroy destroys the session with the given ID.
-	Destroy(id string) error
-	// Gc performs garbage collection on the session handler with the given maximum lifetime.
-	Gc(maxLifetime int) error
-	// Open opens a session with the given path and name.
-	Open(path string, name string) error
-	// Read reads the session data associated with the given ID.
-	Read(id string) (string, error)
-	// Write writes the session data associated with the given ID.
-	Write(id string, data string) error
+  // Close closes the session handler.
+  Close() error
+  // Destroy destroys the session with the given ID.
+  Destroy(id string) error
+  // Gc performs garbage collection on the session handler with the given maximum lifetime.
+  Gc(maxLifetime int) error
+  // Open opens a session with the given path and name.
+  Open(path string, name string) error
+  // Read reads the session data associated with the given ID.
+  Read(id string) (string, error)
+  // Write writes the session data associated with the given ID.
+  Write(id string, data string) error
 }
 ```
 
@@ -195,7 +210,7 @@ After implementing the driver, you need to register it in Goravel. You can do th
 import "github.com/goravel/framework/contracts/session"
 
 facades.Session().Extend("redis", func() session.Driver {
-	return &RedisDriver{}
+  return &RedisDriver{}
 })
 ```
 

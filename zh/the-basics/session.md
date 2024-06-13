@@ -16,14 +16,14 @@ Goravel 默认情况下未启动 `Session` 功能，但是框架提供了用于�
 
 ```go
 import (
-	"github.com/goravel/framework/contracts/http"
-	"github.com/goravel/framework/session/middleware"
+  "github.com/goravel/framework/contracts/http"
+  "github.com/goravel/framework/session/middleware"
 )
 
 func (kernel Kernel) Middleware() []http.Middleware {
-	return []http.Middleware{
-		middleware.StartSession(),
-	}
+  return []http.Middleware{
+    middleware.StartSession(),
+  }
 }
 ```
 
@@ -125,6 +125,21 @@ ctx.Request().Session().Regenerate()
 ctx.Request().Session().Invalidate()
 ```
 
+然后需要保存新的 session 到 cookie 中：
+
+```go
+ctx.Response().Cookie(http.Cookie{
+  Name:     ctx.Request().Session().GetName(),
+  Value:    ctx.Request().Session().GetID(),
+  MaxAge:   facades.Config().GetInt("session.lifetime") * 60,
+  Path:     facades.Config().GetString("session.path"),
+  Domain:   facades.Config().GetString("session.domain"),
+  Secure:   facades.Config().GetBool("session.secure"),
+  HttpOnly: facades.Config().GetBool("session.http_only"),
+  SameSite: facades.Config().GetString("session.same_site"),
+})
+```
+
 ### 闪存数据
 
 闪存数据一种仅在随后的 HTTP 请求中可用的数据，请求结束后将被删除。闪存数据对于存储临时消息（如状态消息）非常有用。你可以使用 `Flash` 方法将闪存数据存储在会话中：
@@ -174,18 +189,18 @@ session := facades.Session().BuildSession(driver, "sessionID")
 ```go
 // Driver is the interface for Session handlers.
 type Driver interface {
-	// Close closes the session handler.
-	Close() error
-	// Destroy destroys the session with the given ID.
-	Destroy(id string) error
-	// Gc performs garbage collection on the session handler with the given maximum lifetime.
-	Gc(maxLifetime int) error
-	// Open opens a session with the given path and name.
-	Open(path string, name string) error
-	// Read reads the session data associated with the given ID.
-	Read(id string) (string, error)
-	// Write writes the session data associated with the given ID.
-	Write(id string, data string) error
+  // Close closes the session handler.
+  Close() error
+  // Destroy destroys the session with the given ID.
+  Destroy(id string) error
+  // Gc performs garbage collection on the session handler with the given maximum lifetime.
+  Gc(maxLifetime int) error
+  // Open opens a session with the given path and name.
+  Open(path string, name string) error
+  // Read reads the session data associated with the given ID.
+  Read(id string) (string, error)
+  // Write writes the session data associated with the given ID.
+  Write(id string, data string) error
 }
 ```
 
@@ -197,7 +212,7 @@ type Driver interface {
 import "github.com/goravel/framework/contracts/session"
 
 facades.Session().Extend("redis", func() session.Driver {
-	return &RedisDriver{}
+  return &RedisDriver{}
 })
 ```
 
