@@ -8,9 +8,22 @@ Goravel 的测试功能依托于 Golang 自带的 test 官方组件，是对单�
 
 ## 环境
 
-### `.env.testing` 环境配置文件
+### 自定义环境配置文件
 
-测试时默认使用 `.env` 文件注入配置信息，您也可以在运行 `go test` 时使用 `--env=.env.testing` 选项自定义配置文件，但需注意，此选项需跟在测试目录后面，例如：
+测试时默认使用根目录下的 `.env` 文件注入配置信息，如果想为不同的包使用不同的 `.env` 文件，可以在包目录下创建 `.env` 文件，测试时会优先读取该文件。
+
+```
+- /app
+- /config
+- ...
+- /test
+  - /feature
+    - .env
+    - user_test.go
+- .env
+```
+
+您也可以在运行 `go test` 时使用 `--env=.env.testing` 选项自定义配置文件，但需注意，此选项需跟在测试目录后面，例如：
 
 ```shell
 go test ./... --env=.env.testing

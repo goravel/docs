@@ -134,7 +134,7 @@ ctx.Response().NoContent(http.StatusOk)
 origin := ctx.Response().Origin()
 ```
 
-`origin` 包含一下方法：
+`origin` 包含以下方法：
 
 | 方法名        | 作用           |
 | -----------  | -------------- |
