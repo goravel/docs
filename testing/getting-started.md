@@ -8,8 +8,20 @@ The testing function of Goravel relies on Golang's official test component, exte
 
 ## Environment
 
-### The `.env.testing` Environment File
+### Custom Environment File
 
+By default, the `.env` file in the root directory is used to inject configuration information during testing. If you want to use different `.env` files for different packages, you can create a `.env` file in the package directory, and the test will read this file first.
+
+```
+- /app
+- /config
+- ...
+- /test
+  - /feature
+    - .env
+    - user_test.go
+- .env
+```
 In addition, you may create a `.env.testing` file at the root of your project. This file will be used instead of the `.env` file when running `go test` with the `--env` option, note that this option needs to follow the test directory, for example:
 
 ```shell
