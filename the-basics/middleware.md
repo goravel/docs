@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. For example, `Goravel` provides a CORS middleware, which can implement requests across domains.
+Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application.
 
 ## Define Middleware
 
@@ -26,8 +26,10 @@ func Auth() http.Middleware {
 
 ### Create Middleware By Command
 ```
-go run . artisan make:middleware Cors
-go run . artisan make:middleware user/Cors
+go run . artisan make:middleware Auth
+
+// Support nested folders
+go run . artisan make:middleware user/Auth
 ```
 
 ## Register Middleware

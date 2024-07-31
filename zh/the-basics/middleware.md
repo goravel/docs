@@ -4,7 +4,7 @@
 
 ## 简介
 
-中间件可以过滤进入应用程序的 HTTP 请求。例如 `Goravel` 提供一个 CORS 中间件，可以实现请求跨域。
+中间件可以过滤进入应用程序的 HTTP 请求。
 
 ## 定义中间件
 
@@ -26,8 +26,10 @@ func Auth() http.Middleware {
 
 ### 命令创建中间件
 ```
-go run . artisan make:middleware Cors
-go run . artisan make:middleware user/Cors
+go run . artisan make:middleware Auth
+
+// 支持嵌套文件夹
+go run . artisan make:middleware user/Auth
 ```
 
 ## 注册中间件
