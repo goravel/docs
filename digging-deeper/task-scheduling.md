@@ -58,6 +58,10 @@ func (kernel *Kernel) Schedule() []schedule.Event {
 }
 ```
 
+### Logging Level
+
+When `app.debug` is `true`, the console will print all logs. Otherwise, only `error` level logs will be printed.
+
 ### Schedule Frequency Options
 
 We've already seen a few examples of how you may configure a task to run at specified intervals. However, there are many more task schedule frequencies avaibable to assign to tasks:

@@ -4,11 +4,11 @@
 
 ## 简介
 
-Goravel 提供了几种不同的方法来验证传入应用程序的数据。最常见的做法是在所有传入的 HTTP 请求中使用 `validate` 方法。Goravel 包含了各种方便的验证规则。
+Goravel 提供了几种不同的方法来验证传入应用程序的数据。最常见的做法是在所有传入的 HTTP 请求中使用 `Validate` 方法。Goravel 包含了各种方便的验证规则。
 
 ## 快速验证
 
-为了了解 Goravel 强大的验证功能，我们来看一个表单验证并将错误消息展示给用户的完整示例。通过阅读概述，这将会对您如何使用 Goravel 验证传入的请求数据有一个很好的理解：
+让我们来看一个表单验证并将错误消息展示给用户的完整示例，这将会对你如何使用 Goravel 验证传入的请求数据有一个很好的理解。
 
 ### 定义路由
 
@@ -100,9 +100,9 @@ go run . artisan make:request StorePostRequest
 go run . artisan make:request user/StorePostRequest
 ```
 
-该命令生成的表单请求类将被置于 `app/http/requests` 目录中。如果这个目录不存在，在您运行 `make:request` 命令后将会创建这个目录。Goravel 生成的每个表单请求都有五个方法：`Authorize`, `Rules`, `Messages`, `Attributes` 和 `PrepareForValidation`。
+该命令生成的表单请求类将被置于 `app/http/requests` 目录中。如果这个目录不存在，在您运行 `make:request` 命令后将会创建这个目录。Goravel 生成的每个表单请求都有六个方法：`Authorize`, `Rules`, `Filters`, `Messages`, `Attributes` 和 `PrepareForValidation`。
 
-正如您可能已经猜到的那样，`Authorize` 方法负责确定当前经过身份验证的用户是否可以执行请求操作，而 `Rules` 方法则返回适用于请求数据的验证规则：
+`Authorize` 方法负责确定当前经过身份验证的用户是否可以执行请求操作，而 `Rules` 方法则返回适用于请求数据的验证规则：
 
 ```go
 package requests
@@ -127,6 +127,12 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
   }
 }
 
+func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
+	return map[string]string{
+    "name": "trim",
+  }
+}
+
 func (r *StorePostRequest) Messages(ctx http.Context) map[string]string {
   return map[string]string{}
 }
@@ -140,7 +146,7 @@ func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validatio
 }
 ```
 
-所以，验证规则是如何运行的呢？您所需要做的就是在控制器方法中类型提示传入的请求。在调用控制器方法之前验证传入的表单请求，这意味着您不需要在控制器中写任何验证逻辑：
+然后您可以在控制器中使用 `ValidateRequest` 方法验证该表单：
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
@@ -148,6 +154,8 @@ func (r *PostController) Store(ctx http.Context) {
   errors, err := ctx.Request().ValidateRequest(&storePost)
 }
 ```
+
+更多验证规则详见 [可用的验证规则](#可用的验证规则)。
 
 > 注意，由于 `form` 传值默认为 `string` 类型，因此 request 中所有字段也都应为 `string` 类型，否则请使用 `JSON` 传值。
 
@@ -175,9 +183,21 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
 
 `error` 将会被传递到 `ctx.Request().ValidateRequest` 的返回值中。
 
+### 过滤输入数据
+
+您可以通过完善表单请求的 `Filters` 方法来格式化输入数据。 此方法应返回 `属性/过滤器` 的数组 Map：
+
+```go
+func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
+	return map[string]string{
+    "name": "trim",
+  }
+}
+```
+
 ### 自定义错误消息
 
-您可以通过重写表单请求的 `Messages` 方法来自定义错误消息。此方法应返回属性 / 规则对及其对应错误消息的数组：
+您可以通过完善表单请求的 `Messages` 方法来自定义错误消息。此方法应返回 `属性.规则/对应错误消息` 的 Map：
 
 ```go
 func (r *StorePostRequest) Messages() map[string]string {
@@ -404,16 +424,28 @@ if validator.Errors().Has("email") {
 | `ipv4`  | 检查值是 IPv4 字符串 |
 | `ipv6`  | 检查值是 IPv6 字符串 |
 
+### 规则使用注意事项
+
+#### int
+
+当时用 `ctx.Request().Validate(rules)` 进行校验时，传入的 `int` 类型数据将会被 `json.Unmarshal` 解析为 `float64` 类型，从而导致 int 规则验证失败。
+
+**解决方案：**
+
+方案一：添加 [`validation.PrepareForValidation`](#验证前格式化数据)，在验证数据前对数据进行格式化；
+
+方案二：使用 `facades.Validation().Make()` 进行规则校验；
+
 ## 自定义验证规则
 
-Goravel 提供了各种有用的验证规则，但是，您可能希望指定一些您自己的。注册自定义验证规则的一种方法是使用规则对象。要生成新的规则对象，您可以使用 `make:rule` Artisan 命令。 让我们使用这个命令生成一个验证字符串是否为大写的规则。Goravel 会将新规则放在 `app/rules` 目录中。如果此目录不存在，Goravel 将在您执行 Artisan 命令创建规则时创建它：
+Goravel 提供了各种有用的验证规则，但是，您可能希望指定一些您自己的。要生成新的规则，您可以使用 `make:rule` Artisan 命令。 让我们使用这个命令生成一个验证字符串是否为大写的规则。Goravel 会将新规则放在 `app/rules` 目录中。如果此目录不存在，Goravel 将在您执行 Artisan 命令创建规则时创建它：
 
 ```go
 go run . artisan make:rule Uppercase
 go run . artisan make:rule user/Uppercase
 ```
 
-创建规则后，我们就可以定义其行为了。 一个规则对象包含两个方法：`Passes` 和 `Message`。`Passes` 方法接收所有数据、待验证的数据与验证参数，应该根据属性值是否有效返回 `true` 或 `false`。`Message` 方法应该返回验证失败时应该使用的验证错误消息：
+一个规则对象包含两个方法：`Passes` 和 `Message`。`Passes` 方法接收所有数据、待验证的数据与验证参数，应该根据属性值是否有效返回 `true` 或 `false`。`Message` 方法应该返回验证失败时应该使用的验证错误消息：
 
 ```go
 package rules
@@ -474,19 +506,40 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
     &rules.Uppercase{},
   }
 }
-
 ```
 
-## 规则使用注意事项
+## 可用的过滤器
 
-### int
+ 名称       | 描述                   
+ ----------- | --------------------- 
+`int/toInt`  | 转换(string/intX/floatX) 到 `int` 类型
+`uint/toUint`  | 转换(string/intX/floatX) 到 `uint` 类型
+`int64/toInt64`  | 转换(string/intX/floatX) 到 `int64` 类型
+`float/toFloat`  | 转换(string/intX/floatX) 到 `float` 类型
+`bool/toBool`  | 转换 string 到 bool(`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false")
+`trim/trimSpace`  | 清除字符串两端的空格
+`ltrim/trimLeft`  | 清除字符串左侧的空格
+`rtrim/trimRight`  | 清除字符串右侧的空格
+`int/integer`  | 转换(string/intX/floatX) 到 `int` 类型
+`lower/lowercase` | 转换 string 为小写
+`upper/uppercase` | 转换 string 为大写
+`lcFirst/lowerFirst` | 转换 string 的第一个字符为小写
+`ucFirst/upperFirst` | 转换 string 的第一个字符为大写
+`ucWord/upperWord` | 转换每个单词的首字母为大写
+`camel/camelCase` | 转换 string 到 camelCase 命名风格
+`snake/snakeCase` | 转换 string 到 snake_case 命名风格
+`escapeJs/escapeJS` | 脱敏 JS string.
+`escapeHtml/escapeHTML` | 脱敏 HTML string.
+`str2ints/strToInts` | 转换 string 到 `[]int` 
+`str2time/strToTime` | 转换 date string 到 `time.Time`.
+`str2arr/str2array/strToArray` | 转换 string 到 `[]string`
 
-当时用 `ctx.Request().Validate(rules)` 进行校验时，传入的 `int` 类型数据将会被 `json.Unmarshal` 解析为 `float64` 类型，从而导致 int 规则验证失败。
+## 自定义过滤规则
 
-**解决方案：**
+Goravel 提供了各种有用的过滤规则，但是，您可能希望指定一些您自己的。要生成新的规则，您可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个过滤字符串为大写的规则。Goravel 会将新规则放在 `app/filters` 目录中。如果此目录不存在，Goravel 将在您执行 Artisan 命令创建规则时创建它：
 
-方案一：添加 [`validation.PrepareForValidation`](#验证前格式化数据)，在验证数据前对数据进行格式化；
+```go
 
-方案二：使用 `facades.Validation().Make()` 进行规则校验；
+```
 
 <CommentService/>
