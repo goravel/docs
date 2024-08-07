@@ -117,7 +117,7 @@ name := ctx.Request().InputArray("name")
 name := ctx.Request().InputMap("name")
 ```
 
-### Json/Form Bind Struct
+### Bind Json/Form
 
 ```go
 type User struct {
@@ -131,6 +131,18 @@ err := ctx.Request().Bind(&user)
 ```go
 var user map[string]any
 err := ctx.Request().Bind(&user)
+```
+
+### Bind Query
+
+Only support bind Query to struct:
+
+```go
+type Test struct {
+  ID string `form:"id"`
+}
+var test Test
+err := ctx.Request().BindQuery(&test)
 ```
 
 ## Cookie
