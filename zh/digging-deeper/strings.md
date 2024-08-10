@@ -126,6 +126,26 @@ import "github.com/goravel/framework/support/str"
 str.Of("Goravel").CharAt(1) // "o"
 ```
 
+### `ChopEnd`
+
+`ChopEnd` 方法根据给定字符串移除待处理数据的结尾。
+
+```go
+import "github.com/goravel/framework/support/str"
+
+str.Of("https://goravel.com").ChopEnd(".dev", ".com").String() // https://goravel
+```
+
+### `ChopStart`
+
+`ChopStart` 方法根据给定字符串移除待处理数据的开头。
+
+```go
+import "github.com/goravel/framework/support/str"
+
+str.Of("https://goravel.dev").ChopStart("http://", "https://").String() // goravel.dev
+```
+
 ### `Contains`
 
 `Contains` 方法确定给定字符串是否包含给定值。该方法区分大小写。如果提供多个值，则如果字符串包含任何值，则返回 `true`。
