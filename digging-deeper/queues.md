@@ -91,7 +91,7 @@ func main() {
 
   // Start queue server by facades.Queue().
   go func() {
-    if err := facades.Queue().Worker(nil).Run(); err != nil {
+    if err := facades.Queue().Worker().Run(); err != nil {
       facades.Log().Errorf("Queue run error: %v", err)
     }
   }()
@@ -105,14 +105,14 @@ Different parameters can be passed in the `facades.Queue().Worker` method, you c
 ```go
 // No parameters, default listens to the configuration in the `config/queue.go`, and the number of concurrency is 1
 go func() {
-  if err := facades.Queue().Worker(nil).Run(); err != nil {
+  if err := facades.Queue().Worker().Run(); err != nil {
     facades.Log().Errorf("Queue run error: %v", err)
   }
 }()
 
 // Monitor processing queue for redis link, and the number of concurrency is 10
 go func() {
-  if err := facades.Queue().Worker(&queue.Args{
+  if err := facades.Queue().Worker(queue.Args{
     Connection: "redis",
     Queue: "processing",
     Concurrent: 10,
