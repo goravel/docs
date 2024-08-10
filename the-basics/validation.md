@@ -544,4 +544,74 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 `str2time/strToTime` | Convert date string to `time.Time`.
 `str2arr/str2array/strToArray` | Convert string to string slice `[]string`
 
+## Custom filter
+
+Goravel provides a variety of helpful filters, however, you may wish to specify some of your own. To generate a new rule object, you can simply use the `make:filter` Artisan command. Let's use this command to generate a rule that converts a string to an integer. This rule is already built into the framework, we just create it as an example. Goravel will save this new filter in the `app/filters` directory. If this directory does not exist, Goravel will create it when you run the Artisan command to create the rule:
+
+```go
+go run . artisan make:filter ToInt
+// or
+go run . artisan make:filter user/ToInt
+```
+
+One filter contains two methods: `Signature` and `Handle`. The `Signature` method sets the name of the filter. The `Handle` method performs the specific filtering logic:
+
+```go
+package filters
+
+import (
+  "strings"
+
+  "github.com/spf13/cast"
+  "github.com/goravel/framework/contracts/validation"
+)
+
+type ToInt struct {
+}
+
+// Signature The signature of the filter.
+func (receiver *ToInt) Signature() string {
+	return "ToInt"
+}
+
+// Handle defines the filter function to apply.
+func (receiver *ToInt) Handle() any {
+  return func (val any) int {
+    return cast.ToString(val)
+  }
+}
+```
+
+Then you need to register the filter to the `filters` method in the `app/providers/validation_service_provider.go` file, and the filter can be used like others:
+
+```go
+package providers
+
+import (
+  "github.com/goravel/framework/contracts/validation"
+  "github.com/goravel/framework/facades"
+
+  "goravel/app/filters"
+)
+
+type ValidationServiceProvider struct {
+}
+
+func (receiver *ValidationServiceProvider) Register() {
+
+}
+
+func (receiver *ValidationServiceProvider) Boot() {
+  if err := facades.Validation().AddFilters(receiver.filters()); err != nil {
+    facades.Log().Errorf("add filters error: %+v", err)
+  }
+}
+
+func (receiver *ValidationServiceProvider) filters() []validation.Filter {
+  return []validation.Filter{
+    &filters.ToInt{},
+  }
+}
+```
+
 <CommentService/>

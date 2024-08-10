@@ -442,10 +442,11 @@ Goravel 提供了各种有用的验证规则，但是，您可能希望指定一
 
 ```go
 go run . artisan make:rule Uppercase
+// or
 go run . artisan make:rule user/Uppercase
 ```
 
-一个规则对象包含两个方法：`Passes` 和 `Message`。`Passes` 方法接收所有数据、待验证的数据与验证参数，应该根据属性值是否有效返回 `true` 或 `false`。`Message` 方法应该返回验证失败时应该使用的验证错误消息：
+一个规则包含两个方法：`Passes` 和 `Message`。`Passes` 方法接收所有数据、待验证的数据与验证参数，应该根据属性值是否有效返回 `true` 或 `false`。`Message` 方法应该返回验证失败时应该使用的验证错误消息：
 
 ```go
 package rules
@@ -476,7 +477,7 @@ func (receiver *Uppercase) Message() string {
 
 ```
 
-然后将该规则对象注册到 `app/providers/validation_service_provider.go` 文件的 `rules` 方法中，之后该规则就可以像其他规则一样使用了：
+然后将该规则注册到 `app/providers/validation_service_provider.go` 文件的 `rules` 方法中，之后该规则就可以像其他规则一样使用了：
 
 ```go
 package providers
@@ -536,10 +537,72 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 
 ## 自定义过滤规则
 
-Goravel 提供了各种有用的过滤规则，但是，您可能希望指定一些您自己的。要生成新的规则，您可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个过滤字符串为大写的规则。Goravel 会将新规则放在 `app/filters` 目录中。如果此目录不存在，Goravel 将在您执行 Artisan 命令创建规则时创建它：
+Goravel 提供了各种有用的过滤规则，但是，您可能希望指定一些您自己的。要生成新的规则，您可以使用 `make:filter` Artisan 命令。让我们使用这个命令生成一个转换 string 为 int 的规则，这个规则框架已经内置，这里只是为了示例。Goravel 会将新规则放在 `app/filters` 目录中。如果此目录不存在，Goravel 将在您执行 Artisan 命令创建规则时创建它：
 
 ```go
+go run . artisan make:filter ToInt
+// or
+go run . artisan make:filter user/ToInt
+```
 
+一个过滤器包含两个方法：`Signature` 和 `Handle`。`Signature` 方法设置该过滤器的名称。`Handle` 方法执行具体的过滤逻辑：
+
+```go
+package filters
+
+import (
+  "strings"
+
+  "github.com/spf13/cast"
+  "github.com/goravel/framework/contracts/validation"
+)
+
+type ToInt struct {
+}
+
+// Signature The signature of the filter.
+func (receiver *ToInt) Signature() string {
+	return "ToInt"
+}
+
+// Handle defines the filter function to apply.
+func (receiver *ToInt) Handle() any {
+  return func (val any) int {
+    return cast.ToString(val)
+  }
+}
+```
+
+然后将该过滤器注册到 `app/providers/validation_service_provider.go` 文件的 `filters` 方法中，之后就可以像其他过滤器一样使用了：
+
+```go
+package providers
+
+import (
+  "github.com/goravel/framework/contracts/validation"
+  "github.com/goravel/framework/facades"
+
+  "goravel/app/filters"
+)
+
+type ValidationServiceProvider struct {
+}
+
+func (receiver *ValidationServiceProvider) Register() {
+
+}
+
+func (receiver *ValidationServiceProvider) Boot() {
+  if err := facades.Validation().AddFilters(receiver.filters()); err != nil {
+    facades.Log().Errorf("add filters error: %+v", err)
+  }
+}
+
+func (receiver *ValidationServiceProvider) filters() []validation.Filter {
+  return []validation.Filter{
+    &filters.ToInt{},
+  }
+}
 ```
 
 <CommentService/>
