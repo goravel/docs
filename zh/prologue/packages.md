@@ -12,5 +12,5 @@
 | [goravel/oss](https://github.com/goravel/oss)                                     | `facades.Storage()` 模块 Oss 驱动      | 76.5%      |
 | [goravel/redis](https://github.com/goravel/redis)                                 | `facades.Cache()` 模块 Redis 驱动      | 79.1%      |
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)                       | `facades.Cache()` 模块 Cloudinary 驱动 | 75.4%      |
-| [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)     | goravel`websocket`扩展包               | 0%         |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | goravel 审批流扩展包                   | 4.4%       |
+| [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)     | goravel`websocket`扩展包               | 0%         |

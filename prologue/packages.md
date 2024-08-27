@@ -12,5 +12,5 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [goravel/oss](https://github.com/goravel/oss)                                     | A OSS disk driver for `facades.Storage()`     | 76.5%         |
 | [goravel/redis](https://github.com/goravel/redis)                                 | A Redis disk driver for `facades.Cache()`     | 79.1%         |
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)                       | A Cloudinary disk driver for `facades.Cache() | 75.4%         |
-| [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)     | A webSocket package                           | 0%            |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | A workflow package                            | 4.4%          |
+| [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)     | A webSocket package                           | 0%            |
