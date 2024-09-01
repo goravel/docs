@@ -377,8 +377,8 @@ Below is a list of all available validation rules and their function:
 | `map`  | Check value is a MAP type |
 | `eq_field`  | `eq_field:field` Check that the field value is equals to the value of another field |
 | `ne_field`  | `ne_field:field` Check that the field value is not equals to the value of another field |
-| `gt_field`  | `gte_field:field` Check that the field value is greater than the value of another field |
-| `gte_field`  | `gt_field:field` Check that the field value is greater than or equal to the value of another field |
+| `gt_field`  | `gt_field:field` Check that the field value is greater than the value of another field |
+| `gte_field`  | `gte_field:field` Check that the field value is greater than or equal to the value of another field |
 | `lt_field`  | `lt_field:field` Check that the field value is less than the value of another field |
 | `lte_field`  | `lte_field:field` Check if the field value is less than or equal to the value of another field |
 | `file`  | Verify if it is an uploaded file |

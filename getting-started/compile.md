@@ -2,13 +2,36 @@
 
 [[toc]]
 
-## Regular compilation
+## Compile command
+
+The Goravel project can be compiled with the following command:
+
+```
+// Select the system to compile
+go run . artisan build
+
+// Specify the system to compile
+go run . artisan build --os=linux
+go run . artisan build -o=linux
+
+// Static compilation
+go run . artisan build --static
+go run . artisan build -s
+
+// Specify the output file name
+go run . artisan build --name=goravel
+go run . artisan build -n=goravel
+```
+
+## Manual compilation
+
+### Regular compilation
 
 ```shell
 go build .
 ```
 
-### Deploy Server
+#### Deploy Server
 
 The Following files and folders need to be uploaded to the server during deployment:
 
@@ -21,7 +44,7 @@ The Following files and folders need to be uploaded to the server during deploym
 ./resources
 ```
 
-## Static compilation
+### Static compilation
 
 The package by regular compilation also needs to rely on the support of the deployment environment, the statically compiled files can be freely put to run on the specified platform without environment configuration.
 
@@ -29,7 +52,7 @@ The package by regular compilation also needs to rely on the support of the depl
 go build --ldflags "-extldflags -static" -o main .
 ```
 
-## Cross compile
+### Cross compile
 
 Compilation is differentiated by platform, you need to select a matching compilation method according to the deployment situation.
 

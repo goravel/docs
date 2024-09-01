@@ -8,9 +8,22 @@ Goravel 的测试功能依托于 Golang 自带的 test 官方组件，是对单�
 
 ## 环境
 
-### `.env.testing` 环境配置文件
+### 自定义环境配置文件
 
-测试时默认使用 `.env` 文件注入配置信息，您也可以在运行 `go test` 时使用 `--env=.env.testing` 选项自定义配置文件，但需注意，此选项需跟在测试目录后面，例如：
+测试时默认使用根目录下的 `.env` 文件注入配置信息，如果想为不同的包使用不同的 `.env` 文件，可以在包目录下创建 `.env` 文件，测试时会优先读取该文件。
+
+```
+- /app
+- /config
+- ...
+- /test
+  - /feature
+    - .env
+    - user_test.go
+- .env
+```
+
+您也可以在运行 `go test` 时使用 `--env=.env.testing` 选项自定义配置文件，但需注意，此选项需跟在测试目录后面，例如：
 
 ```shell
 go test ./... --env=.env.testing
@@ -143,7 +156,7 @@ database, err := facades.Testing().Docker().Database("postgresql")
 | 数据库       | 镜像地址                                               | 版本      |
 | --------    | -------------------------------------------------- | --------- |
 | Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql) | latest      |
-| Postgresql  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres) | latest      |
+| Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres) | latest      |
 | Sqlserver   | [https://hub.docker.com/_/microsoft-mssql-server](https://hub.docker.com/_/microsoft-mssql-server) | latest      |
 | Sqlite      | [https://hub.docker.com/r/nouchka/sqlite3](https://hub.docker.com/r/nouchka/sqlite3) | latest      |
 
@@ -159,7 +172,7 @@ database.Image(contractstesting.Image{
     "MYSQL_ROOT_PASSWORD=123123",
     "MYSQL_DATABASE=goravel",
   },
-  Timeout: 1000,
+  ExposedPorts: []string{"3306"},
 })
 ```
 
@@ -188,7 +201,13 @@ err := database.Seed(&seeders.UserSeeder{}, &seeders.PhotoSeeder{})
 
 #### 重置数据库
 
-由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库将不会产生负面影响，我们可以使用 `RefreshDatabase` 方法执行该操作：
+由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库将不会产生负面影响，可以使用 `Fresh` 方法：
+
+```go
+err := database.Fresh()
+```
+
+也可以使用 `RefreshDatabase` 方法执行该操作：
 
 ```go
 package feature
@@ -225,10 +244,10 @@ func (s *ExampleTestSuite) TestIndex() {
 
 #### 卸载镜像
 
-子包内测试用例执行完毕后，镜像将在一小时后自动卸载，您也可以使用 `Clear` 方法手动卸载镜像。
+子包内测试用例执行完毕后，镜像将在一小时后自动卸载，您也可以使用 `Stop` 方法手动卸载镜像。
 
 ```go
-err := database.Clear()
+err := database.Stop()
 ```
 
 #### 示例

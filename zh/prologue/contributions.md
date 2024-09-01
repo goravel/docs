@@ -25,6 +25,11 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 <a href="https://github.com/ahmed3mar" target="_blank"><img src="https://avatars.githubusercontent.com/u/12982325?v=4" width="48" height="48"></a>
 <a href="https://github.com/flc1125" target="_blank"><img src="https://avatars.githubusercontent.com/u/14297703?v=4" width="48" height="48"></a>
 <a href="https://github.com/zzpwestlife" target="_blank"><img src="https://avatars.githubusercontent.com/u/12382180?v=4" width="48" height="48"></a>
+<a href="https://github.com/juantarrel" target="_blank"><img src="https://avatars.githubusercontent.com/u/7213379?v=4" width="48" height="48"></a>
+<a href="https://github.com/Kamandlou" target="_blank"><img src="https://avatars.githubusercontent.com/u/77993374?v=4" width="48" height="48"></a>
+<a href="https://github.com/livghit" target="_blank"><img src="https://avatars.githubusercontent.com/u/108449432?v=4" width="48" height="48"></a>
+<a href="https://github.com/jeff87218" target="_blank"><img src="https://avatars.githubusercontent.com/u/29706585?v=4" width="48" height="48"></a>
+<a href="https://github.com/shayan-yousefi" target="_blank"><img src="https://avatars.githubusercontent.com/u/19957980?v=4" width="48" height="48"></a>
 
 ## Bug 报告
 
@@ -59,13 +64,9 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过�
 
 ## 哪个分支？
 
-**所有**错误修复应发送到最新的稳定分支。错误修复不应该被发送到 `master` 分支，除非它们修复了仅存在于即将发布的版本中的功能。
+**所有**错误修复应发送到最新的稳定分支，除非它们修复了仅存在于 `master` 分支中的功能。
 
-**与当前版本**完全向后兼容的次要功能可能会发送到最新的稳定分支。
-
-**主要**新功能应始终发送到包含即将发布的版本的 `master` 分支。
-
-如果您不确定您的功能是否符合主要或次要功能，可以在 Issue 或群组中联系 Bowen。
+**新功能**或有**破坏性**变化的功能应始终合并到 `master` 分支。
 
 ## 本地环境
 

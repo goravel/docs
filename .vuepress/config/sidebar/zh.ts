@@ -10,12 +10,12 @@ export function getZhSidebar(): SidebarConfigArray {
           text: "升级指南",
           children: [
             {
-              text: "从 v1.12 升级到 v1.13",
-              link: "/zh/upgrade/v1.13",
+              text: "从 v1.13 升级到 v1.14",
+              link: "/zh/upgrade/v1.14",
             },
             {
-              text: "从 v1.11 升级到 v1.12",
-              link: "/zh/upgrade/v1.12",
+              text: "从 v1.12 升级到 v1.13",
+              link: "/zh/upgrade/v1.13",
             },
             {
               text: "历史版本升级",
@@ -110,6 +110,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/the-basics/grpc",
         },
         {
+          text: "Session",
+          link: "/zh/the-basics/session",
+        },
+        {
           text: "表单验证",
           link: "/zh/the-basics/validation",
         },
@@ -152,8 +156,20 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/digging-deeper/task-scheduling",
         },
         {
+          text: "本地化",
+          link: "/zh/digging-deeper/localization",
+        },
+        {
           text: "扩展包开发",
           link: "/zh/digging-deeper/package-development",
+        },
+        {
+          text: "颜色",
+          link: "/zh/digging-deeper/color",
+        },
+        {
+          text: "Strings",
+          link: "/zh/digging-deeper/strings",
         },
         {
           text: "辅助函数",

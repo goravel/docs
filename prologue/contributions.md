@@ -25,6 +25,11 @@ Let's make Goravel more efficient together!
 <a href="https://github.com/ahmed3mar" target="_blank"><img src="https://avatars.githubusercontent.com/u/12982325?v=4" width="48" height="48"></a>
 <a href="https://github.com/flc1125" target="_blank"><img src="https://avatars.githubusercontent.com/u/14297703?v=4" width="48" height="48"></a>
 <a href="https://github.com/zzpwestlife" target="_blank"><img src="https://avatars.githubusercontent.com/u/12382180?v=4" width="48" height="48"></a>
+<a href="https://github.com/juantarrel" target="_blank"><img src="https://avatars.githubusercontent.com/u/7213379?v=4" width="48" height="48"></a>
+<a href="https://github.com/Kamandlou" target="_blank"><img src="https://avatars.githubusercontent.com/u/77993374?v=4" width="48" height="48"></a>
+<a href="https://github.com/livghit" target="_blank"><img src="https://avatars.githubusercontent.com/u/108449432?v=4" width="48" height="48"></a>
+<a href="https://github.com/jeff87218" target="_blank"><img src="https://avatars.githubusercontent.com/u/29706585?v=4" width="48" height="48"></a>
+<a href="https://github.com/shayan-yousefi" target="_blank"><img src="https://avatars.githubusercontent.com/u/19957980?v=4" width="48" height="48"></a>
 
 ## Bug Feedback
 
@@ -59,11 +64,9 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 
 ## Which Branch?
 
-**All** bug fixes should be sent to the latest version that supports bug fixes. Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**All** bug fixes should be sent to the latest version that supports bug fixes, unless they fix features that exist only in the upcoming release.
 
-**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch.
-
-**Major** new features or features with breaking changes should always be sent to the `master` branch, which contains the upcoming release.
+**New features** or features with breaking changes should always be sent to the `master` branch.
 
 ## Local Environment
 

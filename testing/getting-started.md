@@ -8,8 +8,20 @@ The testing function of Goravel relies on Golang's official test component, exte
 
 ## Environment
 
-### The `.env.testing` Environment File
+### Custom Environment File
 
+By default, the `.env` file in the root directory is used to inject configuration information during testing. If you want to use different `.env` files for different packages, you can create a `.env` file in the package directory, and the test will read this file first.
+
+```
+- /app
+- /config
+- ...
+- /test
+  - /feature
+    - .env
+    - user_test.go
+- .env
+```
 In addition, you may create a `.env.testing` file at the root of your project. This file will be used instead of the `.env` file when running `go test` with the `--env` option, note that this option needs to follow the test directory, for example:
 
 ```shell
@@ -143,7 +155,7 @@ The database images supported by default:
 | Database    | Image Link                                                                                         | Version     |
 | --------    | --------------------------------------------------                                                 | ---------   |
 | Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql)                                   | latest      |
-| Postgresql  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres)                             | latest      |
+| Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres)                             | latest      |
 | Sqlserver   | [https://hub.docker.com/_/microsoft-mssql-server](https://hub.docker.com/_/microsoft-mssql-server) | latest      |
 | Sqlite      | [https://hub.docker.com/r/nouchka/sqlite3](https://hub.docker.com/r/nouchka/sqlite3)               | latest      |
 
@@ -159,7 +171,7 @@ database.Image(contractstesting.Image{
     "MYSQL_ROOT_PASSWORD=123123",
     "MYSQL_DATABASE=goravel",
   },
-  Timeout: 1000,
+  ExposedPorts: []string{"3306"},
 })
 ```
 
@@ -188,7 +200,13 @@ err := database.Seed(&seeders.UserSeeder{})
 
 #### Refresh Database
 
-Because the test cases in the same package are executed serially, refreshing the database after a single test case run will have no negative impact, we can use the `RefreshDatabase` method to do this:
+Because the test cases in the same package are executed serially, refreshing the database after a single test case run will have no negative impact, we can use the `Fresh` method:
+
+```go
+err := database.Fresh()
+```
+
+You can also use the `RefreshDatabase` method:
 
 ```go
 package feature
@@ -225,10 +243,10 @@ func (s *ExampleTestSuite) TestIndex() {
 
 #### Uninstall Image
 
-After the test cases in the sub-package are executed, the image will be uninstalled automatically in one hour, you can also use the `Clear` method to uninstall the image manually.
+After the test cases in the sub-package are executed, the image will be uninstalled automatically in one hour, you can also use the `Stop` method to uninstall the image manually.
 
 ```go
-err := database.Clear()
+err := database.Stop()
 ```
 
 #### Example
