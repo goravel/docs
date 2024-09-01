@@ -1,7 +1,6 @@
 # 优秀扩展包
 
 您可以在这里寻找 Goravel 扩展包，您也可以为 [goravel/docs](https://github.com/goravel/docs) 创建一个 PR 将自己的扩展包添加到这里，请尽可能提高包的测试覆盖率。
-
 | 包                                            | 介绍                                 | 测试覆盖率 |
 | -----------------------------------------------    |------------------------------------|-------|
 | [goravel/gin](https://github.com/goravel/gin)      | `facades.Route()` 模块 Gin 驱动        | 83.1% |
@@ -13,4 +12,5 @@
 | [goravel/redis](https://github.com/goravel/redis)  | `facades.Cache()` 模块 Redis 驱动      | 79.1% |
 | [goravel/installer](https://github.com/goravel/installer)  | Goravel 安装器     | 75.7%         |
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)  | `facades.Cache()` 模块 Cloudinary 驱动 | 75.4% |
-| [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)| goravel`websocket`扩展包| 0%    | 
+| [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | goravel 审批流扩展包                   | 4.4%       |
+| [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)     | goravel`websocket`扩展包               | 0%         |
