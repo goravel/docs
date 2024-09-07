@@ -70,13 +70,42 @@ if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); 
 }
 ```
 
+## Close HTTP/HTTPS Server
+
+You can gracefully close the HTTP/HTTPS server by calling the `Shutdown` method, which will wait for all requests to be processed before closing.
+
+```go
+// main.go
+bootstrap.Boot()
+
+// Create a channel to listen for OS signals
+quit := make(chan os.Signal)
+signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+// Start http server by facades.Route().
+go func() {
+  if err := facades.Route().Run(); err != nil {
+    facades.Log().Errorf("Route run error: %v", err)
+  }
+}()
+
+// Listen for the OS signal
+go func() {
+  <-quit
+  if err := facades.Route().Shutdown(); err != nil {
+    facades.Log().Errorf("Route Rhutdown error: %v", err)
+  }
+
+  os.Exit(0)
+}()
+
+select {}
+```
+
 ### Routing Methods
 
 | Methods    | Action                                  |
 | ---------- | --------------------------------------- |
-| Run        | [Start HTTP Server](#start-http-server) |
-| RunTLS        | [Start HTTPS Server](#start-https-server) |
-| RunTLSWithCert        | [Start HTTPS Server](#start-https-server) |
 | Group      | [Group Routing](#group-routing)         |
 | Prefix     | [Routing Prefix](#routing-prefix)       |
 | ServeHTTP  | [Testing Routing](#testing-routing)     |
