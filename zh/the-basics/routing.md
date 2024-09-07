@@ -60,7 +60,7 @@ if err := facades.Route().RunTLS(); err != nil {
 }
 ```
 
-您也可以使用 `facades.Route().RunTLSWithCert()` 方法，自定义 host 与 证书：
+你也可以使用 `facades.Route().RunTLSWithCert()` 方法，自定义 host 与 证书：
 
 ```go
 // main.go
@@ -69,13 +69,42 @@ if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); 
 }
 ```
 
+## 关闭 HTTP/HTTPS 服务器
+
+你可以调用 `Shutdown` 方法优雅的关闭 HTTP/HTTPS 服务器，该方法将会等待所有请求处理完毕后再执行关闭操作。
+
+```go
+// main.go
+bootstrap.Boot()
+
+// Create a channel to listen for OS signals
+quit := make(chan os.Signal)
+signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+// Start http server by facades.Route().
+go func() {
+  if err := facades.Route().Run(); err != nil {
+    facades.Log().Errorf("Route run error: %v", err)
+  }
+}()
+
+//
+go func() {
+  <-quit
+  if err := facades.Route().Shutdown(); err != nil {
+    facades.Log().Errorf("Route Rhutdown error: %v", err)
+  }
+
+  os.Exit(0)
+}()
+
+select {}
+```
+
 ### 路由方法
 
 | 方法       | 作用                                  |
 | ---------- | ------------------------------------- |
-| Run        | [启动 HTTP 服务器](#启动-http-服务器) |
-| RunTLS        | [启动 HTTPS 服务器](#启动-https-服务器) |
-| RunTLSWithCert        | [启动 HTTPS 服务器](#启动-https-服务器) |
 | Group      | [路由分组](#路由分组)                 |
 | Prefix     | [路由前缀](#路由前缀)                 |
 | ServeHTTP  | [测试路由](#测试路由)                 |
@@ -182,7 +211,7 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 
 ## Fallback 路由
 
-使用 `Fallback` 方法，您可以定义一个在没有其他路由匹配传入请求时将执行的路由。
+使用 `Fallback` 方法，你可以定义一个在没有其他路由匹配传入请求时将执行的路由。
 
 ```go
 facades.Route().Fallback(func(ctx http.Context) http.Response {
