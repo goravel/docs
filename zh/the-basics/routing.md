@@ -88,7 +88,7 @@ go func() {
   }
 }()
 
-//
+// Listen for the OS signal
 go func() {
   <-quit
   if err := facades.Route().Shutdown(); err != nil {
