@@ -63,6 +63,7 @@ func (r *PostController) Store(ctx http.Context) {
   validator, err := ctx.Request().Validate(map[string]string{
     "title": "required|max_len:255",
     "body": "required",
+    "code": "required|regex:\d{4,6}",
   })
 }
 ```
@@ -431,6 +432,7 @@ Below is a list of all available validation rules and their function:
 | `ip`  | Check value is IP(v4 or v6) string |
 | `ipv4`  | Check value is IPv4 string |
 | `ipv6`  | Check value is IPv6 string |
+| `regex`  | Check if the value can pass the regular verification |
 
 ### Points For Using Rules
 

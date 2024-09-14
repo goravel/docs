@@ -63,6 +63,7 @@ func (r *PostController) Store(ctx http.Context) {
   validator, err := ctx.Request().Validate(map[string]string{
     "title": "required|max_len:255",
     "body": "required",
+    "code": "required|regex:\d{4,6}",
   })
 }
 ```
@@ -423,6 +424,7 @@ if validator.Errors().Has("email") {
 | `ip`  | 检查值是 IP（v4或v6）字符串 |
 | `ipv4`  | 检查值是 IPv4 字符串 |
 | `ipv6`  | 检查值是 IPv6 字符串 |
+| `regex`  | 检查该值是否可以通过正则验证 |
 
 ### 规则使用注意事项
 
