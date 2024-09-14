@@ -148,7 +148,7 @@ func (s *ExampleTestSuite) TestIndex() {
 
 ```go
 database, err := facades.Testing().Docker().Database()
-database, err := facades.Testing().Docker().Database("postgresql")
+database, err := facades.Testing().Docker().Database("postgres")
 ```
 
 默认支持的数据库镜像：

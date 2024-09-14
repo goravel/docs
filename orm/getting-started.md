@@ -118,7 +118,7 @@ type User struct {
 }
 
 func (r *User) Connection() string {
-  return "postgresql"
+  return "postgres"
 }
 ```
 

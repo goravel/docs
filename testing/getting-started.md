@@ -147,7 +147,7 @@ You can use the `Database` method to initiate a database image based on the defa
 
 ```go
 database, err := facades.Testing().Docker().Database()
-database, err := facades.Testing().Docker().Database("postgresql")
+database, err := facades.Testing().Docker().Database("postgres")
 ```
 
 The database images supported by default:
