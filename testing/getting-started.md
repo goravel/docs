@@ -200,13 +200,13 @@ err := database.Seed(&seeders.UserSeeder{})
 
 #### Refresh Database
 
-Because the test cases in the same package are executed serially, refreshing the database after a single test case run will have no negative impact, we can use the `Fresh` method:
+Because the test cases in the same package are executed serially, refreshing the database after a single test case run will have no negative impact, we can use the `RefreshDatabase` method:
 
-```go
+<!-- ```go
 err := database.Fresh()
 ```
 
-You can also use the `RefreshDatabase` method:
+You can also use the `RefreshDatabase` method: -->
 
 ```go
 package feature

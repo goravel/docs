@@ -201,13 +201,13 @@ err := database.Seed(&seeders.UserSeeder{}, &seeders.PhotoSeeder{})
 
 #### 重置数据库
 
-由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库将不会产生负面影响，可以使用 `Fresh` 方法：
+由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库将不会产生负面影响，可以使用 `RefreshDatabase` 方法：
 
-```go
+<!-- ```go
 err := database.Fresh()
 ```
 
-也可以使用 `RefreshDatabase` 方法执行该操作：
+也可以使用 `RefreshDatabase` 方法执行该操作： -->
 
 ```go
 package feature
