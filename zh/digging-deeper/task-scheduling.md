@@ -147,4 +147,32 @@ func main() {
 }
 ```
 
+## 关闭调度程序
+
+你可以调用 `Stop` 方法优雅的关闭调度程序，该方法将会等待所有任务处理完毕后再执行关闭操作。
+
+```go
+// main.go
+bootstrap.Boot()
+
+// Create a channel to listen for OS signals
+quit := make(chan os.Signal)
+signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+// Start schedule by facades.Schedule
+go facades.Schedule().Run()
+
+// Listen for the OS signal
+go func() {
+  <-quit
+  if err := facades.Schedule().Stop(); err != nil {
+    facades.Log().Errorf("Schedule Stop error: %v", err)
+  }
+
+  os.Exit(0)
+}()
+
+select {}
+```
+
 <CommentService/>

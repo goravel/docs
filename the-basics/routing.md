@@ -72,7 +72,7 @@ if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); 
 
 ## Close HTTP/HTTPS Server
 
-You can gracefully close the HTTP/HTTPS server by calling the `Shutdown` method, which will wait for all requests to be processed before closing.
+You can gracefully close the HTTP/HTTPS server by calling the `Stop` method, which will wait for all requests to be processed before closing.
 
 ```go
 // main.go
@@ -92,8 +92,8 @@ go func() {
 // Listen for the OS signal
 go func() {
   <-quit
-  if err := facades.Route().Shutdown(); err != nil {
-    facades.Log().Errorf("Route Rhutdown error: %v", err)
+  if err := facades.Route().Stop(); err != nil {
+    facades.Log().Errorf("Route Stop error: %v", err)
   }
 
   os.Exit(0)

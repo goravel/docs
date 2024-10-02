@@ -146,4 +146,32 @@ func main() {
 }
 ```
 
+## Stopping The Scheduler
+
+You can call the `Stop` method to gracefully shut down the scheduler. This method will wait for all tasks to complete before shutting down.
+
+```go
+// main.go
+bootstrap.Boot()
+
+// Create a channel to listen for OS signals
+quit := make(chan os.Signal)
+signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+// Start schedule by facades.Schedule
+go facades.Schedule().Run()
+
+// Listen for the OS signal
+go func() {
+  <-quit
+  if err := facades.Schedule().Stop(); err != nil {
+    facades.Log().Errorf("Schedule Stop error: %v", err)
+  }
+
+  os.Exit(0)
+}()
+
+select {}
+```
+
 <CommentService/>
