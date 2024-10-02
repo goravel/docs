@@ -157,7 +157,7 @@ database, err := facades.Testing().Docker().Database("postgres")
 | --------    | -------------------------------------------------- | --------- |
 | Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql) | latest      |
 | Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres) | latest      |
-| Sqlserver   | [https://hub.docker.com/_/microsoft-mssql-server](https://hub.docker.com/_/microsoft-mssql-server) | latest      |
+| Sqlserver   | [https://hub.docker.com/r/microsoft/mssql-server](https://hub.docker.com/r/microsoft/mssql-server) | latest      |
 | Sqlite      | [https://hub.docker.com/r/nouchka/sqlite3](https://hub.docker.com/r/nouchka/sqlite3) | latest      |
 
 也可以使用 `Image` 方法自定义镜像：

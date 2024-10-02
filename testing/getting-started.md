@@ -156,7 +156,7 @@ The database images supported by default:
 | --------    | --------------------------------------------------                                                 | ---------   |
 | Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql)                                   | latest      |
 | Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres)                             | latest      |
-| Sqlserver   | [https://hub.docker.com/_/microsoft-mssql-server](https://hub.docker.com/_/microsoft-mssql-server) | latest      |
+| Sqlserver   | [https://hub.docker.com/r/microsoft/mssql-server](https://hub.docker.com/r/microsoft/mssql-server) | latest      |
 | Sqlite      | [https://hub.docker.com/r/nouchka/sqlite3](https://hub.docker.com/r/nouchka/sqlite3)               | latest      |
 
 You can also use the `Image` method to customize the image:
