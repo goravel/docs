@@ -67,7 +67,7 @@ func (r *PostController) Store(ctx http.Context) {
 }
 ```
 
-### A Note On Nested Attributes
+### Nested Attributes
 
 If the incoming HTTP request contains "nested" field data, you may specify these fields in your validation rules using the "dot" syntax:
 
@@ -76,6 +76,16 @@ validator, err := ctx.Request().Validate(map[string]string{
   "title": "required|max_len:255",
   "author.name": "required",
   "author.description": "required",
+})
+```
+
+### Slice Validation
+
+If the incoming HTTP request contains "array" field data, you may specify these fields in your validation rules using the `*` syntax:
+
+```go
+validator, err := ctx.Request().Validate(map[string]string{
+  "tags.*": "required",
 })
 ```
 

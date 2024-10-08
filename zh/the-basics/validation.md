@@ -67,7 +67,7 @@ func (r *PostController) Store(ctx http.Context) {
 }
 ```
 
-### 嵌套字段的说明
+### 嵌套字段
 
 如果您的 HTTP 请求包含「嵌套」参数，您可以在验证规则中使用 `.` 语法来指定这些参数：
 
@@ -76,6 +76,16 @@ validator, err := ctx.Request().Validate(map[string]string{
   "title": "required|max_len:255",
   "author.name": "required",
   "author.description": "required",
+})
+```
+
+### Slice 验证
+
+如果您的 HTTP 请求包含「数组」参数，您可以在验证规则中使用 `*` 进行校验：
+
+```go
+validator, err := ctx.Request().Validate(map[string]string{
+  "tags.*": "required",
 })
 ```
 
