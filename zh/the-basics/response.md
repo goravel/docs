@@ -113,6 +113,25 @@ ctx.Response().Status(http.StatusOK).Json(http.Json{
 })
 ```
 
+## 返回 Stream
+
+```go
+ctx.Response().Stream(http.StatusCreated, func(w http.StreamWriter) error {
+  data := []string{"a", "b", "c"}
+  for _, item := range data {
+    if _, err := w.Write([]byte(item + "\n")); err != nil {
+      return err
+    }
+
+    if err := w.Flush(); err != nil {
+      return err
+    }
+  }
+
+  return nil
+})
+```
+
 ## 重定向
 
 ```go
