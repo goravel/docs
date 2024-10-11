@@ -19,7 +19,8 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
-  Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
+  Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Subject("Subject").
   Send()
 ```
 
@@ -32,7 +33,8 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
-  Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
+  Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Subject("Subject").
   Queue()
 ```
 
@@ -45,8 +47,9 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
-  Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
-  Queue(mail.Queue{Connection: "high", Queue: "mail"})
+  Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Subject("Subject").
+  Queue(mail.Queue().Connection("high").Queue("mail"))
 ```
 
 ## Setting Sender
@@ -57,12 +60,13 @@ Framework uses `MAIL_FROM_ ADDRESS` and `MAIL_FROM_ NAME` in the `config/mail.go
 import "github.com/goravel/framework/contracts/mail"
 
 err := facades.Mail().To([]string{"example@example.com"}).
-  From(mail.From{Address: "example@example.com", Name: "example"}).
+  From(mail.Address(testFromAddress, testFromName)).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
-  Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
-  Queue(mail.Queue{Connection: "high", Queue: "mail"})
+  Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Subject("Subject").
+  Queue(mail.Queue().Connection("high").Queue("mail"))
 ```
 
 <CommentService/>
