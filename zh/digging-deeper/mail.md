@@ -67,4 +67,57 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Queue(mail.Queue().Connection("high").Queue("mail"))
 ```
 
+## 使用 Mailable
+
+邮件的所有参数都可以在一个 `Mailable` struct 中设置。这些 struct 存储在 `app/mails` 目录中。可以通过 `make:mail` Artisan 命令快速创建一个 `Mailable`：
+
+```bash
+go run . artisan make:mail OrderShipped
+```
+
+生成的 `OrderShipped` struct 如下：
+
+```go
+import "github.com/goravel/framework/contracts/mail"
+
+type OrderShipped struct {
+}
+
+func NewOrderShipped() *OrderShipped {
+	return &OrderShipped{}
+}
+
+func (m *OrderShipped) Attachments() []string {
+	return []string{"../logo.png"}
+}
+
+func (m *OrderShipped) Content() *mail.Content {
+	return &mail.Content{Html: "<h1>Hello Goravel</h1>"}
+}
+
+func (m *OrderShipped) Envelope() *mail.Envelope {
+	return &mail.Envelope{
+		Bcc:     []string{"bcc@goravel.dev"},
+		Cc:      []string{"cc@goravel.dev"},
+		From:    mail.From{Address: "from@goravel.dev", Name: "from"},
+		Subject: "Goravel",
+		To:      []string{"to@goravel.dev"},
+	}
+}
+
+func (m *OrderShipped) Queue() *mail.Queue {
+  return &mail.Queue{
+    Connection: "high",
+    Queue:      "mail",
+  }
+}
+```
+
+然后可以就可以在 `Send` 与 `Queue` 方法中使用该 `Mailalbe`：
+
+```go
+err := facades.Mail().Send(mails.NewOrderShipped())
+err := facades.Mail().Queue(mails.NewOrderShipped())
+```
+
 <CommentService/>
