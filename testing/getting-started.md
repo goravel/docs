@@ -147,7 +147,7 @@ You can use the `Database` method to initiate a database image based on the defa
 
 ```go
 database, err := facades.Testing().Docker().Database()
-database, err := facades.Testing().Docker().Database("postgresql")
+database, err := facades.Testing().Docker().Database("postgres")
 ```
 
 The database images supported by default:
@@ -156,7 +156,7 @@ The database images supported by default:
 | --------    | --------------------------------------------------                                                 | ---------   |
 | Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql)                                   | latest      |
 | Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres)                             | latest      |
-| Sqlserver   | [https://hub.docker.com/_/microsoft-mssql-server](https://hub.docker.com/_/microsoft-mssql-server) | latest      |
+| Sqlserver   | [https://hub.docker.com/r/microsoft/mssql-server](https://hub.docker.com/r/microsoft/mssql-server) | latest      |
 | Sqlite      | [https://hub.docker.com/r/nouchka/sqlite3](https://hub.docker.com/r/nouchka/sqlite3)               | latest      |
 
 You can also use the `Image` method to customize the image:
@@ -200,13 +200,13 @@ err := database.Seed(&seeders.UserSeeder{})
 
 #### Refresh Database
 
-Because the test cases in the same package are executed serially, refreshing the database after a single test case run will have no negative impact, we can use the `RefreshDatabase` method:
+Because the test cases in the same package are executed serially, refreshing the database after a single test case run will have no negative impact, we can use the `Fresh` method:
 
-<!-- ```go
+```go
 err := database.Fresh()
 ```
 
-You can also use the `RefreshDatabase` method: -->
+You can also use the `RefreshDatabase` method:
 
 ```go
 package feature
