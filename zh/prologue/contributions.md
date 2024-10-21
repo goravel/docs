@@ -61,6 +61,7 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过�
 - 如果您对该流程不太了解，可以查看[这篇文章](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)；
 - 在开发过程中，如果遇到问题可以随时在 Issue 中详尽描述该问题，以进一步沟通，但在此之前请确保自己已通过 Google 等方式尽可能的尝试解决问题；
 - 在创建 PR 前，请尽可能的提高单元测试覆盖率，以提供更稳定的功能；
+- 如果修改了 `contracts` 文件夹下的任意文件，请在本地安装 [vektra/mockery](https://vektra.github.io/mockery/latest/installation/)，并在根目录运行 `mockery` 命令生成 mock 文件；
 - 当 PR 开发完毕后，请为其添加 `Review Ready` 标签，维护者将及时进行评审；
 - PR 合并后，如果描述设置正确，Issue 将被自动关闭；
 - Goravel 非常感谢您的贡献，将在下次发版时将您添加到首页贡献列表中；❤️
