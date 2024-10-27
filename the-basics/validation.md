@@ -355,7 +355,7 @@ Below is a list of all available validation rules and their function:
 
 | Name        | Description                   |
 | ----------- | ---------------------  |
-| `required`  | Check value is required and cannot be empty.  |
+| `required`  | Check value is required and cannot be zero value. For example, field type is `bool`, the passing value is `false`, it can not pass the validation.  |
 | `required_if`  | `required_if:anotherfield,value,...` The field under validation must be present and not empty if the anotherField field is equal to any value.  |
 | `required_unless`  | `required_unless:anotherfield,value,...` The field under validation must be present and not empty unless the anotherField field is equal to any value.  |
 | `required_with`  | `required_with:foo,bar,...` The field under validation must be present and not empty only if any of the other specified fields are present. |
