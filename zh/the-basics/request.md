@@ -103,7 +103,7 @@ queries := ctx.Request().Queries()
 
 ### 检索一个输入值
 
-获取所有的用户输入数据，而不用在意用户使用的是哪种 HTTP 动词，不管是什么 HTTP 动词。检索顺序为：`json`, `form`, `query`, `route`。
+获取所有的用户输入数据，而不用在意用户使用的是哪种 HTTP 动词，不管是什么 HTTP 动词。检索顺序为：`json`, `form`。
 
 ```go
 name := ctx.Request().Input("name")

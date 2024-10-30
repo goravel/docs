@@ -105,7 +105,7 @@ queries := ctx.Request().Queries()
 
 ### Retrieving An Input Value
 
-Access all of the user input without worrying about which HTTP verb was used for the request. Retrieve order: `json`, `form`, `query`, `route`.
+Access all of the user input without worrying about which HTTP verb was used for the request. Retrieve order: `json`, `form`.
 
 ```go
 name := ctx.Request().Input("name")
