@@ -76,10 +76,6 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-## HTTP Tests
-
-Please use third-party packages such as `net/http` to initiate HTTP requests during testing, in the future, Goravel plans to extend `Get`, `Post` and other methods in `TestCase` Struct to facilitate requests and assertions.
-
 ## Database Testing
 
 Goravel model factories and Seeders can easily create test database records for the application's model.

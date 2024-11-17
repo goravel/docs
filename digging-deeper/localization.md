@@ -152,3 +152,5 @@ facades.Lang(ctx).Choice("time.minutes_ago", 5, translation.Option{
   },
 })
 ```
+
+<CommentService/>
