@@ -120,3 +120,5 @@ go run . artisan vendor:publish --package={您的包名}
 | --tag        | -t     | 资源分组     |
 | --force      | -f     | 强制覆盖     |
 | --existing   | -e     | 只发布已存在的资源，并强制覆盖     |
+
+<CommentService/>

@@ -100,3 +100,5 @@ func (receiver *AppServiceProvider) Boot(app foundation.Application) {
     facades.View().Share("key", "value")
 }
 ```
+
+<CommentService/>
