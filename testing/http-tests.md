@@ -105,10 +105,7 @@ func (s *ExampleTestSuite) TestIndex() {
 ## Testing Json APIs
 
 Goravel provides several helpers to test JSON API responses effectively. It attempts to unmarshal the response body into a Go `map[string]any`. If unmarshalling fails, the associated assertions will also fail.
-	AssertJson(map[string]any) TestResponse
-	AssertExactJson(map[string]any) TestResponse
-	AssertJsonMissing(map[string]any) TestResponse
-	AssertFluentJson(func(json AssertableJSON)) TestResponse
+
 ```go
 func (s *ExampleTestSuite) TestIndex() {
     response, err := s.Http(s.T()).WithHeader("Content-Type", body.ContentType()).Post("/users", nil)
@@ -148,6 +145,65 @@ func (s *ExampleTestSuite) TestIndex() {
         })
 }
 ```
+
+
+### Fluent JSON Testing
+
+Goravel makes it easy to perform fluent assertions on JSON responses. Using the `AssertFluentJson` method, you can pass a closure that provides an instance of `framework/contracts/testing.AssertableJSON`. This instance allows you to check specific values or conditions in the JSON response returned by your request.
+
+For example, you can use the `Where` method to assert that a particular value exists in the JSON response, and the `Missing` method to ensure that an attribute is not present.
+
+```go
+import contractstesting "github.com/goravel/framework/contracts/testing"
+
+func (s *ExampleTestSuite) TestIndex() {
+    response, err := s.Http(s.T()).Get("/users/1")
+	s.Nil(err)
+	
+	response.AssertStatus(201).
+		AssertFluentJson(func (json contractstesting.AssertableJSON) {
+			json.Where("id", float64(1)).
+				Where("name", "bowen").
+				WhereNot("lang", "en").
+				Missing("password")
+        })
+}
+```
+
+### Asserting Attribute Presence / Absence
+
+If you want to check whether an attribute is present or missing, Goravel makes it simple with the `Has` and `Missing` methods.
+
+```go
+response.AssertStatus(201).
+    AssertFluentJson(func (json contractstesting.AssertableJSON) {
+        json.Has("username").
+            Missing("password")
+    })
+```
+
+You can also assert the presence or absence of multiple attributes at once using `HasAll` and `MissingAll`.
+
+```go
+response.AssertStatus(201).
+    AssertFluentJson(func (json contractstesting.AssertableJSON) {
+        json.Has([]string{"username", "email"}).
+            MissingAll([]string{"verified", "password"})
+    })
+```
+
+If you only need to check for the presence of at least one attribute from a list, use the `HasAny` method.
+
+```go
+response.AssertStatus(201).
+    AssertFluentJson(func (json contractstesting.AssertableJSON) {
+		json.HasAny([]string{"username", "email"})
+    })
+```
+
+### Asserting Against JSON Collections
+
+(need to be finished)
 
 ## Available Assertions
 
@@ -254,8 +310,10 @@ response.AssertExactJson(map[string]any{"created": true})
 
 Asserts the response JSON using a fluent interface:
 ```go
-response.AssertFluentJson(func(json AssertableJSON) {
-     json.HasKey("created").Equals("true")
+import contractstesting "github.com/goravel/framework/contracts/testing"
+
+response.AssertFluentJson(func(json contractstesting.AssertableJSON) {
+     json.Where("created", true)
 })
 ```
 
