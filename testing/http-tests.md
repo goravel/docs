@@ -79,13 +79,13 @@ func (s *ExampleTestSuite) TestIndex() {
 	
 	headers := response.Headers()
 	
-	json, err := response.Json() // response body parsed as response
+	json, err := response.Json() // response body parsed as json(map[string]any)
 	
-	session, err := response.Session() // all values stored in the current request session
+	session, err := response.Session() // returns all values stored in the current request session
 }
 ```
 
-### Building Body
+## Building Body
 
 For method like `Post`, `Put`, `Delete` etc. Goravel accepts `io.Reader` as second argument. To simplify building payloads, the framework provides utility methods for constructing request bodies. Refer to the body support documentation for complete details.
 
@@ -103,5 +103,52 @@ func (s *ExampleTestSuite) TestIndex() {
 ```
 
 ## Testing Json APIs
+
+Goravel provides several helpers to test JSON API responses effectively. It attempts to unmarshal the response body into a Go `map[string]any`. If unmarshalling fails, the associated assertions will also fail.
+	AssertJson(map[string]any) TestResponse
+	AssertExactJson(map[string]any) TestResponse
+	AssertJsonMissing(map[string]any) TestResponse
+	AssertFluentJson(func(json AssertableJSON)) TestResponse
+```go
+func (s *ExampleTestSuite) TestIndex() {
+    response, err := s.Http(s.T()).WithHeader("Content-Type", body.ContentType()).Post("/users", nil)
+	s.Nil(err)
+	
+	response.AssertStatus(201).
+		AssertJson(map[string]any{
+			"created": true,
+        })
+}
+```
+
+To access the unmarshalled JSON directly, use the `Json` method on the `TestResponse`. This lets you inspect individual elements of the response body.
+
+```go
+json, err := response.Json()
+s.Nil(err)
+s.True(json["created"])
+```
+
+::: tip 
+The `AssertJson` method checks whether the response contains all the specified values, even if the response includes additional fields. It doesn't require an exact match unless you use `AssertExactJson`.
+:::
+
+### Asserting Exact JSON Matches
+
+If you need to verify that the response matches your expected JSON exactly (with no extra or missing fields), use the `AssertExactJson` method.
+
+```go
+func (s *ExampleTestSuite) TestIndex() {
+    response, err := s.Http(s.T()).WithHeader("Content-Type", body.ContentType()).Post("/users", nil)
+	s.Nil(err)
+	
+	response.AssertStatus(201).
+		AssertExactJson(map[string]any{
+			"created": true,
+        })
+}
+```
+
+
 
 
