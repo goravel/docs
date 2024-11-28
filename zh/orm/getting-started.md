@@ -682,7 +682,7 @@ num := res.RowsAffected
 
 ```go
 var exists bool
-facades.Orm().Query().Model(models.User{}).Where("name", "tom").Exists(&exists)
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists(&exists)
 ```
 
 ### 事务
