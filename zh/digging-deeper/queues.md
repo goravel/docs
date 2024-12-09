@@ -89,7 +89,7 @@ func main() {
 
   // Start queue server by facades.Queue().
   go func() {
-    if err := facades.Queue().Worker(nil).Run(); err != nil {
+    if err := facades.Queue().Worker().Run(); err != nil {
       facades.Log().Errorf("Queue run error: %v", err)
     }
   }()
@@ -103,14 +103,14 @@ func main() {
 ```go
 // 不传参数，默认监听 `config/queue.go` 中的配置，并发数为 1
 go func() {
-  if err := facades.Queue().Worker(nil).Run(); err != nil {
+  if err := facades.Queue().Worker().Run(); err != nil {
     facades.Log().Errorf("Queue run error: %v", err)
   }
 }()
 
 // 监听 redis 链接的 processing 队列，并发数 10
 go func() {
-  if err := facades.Queue().Worker(&queue.Args{
+  if err := facades.Queue().Worker(queue.Args{
     Connection: "redis",
     Queue: "processing",
     Concurrent: 10,
