@@ -296,8 +296,8 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
 | `.Default(value)` | 为列指定「默认」值 |
 | `.Nullable()` | 允许插入 NULL 值到列中 |
 | `.Unsigned()` | 设置整数列为 UNSIGNED（仅限 MySQL） |
-| `.AutoIncrement()` | 设置整数列为自动增长的（主键）|
-| `.AutoIncrement()` | 设置整数列为自动增长的（主键）|
+| `.UseCurrent()` | 设置时间戳列使用 CURRENT_TIMESTAMP 作为默认值 |
+| `.UseCurrentOnUpdate()` | 设置记录更新时，时间戳列使用 CURRENT_TIMESTAMP（仅限 MySQL） |
 
 ### 删除列
 
