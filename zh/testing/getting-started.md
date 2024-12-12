@@ -77,10 +77,6 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-## HTTP 测试
-
-目前在测试中请使用 `net/http` 等第三方包发起 HTTP 请求，未来 Goravel 有计划在 `TestCase` Struct 中扩展 `Get`, `Post` 等方法，方便发起请求与断言。
-
 ## 数据库测试
 
 Goravel 模型工厂和 Seeders 可以轻松地为应用程序的模型创建测试数据库记录。

@@ -73,7 +73,7 @@ You need to generate a Token by `Parse` before getting a user, the process can b
 ```go
 var user models.User
 err := facades.Auth(ctx).User(&user) // Must point
-id, err := facades.Auth(ctx).Id()
+id, err := facades.Auth(ctx).ID()
 ```
 
 ## Refresh Token

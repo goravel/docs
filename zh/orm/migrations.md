@@ -91,7 +91,7 @@ func (r *M20241207095921CreateUsersTable) Down() error {
 
 #### 设置迁移连接
 
-如果迁移将与应用程序默认数据库连接以外的数据库连接进行交互，你应该使用迁移的 `Connection` 方法：
+如果迁移将与应用程序默认数据库连接以外的数据库连接进行交互，你可以使用迁移的 `Connection` 方法：
 
 ```go
 func (r *M20241207095921CreateUsersTable) Connection() string {
@@ -130,6 +130,8 @@ func (kernel Kernel) Migrations() []schema.Migration {
 	}
 }
 ```
+
+SQL 迁移不需要注册，框架会自动扫描 `database/migrations` 目录下的 SQL 文件。
 
 ## 执行迁移
 

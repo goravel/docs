@@ -73,7 +73,7 @@ errors.Is(err, auth.ErrorTokenExpired)
 ```go
 var user models.User
 err := facades.Auth(ctx).User(&user) // 必须是指针
-id, err := facades.Auth(ctx).Id()
+id, err := facades.Auth(ctx).ID()
 ```
 
 ## 刷新 Token
