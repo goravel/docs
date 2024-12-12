@@ -188,8 +188,6 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
 
 ### Filter Input Data
 
-您可以通过完善表单请求的 `Filters` 方法来格式化输入数据。 此方法应返回 `属性/过滤器` 的数组 Map：
-
 You can format the input data by improving the `Filters` method of the form request. This method should return an map of `attribute/filter`:
 
 ```go
