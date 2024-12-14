@@ -101,7 +101,8 @@ go run . artisan make:request StorePostRequest
 go run . artisan make:request user/StorePostRequest
 ```
 
-该命令生成的表单请求类将被置于 `app/http/requests` 目录中。如果这个目录不存在，在您运行 `make:request` 命令后将会创建这个目录。Goravel 生成的每个表单请求都有六个方法：`Authorize`, `Rules`, `Filters`, `Messages`, `Attributes` 和 `PrepareForValidation`。
+该命令生成的表单请求类将被置于 `app/http/requests` 目录中。如果这个目录不存在，在您运行 `make:request` 命令后将会创建这个目录。Goravel 生成的每个表单请求都有两个方法：`Authorize`, `Rules`。另外可以自定义 `Filters`, `Messages`, `Attributes` 和 `PrepareForValidation` 方法，进行更进一步的操作。
+
 
 `Authorize` 方法负责确定当前经过身份验证的用户是否可以执行请求操作，而 `Rules` 方法则返回适用于请求数据的验证规则：
 
@@ -126,24 +127,6 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
     // 键与传入的键保持一致
     "name": "required|max_len:255",
   }
-}
-
-func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
-	return map[string]string{
-    "name": "trim",
-  }
-}
-
-func (r *StorePostRequest) Messages(ctx http.Context) map[string]string {
-  return map[string]string{}
-}
-
-func (r *StorePostRequest) Attributes(ctx http.Context) map[string]string {
-  return map[string]string{}
-}
-
-func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validation.Data) error {
-  return nil
 }
 ```
 
@@ -226,7 +209,7 @@ func (r *StorePostRequest) Attributes() map[string]string {
 如果您需要在应用验证规则之前修改或清理请求中的任何数据，您可以使用 `PrepareForValidation` 方法：
 
 ```go
-func (r *StorePostRequest) PrepareForValidation(data validation.Data) error {
+func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validation.Data) error {
   if name, exist := data.Get("name"); exist {
     return data.Set("name", name.(string)+"1")
   }
@@ -301,7 +284,7 @@ import (
 )
 
 func (r *PostController) Store(ctx http.Context) http.Response {
-  validator, err := facades.Validation().Make(input, rules, validation.PrepareForValidation(func(data validationcontract.Data) error {
+  validator, err := facades.Validation().Make(input, rules, validation.PrepareForValidation(func(ctx http.Context, data validationcontract.Data) error {
     if name, exist := data.Get("name"); exist {
       return data.Set("name", name)
     }
