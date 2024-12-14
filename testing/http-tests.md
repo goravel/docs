@@ -199,9 +199,57 @@ response.AssertStatus(201).
     })
 ```
 
-### Asserting Against JSON Collections
+### Scoping JSON Collection Assertions
 
-(need to be finished)
+When a response contains a collection of objects under a named key, you can use various methods to assert its structure and content.
+
+```go
+type Item struct {
+    ID int `json:"id"`
+}
+
+facades.Route().Get("/", func(ctx http.Context) http.Response {
+    items := []Item{
+        {ID: 1},
+        {ID: 2},
+    }
+    return ctx.Response().Json(200, map[string]{
+		"items": items,
+    })
+}
+```
+
+You can use the `Count` method to verify the number of elements in the collection. To assert properties of the first element, use the `First` method, which provides an instance of `AssertableJson`. Similarly, the `Each` method allows you to iterate over all elements and assert their properties individually. Alternatively, the `HasWithScope` method combines the functionality of `First` and `Count`, allowing you to assert both the first element and its contents while providing an `AssertableJson` instance for scoped assertions.
+
+```go
+// Count and First
+response.AssertStatus(200).
+    AssertFluentJson(func(json contractstesting.AssertableJSON) {
+        json.Count("items", 2).
+            First("items", func(json contractstesting.AssertableJSON) {
+                json.Where("id", 1)
+            })
+    })
+
+// Each
+response.AssertStatus(200).
+    AssertFluentJson(func(json contractstesting.AssertableJSON) {
+        json.Count("items", 2).
+            Each("items", func(json contractstesting.AssertableJSON) {
+                json.Has("id")
+            })
+    })
+
+// HasWithScope
+response.AssertStatus(200).
+    AssertFluentJson(func(json contractstesting.AssertableJSON) {
+        json.HasWithScope("items", 2, func(json contractstesting.AssertableJSON) {
+            json.Where("id", 1)
+        })
+    })
+```
+
+
 
 ## Available Assertions
 
