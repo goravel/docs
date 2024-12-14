@@ -199,9 +199,55 @@ response.AssertStatus(201).
     })
 ```
 
-### 断言 JSON 集合
+### JSON 集合断言的范围界定
 
-(need to be finished)
+当响应包含一个命名键下的对象集合时，可以使用各种方法来断言其结构和内容。
+
+```go
+type Item struct {
+    ID int `json:"id"`
+}
+
+facades.Route().Get("/", func(ctx http.Context) http.Response {
+    items := []Item{
+        {ID: 1},
+        {ID: 2},
+    }
+    return ctx.Response().Json(200, map[string]{
+		"items": items,
+    })
+}
+```
+
+您可以使用 `Count` 方法验证集合中元素的数量。要断言第一个元素的属性，请使用 `First` 方法，该方法提供了一个 `AssertableJson` 实例。同样，使用 `Each` 方法可以遍历所有元素并逐个断言其属性。另外，`HasWithScope` 方法结合了 `First` 和 `Count` 的功能，允许你断言第一个元素及其内容，同时为范围断言提供一个 `AssertableJson` 实例。
+
+```go
+// Count and First
+response.AssertStatus(200).
+    AssertFluentJson(func(json contractstesting.AssertableJSON) {
+        json.Count("items", 2).
+            First("items", func(json contractstesting.AssertableJSON) {
+                json.Where("id", 1)
+            })
+    })
+
+// Each
+response.AssertStatus(200).
+    AssertFluentJson(func(json contractstesting.AssertableJSON) {
+        json.Count("items", 2).
+            Each("items", func(json contractstesting.AssertableJSON) {
+                json.Has("id")
+            })
+    })
+
+// HasWithScope
+response.AssertStatus(200).
+    AssertFluentJson(func(json contractstesting.AssertableJSON) {
+        json.HasWithScope("items", 2, func(json contractstesting.AssertableJSON) {
+            json.Where("id", 1)
+        })
+    })
+```
 
 ## 可用断言
 

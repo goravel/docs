@@ -249,8 +249,6 @@ response.AssertStatus(200).
     })
 ```
 
-
-
 ## Available Assertions
 
 ### Response Assertions
