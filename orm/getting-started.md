@@ -17,6 +17,18 @@ Before you start, configure the database in `.env` and confirm the `default` con
 
 To configure databases, navigate to `config/database.go`. This is where you can customize all database connections and choose a `default` connection. The configuration in this file relies on the project's environment variables and showcases various database configurations that Goravel supports.
 
+### DSN
+
+You can also use DSN to connect to the database directly, just configure the `dsn` field in the configuration file:
+
+```go
+"mysql": map[string]any{
+  "driver":   "postgres",
+++  "dsn": "postgres://user:password@localhost:5432/dbname?sslmode=disable",
+  ...
+}
+```
+
 ### Read & Write Connections
 
 Sometimes you may wish to use one database connection for `SELECT` statements, and another for `INSERT`, `UPDATE`, and `DELETE` statements. Goravel makes this a breeze.
