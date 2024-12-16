@@ -17,6 +17,18 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 
 数据库的配置文件在 `config/database.go` 文件中。你可以在这个文件中配置所有的数据库连接，并指定默认的数据库连接。该文件中的大部分配置都基于项目的环境变量，且提供了 Goravel 所支持的数据库配置示例。
 
+### DSN
+
+你也可以直接使用 DSN 连接数据库，只需要在配置文件中配置 `dsn` 字段即可：
+
+```go
+"mysql": map[string]any{
+  "driver":   "postgres",
+++  "dsn": "postgres://user:password@localhost:5432/dbname?sslmode=disable",
+  ...
+}
+```
+
 ### 读写分离
 
 有时候您可能会希望使用一个数据库连接来执行 `SELECT` 语句，而 `INSERT`、`UPDATE` 和 `DELETE` 语句则由另一个数据库连接来执行。在 Goravel 中可以轻松实现读写分离。
