@@ -87,7 +87,7 @@ Better development of the project is inseparable from your support, reward us by
 
 Welcome more discussion in Discord.
 
-https://discord.gg/dMs73mSa
+[https://discord.gg/dMs73mSa](https://discord.gg/dMs73mSa)
 
 ## License
 
