@@ -17,6 +17,18 @@ Before you start, configure the database in `.env` and confirm the `default` con
 
 To configure databases, navigate to `config/database.go`. This is where you can customize all database connections and choose a `default` connection. The configuration in this file relies on the project's environment variables and showcases various database configurations that Goravel supports.
 
+### DSN
+
+You can also use DSN to connect to the database directly, just configure the `dsn` field in the configuration file:
+
+```go
+"mysql": map[string]any{
+  "driver":   "postgres",
+++  "dsn": "postgres://user:password@localhost:5432/dbname?sslmode=disable",
+  ...
+}
+```
+
 ### Read & Write Connections
 
 Sometimes you may wish to use one database connection for `SELECT` statements, and another for `INSERT`, `UPDATE`, and `DELETE` statements. Goravel makes this a breeze.
@@ -118,11 +130,11 @@ type User struct {
 }
 
 func (r *User) Connection() string {
-  return "postgresql"
+  return "postgres"
 }
 ```
 
-## facades.Orm available functions
+## facades.Orm() available functions
 
 | Name        | Action                                                      |
 | ----------- | ----------------------------------------------------------- |
@@ -132,7 +144,7 @@ func (r *User) Connection() string {
 | Transaction | [Transaction](#transaction)                                 |
 | WithContext | [Inject Context](#inject-context)                           |
 
-## facades.Orm().Query & facades.Orm().Transaction available functions
+## facades.Orm().Query() available functions
 
 | Functions     | Action                                                  |
 | ------------- | ------------------------------------------------------- |
@@ -497,15 +509,35 @@ facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").J
 
 ```go
 user := models.User{Name: "tom", Age: 18}
-result := facades.Orm().Query().Create(&user)
+err := facades.Orm().Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
+
+// Not trigger model events
+err := facades.Orm().Query().Table("users").Create(map[string]any{
+  "name": "Goravel",
+})
+
+// Trigger model events
+err := facades.Orm().Query().Model(&models.User{}).Create(map[string]any{
+  "name": "Goravel",
+})
 ```
 
 ### Multiple create
 
 ```go
 users := []models.User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
-result := facades.Orm().Query().Create(&users)
+err := facades.Orm().Query().Create(&users)
+
+err := facades.Orm().Query().Table("users").Create(&[]map[string]any{
+  {"name": "Goravel"},
+  {"name": "Framework"},
+})
+
+err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
+  {"name": "Goravel"},
+  {"name": "Framework"},
+})
 ```
 
 > `created_at` and `updated_at` will be filled automatically.
@@ -572,19 +604,11 @@ Delete by model, the number of rows affected by the statement is returned by the
 var user models.User
 facades.Orm().Query().Find(&user, 1)
 res, err := facades.Orm().Query().Delete(&user)
+res, err := facades.Orm().Query().Model(&models.User{}).Where("id", 1).Delete()
+res, err := facades.Orm().Query().Table("users").Where("id", 1).Delete()
 // DELETE FROM `users` WHERE `users`.`id` = 1;
 
 num := res.RowsAffected
-```
-
-Delete by ID
-
-```go
-facades.Orm().Query().Delete(&models.User{}, 10)
-// DELETE FROM `users` WHERE `users`.`id` = 10;
-
-facades.Orm().Query().Delete(&models.User{}, []int{1, 2, 3})
-// DELETE FROM `users` WHERE `users`.`id` IN (1,2,3);
 ```
 
 Multiple delete
@@ -597,7 +621,9 @@ facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
 Want to force delete a soft-delete data.
 
 ```go
-facades.Orm().Query().Where("name = ?", "tom").ForceDelete(&models.User{})
+facades.Orm().Query().Where("name", "tom").ForceDelete(&models.User{})
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").ForceDelete()
+facades.Orm().Query().Table("users").Where("name", "tom").ForceDelete()
 ```
 
 You can delete records with model associations via `Select`:
@@ -699,7 +725,7 @@ import (
 
 ...
 
-return facades.Orm().Transaction(func(tx orm.Transaction) error {
+return facades.Orm().Transaction(func(tx orm.Query) error {
   var user models.User
 
   return tx.Find(&user, user.ID)

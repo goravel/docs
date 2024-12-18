@@ -17,6 +17,18 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 
 数据库的配置文件在 `config/database.go` 文件中。你可以在这个文件中配置所有的数据库连接，并指定默认的数据库连接。该文件中的大部分配置都基于项目的环境变量，且提供了 Goravel 所支持的数据库配置示例。
 
+### DSN
+
+你也可以直接使用 DSN 连接数据库，只需要在配置文件中配置 `dsn` 字段即可：
+
+```go
+"mysql": map[string]any{
+  "driver":   "postgres",
+++  "dsn": "postgres://user:password@localhost:5432/dbname?sslmode=disable",
+  ...
+}
+```
+
 ### 读写分离
 
 有时候您可能会希望使用一个数据库连接来执行 `SELECT` 语句，而 `INSERT`、`UPDATE` 和 `DELETE` 语句则由另一个数据库连接来执行。在 Goravel 中可以轻松实现读写分离。
@@ -118,11 +130,11 @@ type User struct {
 }
 
 func (r *User) Connection() string {
-  return "postgresql"
+  return "postgres"
 }
 ```
 
-## facades.Orm 可用方法
+## facades.Orm() 可用方法
 
 | 方法名       | 作用                              |
 | ----------- | --------------------------------- |
@@ -132,7 +144,7 @@ func (r *User) Connection() string {
 | Transaction | [事务](#事务)                     |
 | WithContext | [注入 Context](#注入-Context)     |
 
-## facades.Orm().Query & facades.Orm().Transaction 可用方法
+## facades.Orm().Query() 可用方法
 
 | 方法名         | 作用                                    |
 | ------------- | --------------------------------------- |
@@ -496,15 +508,35 @@ facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").J
 
 ```go
 user := models.User{Name: "tom", Age: 18}
-result := facades.Orm().Query().Create(&user)
+err := facades.Orm().Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
+
+// 不触发模型事件
+err := facades.Orm().Query().Table("users").Create(map[string]any{
+  "name": "Goravel",
+})
+
+// 触发模型事件
+err := facades.Orm().Query().Model(&models.User{}).Create(map[string]any{
+  "name": "Goravel",
+})
 ```
 
 ### 批量创建
 
 ```go
 users := []models.User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
-result := facades.Orm().Query().Create(&users)
+err := facades.Orm().Query().Create(&users)
+
+err := facades.Orm().Query().Table("users").Create(&[]map[string]any{
+  {"name": "Goravel"},
+  {"name": "Framework"},
+})
+
+err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
+  {"name": "Goravel"},
+  {"name": "Framework"},
+})
 ```
 
 > `created_at` 和 `updated_at` 字段将会被自动填充。
@@ -572,19 +604,11 @@ facades.Orm().Query().UpdateOrCreate(&user, models.User{Name: "name"}, models.Us
 var user models.User
 err := facades.Orm().Query().Find(&user, 1)
 res, err := facades.Orm().Query().Delete(&user)
+res, err := facades.Orm().Query().Model(&models.User{}).Where("id", 1).Delete()
+res, err := facades.Orm().Query().Table("users").Where("id", 1).Delete()
 // DELETE FROM `users` WHERE `users`.`id` = 1;
 
 num := res.RowsAffected
-```
-
-根据 ID 删除
-
-```go
-facades.Orm().Query().Delete(&models.User{}, 10)
-// DELETE FROM `users` WHERE `users`.`id` = 10;
-
-facades.Orm().Query().Delete(&models.User{}, []uint{1, 2, 3})
-// DELETE FROM `users` WHERE `users`.`id` IN (1,2,3);
 ```
 
 批量删除
@@ -597,7 +621,9 @@ facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
 如果模型开启了软删除功能，想要强制删除某数据
 
 ```go
-facades.Orm().Query().Where("name = ?", "tom").ForceDelete(&models.User{})
+facades.Orm().Query().Where("name", "tom").ForceDelete(&models.User{})
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").ForceDelete()
+facades.Orm().Query().Table("users").Where("name", "tom").ForceDelete()
 ```
 
 您可以通过 `Select` 来删除具有模型关联的记录：
@@ -699,7 +725,7 @@ import (
 
 ...
 
-return facades.Orm().Transaction(func(tx orm.Transaction) error {
+return facades.Orm().Transaction(func(tx orm.Query) error {
   var user models.User
 
   return tx.Find(&user, user.ID)

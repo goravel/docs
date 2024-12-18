@@ -86,7 +86,7 @@ path := path.Config("app.go")
 
 ### `path.Database()`
 
-The `path.Database()` function returns the path to your application's database directory. You may also use the `path.Database()` function to generate a path to a given file within the database directory:
+The `path.Database()` function returns the path to your application's database directory. You may also use the `path.Database()` function to generate a path to a given file within the `database` directory:
 
 ```go
 path := path.Database()
@@ -95,7 +95,7 @@ path := path.Database("factories/user_factory.go")
 
 ### `path.Storage()`
 
-The `path.Storage()` function returns the path to your application's storage directory. You may also use the `path.Storage()` function to generate a path to a given file within the storage directory:
+The `path.Storage()` function returns the path to your application's storage directory. You may also use the `path.Storage()` function to generate a path to a given file within the `storage` directory:
 
 ```go
 path := path.Storage()
@@ -104,11 +104,20 @@ path := path.Storage("app/file.txt")
 
 ### `path.Public()`
 
-The `path.Public()` function returns the path to your application's public directory. You may also use the `path.Public()` function to generate a path to a given file within the public directory:
+The `path.Public()` function returns the path to your application's public directory. You may also use the `path.Public()` function to generate a path to a given file within the `public` directory:
 
 ```go
 path := path.Public()
 path := path.Public("css/app.css")
+```
+
+### `path.Lang()`
+
+The `path.Lang()` function returns the path to the `lang` directory. You may also use the `path.Lang()` function to generate a path to a given file within the `lang` directory:
+
+```go
+path := path.Lang()
+path := path.Lang("en.json")
 ```
 
 ## Time
