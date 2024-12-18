@@ -239,10 +239,10 @@ func (s *ExampleTestSuite) TestIndex() {
 
 #### Uninstall Image
 
-After the test cases in the sub-package are executed, the image will be uninstalled automatically in one hour, you can also use the `Stop` method to uninstall the image manually.
+After the test cases in the sub-package are executed, the image will be uninstalled automatically in one hour, you can also use the `Shutdown` method to uninstall the image manually.
 
 ```go
-err := database.Stop()
+err := database.Shutdown()
 ```
 
 #### Example
