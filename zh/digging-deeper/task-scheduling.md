@@ -149,7 +149,7 @@ func main() {
 
 ## 关闭调度程序
 
-你可以调用 `Stop` 方法优雅的关闭调度程序，该方法将会等待所有任务处理完毕后再执行关闭操作。
+你可以调用 `Shutdown` 方法优雅的关闭调度程序，该方法将会等待所有任务处理完毕后再执行关闭操作。
 
 ```go
 // main.go
@@ -165,8 +165,8 @@ go facades.Schedule().Run()
 // Listen for the OS signal
 go func() {
   <-quit
-  if err := facades.Schedule().Stop(); err != nil {
-    facades.Log().Errorf("Schedule Stop error: %v", err)
+  if err := facades.Schedule().Shutdown(); err != nil {
+    facades.Log().Errorf("Schedule Shutdown error: %v", err)
   }
 
   os.Exit(0)

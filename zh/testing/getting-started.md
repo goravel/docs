@@ -240,10 +240,10 @@ func (s *ExampleTestSuite) TestIndex() {
 
 #### 卸载镜像
 
-子包内测试用例执行完毕后，镜像将在一小时后自动卸载，您也可以使用 `Stop` 方法手动卸载镜像。
+子包内测试用例执行完毕后，镜像将在一小时后自动卸载，您也可以使用 `Shutdown` 方法手动卸载镜像。
 
 ```go
-err := database.Stop()
+err := database.Shutdown()
 ```
 
 #### 示例

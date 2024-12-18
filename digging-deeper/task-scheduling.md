@@ -148,7 +148,7 @@ func main() {
 
 ## Stopping The Scheduler
 
-You can call the `Stop` method to gracefully shut down the scheduler. This method will wait for all tasks to complete before shutting down.
+You can call the `Shutdown` method to gracefully shut down the scheduler. This method will wait for all tasks to complete before shutting down.
 
 ```go
 // main.go
@@ -164,8 +164,8 @@ go facades.Schedule().Run()
 // Listen for the OS signal
 go func() {
   <-quit
-  if err := facades.Schedule().Stop(); err != nil {
-    facades.Log().Errorf("Schedule Stop error: %v", err)
+  if err := facades.Schedule().Shutdown(); err != nil {
+    facades.Log().Errorf("Schedule Shutdown error: %v", err)
   }
 
   os.Exit(0)

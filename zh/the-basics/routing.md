@@ -71,7 +71,7 @@ if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); 
 
 ## 关闭 HTTP/HTTPS 服务器
 
-你可以调用 `Stop` 方法优雅的关闭 HTTP/HTTPS 服务器，该方法将会等待所有请求处理完毕后再执行关闭操作。
+你可以调用 `Shutdown` 方法优雅的关闭 HTTP/HTTPS 服务器，该方法将会等待所有请求处理完毕后再执行关闭操作。
 
 ```go
 // main.go
@@ -91,8 +91,8 @@ go func() {
 // Listen for the OS signal
 go func() {
   <-quit
-  if err := facades.Route().Stop(); err != nil {
-    facades.Log().Errorf("Route Stop error: %v", err)
+  if err := facades.Route().Shutdown(); err != nil {
+    facades.Log().Errorf("Route shutdown error: %v", err)
   }
 
   os.Exit(0)
