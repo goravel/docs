@@ -234,6 +234,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/testing/getting-started",
         },
         {
+          text: "HTTP Tests",
+          link: "/zh/testing/htt-tests",
+        },
+        {
           text: "Mock",
           link: "/zh/testing/mock",
         },

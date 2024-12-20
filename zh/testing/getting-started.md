@@ -77,10 +77,6 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-## HTTP 测试
-
-目前在测试中请使用 `net/http` 等第三方包发起 HTTP 请求，未来 Goravel 有计划在 `TestCase` Struct 中扩展 `Get`, `Post` 等方法，方便发起请求与断言。
-
 ## 数据库测试
 
 Goravel 模型工厂和 Seeders 可以轻松地为应用程序的模型创建测试数据库记录。
@@ -148,7 +144,7 @@ func (s *ExampleTestSuite) TestIndex() {
 
 ```go
 database, err := facades.Testing().Docker().Database()
-database, err := facades.Testing().Docker().Database("postgresql")
+database, err := facades.Testing().Docker().Database("postgres")
 ```
 
 默认支持的数据库镜像：
@@ -157,7 +153,7 @@ database, err := facades.Testing().Docker().Database("postgresql")
 | --------    | -------------------------------------------------- | --------- |
 | Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql) | latest      |
 | Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres) | latest      |
-| Sqlserver   | [https://hub.docker.com/_/microsoft-mssql-server](https://hub.docker.com/_/microsoft-mssql-server) | latest      |
+| Sqlserver   | [https://hub.docker.com/r/microsoft/mssql-server](https://hub.docker.com/r/microsoft/mssql-server) | latest      |
 | Sqlite      | [https://hub.docker.com/r/nouchka/sqlite3](https://hub.docker.com/r/nouchka/sqlite3) | latest      |
 
 也可以使用 `Image` 方法自定义镜像：
@@ -201,13 +197,13 @@ err := database.Seed(&seeders.UserSeeder{}, &seeders.PhotoSeeder{})
 
 #### 重置数据库
 
-由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库将不会产生负面影响，可以使用 `RefreshDatabase` 方法：
+由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库将不会产生负面影响，可以使用 `Fresh` 方法：
 
-<!-- ```go
+```go
 err := database.Fresh()
 ```
 
-也可以使用 `RefreshDatabase` 方法执行该操作： -->
+也可以使用 `RefreshDatabase` 方法执行该操作：
 
 ```go
 package feature
@@ -244,10 +240,10 @@ func (s *ExampleTestSuite) TestIndex() {
 
 #### 卸载镜像
 
-子包内测试用例执行完毕后，镜像将在一小时后自动卸载，您也可以使用 `Stop` 方法手动卸载镜像。
+子包内测试用例执行完毕后，镜像将在一小时后自动卸载，您也可以使用 `Shutdown` 方法手动卸载镜像。
 
 ```go
-err := database.Stop()
+err := database.Shutdown()
 ```
 
 #### 示例

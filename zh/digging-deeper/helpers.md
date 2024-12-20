@@ -111,6 +111,15 @@ path := path.Public()
 path := path.Public("css/app.css")
 ```
 
+### `path.Lang()`
+
+`path.Lang()` 函数返回 `lang` 目录的路径。您也可以用来生成 `lang` 目录下特定文件的路径：
+
+```go
+path := path.Lang()
+path := path.Lang("en.json")
+```
+
 ## 时间
 
 Goravel 的 `carbon` 是 [golang-module/carbon](https://github.com/golang-module/carbon) 的一个扩展，主要实现了时间回溯功能，详细用法请参考其官方文档。

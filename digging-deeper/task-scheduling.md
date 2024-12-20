@@ -58,6 +58,10 @@ func (kernel *Kernel) Schedule() []schedule.Event {
 }
 ```
 
+### Logging Level
+
+When `app.debug` is `true`, the console will print all logs. Otherwise, only `error` level logs will be printed.
+
 ### Schedule Frequency Options
 
 We've already seen a few examples of how you may configure a task to run at specified intervals. However, there are many more task schedule frequencies avaibable to assign to tasks:
@@ -140,6 +144,34 @@ func main() {
 
   select {}
 }
+```
+
+## Stopping The Scheduler
+
+You can call the `Shutdown` method to gracefully shut down the scheduler. This method will wait for all tasks to complete before shutting down.
+
+```go
+// main.go
+bootstrap.Boot()
+
+// Create a channel to listen for OS signals
+quit := make(chan os.Signal)
+signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+// Start schedule by facades.Schedule
+go facades.Schedule().Run()
+
+// Listen for the OS signal
+go func() {
+  <-quit
+  if err := facades.Schedule().Shutdown(); err != nil {
+    facades.Log().Errorf("Schedule Shutdown error: %v", err)
+  }
+
+  os.Exit(0)
+}()
+
+select {}
 ```
 
 <CommentService/>

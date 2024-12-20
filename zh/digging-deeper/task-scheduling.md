@@ -58,6 +58,10 @@ func (kernel *Kernel) Schedule() []schedule.Event {
 }
 ```
 
+### 日志级别
+
+当 `app.debug` 为 `true` 时，控制台将打印所有日志；否则，只打印 `error` 级别日志。
+
 ### 调度频率选项
 
 我们已经看到了几个如何设置任务在指定时间间隔运行的例子。不仅如此，你还有更多的任务调度频率可选：
@@ -141,6 +145,34 @@ func main() {
 
   select {}
 }
+```
+
+## 关闭调度程序
+
+你可以调用 `Shutdown` 方法优雅的关闭调度程序，该方法将会等待所有任务处理完毕后再执行关闭操作。
+
+```go
+// main.go
+bootstrap.Boot()
+
+// Create a channel to listen for OS signals
+quit := make(chan os.Signal)
+signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+// Start schedule by facades.Schedule
+go facades.Schedule().Run()
+
+// Listen for the OS signal
+go func() {
+  <-quit
+  if err := facades.Schedule().Shutdown(); err != nil {
+    facades.Log().Errorf("Schedule Shutdown error: %v", err)
+  }
+
+  os.Exit(0)
+}()
+
+select {}
 ```
 
 <CommentService/>
