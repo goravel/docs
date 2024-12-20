@@ -185,6 +185,7 @@ func (r *User) Connection() string {
 | Paginate      | [Paginate](#paginate)             |
 | Pluck         | [Query single column](#query-single-column)             |
 | Raw           | [Execute native SQL](#execute-native-sql)               |
+| Restore       | [Restore](#restore)                   |
 | Rollback      | [Rollback transaction](#transaction)                    |
 | Save          | [Update a existing model](#update-a-existing-model)                  |
 | SaveQuietly          | [Saving a single model without events](#saving-a-single-model-without-events)                  |
@@ -711,6 +712,14 @@ var exists bool
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists(&exists)
 ```
 
+### Restore
+
+```go
+facades.Orm().Query().WithTrashed().Restore(&models.User{ID: 1})
+facades.Orm().Query().Model(&models.User{ID: 1}).WithTrashed().Restore()
+// UPDATE `users` SET `deleted_at`=NULL WHERE `id` = 1;
+```
+
 ### Transaction
 
 You can execute a transaction by `Transaction` function.
@@ -804,7 +813,7 @@ fmt.Println(sum)
 
 ## Events
 
-Orm models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `Retrieved`, `Creating`, `Created`, `Updating`, `Updated`, `Saving`, `Saved`, `Deleting`, `Deleted`, `ForceDeleting`, `ForceDeleted`.
+Orm models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `Retrieved`, `Creating`, `Created`, `Updating`, `Updated`, `Saving`, `Saved`, `Deleting`, `Deleted`, `ForceDeleting`, `ForceDeleted`, `Restored`, `Restoring`.
 
 The `Retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `Creating` and `Created` events will dispatch. The `Updating` / `Updated` events will dispatch when an existing model is modified and the `Save` method is called. The `Saving` / `Saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
 
@@ -856,6 +865,12 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 		contractsorm.EventRetrieved: func(event contractsorm.Event) error {
 			return nil
 		},
+		contractsorm.EventRestored: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventRestoring: func(event contractsorm.Event) error {
+			return nil
+		},
 	}
 }
 ```
@@ -886,19 +901,7 @@ import (
 
 type UserObserver struct{}
 
-func (u *UserObserver) Retrieved(event orm.Event) error {
-	return nil
-}
-
-func (u *UserObserver) Creating(event orm.Event) error {
-	return nil
-}
-
 func (u *UserObserver) Created(event orm.Event) error {
-	return nil
-}
-
-func (u *UserObserver) Updating(event orm.Event) error {
 	return nil
 }
 
@@ -906,23 +909,7 @@ func (u *UserObserver) Updated(event orm.Event) error {
 	return nil
 }
 
-func (u *UserObserver) Saving(event orm.Event) error {
-	return nil
-}
-
-func (u *UserObserver) Saved(event orm.Event) error {
-	return nil
-}
-
-func (u *UserObserver) Deleting(event orm.Event) error {
-	return nil
-}
-
 func (u *UserObserver) Deleted(event orm.Event) error {
-	return nil
-}
-
-func (u *UserObserver) ForceDeleting(event orm.Event) error {
 	return nil
 }
 
@@ -930,6 +917,8 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 	return nil
 }
 ```
+
+The template observer only contains some events, you can add other events according to your needs.
 
 To register an observer, you need to call the `Observe` method on the model you wish to observe. You may register observers in the `Boot` method of your application's `app/providers/event_service_provider.go::Boot` service provider:
 

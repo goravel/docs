@@ -185,6 +185,7 @@ func (r *User) Connection() string {
 | Paginate      | [分页](#分页)                  |
 | Pluck         | [查询单列](#查询单列)                    |
 | Raw           | [执行原生查询 SQL](#执行原生查询-sql)    |
+| Restore       | [恢复软删除](#恢复软删除)                   |
 | Rollback      | [手动回滚事务](#事务)                   |
 | Save          | [保存修改](#在现有模型基础上进行更新)                       |
 | SaveQuietly   | [静默的保存单个模型](#静默的保存单个模型)                       |
@@ -711,6 +712,14 @@ var exists bool
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists(&exists)
 ```
 
+### 恢复软删除
+
+```go
+facades.Orm().Query().WithTrashed().Restore(&models.User{ID: 1})
+facades.Orm().Query().Model(&models.User{ID: 1}).WithTrashed().Restore()
+// UPDATE `users` SET `deleted_at`=NULL WHERE `id` = 1;
+```
+
 ### 事务
 
 可以使用 `Transaction` 方法执行事务：
@@ -804,7 +813,7 @@ fmt.Println(sum)
 
 ## Events
 
-Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节点：`Retrieved`、`Creating`、`Created`、`Updating`、`Updated`、`Saving`、`Saved`、`Deleting`、`Deleted`、`ForceDeleting`、`ForceDeleted`。
+Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节点：`Retrieved`、`Creating`、`Created`、`Updating`、`Updated`、`Saving`、`Saved`、`Deleting`、`Deleted`、`ForceDeleting`、`ForceDeleted`、`Restored`、`Restoring`。
 
 当从数据库中检索到现有模型时，将调度 `Retrieved` 事件。当一个新模型第一次被保存时，`Creating` 和 `Created` 事件将被触发。 `Updating` / `Updated` 事件将在修改现有模型并调用 `Save` 方法时触发。`Saving` / `Saved` 事件将在创建或更新模型时触发 - 即使模型的属性没有更改。以「-ing」结尾的事件名称在模型的任何更改被持久化之前被调度，而以「-ed」结尾的事件在对模型的更改被持久化之后被调度。
 
@@ -856,6 +865,12 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
     contractsorm.EventRetrieved: func(event contractsorm.Event) error {
       return nil
     },
+    contractsorm.EventRestored: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventRestoring: func(event contractsorm.Event) error {
+      return nil
+    },
   }
 }
 ```
@@ -886,19 +901,7 @@ import (
 
 type UserObserver struct{}
 
-func (u *UserObserver) Retrieved(event orm.Event) error {
-  return nil
-}
-
-func (u *UserObserver) Creating(event orm.Event) error {
-  return nil
-}
-
 func (u *UserObserver) Created(event orm.Event) error {
-  return nil
-}
-
-func (u *UserObserver) Updating(event orm.Event) error {
   return nil
 }
 
@@ -906,23 +909,7 @@ func (u *UserObserver) Updated(event orm.Event) error {
   return nil
 }
 
-func (u *UserObserver) Saving(event orm.Event) error {
-  return nil
-}
-
-func (u *UserObserver) Saved(event orm.Event) error {
-  return nil
-}
-
-func (u *UserObserver) Deleting(event orm.Event) error {
-  return nil
-}
-
 func (u *UserObserver) Deleted(event orm.Event) error {
-  return nil
-}
-
-func (u *UserObserver) ForceDeleting(event orm.Event) error {
   return nil
 }
 
@@ -930,6 +917,8 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
   return nil
 }
 ```
+
+模版中仅包含部分事件，可以根据需要手动添加其他事件。
 
 要注册观察者，需要将观察者与要观察的模型绑定。您可以在 `app/providers/event_service_provider.go::Boot` 方法中注册观察者：
 
