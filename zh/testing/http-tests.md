@@ -97,7 +97,7 @@ func (s *ExampleTestSuite) TestIndex() {
     
     body, err := builder.Build()
 
-    response, err := s.Http(s.T()).WithHeader("Content-Type", body.ContentType()).Post("/users", body.Reader())
+    response, err := s.Http(s.T()).WithHeader("Content-Type", body.ContentType()).Post("/users", body)
 }
 ```
 
