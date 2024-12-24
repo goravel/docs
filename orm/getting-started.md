@@ -72,6 +72,30 @@ You can configure a connection pool in the configuration file, reasonable config
 | pool.conn_max_idletime     | Connections max idle time |
 | pool.conn_max_lifetime     | Connections max lifetime  |
 
+### Schema
+
+Postgres and Sqlserver support configuring Schema. Postgres can directly set the Schema in the configuration file, while Sqlserver needs to specify the Schema through the `TableName` method in the model.
+
+#### Postgres
+
+```go
+"connections": map[string]any{
+  "postgres": map[string]any{
+    "driver":   "postgres",
+    ...
+    "schema": "goravel",
+  },
+}
+```
+
+#### Sqlserver
+
+```go
+func (r *User) TableName() string {
+  return "goravel.users"
+}
+```
+
 ## Model Definition
 
 To create a custom model, refer to the model file `app/models/user.go` that is included in the framework. The `struct` in `app/models/user.go` contains two embedded frameworks: `orm.Model` and `orm.SoftDeletes`. These frameworks define `id`, `created_at`, `updated_at`, and `deleted_at` properties respectively. With `orm.SoftDeletes`, you can enable soft deletion for the model.
