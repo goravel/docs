@@ -24,14 +24,13 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## 主要功能
 
-|                                                |                      |                      |                      |
-|------------------------------------------------| --------------       | --------------       | --------------       |
-| [自定义配置](/getting-started/configuration.md)     | [HTTP 服务](/the-basics/routing.md)  | [用户认证](/security/authentication.md)  | [用户授权](/security/authorization.md)  |
-| [数据库 ORM](/orm/getting-started.md)             | [数据库迁移](/orm/migrations.md)  | [日志](/the-basics/logging.md)  | [缓存](/digging-deeper/cache.md)  |
-| [Grpc](/the-basics/grpc.md)                    | [Artisan 命令行](/digging-deeper/artisan-console.md)  | [任务调度](/digging-deeper/task-scheduling.md)  | [队列](/digging-deeper/queues.md)  |
-| [事件系统](/digging-deeper/event.md)               | [文件存储](/digging-deeper/filesystem.md)  | [邮件](/digging-deeper/mail.md)  | [表单验证](/the-basics/validation.md)  |
-| [Mock](/testing/mock.md)                       | [Hash](/security/hashing.md)  | [Crypt](/security/encryption.md)  | [Carbon](/digging-deeper/helpers.md)  |
-| [扩展包开发](/digging-deeper/package-development.md) | [测试](/testing/getting-started.md) |   |   |
+|                     |                      |                      |                      |                      |
+|--------------       | --------------       | --------------       | --------------       | --------------       |
+| [自定义配置](/getting-started/configuration.md)     | [HTTP 服务](/the-basics/routing.md)  | [用户认证](/security/authentication.md)  | [用户授权](/security/authorization.md)  | [数据库 ORM](/orm/getting-started.md)             |
+| [数据库迁移](/orm/migrations.md)  | [日志](/the-basics/logging.md)  | [缓存](/digging-deeper/cache.md)  | [Grpc](/the-basics/grpc.md)                    | [Artisan 命令行](/digging-deeper/artisan-console.md)  |
+| [任务调度](/digging-deeper/task-scheduling.md)  | [队列](/digging-deeper/queues.md)  | [事件系统](/digging-deeper/event.md)               | [文件存储](/digging-deeper/filesystem.md)  | [邮件](/digging-deeper/mail.md)  |
+| [表单验证](/the-basics/validation.md)  | [Mock](/testing/mock.md)                       | [Hash](/security/hashing.md)  | [Crypt](/security/encryption.md)  | [Carbon](/digging-deeper/helpers.md)  |
+| [扩展包开发](/digging-deeper/package-development.md) | [测试](/testing/getting-started.md) | [本地化](/digging-deeper/localization.md)  | [Session](/the-basics/session.md)  |   |
 
 ## 路线图
 
@@ -68,7 +67,16 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 <a href="https://github.com/flc1125" target="_blank"><img src="https://avatars.githubusercontent.com/u/14297703?v=4" width="48" height="48"></a>
 <a href="https://github.com/zzpwestlife" target="_blank"><img src="https://avatars.githubusercontent.com/u/12382180?v=4" width="48" height="48"></a>
 <a href="https://github.com/juantarrel" target="_blank"><img src="https://avatars.githubusercontent.com/u/7213379?v=4" width="48" height="48"></a>
+<a href="https://github.com/Kamandlou" target="_blank"><img src="https://avatars.githubusercontent.com/u/77993374?v=4" width="48" height="48"></a>
 <a href="https://github.com/livghit" target="_blank"><img src="https://avatars.githubusercontent.com/u/108449432?v=4" width="48" height="48"></a>
+<a href="https://github.com/jeff87218" target="_blank"><img src="https://avatars.githubusercontent.com/u/29706585?v=4" width="48" height="48"></a>
+<a href="https://github.com/shayan-yousefi" target="_blank"><img src="https://avatars.githubusercontent.com/u/19957980?v=4" width="48" height="48"></a>
+<a href="https://github.com/zxdstyle" target="_blank"><img src="https://avatars.githubusercontent.com/u/38398954?v=4" width="48" height="48"></a>
+<a href="https://github.com/milwad-dev" target="_blank"><img src="https://avatars.githubusercontent.com/u/98118400?v=4" width="48" height="48"></a>
+<a href="https://github.com/mdanialr" target="_blank"><img src="https://avatars.githubusercontent.com/u/48054961?v=4" width="48" height="48"></a>
+<a href="https://github.com/KlassnayaAfrodita" target="_blank"><img src="https://avatars.githubusercontent.com/u/113383200?v=4" width="48" height="48"></a>
+<a href="https://github.com/YlanzinhoY" target="_blank"><img src="https://avatars.githubusercontent.com/u/102574758?v=4" width="48" height="48"></a>
+<a href="https://github.com/almas1992" target="_blank"><img src="https://avatars.githubusercontent.com/u/9382335?v=4" width="48" height="48"></a>
 
 ## 打赏
 

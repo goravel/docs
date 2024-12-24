@@ -10,12 +10,12 @@ export function getEnSidebar(): SidebarConfigArray {
           text: "Upgrade Guide",
           children: [
             {
-              text: "Upgrading To v1.13 From v1.12",
-              link: "/upgrade/v1.13",
+              text: "Upgrading To v1.14 From v1.13",
+              link: "/upgrade/v1.14",
             },
             {
-              text: "Upgrading To v1.12 From v1.11",
-              link: "/upgrade/v1.12",
+              text: "Upgrading To v1.13 From v1.12",
+              link: "/upgrade/v1.13",
             },
             {
               text: "History Upgrade",
@@ -110,6 +110,10 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/the-basics/grpc",
         },
         {
+          text: "Session",
+          link: "/the-basics/session",
+        },
+        {
           text: "Validation",
           link: "/the-basics/validation",
         },
@@ -152,8 +156,20 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/digging-deeper/task-scheduling",
         },
         {
+          text: "Localization",
+          link: "/digging-deeper/localization",
+        },
+        {
           text: "Package Development",
           link: "/digging-deeper/package-development",
+        },
+        {
+          text: "Color",
+          link: "/digging-deeper/color",
+        },
+        {
+          text: "Strings",
+          link: "/digging-deeper/strings",
         },
         {
           text: "Helpers",

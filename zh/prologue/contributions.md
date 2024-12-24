@@ -25,6 +25,17 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 <a href="https://github.com/ahmed3mar" target="_blank"><img src="https://avatars.githubusercontent.com/u/12982325?v=4" width="48" height="48"></a>
 <a href="https://github.com/flc1125" target="_blank"><img src="https://avatars.githubusercontent.com/u/14297703?v=4" width="48" height="48"></a>
 <a href="https://github.com/zzpwestlife" target="_blank"><img src="https://avatars.githubusercontent.com/u/12382180?v=4" width="48" height="48"></a>
+<a href="https://github.com/juantarrel" target="_blank"><img src="https://avatars.githubusercontent.com/u/7213379?v=4" width="48" height="48"></a>
+<a href="https://github.com/Kamandlou" target="_blank"><img src="https://avatars.githubusercontent.com/u/77993374?v=4" width="48" height="48"></a>
+<a href="https://github.com/livghit" target="_blank"><img src="https://avatars.githubusercontent.com/u/108449432?v=4" width="48" height="48"></a>
+<a href="https://github.com/jeff87218" target="_blank"><img src="https://avatars.githubusercontent.com/u/29706585?v=4" width="48" height="48"></a>
+<a href="https://github.com/shayan-yousefi" target="_blank"><img src="https://avatars.githubusercontent.com/u/19957980?v=4" width="48" height="48"></a>
+<a href="https://github.com/zxdstyle" target="_blank"><img src="https://avatars.githubusercontent.com/u/38398954?v=4" width="48" height="48"></a>
+<a href="https://github.com/milwad-dev" target="_blank"><img src="https://avatars.githubusercontent.com/u/98118400?v=4" width="48" height="48"></a>
+<a href="https://github.com/mdanialr" target="_blank"><img src="https://avatars.githubusercontent.com/u/48054961?v=4" width="48" height="48"></a>
+<a href="https://github.com/KlassnayaAfrodita" target="_blank"><img src="https://avatars.githubusercontent.com/u/113383200?v=4" width="48" height="48"></a>
+<a href="https://github.com/YlanzinhoY" target="_blank"><img src="https://avatars.githubusercontent.com/u/102574758?v=4" width="48" height="48"></a>
+<a href="https://github.com/almas1992" target="_blank"><img src="https://avatars.githubusercontent.com/u/9382335?v=4" width="48" height="48"></a>
 
 ## Bug 报告
 
@@ -53,19 +64,16 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过�
 - 如果您对该流程不太了解，可以查看[这篇文章](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)；
 - 在开发过程中，如果遇到问题可以随时在 Issue 中详尽描述该问题，以进一步沟通，但在此之前请确保自己已通过 Google 等方式尽可能的尝试解决问题；
 - 在创建 PR 前，请尽可能的提高单元测试覆盖率，以提供更稳定的功能；
+- 如果修改了 `contracts` 文件夹下的任意文件，请在本地安装 [vektra/mockery](https://vektra.github.io/mockery/latest/installation/)，并在根目录运行 `mockery` 命令生成 mock 文件；
 - 当 PR 开发完毕后，请为其添加 `Review Ready` 标签，维护者将及时进行评审；
 - PR 合并后，如果描述设置正确，Issue 将被自动关闭；
 - Goravel 非常感谢您的贡献，将在下次发版时将您添加到首页贡献列表中；❤️
 
 ## 哪个分支？
 
-**所有**错误修复应发送到最新的稳定分支。错误修复不应该被发送到 `master` 分支，除非它们修复了仅存在于即将发布的版本中的功能。
+**所有**错误修复应发送到最新的稳定分支，除非它们修复了仅存在于 `master` 分支中的功能。
 
-**与当前版本**完全向后兼容的次要功能可能会发送到最新的稳定分支。
-
-**主要**新功能应始终发送到包含即将发布的版本的 `master` 分支。
-
-如果您不确定您的功能是否符合主要或次要功能，可以在 Issue 或群组中联系 Bowen。
+**新功能**或有**破坏性**变化的功能应始终合并到 `master` 分支。
 
 ## 本地环境
 

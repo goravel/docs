@@ -67,7 +67,7 @@ func (r *PostController) Store(ctx http.Context) {
 }
 ```
 
-### 嵌套字段的说明
+### 嵌套字段
 
 如果您的 HTTP 请求包含「嵌套」参数，您可以在验证规则中使用 `.` 语法来指定这些参数：
 
@@ -76,6 +76,16 @@ validator, err := ctx.Request().Validate(map[string]string{
   "title": "required|max_len:255",
   "author.name": "required",
   "author.description": "required",
+})
+```
+
+### Slice 验证
+
+如果您的 HTTP 请求包含「数组」参数，您可以在验证规则中使用 `*` 进行校验：
+
+```go
+validator, err := ctx.Request().Validate(map[string]string{
+  "tags.*": "required",
 })
 ```
 
@@ -341,7 +351,7 @@ if validator.Errors().Has("email") {
 
 | 规则名       | 描述                   |
 | ----------- | --------------------- |
-| `required`  | 字段为必填项，值不能为空。  |
+| `required`  | 字段为必填项，值不能为零值。例如字段类型为 `bool`，传入值为 `false`，也将无法通过校验。  |
 | `required_if`  | `required_if:anotherfield,value,...` 如果其它字段 anotherField 为任一值 value ，则此验证字段必须存在且不为空。  |
 | `required_unless`  | `required_unless:anotherfield,value,...` 如果其它字段 anotherField 不等于任一值 value ，则此验证字段必须存在且不为空。  |
 | `required_with`  | `required_with:foo,bar,...` 在其他任一指定字段出现时，验证的字段才必须存在且不为空。  |

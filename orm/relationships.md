@@ -317,10 +317,10 @@ user := models.User{Name: "user", Posts: []*models.Post{{Name: "post"}}}
 facades.Orm().Query().Select(orm.Associations).Create(&user)
 
 // Only create Post while creating User. Note: If you don't use `orm.Associations`, but customize specific child associations separately, all fields in the parent model should also be listed at this time.
-facades.Orm().Query().Select("Name", "Post").Create(&user)
+facades.Orm().Query().Select("Name", "Posts").Create(&user)
 
 // When creating a User, ignore the Post, but create all other child associations
-facades.Orm().Query().Omit("Post").Create(&user)
+facades.Orm().Query().Omit("Posts").Create(&user)
 
 // When creating User, ignore Name field, but create all child associations
 facades.Orm().Query().Omit("Name").Create(&user)

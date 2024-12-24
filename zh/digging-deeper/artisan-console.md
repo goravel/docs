@@ -73,11 +73,13 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
-## 定义输入
+## 命令 I/O
 
-在编写控制台命令时，通常是通过参数和选项来收集用户输入的。 Goravel 让你可以非常方便的获取用户输入的内容。
+### 检索输入
 
-### 参数
+在编写控制台命令时，通常是通过 `arguments` 或 `options` 来收集用户输入的。 Goravel 让你可以非常方便的获取用户输入的内容。
+
+#### 参数
 
 直接在命令后跟参数：
 
@@ -97,7 +99,7 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 }
 ```
 
-### 选项
+#### 选项
 
 选项类似于参数，是用户输入的另一种形式。在命令行中指定选项的时候，它们以两个短横线 (–) 作为前缀。
 
@@ -146,7 +148,270 @@ go run . artisan emails name --lang Chinese name
 
 除了 `command.StringFlag`，我们还可以其他类型的 `Flag` 与 `Option*`：`StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`。
 
-### 分类
+### 交互式输入
+
+#### 问题
+
+除了参数和选项，你还可以在命令执行过程中提示用户输入。`Ask` 方法将提示用户回答问题并返回他们的响应：
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+  name := ctx.Ask("What is your name?")
+  email := ctx.Ask("What is your email address?")
+
+  return nil
+}
+```
+
+另外，你可以传递第二个参数给 `Ask` 方法：
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+    name := ctx.Ask("What is your name?", console.AskOption{
+        Default: "Krishan",
+    })
+    
+    return nil
+}
+
+// 可用选项
+type AskOption struct {
+    // 默认值
+    Default string
+    // 描述
+    Description string
+    // 输入框行数（多行文本时使用）
+    Lines int
+    // 限制输入字符数
+    Limit int
+    // 是否多行文本
+    Multiple bool
+    // 占位符
+    Placeholder string
+    // 提示（用于单行文本）
+    Prompt string
+    // 验证输入的函数
+    Validate func(string) error
+}
+```
+
+有时你可能需要隐藏用户输入，例如提示用户输入密码。你可以使用 `Secret` 方法隐藏用户输入：
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+    password := ctx.Secret("What is the password?", console.SecretOption{
+        Validate: func (s string) error {
+            if len(s) < 8 {
+                return errors.New("password length should be at least 8")
+            }
+            return nil
+        },
+    })
+    
+    return nil
+}
+
+// 可用选项
+type SecretOption struct {
+    // 默认值
+    Default string
+    // 描述
+    Description string
+    // 字数限制
+    Limit int
+    // 占位符
+    Placeholder string
+    // 验证输入的函数
+    Validate func(string) error
+}
+ ```
+
+#### 确认操作
+
+如果你需要在继续之前要求用户确认操作，你可以使用 `Confirm` 方法。默认情况下，除非用户选择肯定选项，否则此方法将返回 `false`。
+
+```go
+if !ctx.Confirm("Do you wish to continue?") {
+    // ...
+}
+```
+
+你还可以传递第二个参数给 `Confirm` 方法：
+
+```go
+if !ctx.Confirm("Do you wish to continue?", console.ConfirmOption{
+	Default : true,
+}) {
+    // ...
+}
+
+// 可用选项
+type ConfirmOption struct {
+    // 肯定回答文本
+    Affirmative string
+    // 默认值
+    Default bool
+    // 描述
+    Description string
+    // 否定回答文本
+    Negative string
+}
+```
+
+#### 单选问题
+
+如果你需要让用户从一组选项中选择一个选项，你可以使用 `Choice` 方法。`Choice` 方法将返回所选选项的值：
+
+```go
+question := "What is your favorite programming language?"
+options := []console.Choice{
+    {Key: "go", Value: "Go"},
+    {Key: "php", Value: "PHP"},
+    {Key: "python", Value: "Python"},
+    {Key: "cpp", Value: "C++", Selected: true},
+}
+color, err := ctx.Choice(question, options)
+```
+
+另外，你可以传递第二个参数给 `Choice` 方法：
+
+```go
+question := "What is your favorite programming language?"
+options := []console.Choice{
+    {Key: "go", Value: "Go"},
+    {Key: "php", Value: "PHP"},
+    {Key: "python", Value: "Python"},
+    {Key: "cpp", Value: "C++", Selected: true},
+}
+
+color, err := ctx.Choice(question, options, console.ChoiceOption{
+    Default: "go",
+})
+
+// 可用选项
+type ChoiceOption struct {
+    // 默认值
+    Default string
+    // 描述
+    Description string
+    // 验证输入的函数
+    Validate func(string) error
+}
+```
+
+#### 多选问题
+
+如果你需要让用户从一组选项中选择多个选项，你可以使用 `MultiSelect` 方法。`MultiSelect` 方法将返回所选选项的值：
+
+```go
+question := "What are your favorite programming languages?"
+options := []console.Choice{
+    {Key: "go", Value: "Go"},
+    {Key: "php", Value: "PHP"},
+    {Key: "python", Value: "Python"},
+    {Key: "cpp", Value: "C++", Selected: true},
+}
+colors, err := ctx.MultiSelect(question, options)
+```
+
+另外，你可以传递第二个参数给 `MultiSelect` 方法：
+
+```go
+question := "What are your favorite programming languages?"
+options := []console.Choice{
+    {Key: "go", Value: "Go"},
+    {Key: "php", Value: "PHP"},
+    {Key: "python", Value: "Python"},
+    {Key: "cpp", Value: "C++", Selected: true},
+}
+
+colors, err := ctx.MultiSelect(question, options, console.MultiSelectOption{
+    Default: []string{"go", "php"},
+})
+
+// 可用选项
+type MultiSelectOption struct {
+    // 默认值
+    Default []string
+    // 描述
+    Description string
+    // 过滤选项，输入 `/` 开始过滤
+    Filterable bool
+    // 字数限制
+    Limit int
+    // 验证输入的函数
+    Validate func([]string) error
+}
+```
+
+### 文字输出
+
+有时你可能需要将输出写入控制台。Goravel 提供了几种方法来帮助你将输出写入控制台。每种方法都有适当的颜色化输出。例如，`Error` 将以红色显示文本。
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+  ctx.Comment("This is a comment message")
+  ctx.Info("This is an info message")
+  ctx.Error("This is an error message")
+  ctx.Line("This is a line message")
+  ctx.Warning("This is a warning message")
+  return nil
+}
+```
+
+你可以使用 `NewLine` 方法在控制台中写入新行：
+
+```go
+ctx.NewLine()
+ctx.NewLine(2)
+```
+
+#### 进度条
+
+对于长时间运行的任务，通常需要向用户提供任务所需时间的指示。你可以使用 `WithProgressBar` 方法显示一个进度条。
+
+```go
+items := []any{"item1", "item2", "item3"}
+_, err := ctx.WithProgressBar(items, func(item any) error {
+    // performTask(item)
+    return nil
+})
+```
+
+有时你可能需要手动更新进度条。你可以使用 `CreateProgressBar` 方法来更新进度条：
+
+```go
+users := []string{"user1", "user2", "user3"}
+bar := ctx.CreateProgressBar(len(users))
+
+err := bar.Start()
+
+for _, user := range users {
+    // process user
+    bar.Advance()
+	
+	// sleep for a while to simulate processing
+    time.Sleep(time.Millisecond * 50)
+}
+
+err = bar.Finish()
+```
+
+#### 旋转器
+
+如果你需要在任务运行时显示一个旋转器，你可以使用 `Spinner` 方法。
+
+```go
+err := ctx.Spinner("Loading...", console.SpinnerOption{
+    Action: func() error {
+        // when to stop the spinner
+        time.Sleep(2 * time.Second)
+        return nil
+    },
+})
+```
+
+## 分类
 
 可以将一组命令设置为同一个分类，方便在 `go run . artisan list` 中查看：
 

@@ -31,19 +31,19 @@ type User struct {
 var user models.User
 user.ID = 1
 
-token, err := facades.Auth().Login(ctx, &user)
+token, err := facades.Auth(ctx).Login(&user)
 ```
 
 ## Generate Token Using ID
 
 ```go
-token, err := facades.Auth().LoginUsingID(ctx, 1)
+token, err := facades.Auth(ctx).LoginUsingID(1)
 ```
 
 ## Parse Token
 
 ```go
-payload, err := facades.Auth().Parse(ctx, token)
+payload, err := facades.Auth(ctx).Parse(token)
 ```
 
 Through `payload` you can get:
@@ -72,7 +72,7 @@ You need to generate a Token by `Parse` before getting a user, the process can b
 
 ```go
 var user models.User
-err := facades.Auth().User(ctx, &user) // Must point
+err := facades.Auth(ctx).User(&user) // Must point
 ```
 
 ## Refresh Token
@@ -80,21 +80,21 @@ err := facades.Auth().User(ctx, &user) // Must point
 You need to generate a Token by `Parse` before refreshing the user.
 
 ```go
-token, err := facades.Auth().Refresh(ctx)
+token, err := facades.Auth(ctx).Refresh()
 ```
 
 ## Logout
 
 ```go
-err := facades.Auth().Logout(ctx)
+err := facades.Auth(ctx).Logout()
 ```
 
 ## Multiple Guards
 
 ```go
-token, err := facades.Auth().Guard("admin").LoginUsingID(ctx, 1)
-err := facades.Auth().Guard("admin").Parse(ctx, token)
-token, err := facades.Auth().Guard("admin").User(ctx, &user)
+token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
+err := facades.Auth(ctx).Guard("admin").Parse(token)
+token, err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
 > When the default guard is not used, the `Guard` method must be called before calling the above methods.

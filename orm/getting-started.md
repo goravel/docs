@@ -145,6 +145,7 @@ func (r *User) Connection() string {
 | Distinct      | [Filter Repetition](#filter-repetition)                 |
 | Driver        | [Get Driver](#get-driver)                               |
 | Exec          | [Execute native update SQL](#execute-native-update-sql) |
+| Exists        | [Exists](#exists) |
 | Find          | [Query one or multiple lines by ID](#query-one-or-multiple-lines-by-id)            |
 | FindOrFail    | [Not found return error](#not-found-return-error)            |
 | First         | [Query one line](#query-one-line)                       |
@@ -162,7 +163,13 @@ func (r *User) Connection() string {
 | Model         | [Specify a model](#specify-table-query)                 |
 | Offset        | [Offset](#offset)                                       |
 | Order         | [Order](#order)                                         |
+| OrderBy       | [Order](#order)                           |
+| OrderByDesc   | [Order](#order)                           |
+| InRandomOrder | [Order](#order)                           |
 | OrWhere       | [OrWhere](#where)                                       |
+| OrWhereNotIn  | [OrWhereNotIn](#where)                  |
+| OrWhereNull   | [OrWhereNull](#where)                  |
+| OrWhereIn     | [OrWhereIn](#where)                  |
 | Paginate      | [Paginate](#paginate)             |
 | Pluck         | [Query single column](#query-single-column)             |
 | Raw           | [Execute native SQL](#execute-native-sql)               |
@@ -178,8 +185,13 @@ func (r *User) Connection() string {
 | ToSql         | [Get SQL](#get-sql)                   |
 | ToRawSql      | [Get SQL](#get-sql)                   |
 | Update        | [Update a single column](#update-a-single-column)                   |
-| UpdateOrCreate       | [Update or create](#update-or-create)                  |
+| UpdateOrCreate | [Update or create](#update-or-create)                  |
 | Where         | [Where](#where)                                         |
+| WhereBetween  | [WhereBetween](#where)                  |
+| WhereNotBetween | [WhereNotBetween](#where)                  |
+| WhereNotIn    | [WhereNotIn](#where)                  |
+| WhereNull     | [WhereNull](#where)                  |
+| WhereIn       | [WhereIn](#where)                  |
 | WithoutEvents | [Muting events](#muting-events)               |
 | WithTrashed   | [Query soft delete data](#query-soft-delete-data)       |
 
@@ -331,8 +343,16 @@ err := facades.Orm().Query().FirstOrFail(&user)
 facades.Orm().Query().Where("name", "tom")
 facades.Orm().Query().Where("name = 'tom'")
 facades.Orm().Query().Where("name = ?", "tom")
+facades.Orm().Query().WhereBetween("age", 1, 10)
+facades.Orm().Query().WhereNotBetween("age", 1, 10)
+facades.Orm().Query().WhereNotIn("name", []any{"a"})
+facades.Orm().Query().WhereNull("name")
+facades.Orm().Query().WhereIn("name", []any{"a"})
 
 facades.Orm().Query().OrWhere("name = ?", "tom")
+facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
+facades.Orm().Query().OrWhereNull("name")
+facades.Orm().Query().OrWhereIn("name", []any{"a"})
 ```
 
 ### Limit
@@ -357,6 +377,18 @@ facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 var users []models.User
 facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc,id desc;
+
+facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc;
+
+facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort", "desc").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
+
+facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
+
+facades.Orm().Query().Where("name = ?", "tom").InRandomOrder().Get(&users)
+// SELECT * FROM `users` WHERE name = 'tom' ORDER BY RAND();
 ```
 
 ### Paginate
@@ -646,6 +678,13 @@ res, err := facades.Orm().Query().Exec("DROP TABLE users")
 num := res.RowsAffected
 ```
 
+### Exists
+
+```go
+var exists bool
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists(&exists)
+```
+
 ### Transaction
 
 You can execute a transaction by `Transaction` function.
@@ -681,7 +720,7 @@ if err := tx.Create(&user); err != nil {
 
 ### Scopes
 
-Allows you to specify commonly used queries that can be referenced when methoed are called.
+Allows you to specify commonly used queries that can be referenced when method are called.
 
 ```go
 func Paginator(page string, limit string) func(methods orm.Query) orm.Query {

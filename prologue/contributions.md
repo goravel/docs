@@ -25,6 +25,17 @@ Let's make Goravel more efficient together!
 <a href="https://github.com/ahmed3mar" target="_blank"><img src="https://avatars.githubusercontent.com/u/12982325?v=4" width="48" height="48"></a>
 <a href="https://github.com/flc1125" target="_blank"><img src="https://avatars.githubusercontent.com/u/14297703?v=4" width="48" height="48"></a>
 <a href="https://github.com/zzpwestlife" target="_blank"><img src="https://avatars.githubusercontent.com/u/12382180?v=4" width="48" height="48"></a>
+<a href="https://github.com/juantarrel" target="_blank"><img src="https://avatars.githubusercontent.com/u/7213379?v=4" width="48" height="48"></a>
+<a href="https://github.com/Kamandlou" target="_blank"><img src="https://avatars.githubusercontent.com/u/77993374?v=4" width="48" height="48"></a>
+<a href="https://github.com/livghit" target="_blank"><img src="https://avatars.githubusercontent.com/u/108449432?v=4" width="48" height="48"></a>
+<a href="https://github.com/jeff87218" target="_blank"><img src="https://avatars.githubusercontent.com/u/29706585?v=4" width="48" height="48"></a>
+<a href="https://github.com/shayan-yousefi" target="_blank"><img src="https://avatars.githubusercontent.com/u/19957980?v=4" width="48" height="48"></a>
+<a href="https://github.com/zxdstyle" target="_blank"><img src="https://avatars.githubusercontent.com/u/38398954?v=4" width="48" height="48"></a>
+<a href="https://github.com/milwad-dev" target="_blank"><img src="https://avatars.githubusercontent.com/u/98118400?v=4" width="48" height="48"></a>
+<a href="https://github.com/mdanialr" target="_blank"><img src="https://avatars.githubusercontent.com/u/48054961?v=4" width="48" height="48"></a>
+<a href="https://github.com/KlassnayaAfrodita" target="_blank"><img src="https://avatars.githubusercontent.com/u/113383200?v=4" width="48" height="48"></a>
+<a href="https://github.com/YlanzinhoY" target="_blank"><img src="https://avatars.githubusercontent.com/u/102574758?v=4" width="48" height="48"></a>
+<a href="https://github.com/almas1992" target="_blank"><img src="https://avatars.githubusercontent.com/u/9382335?v=4" width="48" height="48"></a>
 
 ## Bug Feedback
 
@@ -53,17 +64,16 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 - You can check out [this article](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) if you are new to the process;
 - During the development process, if you encounter a problem, you can describe the problem in detail in issue at any time for future communication, but before that, please make sure that you have tried to solve the problem through Google and other methods as much as possible;
 - Before creating a PR, please improve the unit test coverage as much as possible to provide more stable functions;
+- If you modify any file under the `contracts` folder, please install [vektra/mockery](https://vektra.github.io/mockery/latest/installation/) locally and run the `mockery` command in the root directory to generate the mock file;
 - When the PR is developed, please add the `Review Ready `, the maintainer will review it in a timely manner.
 - After the PR is merged, the issue will be closed automatically if the description in the PR is set correctly;
 - Goravel greatly appreciates your contribution and will add you to the home contribution list at the next release; ❤️
 
 ## Which Branch?
 
-**All** bug fixes should be sent to the latest version that supports bug fixes. Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**All** bug fixes should be sent to the latest version that supports bug fixes, unless they fix features that exist only in the upcoming release.
 
-**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch.
-
-**Major** new features or features with breaking changes should always be sent to the `master` branch, which contains the upcoming release.
+**New features** or features with breaking changes should always be sent to the `master` branch.
 
 ## Local Environment
 

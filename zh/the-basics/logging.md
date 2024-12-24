@@ -46,6 +46,20 @@ facades.Log().Panic(message)
 facades.Log().Panicf(message, args)
 ```
 
+### 写入特定通道
+
+有时，你可能希望将消息记录到应用程序默认频道以外的频道：
+
+```go
+facades.Log().Channel("single").Info(message)
+```
+
+如果你想同时写入多个通道，可以使用 `Stack` 方法：
+
+```go
+facades.Log().Stack([]string{"single", "slack"}).Info(message)
+```
+
 ## 链式方法
 
 Goravel 提供有便捷的链式方式，方便在日志中插入更多有用信息：
@@ -65,6 +79,7 @@ facades.Log().User("John").Debug(message)
 | Tags         | 为日志添加标签。     |
 | User         | 记录触发日志的用户。     |
 | With         | 为日志附加数据。   |
+| WithTrace    | 为日志附加堆栈信息。   |
 
 ## 创建自定义通道
 

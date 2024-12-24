@@ -67,7 +67,7 @@ func (r *PostController) Store(ctx http.Context) {
 }
 ```
 
-### A Note On Nested Attributes
+### Nested Attributes
 
 If the incoming HTTP request contains "nested" field data, you may specify these fields in your validation rules using the "dot" syntax:
 
@@ -76,6 +76,16 @@ validator, err := ctx.Request().Validate(map[string]string{
   "title": "required|max_len:255",
   "author.name": "required",
   "author.description": "required",
+})
+```
+
+### Slice Validation
+
+If the incoming HTTP request contains "array" field data, you may specify these fields in your validation rules using the `*` syntax:
+
+```go
+validator, err := ctx.Request().Validate(map[string]string{
+  "tags.*": "required",
 })
 ```
 
@@ -345,7 +355,7 @@ Below is a list of all available validation rules and their function:
 
 | Name        | Description                   |
 | ----------- | ---------------------  |
-| `required`  | Check value is required and cannot be empty.  |
+| `required`  | Check value is required and cannot be zero value. For example, field type is `bool`, the passing value is `false`, it can not pass the validation.  |
 | `required_if`  | `required_if:anotherfield,value,...` The field under validation must be present and not empty if the anotherField field is equal to any value.  |
 | `required_unless`  | `required_unless:anotherfield,value,...` The field under validation must be present and not empty unless the anotherField field is equal to any value.  |
 | `required_with`  | `required_with:foo,bar,...` The field under validation must be present and not empty only if any of the other specified fields are present. |
@@ -377,8 +387,8 @@ Below is a list of all available validation rules and their function:
 | `map`  | Check value is a MAP type |
 | `eq_field`  | `eq_field:field` Check that the field value is equals to the value of another field |
 | `ne_field`  | `ne_field:field` Check that the field value is not equals to the value of another field |
-| `gt_field`  | `gte_field:field` Check that the field value is greater than the value of another field |
-| `gte_field`  | `gt_field:field` Check that the field value is greater than or equal to the value of another field |
+| `gt_field`  | `gt_field:field` Check that the field value is greater than the value of another field |
+| `gte_field`  | `gte_field:field` Check that the field value is greater than or equal to the value of another field |
 | `lt_field`  | `lt_field:field` Check that the field value is less than the value of another field |
 | `lte_field`  | `lte_field:field` Check if the field value is less than or equal to the value of another field |
 | `file`  | Verify if it is an uploaded file |

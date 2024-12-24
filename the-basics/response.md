@@ -64,6 +64,37 @@ import "github.com/goravel/framework/contracts/http"
 ctx.Response().Header("Content", "Goravel").String(http.StatusOK, "Hello Goravel")
 ```
 
+## Cookie
+
+### Set Cookie
+
+Use the `Cookie` method on the `response` instance to set a `cookie`. The `Cookie` method accepts a `http.Cookie` instance, which allows you to set various cookie options.
+
+```go
+import (
+  "time"
+  "github.com/goravel/framework/contracts/http"
+)
+
+ctx.Response().Cookie(http.Cookie{
+  Name: "name",
+  Value: "Goravel",
+  Path: "/",
+  Domain: "goravel.dev",
+  Expires: time.Now().Add(24 * time.Hour),
+  Secure: true,
+  HttpOnly: true,
+})
+```
+
+### Expire Cookie
+
+Use the `WithoutCookie` method to remove a cookie.
+
+```go
+ctx.Response().WithoutCookie("name")
+```
+
 ## Return Success
 
 ```go
@@ -85,6 +116,13 @@ ctx.Response().Status(http.StatusOK).Json(http.Json{
 
 ```go
 ctx.Response().Redirect(http.StatusMovedPermanently, "https://goravel.dev")
+```
+
+## No Content
+
+```go
+ctx.Response().NoContent()
+ctx.Response().NoContent(http.StatusOk)
 ```
 
 ## Get Response

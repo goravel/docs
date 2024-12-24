@@ -4,11 +4,20 @@
 
 ## 服务器要求
 
-- Golang >= 1.20
+- Golang >= 1.21
 
 ## 安装 Goravel
 
-Linux / MacOS
+### 使用 Goravel 安装器
+
+根据[文档](https://github.com/goravel/installer)初始化安装器，然后使用下面命令初始化一个新的 Goravel 项目：
+
+```shell
+// 进入想要安装项目的目录
+goravel new blog
+```
+
+### 手动安装
 
 ```shell
 // 下载框架
@@ -24,36 +33,26 @@ cp .env.example .env
 go run . artisan key:generate
 ```
 
-Windows
-
-```shell
-// 下载框架
-git clone https://github.com/goravel/goravel.git
-rm -rf goravel/.git*
-
-// 安装依赖
-cd goravel
-go mod tidy
-
-// 创建 .env 环境配置文件
-cp .env.example .env
-
-// 生成应用密钥
-go run . artisan key:generate
-```
-
 如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
 
 ## 启动 HTTP 服务
+
+### 根据根目录下的 .env 文件启动服务
 
 ```shell
 go run .
 ```
 
-## 指定 .env 文件启动服务
+### 指定 .env 文件启动服务
 
 ```shell
 go run . --env=../.env
+```
+
+### 使用环境变量启动服务
+
+```shell
+APP_ENV=production APP_DEBUG=true go run .
 ```
 
 ### 热更新
