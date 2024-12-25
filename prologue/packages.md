@@ -15,4 +15,5 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)                       | A Cloudinary disk driver for `facades.Cache() | 75.4%         |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | A workflow package                            | 4.4%          |
 | [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud)         | A crud tool                                   | 4.2%          |
+| [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                     | goravel tinker tool                           | 3.6%  |
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)     | A webSocket package                           | 0%            |

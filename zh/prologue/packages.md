@@ -14,4 +14,5 @@
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)                       | `facades.Cache()` 模块 Cloudinary 驱动 | 75.4% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | goravel 审批流扩展包                     | 4.4%  |
 | [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud)         | goravel crud工具                     | 4.2%  |
+| [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                     | goravel tinker工具                   | 3.6%  |
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)     | goravel`websocket`扩展包              | 0%    |
