@@ -310,16 +310,16 @@ type Post struct {
 可以使用 `Select`, `Omit` 方法，对关联的创建和更新进行更细颗粒度控制。这两个方法不可同时使用，且对关联的控制功能只适用于 `Create`, `Update`, `Save`：
 
 ```go
-user := models.User{Name: "user", Post: &models.Post{Name: "post"}}
+user := models.User{Name: "user", Posts: []*models.Post{{Name: "post"}}}
 
 // 创建 User 的同时创建所有子关联
 facades.Orm().Query().Select(orm.Associations).Create(&user)
 
 // 创建 User 的同时只创建 Post 子关联。注意：如果不使用 `orm.Associations`，而是单独自定义特定子关联，则此时也应将所有父模型中的字段列出。
-facades.Orm().Query().Select("Name", "Post").Create(&user)
+facades.Orm().Query().Select("Name", "Posts").Create(&user)
 
 // 创建 User 时，忽略 Post 关联，但创建其他所有子关联
-facades.Orm().Query().Omit("Post").Create(&user)
+facades.Orm().Query().Omit("Posts").Create(&user)
 
 // 创建 User 时，忽略 Name 字段，但创建所有子关联
 facades.Orm().Query().Omit("Name").Create(&user)

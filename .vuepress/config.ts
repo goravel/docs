@@ -113,7 +113,7 @@ export default defineUserConfig({
     logo: "logo-mini.png",
     contributors: false,
     lastUpdated: false,
-    repo: 'goravel/docs',
+    repo: 'goravel/goravel',
     docsBranch: 'master',
     locales: {
       "/": {
@@ -122,6 +122,10 @@ export default defineUserConfig({
           {
             text: "Home",
             link: "/",
+          },
+          {
+            text: "Video",
+            link: "https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf",
           },
         ],
         sidebar: getEnSidebar(),
@@ -132,6 +136,10 @@ export default defineUserConfig({
           {
             text: "首页",
             link: "/zh/",
+          },
+          {
+            text: "视频",
+            link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0",
           },
         ],
         sidebar: getZhSidebar(),

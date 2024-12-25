@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. For example, `Goravel` provides a CORS middleware, which can implement requests across domains.
+Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application.
 
 ## Define Middleware
 
@@ -17,41 +17,19 @@ import (
   "github.com/goravel/framework/contracts/http"
 )
 
-func Cors() http.Middleware {
+func Auth() http.Middleware {
   return func(ctx http.Context) {
-    method := ctx.Request().Method()
-    origin := ctx.Request().Header("Origin", "")
-    if origin != "" {
-      ctx.Response().Header("Access-Control-Allow-Origin", "*")
-      ctx.Response().Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
-      ctx.Response().Header("Access-Control-Allow-Headers", "*")
-      ctx.Response().Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization")
-      ctx.Response().Header("Access-Control-Max-Age", "172800")
-      ctx.Response().Header("Access-Control-Allow-Credentials", "true")
-    }
-
-    if method == "OPTIONS" {
-      ctx.Request().AbortWithStatus(204)
-      return
-    }
-
     ctx.Request().Next()
   }
 }
-
 ```
-
-There are some middleware available in Goravel:
-
-| Middleware                                       | Action        |
-| ------------------------------------------------- | ------------- |
-| github.com/goravel/framework/http/middleware/Cors | across domain |
-| github.com/goravel/framework/http/middleware/Throttle | Rate Limiting |
 
 ### Create Middleware By Command
 ```
-go run . artisan make:middleware Cors
-go run . artisan make:middleware user/Cors
+go run . artisan make:middleware Auth
+
+// Support nested folders
+go run . artisan make:middleware user/Auth
 ```
 
 ## Register Middleware
@@ -66,7 +44,8 @@ package http
 
 import (
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/http/middleware"
+  
+  "goravel/app/http/middleware"
 )
 
 type Kernel struct {
@@ -74,7 +53,7 @@ type Kernel struct {
 
 func (kernel *Kernel) Middleware() []http.Middleware {
   return []http.Middleware{
-    middleware.Cors(),
+    middleware.Auth(),
   }
 }
 ```
@@ -86,7 +65,7 @@ You can register the middleware for some routing separately:
 ```go
 import "github.com/goravel/framework/http/middleware"
 
-facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
+facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
 
 <CommentService/>

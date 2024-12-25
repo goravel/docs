@@ -33,9 +33,14 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### Nested View Directories
 
-Views may also be nested within subdirectories of the `resources/views` directory. For example, if your view is stored at `resources/views/admin/profile.tmpl`, you may return it from one of your application's routes / controllers like so:
+Views may also be nested within subdirectories of the `resources/views` directory. For example, if your view is stored at `resources/views/admin/profile.tmpl`, you can return it from one of your application's routes or controllers, note that the view needs to be defined as `define "admin/profile.tmpl"` as shown below:
 
 ```go
+// resources/views/admin/profile.tmpl
+{{ define "admin/profile.tmpl" }}
+<h1>Welcome to the Admin Panel</h1>
+{{ end }}
+
 ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
   "name": "Goravel",
 })

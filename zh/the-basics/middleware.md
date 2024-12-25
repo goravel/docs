@@ -4,7 +4,7 @@
 
 ## 简介
 
-中间件可以过滤进入应用程序的 HTTP 请求。例如 `Goravel` 提供一个 CORS 中间件，可以实现请求跨域。
+中间件可以过滤进入应用程序的 HTTP 请求。
 
 ## 定义中间件
 
@@ -17,41 +17,19 @@ import (
   "github.com/goravel/framework/contracts/http"
 )
 
-func Cors() http.Middleware {
+func Auth() http.Middleware {
   return func(ctx http.Context) {
-    method := ctx.Request().Method()
-    origin := ctx.Request().Header("Origin", "")
-    if origin != "" {
-      ctx.Response().Header("Access-Control-Allow-Origin", "*")
-      ctx.Response().Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
-      ctx.Response().Header("Access-Control-Allow-Headers", "*")
-      ctx.Response().Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization")
-      ctx.Response().Header("Access-Control-Max-Age", "172800")
-      ctx.Response().Header("Access-Control-Allow-Credentials", "true")
-    }
-
-    if method == "OPTIONS" {
-      ctx.Request().AbortWithStatus(204)
-      return
-    }
-
     ctx.Request().Next()
   }
 }
-
 ```
-
-Goravel 中自带了一些中间件可供使用：
-
-| 中间件                                            | 作用     |
-| ------------------------------------------------- | -------- |
-| github.com/goravel/framework/http/middleware/Cors | 实现跨域 |
-| github.com/goravel/framework/http/middleware/Throttle | 限流器 |
 
 ### 命令创建中间件
 ```
-go run . artisan make:middleware Cors
-go run . artisan make:middleware user/Cors
+go run . artisan make:middleware Auth
+
+// 支持嵌套文件夹
+go run . artisan make:middleware user/Auth
 ```
 
 ## 注册中间件
@@ -66,7 +44,8 @@ package http
 
 import (
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/http/middleware"
+
+  "goravel/app/http/middleware"
 )
 
 type Kernel struct {
@@ -74,7 +53,7 @@ type Kernel struct {
 
 func (kernel *Kernel) Middleware() []http.Middleware {
   return []http.Middleware{
-    middleware.Cors(),
+    middleware.Auth(),
   }
 }
 ```
@@ -86,7 +65,7 @@ func (kernel *Kernel) Middleware() []http.Middleware {
 ```go
 import "github.com/goravel/framework/http/middleware"
 
-facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
+facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
 
 <CommentService/>

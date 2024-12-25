@@ -103,7 +103,7 @@ queries := ctx.Request().Queries()
 
 ### 检索一个输入值
 
-获取所有的用户输入数据，而不用在意用户使用的是哪种 HTTP 动词，不管是什么 HTTP 动词。检索顺序为：`json`, `form`, `query`, `route`。
+获取所有的用户输入数据，而不用在意用户使用的是哪种 HTTP 动词，不管是什么 HTTP 动词。检索顺序为：`json`, `form`。
 
 ```go
 name := ctx.Request().Input("name")
@@ -129,6 +129,17 @@ err := ctx.Request().Bind(&user)
 ```go
 var user map[string]any
 err := ctx.Request().Bind(&user)
+```
+
+## Cookie
+
+### 获取 Cookie
+
+Goravel 提供了一种简单的方法来处理 `cookie`。使用 `Request` 实例上的 `Cookie` 方法获取 `cookie` 的值，如果 `cookie` 不存在，则返回空字符串。也可以在第二个参数上定义一个默认值。
+
+```go
+value := ctx.Request().Cookie("name")
+value := ctx.Request().Cookie("name", "default") 
 ```
 
 ## 文件

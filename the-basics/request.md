@@ -105,7 +105,7 @@ queries := ctx.Request().Queries()
 
 ### Retrieving An Input Value
 
-Access all of the user input without worrying about which HTTP verb was used for the request. Retrieve order: `json`, `form`, `query`, `route`.
+Access all of the user input without worrying about which HTTP verb was used for the request. Retrieve order: `json`, `form`.
 
 ```go
 name := ctx.Request().Input("name")
@@ -131,6 +131,17 @@ err := ctx.Request().Bind(&user)
 ```go
 var user map[string]any
 err := ctx.Request().Bind(&user)
+```
+
+## Cookie
+
+### Retrieving a Cookie Value
+
+Goravel provides a simple way to work with `cookie`. Use the `Cookie` method on the `Request` instance to retrieve a `cookie` value, will return an empty string if the `cookie` is not present. You can also define a default value in the second argument.
+
+```go
+value := ctx.Request().Cookie("name")
+value := ctx.Request().Cookie("name", "default") 
 ```
 
 ## File

@@ -31,7 +31,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
-  Queue(nil)
+  Queue()
 ```
 
 也可以自定义队列
@@ -44,7 +44,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
-  Queue(&mail.Queue{Connection: "high", Queue: "mail"})
+  Queue(mail.Queue{Connection: "high", Queue: "mail"})
 ```
 
 ## 发件人设置
@@ -60,7 +60,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Content{Subject: "Subject", Html: "<h1>Hello Goravel</h1>"}).
-  Queue(&mail.Queue{Connection: "high", Queue: "mail"})
+  Queue(mail.Queue{Connection: "high", Queue: "mail"})
 ```
 
 <CommentService/>

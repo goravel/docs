@@ -33,9 +33,14 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### 嵌套视图目录
 
-视图也可以嵌套在目录 `resources/views` 的子目录中。例如，如果视图存储在 `resources/views/admin/profile.tmpl`，您可以从应用程序的路由或控制器中返回它，如下所示：
+视图也可以嵌套在目录 `resources/views` 的子目录中。例如，如果视图存储在 `resources/views/admin/profile.tmpl`，您可以从应用程序的路由或控制器中返回它，注意视图需要定义为 `define "admin/profile.tmpl"`，如下所示：
 
 ```go
+// resources/views/admin/profile.tmpl
+{{ define "admin/profile.tmpl" }}
+<h1>Welcome to the Admin Panel</h1>
+{{ end }}
+
 ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
   "Name": "Goravel",
 })
