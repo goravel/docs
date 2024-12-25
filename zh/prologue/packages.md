@@ -13,4 +13,5 @@
 | [goravel/installer](https://github.com/goravel/installer)  | Goravel 安装器     | 75.7%         |
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)  | `facades.Cache()` 模块 Cloudinary 驱动 | 75.4% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | goravel 审批流扩展包                   | 4.4%       |
+| [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud) | goravel crud扩展包                   | 4.2%       |
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)     | goravel`websocket`扩展包               | 0%         |
