@@ -10,7 +10,7 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [goravel/redis](https://github.com/goravel/redis)                                 | A Redis disk driver for `facades.Cache()`     | 79.1%         |
 | [goravel/s3](https://github.com/goravel/s3)                                       | A S3 disk driver for `facades.Storage()`      | 77.8%         |
 | [goravel/oss](https://github.com/goravel/oss)                                     | A OSS disk driver for `facades.Storage()`     | 76.5%         |
-| [goravel/installer](https://github.com/goravel/installer)                         | Goravel installer                             | 75.7%         |
+| [goravel/installer](https://github.com/goravel/installer)                         | Goravel installer                             | 76.2%         |
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)                       | A Cloudinary disk driver for `facades.Storage() | 75.4%         |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | A workflow package                            | 4.4%          |
 | [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud)         | A goravel crud package                        | 4.2%          |
