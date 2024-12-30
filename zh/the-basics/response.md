@@ -126,6 +126,8 @@ ctx.Response().Stream(http.StatusCreated, func(w http.StreamWriter) error {
     if err := w.Flush(); err != nil {
       return err
     }
+
+    time.Sleep(1 * time.Second)
   }
 
   return nil
