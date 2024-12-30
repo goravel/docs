@@ -171,15 +171,6 @@ file, err := ctx.Request().File("file")
 file.Store("./public")
 ```
 
-### Abort Request
-
-```go
-ctx.Request().AbortWithStatus(403)
-ctx.Request().AbortWithStatusJson(403, http.Json{
-  "Hello": "World",
-})
-```
-
 ### Get Origin Request
 
 ```go

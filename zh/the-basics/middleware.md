@@ -68,4 +68,14 @@ import "github.com/goravel/framework/http/middleware"
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
 
+## 中断请求
+
+在中间件中，如果需要中断请求，可以使用 `Abort` 方法。
+
+```go
+ctx.Request().Abort()
+ctx.Request().Abort(http.StatusNotFound)
+ctx.Response().String(http.StatusNotFound, "Not Found").Abort()
+```
+
 <CommentService/>

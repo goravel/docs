@@ -169,15 +169,6 @@ file, err := ctx.Request().File("file")
 file.Store("./public/test.png")
 ```
 
-### 中断请求
-
-```go
-ctx.Request().AbortWithStatus(403)
-ctx.Request().AbortWithStatusJson(403, http.Json{
-  "Hello": "World",
-})
-```
-
 ### 获取原始 Request
 
 ```go
