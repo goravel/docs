@@ -22,7 +22,7 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 你也可以直接使用 DSN 连接数据库，只需要在配置文件中配置 `dsn` 字段即可：
 
 ```go
-"mysql": map[string]any{
+"postgres": map[string]any{
   "driver":   "postgres",
 ++  "dsn": "postgres://user:password@localhost:5432/dbname?sslmode=disable",
   ...

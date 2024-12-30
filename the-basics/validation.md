@@ -63,7 +63,7 @@ func (r *PostController) Store(ctx http.Context) {
   validator, err := ctx.Request().Validate(map[string]string{
     "title": "required|max_len:255",
     "body": "required",
-    "code": "required|regex:\d{4,6}",
+    "code": "required|regex:^\d{4,6}$",
   })
 }
 ```
@@ -129,7 +129,7 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
 }
 
 func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
-	return map[string]string{
+  return map[string]string{
     "name": "trim",
   }
 }
@@ -192,7 +192,7 @@ You can format the input data by improving the `Filters` method of the form requ
 
 ```go
 func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
-	return map[string]string{
+  return map[string]string{
     "name": "trim",
   }
 }
@@ -571,7 +571,7 @@ type ToInt struct {
 
 // Signature The signature of the filter.
 func (receiver *ToInt) Signature() string {
-	return "ToInt"
+  return "ToInt"
 }
 
 // Handle defines the filter function to apply.

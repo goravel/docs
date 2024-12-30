@@ -22,7 +22,7 @@ To configure databases, navigate to `config/database.go`. This is where you can 
 You can also use DSN to connect to the database directly, just configure the `dsn` field in the configuration file:
 
 ```go
-"mysql": map[string]any{
+"postgres": map[string]any{
   "driver":   "postgres",
 ++  "dsn": "postgres://user:password@localhost:5432/dbname?sslmode=disable",
   ...
