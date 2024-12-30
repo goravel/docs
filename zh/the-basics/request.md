@@ -202,4 +202,20 @@ user := ctx.Value("user")
 ctx := ctx.Context()
 ```
 
+## 自定义 Recovery
+
+可以通过在 `app/providers/route_service_provider.go` 文件中调用 `Recover` 方法 设置自定义 `recovery`。
+
+```go
+// app/providers/route_service_provider.go
+func (receiver *RouteServiceProvider) Boot(app foundation.Application) {
+	// Add HTTP middleware
+	facades.Route().GlobalMiddleware(http.Kernel{}.Middleware()...)
+  facades.Route().Recover(func(ctx http.Context, err error) {
+    ctx.Response().String(500, "Internal Server Error").Abort()
+  })
+  ...
+}
+```
+
 <CommentService/>

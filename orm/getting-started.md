@@ -96,6 +96,21 @@ func (r *User) TableName() string {
 }
 ```
 
+### Get Database Information
+
+You can use the `db:show` command to view all tables in the database.
+
+```bash
+go run . artisan db:show
+```
+
+You can also use the `db:table` command to view the structure of a specific table.
+
+```bash
+go run . artisan db:table
+go run . artisan db:table users
+```
+
 ## Model Definition
 
 To create a custom model, refer to the model file `app/models/user.go` that is included in the framework. The `struct` in `app/models/user.go` contains two embedded frameworks: `orm.Model` and `orm.SoftDeletes`. These frameworks define `id`, `created_at`, `updated_at`, and `deleted_at` properties respectively. With `orm.SoftDeletes`, you can enable soft deletion for the model.

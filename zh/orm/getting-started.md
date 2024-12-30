@@ -96,6 +96,21 @@ func (r *User) TableName() string {
 }
 ```
 
+### 获取数据库信息
+
+可以使用 `db:show` 命令查看数据库中的所有表。
+
+```bash
+go run . artisan db:show
+```
+
+也可以使用 `db:table` 命令查看指定表的结构。
+
+```bash
+go run . artisan db:table
+go run . artisan db:table users
+```
+
 ## 模型
 
 模型相当于数据表的映射，你可以根据框架自带的模型文件 `app/models/user.go` 创建自定义模型。在 `app/models/user.go` 文件中 `struct` 嵌套了 `orm.Model` 与 `orm.SoftDeletes` 两个框架自带结构体，他们分别定义了 `id, created_at, updated_at` 与 `deleted_at`，其中 `orm.SoftDeletes` 代表模型开启了软删除功能。

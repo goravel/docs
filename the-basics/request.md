@@ -204,4 +204,20 @@ user := ctx.Value("user")
 ctx := ctx.Context()
 ```
 
+## Custom Recovery
+
+You can set a custom `recovery` by calling the `Recover` method in the `app/providers/route_service_provider.go` file.
+
+```go
+// app/providers/route_service_provider.go
+func (receiver *RouteServiceProvider) Boot(app foundation.Application) {
+	// Add HTTP middleware
+	facades.Route().GlobalMiddleware(http.Kernel{}.Middleware()...)
+  facades.Route().Recover(func(ctx http.Context, err error) {
+    ctx.Response().String(500, "Internal Server Error").Abort()
+  })
+  ...
+}
+```
+
 <CommentService/>
