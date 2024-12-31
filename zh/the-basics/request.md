@@ -115,7 +115,7 @@ name := ctx.Request().InputArray("name")
 name := ctx.Request().InputMap("name")
 ```
 
-### json/form 绑定 struct
+### 绑定 json/form
 
 ```go
 type User struct {
@@ -129,6 +129,18 @@ err := ctx.Request().Bind(&user)
 ```go
 var user map[string]any
 err := ctx.Request().Bind(&user)
+```
+
+### 绑定 Query
+
+仅支持绑定 Query 到 struct：
+
+```go
+type Test struct {
+  ID string `form:"id"`
+}
+var test Test
+err := ctx.Request().BindQuery(&test)
 ```
 
 ## Cookie
@@ -157,15 +169,6 @@ file, err := ctx.Request().File("file")
 file.Store("./public/test.png")
 ```
 
-### 中断请求
-
-```go
-ctx.Request().AbortWithStatus(403)
-ctx.Request().AbortWithStatusJson(403, http.Json{
-  "Hello": "World",
-})
-```
-
 ### 获取原始 Request
 
 ```go
@@ -188,6 +191,22 @@ user := ctx.Value("user")
 
 ```go
 ctx := ctx.Context()
+```
+
+## 自定义 Recovery
+
+可以通过在 `app/providers/route_service_provider.go` 文件中调用 `Recover` 方法 设置自定义 `recovery`。
+
+```go
+// app/providers/route_service_provider.go
+func (receiver *RouteServiceProvider) Boot(app foundation.Application) {
+	// Add HTTP middleware
+	facades.Route().GlobalMiddleware(http.Kernel{}.Middleware()...)
+  facades.Route().Recover(func(ctx http.Context, err error) {
+    ctx.Response().String(500, "Internal Server Error").Abort()
+  })
+  ...
+}
 ```
 
 <CommentService/>

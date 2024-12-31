@@ -68,4 +68,14 @@ import "github.com/goravel/framework/http/middleware"
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
 
+## Abort Request
+
+In middleware, if you need to interrupt the request, you can use the `Abort` method.
+
+```go
+ctx.Request().Abort()
+ctx.Request().Abort(http.StatusNotFound)
+ctx.Response().String(http.StatusNotFound, "Not Found").Abort()
+```
+
 <CommentService/>

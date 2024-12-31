@@ -126,6 +126,26 @@ import "github.com/goravel/framework/support/str"
 str.Of("Goravel").CharAt(1) // "o"
 ```
 
+### `ChopEnd`
+
+The `ChopEnd` method removes the given value(s) from the end of the string.
+
+```go
+import "github.com/goravel/framework/support/str"
+
+str.Of("https://goravel.com").ChopEnd(".dev", ".com").String() // https://goravel
+```
+
+### `ChopStart`
+
+The `ChopStart` method removes the given value(s) from the start of the string.
+
+```go
+import "github.com/goravel/framework/support/str"
+
+str.Of("https://goravel.dev").ChopStart("http://", "https://").String() // goravel.dev
+```
+
 ### `Contains`
 
 The `Contains` method determines if the given string contains the given value. The method is case-sensitive. If multiple values are provided, it will return `true` if the string contains any of the values.
@@ -1017,3 +1037,5 @@ str.Of("Hello, World!").Words(1) // "Hello..."
 
 str.Of("Hello, World!").Words(1, " (****)") // "Hello (****)"
 ```
+
+<CommentService/>

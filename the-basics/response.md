@@ -112,6 +112,27 @@ ctx.Response().Status(http.StatusOK).Json(http.Json{
 })
 ```
 
+## Return Stream
+
+```go
+ctx.Response().Stream(http.StatusCreated, func(w http.StreamWriter) error {
+  data := []string{"a", "b", "c"}
+  for _, item := range data {
+    if _, err := w.Write([]byte(item + "\n")); err != nil {
+      return err
+    }
+
+    if err := w.Flush(); err != nil {
+      return err
+    }
+
+    time.Sleep(1 * time.Second)
+  }
+
+  return nil
+})
+```
+
 ## Redirect
 
 ```go

@@ -76,10 +76,6 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-## HTTP Tests
-
-Please use third-party packages such as `net/http` to initiate HTTP requests during testing, in the future, Goravel plans to extend `Get`, `Post` and other methods in `TestCase` Struct to facilitate requests and assertions.
-
 ## Database Testing
 
 Goravel model factories and Seeders can easily create test database records for the application's model.
@@ -147,7 +143,7 @@ You can use the `Database` method to initiate a database image based on the defa
 
 ```go
 database, err := facades.Testing().Docker().Database()
-database, err := facades.Testing().Docker().Database("postgresql")
+database, err := facades.Testing().Docker().Database("postgres")
 ```
 
 The database images supported by default:
@@ -156,7 +152,7 @@ The database images supported by default:
 | --------    | --------------------------------------------------                                                 | ---------   |
 | Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql)                                   | latest      |
 | Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres)                             | latest      |
-| Sqlserver   | [https://hub.docker.com/_/microsoft-mssql-server](https://hub.docker.com/_/microsoft-mssql-server) | latest      |
+| Sqlserver   | [https://hub.docker.com/r/microsoft/mssql-server](https://hub.docker.com/r/microsoft/mssql-server) | latest      |
 | Sqlite      | [https://hub.docker.com/r/nouchka/sqlite3](https://hub.docker.com/r/nouchka/sqlite3)               | latest      |
 
 You can also use the `Image` method to customize the image:
@@ -200,13 +196,13 @@ err := database.Seed(&seeders.UserSeeder{})
 
 #### Refresh Database
 
-Because the test cases in the same package are executed serially, refreshing the database after a single test case run will have no negative impact, we can use the `RefreshDatabase` method:
+Because the test cases in the same package are executed serially, refreshing the database after a single test case run will have no negative impact, we can use the `Fresh` method:
 
-<!-- ```go
+```go
 err := database.Fresh()
 ```
 
-You can also use the `RefreshDatabase` method: -->
+You can also use the `RefreshDatabase` method:
 
 ```go
 package feature
@@ -243,10 +239,10 @@ func (s *ExampleTestSuite) TestIndex() {
 
 #### Uninstall Image
 
-After the test cases in the sub-package are executed, the image will be uninstalled automatically in one hour, you can also use the `Stop` method to uninstall the image manually.
+After the test cases in the sub-package are executed, the image will be uninstalled automatically in one hour, you can also use the `Shutdown` method to uninstall the image manually.
 
 ```go
-err := database.Stop()
+err := database.Shutdown()
 ```
 
 #### Example

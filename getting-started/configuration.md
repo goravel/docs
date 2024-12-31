@@ -51,4 +51,12 @@ facades.Config().Add("path.with.dot.case1", "value1")
 facades.Config().Add("path.with.dot", map[string]any{"case3": "value3"})
 ```
 
+## Get Project Information
+
+You can use the `artisan about` command to view the framework version, configuration, etc.
+
+```bash
+go run . artisan about
+```
+
 <CommentService/>

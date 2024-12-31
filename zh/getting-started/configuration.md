@@ -51,4 +51,12 @@ facades.Config().Add("path.with.dot.case1", "value1")
 facades.Config().Add("path.with.dot", map[string]any{"case3": "value3"})
 ```
 
+## 获取项目信息
+
+可以使用 `artisan about` 命令来查看框架的版本、配置等信息。
+
+```bash
+go run . artisan about
+```
+
 <CommentService/>

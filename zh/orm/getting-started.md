@@ -17,6 +17,18 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 
 数据库的配置文件在 `config/database.go` 文件中。你可以在这个文件中配置所有的数据库连接，并指定默认的数据库连接。该文件中的大部分配置都基于项目的环境变量，且提供了 Goravel 所支持的数据库配置示例。
 
+### DSN
+
+你也可以直接使用 DSN 连接数据库，只需要在配置文件中配置 `dsn` 字段即可：
+
+```go
+"postgres": map[string]any{
+  "driver":   "postgres",
+++  "dsn": "postgres://user:password@localhost:5432/dbname?sslmode=disable",
+  ...
+}
+```
+
 ### 读写分离
 
 有时候您可能会希望使用一个数据库连接来执行 `SELECT` 语句，而 `INSERT`、`UPDATE` 和 `DELETE` 语句则由另一个数据库连接来执行。在 Goravel 中可以轻松实现读写分离。
@@ -59,6 +71,45 @@ import "github.com/goravel/framework/contracts/database"
 | pool.max_open_conns     | 最大连接数 |
 | pool.conn_max_idletime     | 连接最大空闲时间 |
 | pool.conn_max_lifetime     | 连接最大生命周期 |
+
+### Schema
+
+Postgres 和 Sqlserver 驱动支持配置 Schema。其中 Postgres 可以直接在配置文件中设置 Schema，而 Sqlserver 则需要通过在模型中设置 `TableName` 方法来指定 Schema。
+
+#### Postgres
+
+```go
+"connections": map[string]any{
+  "postgres": map[string]any{
+    "driver":   "postgres",
+    ...
+    "schema": "goravel",
+  },
+}
+```
+
+#### Sqlserver
+
+```go
+func (r *User) TableName() string {
+  return "goravel.users"
+}
+```
+
+### 获取数据库信息
+
+可以使用 `db:show` 命令查看数据库中的所有表。
+
+```bash
+go run . artisan db:show
+```
+
+也可以使用 `db:table` 命令查看指定表的结构。
+
+```bash
+go run . artisan db:table
+go run . artisan db:table users
+```
 
 ## 模型
 
@@ -118,11 +169,11 @@ type User struct {
 }
 
 func (r *User) Connection() string {
-  return "postgresql"
+  return "postgres"
 }
 ```
 
-## facades.Orm 可用方法
+## facades.Orm() 可用方法
 
 | 方法名       | 作用                              |
 | ----------- | --------------------------------- |
@@ -132,7 +183,7 @@ func (r *User) Connection() string {
 | Transaction | [事务](#事务)                     |
 | WithContext | [注入 Context](#注入-Context)     |
 
-## facades.Orm().Query & facades.Orm().Transaction 可用方法
+## facades.Orm().Query() 可用方法
 
 | 方法名         | 作用                                    |
 | ------------- | --------------------------------------- |
@@ -173,6 +224,7 @@ func (r *User) Connection() string {
 | Paginate      | [分页](#分页)                  |
 | Pluck         | [查询单列](#查询单列)                    |
 | Raw           | [执行原生查询 SQL](#执行原生查询-sql)    |
+| Restore       | [恢复软删除](#恢复软删除)                   |
 | Rollback      | [手动回滚事务](#事务)                   |
 | Save          | [保存修改](#在现有模型基础上进行更新)                       |
 | SaveQuietly   | [静默的保存单个模型](#静默的保存单个模型)                       |
@@ -496,15 +548,35 @@ facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").J
 
 ```go
 user := models.User{Name: "tom", Age: 18}
-result := facades.Orm().Query().Create(&user)
+err := facades.Orm().Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
+
+// 不触发模型事件
+err := facades.Orm().Query().Table("users").Create(map[string]any{
+  "name": "Goravel",
+})
+
+// 触发模型事件
+err := facades.Orm().Query().Model(&models.User{}).Create(map[string]any{
+  "name": "Goravel",
+})
 ```
 
 ### 批量创建
 
 ```go
 users := []models.User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
-result := facades.Orm().Query().Create(&users)
+err := facades.Orm().Query().Create(&users)
+
+err := facades.Orm().Query().Table("users").Create(&[]map[string]any{
+  {"name": "Goravel"},
+  {"name": "Framework"},
+})
+
+err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
+  {"name": "Goravel"},
+  {"name": "Framework"},
+})
 ```
 
 > `created_at` 和 `updated_at` 字段将会被自动填充。
@@ -572,19 +644,11 @@ facades.Orm().Query().UpdateOrCreate(&user, models.User{Name: "name"}, models.Us
 var user models.User
 err := facades.Orm().Query().Find(&user, 1)
 res, err := facades.Orm().Query().Delete(&user)
+res, err := facades.Orm().Query().Model(&models.User{}).Where("id", 1).Delete()
+res, err := facades.Orm().Query().Table("users").Where("id", 1).Delete()
 // DELETE FROM `users` WHERE `users`.`id` = 1;
 
 num := res.RowsAffected
-```
-
-根据 ID 删除
-
-```go
-facades.Orm().Query().Delete(&models.User{}, 10)
-// DELETE FROM `users` WHERE `users`.`id` = 10;
-
-facades.Orm().Query().Delete(&models.User{}, []uint{1, 2, 3})
-// DELETE FROM `users` WHERE `users`.`id` IN (1,2,3);
 ```
 
 批量删除
@@ -597,7 +661,9 @@ facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
 如果模型开启了软删除功能，想要强制删除某数据
 
 ```go
-facades.Orm().Query().Where("name = ?", "tom").ForceDelete(&models.User{})
+facades.Orm().Query().Where("name", "tom").ForceDelete(&models.User{})
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").ForceDelete()
+facades.Orm().Query().Table("users").Where("name", "tom").ForceDelete()
 ```
 
 您可以通过 `Select` 来删除具有模型关联的记录：
@@ -685,6 +751,14 @@ var exists bool
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists(&exists)
 ```
 
+### 恢复软删除
+
+```go
+facades.Orm().Query().WithTrashed().Restore(&models.User{ID: 1})
+facades.Orm().Query().Model(&models.User{ID: 1}).WithTrashed().Restore()
+// UPDATE `users` SET `deleted_at`=NULL WHERE `id` = 1;
+```
+
 ### 事务
 
 可以使用 `Transaction` 方法执行事务：
@@ -699,7 +773,7 @@ import (
 
 ...
 
-return facades.Orm().Transaction(func(tx orm.Transaction) error {
+return facades.Orm().Transaction(func(tx orm.Query) error {
   var user models.User
 
   return tx.Find(&user, user.ID)
@@ -778,7 +852,7 @@ fmt.Println(sum)
 
 ## Events
 
-Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节点：`Retrieved`、`Creating`、`Created`、`Updating`、`Updated`、`Saving`、`Saved`、`Deleting`、`Deleted`、`ForceDeleting`、`ForceDeleted`。
+Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节点：`Retrieved`、`Creating`、`Created`、`Updating`、`Updated`、`Saving`、`Saved`、`Deleting`、`Deleted`、`ForceDeleting`、`ForceDeleted`、`Restored`、`Restoring`。
 
 当从数据库中检索到现有模型时，将调度 `Retrieved` 事件。当一个新模型第一次被保存时，`Creating` 和 `Created` 事件将被触发。 `Updating` / `Updated` 事件将在修改现有模型并调用 `Save` 方法时触发。`Saving` / `Saved` 事件将在创建或更新模型时触发 - 即使模型的属性没有更改。以「-ing」结尾的事件名称在模型的任何更改被持久化之前被调度，而以「-ed」结尾的事件在对模型的更改被持久化之后被调度。
 
@@ -830,6 +904,12 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
     contractsorm.EventRetrieved: func(event contractsorm.Event) error {
       return nil
     },
+    contractsorm.EventRestored: func(event contractsorm.Event) error {
+      return nil
+    },
+    contractsorm.EventRestoring: func(event contractsorm.Event) error {
+      return nil
+    },
   }
 }
 ```
@@ -860,19 +940,7 @@ import (
 
 type UserObserver struct{}
 
-func (u *UserObserver) Retrieved(event orm.Event) error {
-  return nil
-}
-
-func (u *UserObserver) Creating(event orm.Event) error {
-  return nil
-}
-
 func (u *UserObserver) Created(event orm.Event) error {
-  return nil
-}
-
-func (u *UserObserver) Updating(event orm.Event) error {
   return nil
 }
 
@@ -880,23 +948,7 @@ func (u *UserObserver) Updated(event orm.Event) error {
   return nil
 }
 
-func (u *UserObserver) Saving(event orm.Event) error {
-  return nil
-}
-
-func (u *UserObserver) Saved(event orm.Event) error {
-  return nil
-}
-
-func (u *UserObserver) Deleting(event orm.Event) error {
-  return nil
-}
-
 func (u *UserObserver) Deleted(event orm.Event) error {
-  return nil
-}
-
-func (u *UserObserver) ForceDeleting(event orm.Event) error {
   return nil
 }
 
@@ -904,6 +956,8 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
   return nil
 }
 ```
+
+模版中仅包含部分事件，可以根据需要手动添加其他事件。
 
 要注册观察者，需要将观察者与要观察的模型绑定。您可以在 `app/providers/event_service_provider.go::Boot` 方法中注册观察者：
 

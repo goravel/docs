@@ -17,6 +17,18 @@ Before you start, configure the database in `.env` and confirm the `default` con
 
 To configure databases, navigate to `config/database.go`. This is where you can customize all database connections and choose a `default` connection. The configuration in this file relies on the project's environment variables and showcases various database configurations that Goravel supports.
 
+### DSN
+
+You can also use DSN to connect to the database directly, just configure the `dsn` field in the configuration file:
+
+```go
+"postgres": map[string]any{
+  "driver":   "postgres",
+++  "dsn": "postgres://user:password@localhost:5432/dbname?sslmode=disable",
+  ...
+}
+```
+
 ### Read & Write Connections
 
 Sometimes you may wish to use one database connection for `SELECT` statements, and another for `INSERT`, `UPDATE`, and `DELETE` statements. Goravel makes this a breeze.
@@ -59,6 +71,45 @@ You can configure a connection pool in the configuration file, reasonable config
 | pool.max_open_conns     | Max open connections |
 | pool.conn_max_idletime     | Connections max idle time |
 | pool.conn_max_lifetime     | Connections max lifetime  |
+
+### Schema
+
+Postgres and Sqlserver support configuring Schema. Postgres can directly set the Schema in the configuration file, while Sqlserver needs to specify the Schema through the `TableName` method in the model.
+
+#### Postgres
+
+```go
+"connections": map[string]any{
+  "postgres": map[string]any{
+    "driver":   "postgres",
+    ...
+    "schema": "goravel",
+  },
+}
+```
+
+#### Sqlserver
+
+```go
+func (r *User) TableName() string {
+  return "goravel.users"
+}
+```
+
+### Get Database Information
+
+You can use the `db:show` command to view all tables in the database.
+
+```bash
+go run . artisan db:show
+```
+
+You can also use the `db:table` command to view the structure of a specific table.
+
+```bash
+go run . artisan db:table
+go run . artisan db:table users
+```
 
 ## Model Definition
 
@@ -118,11 +169,11 @@ type User struct {
 }
 
 func (r *User) Connection() string {
-  return "postgresql"
+  return "postgres"
 }
 ```
 
-## facades.Orm available functions
+## facades.Orm() available functions
 
 | Name        | Action                                                      |
 | ----------- | ----------------------------------------------------------- |
@@ -132,7 +183,7 @@ func (r *User) Connection() string {
 | Transaction | [Transaction](#transaction)                                 |
 | WithContext | [Inject Context](#inject-context)                           |
 
-## facades.Orm().Query & facades.Orm().Transaction available functions
+## facades.Orm().Query() available functions
 
 | Functions     | Action                                                  |
 | ------------- | ------------------------------------------------------- |
@@ -173,6 +224,7 @@ func (r *User) Connection() string {
 | Paginate      | [Paginate](#paginate)             |
 | Pluck         | [Query single column](#query-single-column)             |
 | Raw           | [Execute native SQL](#execute-native-sql)               |
+| Restore       | [Restore](#restore)                   |
 | Rollback      | [Rollback transaction](#transaction)                    |
 | Save          | [Update a existing model](#update-a-existing-model)                  |
 | SaveQuietly          | [Saving a single model without events](#saving-a-single-model-without-events)                  |
@@ -497,15 +549,35 @@ facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").J
 
 ```go
 user := models.User{Name: "tom", Age: 18}
-result := facades.Orm().Query().Create(&user)
+err := facades.Orm().Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
+
+// Not trigger model events
+err := facades.Orm().Query().Table("users").Create(map[string]any{
+  "name": "Goravel",
+})
+
+// Trigger model events
+err := facades.Orm().Query().Model(&models.User{}).Create(map[string]any{
+  "name": "Goravel",
+})
 ```
 
 ### Multiple create
 
 ```go
 users := []models.User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
-result := facades.Orm().Query().Create(&users)
+err := facades.Orm().Query().Create(&users)
+
+err := facades.Orm().Query().Table("users").Create(&[]map[string]any{
+  {"name": "Goravel"},
+  {"name": "Framework"},
+})
+
+err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
+  {"name": "Goravel"},
+  {"name": "Framework"},
+})
 ```
 
 > `created_at` and `updated_at` will be filled automatically.
@@ -572,19 +644,11 @@ Delete by model, the number of rows affected by the statement is returned by the
 var user models.User
 facades.Orm().Query().Find(&user, 1)
 res, err := facades.Orm().Query().Delete(&user)
+res, err := facades.Orm().Query().Model(&models.User{}).Where("id", 1).Delete()
+res, err := facades.Orm().Query().Table("users").Where("id", 1).Delete()
 // DELETE FROM `users` WHERE `users`.`id` = 1;
 
 num := res.RowsAffected
-```
-
-Delete by ID
-
-```go
-facades.Orm().Query().Delete(&models.User{}, 10)
-// DELETE FROM `users` WHERE `users`.`id` = 10;
-
-facades.Orm().Query().Delete(&models.User{}, []int{1, 2, 3})
-// DELETE FROM `users` WHERE `users`.`id` IN (1,2,3);
 ```
 
 Multiple delete
@@ -597,7 +661,9 @@ facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
 Want to force delete a soft-delete data.
 
 ```go
-facades.Orm().Query().Where("name = ?", "tom").ForceDelete(&models.User{})
+facades.Orm().Query().Where("name", "tom").ForceDelete(&models.User{})
+facades.Orm().Query().Model(&models.User{}).Where("name", "tom").ForceDelete()
+facades.Orm().Query().Table("users").Where("name", "tom").ForceDelete()
 ```
 
 You can delete records with model associations via `Select`:
@@ -685,6 +751,14 @@ var exists bool
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists(&exists)
 ```
 
+### Restore
+
+```go
+facades.Orm().Query().WithTrashed().Restore(&models.User{ID: 1})
+facades.Orm().Query().Model(&models.User{ID: 1}).WithTrashed().Restore()
+// UPDATE `users` SET `deleted_at`=NULL WHERE `id` = 1;
+```
+
 ### Transaction
 
 You can execute a transaction by `Transaction` function.
@@ -699,7 +773,7 @@ import (
 
 ...
 
-return facades.Orm().Transaction(func(tx orm.Transaction) error {
+return facades.Orm().Transaction(func(tx orm.Query) error {
   var user models.User
 
   return tx.Find(&user, user.ID)
@@ -778,7 +852,7 @@ fmt.Println(sum)
 
 ## Events
 
-Orm models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `Retrieved`, `Creating`, `Created`, `Updating`, `Updated`, `Saving`, `Saved`, `Deleting`, `Deleted`, `ForceDeleting`, `ForceDeleted`.
+Orm models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `Retrieved`, `Creating`, `Created`, `Updating`, `Updated`, `Saving`, `Saved`, `Deleting`, `Deleted`, `ForceDeleting`, `ForceDeleted`, `Restored`, `Restoring`.
 
 The `Retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `Creating` and `Created` events will dispatch. The `Updating` / `Updated` events will dispatch when an existing model is modified and the `Save` method is called. The `Saving` / `Saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
 
@@ -830,6 +904,12 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 		contractsorm.EventRetrieved: func(event contractsorm.Event) error {
 			return nil
 		},
+		contractsorm.EventRestored: func(event contractsorm.Event) error {
+			return nil
+		},
+		contractsorm.EventRestoring: func(event contractsorm.Event) error {
+			return nil
+		},
 	}
 }
 ```
@@ -860,19 +940,7 @@ import (
 
 type UserObserver struct{}
 
-func (u *UserObserver) Retrieved(event orm.Event) error {
-	return nil
-}
-
-func (u *UserObserver) Creating(event orm.Event) error {
-	return nil
-}
-
 func (u *UserObserver) Created(event orm.Event) error {
-	return nil
-}
-
-func (u *UserObserver) Updating(event orm.Event) error {
 	return nil
 }
 
@@ -880,23 +948,7 @@ func (u *UserObserver) Updated(event orm.Event) error {
 	return nil
 }
 
-func (u *UserObserver) Saving(event orm.Event) error {
-	return nil
-}
-
-func (u *UserObserver) Saved(event orm.Event) error {
-	return nil
-}
-
-func (u *UserObserver) Deleting(event orm.Event) error {
-	return nil
-}
-
 func (u *UserObserver) Deleted(event orm.Event) error {
-	return nil
-}
-
-func (u *UserObserver) ForceDeleting(event orm.Event) error {
 	return nil
 }
 
@@ -904,6 +956,8 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 	return nil
 }
 ```
+
+The template observer only contains some events, you can add other events according to your needs.
 
 To register an observer, you need to call the `Observe` method on the model you wish to observe. You may register observers in the `Boot` method of your application's `app/providers/event_service_provider.go::Boot` service provider:
 

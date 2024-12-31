@@ -12,6 +12,20 @@ You can configure `defaults` guard and multiple `guards` in the `config/auth.go`
 
 You can configure the parameters of JWT in the `config/jwt.go` file, such as `secret`, `ttl`, `refresh_ttl`.
 
+### Configure TTL for different Guards
+
+You can set TTL for each Guard separately in the `config/auth.go` file, if not set, the `jwt.ttl` configuration is used by default.
+
+```go
+// config/auth.go
+"guards": map[string]any{
+  "user": map[string]any{
+    "driver": "jwt",
+++  "ttl": 60,
+  },
+},
+```
+
 ## Generate JWT Token
 
 ```shell
@@ -73,6 +87,7 @@ You need to generate a Token by `Parse` before getting a user, the process can b
 ```go
 var user models.User
 err := facades.Auth(ctx).User(&user) // Must point
+id, err := facades.Auth(ctx).ID()
 ```
 
 ## Refresh Token

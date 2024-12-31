@@ -117,7 +117,7 @@ name := ctx.Request().InputArray("name")
 name := ctx.Request().InputMap("name")
 ```
 
-### Json/Form Bind Struct
+### Bind Json/Form
 
 ```go
 type User struct {
@@ -131,6 +131,18 @@ err := ctx.Request().Bind(&user)
 ```go
 var user map[string]any
 err := ctx.Request().Bind(&user)
+```
+
+### Bind Query
+
+Only support bind Query to struct:
+
+```go
+type Test struct {
+  ID string `form:"id"`
+}
+var test Test
+err := ctx.Request().BindQuery(&test)
 ```
 
 ## Cookie
@@ -159,15 +171,6 @@ file, err := ctx.Request().File("file")
 file.Store("./public")
 ```
 
-### Abort Request
-
-```go
-ctx.Request().AbortWithStatus(403)
-ctx.Request().AbortWithStatusJson(403, http.Json{
-  "Hello": "World",
-})
-```
-
 ### Get Origin Request
 
 ```go
@@ -190,6 +193,22 @@ user := ctx.Value("user")
 
 ```go
 ctx := ctx.Context()
+```
+
+## Custom Recovery
+
+You can set a custom `recovery` by calling the `Recover` method in the `app/providers/route_service_provider.go` file.
+
+```go
+// app/providers/route_service_provider.go
+func (receiver *RouteServiceProvider) Boot(app foundation.Application) {
+	// Add HTTP middleware
+	facades.Route().GlobalMiddleware(http.Kernel{}.Middleware()...)
+  facades.Route().Recover(func(ctx http.Context, err error) {
+    ctx.Response().String(500, "Internal Server Error").Abort()
+  })
+  ...
+}
 ```
 
 <CommentService/>

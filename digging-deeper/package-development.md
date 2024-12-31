@@ -122,3 +122,5 @@ The command can use the following options:
 | --tag        | -t     | Resource Group     |
 | --force      | -f     | Overwrite any existing files     |
 | --existing   | -e     | Publish and overwrite only the files that have already been published     |
+
+<CommentService/>

@@ -10,12 +10,12 @@ export function getZhSidebar(): SidebarConfigArray {
           text: "升级指南",
           children: [
             {
-              text: "从 v1.13 升级到 v1.14",
-              link: "/zh/upgrade/v1.14",
+              text: "从 v1.14 升级到 v1.15",
+              link: "/zh/upgrade/v1.15",
             },
             {
-              text: "从 v1.12 升级到 v1.13",
-              link: "/zh/upgrade/v1.13",
+              text: "从 v1.13 升级到 v1.14",
+              link: "/zh/upgrade/v1.14",
             },
             {
               text: "历史版本升级",
@@ -232,6 +232,10 @@ export function getZhSidebar(): SidebarConfigArray {
         {
           text: "快速入门",
           link: "/zh/testing/getting-started",
+        },
+        {
+          text: "HTTP Tests",
+          link: "/zh/testing/htt-tests",
         },
         {
           text: "Mock",
