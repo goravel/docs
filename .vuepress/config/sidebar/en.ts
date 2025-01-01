@@ -235,7 +235,7 @@ export function getEnSidebar(): SidebarConfigArray {
         },
         {
           text: "HTTP Tests",
-          link: "/testing/htt-tests",
+          link: "/testing/http-tests",
         },
         {
           text: "Mock",
