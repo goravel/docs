@@ -13,7 +13,7 @@ Before sending an email, you need to configure the `config/mail.go` configuratio
 ## Send Mail
 
 ```go
-import "github.com/goravel/framework/contracts/mail"
+import "github.com/goravel/framework/mail"
 
 err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
@@ -27,7 +27,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
 ## Send Mail By Queue
 
 ```go
-import "github.com/goravel/framework/contracts/mail"
+import "github.com/goravel/framework/mail"
 
 err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
@@ -41,7 +41,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
 You can also customize the queue:
 
 ```go
-import "github.com/goravel/framework/contracts/mail"
+import "github.com/goravel/framework/mail"
 
 err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
@@ -57,7 +57,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
 Framework uses `MAIL_FROM_ ADDRESS` and `MAIL_FROM_ NAME` in the `config/mail.go` configuration file as global senders. You can also customize the sender, but you need to note that the mail address needs to be consistent with the configured STMP:
 
 ```go
-import "github.com/goravel/framework/contracts/mail"
+import "github.com/goravel/framework/mail"
 
 err := facades.Mail().To([]string{"example@example.com"}).
   From(mail.Address(testFromAddress, testFromName)).

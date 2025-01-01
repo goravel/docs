@@ -13,7 +13,7 @@ Goravel 可以使用 `facades.Mail()` 便捷的在本地发送邮件。
 ## 发送邮件
 
 ```go
-import "github.com/goravel/framework/contracts/mail"
+import "github.com/goravel/framework/mail"
 
 err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
@@ -27,6 +27,8 @@ err := facades.Mail().To([]string{"example@example.com"}).
 ## 以队列发送邮件
 
 ```go
+import "github.com/goravel/framework/mail"
+
 err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
@@ -55,7 +57,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
 默认框架会使用 `config/mail.go` 配置文件中的 `MAIL_FROM_ADDRESS` 与 `MAIL_FROM_NAME` 作为全局发件人，你也可以自定义发件人，但需要注意发送邮箱需要与配置的 STMP 保持一致：
 
 ```go
-import "github.com/goravel/framework/contracts/mail"
+import "github.com/goravel/framework/mail"
 
 err := facades.Mail().To([]string{"example@example.com"}).
   From(mail.Address(testFromAddress, testFromName)).
