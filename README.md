@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://www.goravel.dev/logo.png" width="300" alt="Logo">
+<img src="/logo.png" width="300" alt="Logo">
 
 [![Doc](https://pkg.go.dev/badge/github.com/goravel/framework)](https://pkg.go.dev/github.com/goravel/framework)
 [![Go](https://img.shields.io/github/go-mod/go-version/goravel/framework)](https://go.dev/)
@@ -82,7 +82,7 @@ This project is made possible by everyone who contributes. To contribute, please
 
 Better development of the project is inseparable from your support, reward us by [Open Collective](https://opencollective.com/goravel).
 
-<p align="left"><img src="https://www.goravel.dev/reward.png" width="200"></p>
+<p align="left"><img src="/reward.png" width="200"></p>
 
 ## Group
 
