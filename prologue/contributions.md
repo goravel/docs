@@ -11,7 +11,7 @@ Let's make Goravel more efficient together!
 - Core developers will be eligible for benefits when Goravel benefits in the future.
 - After completing a `Feature`, you will receive an official Goravel T-Shirt, with a maximum of 1 per major version release cycle.
 
-<p align="left"><img src="https://www.goravel.dev/t-shirt.jpg" width="500"></p>
+<p align="left"><img src="/t-shirt.jpg" width="500"></p>
 
 ## Core Developers
 
