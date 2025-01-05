@@ -2,9 +2,16 @@
 
 [[toc]]
 
-Goravel welcomes rich and diverse contributions from different talents, such as coding, translations, articles, tutorials, etc. After completing two enhancements(not containing good first issue), you will be recognized as a core contributor. By completing one enhancement every three months, you can maintain this status. Core developers will be eligible for benefits when Goravel benefits in the future.
+Goravel welcomes rich and diverse contributions from different talents, such as coding, translations, articles, tutorials, etc. After completing two features(5 `Good First Issue` == 1 `Feature`), you will be recognized as a core contributor. By completing one feature every three months, you can maintain this status.
 
 Let's make Goravel more efficient together!
+
+## Reward
+
+- Core developers will be eligible for benefits when Goravel benefits in the future.
+- After completing a `Feature`, you will receive an official Goravel T-Shirt, with a maximum of 1 per major version release cycle. (PS: Because of the difference of country, you may need to help us to find a suitable supplier.)
+
+<p align="left"><img src="/t-shirt.jpg" width="500"></p>
 
 ## Core Developers
 

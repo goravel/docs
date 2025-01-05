@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://www.goravel.dev/logo.png" width="300" alt="Logo">
+<img src="/logo.png" width="300" alt="Logo">
 
 [![Doc](https://pkg.go.dev/badge/github.com/goravel/framework)](https://pkg.go.dev/github.com/goravel/framework)
 [![Go](https://img.shields.io/github/go-mod/go-version/goravel/framework)](https://go.dev/)
@@ -82,13 +82,13 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 开源项目的发展离不开您的支持，感谢微信打赏。
 
-<p align="left"><img src="https://www.goravel.dev/reward-wechat.jpg" width="200"></p>
+<p align="left"><img src="/reward-wechat.jpg" width="200"></p>
 
 ## 群组
 
 微信入群，请备注 Goravel
 
-<p align="left"><img src="https://www.goravel.dev/wechat.jpg" width="200"></p>
+<p align="left"><img src="/wechat.jpg" width="200"></p>
 
 ## 开源许可
 
