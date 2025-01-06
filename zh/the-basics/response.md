@@ -100,9 +100,9 @@ ctx.Response().WithoutCookie("name")
 
 ```go
 ctx.Response().Success().String("Hello Goravel")
-ctx.Response().Success().Json(http.Json({
+ctx.Response().Success().Json(http.Json{
   "Hello": "Goravel",
-}))
+})
 ```
 
 ## 自定义 Code
