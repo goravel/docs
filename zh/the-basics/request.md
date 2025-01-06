@@ -200,10 +200,12 @@ ctx := ctx.Context()
 ```go
 // app/providers/route_service_provider.go
 func (receiver *RouteServiceProvider) Boot(app foundation.Application) {
-	// Add HTTP middleware
-	facades.Route().GlobalMiddleware(http.Kernel{}.Middleware()...)
+  // Add HTTP middleware
+  facades.Route().GlobalMiddleware(http.Kernel{}.Middleware()...)
   facades.Route().Recover(func(ctx http.Context, err error) {
-    ctx.Response().String(500, "Internal Server Error").Abort()
+    ctx.Request().Abort()
+    // or
+    // ctx.Response().String(500, "Internal Server Error").Abort()
   })
   ...
 }
