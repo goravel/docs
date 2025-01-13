@@ -10,12 +10,12 @@ export function getEnSidebar(): SidebarConfigArray {
           text: "Upgrade Guide",
           children: [
             {
-              text: "Upgrading To v1.15 From v1.14",
+              text: "Upgrading To v1.16 From v1.15",
               link: "/upgrade/v1.15",
             },
             {
-              text: "Upgrading To v1.14 From v1.13",
-              link: "/upgrade/v1.14",
+              text: "Upgrading To v1.15 From v1.14",
+              link: "/upgrade/v1.15",
             },
             {
               text: "History Upgrade",

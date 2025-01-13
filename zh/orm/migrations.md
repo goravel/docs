@@ -8,12 +8,10 @@
 
 ## 配置
 
-数据库迁移文件存放在 `database/migrations` 目录下，你可以在 `config/database.go` 文件中配置数据库连接信息。当前支持 Go 语言迁移和 SQL 迁移两个驱动，但 SQL 迁移将在后续版本中移除。
+数据库迁移文件存放在 `database/migrations` 目录下，你可以在 `config/database.go` 文件中配置数据库连接信息。
 
 ```go
-// Available Drivers: "default", "sql"
 "migrations": map[string]any{
-  "driver": "default",
   // You can cumstomize the table name of migrations
   "table":  "migrations",
 },
@@ -99,25 +97,6 @@ func (r *M20241207095921CreateUsersTable) Connection() string {
 }
 ```
 
-### SQL 迁移
-
-迁移命令会同时生成两个迁移文件：`***.up.sql`、`***.down.sql`，分别对应执行、回滚。你可以在这两个文件中直接编写 SQL 语句。
-
-```sql
--- ***.up.sql
-CREATE TABLE `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ***.down.sql
-DROP TABLE `users`;
-```
-
 ## 注册迁移
 
 使用 Go 语言迁移时，迁移文件生成后需要再在 `database/kernel.go` 文件中注册迁移文件：
@@ -130,8 +109,6 @@ func (kernel Kernel) Migrations() []schema.Migration {
 	}
 }
 ```
-
-SQL 迁移不需要注册，框架会自动扫描 `database/migrations` 目录下的 SQL 文件。
 
 ## 执行迁移
 
@@ -304,6 +281,7 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
 |-----|-----|
 | `.AutoIncrement()` | 设置整数列为自动增长的（主键） |
 | `.Comment("my comment")` | 向列添加注释（MySQL / PostgreSQL） |
+| `.Change()` | 修改列（MySQL / PostgreSQL / Sqlserver） |
 | `.Default(value)` | 为列指定「默认」值 |
 | `.Nullable()` | 允许插入 NULL 值到列中 |
 | `.Unsigned()` | 设置整数列为 UNSIGNED（仅限 MySQL） |
