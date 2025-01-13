@@ -8,12 +8,10 @@ When multiple people collaborate to develop applications, it's crucial to have a
 
 ## Configuration
 
-The database migration files are stored in the `database/migrations` directory. You can configure the database connection information in the `config/database.go` file. Currently, there are two drivers available for migrations: Go language migration and SQL migration. However, the SQL migration will be removed in future versions.
+The database migration files are stored in the `database/migrations` directory. You can configure the database connection information in the `config/database.go` file.
 
 ```go
-// Available Drivers: "default", "sql"
 "migrations": map[string]any{
-  "driver": "default",
   // You can cumstomize the table name of migrations
   "table":  "migrations",
 },
@@ -99,25 +97,6 @@ func (r *M20241207095921CreateUsersTable) Connection() string {
 }
 ```
 
-### SQL Migration
-
-The migration command will generate two migration files: `***.up.sql` and `***.down.sql`, corresponding to execution and rollback, respectively. You can write SQL statements directly in these two files.
-
-```sql
--- ***.up.sql
-CREATE TABLE `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ***.down.sql
-DROP TABLE `users`;
-```
-
 ## Register Migrations
 
 When using Go language migrations, you need to register the migration files in the `database/kernel.go` file after the migration files are generated:
@@ -130,8 +109,6 @@ func (kernel Kernel) Migrations() []schema.Migration {
 	}
 }
 ```
-
-SQL migrations do not need to be registered, as the framework will automatically scan the SQL files in the `database/migrations` directory.
 
 ## Run Migrations
 
