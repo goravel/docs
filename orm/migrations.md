@@ -242,16 +242,17 @@ facades.Schema().DropIfExists("users")
 
 |     |     |     |     |
 |-----|-----|-----|-----|
-| BigIncrements | BigInteger | Char | Date |
-| DateTime | DateTimeTz | Decimal | Double |
-| [Enum](#enum) | Float | [ID](#id) | Increments |
-| Integer | IntegerIncrements | Json | Jsonb |
-| LongText | MediumIncrements | MediumInteger | MediumText |
-| SmallIncrements | SmallInteger | [SoftDeletes](#softdeletes) | SoftDeletesTz |
-| String | Text | Time | TimeTz |
-| Timestamp | Timestamps | TimestampsTz | TimestampTz |
-| UnsignedBigInteger | TinyIncrements | TinyInteger | TinyText |
-| UnsignedInteger | UnsignedMediumInteger | UnsignedSmallInteger | UnsignedTinyInteger |
+| BigIncrements | BigInteger | Boolean | Char |
+| Date | DateTime | DateTimeTz | Decimal |
+| Double | [Enum](#enum) | Float | [ID](#id) |
+| Increments | Integer | IntegerIncrements | Json |
+| Increments | LongText | MediumIncrements | MediumInteger |
+| MediumText | SmallIncrements | SmallInteger | [SoftDeletes](#softdeletes) |
+| SoftDeletesTz | String | Text | Time |
+| TimeTz | Timestamp | Timestamps | TimestampsTz |
+| TimestampTz | UnsignedBigInteger | TinyIncrements | TinyInteger |
+| TinyText | UnsignedInteger | UnsignedMediumInteger | UnsignedSmallInteger |
+| UnsignedTinyInteger |  |  |  |
 
 #### Enum
 
@@ -277,6 +278,12 @@ The `SoftDeletes` method adds a nullable `deleted_at` `TIMESTAMP` column. This c
 
 ```go
 table.SoftDeletes()
+```
+
+#### Custom column
+
+```go
+table.Custom("geometry", "geometry")
 ```
 
 ### Column Modifiers
