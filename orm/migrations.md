@@ -282,6 +282,8 @@ table.SoftDeletes()
 
 #### Custom column
 
+If you are using column types that framework does not support yet, you can use the `Custom` method to customize the field type:
+
 ```go
 table.Custom("geometry", "geometry")
 ```

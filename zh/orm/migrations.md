@@ -282,6 +282,8 @@ table.SoftDeletes()
 
 #### 自定义字段
 
+如果你正在使用框架尚不支持的字段类型，可以通过 `Custom` 方法自定义字段类型：
+
 ```go
 table.Custom("geometry", "geometry")
 ```
