@@ -8,7 +8,7 @@
 
 ## 安装 Goravel
 
-安装前需先设置GOPROXY，[详见文章](https://learnku.com/go/wikis/38122) 或开启 VPN。
+安装前需先设置 GOPROXY（[详见文章](https://learnku.com/go/wikis/38122)），或开启 VPN。
 
 ### 使用 Goravel 安装器
 
