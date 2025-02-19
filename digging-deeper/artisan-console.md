@@ -156,10 +156,9 @@ In addition to arguments and options, you may also prompt the user for input dur
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-  name := ctx.Ask("What is your name?")
-  email := ctx.Ask("What is your email address?")
-
-  return nil
+  email, err := ctx.Ask("What is your email address?")
+  
+  return err
 }
 ```
 
@@ -167,11 +166,11 @@ Additionally, you can pass options to the `Ask` method as optional second argume
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-    name := ctx.Ask("What is your name?", console.AskOption{
+    name, err := ctx.Ask("What is your name?", console.AskOption{
         Default: "Krishan",
     })
     
-    return nil
+    return err
 }
 
 // Available options
@@ -199,7 +198,7 @@ Sometimes you may need to hide the user input, such as when prompting for a pass
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-    password := ctx.Secret("What is the password?", console.SecretOption{
+    password, err := ctx.Secret("What is the password?", console.SecretOption{
         Validate: func (s string) error {
             if len(s) < 8 {
                 return errors.New("password length should be at least 8")
@@ -208,7 +207,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
         },
     })
     
-    return nil
+    return err
 }
 
 // Available options
@@ -231,7 +230,7 @@ type SecretOption struct {
 If you need to ask the user to confirm an action before proceeding, you may use the `Confirm` method. By default, this method will return `false` unless the user select affirmative option.
 
 ```go
-if !ctx.Confirm("Do you wish to continue?") {
+if answer, _ := ctx.Confirm("Do you wish to continue?"); !answer {
     // ...
 }
 ```
@@ -239,8 +238,10 @@ if !ctx.Confirm("Do you wish to continue?") {
 You can also pass a second argument to the `Confirm` method to customize the default value, label of the affirmative and negative buttons:
 
 ```go
-if !ctx.Confirm("Do you wish to continue?", console.ConfirmOption{
+if answer, _ := ctx.Confirm("Do you wish to continue?", console.ConfirmOption; !answer {
 	Default : true,
+	Affirmative : "Yes",
+	Negative : "No",
 }) {
     // ...
 }
