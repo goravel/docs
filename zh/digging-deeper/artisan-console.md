@@ -156,10 +156,9 @@ go run . artisan emails name --lang Chinese name
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-  name := ctx.Ask("What is your name?")
-  email := ctx.Ask("What is your email address?")
+  email, err := ctx.Ask("What is your email address?")
 
-  return nil
+  return err
 }
 ```
 
@@ -167,11 +166,11 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-    name := ctx.Ask("What is your name?", console.AskOption{
+    name, err := ctx.Ask("What is your name?", console.AskOption{
         Default: "Krishan",
     })
     
-    return nil
+    return err
 }
 
 // 可用选项
@@ -199,7 +198,7 @@ type AskOption struct {
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-    password := ctx.Secret("What is the password?", console.SecretOption{
+    password, err := ctx.Secret("What is the password?", console.SecretOption{
         Validate: func (s string) error {
             if len(s) < 8 {
                 return errors.New("password length should be at least 8")
@@ -208,7 +207,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
         },
     })
     
-    return nil
+    return err
 }
 
 // 可用选项
@@ -231,7 +230,7 @@ type SecretOption struct {
 如果你需要在继续之前要求用户确认操作，你可以使用 `Confirm` 方法。默认情况下，除非用户选择肯定选项，否则此方法将返回 `false`。
 
 ```go
-if !ctx.Confirm("Do you wish to continue?") {
+if answer, _ := ctx.Confirm("Do you wish to continue?"); !answer {
     // ...
 }
 ```
@@ -239,8 +238,10 @@ if !ctx.Confirm("Do you wish to continue?") {
 你还可以传递第二个参数给 `Confirm` 方法：
 
 ```go
-if !ctx.Confirm("Do you wish to continue?", console.ConfirmOption{
+if answer, _ := ctx.Confirm("Do you wish to continue?", console.ConfirmOption; !answer {
 	Default : true,
+	Affirmative : "确认",
+	Negative : "取消",
 }) {
     // ...
 }
