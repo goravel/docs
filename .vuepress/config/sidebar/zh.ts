@@ -61,19 +61,19 @@ export function getZhSidebar(): SidebarConfigArray {
       children: [
         {
           text: "请求周期",
-          link: "/zh/architecutre-concepts/request-lifecycle",
+          link: "/zh/architecture-concepts/request-lifecycle",
         },
         {
           text: "服务容器",
-          link: "/zh/architecutre-concepts/service-container",
+          link: "/zh/architecture-concepts/service-container",
         },
         {
           text: "服务提供者",
-          link: "/zh/architecutre-concepts/service-providers",
+          link: "/zh/architecture-concepts/service-providers",
         },
         {
           text: "Facades",
-          link: "/zh/architecutre-concepts/facades",
+          link: "/zh/architecture-concepts/facades",
         },
       ],
     },
