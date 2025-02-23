@@ -56,24 +56,24 @@ export function getEnSidebar(): SidebarConfigArray {
       ],
     },
     {
-      text: "Architecutre Concepts",
+      text: "Architecture Concepts",
       // collapsible: true,
       children: [
         {
           text: "Request Lifecycle",
-          link: "/architecutre-concepts/request-lifecycle",
+          link: "/architecture-concepts/request-lifecycle",
         },
         {
           text: "Service Container",
-          link: "/architecutre-concepts/service-container",
+          link: "/architecture-concepts/service-container",
         },
         {
           text: "Service Providers",
-          link: "/architecutre-concepts/service-providers",
+          link: "/architecture-concepts/service-providers",
         },
         {
           text: "Facades",
-          link: "/architecutre-concepts/facades",
+          link: "/architecture-concepts/facades",
         },
       ],
     },
