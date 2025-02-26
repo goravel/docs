@@ -124,10 +124,43 @@ For example, the model name is `UserOrder`, and the table name is `user_orders`.
 
 ### Create Model
 
+Use the `make:model` command to create a model:
+
 ```shell
 go run . artisan make:model User
 go run . artisan make:model user/User
 ```
+
+Created model file is located in `app/models/user.go` file, the content is as follows:
+
+```go
+package models
+
+import (
+  "github.com/goravel/framework/database/orm"
+)
+
+type User struct {
+  orm.Model
+  Name   string
+  Avatar string
+  orm.SoftDeletes
+}
+```
+
+If you want to set the model field to `any`, you need to add an additional Tag: `gorm:"type:text"`:
+
+```go
+type User struct {
+  orm.Model
+  Name   string
+  Avatar string
+  Detail any `gorm:"type:text"`
+  orm.SoftDeletes
+}
+```
+
+More Tag usage details can be found at: https://gorm.io/docs/models.html.
 
 ### Specify Table Name
 
