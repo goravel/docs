@@ -19,10 +19,43 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 
 ### 创建模型
 
+使用 `make:model` 命令创建模型：
+
 ```shell
 go run . artisan make:model User
 go run . artisan make:model user/User
 ```
+
+创建的模型文件位于 `app/models/user.go` 文件中，内容如下：
+
+```go
+package models
+
+import (
+  "github.com/goravel/framework/database/orm"
+)
+
+type User struct {
+  orm.Model
+  Name   string
+  Avatar string
+  orm.SoftDeletes
+}
+```
+
+如果你想将模型字段设置为 `any`, 需要额外添加一个 Tag: `gorm:"type:text"`:
+
+```go
+type User struct {
+  orm.Model
+  Name   string
+  Avatar string
+  Detail any `gorm:"type:text"`
+  orm.SoftDeletes
+}
+```
+
+更多 Tag 使用方法详见：https://gorm.io/docs/models.html。
 
 ### 指定表名
 
