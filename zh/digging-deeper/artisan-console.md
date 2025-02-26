@@ -28,6 +28,12 @@ echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 artisan make:controller DemoController
 ```
 
+你也可以使用 `artisan` shell 脚本来运行：
+
+```shell
+./artisan make:controller DemoController
+```
+
 ### 生成命令
 
 使用 `make:command` 命令将在 `app/console/commands` 目录中创建一个新的命令。如果你的应用程序中不存在此目录，请不要担心，它将在你第一次运行 make:command 命令时自动创建：
@@ -133,17 +139,17 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 使用：
 
 ```shell
-go run . artisan emails --lang Chinese
-go run . artisan emails -l Chinese
+go run . artisan emails --lang=Chinese
+go run . artisan emails -l=Chinese
 ```
 
 注意：同时使用参数与选项时，选项要在参数之前定义，例如：
 
 ```shell
 // 正确
-go run . artisan emails --lang Chinese name
+go run . artisan emails --lang=Chinese name
 // 错误
-go run . artisan emails name --lang Chinese name
+go run . artisan emails name --lang=Chinese name
 ```
 
 除了 `command.StringFlag`，我们还可以其他类型的 `Flag` 与 `Option*`：`StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`。

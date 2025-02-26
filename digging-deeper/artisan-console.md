@@ -28,6 +28,11 @@ Then you can simply run your commands like this:
 artisan make:controller DemoController
 ```
 
+You can also use `artisan` shell script like this:
+```shell
+./artisan make:controller DemoController
+```
+
 ### Generating Commands
 
 You can use the `make:command` command to create a new command in the `app/console/commands` directory. Don't worry if this directory does not exist in your application, it will be created the first time you run the `make:command` command:
@@ -141,9 +146,9 @@ Notice: When using both arguments and options, define the options before the arg
 
 ```shell
 // Right
-go run . artisan emails --lang Chinese name
+go run . artisan emails --lang=Chinese name
 // Wrong
-go run . artisan emails name --lang Chinese name
+go run . artisan emails name --lang=Chinese name
 ```
 
 Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
