@@ -434,7 +434,7 @@ facades.Orm().Query().WhereNotIn("name", []any{"a"})
 facades.Orm().Query().WhereNull("name")
 facades.Orm().Query().WhereIn("name", []any{"a"})
 
-facades.Orm().Query().OrWhere("name = ?", "tom")
+facades.Orm().Query().OrWhere("name", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
 facades.Orm().Query().OrWhereNull("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
@@ -444,7 +444,7 @@ facades.Orm().Query().OrWhereIn("name", []any{"a"})
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
+facades.Orm().Query().Where("name", "tom").Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3;
 ```
 
@@ -452,7 +452,7 @@ facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
+facades.Orm().Query().Where("name", "tom").Offset(5).Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3 OFFSET 5;
 ```
 
@@ -460,16 +460,16 @@ facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
+facades.Orm().Query().Where("name", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc,id desc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort").Get(&users)
+facades.Orm().Query().Where("name", "tom").OrderBy("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
+facades.Orm().Query().Where("name", "tom").OrderByDesc("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 
-facades.Orm().Query().Where("name = ?", "tom").InRandomOrder().Get(&users)
+facades.Orm().Query().Where("name", "tom").InRandomOrder().Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY RAND();
 ```
 
@@ -533,7 +533,7 @@ The methods can be called after `ToSql` and `ToRawSql`: `Count`, `Create`, `Dele
 
 ```go
 var count int64
-facades.Orm().Query().Table("users").Where("name = ?", "tom").Count(&count)
+facades.Orm().Query().Table("users").Where("name", "tom").Count(&count)
 // SELECT count(*) FROM `users` WHERE name = 'tom';
 ```
 
@@ -543,9 +543,6 @@ facades.Orm().Query().Table("users").Where("name = ?", "tom").Count(&count)
 
 ```go
 facades.Orm().Query().Select("name", "age").Get(&users)
-// SELECT `name`,`age` FROM `users`;
-
-facades.Orm().Query().Select([]string{"name", "age"}).Get(&users)
 // SELECT `name`,`age` FROM `users`;
 ```
 
@@ -685,7 +682,7 @@ num := res.RowsAffected
 Multiple delete
 
 ```go
-facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
+facades.Orm().Query().Where("name", "tom").Delete(&models.User{})
 // DELETE FROM `users` WHERE name = 'tom';
 ```
 
@@ -717,10 +714,10 @@ Note: The associations will be deleted only if the primary key of the record is 
 
 ```go
 // Delete user that name='goravel', but don't delete account of user
-facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{})
+facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.User{})
 
 // Delete user that name='goravel' and id = 1, and delete account of user
-facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{ID: 1})
+facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.User{ID: 1})
 
 // Delete user that id = 1 and delete account of that user
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
