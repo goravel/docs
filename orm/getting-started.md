@@ -433,9 +433,6 @@ facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc"
 facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort", "desc").Get(&users)
-// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
-
 facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 
