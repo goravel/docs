@@ -220,7 +220,7 @@ func (r *User) Connection() string {
 
 | Functions     | Action                                                  |
 | ------------- | ------------------------------------------------------- |
-| Begin         | [Begin transaction](#transaction)                       |
+| BeginTransaction         | [Begin transaction](#transaction)                       |
 | Commit        | [Commit transaction](#transaction)                      |
 | Count         | [Count](#count)                                         |
 | Create        | [Create](#create)                                       |
@@ -813,7 +813,7 @@ return facades.Orm().Transaction(func(tx orm.Query) error {
 You can also manually control the flow of the transaction yourself:
 
 ```go
-tx, err := facades.Orm().Query().Begin()
+tx, err := facades.Orm().Query().BeginTransaction()
 user := models.User{Name: "Goravel"}
 if err := tx.Create(&user); err != nil {
   err := tx.Rollback()
