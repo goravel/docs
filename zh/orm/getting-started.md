@@ -220,7 +220,7 @@ func (r *User) Connection() string {
 
 | 方法名         | 作用                                    |
 | ------------- | --------------------------------------- |
-| Begin         | [手动开始事务](#事务)                   |
+| BeginTransaction         | [手动开始事务](#事务)                   |
 | Commit        | [提交事务](#事务)                       |
 | Count         | [检索聚合](#检索聚合)                     |
 | Create        | [创建数据](#创建)                       |
@@ -433,7 +433,7 @@ facades.Orm().Query().WhereNotIn("name", []any{"a"})
 facades.Orm().Query().WhereNull("name")
 facades.Orm().Query().WhereIn("name", []any{"a"})
 
-facades.Orm().Query().OrWhere("name = ?", "tom")
+facades.Orm().Query().OrWhere("name", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
 facades.Orm().Query().OrWhereNUll("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
@@ -443,7 +443,7 @@ facades.Orm().Query().OrWhereIn("name", []any{"a"})
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
+facades.Orm().Query().Where("name", "tom").Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3;
 ```
 
@@ -451,7 +451,7 @@ facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
+facades.Orm().Query().Where("name", "tom").Offset(5).Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3 OFFSET 5;
 ```
 
@@ -459,19 +459,16 @@ facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
+facades.Orm().Query().Where("name", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc,id desc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort").Get(&users)
+facades.Orm().Query().Where("name", "tom").OrderBy("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort", "desc").Get(&users)
+facades.Orm().Query().Where("name", "tom").OrderByDesc("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
-// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
-
-facades.Orm().Query().Where("name = ?", "tom").InRandomOrder().Get(&users)
+facades.Orm().Query().Where("name", "tom").InRandomOrder().Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY RAND();
 ```
 
@@ -535,7 +532,7 @@ facades.Orm().Query().ToRawSql().Get(models.User{})
 
 ```go
 var count int
-facades.Orm().Query().Where("name = ?", "tom").Count(&count)
+facades.Orm().Query().Where("name", "tom").Count(&count)
 // SELECT count(*) FROM `users` WHERE name = 'tom';
 ```
 
@@ -545,9 +542,6 @@ facades.Orm().Query().Where("name = ?", "tom").Count(&count)
 
 ```go
 facades.Orm().Query().Select("name", "age").Get(&users)
-// SELECT `name`,`age` FROM `users`;
-
-facades.Orm().Query().Select([]string{"name", "age"}).Get(&users)
 // SELECT `name`,`age` FROM `users`;
 ```
 
@@ -688,7 +682,7 @@ num := res.RowsAffected
 批量删除
 
 ```go
-facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
+facades.Orm().Query().Where("name", "tom").Delete(&models.User{})
 // DELETE FROM `users` WHERE name = 'tom';
 ```
 
@@ -720,10 +714,10 @@ facades.Orm().Query().Select("Account").Delete(&users)
 
 ```go
 // 会删除所有 name=`goravel` 的 user，但这些 user 的 account 不会被删除
-facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{})
+facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.User{})
 
 // 会删除 name = `goravel` 且 id = `1` 的 user，并且 user `1` 的 account 也会被删除
-facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{ID: 1})
+facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.User{ID: 1})
 
 // 会删除 id = `1` 的 user，并且 account 也会被删除
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
@@ -817,7 +811,7 @@ return facades.Orm().Transaction(func(tx orm.Query) error {
 也可以自己手动控制事务的流程：
 
 ```go
-tx, err := facades.Orm().Query().Begin()
+tx, err := facades.Orm().Query().BeginTransaction()
 user := models.User{Name: "Goravel"}
 if err := tx.Create(&user); err != nil {
   err := tx.Rollback()
