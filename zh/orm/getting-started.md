@@ -220,7 +220,7 @@ func (r *User) Connection() string {
 
 | 方法名         | 作用                                    |
 | ------------- | --------------------------------------- |
-| Begin         | [手动开始事务](#事务)                   |
+| BeginTransaction         | [手动开始事务](#事务)                   |
 | Commit        | [提交事务](#事务)                       |
 | Count         | [检索聚合](#检索聚合)                     |
 | Create        | [创建数据](#创建)                       |
@@ -811,7 +811,7 @@ return facades.Orm().Transaction(func(tx orm.Query) error {
 也可以自己手动控制事务的流程：
 
 ```go
-tx, err := facades.Orm().Query().Begin()
+tx, err := facades.Orm().Query().BeginTransaction()
 user := models.User{Name: "Goravel"}
 if err := tx.Create(&user); err != nil {
   err := tx.Rollback()
