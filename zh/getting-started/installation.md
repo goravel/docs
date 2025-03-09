@@ -23,7 +23,7 @@ goravel new blog
 
 ```shell
 // 下载框架
-git clone https://github.com/goravel/goravel.git && rm -rf goravel/.git*
+git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
 // 安装依赖
 cd goravel && go mod tidy
