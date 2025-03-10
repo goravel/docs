@@ -200,6 +200,24 @@ export function getEnSidebar(): SidebarConfigArray {
       ],
     },
     {
+      text: "Database",
+      // collapsible: true,
+      children: [
+        {
+          text: "Getting Started",
+          link: "/database/getting-started",
+        },
+        {
+          text: "Migrations",
+          link: "/database/migrations",
+        },
+        {
+          text: "Seeding",
+          link: "/database/seeding",
+        },
+      ],
+    },
+    {
       text: "ORM",
       // collapsible: true,
       children: [
@@ -210,14 +228,6 @@ export function getEnSidebar(): SidebarConfigArray {
         {
           text: "Relationships",
           link: "/orm/relationships",
-        },
-        {
-          text: "Migrations",
-          link: "/orm/migrations",
-        },
-        {
-          text: "Seeding",
-          link: "/orm/seeding",
         },
         {
           text: "Factories",

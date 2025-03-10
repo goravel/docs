@@ -200,6 +200,24 @@ export function getZhSidebar(): SidebarConfigArray {
       ],
     },
     {
+      text: "Database",
+      // collapsible: true,
+      children: [
+        {
+          text: "快速入门",
+          link: "/zh/database/getting-started",
+        },
+        {
+          text: "数据库迁移",
+          link: "/zh/database/migrations",
+        },
+        {
+          text: "数据填充",
+          link: "/zh/database/seeding",
+        },
+      ],
+    },
+    {
       text: "ORM",
       // collapsible: true,
       children: [
@@ -210,14 +228,6 @@ export function getZhSidebar(): SidebarConfigArray {
         {
           text: "模型关联",
           link: "/zh/orm/relationships",
-        },
-        {
-          text: "数据库迁移",
-          link: "/zh/orm/migrations",
-        },
-        {
-          text: "数据填充",
-          link: "/zh/orm/seeding",
         },
         {
           text: "模型工厂",
