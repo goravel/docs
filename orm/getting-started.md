@@ -465,16 +465,14 @@ If you want to query some aggregate data, you need to specify a specific table.
 Specify a model
 
 ```go
-var count int64
-facades.Orm().Query().Model(&models.User{}).Count(&count)
+count, err := facades.Orm().Query().Model(&models.User{}).Count()
 // SELECT count(*) FROM `users` WHERE deleted_at IS NULL;
 ```
 
 Specify a table
 
 ```go
-var count int
-facades.Orm().Query().Table("users").Count(&count)
+count, err := facades.Orm().Query().Table("users").Count()
 // SELECT count(*) FROM `users`; // get all records, whether deleted or not
 ```
 
@@ -499,8 +497,7 @@ The methods can be called after `ToSql` and `ToRawSql`: `Count`, `Create`, `Dele
 ### Count
 
 ```go
-var count int64
-facades.Orm().Query().Table("users").Where("name", "tom").Count(&count)
+count, err := facades.Orm().Query().Table("users").Count()
 // SELECT count(*) FROM `users` WHERE name = 'tom';
 ```
 
@@ -741,8 +738,7 @@ num := res.RowsAffected
 ### Exists
 
 ```go
-var exists bool
-facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists(&exists)
+exists, err := facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists()
 ```
 
 ### Restore

@@ -92,4 +92,24 @@ You need to generate JWT Token if you use [Authentication](../security/authentic
 go run . artisan jwt:secret
 ```
 
+### Encrypt and decrypt env file
+
+You may want to add the production environment env file to version control, but you don't want to expose sensitive information, you can use the `env:encrypt` command to encrypt the env file:
+
+```shell
+go run . artisan env:encrypt
+
+// Specify the file name and key
+go run . artisan env.encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+```
+
+Then use the `env:decrypt` command to decrypt the env file in the production environment:
+
+```shell
+GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc go run . artisan env:decrypt
+
+// or
+go run . artisan env.decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+```
+
 <CommentService/>

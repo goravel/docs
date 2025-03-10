@@ -447,4 +447,12 @@ facades.Route().GET("/", func(c *gin.Context) {
 })
 ```
 
+## 禁用打印颜色
+
+有些命令默认会打印颜色，例如 `list` 命令，但在某些终端或日志中颜色值会是乱码，这时你可以使用 `--no-ansi` 选项禁用打印颜色：
+
+```shell
+go run . artisan list --no-ansi
+```
+
 <CommentService/>
