@@ -169,4 +169,36 @@ func init() {
 }
 ```
 
+## 关闭 Grpc
+
+你可以调用 `Shutdown` 方法优雅的关闭 Grpc，该方法将会等待所有请求处理完毕后再执行关闭操作。
+
+```go
+// main.go
+bootstrap.Boot()
+
+// Create a channel to listen for OS signals
+quit := make(chan os.Signal)
+signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+// Start schedule by facades.Schedule
+go func() {
+  if err := facades.Grpc().Run(facades.Config().GetString("grpc.host")); err != nil {
+    facades.Log().Errorf("Grpc run error: %v", err)
+  }
+}()
+
+// Listen for the OS signal
+go func() {
+  <-quit
+  if err := facades.Grpc().Shutdown(); err != nil {
+    facades.Log().Errorf("Grpc Shutdown error: %v", err)
+  }
+
+  os.Exit(0)
+}()
+
+select {}
+```
+
 <CommentService/>
