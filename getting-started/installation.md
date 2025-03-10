@@ -22,7 +22,7 @@ goravel new blog
 
 ```shell
 // Download framework
-git clone https://github.com/goravel/goravel.git && rm -rf goravel/.git*
+git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
 // Install dependencies
 cd goravel && go mod tidy
