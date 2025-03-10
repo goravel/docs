@@ -456,4 +456,12 @@ facades.Route().Get("/", func(c *gin.Context) {
 })
 ```
 
+## Disabling Print Colors
+
+Some commands print colors by default, such as the `list` command. However, in some terminals or logs, the color values may be garbled. You can use the `--no-ansi` option to disable the print colors:
+
+```shell
+go run . artisan list --no-ansi
+```
+
 <CommentService/>

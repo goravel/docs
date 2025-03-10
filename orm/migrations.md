@@ -204,6 +204,22 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
 })
 ```
 
+### Rename Column
+
+```go
+facades.Schema().Table("users", func(table schema.Blueprint) {
+  table.RenameColumn("old_name", "new_name")
+})
+```
+
+### Add Table Comment
+
+```go
+facades.Schema().Table("users", func(table schema.Blueprint) {
+  table.Comment("user table")
+})
+```
+
 ### Rename / Drop Table
 
 ```go
@@ -280,8 +296,11 @@ The following table contains all available column modifiers:
 | Modified | Description |
 |-----|-----|
 | `.AutoIncrement()` | Sets an integer column as auto-incrementing (primary key) |
+| `.After("column")` | Sets the column after the specified column (MySQL only) |
 | `.Comment("my comment")` | Adds a comment to the column (MySQL / PostgreSQL) |
+| `.Change()` | Modify the column structure (MySQL / PostgreSQL / Sqlserver) |
 | `.Default(value)` | Sets the default value for the column |
+| `.First()` | Sets the column as the first column (MySQL only) |
 | `.Nullable()` | Allows NULL values to be inserted into the column |
 | `.Unsigned()` | Sets an integer column as UNSIGNED (MySQL only) |
 | `.UseCurrent()` | Sets a timestamp column to use CURRENT_TIMESTAMP as the default value |

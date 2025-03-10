@@ -499,16 +499,14 @@ facades.Orm().Query().Model(&models.User{}).Pluck("age", &ages)
 使用模型指定
 
 ```go
-var count int64
-facades.Orm().Query().Model(&models.User{}).Count(&count)
+count, err := facades.Orm().Query().Model(&models.User{}).Count()
 // SELECT count(*) FROM `users` WHERE deleted_at IS NULL;
 ```
 
 使用表名指定
 
 ```go
-var count int64
-facades.Orm().Query().Table("users").Count(&count)
+count, err := facades.Orm().Query().Table("users").Count()
 // SELECT count(*) FROM `users`; // get all records, whether deleted or not
 ```
 
@@ -533,8 +531,7 @@ facades.Orm().Query().ToRawSql().Get(models.User{})
 ### 检索聚合
 
 ```go
-var count int
-facades.Orm().Query().Where("name", "tom").Count(&count)
+count, err := facades.Orm().Query().Table("users").Count()
 // SELECT count(*) FROM `users` WHERE name = 'tom';
 ```
 
@@ -777,8 +774,7 @@ num := res.RowsAffected
 ### 数据是否存在
 
 ```go
-var exists bool
-facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists(&exists)
+exists, err := facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists()
 ```
 
 ### 恢复软删除
