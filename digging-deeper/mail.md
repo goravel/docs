@@ -49,7 +49,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
   Subject("Subject").
-  Queue(mail.Queue().Connection("high").Queue("mail"))
+  Queue(mail.Queue().Connection("redis").Queue("mail"))
 ```
 
 ## Setting Sender
@@ -66,7 +66,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
   Subject("Subject").
-  Queue(mail.Queue().Connection("high").Queue("mail"))
+  Queue(mail.Queue().Connection("redis").Queue("mail"))
 ```
 
 ## Using Mailable
@@ -109,7 +109,7 @@ func (m *OrderShipped) Envelope() *mail.Envelope {
 
 func (m *OrderShipped) Queue() *mail.Queue {
   return &mail.Queue{
-    Connection: "high",
+    Connection: "redis",
     Queue:      "mail",
   }
 }
