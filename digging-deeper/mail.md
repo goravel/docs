@@ -109,7 +109,7 @@ func (m *OrderShipped) Envelope() *mail.Envelope {
 
 func (m *OrderShipped) Queue() *mail.Queue {
   return &mail.Queue{
-    Connection: "high",
+    Connection: "redis",
     Queue:      "mail",
   }
 }
