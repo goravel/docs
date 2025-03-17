@@ -14,8 +14,8 @@ const __dirname = getDirname(import.meta.url);
 
 export default defineUserConfig({
   lang: "en-US",
-  title: "Goravel",
-  description: "A Golang web application framework",
+  title: "Goravel - The Golang Framework For Web Artisans",
+  description: "Goravel is a web application framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications.",
   head: [
     [
       "script",
@@ -37,6 +37,18 @@ export default defineUserConfig({
       {},
       "window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-HJQNEG5H69');",
     ],
+    ['meta', { name: "description", content: "Goravel is a web application framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications." }],
+    ['meta', { property: "og:url", content: "https://www.goravel.dev" }],
+    ['meta', { property: "og:type", content: "website" }],
+    ['meta', { property: "og:title", content: "Goravel - The Golang Framework For Web Artisans" }],
+    ['meta', { property: "og:description", content: "Goravel is a web application framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications." }],
+    ['meta', { property: "og:image", content: "https://www.goravel.dev/meta.png" }],
+    ['meta', { name: "twitter:card", content: "summary_large_image" }],
+    ['meta', { name: "twitter:domain", content: "www.goravel.dev" }],
+    ['meta', { name: "twitter:url", content: "https://www.goravel.dev" }],
+    ['meta', { name: "twitter:title", content: "Goravel - The Golang Framework For Web Artisans" }],
+    ['meta', { name: "twitter:description", content: "Goravel is a web application framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications." }],
+    ['meta', { name: "twitter:image", content: "https://www.goravel.dev/meta.png" }],
   ],
   bundler: viteBundler({
     viteOptions: {},
