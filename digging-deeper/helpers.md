@@ -9,7 +9,7 @@
 |                           |                               |             |
 | -----------               | --------------                | -------------- |
 | [path.App()](#path-app)   | [path.Base()](#path-base)     | [path.Config()](#path-config)     |
-| [path.Database()](#path-database)   | [path.Storage()](#path-storage)     | [path.Public()](#path-public)     |
+| [path.Database()](#path-database)   | [path.Storage()](#path-storage)     | [path.Public()](#path-public)     | [path.Resource()](#path-resource)     |
 
 ### Time
 
@@ -118,6 +118,15 @@ The `path.Lang()` function returns the absolute path to the `lang` directory. Yo
 ```go
 path := path.Lang()
 path := path.Lang("en.json")
+```
+
+### `path.Resource()`
+
+The `path.Resource()` function returns the absolute path to the `resource` directory. You may also use the `path.Resource()` function to generate a path to a given file within the `resource` directory:
+
+```go
+path := path.Resource()
+path := path.Resource("css/app.css")
 ```
 
 ## Time
