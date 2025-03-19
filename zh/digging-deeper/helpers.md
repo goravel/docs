@@ -9,7 +9,7 @@
 |                           |                               |             |
 | -----------               | --------------                | -------------- |
 | [path.App()](#path-app)   | [path.Base()](#path-base)     | [path.Config()](#path-config)     |
-| [path.Database()](#path-database)   | [path.Storage()](#path-storage)     | [path.Public()](#path-public)     |
+| [path.Database()](#path-database)   | [path.Storage()](#path-storage)     | [path.Public()](#path-public)     | [path.Resource()](#path-resource)     |
 
 ### 时间
 
@@ -118,6 +118,15 @@ path := path.Public("css/app.css")
 ```go
 path := path.Lang()
 path := path.Lang("en.json")
+```
+
+### `path.Resource()`
+
+`path.Resource()` 函数返回 `resource` 目录的绝对路径。你也可以用来生成 `resource` 目录下特定文件的路径：
+
+```go
+path := path.Resource()
+path := path.Resource("css/app.css")
 ```
 
 ## 时间
