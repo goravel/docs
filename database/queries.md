@@ -152,6 +152,19 @@ exists, err := facades.DB().Table("users").Where("votes", ">", 100).Exists()
 exists, err := facades.DB().Table("users").Where("votes", ">", 100).DoesntExist()
 ```
 
+### Pagination
+
+You can use the `Paginate` method to paginate the query results:
+
+```go
+var (
+  users []User
+  total int64
+)
+
+err := facades.DB().Table("users").Where("name", "John").Paginate(1, 10, &users, &total)
+```
+
 ## Select
 
 You may not always want to retrieve all columns from a database table. Use the `Select` method to customize a "select" query statement to query the specified fields:
