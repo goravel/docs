@@ -152,6 +152,19 @@ exists, err := facades.DB().Table("users").Where("votes", ">", 100).Exists()
 exists, err := facades.DB().Table("users").Where("votes", ">", 100).DoesntExist()
 ```
 
+### 分页
+
+可以使用 `Paginate` 方法分页查询：
+
+```go
+var (
+  users []User
+  total int64
+)
+
+err := facades.DB().Table("users").Where("name", "John").Paginate(1, 10, &users, &total)
+```
+
 ## Select 语句
 
 可能你并不总是希望从数据库表中获取所有列。 使用 `Select` 方法，可以自定义一个 「select」 查询语句来查询指定的字段：
