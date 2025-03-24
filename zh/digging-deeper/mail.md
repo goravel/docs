@@ -20,6 +20,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Headers(map[string]string{"X-Mailer": "Goravel"}).
   Subject("Subject").
   Send()
 ```
@@ -34,6 +35,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Headers(map[string]string{"X-Mailer": "Goravel"}).
   Subject("Subject").
   Queue()
 ```
@@ -48,6 +50,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Headers(map[string]string{"X-Mailer": "Goravel"}).
   Subject("Subject").
   Queue(mail.Queue().Connection("redis").Queue("mail"))
 ```
@@ -65,6 +68,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Headers(map[string]string{"X-Mailer": "Goravel"}).
   Subject("Subject").
   Queue(mail.Queue().Connection("redis").Queue("mail"))
 ```
@@ -87,6 +91,12 @@ type OrderShipped struct {
 
 func NewOrderShipped() *OrderShipped {
 	return &OrderShipped{}
+}
+
+func (m *OrderShipped) Headers() map[string]string{
+	return map[string]string{
+		"X-Mailer": "Goravel",
+	}
 }
 
 func (m *OrderShipped) Attachments() []string {
