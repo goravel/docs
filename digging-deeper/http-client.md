@@ -89,8 +89,6 @@ You can define these placeholders in your URL and then provide the values to rep
 To achieve this, you can use `WithUrlParameter` for single parameters or `WithUrlParameters` for multiple parameters.
 
 ```go
-import "github.com/goravel/framework/facades"
-
 response, err := facades.Http().
 	WithUrlParameter("id", "123").
 	Get("https://api.example.com/users/{id}")
@@ -289,7 +287,4 @@ response, err := facades.Http().
 	Get("https://example.com")
 ```
 
-
-
-
-
+<CommentService/>
