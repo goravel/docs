@@ -132,6 +132,21 @@ response, err := facades.Http().
     Get("https://api.example.com/items")
 ```
 
+### Sending a Request Body
+
+For HTTP verbs like `POST`, `PUT`, `PATCH` and `DELETE` accept `io.Reader` as the second argument. 
+To simplify building payloads, the framework provides utility methods for constructing request bodies.
+
+```go
+import "github.com/goravel/framework/support/http"
+
+builder := http.NewBody().SetField("name", "krishan")
+
+body, err := builder.Build()
+
+response, err := facades.Http().WithHeader("Content-Type", body.ContentType()).Post("https://example.com/users", body)
+```
+
 ### Headers
 
 You can add headers to your requests using `WithHeader` for a single header 

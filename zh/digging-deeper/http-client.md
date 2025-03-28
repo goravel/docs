@@ -125,6 +125,20 @@ response, err := facades.Http().
     Get("https://api.example.com/items")
 ```
 
+### 发送请求体
+
+对于像 `POST`、`PUT`、`PATCH` 和 `DELETE` 这样的 HTTP 动词，它们接受 `io.Reader` 作为第二个参数。为了简化构建请求负载（payload），框架提供了构建请求体的实用方法。
+
+```go
+import "github.com/goravel/framework/support/http"
+
+builder := http.NewBody().SetField("name", "krishan")
+
+body, err := builder.Build()
+
+response, err := facades.Http().WithHeader("Content-Type", body.ContentType()).Post("https://example.com/users", body)
+```
+
 ### 请求头
 
 你可以使用 `WithHeader` 为你的请求添加单个请求头，或者使用 `WithHeaders` 通过 map 提供多个请求头。
