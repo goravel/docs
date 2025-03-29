@@ -4,7 +4,7 @@
 
 ## 简介
 
-用户认证是 Web 应用中不可或缺的功能，Goravel 的 `facades.Auth()` 模块提供 JWT 功能的支持。
+用户认证是 Web 应用中不可或缺的功能，Goravel 的 `facades.Auth()` 模块提供 JWT 功能的支持，并且可以根据自己需要自定义驱动。
 
 ## 配置
 
@@ -113,5 +113,17 @@ token, err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
 > 当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。
+
+## 自定义驱动
+
+### 添加自定义 Guard
+
+你可以使用 `facades.Auth().Extend()` 方法定义你自己的身份验证看守器，该方法可以在 `AuthServiceProvider` 中调用。
+
+```go
+facades.Auth().Extend("custom", func(ctx context.Context) auth.Guard {
+  return &CustomGuard{}
+})
+```
 
 <CommentService/>
