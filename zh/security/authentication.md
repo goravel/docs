@@ -118,12 +118,60 @@ token, err := facades.Auth(ctx).Guard("admin").User(&user)
 
 ### 添加自定义 Guard
 
-你可以使用 `facades.Auth().Extend()` 方法定义你自己的身份验证看守器，该方法可以在 `AuthServiceProvider` 中调用。
+你可以使用 `facades.Auth().Extend()` 方法定义你自己的身份验证看守器，该方法可以在 `AuthServiceProvider` 的 `Boot` 方法中调用。
 
 ```go
-facades.Auth().Extend("custom", func(ctx context.Context) auth.Guard {
-  return &CustomGuard{}
+import "github.com/goravel/framework/contracts/auth"
+
+func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
+  facades.Auth().Extend("custom-driver", func(ctx http.Context, name string, userProvider auth.UserProvider) (auth.GuardDriver, error) {
+    return &CustomGuard{}, nil
+  })
+}
+```
+
+定义自定义看守器后，你可以在 `auth.go` 配置文件的 `guards` 配置中引用该看守器：
+
+```go
+"guards": map[string]any{
+  "api": map[string]any{
+    "driver": "custom-driver",
+    "provider": "users",
+  },
+},
+```
+
+### 添加自定义 UserProvider
+
+你可以使用 `facades.Auth().Provider()` 方法定义你自己的用户提供者，该方法也可以在 `AuthServiceProvider` 的 `Boot` 方法中调用。
+
+```go
+import "github.com/goravel/framework/contracts/auth"
+
+facades.Auth().Provider("custom-provider", func(ctx http.Context) (auth.UserProvider, error) {
+  return &UserProvider{}, nil
 })
+```
+
+使用 `Provider` 方法注册提供器后，你可以在 `auth.go` 配置文件中使用自定义的用户提供器。 首先，定义一个使用新驱动程序的 `provider`:
+
+```go
+"providers": map[string]any{
+  "users": map[string]any{
+    "driver": "custom-provider",
+  },
+},
+```
+
+最后，你可以在 `guards` 配置中引用此提供器：
+
+```go
+"guards": map[string]any{
+  "api": map[string]any{
+    "driver": "custom-provider",
+    "provider": "users",
+  },
+},
 ```
 
 <CommentService/>
