@@ -163,6 +163,7 @@ value := ctx.Request().Cookie("name", "default")
 
 ```go
 file, err := ctx.Request().File("file")
+files, err := ctx.Request().Files("file")
 ```
 
 ### Save File

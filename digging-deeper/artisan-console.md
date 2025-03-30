@@ -235,7 +235,7 @@ type SecretOption struct {
 If you need to ask the user to confirm an action before proceeding, you may use the `Confirm` method. By default, this method will return `false` unless the user select affirmative option.
 
 ```go
-if answer, _ := ctx.Confirm("Do you wish to continue?"); !answer {
+if ctx.Confirm("Do you wish to continue?") {
     // ...
 }
 ```
@@ -243,7 +243,7 @@ if answer, _ := ctx.Confirm("Do you wish to continue?"); !answer {
 You can also pass a second argument to the `Confirm` method to customize the default value, label of the affirmative and negative buttons:
 
 ```go
-if answer, _ := ctx.Confirm("Do you wish to continue?", console.ConfirmOption; !answer {
+if ctx.Confirm("Do you wish to continue?", console.ConfirmOption{
 	Default : true,
 	Affirmative : "Yes",
 	Negative : "No",
