@@ -17,6 +17,17 @@ Almost all applications need to interact with databases, so Goravel provides a v
 
 The database configuration file is `config/database.go`. You can configure all database connections in this file and specify the default database connection. Most of the configuration in this file is based on the project's environment variables.
 
+### Connection Pool
+
+You can configure the database connection pool in the configuration file to improve the concurrency performance by properly configuring the connection pool parameters:
+
+| Configuration Key | Description |
+| ----------- | -------------- |
+| pool.max_idle_conns         | Maximum idle connections    |
+| pool.max_open_conns     | Maximum connections |
+| pool.conn_max_idletime     | Connection maximum idle time |
+| pool.conn_max_lifetime     | Connection maximum lifetime |
+
 ### Read-Write Splitting
 
 Sometimes you may want to use a database connection to execute `SELECT` statements, while `INSERT`, `UPDATE`, and `DELETE` statements are executed by another database connection. In Goravel, it is easy to implement read-write splitting.
@@ -46,41 +57,6 @@ import "github.com/goravel/framework/contracts/database"
 ```
 
 We have added two keys, `read` and `write`, in the database configuration. `192.168.1.1` will be used as the "read" connection host, and `192.168.1.2` will be used as the "write" connection host. These two connections will share the configurations in the `mysql` array, such as the database prefix and character encoding. If there are multiple values in the `read` or `write` arrays, Goravel will randomly select the database host for each connection.
-
-### Connection Pool
-
-You can configure the database connection pool in the configuration file to improve the concurrency performance by properly configuring the connection pool parameters:
-
-| Configuration Key | Description |
-| ----------- | -------------- |
-| pool.max_idle_conns         | Maximum idle connections    |
-| pool.max_open_conns     | Maximum connections |
-| pool.conn_max_idletime     | Connection maximum idle time |
-| pool.conn_max_lifetime     | Connection maximum lifetime |
-
-### Schema
-
-Postgres and Sqlserver drivers support configuring Schema. Postgres can directly set the Schema in the configuration file, while Sqlserver requires setting the `TableName` method in the model to specify the Schema.
-
-#### Postgres
-
-```go
-"connections": map[string]any{
-  "postgres": map[string]any{
-    "driver":   "postgres",
-    ...
-    "schema": "goravel",
-  },
-}
-```
-
-#### Sqlserver
-
-```go
-func (r *User) TableName() string {
-  return "goravel.users"
-}
-```
 
 ## Running Native SQL Queries
 

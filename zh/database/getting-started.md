@@ -17,6 +17,17 @@
 
 数据库的配置文件在 `config/database.go` 文件中。你可以在这个文件中配置所有的数据库连接，并指定默认的数据库连接。该文件中的大部分配置都基于项目的环境变量。
 
+### 连接池
+
+可以在配置文件中配置数据库连接池，合理的配置连接池参数，可以极大的提高并发性能：
+
+| 配置键        | 作用           |
+| -----------  | -------------- |
+| pool.max_idle_conns         | 最大空闲连接    |
+| pool.max_open_conns     | 最大连接数 |
+| pool.conn_max_idletime     | 连接最大空闲时间 |
+| pool.conn_max_lifetime     | 连接最大生命周期 |
+
 ### 读写分离
 
 有时候你可能会希望使用一个数据库连接来执行 `SELECT` 语句，而 `INSERT`、`UPDATE` 和 `DELETE` 语句则由另一个数据库连接来执行。在 Goravel 中可以轻松实现读写分离。
@@ -46,41 +57,6 @@ import "github.com/goravel/framework/contracts/database"
 ```
 
 我们在数据库配置中加入了两个键，分别是：`read`, `write`，`192.168.1.1` 将会被用作「读」连接主机，而 `192.168.1.2` 将作为「写」连接主机。这两个连接将共享 `mysql` 数组中的各项配置，如数据库前缀、字符编码等。如果 `read` 或 `write` 数组中存在多个值，Goravel 将会为每个连接随机选取所使用的数据库主机。
-
-### 连接池
-
-可以在配置文件中配置数据库连接池，合理的配置连接池参数，可以极大的提高并发性能：
-
-| 配置键        | 作用           |
-| -----------  | -------------- |
-| pool.max_idle_conns         | 最大空闲连接    |
-| pool.max_open_conns     | 最大连接数 |
-| pool.conn_max_idletime     | 连接最大空闲时间 |
-| pool.conn_max_lifetime     | 连接最大生命周期 |
-
-### Schema
-
-Postgres 和 Sqlserver 驱动支持配置 Schema。其中 Postgres 可以直接在配置文件中设置 Schema，而 Sqlserver 则需要通过在模型中设置 `TableName` 方法来指定 Schema。
-
-#### Postgres
-
-```go
-"connections": map[string]any{
-  "postgres": map[string]any{
-    "driver":   "postgres",
-    ...
-    "schema": "goravel",
-  },
-}
-```
-
-#### Sqlserver
-
-```go
-func (r *User) TableName() string {
-  return "goravel.users"
-}
-```
 
 ## 运行原生 SQL 查询
 
