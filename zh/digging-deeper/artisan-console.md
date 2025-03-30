@@ -236,7 +236,7 @@ type SecretOption struct {
 如果你需要在继续之前要求用户确认操作，你可以使用 `Confirm` 方法。默认情况下，除非用户选择肯定选项，否则此方法将返回 `false`。
 
 ```go
-if answer, _ := ctx.Confirm("Do you wish to continue?"); !answer {
+if ctx.Confirm("Do you wish to continue?") {
     // ...
 }
 ```
@@ -244,7 +244,7 @@ if answer, _ := ctx.Confirm("Do you wish to continue?"); !answer {
 你还可以传递第二个参数给 `Confirm` 方法：
 
 ```go
-if answer, _ := ctx.Confirm("Do you wish to continue?", console.ConfirmOption; !answer {
+if ctx.Confirm("Do you wish to continue?", console.ConfirmOption {
 	Default : true,
 	Affirmative : "确认",
 	Negative : "取消",
