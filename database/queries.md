@@ -10,6 +10,21 @@ Query builder uses parameter binding to protect your application from SQL inject
 
 ## Running Queries
 
+Framework provides various query methods, you can query, create, update and delete data in the database. Note that when you want to bind data to `struct` or [model](../orm/getting-started.md#model-definition), you need to add the `db` tag to the field:
+
+```go
+type User struct {
+	ID   string `db:"id"`
+	Name string `db:"name"`
+}
+
+type User struct {
+	orm.BaseModel
+	orm.NullableSoftDeletes
+	Name string `db:"name"`
+}
+```
+
 ### Retrieving All Rows
 
 You can use the `facades.DB()` provided `table` method to start a query. The `table` method returns a chainable query builder instance for the specified table, allowing you to chain more constraints, and finally use the `Get` method to retrieve the query results:

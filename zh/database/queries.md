@@ -10,6 +10,21 @@ Goravel 查询构造器使用参数绑定来保护你的应用程序免受 SQL �
 
 ## 运行查询
 
+框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。注意，当你想将数据绑定至 struct 或[模型](../orm/getting-started.md#模型)，需要为字段添加 tag `db`：
+
+```go
+type User struct {
+	ID   string `db:"id"`
+	Name string `db:"name"`
+}
+
+type User struct {
+	orm.BaseModel
+	orm.NullableSoftDeletes
+	Name string `db:"name"`
+}
+```
+
 ### 检索所有行
 
 你可以使用 `facades.DB()` 提供的 `table` 方法开始查询。`table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果：
