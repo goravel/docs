@@ -115,6 +115,7 @@ name := ctx.Request().InputInt64("name")
 name := ctx.Request().InputBool("name")
 name := ctx.Request().InputArray("name")
 name := ctx.Request().InputMap("name")
+name := ctx.Request().InputMapArray("name")
 ```
 
 ### Bind Json/Form
