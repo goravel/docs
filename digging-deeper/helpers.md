@@ -9,7 +9,7 @@
 |                           |                               |             |
 | -----------               | --------------                | -------------- |
 | [path.App()](#path-app)   | [path.Base()](#path-base)     | [path.Config()](#path-config)     |
-| [path.Database()](#path-database)   | [path.Storage()](#path-storage)     | [path.Public()](#path-public)     |
+| [path.Database()](#path-database)   | [path.Storage()](#path-storage)     | [path.Public()](#path-public)     | [path.Resource()](#path-resource)     |
 
 ### Time
 
@@ -57,7 +57,7 @@
 
 ### `path.App()`
 
-The `path.App()` function returns the path to your application's app directory. You may also use the `path.App()` function to generate a path to a file relative to the application directory:
+The `path.App()` function returns the absolute path to your application's app directory. You may also use the `path.App()` function to generate a path to a file relative to the application directory:
 
 ```go
 import "github.com/goravel/framework/support/path"
@@ -68,7 +68,7 @@ path := path.App("http/controllers/controller.go")
 
 ### `path.Base()`
 
-The `path.Base()` function returns the path to your application's root directory. You may also use the `path.Base()` function to generate a path to a given file relative to the project root directory:
+The `path.Base()` function returns the absolute path to your application's root directory. You may also use the `path.Base()` function to generate a path to a given file relative to the project root directory:
 
 ```go
 path := path.Base()
@@ -77,7 +77,7 @@ path := path.Base("vendor/bin")
 
 ### `path.Config()`
 
-The `path.Config()` function returns the path to your application's config directory. You may also use the `path.Config()` function to generate a path to a given file within the application's configuration directory:
+The `path.Config()` function returns the absolute path to your application's config directory. You may also use the `path.Config()` function to generate a path to a given file within the application's configuration directory:
 
 ```go
 path := path.Config()
@@ -86,7 +86,7 @@ path := path.Config("app.go")
 
 ### `path.Database()`
 
-The `path.Database()` function returns the path to your application's database directory. You may also use the `path.Database()` function to generate a path to a given file within the `database` directory:
+The `path.Database()` function returns the absolute path to your application's database directory. You may also use the `path.Database()` function to generate a path to a given file within the `database` directory:
 
 ```go
 path := path.Database()
@@ -95,7 +95,7 @@ path := path.Database("factories/user_factory.go")
 
 ### `path.Storage()`
 
-The `path.Storage()` function returns the path to your application's storage directory. You may also use the `path.Storage()` function to generate a path to a given file within the `storage` directory:
+The `path.Storage()` function returns the absolute path to your application's storage directory. You may also use the `path.Storage()` function to generate a path to a given file within the `storage` directory:
 
 ```go
 path := path.Storage()
@@ -104,7 +104,7 @@ path := path.Storage("app/file.txt")
 
 ### `path.Public()`
 
-The `path.Public()` function returns the path to your application's public directory. You may also use the `path.Public()` function to generate a path to a given file within the `public` directory:
+The `path.Public()` function returns the absolute path to your application's public directory. You may also use the `path.Public()` function to generate a path to a given file within the `public` directory:
 
 ```go
 path := path.Public()
@@ -113,11 +113,20 @@ path := path.Public("css/app.css")
 
 ### `path.Lang()`
 
-The `path.Lang()` function returns the path to the `lang` directory. You may also use the `path.Lang()` function to generate a path to a given file within the `lang` directory:
+The `path.Lang()` function returns the absolute path to the `lang` directory. You may also use the `path.Lang()` function to generate a path to a given file within the `lang` directory:
 
 ```go
 path := path.Lang()
 path := path.Lang("en.json")
+```
+
+### `path.Resource()`
+
+The `path.Resource()` function returns the absolute path to the `resource` directory. You may also use the `path.Resource()` function to generate a path to a given file within the `resource` directory:
+
+```go
+path := path.Resource()
+path := path.Resource("css/app.css")
 ```
 
 ## Time
