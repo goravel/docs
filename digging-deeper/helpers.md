@@ -6,54 +6,54 @@
 
 ### Paths
 
-|                           |                               |             |
+|                          |                              |             |
 | -----------               | --------------                | -------------- |
-| [path.App()](#path-app)   | [path.Base()](#path-base)     | [path.Config()](#path-config)     |
-| [path.Database()](#path-database)   | [path.Storage()](#path-storage)     | [path.Public()](#path-public)     |
+| [path.App()](#pathapp)   | [path.Base()](#pathbase)     | [path.Config()](#pathconfig)    |
+| [path.Database()](#pathdatabase)  | [path.Storage()](#pathstorage)    | [path.Public()](#pathpublic)    |
 
 ### Time
 
-|                                                       |                                                       |                                                 |
-|-------------------------------------------------------|-------------------------------------------------------|-------------------------------------------------|
-| [carbon.Now()](#carbon-now)                           | [carbon.SetTimezone()](#carbon-settimezone)           | [carbon.Parse()](#carbon-parse)                 |
-| [carbon.FromTimestamp()](#carbon-fromtimestamp)       | [carbon.FromDateTime()](#carbon-fromdatetime)         | [carbon.FromDate()](#carbon-fromdate)           |
-| [carbon.FromTime()](#carbon-fromtime)                 | [carbon.FromStdTime()](#carbon-fromstdtime)           | [carbon.IsTestNow()](#istestnow-fromdate)       |
-| [carbon.SetTestNow()](#carbon-settestnow)             | [carbon.UnsetTestNow()](#carbon-unsettestnow)         | [carbon.CleanTestNow()](#carbon-cleantestnow)   |
-| [carbon.ParseByLayout()](#carbon-parsebylayout)       | [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbon-parsebyformat) |
-| [carbon.ParseWithFormats()](#carbon-parsewithformats) |                                                       |                                                 |
+|                           |                               |             |
+| -----------               | --------------                | -------------- |
+| [carbon.Now()](#carbonnow)   | [carbon.SetTimezone()](#carbonsettimezone)     | [carbon.Parse()](#carbonparse)     |
+| [carbon.FromTimestamp()](#carbonfromtimestamp)   | [carbon.FromDateTime()](#carbonfromdatetime)     | [carbon.FromDate()](#carbonfromdate)     |
+| [carbon.FromTime()](#carbonfromtime)   | [carbon.FromStdTime()](#carbonfromstdtime)     | [carbon.IsTestNow()](#carbonistestnow)     |
+| [carbon.SetTestNow()](#carbonsettestnow)     | [carbon.UnsetTestNow()](#carbonunsettestnow)     |  [carbon.CleanTestNow()](#carboncleantestnow)    |
+| [carbon.ParseByLayout()](#carbonparsebylayout)       | [carbon.ParseWithLayouts()](#carbonparsewithlayouts) | [carbon.ParseByFormat()](#carbonparsewithlayouts) |
+| [carbon.ParseWithFormats()](#carbonparsewithformats) |                                                       |                                                 |
 
 ### Debug
 
 |                           |                               |             |
 | -----------               | --------------                | -------------- |
-| [debug.Dump()](#debug-dump)   | [debug.SDump()](#debug-sdump)     | [debug.FDump()](#debug-fdump)     |
+| [debug.Dump()](#debugdump)   | [debug.SDump()](#debugsdump)     | [debug.FDump()](#debugfdump)     |
 
 ### Maps
 
-|                             |                               |                               |
-|-----------------------------|-------------------------------|-------------------------------|
-| [maps.Add()](#maps-add)     | [maps.Exists()](#maps-exists) | [maps.Forget()](#maps-forget) |
-| [maps.Get()](#maps-get)     | [maps.Has()](#maps-has)       | [maps.HasAny()](#maps-hasany) |
-| [maps.Only()](#maps-only)   | [maps.Pull()](#maps-pull)     | [maps.Set()](#maps-set)       |
-| [maps.Where()](#maps-where) |                               |                               |
+|                          |                             |                             |
+|--------------------------|-----------------------------|-----------------------------|
+| [maps.Add()](#mapsadd)   | [maps.Exists()](#mapsexists) | [maps.Forget()](#mapsforget) |
+| [maps.Get()](#mapsget)   | [maps.Has()](#mapshas)      | [maps.HasAny()](#mapshasany) |
+| [maps.Only()](#mapsonly) | [maps.Pull()](#mapspull)    | [maps.Set()](#mapsset)      |
+| [maps.Where()](#mapswhere) |                             |                             |
 
 ### Convert
 
-|                                       |                                       |                                           |
-|---------------------------------------|---------------------------------------|-------------------------------------------|
-| [convert.Tap()](#convert-tap)         | [convert.With()](#convert-with)       | [convert.Transform()](#convert-transform) |
-| [convert.Default()](#convert-default) | [convert.Pointer()](#convert-pointer) |                                           |
+|                                      |                                      |                                          |
+|--------------------------------------|--------------------------------------|------------------------------------------|
+| [convert.Tap()](#converttap)         | [convert.With()](#convertwith)       | [convert.Transform()](#converttransform) |
+| [convert.Default()](#convertdefault) | [convert.Pointer()](#convertpointer) |                                          |
 
 ### Collect
 
-|                                     |                                       |                                       |
-|-------------------------------------|---------------------------------------|---------------------------------------|
-| [collect.Count()](#collect-count)   | [collect.CountBy()](#collect-countby) | [collect.Each()](#collect-each)       |
-| [collect.Filter()](#collect-filter) | [collect.GroupBy()](#collect-groupby) | [collect.Keys()](#collect-keys)       |
-| [collect.Map()](#collect-map)       | [collect.Max()](#collect-max)         | [collect.Merge()](#collect-merge)     |
-| [collect.Min()](#collect-min)       | [collect.Reverse()](#collect-reverse) | [collect.Shuffle()](#collect-shuffle) |
-| [collect.Split()](#collect-split)   | [collect.Sum()](#collect-sum)         | [collect.Unique()](#collect-unique)   |
-| [collect.Values()](#collect-values) |                                       |                                       |
+|                                  |                                    |                                    |
+|----------------------------------|------------------------------------|------------------------------------|
+| [collect.Count()](#collectcount) | [collect.CountBy()](#collectcountby) | [collect.Each()](#collecteach)     |
+| [collect.Filter()](#collectfilter) | [collect.GroupBy()](#collectgroupby) | [collect.Keys()](#collectkeys)     |
+| [collect.Map()](#collectmap)     | [collect.Max()](#collectmax)       | [collect.Merge()](#collectmerge)   |
+| [collect.Min()](#collectmin)     | [collect.Reverse()](#collectreverse) | [collect.Shuffle()](#collectshuffle) |
+| [collect.Split()](#collectsplit) | [collect.Sum()](#collectsum)       | [collect.Unique()](#collectunique) |
+| [collect.Values()](#collectvalues) |                                    |                                    |
 
 ## Paths
 
