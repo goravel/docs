@@ -123,8 +123,7 @@ path := path.Lang("en.json")
 
 ## Time
 
-The `carbon` module of Goravel is an expansion by [dromara/carbon](https://github.com/dromara/carbon), the main feature
-is the realization of time backtracking, please refer to the official documentation for details.
+The `carbon` module of Goravel is an expansion by [dromara/carbon](https://github.com/dromara/carbon), please refer to the official documentation for details.
 
 ### `carbon.Now()`
 
