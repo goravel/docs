@@ -124,7 +124,7 @@ path := path.Lang("en.json")
 
 ## 时间
 
-Goravel 的 `carbon` 是 [golang-module/carbon](https://github.com/golang-module/carbon) 的一个扩展，主要实现了时间回溯功能，详细用法请参考其官方文档。
+Goravel 的 `carbon` 是 [dromara/carbon](https://github.com/dromara/carbon) 的一个扩展，主要实现了时间回溯功能，详细用法请参考其官方文档。
 
 ### `carbon.Now()`
 
