@@ -6,25 +6,26 @@
 
 ### Paths
 
-|                           |                               |             |
-| -----------               | --------------                | -------------- |
-| [path.App()](#path-app)   | [path.Base()](#path-base)     | [path.Config()](#path-config)     |
-| [path.Database()](#path-database)   | [path.Storage()](#path-storage)     | [path.Public()](#path-public)     | [path.Resource()](#path-resource)     |
+|                                   |                                 |                               |
+|-----------------------------------|---------------------------------|-------------------------------|
+| [path.App()](#path-app)           | [path.Base()](#path-base)       | [path.Config()](#path-config) |
+| [path.Database()](#path-database) | [path.Storage()](#path-storage) | [path.Public()](#path-public) |
 
 ### Time
 
-|                           |                               |             |
-| -----------               | --------------                | -------------- |
-| [carbon.Now()](#carbon-now)   | [carbon.SetTimezone()](#carbon-settimezone)     | [carbon.Parse()](#carbon-parse)     |
-| [carbon.FromTimestamp()](#carbon-fromtimestamp)   | [carbon.FromDateTime()](#carbon-fromdatetime)     | [carbon.FromDate()](#carbon-fromdate)     |
-| [carbon.FromTime()](#carbon-fromtime)   | [carbon.FromStdTime()](#carbon-fromstdtime)     | [carbon.IsTestNow()](#istestnow-fromdate)     |
-| [carbon.SetTestNow()](#carbon-settestnow)     | [carbon.UnsetTestNow()](#carbon-unsettestnow)     |      |
+|                                                       |                                                    |                                                       |
+|-------------------------------------------------------|----------------------------------------------------|-------------------------------------------------------|
+| [carbon.Now()](#carbon-now)                           | [carbon.SetTimezone()](#carbon-settimezone)        | [carbon.Parse()](#carbon-parse)                       |
+| [carbon.FromTimestamp()](#carbon-fromtimestamp)       | [carbon.FromDateTime()](#carbon-fromdatetime)      | [carbon.FromDate()](#carbon-fromdate)                 |
+| [carbon.FromTime()](#carbon-fromtime)                 | [carbon.FromStdTime()](#carbon-fromstdtime)        | [carbon.IsTestNow()](#carbon-istestnow)               |
+| [carbon.SetTestNow()](#carbon-settestnow)             | [carbon.CleanTestNow()](#carbon-cleantestnow)      | [carbon.ParseByLayout()](#carbon-parsebylayout)       |
+| [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbon-parsewithlayouts) | [carbon.ParseWithFormats()](#carbon-parsewithformats) |
 
 ### Debug
 
-|                           |                               |             |
-| -----------               | --------------                | -------------- |
-| [debug.Dump()](#debug-dump)   | [debug.SDump()](#debug-sdump)     | [debug.FDump()](#debug-fdump)     |
+|                             |                               |                               |
+|-----------------------------|-------------------------------|-------------------------------|
+| [debug.Dump()](#debug-dump) | [debug.SDump()](#debug-sdump) | [debug.FDump()](#debug-fdump) |
 
 ### Maps
 
@@ -57,7 +58,7 @@
 
 ### `path.App()`
 
-The `path.App()` function returns the absolute path to your application's app directory. You may also use the `path.App()` function to generate a path to a file relative to the application directory:
+The `path.App()` function returns the path to your application's app directory. You may also use the `path.App()` function to generate a path to a file relative to the application directory:
 
 ```go
 import "github.com/goravel/framework/support/path"
@@ -68,7 +69,7 @@ path := path.App("http/controllers/controller.go")
 
 ### `path.Base()`
 
-The `path.Base()` function returns the absolute path to your application's root directory. You may also use the `path.Base()` function to generate a path to a given file relative to the project root directory:
+The `path.Base()` function returns the path to your application's root directory. You may also use the `path.Base()` function to generate a path to a given file relative to the project root directory:
 
 ```go
 path := path.Base()
@@ -77,7 +78,7 @@ path := path.Base("vendor/bin")
 
 ### `path.Config()`
 
-The `path.Config()` function returns the absolute path to your application's config directory. You may also use the `path.Config()` function to generate a path to a given file within the application's configuration directory:
+The `path.Config()` function returns the path to your application's config directory. You may also use the `path.Config()` function to generate a path to a given file within the application's configuration directory:
 
 ```go
 path := path.Config()
@@ -86,7 +87,7 @@ path := path.Config("app.go")
 
 ### `path.Database()`
 
-The `path.Database()` function returns the absolute path to your application's database directory. You may also use the `path.Database()` function to generate a path to a given file within the `database` directory:
+The `path.Database()` function returns the path to your application's database directory. You may also use the `path.Database()` function to generate a path to a given file within the `database` directory:
 
 ```go
 path := path.Database()
@@ -95,7 +96,7 @@ path := path.Database("factories/user_factory.go")
 
 ### `path.Storage()`
 
-The `path.Storage()` function returns the absolute path to your application's storage directory. You may also use the `path.Storage()` function to generate a path to a given file within the `storage` directory:
+The `path.Storage()` function returns the path to your application's storage directory. You may also use the `path.Storage()` function to generate a path to a given file within the `storage` directory:
 
 ```go
 path := path.Storage()
@@ -104,7 +105,7 @@ path := path.Storage("app/file.txt")
 
 ### `path.Public()`
 
-The `path.Public()` function returns the absolute path to your application's public directory. You may also use the `path.Public()` function to generate a path to a given file within the `public` directory:
+The `path.Public()` function returns the path to your application's public directory. You may also use the `path.Public()` function to generate a path to a given file within the `public` directory:
 
 ```go
 path := path.Public()
@@ -113,25 +114,16 @@ path := path.Public("css/app.css")
 
 ### `path.Lang()`
 
-The `path.Lang()` function returns the absolute path to the `lang` directory. You may also use the `path.Lang()` function to generate a path to a given file within the `lang` directory:
+The `path.Lang()` function returns the path to the `lang` directory. You may also use the `path.Lang()` function to generate a path to a given file within the `lang` directory:
 
 ```go
 path := path.Lang()
 path := path.Lang("en.json")
 ```
 
-### `path.Resource()`
-
-The `path.Resource()` function returns the absolute path to the `resource` directory. You may also use the `path.Resource()` function to generate a path to a given file within the `resource` directory:
-
-```go
-path := path.Resource()
-path := path.Resource("css/app.css")
-```
-
 ## Time
 
-The `carbon` module of Goravel is an expansion by [golang-module/carbon](https://github.com/golang-module/carbon), the main feature is the realization of time backtracking, please refer to the official documentation for details.
+The `carbon` module of Goravel is an expansion by [dromara/carbon](https://github.com/dromara/carbon), please refer to the official documentation for details.
 
 ### `carbon.Now()`
 
@@ -159,9 +151,41 @@ Get `Carbon` object by String:
 carbon.Parse("2020-08-05 13:14:15")
 ```
 
+### `carbon.ParseByLayout()`
+
+Get `Carbon` object by given value and layout:
+
+```go
+carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
+```
+
+### `carbon.ParseByFormat()`
+
+Get `Carbon` object by given value and format:
+
+```go
+carbon.ParseByFormat("2020-08-05 13:14:15", carbon.DateTimeFormat)
+```
+
+### `carbon.ParseWithLayouts()`
+
+Get `Carbon` object with layouts:
+
+```go
+carbon.ParseWithLayouts("2020|08|05 13|14|15", []string{"2006|01|02 15|04|05", "2006|1|2 3|4|5"})
+```
+
+### `carbon.ParseWithFormats()`
+
+Get `Carbon` object with formats:
+
+```go
+carbon.ParseWithFormats("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|i|s"})
+```
+
 ### `carbon.FromTimestamp()`
 
-Get `Carbon` Object by timestamp:
+Get `Carbon` object by timestamp:
 
 ```go
 carbon.FromTimestamp(1577836800)
@@ -169,7 +193,7 @@ carbon.FromTimestamp(1577836800)
 
 ### `carbon.FromDateTime()`
 
-Get `Carbon` Object by date time:
+Get `Carbon` object by date time:
 
 ```go
 carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
@@ -177,7 +201,7 @@ carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
 
 ### `carbon.FromDate()`
 
-Get `Carbon` Object by date:
+Get `Carbon` object by date:
 
 ```go
 carbon.FromDate(2020, 1, 1)
@@ -185,7 +209,7 @@ carbon.FromDate(2020, 1, 1)
 
 ### `carbon.FromTime()`
 
-Get `Carbon` Object by time:
+Get `Carbon` object by time:
 
 ```go
 carbon.FromTime(0, 0, 0)
@@ -193,7 +217,7 @@ carbon.FromTime(0, 0, 0)
 
 ### `carbon.FromStdTime()`
 
-Get `Carbon` Object by `time.Time`:
+Get `Carbon` object by `time.Time`:
 
 ```go
 carbon.FromStdTime(time.Now())
@@ -215,12 +239,12 @@ Set the time to a test value:
 carbon.SetTestNow(carbon.Now())
 ```
 
-### `carbon.UnsetTestNow()`
+### `carbon.CleanTestNow()`
 
-Restore the time to a normal value:
+Clear the test now Carbon object:
 
 ```go
-carbon.UnsetTestNow()
+carbon.CleanTestNow()
 ```
 
 ## Debug
@@ -451,7 +475,7 @@ value := convert.Transform(1, strconv.Itoa)
 // "1"
 
 val := convert.Transform("foo", func(s string) *foo {
-      return &foo{Name: s}
+    return &foo{Name: s}
 })
 // &foo{Name: "foo"}
 ```
