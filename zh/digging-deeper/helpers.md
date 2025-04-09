@@ -6,54 +6,54 @@
 
 ### 路径
 
-|                          |                              |             |
-| -----------               | --------------                | -------------- |
-| [path.App()](#pathapp)   | [path.Base()](#pathbase)     | [path.Config()](#pathconfig)    |
-| [path.Database()](#pathdatabase)  | [path.Storage()](#pathstorage)    | [path.Public()](#pathpublic)    |
+|                                   |                                 |                               |
+|-----------------------------------|---------------------------------|-------------------------------|
+| [path.App()](#path-app)           | [path.Base()](#path-base)       | [path.Config()](#path-config) |
+| [path.Database()](#path-database) | [path.Storage()](#path-storage) | [path.Public()](#path-public) |
 
 ### 时间
 
-|                           |                               |             |
-| -----------               | --------------                | -------------- |
-| [carbon.Now()](#carbonnow)   | [carbon.SetTimezone()](#carbonsettimezone)     | [carbon.Parse()](#carbonparse)     |
-| [carbon.FromTimestamp()](#carbonfromtimestamp)   | [carbon.FromDateTime()](#carbonfromdatetime)     | [carbon.FromDate()](#carbonfromdate)     |
-| [carbon.FromTime()](#carbonfromtime)   | [carbon.FromStdTime()](#carbonfromstdtime)     | [carbon.IsTestNow()](#carbonistestnow)     |
-| [carbon.SetTestNow()](#carbonsettestnow)     | [carbon.UnsetTestNow()](#carbonunsettestnow)     |  [carbon.CleanTestNow()](#carboncleantestnow)    |
-| [carbon.ParseByLayout()](#carbonparsebylayout)       | [carbon.ParseWithLayouts()](#carbonparsewithlayouts) | [carbon.ParseByFormat()](#carbonparsewithlayouts) |
-| [carbon.ParseWithFormats()](#carbonparsewithformats) |                                                       |                                                 |
+|                                                       |                                                       |                                                   |
+|-------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------|
+| [carbon.Now()](#carbon-now)                           | [carbon.SetTimezone()](#carbon-settimezone)           | [carbon.Parse()](#carbonparse)                    |
+| [carbon.FromTimestamp()](#carbon-fromtimestamp)       | [carbon.FromDateTime()](#carbon-fromdatetime)         | [carbon.FromDate()](#carbonfromdate)              |
+| [carbon.FromTime()](#carbon-fromtime)                 | [carbon.FromStdTime()](#carbon-fromstdtime)           | [carbon.IsTestNow()](#carbonistestnow)            |
+| [carbon.SetTestNow()](#carbon-settestnow)             | [carbon.UnsetTestNow()](#carbon-unsettestnow)         | [carbon.CleanTestNow()](#carboncleantestnow)      |
+| [carbon.ParseByLayout()](#carbon-parsebylayout)       | [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbonparsewithlayouts) |
+| [carbon.ParseWithFormats()](#carbon-parsewithformats) |                                                       |                                                   |
 
 ### 调试
 
-|                           |                               |             |
-| -----------               | --------------                | -------------- |
-| [debug.Dump()](#debugdump)   | [debug.SDump()](#debugsdump)     | [debug.FDump()](#debugfdump)     |
+|                             |                               |                               |
+|-----------------------------|-------------------------------|-------------------------------|
+| [debug.Dump()](#debug-dump) | [debug.SDump()](#debug-sdump) | [debug.FDump()](#debug-fdump) |
 
 ### Maps
 
-|                          |                            |                             |
-|--------------------------|----------------------------|-----------------------------|
-| [maps.Add()](#mapsadd)   | [maps.Exists()](#mapsexists) | [maps.Forget()](#mapsforget) |
-| [maps.Get()](#mapsget)   | [maps.Has()](#mapshas)     | [maps.HasAny()](#mapshasany) |
-| [maps.Only()](#mapsonly) | [maps.Pull()](#mapspull)   | [maps.Set()](#mapsset)      |
-| [maps.Where()](#mapswhere) |                            |                             |
+|                             |                               |                               |
+|-----------------------------|-------------------------------|-------------------------------|
+| [maps.Add()](#maps-add)     | [maps.Exists()](#maps-exists) | [maps.Forget()](#maps-forget) |
+| [maps.Get()](#maps-get)     | [maps.Has()](#maps-has)       | [maps.HasAny()](#maps-hasany) |
+| [maps.Only()](#maps-only)   | [maps.Pull()](#maps-pull)     | [maps.Set()](#maps-set)       |
+| [maps.Where()](#maps-where) |                               |                               |
 
 ### 转换
 
-|                                      |                                      |                                          |
-|--------------------------------------|--------------------------------------|------------------------------------------|
-| [convert.Tap()](#converttap)         | [convert.With()](#convertwith)       | [convert.Transform()](#converttransform) |
-| [convert.Default()](#convertdefault) | [convert.Pointer()](#convertpointer) |                                          |
+|                                       |                                       |                                           |
+|---------------------------------------|---------------------------------------|-------------------------------------------|
+| [convert.Tap()](#convert-tap)         | [convert.With()](#convert-with)       | [convert.Transform()](#convert-transform) |
+| [convert.Default()](#convert-default) | [convert.Pointer()](#convert-pointer) |                                           |
 
 ### 集合
 
-|                                  |                                    |                                    |
-|----------------------------------|------------------------------------|------------------------------------|
-| [collect.Count()](#collectcount) | [collect.CountBy()](#collectcountby) | [collect.Each()](#collecteach)     |
-| [collect.Filter()](#collectfilter) | [collect.GroupBy()](#collectgroupby) | [collect.Keys()](#collectkeys)     |
-| [collect.Map()](#collectmap)     | [collect.Max()](#collectmax)       | [collect.Merge()](#collectmerge)   |
-| [collect.Min()](#collectmin)     | [collect.Reverse()](#collectreverse) | [collect.Shuffle()](#collectshuffle) |
-| [collect.Split()](#collectsplit) | [collect.Sum()](#collectsum)       | [collect.Unique()](#collectunique) |
-| [collect.Values()](#collectvalues) |                                    |                                    |
+|                                     |                                       |                                       |
+|-------------------------------------|---------------------------------------|---------------------------------------|
+| [collect.Count()](#collect-count)   | [collect.CountBy()](#collect-countby) | [collect.Each()](#collect-each)       |
+| [collect.Filter()](#collect-filter) | [collect.GroupBy()](#collect-groupby) | [collect.Keys()](#collect-keys)       |
+| [collect.Map()](#collect-map)       | [collect.Max()](#collect-max)         | [collect.Merge()](#collect-merge)     |
+| [collect.Min()](#collect-min)       | [collect.Reverse()](#collect-reverse) | [collect.Shuffle()](#collect-shuffle) |
+| [collect.Split()](#collect-split)   | [collect.Sum()](#collect-sum)         | [collect.Unique()](#collect-unique)   |
+| [collect.Values()](#collect-values) |                                       |                                       |
 
 ## 路径
 
@@ -183,7 +183,6 @@ carbon.ParseWithLayouts("2020|08|05 13|14|15", []string{"2006|01|02 15|04|05", "
 ```go
 carbon.ParseWithFormats("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|i|s"})
 ```
-
 
 ### `carbon.FromTimestamp()`
 
@@ -448,7 +447,7 @@ import "github.com/goravel/framework/support/maps"
 mp := map[string]string{"name": "Goravel", "language": "Go"}
 
 newMap := maps.Where(mp, func(key string, value string) bool {
-    return key == "name"
+return key == "name"
 })
 // map[string]string{"name": "Goravel"}
 ```
@@ -462,14 +461,14 @@ newMap := maps.Where(mp, func(key string, value string) bool {
 ```go
 import "github.com/goravel/framework/support/convert"
 
-value := convert.Tap("Goravel", func(value string) {
-    fmt.Println(value + " Framework")
+value := convert.Tap("Goravel", func (value string) {
+fmt.Println(value + " Framework")
 })
 // Goravel
 
 mp := map[string]string{"name": "Goravel"}
 val := convert.Tap(mp, func(value map[string]string) {
-    mp["language"] = "Go"
+mp["language"] = "Go"
 })
 // map[string]string{"name": "Goravel", "language": "Go"}
 ```
@@ -484,8 +483,8 @@ import "github.com/goravel/framework/support/convert"
 value := convert.Transform(1, strconv.Itoa)
 // "1"
 
-val := convert.Transform("foo", func(s string) *foo {
-      return &foo{Name: s}
+val := convert.Transform("foo", func (s string) *foo {
+return &foo{Name: s}
 })
 // &foo{Name: "foo"}
 ```
@@ -497,8 +496,8 @@ val := convert.Transform("foo", func(s string) *foo {
 ```go
 import "github.com/goravel/framework/support/convert"
 
-value := convert.With("Goravel", func(value string) string {
-    return value + " Framework"
+value := convert.With("Goravel", func (value string) string {
+return value + " Framework"
 })
 // Goravel Framework
 ```
@@ -552,8 +551,8 @@ collect.Count([]string{"Goravel", "Framework"})
 ```go
 import "github.com/goravel/framework/support/collect"
 
-collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
-    return strings.Contains(value, "Goravel")
+collect.CountBy([]string{"Goravel", "Framework"}, func (value string) bool {
+return strings.Contains(value, "Goravel")
 })
 // 1
 ```
@@ -565,8 +564,8 @@ collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
 ```go
 import "github.com/goravel/framework/support/collect"
 
-collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
-    fmt.Println(index + 1, value)
+collect.Each([]string{"Goravel", "Framework"}, func (value string, index int) {
+fmt.Println(index + 1, value)
 })
 // 1 Goravel
 // 2 Framework
@@ -579,8 +578,8 @@ collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
 ```go
 import "github.com/goravel/framework/support/collect"
 
-newCollection := collect.Filter([]string{"Goravel", "Framework"}, func(value string) bool {
-    return strings.Contains(value, "Goravel")
+newCollection := collect.Filter([]string{"Goravel", "Framework"}, func (value string) bool {
+return strings.Contains(value, "Goravel")
 })
 
 // []string{"Goravel"}
@@ -595,11 +594,11 @@ import "github.com/goravel/framework/support/collect"
 
 // use example of complex map slice (use different example)
 newCollection := collect.GroupBy([]map[string]string{
-    {"class": "1", "Name": "Rohan"},
-    {"class": "2", "Name": "Bowen"},
-    {"class": "2", "Name": "Krishan"},
-}, func(value map[string]string) string {
-    return value["class"]
+{"class": "1", "Name": "Rohan"},
+{"class": "2", "Name": "Bowen"},
+{"class": "2", "Name": "Krishan"},
+}, func (value map[string]string) string {
+return value["class"]
 })
 
 // map[string][]map[string]string{
@@ -626,8 +625,8 @@ keys := collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
 ```go
 import "github.com/goravel/framework/support/collect"
 
-newCollection := collect.Map([]string{"Goravel", "Framework"}, func(value string,  _ int) string {
-    return strings.ToUpper(value)
+newCollection := collect.Map([]string{"Goravel", "Framework"}, func (value string, _ int) string {
+return strings.ToUpper(value)
 })
 
 // []string{"GORAVEL", "FRAMEWORK"}

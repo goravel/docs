@@ -6,60 +6,61 @@
 
 ### Paths
 
-|                          |                              |             |
-| -----------               | --------------                | -------------- |
-| [path.App()](#pathapp)   | [path.Base()](#pathbase)     | [path.Config()](#pathconfig)    |
-| [path.Database()](#pathdatabase)  | [path.Storage()](#pathstorage)    | [path.Public()](#pathpublic)    |
+|                                   |                                 |                               |
+|-----------------------------------|---------------------------------|-------------------------------|
+| [path.App()](#path-app)           | [path.Base()](#path-base)       | [path.Config()](#path-config) |
+| [path.Database()](#path-database) | [path.Storage()](#path-storage) | [path.Public()](#path-public) |
 
 ### Time
 
-|                           |                               |             |
-| -----------               | --------------                | -------------- |
-| [carbon.Now()](#carbonnow)   | [carbon.SetTimezone()](#carbonsettimezone)     | [carbon.Parse()](#carbonparse)     |
-| [carbon.FromTimestamp()](#carbonfromtimestamp)   | [carbon.FromDateTime()](#carbonfromdatetime)     | [carbon.FromDate()](#carbonfromdate)     |
-| [carbon.FromTime()](#carbonfromtime)   | [carbon.FromStdTime()](#carbonfromstdtime)     | [carbon.IsTestNow()](#carbonistestnow)     |
-| [carbon.SetTestNow()](#carbonsettestnow)     | [carbon.UnsetTestNow()](#carbonunsettestnow)     |  [carbon.CleanTestNow()](#carboncleantestnow)    |
-| [carbon.ParseByLayout()](#carbonparsebylayout)       | [carbon.ParseWithLayouts()](#carbonparsewithlayouts) | [carbon.ParseByFormat()](#carbonparsewithlayouts) |
-| [carbon.ParseWithFormats()](#carbonparsewithformats) |                                                       |                                                 |
+|                                                       |                                                       |                                                   |
+|-------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------|
+| [carbon.Now()](#carbon-now)                           | [carbon.SetTimezone()](#carbon-settimezone)           | [carbon.Parse()](#carbonparse)                    |
+| [carbon.FromTimestamp()](#carbon-fromtimestamp)       | [carbon.FromDateTime()](#carbon-fromdatetime)         | [carbon.FromDate()](#carbonfromdate)              |
+| [carbon.FromTime()](#carbon-fromtime)                 | [carbon.FromStdTime()](#carbon-fromstdtime)           | [carbon.IsTestNow()](#carbonistestnow)            |
+| [carbon.SetTestNow()](#carbon-settestnow)             | [carbon.UnsetTestNow()](#carbon-unsettestnow)         | [carbon.CleanTestNow()](#carboncleantestnow)      |
+| [carbon.ParseByLayout()](#carbon-parsebylayout)       | [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbonparsewithlayouts) |
+| [carbon.ParseWithFormats()](#carbon-parsewithformats) |                                                       |                                                   |
 
 ### Debug
 
-|                           |                               |             |
-| -----------               | --------------                | -------------- |
-| [debug.Dump()](#debugdump)   | [debug.SDump()](#debugsdump)     | [debug.FDump()](#debugfdump)     |
+|                             |                               |                               |
+|-----------------------------|-------------------------------|-------------------------------|
+| [debug.Dump()](#debug-dump) | [debug.SDump()](#debug-sdump) | [debug.FDump()](#debug-fdump) |
 
 ### Maps
 
-|                          |                             |                             |
-|--------------------------|-----------------------------|-----------------------------|
-| [maps.Add()](#mapsadd)   | [maps.Exists()](#mapsexists) | [maps.Forget()](#mapsforget) |
-| [maps.Get()](#mapsget)   | [maps.Has()](#mapshas)      | [maps.HasAny()](#mapshasany) |
-| [maps.Only()](#mapsonly) | [maps.Pull()](#mapspull)    | [maps.Set()](#mapsset)      |
-| [maps.Where()](#mapswhere) |                             |                             |
+|                             |                               |                               |
+|-----------------------------|-------------------------------|-------------------------------|
+| [maps.Add()](#maps-add)     | [maps.Exists()](#maps-exists) | [maps.Forget()](#maps-forget) |
+| [maps.Get()](#maps-get)     | [maps.Has()](#maps-has)       | [maps.HasAny()](#maps-hasany) |
+| [maps.Only()](#maps-only)   | [maps.Pull()](#maps-pull)     | [maps.Set()](#maps-set)       |
+| [maps.Where()](#maps-where) |                               |                               |
 
 ### Convert
 
-|                                      |                                      |                                          |
-|--------------------------------------|--------------------------------------|------------------------------------------|
-| [convert.Tap()](#converttap)         | [convert.With()](#convertwith)       | [convert.Transform()](#converttransform) |
-| [convert.Default()](#convertdefault) | [convert.Pointer()](#convertpointer) |                                          |
+|                                       |                                       |                                           |
+|---------------------------------------|---------------------------------------|-------------------------------------------|
+| [convert.Tap()](#convert-tap)         | [convert.With()](#convert-with)       | [convert.Transform()](#convert-transform) |
+| [convert.Default()](#convert-default) | [convert.Pointer()](#convert-pointer) |                                           |
 
 ### Collect
 
-|                                  |                                    |                                    |
-|----------------------------------|------------------------------------|------------------------------------|
-| [collect.Count()](#collectcount) | [collect.CountBy()](#collectcountby) | [collect.Each()](#collecteach)     |
-| [collect.Filter()](#collectfilter) | [collect.GroupBy()](#collectgroupby) | [collect.Keys()](#collectkeys)     |
-| [collect.Map()](#collectmap)     | [collect.Max()](#collectmax)       | [collect.Merge()](#collectmerge)   |
-| [collect.Min()](#collectmin)     | [collect.Reverse()](#collectreverse) | [collect.Shuffle()](#collectshuffle) |
-| [collect.Split()](#collectsplit) | [collect.Sum()](#collectsum)       | [collect.Unique()](#collectunique) |
-| [collect.Values()](#collectvalues) |                                    |                                    |
+|                                     |                                       |                                       |
+|-------------------------------------|---------------------------------------|---------------------------------------|
+| [collect.Count()](#collect-count)   | [collect.CountBy()](#collect-countby) | [collect.Each()](#collect-each)       |
+| [collect.Filter()](#collect-filter) | [collect.GroupBy()](#collect-groupby) | [collect.Keys()](#collect-keys)       |
+| [collect.Map()](#collect-map)       | [collect.Max()](#collect-max)         | [collect.Merge()](#collect-merge)     |
+| [collect.Min()](#collect-min)       | [collect.Reverse()](#collect-reverse) | [collect.Shuffle()](#collect-shuffle) |
+| [collect.Split()](#collect-split)   | [collect.Sum()](#collect-sum)         | [collect.Unique()](#collect-unique)   |
+| [collect.Values()](#collect-values) |                                       |                                       |
 
 ## Paths
 
 ### `path.App()`
 
-The `path.App()` function returns the path to your application's app directory. You may also use the `path.App()` function to generate a path to a file relative to the application directory:
+The `path.App()` function returns the path to your application's app directory. You may also use the `path.App()`
+function to generate a path to a file relative to the application directory:
 
 ```go
 import "github.com/goravel/framework/support/path"
@@ -70,7 +71,8 @@ path := path.App("http/controllers/controller.go")
 
 ### `path.Base()`
 
-The `path.Base()` function returns the path to your application's root directory. You may also use the `path.Base()` function to generate a path to a given file relative to the project root directory:
+The `path.Base()` function returns the path to your application's root directory. You may also use the `path.Base()`
+function to generate a path to a given file relative to the project root directory:
 
 ```go
 path := path.Base()
@@ -79,7 +81,8 @@ path := path.Base("vendor/bin")
 
 ### `path.Config()`
 
-The `path.Config()` function returns the path to your application's config directory. You may also use the `path.Config()` function to generate a path to a given file within the application's configuration directory:
+The `path.Config()` function returns the path to your application's config directory. You may also use the
+`path.Config()` function to generate a path to a given file within the application's configuration directory:
 
 ```go
 path := path.Config()
@@ -88,7 +91,8 @@ path := path.Config("app.go")
 
 ### `path.Database()`
 
-The `path.Database()` function returns the path to your application's database directory. You may also use the `path.Database()` function to generate a path to a given file within the `database` directory:
+The `path.Database()` function returns the path to your application's database directory. You may also use the
+`path.Database()` function to generate a path to a given file within the `database` directory:
 
 ```go
 path := path.Database()
@@ -97,7 +101,8 @@ path := path.Database("factories/user_factory.go")
 
 ### `path.Storage()`
 
-The `path.Storage()` function returns the path to your application's storage directory. You may also use the `path.Storage()` function to generate a path to a given file within the `storage` directory:
+The `path.Storage()` function returns the path to your application's storage directory. You may also use the
+`path.Storage()` function to generate a path to a given file within the `storage` directory:
 
 ```go
 path := path.Storage()
@@ -106,7 +111,8 @@ path := path.Storage("app/file.txt")
 
 ### `path.Public()`
 
-The `path.Public()` function returns the path to your application's public directory. You may also use the `path.Public()` function to generate a path to a given file within the `public` directory:
+The `path.Public()` function returns the path to your application's public directory. You may also use the
+`path.Public()` function to generate a path to a given file within the `public` directory:
 
 ```go
 path := path.Public()
@@ -115,7 +121,8 @@ path := path.Public("css/app.css")
 
 ### `path.Lang()`
 
-The `path.Lang()` function returns the path to the `lang` directory. You may also use the `path.Lang()` function to generate a path to a given file within the `lang` directory:
+The `path.Lang()` function returns the path to the `lang` directory. You may also use the `path.Lang()` function to
+generate a path to a given file within the `lang` directory:
 
 ```go
 path := path.Lang()
@@ -124,7 +131,8 @@ path := path.Lang("en.json")
 
 ## Time
 
-The `carbon` module of Goravel is an expansion by [dromara/carbon](https://github.com/dromara/carbon), the main feature is the realization of time backtracking, please refer to the official documentation for details.
+The `carbon` module of Goravel is an expansion by [dromara/carbon](https://github.com/dromara/carbon), the main feature
+is the realization of time backtracking, please refer to the official documentation for details.
 
 ### `carbon.Now()`
 
@@ -243,7 +251,8 @@ carbon.SetTestNow(carbon.Now())
 ### `carbon.UnsetTestNow()`
 
 Restore the time to a normal value:
- > It will be deprecated in the future, please use 'CleanTestNow' instead
+> It will be deprecated in the future, please use 'CleanTestNow' instead
+
 ```go
 carbon.UnsetTestNow()
 ```
@@ -336,7 +345,8 @@ maps.Forget(mp, "name", "age")
 
 ### `maps.Get()`
 
-The `maps.Get()` function retrieves the value of the given key from the provided map. If the key does not exist, the default value will be returned:
+The `maps.Get()` function retrieves the value of the given key from the provided map. If the key does not exist, the
+default value will be returned:
 
 ```go
 import "github.com/goravel/framework/support/maps"
@@ -412,7 +422,8 @@ name := maps.Pull(mp, "name")
 // mp = map[string]any{"language": "Go"}
 ```
 
-A default value can be provided as the third argument to the `maps.Pull()` function. This value will be returned if the key does not exist in the map:
+A default value can be provided as the third argument to the `maps.Pull()` function. This value will be returned if the
+key does not exist in the map:
 
 ```go
 import "github.com/goravel/framework/support/maps"
@@ -447,7 +458,7 @@ import "github.com/goravel/framework/support/maps"
 mp := map[string]string{"name": "Goravel", "language": "Go"}
 
 newMap := maps.Where(mp, func(key string, value string) bool {
-    return key == "name"
+return key == "name"
 })
 // map[string]string{"name": "Goravel"}
 ```
@@ -461,14 +472,14 @@ The `convert.Tap()` function passes the given value to the provided callback and
 ```go
 import "github.com/goravel/framework/support/convert"
 
-value := convert.Tap("Goravel", func(value string) {
-    fmt.Println(value + " Framework")
+value := convert.Tap("Goravel", func (value string) {
+fmt.Println(value + " Framework")
 })
 // Goravel
 
 mp := map[string]string{"name": "Goravel"}
 val := convert.Tap(mp, func(value map[string]string) {
-    mp["language"] = "Go"
+mp["language"] = "Go"
 })
 // map[string]string{"name": "Goravel", "language": "Go"}
 ```
@@ -483,8 +494,8 @@ import "github.com/goravel/framework/support/convert"
 value := convert.Transform(1, strconv.Itoa)
 // "1"
 
-val := convert.Transform("foo", func(s string) *foo {
-      return &foo{Name: s}
+val := convert.Transform("foo", func (s string) *foo {
+return &foo{Name: s}
 })
 // &foo{Name: "foo"}
 ```
@@ -496,8 +507,8 @@ The `convert.With()` executes the given callback with the provided value and ret
 ```go
 import "github.com/goravel/framework/support/convert"
 
-value := convert.With("Goravel", func(value string) string {
-    return value + " Framework"
+value := convert.With("Goravel", func (value string) string {
+return value + " Framework"
 })
 // Goravel Framework
 ```
@@ -551,21 +562,22 @@ The `collect.CountBy()` function counts the occurrences for which the predicate 
 ```go
 import "github.com/goravel/framework/support/collect"
 
-collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
-    return strings.Contains(value, "Goravel")
+collect.CountBy([]string{"Goravel", "Framework"}, func (value string) bool {
+return strings.Contains(value, "Goravel")
 })
 // 1
 ```
 
 ### `collect.Each()`
 
-The `collect.Each()` function iterates over the items in the given collection and passes each item to the given callback:
+The `collect.Each()` function iterates over the items in the given collection and passes each item to the given
+callback:
 
 ```go
 import "github.com/goravel/framework/support/collect"
 
-collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
-    fmt.Println(index + 1, value)
+collect.Each([]string{"Goravel", "Framework"}, func (value string, index int) {
+fmt.Println(index + 1, value)
 })
 // 1 Goravel
 // 2 Framework
@@ -578,8 +590,8 @@ The `collect.Filter()` function filters the items in the collection using the gi
 ```go
 import "github.com/goravel/framework/support/collect"
 
-newCollection := collect.Filter([]string{"Goravel", "Framework"}, func(value string) bool {
-    return strings.Contains(value, "Goravel")
+newCollection := collect.Filter([]string{"Goravel", "Framework"}, func (value string) bool {
+return strings.Contains(value, "Goravel")
 })
 
 // []string{"Goravel"}
@@ -594,11 +606,11 @@ import "github.com/goravel/framework/support/collect"
 
 // use example of complex map slice (use different example)
 newCollection := collect.GroupBy([]map[string]string{
-    {"class": "1", "Name": "Rohan"},
-    {"class": "2", "Name": "Bowen"},
-    {"class": "2", "Name": "Krishan"},
-}, func(value map[string]string) string {
-    return value["class"]
+{"class": "1", "Name": "Rohan"},
+{"class": "2", "Name": "Bowen"},
+{"class": "2", "Name": "Krishan"},
+}, func (value map[string]string) string {
+return value["class"]
 })
 
 // map[string][]map[string]string{
@@ -625,8 +637,8 @@ The `collect.Map()` function converts one type of collection into another using 
 ```go
 import "github.com/goravel/framework/support/collect"
 
-newCollection := collect.Map([]string{"Goravel", "Framework"}, func(value string,  _ int) string {
-    return strings.ToUpper(value)
+newCollection := collect.Map([]string{"Goravel", "Framework"}, func (value string, _ int) string {
+return strings.ToUpper(value)
 })
 
 // []string{"GORAVEL", "FRAMEWORK"}
@@ -694,7 +706,8 @@ newCollection := collect.Shuffle([]int{1, 2, 3, 4, 5})
 
 ### `collect.Split()`
 
-The `collect.Split()` function splits a collection into the groups of the given length. If the collection can't be split evenly, the final chunk will contain the remaining items:
+The `collect.Split()` function splits a collection into the groups of the given length. If the collection can't be split
+evenly, the final chunk will contain the remaining items:
 
 ```go
 import "github.com/goravel/framework/support/collect"
@@ -719,7 +732,8 @@ sum := collect.Sum([]int{1, 2, 3, 4, 5})
 
 ### `collect.Unique()`
 
-The `collect.Unique()` method returns the duplicate-free collection where in case of duplicate values, only the first occurrence will be kept:
+The `collect.Unique()` method returns the duplicate-free collection where in case of duplicate values, only the first
+occurrence will be kept:
 
 ```go
 import "github.com/goravel/framework/support/collect"
