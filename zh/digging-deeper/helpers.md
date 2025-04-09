@@ -13,14 +13,13 @@
 
 ### 时间
 
-|                                                       |                                                       |                                                   |
-|-------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------|
-| [carbon.Now()](#carbon-now)                           | [carbon.SetTimezone()](#carbon-settimezone)           | [carbon.Parse()](#carbonparse)                    |
-| [carbon.FromTimestamp()](#carbon-fromtimestamp)       | [carbon.FromDateTime()](#carbon-fromdatetime)         | [carbon.FromDate()](#carbonfromdate)              |
-| [carbon.FromTime()](#carbon-fromtime)                 | [carbon.FromStdTime()](#carbon-fromstdtime)           | [carbon.IsTestNow()](#carbonistestnow)            |
-| [carbon.SetTestNow()](#carbon-settestnow)             | [carbon.UnsetTestNow()](#carbon-unsettestnow)         | [carbon.CleanTestNow()](#carboncleantestnow)      |
-| [carbon.ParseByLayout()](#carbon-parsebylayout)       | [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbonparsewithlayouts) |
-| [carbon.ParseWithFormats()](#carbon-parsewithformats) |                                                       |                                                   |
+|                                                       |                                                    |                                                       |
+|-------------------------------------------------------|----------------------------------------------------|-------------------------------------------------------|
+| [carbon.Now()](#carbon-now)                           | [carbon.SetTimezone()](#carbon-settimezone)        | [carbon.Parse()](#carbon-parse)                       |
+| [carbon.FromTimestamp()](#carbon-fromtimestamp)       | [carbon.FromDateTime()](#carbon-fromdatetime)      | [carbon.FromDate()](#carbon-fromdate)                 |
+| [carbon.FromTime()](#carbon-fromtime)                 | [carbon.FromStdTime()](#carbon-fromstdtime)        | [carbon.IsTestNow()](#carbon-istestnow)               |
+| [carbon.SetTestNow()](#carbon-settestnow)             | [carbon.CleanTestNow()](#carbon-cleantestnow)      | [carbon.ParseByLayout()](#carbon-parsebylayout)       |
+| [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbon-parsewithlayouts) | [carbon.ParseWithFormats()](#carbon-parsewithformats) |
 
 ### 调试
 
@@ -240,14 +239,6 @@ carbon.IsTestNow()
 carbon.SetTestNow(carbon.Now())
 ```
 
-### `carbon.UnsetTestNow()`
-
-恢复系统时间为正常值：
-
-```go
-carbon.UnsetTestNow()
-```
-
 ### `carbon.CleanTestNow()`
 
 清除系统时间为正常值：
@@ -447,7 +438,7 @@ import "github.com/goravel/framework/support/maps"
 mp := map[string]string{"name": "Goravel", "language": "Go"}
 
 newMap := maps.Where(mp, func(key string, value string) bool {
-return key == "name"
+    return key == "name"
 })
 // map[string]string{"name": "Goravel"}
 ```
@@ -461,14 +452,14 @@ return key == "name"
 ```go
 import "github.com/goravel/framework/support/convert"
 
-value := convert.Tap("Goravel", func (value string) {
-fmt.Println(value + " Framework")
+value := convert.Tap("Goravel", func(value string) {
+    fmt.Println(value + " Framework")
 })
 // Goravel
 
 mp := map[string]string{"name": "Goravel"}
 val := convert.Tap(mp, func(value map[string]string) {
-mp["language"] = "Go"
+    mp["language"] = "Go"
 })
 // map[string]string{"name": "Goravel", "language": "Go"}
 ```
@@ -483,8 +474,8 @@ import "github.com/goravel/framework/support/convert"
 value := convert.Transform(1, strconv.Itoa)
 // "1"
 
-val := convert.Transform("foo", func (s string) *foo {
-return &foo{Name: s}
+val := convert.Transform("foo", func(s string) *foo {
+      return &foo{Name: s}
 })
 // &foo{Name: "foo"}
 ```
@@ -496,8 +487,8 @@ return &foo{Name: s}
 ```go
 import "github.com/goravel/framework/support/convert"
 
-value := convert.With("Goravel", func (value string) string {
-return value + " Framework"
+value := convert.With("Goravel", func(value string) string {
+    return value + " Framework"
 })
 // Goravel Framework
 ```
@@ -551,8 +542,8 @@ collect.Count([]string{"Goravel", "Framework"})
 ```go
 import "github.com/goravel/framework/support/collect"
 
-collect.CountBy([]string{"Goravel", "Framework"}, func (value string) bool {
-return strings.Contains(value, "Goravel")
+collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
+    return strings.Contains(value, "Goravel")
 })
 // 1
 ```
@@ -564,8 +555,8 @@ return strings.Contains(value, "Goravel")
 ```go
 import "github.com/goravel/framework/support/collect"
 
-collect.Each([]string{"Goravel", "Framework"}, func (value string, index int) {
-fmt.Println(index + 1, value)
+collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
+    fmt.Println(index + 1, value)
 })
 // 1 Goravel
 // 2 Framework
@@ -578,8 +569,8 @@ fmt.Println(index + 1, value)
 ```go
 import "github.com/goravel/framework/support/collect"
 
-newCollection := collect.Filter([]string{"Goravel", "Framework"}, func (value string) bool {
-return strings.Contains(value, "Goravel")
+newCollection := collect.Filter([]string{"Goravel", "Framework"}, func(value string) bool {
+    return strings.Contains(value, "Goravel")
 })
 
 // []string{"Goravel"}
@@ -594,11 +585,11 @@ import "github.com/goravel/framework/support/collect"
 
 // use example of complex map slice (use different example)
 newCollection := collect.GroupBy([]map[string]string{
-{"class": "1", "Name": "Rohan"},
-{"class": "2", "Name": "Bowen"},
-{"class": "2", "Name": "Krishan"},
-}, func (value map[string]string) string {
-return value["class"]
+    {"class": "1", "Name": "Rohan"},
+    {"class": "2", "Name": "Bowen"},
+    {"class": "2", "Name": "Krishan"},
+}, func(value map[string]string) string {
+    return value["class"]
 })
 
 // map[string][]map[string]string{
@@ -625,8 +616,8 @@ keys := collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
 ```go
 import "github.com/goravel/framework/support/collect"
 
-newCollection := collect.Map([]string{"Goravel", "Framework"}, func (value string, _ int) string {
-return strings.ToUpper(value)
+newCollection := collect.Map([]string{"Goravel", "Framework"}, func(value string,  _ int) string {
+    return strings.ToUpper(value)
 })
 
 // []string{"GORAVEL", "FRAMEWORK"}
