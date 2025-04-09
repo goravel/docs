@@ -6,25 +6,26 @@
 
 ### Paths
 
-|                           |                               |             |
-| -----------               | --------------                | -------------- |
-| [path.App()](#path-app)   | [path.Base()](#path-base)     | [path.Config()](#path-config)     |
-| [path.Database()](#path-database)   | [path.Storage()](#path-storage)     | [path.Public()](#path-public)     |
+|                                   |                                 |                               |
+|-----------------------------------|---------------------------------|-------------------------------|
+| [path.App()](#path-app)           | [path.Base()](#path-base)       | [path.Config()](#path-config) |
+| [path.Database()](#path-database) | [path.Storage()](#path-storage) | [path.Public()](#path-public) |
 
 ### Time
 
-|                           |                               |             |
-| -----------               | --------------                | -------------- |
-| [carbon.Now()](#carbon-now)   | [carbon.SetTimezone()](#carbon-settimezone)     | [carbon.Parse()](#carbon-parse)     |
-| [carbon.FromTimestamp()](#carbon-fromtimestamp)   | [carbon.FromDateTime()](#carbon-fromdatetime)     | [carbon.FromDate()](#carbon-fromdate)     |
-| [carbon.FromTime()](#carbon-fromtime)   | [carbon.FromStdTime()](#carbon-fromstdtime)     | [carbon.IsTestNow()](#istestnow-fromdate)     |
-| [carbon.SetTestNow()](#carbon-settestnow)     | [carbon.UnsetTestNow()](#carbon-unsettestnow)     |      |
+|                                                       |                                                    |                                                       |
+|-------------------------------------------------------|----------------------------------------------------|-------------------------------------------------------|
+| [carbon.Now()](#carbon-now)                           | [carbon.SetTimezone()](#carbon-settimezone)        | [carbon.Parse()](#carbon-parse)                       |
+| [carbon.FromTimestamp()](#carbon-fromtimestamp)       | [carbon.FromDateTime()](#carbon-fromdatetime)      | [carbon.FromDate()](#carbon-fromdate)                 |
+| [carbon.FromTime()](#carbon-fromtime)                 | [carbon.FromStdTime()](#carbon-fromstdtime)        | [carbon.IsTestNow()](#carbon-istestnow)               |
+| [carbon.SetTestNow()](#carbon-settestnow)             | [carbon.CleanTestNow()](#carbon-cleantestnow)      | [carbon.ParseByLayout()](#carbon-parsebylayout)       |
+| [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbon-parsewithlayouts) | [carbon.ParseWithFormats()](#carbon-parsewithformats) |
 
 ### Debug
 
-|                           |                               |             |
-| -----------               | --------------                | -------------- |
-| [debug.Dump()](#debug-dump)   | [debug.SDump()](#debug-sdump)     | [debug.FDump()](#debug-fdump)     |
+|                             |                               |                               |
+|-----------------------------|-------------------------------|-------------------------------|
+| [debug.Dump()](#debug-dump) | [debug.SDump()](#debug-sdump) | [debug.FDump()](#debug-fdump) |
 
 ### Maps
 
@@ -122,7 +123,7 @@ path := path.Lang("en.json")
 
 ## Time
 
-The `carbon` module of Goravel is an expansion by [golang-module/carbon](https://github.com/golang-module/carbon), the main feature is the realization of time backtracking, please refer to the official documentation for details.
+The `carbon` module of Goravel is an expansion by [dromara/carbon](https://github.com/dromara/carbon), please refer to the official documentation for details.
 
 ### `carbon.Now()`
 
@@ -150,9 +151,41 @@ Get `Carbon` object by String:
 carbon.Parse("2020-08-05 13:14:15")
 ```
 
+### `carbon.ParseByLayout()`
+
+Get `Carbon` object by given value and layout:
+
+```go
+carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
+```
+
+### `carbon.ParseByFormat()`
+
+Get `Carbon` object by given value and format:
+
+```go
+carbon.ParseByFormat("2020-08-05 13:14:15", carbon.DateTimeFormat)
+```
+
+### `carbon.ParseWithLayouts()`
+
+Get `Carbon` object with layouts:
+
+```go
+carbon.ParseWithLayouts("2020|08|05 13|14|15", []string{"2006|01|02 15|04|05", "2006|1|2 3|4|5"})
+```
+
+### `carbon.ParseWithFormats()`
+
+Get `Carbon` object with formats:
+
+```go
+carbon.ParseWithFormats("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|i|s"})
+```
+
 ### `carbon.FromTimestamp()`
 
-Get `Carbon` Object by timestamp:
+Get `Carbon` object by timestamp:
 
 ```go
 carbon.FromTimestamp(1577836800)
@@ -160,7 +193,7 @@ carbon.FromTimestamp(1577836800)
 
 ### `carbon.FromDateTime()`
 
-Get `Carbon` Object by date time:
+Get `Carbon` object by date time:
 
 ```go
 carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
@@ -168,7 +201,7 @@ carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
 
 ### `carbon.FromDate()`
 
-Get `Carbon` Object by date:
+Get `Carbon` object by date:
 
 ```go
 carbon.FromDate(2020, 1, 1)
@@ -176,7 +209,7 @@ carbon.FromDate(2020, 1, 1)
 
 ### `carbon.FromTime()`
 
-Get `Carbon` Object by time:
+Get `Carbon` object by time:
 
 ```go
 carbon.FromTime(0, 0, 0)
@@ -184,7 +217,7 @@ carbon.FromTime(0, 0, 0)
 
 ### `carbon.FromStdTime()`
 
-Get `Carbon` Object by `time.Time`:
+Get `Carbon` object by `time.Time`:
 
 ```go
 carbon.FromStdTime(time.Now())
@@ -206,12 +239,12 @@ Set the time to a test value:
 carbon.SetTestNow(carbon.Now())
 ```
 
-### `carbon.UnsetTestNow()`
+### `carbon.CleanTestNow()`
 
-Restore the time to a normal value:
+Clear the test now Carbon object:
 
 ```go
-carbon.UnsetTestNow()
+carbon.CleanTestNow()
 ```
 
 ## Debug
@@ -442,7 +475,7 @@ value := convert.Transform(1, strconv.Itoa)
 // "1"
 
 val := convert.Transform("foo", func(s string) *foo {
-      return &foo{Name: s}
+    return &foo{Name: s}
 })
 // &foo{Name: "foo"}
 ```
