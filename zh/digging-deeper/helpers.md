@@ -18,7 +18,9 @@
 | [carbon.Now()](#carbon-now)   | [carbon.SetTimezone()](#carbon-settimezone)     | [carbon.Parse()](#carbon-parse)     |
 | [carbon.FromTimestamp()](#carbon-fromtimestamp)   | [carbon.FromDateTime()](#carbon-fromdatetime)     | [carbon.FromDate()](#carbon-fromdate)     |
 | [carbon.FromTime()](#carbon-fromtime)   | [carbon.FromStdTime()](#carbon-fromstdtime)     | [carbon.IsTestNow()](#istestnow-fromdate)     |
-| [carbon.SetTestNow()](#carbon-settestnow)     | [carbon.UnsetTestNow()](#carbon-unsettestnow)     |      |
+| [carbon.SetTestNow()](#carbon-settestnow)     | [carbon.UnsetTestNow()](#carbon-unsettestnow)     |  [carbon.CleanTestNow()](#carbon-cleantestnow)    |
+| [carbon.ParseByLayout()](#carbon-parsebylayout)       | [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbon-parsebyformat) |
+| [carbon.ParseWithFormats()](#carbon-parsewithformats) |                                                       |                                                 |
 
 ### Debug
 
@@ -150,6 +152,39 @@ carbon.SetTimezone(carbon.UTC)
 carbon.Parse("2020-08-05 13:14:15")
 ```
 
+### `carbon.ParseByLayout()`
+
+通过指定布局模板解析 `Carbon` 对象:
+
+```go
+carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
+```
+
+### `carbon.ParseByFormat()`
+
+通过指定格式模板解析 `Carbon` 对象:
+
+```go
+carbon.ParseByFormat("2020-08-05 13:14:15", carbon.DateTimeFormat)
+```
+
+### `carbon.ParseWithLayouts()`
+
+通过自定义布局模板将时间字符串解析成 `Carbon` 对象:
+
+```go
+carbon.ParseWithLayouts("2020|08|05 13|14|15", []string{"2006|01|02 15|04|05", "2006|1|2 3|4|5"})
+```
+
+### `carbon.ParseWithFormats()`
+
+通过自定义格式模板将时间字符串解析成 `Carbon` 对象
+
+```go
+carbon.ParseWithFormats("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|i|s"})
+```
+
+
 ### `carbon.FromTimestamp()`
 
 时间戳格式化为 `Carbon` 对象：
@@ -212,6 +247,14 @@ carbon.SetTestNow(carbon.Now())
 
 ```go
 carbon.UnsetTestNow()
+```
+
+### `carbon.CleanTestNow()`
+
+清除系统时间为正常值：
+
+```go
+carbon.CleanTestNow()
 ```
 
 ## Debug
