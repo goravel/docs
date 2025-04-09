@@ -475,7 +475,7 @@ value := convert.Transform(1, strconv.Itoa)
 // "1"
 
 val := convert.Transform("foo", func(s string) *foo {
-      return &foo{Name: s}
+    return &foo{Name: s}
 })
 // &foo{Name: "foo"}
 ```
