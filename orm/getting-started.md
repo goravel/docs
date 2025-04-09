@@ -4,112 +4,7 @@
 
 ## Introduction
 
-Goravel makes it easy for developers to interact with databases using `facades.Orm()`. Currently, it provides official support for the following four databases:
-
-- MySQL 5.7+
-- PostgreSQL 9.6+
-- SQLite 3.8.8+
-- SQL Server 2017+
-
-Before you start, configure the database in `.env` and confirm the `default` configuration in `config/database.go`.
-
-# Configuration
-
-To configure databases, navigate to `config/database.go`. This is where you can customize all database connections and choose a `default` connection. The configuration in this file relies on the project's environment variables and showcases various database configurations that Goravel supports.
-
-### DSN
-
-You can also use DSN to connect to the database directly, just configure the `dsn` field in the configuration file:
-
-```go
-"postgres": map[string]any{
-  "driver":   "postgres",
-++  "dsn": "postgres://user:password@localhost:5432/dbname?sslmode=disable",
-  ...
-}
-```
-
-### Read & Write Connections
-
-Sometimes you may wish to use one database connection for `SELECT` statements, and another for `INSERT`, `UPDATE`, and `DELETE` statements. Goravel makes this a breeze.
-
-To see how read/write connections should be configured, let's look at this example:
-
-```go
-import "github.com/goravel/framework/contracts/database"
-
-// config/database.go
-"connections": map[string]any{
-  "mysql": map[string]any{
-    "driver": "mysql",
-    "read": []database.Config{
-      {Host: "192.168.1.1", Port: 3306, Database: "forge", Username: "root", Password: "123123"},
-    },
-    "write": []database.Config{
-      {Host: "192.168.1.2", Port: 3306, Database: "forge", Username: "root", Password: "123123"},
-    },
-    "host": config.Env("DB_HOST", "127.0.0.1"),
-    "port":     config.Env("DB_PORT", 3306),
-    "database": config.Env("DB_DATABASE", "forge"),
-    "username": config.Env("DB_USERNAME", ""),
-    "password": config.Env("DB_PASSWORD", ""),
-    "charset":  "utf8mb4",
-    "loc":      "Local",
-  },
-}
-```
-
-We have updated the configuration array with two new keys - `read` and `write`. The `read` connection will use `192.168.1.1` as the host, while the `write` connection will use `192.168.1.2`. Both connections will share the same database prefix, character set, and other options specified in the main mysql array. In case of multiple values in the `host` configuration array, a database host will be selected randomly for each request.
-
-### Connection Pool
-
-You can configure a connection pool in the configuration file, reasonable configuration of connection pool parameters can greatly improve concurrency performance:
-
-| Key        | Action           |
-| -----------  | -------------- |
-| pool.max_idle_conns         | Max idle connections    |
-| pool.max_open_conns     | Max open connections |
-| pool.conn_max_idletime     | Connections max idle time |
-| pool.conn_max_lifetime     | Connections max lifetime  |
-
-### Schema
-
-Postgres and Sqlserver support configuring Schema. Postgres can directly set the Schema in the configuration file, while Sqlserver needs to specify the Schema through the `TableName` method in the model.
-
-#### Postgres
-
-```go
-"connections": map[string]any{
-  "postgres": map[string]any{
-    "driver":   "postgres",
-    ...
-    "schema": "goravel",
-  },
-}
-```
-
-#### Sqlserver
-
-```go
-func (r *User) TableName() string {
-  return "goravel.users"
-}
-```
-
-### Get Database Information
-
-You can use the `db:show` command to view all tables in the database.
-
-```bash
-go run . artisan db:show
-```
-
-You can also use the `db:table` command to view the structure of a specific table.
-
-```bash
-go run . artisan db:table
-go run . artisan db:table users
-```
+Goravel provides a very simple and easy-to-use database interaction, developers can use `facades.Orm()` to operate. Please refer to [Configure Database](../database/getting-started) before starting.
 
 ## Model Definition
 
@@ -220,7 +115,7 @@ func (r *User) Connection() string {
 
 | Functions     | Action                                                  |
 | ------------- | ------------------------------------------------------- |
-| Begin         | [Begin transaction](#transaction)                       |
+| BeginTransaction         | [Begin transaction](#transaction)                       |
 | Commit        | [Commit transaction](#transaction)                      |
 | Count         | [Count](#count)                                         |
 | Create        | [Create](#create)                                       |
@@ -428,13 +323,17 @@ err := facades.Orm().Query().FirstOrFail(&user)
 facades.Orm().Query().Where("name", "tom")
 facades.Orm().Query().Where("name = 'tom'")
 facades.Orm().Query().Where("name = ?", "tom")
+facades.Orm().Query().Where("name", "tom").Where(func(query orm.Query) orm.Query {
+  return query.Where("height", 180).Where("age", 18)
+})
+
 facades.Orm().Query().WhereBetween("age", 1, 10)
 facades.Orm().Query().WhereNotBetween("age", 1, 10)
 facades.Orm().Query().WhereNotIn("name", []any{"a"})
 facades.Orm().Query().WhereNull("name")
 facades.Orm().Query().WhereIn("name", []any{"a"})
 
-facades.Orm().Query().OrWhere("name = ?", "tom")
+facades.Orm().Query().OrWhere("name", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
 facades.Orm().Query().OrWhereNull("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
@@ -444,7 +343,7 @@ facades.Orm().Query().OrWhereIn("name", []any{"a"})
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
+facades.Orm().Query().Where("name", "tom").Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3;
 ```
 
@@ -452,7 +351,7 @@ facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
+facades.Orm().Query().Where("name", "tom").Offset(5).Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3 OFFSET 5;
 ```
 
@@ -460,19 +359,16 @@ facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
+facades.Orm().Query().Where("name", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc,id desc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort").Get(&users)
+facades.Orm().Query().Where("name", "tom").OrderBy("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort", "desc").Get(&users)
+facades.Orm().Query().Where("name", "tom").OrderByDesc("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
-// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
-
-facades.Orm().Query().Where("name = ?", "tom").InRandomOrder().Get(&users)
+facades.Orm().Query().Where("name", "tom").InRandomOrder().Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY RAND();
 ```
 
@@ -501,16 +397,14 @@ If you want to query some aggregate data, you need to specify a specific table.
 Specify a model
 
 ```go
-var count int64
-facades.Orm().Query().Model(&models.User{}).Count(&count)
+count, err := facades.Orm().Query().Model(&models.User{}).Count()
 // SELECT count(*) FROM `users` WHERE deleted_at IS NULL;
 ```
 
 Specify a table
 
 ```go
-var count int
-facades.Orm().Query().Table("users").Count(&count)
+count, err := facades.Orm().Query().Table("users").Count()
 // SELECT count(*) FROM `users`; // get all records, whether deleted or not
 ```
 
@@ -535,8 +429,7 @@ The methods can be called after `ToSql` and `ToRawSql`: `Count`, `Create`, `Dele
 ### Count
 
 ```go
-var count int64
-facades.Orm().Query().Table("users").Where("name = ?", "tom").Count(&count)
+count, err := facades.Orm().Query().Table("users").Count()
 // SELECT count(*) FROM `users` WHERE name = 'tom';
 ```
 
@@ -546,9 +439,6 @@ facades.Orm().Query().Table("users").Where("name = ?", "tom").Count(&count)
 
 ```go
 facades.Orm().Query().Select("name", "age").Get(&users)
-// SELECT `name`,`age` FROM `users`;
-
-facades.Orm().Query().Select([]string{"name", "age"}).Get(&users)
 // SELECT `name`,`age` FROM `users`;
 ```
 
@@ -688,7 +578,7 @@ num := res.RowsAffected
 Multiple delete
 
 ```go
-facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
+facades.Orm().Query().Where("name", "tom").Delete(&models.User{})
 // DELETE FROM `users` WHERE name = 'tom';
 ```
 
@@ -720,10 +610,10 @@ Note: The associations will be deleted only if the primary key of the record is 
 
 ```go
 // Delete user that name='goravel', but don't delete account of user
-facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{})
+facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.User{})
 
 // Delete user that name='goravel' and id = 1, and delete account of user
-facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{ID: 1})
+facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.User{ID: 1})
 
 // Delete user that id = 1 and delete account of that user
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
@@ -781,8 +671,7 @@ num := res.RowsAffected
 ### Exists
 
 ```go
-var exists bool
-facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists(&exists)
+exists, err := facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists()
 ```
 
 ### Restore
@@ -817,7 +706,7 @@ return facades.Orm().Transaction(func(tx orm.Query) error {
 You can also manually control the flow of the transaction yourself:
 
 ```go
-tx, err := facades.Orm().Query().Begin()
+tx, err := facades.Orm().Query().BeginTransaction()
 user := models.User{Name: "Goravel"}
 if err := tx.Create(&user); err != nil {
   err := tx.Rollback()
