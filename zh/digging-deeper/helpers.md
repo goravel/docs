@@ -13,18 +13,18 @@
 
 ### 时间
 
-|                                                         |                                                           |                                                           |
-|---------------------------------------------------------|-----------------------------------------------------------|-----------------------------------------------------------|
-| [carbon.Now()](#carbon-now)                             | [carbon.SetTimezone()](#carbon-settimezone)               | [carbon.SetLocation()](#carbon-setlocation)               |
-| [carbon.SetLocale()](#carbon-setlocale)                 | [carbon.SetTestNow()](#carbon-settestnow)                 | [carbon.CleanTestNow()](#carbon-cleantestnow)             |
-| [carbon.IsTestNow()](#carbon-istestnow)                 | [carbon.Parse()](#carbon-parse)                           | [carbon.ParseByLayout()](#carbon-parsebylayout)           |
-| [carbon.ParseByFormat()](#carbon-parsebyformat)         | [carbon.ParseWithLayouts()](#carbon-parsewithlayouts)     | [carbon.ParseWithFormats()](#carbon-parsewithformats)     |
-| [carbon.FromTimestamp()](#carbon-fromtimestamp)         | [carbon.FromTimestampMilli()](#carbon-fromtimestampmilli) | [carbon.FromTimestampMicro()](#carbon-fromtimestampmicro) |
-| [carbon.FromTimestampNano()](#carbon-fromtimestampnano) | [carbon.FromDateTime()](#carbon-fromdatetime)             | [carbon.FromDateTimeMilli()](#carbon-fromdatetimemilli)   |
-| [carbon.FromDateTimeMicro()](#carbon-fromdatetimemicro) | [carbon.FromDateTimeNano()](#carbon-fromdatetimenano)     | [carbon.FromDate()](#carbon-fromdate)                     |
-| [carbon.FromDateMilli()](#carbon-fromdatemilli)         | [carbon.FromDateMicro()](#carbon-fromdatemicro)           | [carbon.FromDateNano()](#carbon-fromdatenano)             |
-| [carbon.FromTime()](#carbon-fromtime)                   | [carbon.FromTimeMilli()](#carbon-fromtimemilli)           | [carbon.FromTimeMicro()](#carbon-fromtimemicro)           |
-| [carbon.FromTimeNano()](#carbon-fromtimenano)           | [carbon.FromStdTime()](#carbon-fromstdtime)               |                                                           |
+|                                                           |                                                           |                                                         |
+|-----------------------------------------------------------|-----------------------------------------------------------|---------------------------------------------------------|
+| [carbon.Now()](#carbon-now)                               | [carbon.SetTimezone()](#carbon-settimezone)               | [carbon.SetLocale()](#carbon-setlocale)                 |
+| [carbon.SetTestNow()](#carbon-settestnow)                 | [carbon.CleanTestNow()](#carbon-cleantestnow)             | [carbon.IsTestNow()](#carbon-istestnow)                 |
+| [carbon.Parse()](#carbon-parse)                           | [carbon.ParseByLayout()](#carbon-parsebylayout)           | [carbon.ParseByFormat()](#carbon-parsebyformat)         |
+| [carbon.ParseWithLayouts()](#carbon-parsewithlayouts)     | [carbon.ParseWithFormats()](#carbon-parsewithformats)     | [carbon.FromTimestamp()](#carbon-fromtimestamp)         |
+| [carbon.FromTimestampMilli()](#carbon-fromtimestampmilli) | [carbon.FromTimestampMicro()](#carbon-fromtimestampmicro) | [carbon.FromTimestampNano()](#carbon-fromtimestampnano) |
+| [carbon.FromDateTime()](#carbon-fromdatetime)             | [carbon.FromDateTimeMilli()](#carbon-fromdatetimemilli)   | [carbon.FromDateTimeMicro()](#carbon-fromdatetimemicro) |
+| [carbon.FromDateTimeNano()](#carbon-fromdatetimenano)     | [carbon.FromDate()](#carbon-fromdate)                     | [carbon.FromDateMilli()](#carbon-fromdatemilli)         |
+| [carbon.FromDateMicro()](#carbon-fromdatemicro)           | [carbon.FromDateNano()](#carbon-fromdatenano)             | [carbon.FromTime()](#carbon-fromtime)                   |
+| [carbon.FromTimeMilli()](#carbon-fromtimemilli)           | [carbon.FromTimeMicro()](#carbon-fromtimemicro)           | [carbon.FromTimeNano()](#carbon-fromtimenano)           |
+| [carbon.FromStdTime()](#carbon-fromstdtime)               |                                                           |                                                         |
 
 ### 调试
 
@@ -144,14 +144,6 @@ carbon.Now()
 
 ```go
 carbon.SetTimezone(carbon.UTC)
-```
-
-### `carbon.SetLocation()`
-
-设置位置：
-
-```go
-carbon.SetLocation(time.UTC)
 ```
 
 ### `carbon.SetLocale()`
