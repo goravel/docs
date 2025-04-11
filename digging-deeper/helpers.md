@@ -135,6 +135,8 @@ The `carbon` module of Goravel is an expansion by [dromara/carbon](https://githu
 Get current time:
 
 ```go
+import "github.com/goravel/framework/support/carbon"
+
 carbon.Now()
 ```
 

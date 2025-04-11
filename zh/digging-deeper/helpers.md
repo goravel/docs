@@ -135,6 +135,8 @@ Goravel 的 `carbon` 是 [dromara/carbon](https://github.com/dromara/carbon) 的
 获取当前时间：
 
 ```go
+import "github.com/goravel/framework/support/carbon"
+
 carbon.Now()
 ```
 
