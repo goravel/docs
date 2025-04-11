@@ -13,13 +13,18 @@
 
 ### 时间
 
-|                                                       |                                                    |                                                       |
-|-------------------------------------------------------|----------------------------------------------------|-------------------------------------------------------|
-| [carbon.Now()](#carbon-now)                           | [carbon.SetTimezone()](#carbon-settimezone)        | [carbon.Parse()](#carbon-parse)                       |
-| [carbon.FromTimestamp()](#carbon-fromtimestamp)       | [carbon.FromDateTime()](#carbon-fromdatetime)      | [carbon.FromDate()](#carbon-fromdate)                 |
-| [carbon.FromTime()](#carbon-fromtime)                 | [carbon.FromStdTime()](#carbon-fromstdtime)        | [carbon.IsTestNow()](#carbon-istestnow)               |
-| [carbon.SetTestNow()](#carbon-settestnow)             | [carbon.CleanTestNow()](#carbon-cleantestnow)      | [carbon.ParseByLayout()](#carbon-parsebylayout)       |
-| [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbon-parsewithlayouts) | [carbon.ParseWithFormats()](#carbon-parsewithformats) |
+|                                                         |                                                           |                                                           |
+|---------------------------------------------------------|-----------------------------------------------------------|-----------------------------------------------------------|
+| [carbon.Now()](#carbon-now)                             | [carbon.SetTimezone()](#carbon-settimezone)               | [carbon.SetLocation()](#carbon-setlocation)               |
+| [carbon.SetLocale()](#carbon-setlocale)                 | [carbon.SetTestNow()](#carbon-settestnow)                 | [carbon.CleanTestNow()](#carbon-cleantestnow)             |
+| [carbon.IsTestNow()](#carbon-istestnow)                 | [carbon.Parse()](#carbon-parse)                           | [carbon.ParseByLayout()](#carbon-parsebylayout)           |
+| [carbon.ParseByFormat()](#carbon-parsebyformat)         | [carbon.ParseWithLayouts()](#carbon-parsewithlayouts)     | [carbon.ParseWithFormats()](#carbon-parsewithformats)     |
+| [carbon.FromTimestamp()](#carbon-fromtimestamp)         | [carbon.FromTimestampMilli()](#carbon-fromtimestampmilli) | [carbon.FromTimestampMicro()](#carbon-fromtimestampmicro) |
+| [carbon.FromTimestampNano()](#carbon-fromtimestampnano) | [carbon.FromDateTime()](#carbon-fromdatetime)             | [carbon.FromDateTimeMilli()](#carbon-fromdatetimemilli)   |
+| [carbon.FromDateTimeMicro()](#carbon-fromdatetimemicro) | [carbon.FromDateTimeNano()](#carbon-fromdatetimenano)     | [carbon.FromDate()](#carbon-fromdate)                     |
+| [carbon.FromDateMilli()](#carbon-fromdatemilli)         | [carbon.FromDateMicro()](#carbon-fromdatemicro)           | [carbon.FromDateNano()](#carbon-fromdatenano)             |
+| [carbon.FromTime()](#carbon-fromtime)                   | [carbon.FromTimeMilli()](#carbon-fromtimemilli)           | [carbon.FromTimeMicro()](#carbon-fromtimemicro)           |
+| [carbon.FromTimeNano()](#carbon-fromtimenano)           | [carbon.FromStdTime()](#carbon-fromstdtime)               |                                                           |
 
 ### 调试
 
@@ -130,8 +135,6 @@ Goravel 的 `carbon` 是 [dromara/carbon](https://github.com/dromara/carbon) 的
 获取当前时间：
 
 ```go
-import "github.com/goravel/framework/support/carbon"
-
 carbon.Now()
 ```
 
@@ -143,9 +146,49 @@ carbon.Now()
 carbon.SetTimezone(carbon.UTC)
 ```
 
+### `carbon.SetLocation()`
+
+设置位置：
+
+```go
+carbon.SetLocation(time.UTC)
+```
+
+### `carbon.SetLocale()`
+
+设置语言：
+
+```go
+carbon.SetLocale("en")
+```
+
+### `carbon.SetTestNow()`
+
+将系统时间设置为一个测试值：
+
+```go
+carbon.SetTestNow(carbon.Now())
+```
+
+### `carbon.CleanTestNow()`
+
+清除系统时间为正常值：
+
+```go
+carbon.CleanTestNow()
+```
+
+### `carbon.IsTestNow()`
+
+判断系统时间是否为测试值：
+
+```go
+carbon.IsTestNow()
+```
+
 ### `carbon.Parse()`
 
-字符串格式化为 `Carbon` 对象：
+将字符串格式化为 `Carbon` 对象：
 
 ```go
 carbon.Parse("2020-08-05 13:14:15")
@@ -185,66 +228,138 @@ carbon.ParseWithFormats("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|
 
 ### `carbon.FromTimestamp()`
 
-时间戳格式化为 `Carbon` 对象：
+将秒级时间戳格式化为 `Carbon` 对象：
 
 ```go
-carbon.FromTimestamp(1577836800)
+carbon.FromTimestamp(1649735755)
+```
+
+### `carbon.FromTimestampMilli()`
+
+将毫秒级时间戳格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimestampMilli(1649735755999)
+```
+
+### `carbon.FromTimestampMicro()`
+
+将微秒级时间戳格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimestampMicro(1649735755999999)
+```
+
+### `carbon.FromTimestampNano()`
+
+将纳秒级时间戳格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimestampNano(1649735755999999999)
 ```
 
 ### `carbon.FromDateTime()`
 
-时间格式化为 `Carbon` 对象：
+将年、月、日、时、分、秒、格式化为 `Carbon` 对象：
 
 ```go
 carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
 ```
 
+### `carbon.FromDateTimeMilli()`
+
+将年、月、日、时、分、秒、毫秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromDateTimeMilli(2020, 1, 1, 0, 0, 0, 999)
+```
+
+### `carbon.FromDateTimeMicro()`
+
+将年、月、日、时、分、秒、微妙格式化为 `Carbon` 对象：
+
+```go
+carbon.FromDateTimeMicro(2020, 1, 1, 0, 0, 0, 999999)
+```
+
+### `carbon.FromDateTimeNano()`
+
+将年、月、日、时、分、秒、纳妙格式化为 `Carbon` 对象：
+
+```go
+carbon.FromDateTimeNano(2020, 1, 1, 0, 0, 0, 999999999)
+```
+
 ### `carbon.FromDate()`
 
-年月日格式化为 `Carbon` 对象：
+将年、月、日格式化为 `Carbon` 对象：
 
 ```go
 carbon.FromDate(2020, 1, 1)
 ```
 
-### `carbon.FromTime()`
+### `carbon.FromDateMilli()`
 
-时分秒格式化为 `Carbon` 对象：
+将年、月、日、毫秒格式化为 `Carbon` 对象：
 
 ```go
-carbon.FromTime(0, 0, 0)
+carbon.FromDateMilli(2020, 1, 1, 999)
+```
+
+### `carbon.FromDateMicro()`
+
+将年、月、日、微秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromDateMicro(2020, 1, 1, 999999)
+```
+
+### `carbon.FromDateNano()`
+
+将年、月、日、纳秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromDateNano(2020, 1, 1, 999999999)
+```
+
+### `carbon.FromTime()`
+
+将时、分、秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTime(13, 14, 15)
+```
+
+### `carbon.FromTimeMilli()`
+
+将时、分、秒、毫秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimeMilli(13, 14, 15, 999)
+```
+
+### `carbon.FromTimeMicro()`
+
+将时、分、秒、微秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimeMicro(13, 14, 15, 999999)
+```
+
+### `carbon.FromTimeNano()`
+
+将时、分、秒、纳秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimeNano(13, 14, 15, 999999999)
 ```
 
 ### `carbon.FromStdTime()`
 
-`time.Time` 格式化为 `Carbon` 对象：
+将 `time.Time` 格式化为 `Carbon` 对象：
 
 ```go
 carbon.FromStdTime(time.Now())
-```
-
-### `carbon.IsTestNow()`
-
-判断系统时间是否为测试值：
-
-```go
-carbon.IsTestNow()
-```
-
-### `carbon.SetTestNow()`
-
-将系统时间设置为一个测试值：
-
-```go
-carbon.SetTestNow(carbon.Now())
-```
-
-### `carbon.CleanTestNow()`
-
-清除系统时间为正常值：
-
-```go
-carbon.CleanTestNow()
 ```
 
 ## Debug
