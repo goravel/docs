@@ -138,7 +138,7 @@ import "github.com/goravel/framework/support/carbon"
 
 ### `carbon.Now()`
 
-Get current time:
+The `carbon.Now()` function gets current time:
 
 ```go
 carbon.Now()
@@ -146,7 +146,7 @@ carbon.Now()
 
 ### `carbon.SetTimezone()`
 
-Set timezone：
+The `carbon.SetTimezone()` function sets timezone：
 
 ```go
 carbon.SetTimezone(carbon.UTC)
@@ -154,7 +154,7 @@ carbon.SetTimezone(carbon.UTC)
 
 ### `carbon.SetLocale()`
 
-Set language locale：
+The `carbon.SetLocale()` function sets language locale：
 
 ```go
 carbon.SetLocale("en")
@@ -164,7 +164,7 @@ carbon.SetLocale("en")
 
 ### `carbon.SetTestNow()`
 
-Set the time to a test value:
+The `carbon.SetTestNow()` function sets the time to a test value:
 
 ```go
 carbon.SetTestNow(carbon.Now())
@@ -172,7 +172,7 @@ carbon.SetTestNow(carbon.Now())
 
 ### `carbon.CleanTestNow()`
 
-Clear the test now Carbon object:
+The `carbon.CleanTestNow()` function clears the test now Carbon object:
 
 ```go
 carbon.CleanTestNow()
@@ -180,7 +180,7 @@ carbon.CleanTestNow()
 
 ### `carbon.IsTestNow()`
 
-Determine whether the time is a test value:
+The `carbon.IsTestNow()` function determines whether the time is a test value:
 
 ```go
 carbon.IsTestNow()
@@ -188,7 +188,7 @@ carbon.IsTestNow()
 
 ### `carbon.Parse()`
 
-Get `Carbon` object by String:
+The `carbon.Parse()` function gets `Carbon` object by String:
 
 ```go
 carbon.Parse("2020-08-05 13:14:15")
@@ -196,7 +196,7 @@ carbon.Parse("2020-08-05 13:14:15")
 
 ### `carbon.ParseByLayout()`
 
-Get `Carbon` object by given value and layout:
+The `carbon.ParseByLayout()` function gets `Carbon` object by given value and layout:
 
 ```go
 carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
@@ -204,7 +204,7 @@ carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
 
 ### `carbon.ParseByFormat()`
 
-Get `Carbon` object by given value and format:
+The `carbon.ParseByFormat()` function gets `Carbon` object by given value and format:
 
 ```go
 carbon.ParseByFormat("2020-08-05 13:14:15", carbon.DateTimeFormat)
@@ -212,7 +212,7 @@ carbon.ParseByFormat("2020-08-05 13:14:15", carbon.DateTimeFormat)
 
 ### `carbon.ParseWithLayouts()`
 
-Get `Carbon` object with layouts:
+The `carbon.ParseWithLayouts()` function gets `Carbon` object with layouts:
 
 ```go
 carbon.ParseWithLayouts("2020|08|05 13|14|15", []string{"2006|01|02 15|04|05", "2006|1|2 3|4|5"})
@@ -220,7 +220,7 @@ carbon.ParseWithLayouts("2020|08|05 13|14|15", []string{"2006|01|02 15|04|05", "
 
 ### `carbon.ParseWithFormats()`
 
-Get `Carbon` object with formats:
+The `carbon.ParseWithFormats()` function gets `Carbon` object with formats:
 
 ```go
 carbon.ParseWithFormats("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|i|s"})
@@ -228,7 +228,7 @@ carbon.ParseWithFormats("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|
 
 ### `carbon.FromTimestamp()`
 
-Get `Carbon` object by timestamp with second precision:
+The `carbon.FromTimestamp()` function gets `Carbon` object by timestamp with second precision:
 
 ```go
 carbon.FromTimestamp(1577836800)
@@ -236,7 +236,7 @@ carbon.FromTimestamp(1577836800)
 
 ### `carbon.FromTimestampMilli()`
 
-Get `Carbon` object by timestamp with millisecond precision:
+The `carbon.FromTimestampMilli()` function gets `Carbon` object by timestamp with millisecond precision:
 
 ```go
 carbon.FromTimestampMilli(1649735755999)
@@ -244,7 +244,7 @@ carbon.FromTimestampMilli(1649735755999)
 
 ### `carbon.FromTimestampMicro()`
 
-Get `Carbon` object by timestamp with microsecond precision:
+The `carbon.FromTimestampMicro()` function gets `Carbon` object by timestamp with microsecond precision:
 
 ```go
 carbon.FromTimestampMicro(1649735755999999)
@@ -252,7 +252,7 @@ carbon.FromTimestampMicro(1649735755999999)
 
 ### `carbon.FromTimestampNano()`
 
-Get `Carbon` object by timestamp with nanosecond precision:
+The `carbon.FromTimestampNano()` function gets `Carbon` object by timestamp with nanosecond precision:
 
 ```go
 carbon.FromTimestampNano(1649735755999999999)
@@ -260,7 +260,7 @@ carbon.FromTimestampNano(1649735755999999999)
 
 ### `carbon.FromDateTime()`
 
-Get `Carbon` object by year, month, day, hour, minute, second:
+The `carbon.FromDateTime()` function gets `Carbon` object by year, month, day, hour, minute, second:
 
 ```go
 carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
@@ -268,7 +268,7 @@ carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
 
 ### `carbon.FromDateTimeMilli()`
 
-Get `Carbon` object by year, month, day, hour, minute, second, millisecond:
+The `carbon.FromDateTimeMilli()` function gets `Carbon` object by year, month, day, hour, minute, second, millisecond:
 
 ```go
 carbon.FromDateTimeMilli(2020, 1, 1, 0, 0, 0, 999)
@@ -276,7 +276,7 @@ carbon.FromDateTimeMilli(2020, 1, 1, 0, 0, 0, 999)
 
 ### `carbon.FromDateTimeMicro()`
 
-Get `Carbon` object by year, month, day, hour, minute, second, microsecond:
+The `carbon.FromDateTimeMicro()` function gets `Carbon` object by year, month, day, hour, minute, second, microsecond:
 
 ```go
 carbon.FromDateTimeMicro(2020, 1, 1, 0, 0, 0, 999999)
@@ -284,7 +284,7 @@ carbon.FromDateTimeMicro(2020, 1, 1, 0, 0, 0, 999999)
 
 ### `carbon.FromDateTimeNano()`
 
-Get `Carbon` object by year, month, day, hour, minute, second, nanosecond:
+The `carbon.FromDateTimeNano()` function gets `Carbon` object by year, month, day, hour, minute, second, nanosecond:
 
 ```go
 carbon.FromDateTimeNano(2020, 1, 1, 0, 0, 0, 999999999)
@@ -292,7 +292,7 @@ carbon.FromDateTimeNano(2020, 1, 1, 0, 0, 0, 999999999)
 
 ### `carbon.FromDate()`
 
-Get `Carbon` object by year, month, day:
+The `carbon.FromDate()` function gets `Carbon` object by year, month, day:
 
 ```go
 carbon.FromDate(2020, 1, 1)
@@ -300,7 +300,7 @@ carbon.FromDate(2020, 1, 1)
 
 ### `carbon.FromDateMilli()`
 
-Get `Carbon` object by year, month, day, millisecond:
+The `carbon.FromDateMilli()` function gets `Carbon` object by year, month, day, millisecond:
 
 ```go
 carbon.FromDateMilli(2020, 1, 1, 999)
@@ -308,7 +308,7 @@ carbon.FromDateMilli(2020, 1, 1, 999)
 
 ### `carbon.FromDateMicro()`
 
-Get `Carbon` object by year, month, day, microsecond:
+The `carbon.FromDateMicro()` function gets `Carbon` object by year, month, day, microsecond:
 
 ```go
 carbon.FromDateMicro(2020, 1, 1, 999999)
@@ -316,7 +316,7 @@ carbon.FromDateMicro(2020, 1, 1, 999999)
 
 ### `carbon.FromDateNano()`
 
-Get `Carbon` object by year, month, day, nanosecond:
+The `carbon.FromDateNano()` function gets `Carbon` object by year, month, day, nanosecond:
 
 ```go
 carbon.FromDateNano(2020, 1, 1, 999999999)
@@ -324,7 +324,7 @@ carbon.FromDateNano(2020, 1, 1, 999999999)
 
 ### `carbon.FromTime()`
 
-Get `Carbon` object by hour, minute, second:
+The `carbon.FromTime()` function gets `Carbon` object by hour, minute, second:
 
 ```go
 carbon.FromTime(13, 14, 15)
@@ -332,7 +332,7 @@ carbon.FromTime(13, 14, 15)
 
 ### `carbon.FromTimeMilli()`
 
-Get `Carbon` object by hour, minute, second, millisecond:
+The `carbon.FromTimeMilli()` function gets `Carbon` object by hour, minute, second, millisecond:
 
 ```go
 carbon.FromTimeMilli(13, 14, 15, 999)
@@ -340,7 +340,7 @@ carbon.FromTimeMilli(13, 14, 15, 999)
 
 ### `carbon.FromTimeMicro()`
 
-Get `Carbon` object by hour, minute, second, microsecond:
+The `carbon.FromTimeMicro()` function gets `Carbon` object by hour, minute, second, microsecond:
 
 ```go
 carbon.FromTimeMicro(13, 14, 15, 999999)
@@ -348,7 +348,7 @@ carbon.FromTimeMicro(13, 14, 15, 999999)
 
 ### `carbon.FromTimeNano()`
 
-Get `Carbon` object by hour, minute, second, nanosecond:
+The `carbon.FromTimeNano()` function gets `Carbon` object by hour, minute, second, nanosecond:
 
 ```go
 carbon.FromTimeNano(13, 14, 15, 999999999)
@@ -357,7 +357,7 @@ carbon.FromTimeNano(13, 14, 15, 999999999)
 
 ### `carbon.FromStdTime()`
 
-Get `Carbon` object by `time.Time`:
+The `carbon.FromStdTime()` function gets `Carbon` object by `time.Time`:
 
 ```go
 carbon.FromStdTime(time.Now())
@@ -371,7 +371,7 @@ import "github.com/goravel/framework/support/debug"
 
 ### `debug.Dump()`
 
-`debug.Dump()` can print any variable:
+The `debug.Dump()` function prints any variable:
 
 ```go
 debug.Dump(myVar1, myVar2, ...)
@@ -379,7 +379,7 @@ debug.Dump(myVar1, myVar2, ...)
 
 ### `debug.FDump()`
 
-`debug.FDump()` can print any variable to `io.Writer`:
+The `debug.FDump()` function prints any variable to `io.Writer`:
 
 ```go
 debug.FDump(someWriter, myVar1, myVar2, ...)
@@ -387,7 +387,7 @@ debug.FDump(someWriter, myVar1, myVar2, ...)
 
 ### `debug.SDump()`
 
-`debug.SDump()` can print any variable to `string`:
+The `debug.SDump()` function prints any variable to `string`:
 
 ```go
 debug.SDump(myVar1, myVar2, ...)
