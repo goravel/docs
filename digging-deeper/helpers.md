@@ -11,15 +11,20 @@
 | [path.App()](#path-app)           | [path.Base()](#path-base)       | [path.Config()](#path-config) |
 | [path.Database()](#path-database) | [path.Storage()](#path-storage) | [path.Public()](#path-public) |
 
-### Time
+### Carbon
 
-|                                                       |                                                    |                                                       |
-|-------------------------------------------------------|----------------------------------------------------|-------------------------------------------------------|
-| [carbon.Now()](#carbon-now)                           | [carbon.SetTimezone()](#carbon-settimezone)        | [carbon.Parse()](#carbon-parse)                       |
-| [carbon.FromTimestamp()](#carbon-fromtimestamp)       | [carbon.FromDateTime()](#carbon-fromdatetime)      | [carbon.FromDate()](#carbon-fromdate)                 |
-| [carbon.FromTime()](#carbon-fromtime)                 | [carbon.FromStdTime()](#carbon-fromstdtime)        | [carbon.IsTestNow()](#carbon-istestnow)               |
-| [carbon.SetTestNow()](#carbon-settestnow)             | [carbon.CleanTestNow()](#carbon-cleantestnow)      | [carbon.ParseByLayout()](#carbon-parsebylayout)       |
-| [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbon-parsewithlayouts) | [carbon.ParseWithFormats()](#carbon-parsewithformats) |
+|                                                           |                                                           |                                                         |
+|-----------------------------------------------------------|-----------------------------------------------------------|---------------------------------------------------------|
+| [carbon.Now()](#carbon-now)                               | [carbon.SetTimezone()](#carbon-settimezone)               | [carbon.SetLocale()](#carbon-setlocale)                 |
+| [carbon.SetTestNow()](#carbon-settestnow)                 | [carbon.CleanTestNow()](#carbon-cleantestnow)             | [carbon.IsTestNow()](#carbon-istestnow)                 |
+| [carbon.Parse()](#carbon-parse)                           | [carbon.ParseByLayout()](#carbon-parsebylayout)           | [carbon.ParseByFormat()](#carbon-parsebyformat)         |
+| [carbon.ParseWithLayouts()](#carbon-parsewithlayouts)     | [carbon.ParseWithFormats()](#carbon-parsewithformats)     | [carbon.FromTimestamp()](#carbon-fromtimestamp)         |
+| [carbon.FromTimestampMilli()](#carbon-fromtimestampmilli) | [carbon.FromTimestampMicro()](#carbon-fromtimestampmicro) | [carbon.FromTimestampNano()](#carbon-fromtimestampnano) |
+| [carbon.FromDateTime()](#carbon-fromdatetime)             | [carbon.FromDateTimeMilli()](#carbon-fromdatetimemilli)   | [carbon.FromDateTimeMicro()](#carbon-fromdatetimemicro) |
+| [carbon.FromDateTimeNano()](#carbon-fromdatetimenano)     | [carbon.FromDate()](#carbon-fromdate)                     | [carbon.FromDateMilli()](#carbon-fromdatemilli)         |
+| [carbon.FromDateMicro()](#carbon-fromdatemicro)           | [carbon.FromDateNano()](#carbon-fromdatenano)             | [carbon.FromTime()](#carbon-fromtime)                   |
+| [carbon.FromTimeMilli()](#carbon-fromtimemilli)           | [carbon.FromTimeMicro()](#carbon-fromtimemicro)           | [carbon.FromTimeNano()](#carbon-fromtimenano)           |
+| [carbon.FromStdTime()](#carbon-fromstdtime)               |                                                           |                                                         |
 
 ### Debug
 
@@ -56,13 +61,15 @@
 
 ## Paths
 
+```go
+import "github.com/goravel/framework/support/path"
+```
+
 ### `path.App()`
 
 The `path.App()` function returns the path to your application's app directory. You may also use the `path.App()` function to generate a path to a file relative to the application directory:
 
 ```go
-import "github.com/goravel/framework/support/path"
-
 path := path.App()
 path := path.App("http/controllers/controller.go")
 ```
@@ -121,119 +128,41 @@ path := path.Lang()
 path := path.Lang("en.json")
 ```
 
-## Time
+## Carbon
 
 The `carbon` module of Goravel is an expansion by [dromara/carbon](https://github.com/dromara/carbon), please refer to the official documentation for details.
 
-### `carbon.Now()`
-
-Get current time:
-
 ```go
 import "github.com/goravel/framework/support/carbon"
+```
 
+### `carbon.Now()`
+
+The `carbon.Now()` function gets current time:
+
+```go
 carbon.Now()
 ```
 
 ### `carbon.SetTimezone()`
 
-Set timezone：
+The `carbon.SetTimezone()` function sets timezone：
 
 ```go
 carbon.SetTimezone(carbon.UTC)
 ```
 
-### `carbon.Parse()`
+### `carbon.SetLocale()`
 
-Get `Carbon` object by String:
-
-```go
-carbon.Parse("2020-08-05 13:14:15")
-```
-
-### `carbon.ParseByLayout()`
-
-Get `Carbon` object by given value and layout:
+The `carbon.SetLocale()` function sets language locale, refer to [locales list](https://github.com/dromara/carbon/tree/master/lang) for all supported locales：
 
 ```go
-carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
-```
-
-### `carbon.ParseByFormat()`
-
-Get `Carbon` object by given value and format:
-
-```go
-carbon.ParseByFormat("2020-08-05 13:14:15", carbon.DateTimeFormat)
-```
-
-### `carbon.ParseWithLayouts()`
-
-Get `Carbon` object with layouts:
-
-```go
-carbon.ParseWithLayouts("2020|08|05 13|14|15", []string{"2006|01|02 15|04|05", "2006|1|2 3|4|5"})
-```
-
-### `carbon.ParseWithFormats()`
-
-Get `Carbon` object with formats:
-
-```go
-carbon.ParseWithFormats("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|i|s"})
-```
-
-### `carbon.FromTimestamp()`
-
-Get `Carbon` object by timestamp:
-
-```go
-carbon.FromTimestamp(1577836800)
-```
-
-### `carbon.FromDateTime()`
-
-Get `Carbon` object by date time:
-
-```go
-carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
-```
-
-### `carbon.FromDate()`
-
-Get `Carbon` object by date:
-
-```go
-carbon.FromDate(2020, 1, 1)
-```
-
-### `carbon.FromTime()`
-
-Get `Carbon` object by time:
-
-```go
-carbon.FromTime(0, 0, 0)
-```
-
-### `carbon.FromStdTime()`
-
-Get `Carbon` object by `time.Time`:
-
-```go
-carbon.FromStdTime(time.Now())
-```
-
-### `carbon.IsTestNow()`
-
-Determine whether the time is a test value:
-
-```go
-carbon.IsTestNow()
+carbon.SetLocale("en")
 ```
 
 ### `carbon.SetTestNow()`
 
-Set the time to a test value:
+The `carbon.SetTestNow()` function sets the time to a test value:
 
 ```go
 carbon.SetTestNow(carbon.Now())
@@ -241,53 +170,238 @@ carbon.SetTestNow(carbon.Now())
 
 ### `carbon.CleanTestNow()`
 
-Clear the test now Carbon object:
+The `carbon.CleanTestNow()` function clears the test now Carbon object:
 
 ```go
 carbon.CleanTestNow()
 ```
 
+### `carbon.IsTestNow()`
+
+The `carbon.IsTestNow()` function determines whether the time is a test value:
+
+```go
+carbon.IsTestNow()
+```
+
+### `carbon.Parse()`
+
+The `carbon.Parse()` function gets `Carbon` object by String:
+
+```go
+carbon.Parse("2020-08-05 13:14:15")
+```
+
+### `carbon.ParseByLayout()`
+
+The `carbon.ParseByLayout()` function gets `Carbon` object by given value and layout:
+
+```go
+carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
+```
+
+### `carbon.ParseByFormat()`
+
+The `carbon.ParseByFormat()` function gets `Carbon` object by given value and format:
+
+```go
+carbon.ParseByFormat("2020-08-05 13:14:15", carbon.DateTimeFormat)
+```
+
+### `carbon.ParseWithLayouts()`
+
+The `carbon.ParseWithLayouts()` function gets `Carbon` object with layouts:
+
+```go
+carbon.ParseWithLayouts("2020|08|05 13|14|15", []string{"2006|01|02 15|04|05", "2006|1|2 3|4|5"})
+```
+
+### `carbon.ParseWithFormats()`
+
+The `carbon.ParseWithFormats()` function gets `Carbon` object with formats:
+
+```go
+carbon.ParseWithFormats("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|i|s"})
+```
+
+### `carbon.FromTimestamp()`
+
+The `carbon.FromTimestamp()` function gets `Carbon` object by timestamp with second precision:
+
+```go
+carbon.FromTimestamp(1577836800)
+```
+
+### `carbon.FromTimestampMilli()`
+
+The `carbon.FromTimestampMilli()` function gets `Carbon` object by timestamp with millisecond precision:
+
+```go
+carbon.FromTimestampMilli(1649735755999)
+```
+
+### `carbon.FromTimestampMicro()`
+
+The `carbon.FromTimestampMicro()` function gets `Carbon` object by timestamp with microsecond precision:
+
+```go
+carbon.FromTimestampMicro(1649735755999999)
+```
+
+### `carbon.FromTimestampNano()`
+
+The `carbon.FromTimestampNano()` function gets `Carbon` object by timestamp with nanosecond precision:
+
+```go
+carbon.FromTimestampNano(1649735755999999999)
+```
+
+### `carbon.FromDateTime()`
+
+The `carbon.FromDateTime()` function gets `Carbon` object by year, month, day, hour, minute, second:
+
+```go
+carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
+```
+
+### `carbon.FromDateTimeMilli()`
+
+The `carbon.FromDateTimeMilli()` function gets `Carbon` object by year, month, day, hour, minute, second, millisecond:
+
+```go
+carbon.FromDateTimeMilli(2020, 1, 1, 0, 0, 0, 999)
+```
+
+### `carbon.FromDateTimeMicro()`
+
+The `carbon.FromDateTimeMicro()` function gets `Carbon` object by year, month, day, hour, minute, second, microsecond:
+
+```go
+carbon.FromDateTimeMicro(2020, 1, 1, 0, 0, 0, 999999)
+```
+
+### `carbon.FromDateTimeNano()`
+
+The `carbon.FromDateTimeNano()` function gets `Carbon` object by year, month, day, hour, minute, second, nanosecond:
+
+```go
+carbon.FromDateTimeNano(2020, 1, 1, 0, 0, 0, 999999999)
+```
+
+### `carbon.FromDate()`
+
+The `carbon.FromDate()` function gets `Carbon` object by year, month, day:
+
+```go
+carbon.FromDate(2020, 1, 1)
+```
+
+### `carbon.FromDateMilli()`
+
+The `carbon.FromDateMilli()` function gets `Carbon` object by year, month, day, millisecond:
+
+```go
+carbon.FromDateMilli(2020, 1, 1, 999)
+```
+
+### `carbon.FromDateMicro()`
+
+The `carbon.FromDateMicro()` function gets `Carbon` object by year, month, day, microsecond:
+
+```go
+carbon.FromDateMicro(2020, 1, 1, 999999)
+```
+
+### `carbon.FromDateNano()`
+
+The `carbon.FromDateNano()` function gets `Carbon` object by year, month, day, nanosecond:
+
+```go
+carbon.FromDateNano(2020, 1, 1, 999999999)
+```
+
+### `carbon.FromTime()`
+
+The `carbon.FromTime()` function gets `Carbon` object by hour, minute, second:
+
+```go
+carbon.FromTime(13, 14, 15)
+```
+
+### `carbon.FromTimeMilli()`
+
+The `carbon.FromTimeMilli()` function gets `Carbon` object by hour, minute, second, millisecond:
+
+```go
+carbon.FromTimeMilli(13, 14, 15, 999)
+```
+
+### `carbon.FromTimeMicro()`
+
+The `carbon.FromTimeMicro()` function gets `Carbon` object by hour, minute, second, microsecond:
+
+```go
+carbon.FromTimeMicro(13, 14, 15, 999999)
+```
+
+### `carbon.FromTimeNano()`
+
+The `carbon.FromTimeNano()` function gets `Carbon` object by hour, minute, second, nanosecond:
+
+```go
+carbon.FromTimeNano(13, 14, 15, 999999999)
+```
+
+
+### `carbon.FromStdTime()`
+
+The `carbon.FromStdTime()` function gets `Carbon` object by `time.Time`:
+
+```go
+carbon.FromStdTime(time.Now())
+```
+
 ## Debug
-
-### `debug.Dump()`
-
-`debug.Dump()` can print any variable:
 
 ```go
 import "github.com/goravel/framework/support/debug"
+```
 
+### `debug.Dump()`
+
+The `debug.Dump()` function prints any variable:
+
+```go
 debug.Dump(myVar1, myVar2, ...)
 ```
 
 ### `debug.FDump()`
 
-`debug.FDump()` can print any variable to `io.Writer`:
+The `debug.FDump()` function prints any variable to `io.Writer`:
 
 ```go
-import "github.com/goravel/framework/support/debug"
-
 debug.FDump(someWriter, myVar1, myVar2, ...)
 ```
 
 ### `debug.SDump()`
 
-`debug.SDump()` can print any variable to `string`:
+The `debug.SDump()` function prints any variable to `string`:
 
 ```go
-import "github.com/goravel/framework/support/debug"
-
 debug.SDump(myVar1, myVar2, ...)
 ```
 
 ## Maps
+
+```go
+import "github.com/goravel/framework/support/maps"
+```
 
 ### `maps.Add()`
 
 The `maps.Add()` function adds a new key-value pair to the given map if the key does not already exist in the map:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Krishan"}
 maps.Add(mp, "age", 22)
 // map[string]any{"name": "Krishan", "age": 22}
@@ -303,13 +417,11 @@ maps.Add(mp2, "name", "Krishan")
 The `maps.Exists()` function determines if the given key exists in the provided map:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Krishan", "age": 22}
 
-exists := maps.Exists(mp, "name") // true
+maps.Exists(mp, "name") // true
 
-exists = maps.Exists(mp, "email") // false
+maps.Exists(mp, "email") // false
 ```
 
 ### `maps.Forget()`
@@ -317,8 +429,6 @@ exists = maps.Exists(mp, "email") // false
 The `maps.Forget()` function removes the given key(s) from the provided map:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]string{"name": "Krishan", "age": "22"}
 
 maps.Forget(mp, "name", "age")
@@ -330,15 +440,11 @@ maps.Forget(mp, "name", "age")
 The `maps.Get()` function retrieves the value of the given key from the provided map. If the key does not exist, the default value will be returned:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Bowen"}
 
-value := maps.Get(mp, "name", "Krishan")
-// Bowen
+maps.Get(mp, "name", "Krishan") // Bowen
 
-value = maps.Get(mp, "age", 22)
-// 22
+maps.Get(mp, "age", 22) // 22
 ```
 
 ### `maps.Has()`
@@ -346,15 +452,11 @@ value = maps.Get(mp, "age", 22)
 The `maps.Has()` function determines if the given key(s) exists in the provided map:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel", "language": "Go"}
 
-exists := maps.Has(mp, "name", "language")
-// true
+maps.Has(mp, "name", "language") // true
 
-exists = maps.Has(mp, "name", "age")
-// false
+maps.Has(mp, "name", "age") // false
 ```
 
 ### `maps.HasAny()`
@@ -362,15 +464,11 @@ exists = maps.Has(mp, "name", "age")
 The `maps.HasAny()` function determines if any of the given key(s) exists in the provided map:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel", "language": "Go"}
 
-exists := maps.HasAny(mp, "name", "age")
-// true
+maps.HasAny(mp, "name", "age") // true
 
-exists = maps.HasAny(mp, "age", "email")
-// false
+maps.HasAny(mp, "age", "email") // false
 ```
 
 ### `maps.Only()`
@@ -378,14 +476,12 @@ exists = maps.HasAny(mp, "age", "email")
 The `maps.Only()` function retrieves only the given key(s) from the provided map:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel", "language": "Go"}
 
-newMap := maps.Only(mp, "name")
+maps.Only(mp, "name")
 // map[string]any{"name": "Goravel"}
 
-newMap = maps.Only(mp, "name", "age")
+maps.Only(mp, "name", "age")
 // map[string]any{"name": "Goravel"}
 ```
 
@@ -394,25 +490,19 @@ newMap = maps.Only(mp, "name", "age")
 The `maps.Pull()` function retrieves and removes the given key from the provided map:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel", "language": "Go"}
 
-name := maps.Pull(mp, "name")
-// name = "Goravel"
-// mp = map[string]any{"language": "Go"}
+maps.Pull(mp, "name")
+// map[string]any{"language": "Go"}
 ```
 
 A default value can be provided as the third argument to the `maps.Pull()` function. This value will be returned if the key does not exist in the map:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel", "language": "Go"}
 
-name := maps.Pull(mp, "age", "default")
-// name = "default"
-// mp = map[string]any{"name": "Goravel", "language": "Go"}
+maps.Pull(mp, "age", "default")
+// map[string]any{"name": "Goravel", "language": "Go"}
 ```
 
 ### `maps.Set()`
@@ -420,8 +510,6 @@ name := maps.Pull(mp, "age", "default")
 The `maps.Set()` function sets the given key and value in the provided map:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel"}
 
 maps.Set(mp, "language", "Go")
@@ -433,11 +521,9 @@ maps.Set(mp, "language", "Go")
 The `maps.Where()` function filters the provided map using the given callback:
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]string{"name": "Goravel", "language": "Go"}
 
-newMap := maps.Where(mp, func(key string, value string) bool {
+maps.Where(mp, func(key string, value string) bool {
     return key == "name"
 })
 // map[string]string{"name": "Goravel"}
@@ -445,20 +531,22 @@ newMap := maps.Where(mp, func(key string, value string) bool {
 
 ## Convert
 
+```go
+import "github.com/goravel/framework/support/convert"
+```
+
 ### `convert.Tap()`
 
 The `convert.Tap()` function passes the given value to the provided callback and returns the value:
 
 ```go
-import "github.com/goravel/framework/support/convert"
-
-value := convert.Tap("Goravel", func(value string) {
+convert.Tap("Goravel", func(value string) {
     fmt.Println(value + " Framework")
 })
 // Goravel
 
 mp := map[string]string{"name": "Goravel"}
-val := convert.Tap(mp, func(value map[string]string) {
+convert.Tap(mp, func(value map[string]string) {
     mp["language"] = "Go"
 })
 // map[string]string{"name": "Goravel", "language": "Go"}
@@ -469,12 +557,10 @@ val := convert.Tap(mp, func(value map[string]string) {
 The `convert.Transform()` transforms the given value using the provided callback and returns the result:
 
 ```go
-import "github.com/goravel/framework/support/convert"
-
-value := convert.Transform(1, strconv.Itoa)
+convert.Transform(1, strconv.Itoa)
 // "1"
 
-val := convert.Transform("foo", func(s string) *foo {
+convert.Transform("foo", func(s string) *foo {
     return &foo{Name: s}
 })
 // &foo{Name: "foo"}
@@ -485,9 +571,7 @@ val := convert.Transform("foo", func(s string) *foo {
 The `convert.With()` executes the given callback with the provided value and returns the result of the callback:
 
 ```go
-import "github.com/goravel/framework/support/convert"
-
-value := convert.With("Goravel", func(value string) string {
+convert.With("Goravel", func(value string) string {
     return value + " Framework"
 })
 // Goravel Framework
@@ -498,16 +582,11 @@ value := convert.With("Goravel", func(value string) string {
 The `convert.Default()` method returns first non-zero value. If all values are zero, it returns zero value.
 
 ```go
-import "github.com/goravel/framework/support/convert"
+convert.Default("", "foo") // foo
 
-value := convert.Default("", "foo")
-// foo
+convert.Default("bar", "foo") // bar
 
-value = convert.Default("bar", "foo")
-// bar
-
-value = convert.Default(0, 1)
-// 1
+convert.Default(0, 1) // 1
 ```
 
 ### `convert.Pointer()`
@@ -515,8 +594,6 @@ value = convert.Default(0, 1)
 The `convert.Pointer()` method returns the pointer of the given value.
 
 ```go
-import "github.com/goravel/framework/support/convert"
-
 convert.Pointer("foo") // *string("foo")
 
 convert.Pointer(1) // *int(1)
@@ -524,15 +601,16 @@ convert.Pointer(1) // *int(1)
 
 ## Collect
 
+```go
+import "github.com/goravel/framework/support/collect"
+```
+
 ### `collect.Count()`
 
 The `collect.Count()` function returns the number of items in the given collection:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-collect.Count([]string{"Goravel", "Framework"})
-// 2
+collect.Count([]string{"Goravel", "Framework"}) // 2
 ```
 
 ### `collect.CountBy()`
@@ -540,8 +618,6 @@ collect.Count([]string{"Goravel", "Framework"})
 The `collect.CountBy()` function counts the occurrences for which the predicate is true:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
 collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
     return strings.Contains(value, "Goravel")
 })
@@ -553,8 +629,6 @@ collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
 The `collect.Each()` function iterates over the items in the given collection and passes each item to the given callback:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
 collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
     fmt.Println(index + 1, value)
 })
@@ -567,12 +641,9 @@ collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
 The `collect.Filter()` function filters the items in the collection using the given callback:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Filter([]string{"Goravel", "Framework"}, func(value string) bool {
+collect.Filter([]string{"Goravel", "Framework"}, func(value string) bool {
     return strings.Contains(value, "Goravel")
 })
-
 // []string{"Goravel"}
 ```
 
@@ -581,17 +652,14 @@ newCollection := collect.Filter([]string{"Goravel", "Framework"}, func(value str
 The `collect.GroupBy()` function groups the items in the collection by the result of the given callback:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
 // use example of complex map slice (use different example)
-newCollection := collect.GroupBy([]map[string]string{
+collect.GroupBy([]map[string]string{
     {"class": "1", "Name": "Rohan"},
     {"class": "2", "Name": "Bowen"},
     {"class": "2", "Name": "Krishan"},
 }, func(value map[string]string) string {
     return value["class"]
 })
-
 // map[string][]map[string]string{
 //     "1": []map[string]string{{"class": "1", "Name": "Rohan"}},
 //     "2": []map[string]string{{"class": "2", "Name": "Bowen"}, {"class": "2", "Name": "Krishan"}},
@@ -603,9 +671,7 @@ newCollection := collect.GroupBy([]map[string]string{
 The `collect.Keys()` function returns all the keys for the items in the collection:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-keys := collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
+collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
 // []string{"name", "language"}
 ```
 
@@ -614,12 +680,9 @@ keys := collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
 The `collect.Map()` function converts one type of collection into another using the given iteratee:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Map([]string{"Goravel", "Framework"}, func(value string,  _ int) string {
+collect.Map([]string{"Goravel", "Framework"}, func(value string,  _ int) string {
     return strings.ToUpper(value)
 })
-
 // []string{"GORAVEL", "FRAMEWORK"}
 ```
 
@@ -628,10 +691,7 @@ newCollection := collect.Map([]string{"Goravel", "Framework"}, func(value string
 The `collect.Max()` function returns the maximum value of the given collection:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-max := collect.Max([]int{1, 2, 3, 4, 5})
-// 5
+collect.Max([]int{1, 2, 3, 4, 5}) // 5
 ```
 
 ### `collect.Merge()`
@@ -639,12 +699,10 @@ max := collect.Max([]int{1, 2, 3, 4, 5})
 The `collect.Merge()` function merges the given maps into a single map:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newMap := collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"language": "Go"})
+collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"language": "Go"})
 // map[string]string{"name": "Goravel", "language": "Go"}
 
-newMap = collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"name": "Framework"})
+collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"name": "Framework"})
 // map[string]string{"name": "Framework"}
 ```
 
@@ -653,10 +711,7 @@ newMap = collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"
 The `collect.Min()` function returns the minimum value of the given collection:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-min := collect.Min([]int{1, 2, 3, 4, 5})
-// 1
+collect.Min([]int{1, 2, 3, 4, 5}) // 1
 ```
 
 ### `collect.Reverse()`
@@ -664,10 +719,7 @@ min := collect.Min([]int{1, 2, 3, 4, 5})
 The `collect.Reverse()` function reverses the items in the collection:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Reverse([]string{"Goravel", "Framework"})
-
+collect.Reverse([]string{"Goravel", "Framework"})
 // []string{"Framework", "Goravel"}
 ```
 
@@ -676,10 +728,7 @@ newCollection := collect.Reverse([]string{"Goravel", "Framework"})
 The `collect.Shuffle()` function shuffles the items in the collection:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Shuffle([]int{1, 2, 3, 4, 5})
-
+collect.Shuffle([]int{1, 2, 3, 4, 5})
 // []int{3, 1, 5, 2, 4}(example)
 ```
 
@@ -688,10 +737,7 @@ newCollection := collect.Shuffle([]int{1, 2, 3, 4, 5})
 The `collect.Split()` function splits a collection into the groups of the given length. If the collection can't be split evenly, the final chunk will contain the remaining items:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Split([]int{1, 2, 3, 4, 5}, 2)
-
+collect.Split([]int{1, 2, 3, 4, 5}, 2)
 // [][]int{{1, 2}, {3, 4}, {5}}
 ```
 
@@ -700,12 +746,7 @@ newCollection := collect.Split([]int{1, 2, 3, 4, 5}, 2)
 The `collect.Sum()` function returns the sum of all items in the collection:
 
 ```go
-
-import "github.com/goravel/framework/support/collect"
-
-sum := collect.Sum([]int{1, 2, 3, 4, 5})
-
-// 15
+collect.Sum([]int{1, 2, 3, 4, 5}) // 15
 ```
 
 ### `collect.Unique()`
@@ -713,10 +754,7 @@ sum := collect.Sum([]int{1, 2, 3, 4, 5})
 The `collect.Unique()` method returns the duplicate-free collection where in case of duplicate values, only the first occurrence will be kept:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Unique([]string{"Goravel", "Framework", "Goravel"})
-
+collect.Unique([]string{"Goravel", "Framework", "Goravel"})
 // []string{"Goravel", "Framework"}
 ```
 
@@ -725,9 +763,7 @@ newCollection := collect.Unique([]string{"Goravel", "Framework", "Goravel"})
 The `collect.Values()` function returns all the values of the given collection:
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-values := collect.Values(map[string]string{"name": "Goravel", "language": "Go"})
+collect.Values(map[string]string{"name": "Goravel", "language": "Go"})
 // []string{"Goravel", "Go"}
 ```
 
