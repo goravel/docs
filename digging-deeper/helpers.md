@@ -162,6 +162,8 @@ Set language locale：
 carbon.SetLocale("en")
 ```
 
+> refer to [locales list](https://github.com/dromara/carbon/tree/v2.6.x/lang) for view all supported locales
+
 ### `carbon.SetTestNow()`
 
 Set the time to a test value:

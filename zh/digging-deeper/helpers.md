@@ -159,8 +159,9 @@ carbon.SetLocation(time.UTC)
 设置语言：
 
 ```go
-carbon.SetLocale("en")
+carbon.SetLocale("zh-CN")
 ```
+> 访问 [语言列表](https://github.com/dromara/carbon/tree/v2.6.x/lang) 查看所有支持的语言
 
 ### `carbon.SetTestNow()`
 
