@@ -154,7 +154,7 @@ carbon.SetTimezone(carbon.UTC)
 
 ### `carbon.SetLocale()`
 
-The `carbon.SetLocale()` function sets language locale, refer to [locales list](https://github.com/dromara/carbon/tree/v2.6.x/lang) for all supported locales：
+The `carbon.SetLocale()` function sets language locale, refer to [locales list](https://github.com/dromara/carbon/tree/master/lang) for all supported locales：
 
 ```go
 carbon.SetLocale("en")
