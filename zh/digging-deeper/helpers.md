@@ -13,13 +13,18 @@
 
 ### 时间
 
-|                                                       |                                                    |                                                       |
-|-------------------------------------------------------|----------------------------------------------------|-------------------------------------------------------|
-| [carbon.Now()](#carbon-now)                           | [carbon.SetTimezone()](#carbon-settimezone)        | [carbon.Parse()](#carbon-parse)                       |
-| [carbon.FromTimestamp()](#carbon-fromtimestamp)       | [carbon.FromDateTime()](#carbon-fromdatetime)      | [carbon.FromDate()](#carbon-fromdate)                 |
-| [carbon.FromTime()](#carbon-fromtime)                 | [carbon.FromStdTime()](#carbon-fromstdtime)        | [carbon.IsTestNow()](#carbon-istestnow)               |
-| [carbon.SetTestNow()](#carbon-settestnow)             | [carbon.CleanTestNow()](#carbon-cleantestnow)      | [carbon.ParseByLayout()](#carbon-parsebylayout)       |
-| [carbon.ParseWithLayouts()](#carbon-parsewithlayouts) | [carbon.ParseByFormat()](#carbon-parsewithlayouts) | [carbon.ParseWithFormats()](#carbon-parsewithformats) |
+|                                                           |                                                           |                                                         |
+|-----------------------------------------------------------|-----------------------------------------------------------|---------------------------------------------------------|
+| [carbon.Now()](#carbon-now)                               | [carbon.SetTimezone()](#carbon-settimezone)               | [carbon.SetLocale()](#carbon-setlocale)                 |
+| [carbon.SetTestNow()](#carbon-settestnow)                 | [carbon.CleanTestNow()](#carbon-cleantestnow)             | [carbon.IsTestNow()](#carbon-istestnow)                 |
+| [carbon.Parse()](#carbon-parse)                           | [carbon.ParseByLayout()](#carbon-parsebylayout)           | [carbon.ParseByFormat()](#carbon-parsebyformat)         |
+| [carbon.ParseWithLayouts()](#carbon-parsewithlayouts)     | [carbon.ParseWithFormats()](#carbon-parsewithformats)     | [carbon.FromTimestamp()](#carbon-fromtimestamp)         |
+| [carbon.FromTimestampMilli()](#carbon-fromtimestampmilli) | [carbon.FromTimestampMicro()](#carbon-fromtimestampmicro) | [carbon.FromTimestampNano()](#carbon-fromtimestampnano) |
+| [carbon.FromDateTime()](#carbon-fromdatetime)             | [carbon.FromDateTimeMilli()](#carbon-fromdatetimemilli)   | [carbon.FromDateTimeMicro()](#carbon-fromdatetimemicro) |
+| [carbon.FromDateTimeNano()](#carbon-fromdatetimenano)     | [carbon.FromDate()](#carbon-fromdate)                     | [carbon.FromDateMilli()](#carbon-fromdatemilli)         |
+| [carbon.FromDateMicro()](#carbon-fromdatemicro)           | [carbon.FromDateNano()](#carbon-fromdatenano)             | [carbon.FromTime()](#carbon-fromtime)                   |
+| [carbon.FromTimeMilli()](#carbon-fromtimemilli)           | [carbon.FromTimeMicro()](#carbon-fromtimemicro)           | [carbon.FromTimeNano()](#carbon-fromtimenano)           |
+| [carbon.FromStdTime()](#carbon-fromstdtime)               |                                                           |                                                         |
 
 ### 调试
 
@@ -56,13 +61,15 @@
 
 ## 路径
 
+```go
+import "github.com/goravel/framework/support/path"
+```
+
 ### `path.App()`
 
 `path.App()` 函数返回 app 目录的路径。您也可以用来生成应用目录下特定文件的路径：
 
 ```go
-import "github.com/goravel/framework/support/path"
-
 path := path.App()
 path := path.App("http/controllers/controller.go")
 ```
@@ -125,13 +132,15 @@ path := path.Lang("en.json")
 
 Goravel 的 `carbon` 是 [dromara/carbon](https://github.com/dromara/carbon) 的一个扩展，详细用法请参考其官方文档。
 
+```go
+import "github.com/goravel/framework/support/carbon"
+```
+
 ### `carbon.Now()`
 
 获取当前时间：
 
 ```go
-import "github.com/goravel/framework/support/carbon"
-
 carbon.Now()
 ```
 
@@ -143,9 +152,41 @@ carbon.Now()
 carbon.SetTimezone(carbon.UTC)
 ```
 
+### `carbon.SetLocale()`
+
+设置语言环境，访问 [语言列表](https://github.com/dromara/carbon/tree/master/lang) 查看所有支持的语言：
+
+```go
+carbon.SetLocale("zh-CN")
+```
+
+### `carbon.SetTestNow()`
+
+将系统时间设置为一个测试值：
+
+```go
+carbon.SetTestNow(carbon.Now())
+```
+
+### `carbon.CleanTestNow()`
+
+清除系统时间为正常值：
+
+```go
+carbon.CleanTestNow()
+```
+
+### `carbon.IsTestNow()`
+
+判断系统时间是否为测试值：
+
+```go
+carbon.IsTestNow()
+```
+
 ### `carbon.Parse()`
 
-字符串格式化为 `Carbon` 对象：
+将字符串格式化为 `Carbon` 对象：
 
 ```go
 carbon.Parse("2020-08-05 13:14:15")
@@ -185,77 +226,151 @@ carbon.ParseWithFormats("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|
 
 ### `carbon.FromTimestamp()`
 
-时间戳格式化为 `Carbon` 对象：
+将秒级时间戳格式化为 `Carbon` 对象：
 
 ```go
-carbon.FromTimestamp(1577836800)
+carbon.FromTimestamp(1649735755)
+```
+
+### `carbon.FromTimestampMilli()`
+
+将毫秒级时间戳格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimestampMilli(1649735755999)
+```
+
+### `carbon.FromTimestampMicro()`
+
+将微秒级时间戳格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimestampMicro(1649735755999999)
+```
+
+### `carbon.FromTimestampNano()`
+
+将纳秒级时间戳格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimestampNano(1649735755999999999)
 ```
 
 ### `carbon.FromDateTime()`
 
-时间格式化为 `Carbon` 对象：
+将年、月、日、时、分、秒、格式化为 `Carbon` 对象：
 
 ```go
 carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
 ```
 
+### `carbon.FromDateTimeMilli()`
+
+将年、月、日、时、分、秒、毫秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromDateTimeMilli(2020, 1, 1, 0, 0, 0, 999)
+```
+
+### `carbon.FromDateTimeMicro()`
+
+将年、月、日、时、分、秒、微妙格式化为 `Carbon` 对象：
+
+```go
+carbon.FromDateTimeMicro(2020, 1, 1, 0, 0, 0, 999999)
+```
+
+### `carbon.FromDateTimeNano()`
+
+将年、月、日、时、分、秒、纳妙格式化为 `Carbon` 对象：
+
+```go
+carbon.FromDateTimeNano(2020, 1, 1, 0, 0, 0, 999999999)
+```
+
 ### `carbon.FromDate()`
 
-年月日格式化为 `Carbon` 对象：
+将年、月、日格式化为 `Carbon` 对象：
 
 ```go
 carbon.FromDate(2020, 1, 1)
 ```
 
-### `carbon.FromTime()`
+### `carbon.FromDateMilli()`
 
-时分秒格式化为 `Carbon` 对象：
+将年、月、日、毫秒格式化为 `Carbon` 对象：
 
 ```go
-carbon.FromTime(0, 0, 0)
+carbon.FromDateMilli(2020, 1, 1, 999)
+```
+
+### `carbon.FromDateMicro()`
+
+将年、月、日、微秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromDateMicro(2020, 1, 1, 999999)
+```
+
+### `carbon.FromDateNano()`
+
+将年、月、日、纳秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromDateNano(2020, 1, 1, 999999999)
+```
+
+### `carbon.FromTime()`
+
+将时、分、秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTime(13, 14, 15)
+```
+
+### `carbon.FromTimeMilli()`
+
+将时、分、秒、毫秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimeMilli(13, 14, 15, 999)
+```
+
+### `carbon.FromTimeMicro()`
+
+将时、分、秒、微秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimeMicro(13, 14, 15, 999999)
+```
+
+### `carbon.FromTimeNano()`
+
+将时、分、秒、纳秒格式化为 `Carbon` 对象：
+
+```go
+carbon.FromTimeNano(13, 14, 15, 999999999)
 ```
 
 ### `carbon.FromStdTime()`
 
-`time.Time` 格式化为 `Carbon` 对象：
+将 `time.Time` 格式化为 `Carbon` 对象：
 
 ```go
 carbon.FromStdTime(time.Now())
 ```
 
-### `carbon.IsTestNow()`
-
-判断系统时间是否为测试值：
-
-```go
-carbon.IsTestNow()
-```
-
-### `carbon.SetTestNow()`
-
-将系统时间设置为一个测试值：
-
-```go
-carbon.SetTestNow(carbon.Now())
-```
-
-### `carbon.CleanTestNow()`
-
-清除系统时间为正常值：
-
-```go
-carbon.CleanTestNow()
-```
-
 ## Debug
+
+```go
+import "github.com/goravel/framework/support/debug"
+```
 
 ### `debug.Dump()`
 
 `debug.Dump()` 可以打印任意对象：
 
 ```go
-import "github.com/goravel/framework/support/debug"
-
 debug.Dump(myVar1, myVar2, ...)
 ```
 
@@ -264,8 +379,6 @@ debug.Dump(myVar1, myVar2, ...)
 `debug.FDump()` 可以打印任意对象输出到一个 `io.Writer`：
 
 ```go
-import "github.com/goravel/framework/support/debug"
-
 debug.FDump(someWriter, myVar1, myVar2, ...)
 ```
 
@@ -274,8 +387,6 @@ debug.FDump(someWriter, myVar1, myVar2, ...)
 `debug.SDump()` 可以将打印输出至字符串：
 
 ```go
-import "github.com/goravel/framework/support/debug"
-
 debug.SDump(myVar1, myVar2, ...)
 ```
 
@@ -286,8 +397,6 @@ debug.SDump(myVar1, myVar2, ...)
 `maps.Add()` 方法用于向给定的 map 中添加不存在的键值对：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Krishan"}
 maps.Add(mp, "age", 22)
 // map[string]any{"name": "Krishan", "age": 22}
@@ -303,13 +412,10 @@ maps.Add(mp2, "name", "Krishan")
 `maps.Exists()` 函数用于判断给定的键是否存在于提供的 map 中：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Krishan", "age": 22}
 
-exists := maps.Exists(mp, "name") // true
-
-exists = maps.Exists(mp, "email") // false
+maps.Exists(mp, "name") // true
+maps.Exists(mp, "email") // false
 ```
 
 ### `maps.Forget()`
@@ -317,8 +423,6 @@ exists = maps.Exists(mp, "email") // false
 `maps.Forget()` 函数用于从提供的 map 中移除给定的键：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]string{"name": "Krishan", "age": "22"}
 
 maps.Forget(mp, "name", "age")
@@ -330,15 +434,10 @@ maps.Forget(mp, "name", "age")
 `maps.Get()` 函数从提供的 map 中检索给定键的值。如果键不存在，则返回默认值：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Bowen"}
 
-value := maps.Get(mp, "name", "Krishan")
-// Bowen
-
-value = maps.Get(mp, "age", 22)
-// 22
+maps.Get(mp, "name", "Krishan") // Bowen
+maps.Get(mp, "age", 22) // 22
 ```
 
 ### `maps.Has()`
@@ -346,15 +445,10 @@ value = maps.Get(mp, "age", 22)
 `maps.Has()` 函数用于判断给定的键是否存在于提供的 map 中：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel", "language": "Go"}
 
-exists := maps.Has(mp, "name", "language")
-// true
-
-exists = maps.Has(mp, "name", "age")
-// false
+maps.Has(mp, "name", "language") // true
+maps.Has(mp, "name", "age") // false
 ```
 
 ### `maps.HasAny()`
@@ -362,15 +456,10 @@ exists = maps.Has(mp, "name", "age")
 `maps.HasAny()` 函数用于判断给定的任意键是否存在于提供的 map 中：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel", "language": "Go"}
 
-exists := maps.HasAny(mp, "name", "age")
-// true
-
-exists = maps.HasAny(mp, "age", "email")
-// false
+maps.HasAny(mp, "name", "age") // true
+maps.HasAny(mp, "age", "email") // false
 ```
 
 ### `maps.Only()`
@@ -378,14 +467,11 @@ exists = maps.HasAny(mp, "age", "email")
 `maps.Only()` 函数从提供的 map 中检索给定的键：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel", "language": "Go"}
 
-newMap := maps.Only(mp, "name")
+maps.Only(mp, "name")
 // map[string]any{"name": "Goravel"}
-
-newMap = maps.Only(mp, "name", "age")
+maps.Only(mp, "name", "age")
 // map[string]any{"name": "Goravel"}
 ```
 
@@ -394,25 +480,19 @@ newMap = maps.Only(mp, "name", "age")
 `maps.Pull()` 函数从提供的 map 中检索并移除给定的键：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel", "language": "Go"}
 
-name := maps.Pull(mp, "name")
-// name = "Goravel"
-// mp = map[string]any{"language": "Go"}
+maps.Pull(mp, "name")
+// map[string]any{"language": "Go"}
 ```
 
 `maps.Pull()` 可以设置默认值在第三个参数，如果键不存在，则返回默认值：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel", "language": "Go"}
 
-name := maps.Pull(mp, "age", "default")
-// name = "default"
-// mp = map[string]any{"name": "Goravel", "language": "Go"}
+maps.Pull(mp, "age", "default")
+// map[string]any{"name": "Goravel", "language": "Go"}
 ```
 
 ### `maps.Set()`
@@ -420,8 +500,6 @@ name := maps.Pull(mp, "age", "default")
 `maps.Set()` 函数用于在提供的 map 中设置给定的键和值：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]any{"name": "Goravel"}
 
 maps.Set(mp, "language", "Go")
@@ -433,11 +511,8 @@ maps.Set(mp, "language", "Go")
 `maps.Where()` 函数使用给定的回调函数过滤提供的 map：
 
 ```go
-import "github.com/goravel/framework/support/maps"
-
 mp := map[string]string{"name": "Goravel", "language": "Go"}
-
-newMap := maps.Where(mp, func(key string, value string) bool {
+maps.Where(mp, func(key string, value string) bool {
     return key == "name"
 })
 // map[string]string{"name": "Goravel"}
@@ -445,20 +520,22 @@ newMap := maps.Where(mp, func(key string, value string) bool {
 
 ## Convert
 
+```go
+import "github.com/goravel/framework/support/convert"
+```
+
 ### `convert.Tap()`
 
 `convert.Tap()` 函数将给定的值传递给提供的回调函数，并返回该值：
 
 ```go
-import "github.com/goravel/framework/support/convert"
-
-value := convert.Tap("Goravel", func(value string) {
+convert.Tap("Goravel", func(value string) {
     fmt.Println(value + " Framework")
 })
 // Goravel
 
 mp := map[string]string{"name": "Goravel"}
-val := convert.Tap(mp, func(value map[string]string) {
+convert.Tap(mp, func(value map[string]string) {
     mp["language"] = "Go"
 })
 // map[string]string{"name": "Goravel", "language": "Go"}
@@ -469,12 +546,10 @@ val := convert.Tap(mp, func(value map[string]string) {
 `convert.Transform()` 函数使用提供的回调函数转换给定的值，并返回结果：
 
 ```go
-import "github.com/goravel/framework/support/convert"
-
-value := convert.Transform(1, strconv.Itoa)
+convert.Transform(1, strconv.Itoa)
 // "1"
 
-val := convert.Transform("foo", func(s string) *foo {
+convert.Transform("foo", func(s string) *foo {
     return &foo{Name: s}
 })
 // &foo{Name: "foo"}
@@ -485,9 +560,7 @@ val := convert.Transform("foo", func(s string) *foo {
 `convert.With()` 函数使用提供的值执行给定的回调函数，并返回回调函数的结果：
 
 ```go
-import "github.com/goravel/framework/support/convert"
-
-value := convert.With("Goravel", func(value string) string {
+convert.With("Goravel", func(value string) string {
     return value + " Framework"
 })
 // Goravel Framework
@@ -498,16 +571,11 @@ value := convert.With("Goravel", func(value string) string {
 `convert.Default()` 方法返回第一个非零值。如果所有值都为零，则返回零值。
 
 ```go
-import "github.com/goravel/framework/support/convert"
+convert.Default("", "foo") // foo
 
-value := convert.Default("", "foo")
-// foo
+convert.Default("bar", "foo") // bar
 
-value = convert.Default("bar", "foo")
-// bar
-
-value = convert.Default(0, 1)
-// 1
+convert.Default(0, 1) // 1
 ```
 
 ### `convert.Pointer()`
@@ -515,8 +583,6 @@ value = convert.Default(0, 1)
 `convert.Pointer()` 函数返回给定值的指针。
 
 ```go
-import "github.com/goravel/framework/support/convert"
-
 convert.Pointer("foo") // *string("foo")
 
 convert.Pointer(1) // *int(1)
@@ -524,15 +590,16 @@ convert.Pointer(1) // *int(1)
 
 ## Collect
 
+```go
+import "github.com/goravel/framework/support/collect"
+```
+
 ### `collect.Count()`
 
 `collect.Count()` 函数返回给定集合中的项目数：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-collect.Count([]string{"Goravel", "Framework"})
-// 2
+collect.Count([]string{"Goravel", "Framework"}) // 2
 ```
 
 ### `collect.CountBy()`
@@ -540,8 +607,6 @@ collect.Count([]string{"Goravel", "Framework"})
 `collect.CountBy()` 函数统计返回值为 true 的出现次数：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
 collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
     return strings.Contains(value, "Goravel")
 })
@@ -553,8 +618,6 @@ collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
 `collect.Each()` 函数迭代给定集合中的项目，并将每个项目传递给给定的回调函数：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
 collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
     fmt.Println(index + 1, value)
 })
@@ -567,12 +630,9 @@ collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
 `collect.Filter()` 函数使用给定的回调函数过滤集合中的项目：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Filter([]string{"Goravel", "Framework"}, func(value string) bool {
+collect.Filter([]string{"Goravel", "Framework"}, func(value string) bool {
     return strings.Contains(value, "Goravel")
 })
-
 // []string{"Goravel"}
 ```
 
@@ -581,17 +641,14 @@ newCollection := collect.Filter([]string{"Goravel", "Framework"}, func(value str
 `collect.GroupBy()` 函数根据给定回调函数的结果对集合中的项目进行分组：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
 // use example of complex map slice (use different example)
-newCollection := collect.GroupBy([]map[string]string{
+collect.GroupBy([]map[string]string{
     {"class": "1", "Name": "Rohan"},
     {"class": "2", "Name": "Bowen"},
     {"class": "2", "Name": "Krishan"},
 }, func(value map[string]string) string {
     return value["class"]
 })
-
 // map[string][]map[string]string{
 //     "1": []map[string]string{{"class": "1", "Name": "Rohan"}},
 //     "2": []map[string]string{{"class": "2", "Name": "Bowen"}, {"class": "2", "Name": "Krishan"}},
@@ -603,9 +660,7 @@ newCollection := collect.GroupBy([]map[string]string{
 `collect.Keys()` 函数返回集合中所有项目的键：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-keys := collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
+collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
 // []string{"name", "language"}
 ```
 
@@ -614,12 +669,9 @@ keys := collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
 `collect.Map()` 函数使用给定的迭代器将一种类型的集合转换为另一种类型：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Map([]string{"Goravel", "Framework"}, func(value string,  _ int) string {
+collect.Map([]string{"Goravel", "Framework"}, func(value string,  _ int) string {
     return strings.ToUpper(value)
 })
-
 // []string{"GORAVEL", "FRAMEWORK"}
 ```
 
@@ -628,10 +680,7 @@ newCollection := collect.Map([]string{"Goravel", "Framework"}, func(value string
 `collect.Max()` 函数返回给定集合的最大值：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-max := collect.Max([]int{1, 2, 3, 4, 5})
-// 5
+collect.Max([]int{1, 2, 3, 4, 5}) // 5
 ```
 
 ### `collect.Merge()`
@@ -639,12 +688,10 @@ max := collect.Max([]int{1, 2, 3, 4, 5})
 `collect.Merge()` 函数将给定的 map 合并为一个 map：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newMap := collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"language": "Go"})
+collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"language": "Go"})
 // map[string]string{"name": "Goravel", "language": "Go"}
 
-newMap = collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"name": "Framework"})
+collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"name": "Framework"})
 // map[string]string{"name": "Framework"}
 ```
 
@@ -653,10 +700,7 @@ newMap = collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"
 `collect.Min()` 函数返回给定集合的最小值：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-min := collect.Min([]int{1, 2, 3, 4, 5})
-// 1
+collect.Min([]int{1, 2, 3, 4, 5}) // 1
 ```
 
 ### `collect.Reverse()`
@@ -664,10 +708,7 @@ min := collect.Min([]int{1, 2, 3, 4, 5})
 `collect.Reverse()` 函数反转集合中的项目：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Reverse([]string{"Goravel", "Framework"})
-
+collect.Reverse([]string{"Goravel", "Framework"})
 // []string{"Framework", "Goravel"}
 ```
 
@@ -676,10 +717,7 @@ newCollection := collect.Reverse([]string{"Goravel", "Framework"})
 `collect.Shuffle()` 函数随机打乱集合中的项目：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Shuffle([]int{1, 2, 3, 4, 5})
-
+collect.Shuffle([]int{1, 2, 3, 4, 5})
 // []int{3, 1, 5, 2, 4}(example)
 ```
 
@@ -688,10 +726,7 @@ newCollection := collect.Shuffle([]int{1, 2, 3, 4, 5})
 `collect.Split()` 函数将集合分成给定长度的组。如果集合无法均匀分割，则最后一个块将包含剩余的项目：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Split([]int{1, 2, 3, 4, 5}, 2)
-
+collect.Split([]int{1, 2, 3, 4, 5}, 2)
 // [][]int{{1, 2}, {3, 4}, {5}}
 ```
 
@@ -700,12 +735,7 @@ newCollection := collect.Split([]int{1, 2, 3, 4, 5}, 2)
 `collect.Sum()` 函数返回集合中所有项目的总和：
 
 ```go
-
-import "github.com/goravel/framework/support/collect"
-
-sum := collect.Sum([]int{1, 2, 3, 4, 5})
-
-// 15
+collect.Sum([]int{1, 2, 3, 4, 5}) // 15
 ```
 
 ### `collect.Unique()`
@@ -713,10 +743,7 @@ sum := collect.Sum([]int{1, 2, 3, 4, 5})
 `collect.Unique()` 函数返回无重复的集合，如果有重复值，则只保留第一次出现的值：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-newCollection := collect.Unique([]string{"Goravel", "Framework", "Goravel"})
-
+collect.Unique([]string{"Goravel", "Framework", "Goravel"})
 // []string{"Goravel", "Framework"}
 ```
 
@@ -725,9 +752,7 @@ newCollection := collect.Unique([]string{"Goravel", "Framework", "Goravel"})
 `collect.Values()` 函数返回给定集合的所有值：
 
 ```go
-import "github.com/goravel/framework/support/collect"
-
-values := collect.Values(map[string]string{"name": "Goravel", "language": "Go"})
+collect.Values(map[string]string{"name": "Goravel", "language": "Go"})
 // []string{"Goravel", "Go"}
 ```
 
