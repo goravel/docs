@@ -273,7 +273,7 @@ func TestMain(m *testing.M) {
     panic(err)
   }
 
-  if err := database.Seed(); err != nil {
+  if err := database.Migrate(); err != nil {
     panic(err)
   }
 
@@ -281,7 +281,7 @@ func TestMain(m *testing.M) {
   exit := m.Run()
 
   // Uninstall the image after all test cases have been run
-  if err := database.Clear(); err != nil {
+  if err := database.Shutdown(); err != nil {
     panic(err)
   }
 

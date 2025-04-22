@@ -274,7 +274,7 @@ func TestMain(m *testing.M) {
     panic(err)
   }
 
-  if err := database.Seed(); err != nil {
+  if err := database.Migrate(); err != nil {
     panic(err)
   }
 
@@ -282,7 +282,7 @@ func TestMain(m *testing.M) {
   exit := m.Run()
 
   // 所有测试用例运行完毕后卸载镜像
-  if err := database.Clear(); err != nil {
+  if err := database.Shutdown(); err != nil {
     panic(err)
   }
 
