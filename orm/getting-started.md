@@ -419,7 +419,9 @@ When the requested item is not found, the `First` method does not generate an er
 ```go
 var user models.User
 err := facades.Orm().Query().FirstOrFail(&user)
-// err == orm.ErrRecordNotFound
+
+// import "github.com/goravel/framework/errors"
+// if errors.Is(err, errors.OrmRecordNotFound) {}
 ```
 
 ### Where

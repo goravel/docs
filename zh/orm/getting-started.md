@@ -418,7 +418,9 @@ facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "to
 ```go
 var user models.User
 err := facades.Orm().Query().FirstOrFail(&user)
-// err == orm.ErrRecordNotFound
+
+// import "github.com/goravel/framework/errors"
+// if errors.Is(err, errors.OrmRecordNotFound) {}
 ```
 
 ### Where 条件
