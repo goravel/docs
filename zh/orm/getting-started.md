@@ -413,7 +413,7 @@ facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "to
 
 #### 未找到时抛出错误
 
-当找不到模型时，`First` 方法不会抛出错误，如果想抛出，可以使用 `FirstOrFail`：
+当找不到模型时，`First` 方法不会抛出错误，如果想抛出，可以使用 `FirstOrFail`： 
 
 ```go
 var user models.User
