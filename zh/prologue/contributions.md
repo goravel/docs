@@ -59,12 +59,12 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过以下途径进行讨论：
 
 - [GitHub 讨论区](https://github.com/goravel/goravel/discussions)
-- [Telegram](https://github.com/goravel/goravel/tree/master#group)
+- [Discord](https://github.com/goravel/goravel/tree/master#group)
 - [微信群](https://github.com/goravel/goravel/blob/master/README_zh.md#%E7%BE%A4%E7%BB%84)
 
 ## 开发讨论
 
-您可以在 Goravel 仓库的 [GitHub 讨论区](https://github.com/goravel/goravel/discussions) 中提出新功能或对现有 Goravel 行为的改进。也可以在 Telegram 或微信群中进行有关错误、新功能和现有功能实现的非正式讨论。Goravel 的维护者 Bowen 通常在工作日的上午 9 点至下午 6 点（UTC+08:00）出现在频道中，并在其他时间偶尔出现在频道中。
+您可以在 Goravel 仓库的 [GitHub 讨论区](https://github.com/goravel/goravel/discussions) 中提出新功能或对现有 Goravel 行为的改进。也可以在 Discord 或微信群中进行有关错误、新功能和现有功能实现的非正式讨论。Goravel 的维护者 Bowen 通常在工作日的上午 9 点至下午 6 点（UTC+08:00）出现在频道中，并在其他时间偶尔出现在频道中。
 
 ## 提交贡献
 

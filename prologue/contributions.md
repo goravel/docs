@@ -59,12 +59,12 @@ You can report Bug Feedback [here](https://github.com/goravel/goravel/issues/new
 Goravel's GitHub issue trackers are not intended to provide Goravel help or support. Instead, use one of the following channels:
 
 - [GitHub Discussions](https://github.com/goravel/goravel/discussions)
-- [Telegram](https://github.com/goravel/goravel/tree/master#group)
+- [Discord](https://github.com/goravel/goravel/tree/master#group)
 - [WeChat](https://github.com/goravel/goravel/blob/master/README_zh.md#%E7%BE%A4%E7%BB%84)
 
 ## Development Discussion
 
-You may propose new features or improvements to existing Goravel behavior in the Goravel framework repository's [GitHub discussion board](https://github.com/goravel/goravel/discussions). Informal discussion regarding bugs, new features, and implementation of existing features takes place in Telegram or WeChat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
+You may propose new features or improvements to existing Goravel behavior in the Goravel framework repository's [GitHub discussion board](https://github.com/goravel/goravel/discussions). Informal discussion regarding bugs, new features, and implementation of existing features takes place in Discord or WeChat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
 
 ## Contribution
 
