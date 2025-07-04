@@ -151,4 +151,37 @@ facades.Lang(ctx).Choice("time.minutes_ago", 5, translation.Option{
 })
 ```
 
+## Embed 加载
+
+使用 embed 加载时，多语言文件将会被编译到二进制文件中，部署时不再需要多语言文件。独立语言文件与 embed 加载可以同时使用，只需要在 `config/app.go` 中同时配置 `lang_path` 和 `lang_fs` 即可。使用时将优先使用独立语言文件模式，当独立语言文件不存在时，才会使用 embed 加载。
+
+在多语言文件同级目录下创建一个 `fs.go` 文件：
+
+```
+/lang
+  en.json
+  cn.json
+  fs.go
+```
+
+```go
+// lang/fs.go
+package lang
+
+import "embed"
+
+//go:embed *
+var FS embed.FS
+```
+
+然后在 `config/app.go` 中配置：
+
+```go
+// config/app.go
+import "lang"
+
+"lang_path": "lang",
+"lang_fs":   lang.Fs,
+```
+
 <CommentService/>

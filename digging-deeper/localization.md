@@ -153,4 +153,37 @@ facades.Lang(ctx).Choice("time.minutes_ago", 5, translation.Option{
 })
 ```
 
+## Embed Loading  
+
+When using embed loading, the language files will be compiled into the binary file and no longer need to be deployed. The independent language files and embed loading can be used at the same time, just configure `lang_path` and `lang_fs` in the `config/app.go` file. When using, the independent language file mode will be used first, and when the independent language file does not exist, the embed loading will be used.
+
+In the same directory as the language files, create a `fs.go` file:
+
+```
+/lang
+  en.json
+  cn.json
+  fs.go
+```
+
+```go
+// lang/fs.go
+package lang
+
+import "embed"
+
+//go:embed *
+var FS embed.FS
+```
+
+Then configure in the `config/app.go` file:
+
+```go
+// config/app.go
+import "lang"
+
+"lang_path": "lang",
+"lang_fs":   lang.Fs,
+```
+
 <CommentService/>
