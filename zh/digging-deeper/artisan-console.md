@@ -8,6 +8,9 @@ Artisan 是 Goravel 自带的命令行工具，该模块可以使用 `facades.Ar
 
 ```shell
 go run . artisan list
+
+# or
+./artisan list
 ```
 
 每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。只需要在命令前加上 help 即可查看命令帮助界面：

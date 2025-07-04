@@ -51,7 +51,6 @@ import "github.com/goravel/framework/contracts/database"
     "username": config.Env("DB_USERNAME", ""),
     "password": config.Env("DB_PASSWORD", ""),
     "charset":  "utf8mb4",
-    "loc":      "Local",
   },
 }
 ```

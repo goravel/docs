@@ -8,6 +8,9 @@ Artisan is the CLI tool that comes with Goravel for interacting with the command
 
 ```shell
 go run . artisan list
+
+# or
+./artisan list
 ```
 
 Each command also has a "help" feature that shows and explains the arguments and options associated with the command. To see the help screen, just add "help" before the command name.
