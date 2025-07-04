@@ -6,8 +6,6 @@
 
 When building your web application, there may be tasks, like parsing and storing an uploaded CSV file, that take too long to complete during a web request. Fortunately, Goravel offers a solution by allowing you to create queued jobs that can run in the background. This way, by moving time-intensive tasks to a queue, your application can respond to web requests much faster and provide a better user experience for your customers. To implement this feature, we use `facades.Queue()`.  
 
-Goravel's queue configuration options are saved in your application's `config/queue.go` configuration file. Goravel supports two drivers: `redis` and `sync`.
-
 ### Connections Vs. Queues
 
 Before delving into Goravel queues, it's important to understand the difference between "connections" and "queues". In the configuration file, `config/queue.go`, you'll find an array for `connections` configuration. This option specifies the connections to backend queue services like Redis. However, every queue connection can have multiple "queues", which can be thought of as different stacks or piles of queued jobs. 
@@ -26,6 +24,40 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
   {Type: "int", Value: 1},
 }).OnQueue("emails").Dispatch()
+```
+
+## Driver
+
+The queue configuration file is stored in `config/queue.go`, and different queue drivers can be set in the configuration file.
+
+### Sync Driver
+
+The sync driver is the default driver, it will not push tasks to the queue, but execute directly in the current process.
+
+### Database Driver
+
+To use the `database` driver, you need to create a database table to store tasks first: [20210101000002_create_jobs_table.go](https://github.com/goravel/goravel/blob/master/database/migrations/20210101000002_create_jobs_table.go). The migration file is located in the `database/migrations` directory by default.
+
+### Custom Driver
+
+If the current driver cannot meet your needs, you can customize the driver. You need to implement the [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) interface in `contracts/queue/driver.go`.
+
+The official implementation of the `Redis` driver, you can refer to [Redis Driver](https://github.com/goravel/framework/blob/master/queue/drivers/redis/driver.go) to implement your own custom driver.
+
+After implementing the custom driver, you can add the configuration to `config/queue.go`:
+
+```
+...
+"connections": map[string]any{
+  "redis": map[string]any{
+    "driver": "custom",
+    "connection": "default",
+    "queue": "default",
+    "via": func() (queue.Driver, error) {
+        return redisfacades.Queue("redis") // The redis value is the key of connections
+    },
+  },
+},
 ```
 
 ## Creating Jobs
@@ -120,6 +152,14 @@ go func() {
     facades.Log().Errorf("Queue run error: %v", err)
   }
 }()
+```
+
+## Stop Queue Server
+
+When the queue server is running, you can stop the queue server by calling the `Shutdown` method, this method will wait for the current running tasks to complete before stopping the queue.
+
+```go
+err := facades.Queue().Worker().Shutdown()
 ```
 
 ## Dispatching Jobs

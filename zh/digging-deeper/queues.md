@@ -6,8 +6,6 @@
 
 在构建 Web 应用程序时，你可能需要执行一些比较耗时的任务（例如解析和存储上传的 CSV 文件），Goravel 可以让你轻松地创建可在后台排队处理的任务。通过将耗时的任务移到队列中，你的应用程序可以以超快的速度响应 Web 请求，并为客户提供更好的用户体验。我们使用 `facades.Queue()` 实现这些功能。
 
-队列配置文件存储在 `config/queue.go` 中。目前框架支持两种队列驱动： `redis` 和 `sync`。
-
 ### 连接 Vs 队列
 
 在开始使用 Goravel 队列之前，理解「连接」和「队列」之间的区别非常重要。在 `config/queue.go` 配置文件中，有一个 `connections` 配置选项。此选项定义到后端服务（如 Redis）的特定连接。然而，任何给定的队列连接都可能有多个「队列」，这些「队列」可能被认为是不同的堆栈或成堆的排队任务。
@@ -24,6 +22,40 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
   {Type: "int", Value: 1},
 }).OnQueue("emails").Dispatch()
+```
+
+## 驱动
+
+队列配置文件存储在 `config/queue.go` 中，可以在配置文件中设置不同的队列驱动。
+
+### 同步驱动
+
+同步驱动是默认的驱动，它不会将任务推送到队列中，而是直接在当前进程中执行。
+
+### 数据库驱动
+
+为使用 `database` 驱动，需要先创建一个数据库表来存储任务：[20210101000002_create_jobs_table.go](https://github.com/goravel/goravel/blob/master/database/migrations/20210101000002_create_jobs_table.go)。该迁移文件默认在 `database/migrations` 目录下。
+
+### 自定义驱动
+
+如果当前驱动无法满足需求，你可以自定义驱动。需要实现 `contracts/queue/driver.go` 中的 [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) 接口。
+
+官方实现了 `Redis` 驱动，你可以参考 [Redis Driver](https://github.com/goravel/framework/blob/master/queue/drivers/redis/driver.go) 实现自己的自定义驱动。
+
+自定义驱动实现后，可以添加配置到 `config/queue.go` 中：
+
+```
+...
+"connections": map[string]any{
+  "redis": map[string]any{
+    "driver": "custom",
+    "connection": "default",
+    "queue": "default",
+    "via": func() (queue.Driver, error) {
+        return redisfacades.Queue("redis") // The redis value is the key of connections
+    },
+  },
+},
 ```
 
 ## 创建任务
@@ -118,6 +150,14 @@ go func() {
     facades.Log().Errorf("Queue run error: %v", err)
   }
 }()
+```
+
+## 停止队列服务器
+
+当队列服务器运行时，你可以通过调用 `Shutdown` 方法来停止队列服务器，该方法会等待当前运行中的任务完成后才会停止队列。
+
+```go
+err := facades.Queue().Worker().Shutdown()
 ```
 
 ## 调度任务
