@@ -57,6 +57,38 @@ type User struct {
 
 更多 Tag 使用方法详见：https://gorm.io/docs/models.html。
 
+#### 根据数据表创建模型
+
+```shell
+./artisan make:model --table=users User
+
+// 如果 Model 已存在可以使用 -f 选项强制覆盖
+./artisan make:model --table=users -f User
+```
+
+如果数据表中有字段类型框架无法识别，可以在 `app/providers/database_service_provider.go` 文件的 `Boot` 方法中调用 `facades.Schema().Extend` 方法扩展字段类型：
+
+```go
+import "github.com/goravel/framework/contracts/schema"
+
+facades.Schema().Extend(&schema.Extension{
+  GoTypes: []schema.GoType{
+    {
+        Pattern: "uuid", 
+        Type: "uuid.UUID", 
+        NullType: "uuid.NullUUID", 
+        Imports: []string{"github.com/google/uuid"},
+    },
+    {
+        Pattern: "point", 
+        Type: "geom.Point", 
+        NullType: "*geom.Point", 
+        Imports: []string{"github.com/twpayne/go-geom"},
+    },
+  },
+})
+```
+
 ### 指定表名
 
 ```go

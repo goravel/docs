@@ -57,6 +57,38 @@ type User struct {
 
 More Tag usage details can be found at: https://gorm.io/docs/models.html.
 
+#### Create Model based on data table
+
+```shell
+./artisan make:model --table=users User
+
+// If the Model already exists, you can use the -f option to force overwrite
+./artisan make:model --table=users -f User
+```
+
+If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend` method to extend the field type in the `Boot` method of the `app/providers/database_service_provider.go` file:
+
+```go
+import "github.com/goravel/framework/contracts/schema"
+
+facades.Schema().Extend(&schema.Extension{
+  GoTypes: []schema.GoType{
+    {
+        Pattern: "uuid", 
+        Type: "uuid.UUID", 
+        NullType: "uuid.NullUUID", 
+        Imports: []string{"github.com/google/uuid"},
+    },
+    {
+        Pattern: "point", 
+        Type: "geom.Point", 
+        NullType: "*geom.Point", 
+        Imports: []string{"github.com/twpayne/go-geom"},
+    },
+  },
+})
+```
+
 ### Specify Table Name
 
 ```go
