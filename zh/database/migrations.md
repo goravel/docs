@@ -99,7 +99,7 @@ func (r *M20241207095921CreateUsersTable) Connection() string {
 
 ## 注册迁移
 
-使用 Go 语言迁移时，迁移文件生成后需要再在 `database/kernel.go` 文件中注册迁移文件：
+迁移文件生成后需要在 `database/kernel.go` 文件中注册，如果是通过 `make:migration` 命令生成的迁移文件，则不需要手动注册，框架会自动注册。
 
 ```go
 // database/kernel.go

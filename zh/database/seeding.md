@@ -77,7 +77,7 @@ func (s *DatabaseSeeder) Run() error {
 go run . artisan db:seed
 ```
 
-如果您想在运行 `db:seed` 命令时执行其他 seeder，可以在 `app/providers/database_service_provider.go` 中注册该 seeder：
+如果您想在运行 `db:seed` 命令时执行其他 seeder，可以在 `app/providers/database_service_provider.go` 中注册该 seeder，如果是通过 `make:seeder` 命令生成的 seeder，则不需要手动注册，框架会自动注册。
 
 ```go
 // app/providers/database_service_provider.go
