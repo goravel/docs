@@ -8,6 +8,9 @@ Artisan 是 Goravel 自带的命令行工具，该模块可以使用 `facades.Ar
 
 ```shell
 go run . artisan list
+
+# or
+./artisan list
 ```
 
 每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。只需要在命令前加上 help 即可查看命令帮助界面：
@@ -236,7 +239,7 @@ type SecretOption struct {
 如果你需要在继续之前要求用户确认操作，你可以使用 `Confirm` 方法。默认情况下，除非用户选择肯定选项，否则此方法将返回 `false`。
 
 ```go
-if answer, _ := ctx.Confirm("Do you wish to continue?"); !answer {
+if ctx.Confirm("Do you wish to continue?") {
     // ...
 }
 ```
@@ -244,7 +247,7 @@ if answer, _ := ctx.Confirm("Do you wish to continue?"); !answer {
 你还可以传递第二个参数给 `Confirm` 方法：
 
 ```go
-if answer, _ := ctx.Confirm("Do you wish to continue?", console.ConfirmOption; !answer {
+if ctx.Confirm("Do you wish to continue?", console.ConfirmOption {
 	Default : true,
 	Affirmative : "确认",
 	Negative : "取消",
@@ -452,6 +455,14 @@ facades.Route().GET("/", func(c *gin.Context) {
   facades.Artisan().Call("emails")
   facades.Artisan().Call("emails --lang Chinese name") // 携带参数与选项
 })
+```
+
+## 禁用打印颜色
+
+有些命令默认会打印颜色，例如 `list` 命令，但在某些终端或日志中颜色值会是乱码，这时你可以使用 `--no-ansi` 选项禁用打印颜色：
+
+```shell
+go run . artisan list --no-ansi
 ```
 
 <CommentService/>

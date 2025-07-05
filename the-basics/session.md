@@ -204,17 +204,24 @@ type Driver interface {
 
 #### Registering The Driver
 
-After implementing the driver, you need to register it in Goravel. You can do this using `Extend` method of the `facades.Session`. You should call the `Extend` method in the `boot` method of `app/providers/app_service_provider.go`:
+After implementing the driver, you only need to add it to the `config/session.go` configuration file:
 
 ```go
-import "github.com/goravel/framework/contracts/session"
+// config/session.go
+"default": "new",
 
-facades.Session().Extend("redis", func() session.Driver {
-  return &RedisDriver{}
-})
+"drivers": map[string]any{
+  "file": map[string]any{
+    "driver": "file",
+  },
+  "new": map[string]any{
+    "driver": "custom",
+    "via": func() (session.Driver, error) {
+      return &CustomDriver{}, nil
+    },
+  }
+},
 ```
-
-Once the driver is registered, you can use it by setting the `driver` option in the session configuration file to `redis` or by setting the `SESSION_DRIVER` environment variable to `redis`.
 
 ### Retrieving driver instance
 

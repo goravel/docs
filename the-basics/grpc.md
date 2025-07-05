@@ -165,4 +165,36 @@ func init() {
 }
 ```
 
+## Shutdown Grpc
+
+You can call the `Shutdown` method to gracefully shut down Grpc, which will wait for all requests to be processed before shutting down.
+
+```go
+// main.go
+bootstrap.Boot()
+
+// Create a channel to listen for OS signals
+quit := make(chan os.Signal)
+signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+// Start schedule by facades.Schedule
+go func() {
+  if err := facades.Grpc().Run(facades.Config().GetString("grpc.host")); err != nil {
+    facades.Log().Errorf("Grpc run error: %v", err)
+  }
+}()
+
+// Listen for the OS signal
+go func() {
+  <-quit
+  if err := facades.Grpc().Shutdown(); err != nil {
+    facades.Log().Errorf("Grpc Shutdown error: %v", err)
+  }
+
+  os.Exit(0)
+}()
+
+select {}
+```
+
 <CommentService/>

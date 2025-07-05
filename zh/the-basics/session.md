@@ -206,17 +206,24 @@ type Driver interface {
 
 #### 注册驱动
 
-实现驱动后，你需要在 Goravel 中注册它。你可以在 `app/providers/app_service_provider.go` 的 `boot` 方法中调用 `Extend` 方法：
+实现驱动后，你只需要将其添加到 `config/session.go` 配置文件中即可：
 
 ```go
-import "github.com/goravel/framework/contracts/session"
+// config/session.go
+"default": "new",
 
-facades.Session().Extend("redis", func() session.Driver {
-  return &RedisDriver{}
-})
+"drivers": map[string]any{
+  "file": map[string]any{
+    "driver": "file",
+  },
+  "new": map[string]any{
+    "driver": "custom",
+    "via": func() (session.Driver, error) {
+      return &CustomDriver{}, nil
+    },
+  }
+},
 ```
-
-注册了驱动程序以后，你可以通过将会话配置文件中的 `driver` 选项设置为 `redis` 或将 `SESSION_DRIVER` 环境变量设置为 `redis` 来使用它。
 
 ### 获取驱动实例
 
