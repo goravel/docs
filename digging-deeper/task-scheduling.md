@@ -68,7 +68,15 @@ We've already seen a few examples of how you may configure a task to run at spec
 
 | 方法                     | 描述                                                |
 | ------------------------ | --------------------------------------------------- |
-| `.Cron("* * * * *")`     | Run the task on a custom cron schedule              |
+| `.Cron("* * * * *")`     | Custom Crone schedule (minutes) |
+| `.Cron("* * * * * *")`   | Custom Crone schedule (seconds) |
+| `.EverySecond()`         | Run the task every second                 |
+| `.EveryTwoSeconds()`     | Run the task every two seconds               |
+| `.EveryFiveSeconds()`    | Run the task every five seconds               |
+| `.EveryTenSeconds()`     | Run the task every ten seconds               |
+| `.EveryFifteenSeconds()` | Run the task every fifteen seconds             |
+| `.EveryTwentySeconds()`  | Run the task every twenty seconds             |
+| `.EveryThirtySeconds()`  | Run the task every thirty seconds             |
 | `.EveryMinute()`         | Run the task every minute                           |
 | `.EveryTwoMinutes()`     | Run the task every two minutes                      |
 | `.EveryThreeMinutes()`   | Run the task every three minutes                    |
@@ -85,6 +93,20 @@ We've already seen a few examples of how you may configure a task to run at spec
 | `.EverySixHours()`       | Run the task every six hours                        |
 | `.Daily()`               | Run the task every day at midnight                  |
 | `.DailyAt("13:00")`      | Run the task every day at 13:00                     |
+| `.Days(1, 3, 5)`         | Run the task every Monday, Wednesday, and Friday |
+| `.Weekdays()`            | Run the task every Monday to Friday |
+| `.Weekends()`            | Run the task every Saturday and Sunday |
+| `.Mondays()`             | Run the task every Monday |
+| `.Tuesdays()`            | Run the task every Tuesday |
+| `.Wednesdays()`          | Run the task every Wednesday |
+| `.Thursdays()`           | Run the task every Thursday |
+| `.Fridays()`             | Run the task every Friday |
+| `.Saturdays()`           | Run the task every Saturday |
+| `.Sundays()`             | Run the task every Sunday |
+| `.Weekly()`              | Run the task every week |
+| `.Monthly()`             | Run the task every month |
+| `.Quarterly()`           | Run the task every quarter |
+| `.Yearly()`              | Run the task every year |
 
 ### Preventing Task Overlaps
 
