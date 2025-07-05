@@ -92,7 +92,7 @@ func (receiver *ProcessPodcast) Handle(args ...interface{}) error {
 
 ### 注册任务
 
-当任务创建好后，需要注册到 `app/provides/queue_service_provider.go`，以便能够正确调用。
+当任务创建好后，需要注册到 `app/provides/queue_service_provider.go`，以便能够正确调用。如果是通过 `make:job` 命令生成的任务，则不需要手动注册，框架会自动注册。
 
 ```go
 func (receiver *QueueServiceProvider) Jobs() []queue.Job {
