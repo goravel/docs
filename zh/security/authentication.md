@@ -4,7 +4,7 @@
 
 ## 简介
 
-用户认证是 Web 应用中不可或缺的功能，Goravel 的 `facades.Auth()` 模块提供 JWT 功能的支持，并且可以根据自己需要自定义驱动。
+用户认证是 Web 应用中不可或缺的功能，Goravel 的 `facades.Auth()` 模块提供 JWT 和 Session 驱动的支持，并且可以根据自己需要自定义驱动。
 
 ## 配置
 
