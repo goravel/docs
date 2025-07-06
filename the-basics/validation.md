@@ -109,12 +109,16 @@ The `Authorize` method is responsible for determining if the currently authentic
 package requests
 
 import (
+  "mime/multipart"
+
   "github.com/goravel/framework/contracts/http"
   "github.com/goravel/framework/contracts/validation"
 )
 
 type StorePostRequest struct {
   Name string `form:"name" json:"name"`
+  File *multipart.FileHeader `form:"file" json:"file"`
+  Files []*multipart.FileHeader `form:"files" json:"files"`
 }
 
 func (r *StorePostRequest) Authorize(ctx http.Context) error {
@@ -125,25 +129,10 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
   return map[string]string{
     // The keys are consistent with the incoming keys.
     "name": "required|max_len:255",
+    "file": "required|file",
+    "files": "required|array",
+    "files.*": "required|file",
   }
-}
-
-func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
-  return map[string]string{
-    "name": "trim",
-  }
-}
-
-func (r *StorePostRequest) Messages(ctx http.Context) map[string]string {
-  return map[string]string{}
-}
-
-func (r *StorePostRequest) Attributes(ctx http.Context) map[string]string {
-  return map[string]string{}
-}
-
-func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validation.Data) error {
-  return nil
 }
 ```
 

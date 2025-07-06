@@ -110,12 +110,16 @@ go run . artisan make:request user/StorePostRequest
 package requests
 
 import (
+  "mime/multipart"
+  
   "github.com/goravel/framework/contracts/http"
   "github.com/goravel/framework/contracts/validation"
 )
 
 type StorePostRequest struct {
   Name string `form:"name" json:"name"`
+  File *multipart.FileHeader `form:"file" json:"file"`
+  Files []*multipart.FileHeader `form:"files" json:"files"`
 }
 
 func (r *StorePostRequest) Authorize(ctx http.Context) error {
@@ -126,6 +130,9 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
   return map[string]string{
     // 键与传入的键保持一致
     "name": "required|max_len:255",
+    "file": "required|file",
+    "files": "required|array",
+    "files.*": "required|file",
   }
 }
 ```
