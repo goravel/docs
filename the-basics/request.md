@@ -21,7 +21,9 @@ facades.Route().Get("/", func(ctx http.Context) {
 ### Retrieving The Request Path
 
 ```go
-path := ctx.Request().Path() // /users
+path := ctx.Request().Path() // /users/1
+
+originPath := ctx.Request().OriginPath() // /users/{id}
 ```
 
 ### Retrieving The Request URL
