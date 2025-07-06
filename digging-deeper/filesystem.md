@@ -133,7 +133,7 @@ mime, err := file.MimeType()
 
 ### File Paths
 
-To obtain the path for a specific file, you can utilize the `Path` method. When using the `local` driver, this will provide you with the absolute path to the file. However, if you are using a driver like `s3`, the method will give you the file's relative path within the bucket:
+To obtain the path for a specific file, you can utilize the `Path` method. When using the `local` driver, this will provide you with the relative path to the file. However, if you are using a driver like `s3`, the method will give you the file's relative path within the bucket:
 
 ```go
 path := facades.Storage().Path("file.jpg")
