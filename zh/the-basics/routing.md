@@ -120,6 +120,7 @@ select {}
 | StaticFile | [文件路由](#文件路由)                 |
 | StaticFS   | [文件路由](#文件路由)                 |
 | Middleware | [中间件](#中间件)                     |
+| GetRoutes  | [获取所有路由](#获取所有路由)           |
 
 ## 基本路由
 
@@ -208,6 +209,12 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 详见[中间件](./middleware.md)
+
+## 获取所有路由
+
+```go
+routes := facades.Route().GetRoutes()
+```
 
 ## Fallback 路由
 

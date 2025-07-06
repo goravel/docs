@@ -121,6 +121,7 @@ select {}
 | StaticFile | [File Routing](#file-routing)           |
 | StaticFS   | [File Routing](#file-routing)           |
 | Middleware | [Middleware](#middleware)               |
+| GetRoutes  | [Get All Routes](#get-all-routes)       |
 
 ## Basic Routing
 
@@ -209,6 +210,12 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 Detail [Middleware](./middleware.md)
+
+## Get All Routes
+
+```go
+routes := facades.Route().GetRoutes()
+```
 
 ## Fallback Routes
 
