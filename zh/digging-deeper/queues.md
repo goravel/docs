@@ -265,6 +265,30 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dis
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
 ```
 
+## 重试失败任务
+
+如果任务在处理过程中失败，你可以使用 `queue:retry` 命令来重试该任务，在重试任务前请先从数据库 `failed_jobs` 表中获取要重试的任务 UUID：
+
+```shell
+# 重试单个任务
+./artisan queue:retry 4427387e-c75a-4295-afb3-2f3d0e410494
+
+# 重试多个任务
+./artisan queue:retry 4427387e-c75a-4295-afb3-2f3d0e410494 eafdd963-a8b7-4aca-9421-b376ed9f4382
+
+# 重试指定连接的失败任务
+./artisan queue:retry --connection=redis
+
+# 重试指定队列的失败任务
+./artisan queue:retry --queue=processing
+
+# 重试指定连接和队列的失败任务
+./artisan queue:retry --connection=redis --queue=processing
+
+# 重试所有失败任务
+./artisan queue:retry all
+```
+
 ## `queue.Arg.Type` 支持的类型
 
 ```go

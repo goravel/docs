@@ -267,6 +267,30 @@ You may chain the `OnConnection` and `OnQueue` methods together to specify the c
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
 ```
 
+## Retrying Failed Jobs
+
+If a job fails during processing, you can use the `queue:retry` command to retry the job. Before retrying the job, you need to get the UUID of the job to be retried from the `failed_jobs` table in the database:
+
+```shell
+# Retry a single job
+./artisan queue:retry 4427387e-c75a-4295-afb3-2f3d0e410494
+
+# Retry multiple jobs
+./artisan queue:retry 4427387e-c75a-4295-afb3-2f3d0e410494 eafdd963-a8b7-4aca-9421-b376ed9f4382
+
+# Retry failed jobs for a specific connection
+./artisan queue:retry --connection=redis
+
+# Retry failed jobs for a specific queue
+./artisan queue:retry --queue=processing
+
+# Retry failed jobs for a specific connection and queue
+./artisan queue:retry --connection=redis --queue=processing
+
+# Retry all failed jobs
+./artisan queue:retry all
+```
+
 ## `queue.Arg.Type` Supported Types
 
 ```go
