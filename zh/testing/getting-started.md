@@ -134,17 +134,20 @@ func (s *ExampleTestSuite) TestIndex() {
 
 ### 使用 Docker
 
-由于 `go test` 在不同包之间是并行测试，因此当使用本地数据库进行测试时，不能在测试用例中执行重置数据库操作，否则将有可能对并行运行的其他测试用例产生影响。针对这种情况，Goravel 支持使用 Docker 进行测试，不同包之间可以独立使用由 Docker 创建的数据库镜像。
+由于 `go test` 在不同包之间是并行测试，因此当使用本地数据库或缓存进行测试时，不能在测试用例中执行重置数据库或缓存操作，否则将有可能对并行运行的其他测试用例产生影响。针对这种情况，Goravel 支持使用 Docker 进行测试，不同包之间可以独立使用由 Docker 创建的镜像。
 
 > 由于 Docker 镜像对 windows 系统的支持有限，目前 Docker 测试仅支持在非 windows 环境下运行。
 
 #### 初始化镜像
 
-您可以使用 `Database` 方法根据默认数据库连接初始化数据库镜像，也可以向该方法传入数据库连接名称，初始化其他数据库镜像：
+你可以使用 `Database` 或 `Cache` 方法创建镜像，也可以向该方法传入连接名称：
 
 ```go
 database, err := facades.Testing().Docker().Database()
 database, err := facades.Testing().Docker().Database("postgres")
+
+cache, err := facades.Testing().Docker().Cache()
+cache, err := facades.Testing().Docker().Cache("redis")
 ```
 
 默认支持的数据库镜像：
@@ -154,7 +157,7 @@ database, err := facades.Testing().Docker().Database("postgres")
 | Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql) | latest      |
 | Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres) | latest      |
 | Sqlserver   | [https://hub.docker.com/r/microsoft/mssql-server](https://hub.docker.com/r/microsoft/mssql-server) | latest      |
-| Sqlite      | [https://hub.docker.com/r/nouchka/sqlite3](https://hub.docker.com/r/nouchka/sqlite3) | latest      |
+| Redis   | [https://hub.docker.com/_/redis](https://hub.docker.com/_/redis) | latest      |
 
 也可以使用 `Image` 方法自定义镜像：
 
@@ -178,12 +181,14 @@ database.Image(contractstesting.Image{
 
 ```go
 err := database.Build()
+err := cache.Build()
 ```
 
 这时使用 `docker ps` 命令可以看到镜像已运行在系统中，通过 `Config` 方法可以获取链接数据库的配置信息，方便连接调试：
 
 ```go
 config := database.Config()
+config := cache.Config()
 ```
 
 #### 运行填充
@@ -195,15 +200,16 @@ err := database.Seed()
 err := database.Seed(&seeders.UserSeeder{}, &seeders.PhotoSeeder{})
 ```
 
-#### 重置数据库
+#### 重置数据库或缓存
 
-由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库将不会产生负面影响，可以使用 `Fresh` 方法：
+由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库或缓存将不会产生负面影响，可以使用 `Fresh` 方法：
 
 ```go
 err := database.Fresh()
+err := cache.Fresh()
 ```
 
-也可以使用 `RefreshDatabase` 方法执行该操作：
+对于数据库，也可以使用 `RefreshDatabase` 方法执行该操作：
 
 ```go
 package feature
@@ -244,6 +250,7 @@ func (s *ExampleTestSuite) TestIndex() {
 
 ```go
 err := database.Shutdown()
+err := cache.Shutdown()
 ```
 
 #### 示例

@@ -133,17 +133,20 @@ func (s *ExampleTestSuite) TestIndex() {
 
 ### Using Docker
 
-When using `go test`, multiple packages are tested in parallel. As a result, refreshing the database in a test case using a local database can potentially affect other parallel test cases. To address this, Goravel offers Docker-based testing. With Docker, a database image can be created and used independently across different packages.
+When using `go test`, multiple packages are tested in parallel. As a result, refreshing the database or cache in a test case using a local database or cache can potentially affect other parallel test cases. To address this, Goravel offers Docker-based testing. With Docker, a database or cache image can be created and used independently across different packages.
 
 > Due to the limited support of the Docker image for the windows system, currently, the Docker test can only be run in non-windows environments.
 
 #### Initiate Docker
 
-You can use the `Database` method to initiate a database image based on the default database connection, or you can pass the database connection name to this method to initiate other database images:
+You can use the `Database` or `Cache` method to create an image, or you can pass the connection name to this method:
 
 ```go
 database, err := facades.Testing().Docker().Database()
-database, err := facades.Testing().Docker().Database("postgres")
+database, err := facades.Testing().Docker().Database("postgres")  
+
+cache, err := facades.Testing().Docker().Cache()
+cache, err := facades.Testing().Docker().Cache("redis")
 ```
 
 The database images supported by default:
@@ -153,7 +156,7 @@ The database images supported by default:
 | Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql)                                   | latest      |
 | Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres)                             | latest      |
 | Sqlserver   | [https://hub.docker.com/r/microsoft/mssql-server](https://hub.docker.com/r/microsoft/mssql-server) | latest      |
-| Sqlite      | [https://hub.docker.com/r/nouchka/sqlite3](https://hub.docker.com/r/nouchka/sqlite3)               | latest      |
+| Redis   | [https://hub.docker.com/_/redis](https://hub.docker.com/_/redis) | latest      |
 
 You can also use the `Image` method to customize the image:
 
@@ -177,12 +180,14 @@ After the image is initiated, you can use the `Build` method to build the image:
 
 ```go
 err := database.Build()
+err := cache.Build()
 ```
 
 At this time, you can use the `docker ps` command to see that the image is already running on the system, and you can obtain the configuration information of the database through the `Config` method to facilitate connection debugging:
 
 ```go
 config := database.Config()
+config := cache.Config()
 ```
 
 #### Running Seeders
@@ -194,15 +199,16 @@ err := database.Seed()
 err := database.Seed(&seeders.UserSeeder{})
 ```
 
-#### Refresh Database
+#### Refresh Database or Cache
 
-Because the test cases in the same package are executed serially, refreshing the database after a single test case run will have no negative impact, we can use the `Fresh` method:
+Because the test cases in the same package are executed serially, refreshing the database or cache after a single test case run will have no negative impact, we can use the `Fresh` method:
 
 ```go
 err := database.Fresh()
+err := cache.Fresh()
 ```
 
-You can also use the `RefreshDatabase` method:
+For the database, you can also use the `RefreshDatabase` method:
 
 ```go
 package feature
