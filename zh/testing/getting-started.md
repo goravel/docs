@@ -150,21 +150,12 @@ cache, err := facades.Testing().Docker().Cache()
 cache, err := facades.Testing().Docker().Cache("redis")
 ```
 
-默认支持的数据库镜像：
-
-| 数据库       | 镜像地址                                               | 版本      |
-| --------    | -------------------------------------------------- | --------- |
-| Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql) | latest      |
-| Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres) | latest      |
-| Sqlserver   | [https://hub.docker.com/r/microsoft/mssql-server](https://hub.docker.com/r/microsoft/mssql-server) | latest      |
-| Redis   | [https://hub.docker.com/_/redis](https://hub.docker.com/_/redis) | latest      |
-
 也可以使用 `Image` 方法自定义镜像：
 
 ```go
 import contractstesting "github.com/goravel/framework/contracts/testing"
 
-database.Image(contractstesting.Image{
+image, err := facades.Testing().Docker().Image(contractstesting.Image{
   Repository: "mysql",
   Tag:        "5.7",
   Env: []string{

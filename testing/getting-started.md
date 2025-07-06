@@ -149,21 +149,12 @@ cache, err := facades.Testing().Docker().Cache()
 cache, err := facades.Testing().Docker().Cache("redis")
 ```
 
-The database images supported by default:
-
-| Database    | Image Link                                                                                         | Version     |
-| --------    | --------------------------------------------------                                                 | ---------   |
-| Mysql       | [https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql)                                   | latest      |
-| Postgres  | [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres)                             | latest      |
-| Sqlserver   | [https://hub.docker.com/r/microsoft/mssql-server](https://hub.docker.com/r/microsoft/mssql-server) | latest      |
-| Redis   | [https://hub.docker.com/_/redis](https://hub.docker.com/_/redis) | latest      |
-
 You can also use the `Image` method to customize the image:
 
 ```go
 import contractstesting "github.com/goravel/framework/contracts/testing"
 
-database.Image(contractstesting.Image{
+image, err := facades.Testing().Docker().Image(contractstesting.Image{
   Repository: "mysql",
   Tag:        "5.7",
   Env: []string{

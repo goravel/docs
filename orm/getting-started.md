@@ -373,6 +373,32 @@ facades.Orm().Query().OrWhereNull("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
 ```
 
+Query JSON columns
+
+```go
+facades.Orm().Query().Where("preferences->dining->meal", "salad").First(&user)
+facades.Orm().Query().Where("options->languages[0]", "en").First(&user)
+facades.Orm().Query().WhereJsonContainsKey("contacts->personal->email").First(&user)
+facades.Orm().Query().WhereJsonDoesntContainKey("contacts->personal->email").First(&user)
+facades.Orm().Query().WhereJsonContains("options->languages", "en").First(&user)
+facades.Orm().Query().WhereJsonContains("options->languages", []string{"en", "de"}).First(&user)
+facades.Orm().Query().WhereJsonDoesntContain("options->languages", "en").First(&user)
+facades.Orm().Query().WhereJsonDoesntContain("options->languages", []string{"en", "de"}).First(&user)
+facades.Orm().Query().WhereJsonLength('options->languages', 1).First(&user)
+facades.Orm().Query().WhereJsonLength('options->languages > ?', 1).First(&user)
+
+facades.Orm().Query().OrWhere("preferences->dining->meal", "salad").First(&user)
+facades.Orm().Query().OrWhere("options->languages[0]", "en").First(&user)
+facades.Orm().Query().OrWhereJsonContainsKey("contacts->personal->email").First(&user)
+facades.Orm().Query().OrWhereJsonDoesntContainKey("contacts->personal->email").First(&user)
+facades.Orm().Query().OrWhereJsonContains("options->languages", "en").First(&user)
+facades.Orm().Query().OrWhereJsonContains("options->languages", []string{"en", "de"}).First(&user)
+facades.Orm().Query().OrWhereJsonDoesntContain("options->languages", "en").First(&user)
+facades.Orm().Query().OrWhereJsonDoesntContain("options->languages", []string{"en", "de"}).First(&user)
+facades.Orm().Query().OrWhereJsonLength('options->languages', 1).First(&user)
+facades.Orm().Query().OrWhereJsonLength('options->languages > ?', 1).First(&user)
+```
+
 ### Limit
 
 ```go
