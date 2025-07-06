@@ -12,16 +12,18 @@
 
 可以在 `config/jwt.go` 文件中配置 JWT 的相关参数，如秘钥、有效时长、可刷新时长等。
 
-### 为不同 Guard 配置 TTL
+### 不同 JWT Guard 支持不同配置
 
-你可以通过在 `config/auth.go` 文件中为每个 Guard 单独设置 TTL，如果不设置，则默认使用 `jwt.ttl` 配置。
+你可以通过在 `config/auth.go` 文件中为每个 Guard 单独设置 TTL、 Secret 和 RefreshTTL，如果不设置，则默认使用 `jwt.ttl` 等配置。
 
 ```go
 // config/auth.go
 "guards": map[string]any{
   "user": map[string]any{
     "driver": "jwt",
-++  "ttl": 60,
+++    "ttl": 60,
+++    "refresh_ttl": 0,
+++    "secret": "your-secret",
   },
 },
 ```

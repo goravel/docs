@@ -12,16 +12,18 @@ You can configure `defaults` guard and multiple `guards` in the `config/auth.go`
 
 You can configure the parameters of JWT in the `config/jwt.go` file, such as `secret`, `ttl`, `refresh_ttl`.
 
-### Configure TTL for different Guards
+### Different JWT Guard supports different configurations
 
-You can set TTL for each Guard separately in the `config/auth.go` file, if not set, the `jwt.ttl` configuration is used by default.
+You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/auth.go` file, if not set, the `jwt.ttl` configuration is used by default.
 
 ```go
 // config/auth.go
 "guards": map[string]any{
   "user": map[string]any{
     "driver": "jwt",
-++  "ttl": 60,
+++    "ttl": 60,
+++    "refresh_ttl": 0,
+++    "secret": "your-secret",
   },
 },
 ```
