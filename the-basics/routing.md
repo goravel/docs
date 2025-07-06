@@ -122,6 +122,8 @@ select {}
 | StaticFS   | [File Routing](#file-routing)           |
 | Middleware | [Middleware](#middleware)               |
 | GetRoutes  | [Get All Routes](#get-all-routes)       |
+| Name       | [Set Route Name](#set-route-name)       |
+| Info       | [Get Route Info](#get-route-info)       |
 
 ## Basic Routing
 
@@ -215,6 +217,18 @@ Detail [Middleware](./middleware.md)
 
 ```go
 routes := facades.Route().GetRoutes()
+```
+
+## Set Route Name
+
+```go
+facades.Route().Get("users", userController.Index).Name("users.index")
+```
+
+## Get Route Info
+
+```go
+route := facades.Route().Info("users.index")
 ```
 
 ## Fallback Routes

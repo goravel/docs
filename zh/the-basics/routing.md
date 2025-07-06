@@ -121,6 +121,8 @@ select {}
 | StaticFS   | [文件路由](#文件路由)                 |
 | Middleware | [中间件](#中间件)                     |
 | GetRoutes  | [获取所有路由](#获取所有路由)           |
+| Name       | [设置路由名称](#设置路由名称)           |
+| Info       | [获取路由信息](#获取路由信息)           |
 
 ## 基本路由
 
@@ -214,6 +216,18 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 
 ```go
 routes := facades.Route().GetRoutes()
+```
+
+## 设置路由名称
+
+```go
+facades.Route().Get("users", userController.Index).Name("users.index")
+```
+
+## 获取路由信息
+
+```go
+route := facades.Route().Info("users.index")
 ```
 
 ## Fallback 路由
