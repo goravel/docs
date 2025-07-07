@@ -21,6 +21,13 @@ To define routing files, simply navigate to the `/routes` directory. By default,
 
 If you require more precise management, you can add routing files to the `/routes` directory and register them in the `app/providers/route_service_provider.go` file.
 
+## Get Routes List
+
+Use the `route:list` command to view routes list:
+
+```shell
+./artisan route:list
+```
 
 ## Start HTTP Server
 

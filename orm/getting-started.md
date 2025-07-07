@@ -133,6 +133,27 @@ func (r *User) Connection() string {
 }
 ```
 
+### Setting Global Scope
+
+Model supports setting the `GlobalScope` method, which restricts the scope of the query, update, and delete operations:
+
+```go
+import "github.com/goravel/framework/contracts/orm"
+
+type User struct {
+  orm.Model
+  Name string
+}
+
+func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
+  return []func(orm.Query) orm.Query{
+    func(query orm.Query) orm.Query {
+      return query.Where("name", "goravel")
+    },
+  }
+}
+```
+
 ## facades.Orm() available functions
 
 | Name        | Action                                                      |
@@ -826,11 +847,7 @@ facades.Orm().Query().Where("votes", ">", 100).LockForUpdate().Get(&users)
 ### Sum
 
 ```go
-var sum int
-if err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum); err != nil {
-  return err
-}
-fmt.Println(sum)
+sum, err := facades.Orm().Query().Model(models.User{}).Sum("id")
 ```
 
 ## Events

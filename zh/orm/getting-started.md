@@ -133,6 +133,27 @@ func (r *User) Connection() string {
 }
 ```
 
+### 设置 Global Scope
+
+Model 中支持设置 `GlobalScope` 方法，在查找、更新和删除操作时限制作用域：
+
+```go
+import "github.com/goravel/framework/contracts/orm"
+
+type User struct {
+  orm.Model
+  Name string
+}
+
+func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
+  return []func(orm.Query) orm.Query{
+    func(query orm.Query) orm.Query {
+      return query.Where("name", "goravel")
+    },
+  }
+}
+```
+
 ## facades.Orm() 可用方法
 
 | 方法名       | 作用                              |
@@ -836,11 +857,7 @@ facades.Orm().Query().Where("votes", ">", 100).LockForUpdate().Get(&users)
 ### 求和
 
 ```go
-var sum int
-if err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum); err != nil {
-  return err
-}
-fmt.Println(sum)
+sum, err := facades.Orm().Query().Model(models.User{}).Sum("id")
 ```
 
 ## Events

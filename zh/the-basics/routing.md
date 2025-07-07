@@ -21,6 +21,14 @@ Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动�
 
 你可以在 `routes` 目录下新增路由文件，以进行更细颗粒的管理，然后在 `app/providers/route_service_provider.go` 文件中进行注册。
 
+## 获取路由列表
+
+使用 `route:list` 命令可以查看路由列表：
+
+```shell
+./artisan route:list
+```
+
 ## 启动 HTTP 服务器
 
 在根目录下 `main.go` 中启动 HTTP 服务器，`facades.Route().Run()` 将会自动获取 `route.host` 的配置。
