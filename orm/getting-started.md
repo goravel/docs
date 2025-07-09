@@ -631,6 +631,20 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 
 > When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
 
+#### Update JSON fields
+
+```go
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->enabled", true)
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->languages[0]", "en")
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->languages", []string{"en", "de"})
+
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update(map[string]any{
+    "preferences->dining->meal": "salad",
+    "options->languages[0]":     "en",
+    "options->enabled":          true,
+})
+```
+
 #### Update or create
 
 Query by `name`, if not exist, create by `name`, `avatar`, if exists, update `avatar` based on `name`:

@@ -546,6 +546,20 @@ result, err := facades.DB().Table("products").Where("id", 1).Update(map[string]a
 })
 ```
 
+### Update JSON fields
+
+```go
+facades.DB().Table("users").Where("id", 1).Update("options->enabled", true)
+facades.DB().Table("users").Where("id", 1).Update("options->languages[0]", "en")
+facades.DB().Table("users").Where("id", 1).Update("options->languages", []string{"en", "de"})
+
+facades.DB().Table("users").Where("id", 1).Update(map[string]any{
+    "preferences->dining->meal": "salad",
+    "options->languages[0]":     "en",
+    "options->enabled":          true,
+})
+```
+
 ### Update or Insert
 
 Sometimes you may want to update a record in the database, but if the specified record does not exist, create it. This can be done using the `UpdateOrInsert` method. The `UpdateOrInsert` method accepts two parameters: a condition for finding the record, and a key-value pair containing the values to update the record with.

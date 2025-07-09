@@ -546,6 +546,20 @@ result, err := facades.DB().Table("products").Where("id", 1).Update(map[string]a
 })
 ```
 
+### 更新 JSON 字段
+
+```go
+facades.DB().Table("users").Where("id", 1).Update("options->enabled", true)
+facades.DB().Table("users").Where("id", 1).Update("options->languages[0]", "en")
+facades.DB().Table("users").Where("id", 1).Update("options->languages", []string{"en", "de"})
+
+facades.DB().Table("users").Where("id", 1).Update(map[string]any{
+    "preferences->dining->meal": "salad",
+    "options->languages[0]":     "en",
+    "options->enabled":          true,
+})
+```
+
 ### 更新或插入
 
 有时你可能希望更新数据库中的记录，但如果指定记录不存在的时候则创建它。这是可以使用 `UpdateOrInsert` 方法。`UpdateOrInsert` 方法接受两个参数：一个用于查找记录的条件，以及一个包含要更改记录的键值对。

@@ -640,6 +640,20 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 
 > 当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
 
+#### 更新 JSON 字段
+
+```go
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->enabled", true)
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->languages[0]", "en")
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->languages", []string{"en", "de"})
+
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update(map[string]any{
+    "preferences->dining->meal": "salad",
+    "options->languages[0]":     "en",
+    "options->enabled":          true,
+})
+```
+
 #### 更新或创建一条数据
 
 根据 `name` 查询，如果不存在，则根据 `name`, `avatar` 创建，如果存在，则根据 `name` 更新 `avatar`：
