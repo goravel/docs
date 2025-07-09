@@ -82,13 +82,24 @@ type ProcessPodcast struct {
 }
 
 // Signature The name and signature of the job.
-func (receiver *ProcessPodcast) Signature() string {
+func (r *ProcessPodcast) Signature() string {
   return "process_podcast"
 }
 
 // Handle Execute the job.
-func (receiver *ProcessPodcast) Handle(args ...any) error {
+func (r *ProcessPodcast) Handle(args ...any) error {
   return nil
+}
+```
+
+#### Job Retry
+
+Job classes support an optional `ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration)` method, which is used to control job retry.
+
+```go
+// ShouldRetry determines if the job should be retried based on the error.
+func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration) {
+  return true, 10 * time.Second
 }
 ```
 
@@ -148,6 +159,7 @@ go func() {
     Connection: "redis",
     Queue: "processing",
     Concurrent: 10,
+    Tries: 3,
   }).Run(); err != nil {
     facades.Log().Errorf("Queue run error: %v", err)
   }
@@ -265,6 +277,14 @@ You may chain the `OnConnection` and `OnQueue` methods together to specify the c
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
+```
+
+## View Failed Jobs
+
+You can use the `queue:failed` command to view failed jobs, this command will get the failed jobs from the `failed_jobs` table in the database:
+
+```shell
+./artisan queue:failed
 ```
 
 ## Retrying Failed Jobs

@@ -80,13 +80,24 @@ type ProcessPodcast struct {
 }
 
 // Signature The name and signature of the job.
-func (receiver *ProcessPodcast) Signature() string {
+func (r *ProcessPodcast) Signature() string {
   return "process_podcast"
 }
 
 // Handle Execute the job.
-func (receiver *ProcessPodcast) Handle(args ...interface{}) error {
+func (r *ProcessPodcast) Handle(args ...interface{}) error {
   return nil
+}
+```
+
+#### 任务重试
+
+任务类支持一个可选的 `ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration)` 方法，用于控制任务重试。
+
+```go
+// ShouldRetry determines if the job should be retried based on the error.
+func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration) {
+  return true, 10 * time.Second
 }
 ```
 
@@ -146,6 +157,7 @@ go func() {
     Connection: "redis",
     Queue: "processing",
     Concurrent: 10,
+    Tries: 3,
   }).Run(); err != nil {
     facades.Log().Errorf("Queue run error: %v", err)
   }
@@ -263,6 +275,14 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dis
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
+```
+
+## 获取失败任务
+
+你可以使用 `queue:failed` 命令来获取失败任务，该命令会从数据库 `failed_jobs` 表中获取失败任务：
+
+```shell
+./artisan queue:failed
 ```
 
 ## 重试失败任务

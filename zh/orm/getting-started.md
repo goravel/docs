@@ -646,7 +646,6 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->enabled", true)
 facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->languages[0]", "en")
 facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->languages", []string{"en", "de"})
-
 facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update(map[string]any{
     "preferences->dining->meal": "salad",
     "options->languages[0]":     "en",

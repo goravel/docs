@@ -11,7 +11,7 @@ export function getZhSidebar(): SidebarConfigArray {
           children: [
             {
               text: "从 v1.15 升级到 v1.16",
-              link: "/zh/upgrade/v1.14",
+              link: "/zh/upgrade/v1.16",
             },
             {
               text: "从 v1.14 升级到 v1.15",
