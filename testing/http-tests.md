@@ -44,6 +44,8 @@ func (s *ExampleTestSuite) TestIndex() {
 You may use either `WithCookie` or `WithCookies` method to set cookies value before making a request.
 
 ```go
+import "github.com/goravel/framework/testing/http"
+
 func (s *ExampleTestSuite) TestIndex() {
 	response, err := s.Http(s.T()).WithCookie(http.Cookie("name", "krishan")).Get("/users/1")
 

@@ -202,6 +202,11 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | OrWhereNotIn  | [OrWhereNotIn](#where)                  |
 | OrWhereNull   | [OrWhereNull](#where)                  |
 | OrWhereIn     | [OrWhereIn](#where)                  |
+| OrWhereJsonContains | [查询条件](#where-条件)                  |
+| OrWhereJsonContainsKey | [查询条件](#where-条件)                  |
+| OrWhereJsonDoesntContain | [查询条件](#where-条件)                  |
+| OrWhereJsonDoesntContainKey | [查询条件](#where-条件)                  |
+| OrWhereJsonLength | [查询条件](#where-条件)                  |
 | Paginate      | [Paginate](#paginate)             |
 | Pluck         | [Query single column](#query-single-column)             |
 | Raw           | [Execute native SQL](#execute-native-sql)               |
@@ -225,6 +230,11 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | WhereNotIn    | [WhereNotIn](#where)                  |
 | WhereNull     | [WhereNull](#where)                  |
 | WhereIn       | [WhereIn](#where)                  |
+| WhereJsonContains | [查询条件](#where-条件)                  |
+| WhereJsonContainsKey | [查询条件](#where-条件)                  |
+| WhereJsonDoesntContain | [查询条件](#where-条件)                  |
+| WhereJsonDoesntContainKey | [查询条件](#where-条件)                  |
+| WhereJsonLength | [查询条件](#where-条件)                  |
 | WithoutEvents | [Muting events](#muting-events)               |
 | WithTrashed   | [Query soft delete data](#query-soft-delete-data)       |
 
