@@ -50,6 +50,18 @@ url := ctx.Request().FullUrl() // http://**/users?name=Goravel
 method := ctx.Request().Method()
 ```
 
+### Retrieving The Request Route Information
+
+```go
+info := ctx.Request().Info()
+```
+
+### Retrieving The Request Route Name
+
+```go
+name := ctx.Request().Name()
+```
+
 ### Request Headers
 
 ```go
