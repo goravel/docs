@@ -233,19 +233,25 @@ facades.Schema().DropIfExists("users")
 
 ### 可用的字段类型
 
-|     |     |     |     |
-|-----|-----|-----|-----|
-| BigIncrements | BigInteger | Boolean | Char |
-| Date | DateTime | DateTimeTz | Decimal |
-| Double | [Enum](#enum) | Float | [ID](#id) |
-| Increments | Integer | IntegerIncrements | Json |
-| Increments | LongText | MediumIncrements | MediumInteger |
-| MediumText | SmallIncrements | SmallInteger | [SoftDeletes](#softdeletes) |
-| SoftDeletesTz | String | Text | Time |
-| TimeTz | Timestamp | Timestamps | TimestampsTz |
-| TimestampTz | UnsignedBigInteger | TinyIncrements | TinyInteger |
-| TinyText | UnsignedInteger | UnsignedMediumInteger | UnsignedSmallInteger |
-| UnsignedTinyInteger |  |  |  |
+#### 布尔类型
+
+Boolean
+
+#### 字符串 & 文本类型
+
+Char, Json, LongText, MediumText, String, Text, LongText, TinyText, Uuid, Ulid
+
+#### 数字类型
+
+BigIncrements, BigInteger, Decimal, Double, Float, [ID](#id), Increments, Integer, IntegerIncrements, MediumIncrements, MediumInteger, SmallIncrements, SmallInteger, TinyIncrements, TinyInteger, UnsignedBigInteger, UnsignedInteger, UnsignedMediumInteger, UnsignedSmallInteger, UnsignedTinyInteger
+
+#### 日期 & 时间类型
+
+Date, DateTime, DateTimeTz, [SoftDeletes](#softdeletes), SoftDeletesTz, Time, TimeTz, Timestamp, TimestampTz, Timestamps, TimestampsTz
+
+#### 其他类型
+
+[Enum](#enum), Morphs, NullableMorphs, NumericMorphs, UuidMorphs, UlidMorphs
 
 #### Enum
 

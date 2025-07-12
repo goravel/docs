@@ -233,19 +233,25 @@ facades.Schema().DropIfExists("users")
 
 ### Available Column Types
 
-|     |     |     |     |
-|-----|-----|-----|-----|
-| BigIncrements | BigInteger | Boolean | Char |
-| Date | DateTime | DateTimeTz | Decimal |
-| Double | [Enum](#enum) | Float | [ID](#id) |
-| Increments | Integer | IntegerIncrements | Json |
-| Increments | LongText | MediumIncrements | MediumInteger |
-| MediumText | SmallIncrements | SmallInteger | [SoftDeletes](#softdeletes) |
-| SoftDeletesTz | String | Text | Time |
-| TimeTz | Timestamp | Timestamps | TimestampsTz |
-| TimestampTz | UnsignedBigInteger | TinyIncrements | TinyInteger |
-| TinyText | UnsignedInteger | UnsignedMediumInteger | UnsignedSmallInteger |
-| UnsignedTinyInteger |  |  |  |
+#### Boolean Types
+
+Boolean
+
+#### String & Text Types
+
+Char, Json, LongText, MediumText, String, Text, LongText, TinyText, Uuid, Ulid
+
+#### Numeric Types
+
+BigIncrements, BigInteger, Decimal, Double, Float, [ID](#id), Increments, Integer, IntegerIncrements, MediumIncrements, MediumInteger, SmallIncrements, SmallInteger, TinyIncrements, TinyInteger, UnsignedBigInteger, UnsignedInteger, UnsignedMediumInteger, UnsignedSmallInteger, UnsignedTinyInteger
+
+#### Date & Time Types
+
+Date, DateTime, DateTimeTz, [SoftDeletes](#softdeletes), SoftDeletesTz, Time, TimeTz, Timestamp, TimestampTz, Timestamps, TimestampsTz
+
+#### Other Types
+
+[Enum](#enum), Morphs, NullableMorphs, NumericMorphs, UuidMorphs, UlidMorphs
 
 #### Enum
 
