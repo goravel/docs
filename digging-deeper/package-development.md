@@ -24,7 +24,7 @@ go run . artisan make:package --root=pkg sms
 
 ## Service Providers
 
-[Service providers](../architecutre-concepts/service-providers.md) act as the bridge between your package and Goravel. They are typically located in the root of the package as a `service_provider.go` file. Their main function is to bind items into Goravel's service container and guide Goravel in loading package resources.
+[Service providers](../architecture-concepts/service-providers.md) act as the bridge between your package and Goravel. They are typically located in the root of the package as a `service_provider.go` file. Their main function is to bind items into Goravel's service container and guide Goravel in loading package resources.
 
 ## Usage
 
@@ -107,7 +107,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ### Migrations
 
-If there are [migrations](../orm/migrations.md) in your package, you can publish them by the `Publishes` method:
+If there are [migrations](../database/migrations.md) in your package, you can publish them by the `Publishes` method:
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {

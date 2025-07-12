@@ -22,7 +22,7 @@ go run . artisan make:package --root=pkg sms
 
 ## 服务提供者
 
-[服务提供者](../architecutre-concepts/service-providers.md)是您的包和 Goravel 之间的连接点，通常位于包的根目录中：`service_provider.go`。服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecutre-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
+[服务提供者](../architecture-concepts/service-providers.md)是您的包和 Goravel 之间的连接点，通常位于包的根目录中：`service_provider.go`。服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
 
 ## 使用
 
@@ -105,7 +105,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ### 迁移
 
-如果您的包包含[数据库迁移](../orm/migrations.md)，也可以使用 `Publishes` 方法进行发布：
+如果您的包包含[数据库迁移](../database/migrations.md)，也可以使用 `Publishes` 方法进行发布：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {

@@ -91,7 +91,7 @@ err := facades.Orm().Factory().Create(&user)
 
 ### Running Seeders
 
-If you would like to use [database seeders](../orm/seeding.md) to populate your database during a feature test, you may invoke the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
+If you would like to use [database seeders](../database/seeding.md) to populate your database during a feature test, you may invoke the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
 
 ```go
 package feature
@@ -183,7 +183,7 @@ config := cache.Config()
 
 #### Running Seeders
 
-If you wish to use [seeder](../orm/seeding.md) to populate the database during testing, you can call the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
+If you wish to use [seeder](../database/seeding.md) to populate the database during testing, you can call the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
 
 ```go
 err := database.Seed()
