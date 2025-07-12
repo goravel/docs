@@ -14,4 +14,29 @@
 
 框架默认有一个空白的服务提供者 `app/providers/app_service_provider.go`，你可以在这里添加一些简单的引导逻辑。在大型项目中，你可以新建服务提供者以获得更细颗粒度的控制。
 
+ServiceProvider 中提供可选方法 `Relationship() binding.Relationship`，用来声明当前 ServicerProvider 的依赖关系，设置了该方法的 ServiceProvider 将不依赖注册顺序，未设置的 ServiceProvider 将被最后注册，例如：
+
+```go
+type ServiceProvider struct {
+}
+
+func (r *ServiceProvider) Relationship() binding.Relationship {
+	return binding.Relationship{
+		Bindings: []string{
+			BindingSession,
+		},
+		Dependencies: []string{
+			binding.Config,
+		},
+		ProvideFor: []string{
+			binding.Cache,
+		},
+	}
+}
+
+func (r *ServiceProvider) Register(app foundation.Application) {}
+
+func (r *ServiceProvider) Boot(app foundation.Application) {}
+```
+
 <CommentService/>

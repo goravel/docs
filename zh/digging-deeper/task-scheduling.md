@@ -68,7 +68,15 @@ func (kernel *Kernel) Schedule() []schedule.Event {
 
 | 方法                     | 描述                           |
 | ------------------------ | ------------------------------ |
-| `.Cron("* * * * *")`     | 自定义 Crone 计划执行任务      |
+| `.Cron("* * * * *")`     | 自定义 Crone 计划执行任务（分钟） |
+| `.Cron("* * * * * *")`   | 自定义 Crone 计划执行任务（秒）   |
+| `.EverySecond()`         | 每秒执行一次任务                 |
+| `.EveryTwoSeconds()`     | 每两秒执行一次任务               |
+| `.EveryFiveSeconds()`    | 每五秒执行一次任务               |
+| `.EveryTenSeconds()`     | 每十秒执行一次任务               |
+| `.EveryFifteenSeconds()` | 每十五秒执行一次任务             |
+| `.EveryTwentySeconds()`  | 每二十秒执行一次任务             |
+| `.EveryThirtySeconds()`  | 每三十秒执行一次任务             |
 | `.EveryMinute()`         | 每分钟执行一次任务             |
 | `.EveryTwoMinutes()`     | 每两分钟执行一次任务           |
 | `.EveryThreeMinutes()`   | 每三分钟执行一次任务           |
@@ -85,6 +93,20 @@ func (kernel *Kernel) Schedule() []schedule.Event {
 | `.EverySixHours()`       | 每六小时执行一次任务           |
 | `.Daily()`               | 每天 00:00 执行一次任务        |
 | `.DailyAt("13:00")`      | 每天 13:00 执行一次任务        |
+| `.Days(1, 3, 5)`         | 每周一、周三、周五执行一次任务 |
+| `.Weekdays()`            | 每周一至周五执行一次任务       |
+| `.Weekends()`            | 每周六、周日执行一次任务       |
+| `.Mondays()`             | 每周一执行一次任务               |
+| `.Tuesdays()`            | 每周二执行一次任务               |
+| `.Wednesdays()`          | 每周三执行一次任务               |
+| `.Thursdays()`           | 每周四执行一次任务               |
+| `.Fridays()`             | 每周五执行一次任务               |
+| `.Saturdays()`           | 每周六执行一次任务               |
+| `.Sundays()`             | 每周日执行一次任务               |
+| `.Weekly()`              | 每周执行一次任务               |
+| `.Monthly()`             | 每月执行一次任务               |
+| `.Quarterly()`           | 每季度执行一次任务               |
+| `.Yearly()`              | 每年执行一次任务               |
 
 ### 避免任务重复
 

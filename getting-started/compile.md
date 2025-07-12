@@ -38,7 +38,6 @@ The Following files and folders need to be uploaded to the server during deploym
 ```
 ./main // Compile the resulting binary file
 .env
-./database
 ./public
 ./storage
 ./resources
@@ -85,6 +84,30 @@ docker-compose up
 ```
 
 > Note: If you need external access, you need to change APP_HOST to 0.0.0.0
+
+## Set timezone
+
+When the `app.timezone` configuration is not `UTC`, you need to set the timezone to the application during compilation. You can choose any of the following three methods:
+
+1. Add timezone settings in Dockerfile
+
+```
+RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
+```
+
+2. Set timezone during compilation
+
+```
+go build -tags timetzdata .
+```
+
+3. Import timezone in `main.go`
+
+```shell
+import (
+    _ "time/tzdata"
+)
+```
 
 ## Reduce package size
 

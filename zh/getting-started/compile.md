@@ -38,7 +38,6 @@ go build .
 ```
 ./main // 编译生成的二进制文件
 .env
-./database
 ./public
 ./storage
 ./resources
@@ -118,6 +117,30 @@ docker-compose up
 ```
 
 > 注意：如需外部访问，需要将 APP_HOST 改为 0.0.0.0
+
+## 设置时区
+
+当你在 `app.timezone` 配置中非 `UTC` 时区时，在编译时需要通过将时区设置到应用中，可以选择下面三种方式中的任意一种：
+
+1. 在 Dockerfile 中添加时区设置
+
+```
+RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
+```
+
+2. 在编译时设置时区
+
+```
+go build -tags timetzdata .
+```
+
+3. 在 `main.go` 中导入时区
+
+```shell
+import (
+    _ "time/tzdata"
+)
+```
 
 ## 减小打包体积
 

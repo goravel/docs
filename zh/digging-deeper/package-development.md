@@ -22,9 +22,59 @@ go run . artisan make:package --root=pkg sms
 
 ## 服务提供者
 
-[服务提供者](../architecutre-concepts/service-providers.md)是您的包和 Goravel 之间的连接点，通常位于包的根目录中：`service_provider.go`。服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecutre-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
+[服务提供者](../architecture-concepts/service-providers.md)是您的包和 Goravel 之间的连接点，通常位于包的根目录中：`service_provider.go`。服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
 
 ## 使用
+
+### 自动安装
+
+当创建包时包含一个 `setup/setup.go` 文件，你可以在这个文件中定义包的安装逻辑，之后用户可以使用 `package:install` 命令安装包：
+
+```shell
+./artisan package:install github.com/goravel/example-package
+```
+
+下面是关于 `setup/setup.go` 文件定义安装过程的解析，有助于你编写自己包的安装逻辑：
+
+```go
+// setup/setup.go
+func main() {
+  // 当使用这种方式安装时，配置文件将会被发布到项目的 config 目录。
+  // 你也可以手动发布这个配置文件：./artisan vendor:publish --package=github.com/goravel/example-package
+	config, err := supportfile.GetPackageContent(packages.GetModulePath(), "setup/config/hello.go")
+	if err != nil {
+		panic(err)
+	}
+
+  // 根据用户输入的参数，执行安装或卸载操作
+	packages.Setup(os.Args).
+    // 定义安装过程
+		Install(
+      // 查找 config/app.go 文件
+			modify.GoFile(path.Config("app.go")).
+        // 查找 imports 并添加导入: examplepackage "github.com/goravel/example-package"
+				Find(match.Imports()).Modify(modify.AddImport(packages.GetModulePath(), "examplepackage")).
+        // 查找 providers 并注册服务提供者: &examplepackage.ServiceProvider{}，注意这里需要先添加导入，然后才能注册服务提供者
+				Find(match.Providers()).Modify(modify.Register("&examplepackage.ServiceProvider{}")),
+      // 查找 hello.go 文件，创建或覆盖文件
+			modify.File(path.Config("hello.go")).Overwrite(config),
+		).
+    // 定义卸载过程
+		Uninstall(
+      // 查找 config/app.go 文件
+			modify.GoFile(path.Config("app.go")).
+        // 查找 providers 并取消注册服务提供者: &examplepackage.ServiceProvider{}
+				Find(match.Providers()).Modify(modify.Unregister("&examplepackage.ServiceProvider{}")).
+        // 查找 imports 并删除导入: examplepackage "github.com/goravel/example-package"，注意这里需要先取消注册服务提供者，然后才能删除导入
+				Find(match.Imports()).Modify(modify.RemoveImport(packages.GetModulePath(), "examplepackage")),
+      // 查找 hello.go 文件，删除文件
+			modify.File(path.Config("hello.go")).Remove(),
+		).
+    // 执行安装或卸载操作
+		Execute()
+```
+
+### 手动安装
 
 将包内的 `ServiceProvider` 注册到 `config/app.go::providers`，然后将 `facades` 导出到应用中即可，详细步骤可以参考：[goravel/example-package](https://github.com/goravel/example-package)。
 
@@ -55,7 +105,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ### 迁移
 
-如果您的包包含[数据库迁移](../orm/migrations.md)，也可以使用 `Publishes` 方法进行发布：
+如果您的包包含[数据库迁移](../database/migrations.md)，也可以使用 `Publishes` 方法进行发布：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {

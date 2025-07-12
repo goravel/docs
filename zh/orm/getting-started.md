@@ -4,112 +4,7 @@
 
 ## 简介
 
-Goravel 提供了一套非常简单易用的数据库交互方式，开发者可以使用 `facades.Orm()` 进行操作。目前，Goravel 为以下四种数据库提供了官方支持：
-
-- MySQL 5.7+
-- PostgreSQL 9.6+
-- SQLite 3.8.8+
-- SQL Server 2017+
-
-在开始之前，请在 `.env` 文件中配置数据库链接信息，并确认 `config/database.go` 的默认配置。
-
-## 配置
-
-数据库的配置文件在 `config/database.go` 文件中。你可以在这个文件中配置所有的数据库连接，并指定默认的数据库连接。该文件中的大部分配置都基于项目的环境变量，且提供了 Goravel 所支持的数据库配置示例。
-
-### DSN
-
-你也可以直接使用 DSN 连接数据库，只需要在配置文件中配置 `dsn` 字段即可：
-
-```go
-"postgres": map[string]any{
-  "driver":   "postgres",
-++  "dsn": "postgres://user:password@localhost:5432/dbname?sslmode=disable",
-  ...
-}
-```
-
-### 读写分离
-
-有时候您可能会希望使用一个数据库连接来执行 `SELECT` 语句，而 `INSERT`、`UPDATE` 和 `DELETE` 语句则由另一个数据库连接来执行。在 Goravel 中可以轻松实现读写分离。
-
-为了弄明白如何配置读写分离，我们先来看个例子：
-
-```go
-import "github.com/goravel/framework/contracts/database"
-
-// config/database.go
-"connections": map[string]any{
-  "mysql": map[string]any{
-    "driver": "mysql",
-    "read": []database.Config{
-      {Host: "192.168.1.1", Port: 3306, Database: "forge", Username: "root", Password: "123123"},
-    },
-    "write": []database.Config{
-      {Host: "192.168.1.2", Port: 3306, Database: "forge", Username: "root", Password: "123123"},
-    },
-    "host": config.Env("DB_HOST", "127.0.0.1"),
-    "port":     config.Env("DB_PORT", 3306),
-    "database": config.Env("DB_DATABASE", "forge"),
-    "username": config.Env("DB_USERNAME", ""),
-    "password": config.Env("DB_PASSWORD", ""),
-    "charset":  "utf8mb4",
-    "loc":      "Local",
-  },
-}
-```
-
-我们在数据库配置中加入了两个键，分别是：`read`, `write`，`192.168.1.1` 将会被用作「读」连接主机，而 `192.168.1.2` 将作为「写」连接主机。这两个连接将共享 `mysql` 数组中的各项配置，如数据库前缀、字符编码等。如果 `read` 或 `write` 数组中存在多个值，Goravel 将会为每个连接随机选取所使用的数据库主机。
-
-### 连接池
-
-可以在配置文件中配置数据库连接池，合理的配置连接池参数，可以极大的提高并发性能：
-
-| 配置键        | 作用           |
-| -----------  | -------------- |
-| pool.max_idle_conns         | 最大空闲连接    |
-| pool.max_open_conns     | 最大连接数 |
-| pool.conn_max_idletime     | 连接最大空闲时间 |
-| pool.conn_max_lifetime     | 连接最大生命周期 |
-
-### Schema
-
-Postgres 和 Sqlserver 驱动支持配置 Schema。其中 Postgres 可以直接在配置文件中设置 Schema，而 Sqlserver 则需要通过在模型中设置 `TableName` 方法来指定 Schema。
-
-#### Postgres
-
-```go
-"connections": map[string]any{
-  "postgres": map[string]any{
-    "driver":   "postgres",
-    ...
-    "schema": "goravel",
-  },
-}
-```
-
-#### Sqlserver
-
-```go
-func (r *User) TableName() string {
-  return "goravel.users"
-}
-```
-
-### 获取数据库信息
-
-可以使用 `db:show` 命令查看数据库中的所有表。
-
-```bash
-go run . artisan db:show
-```
-
-也可以使用 `db:table` 命令查看指定表的结构。
-
-```bash
-go run . artisan db:table
-go run . artisan db:table users
-```
+Goravel 提供了一套非常简单易用的数据库交互方式，开发者可以使用 `facades.Orm()` 进行操作。在开始之前请先[配置数据库](../database/getting-started)。
 
 ## 模型
 
@@ -162,6 +57,38 @@ type User struct {
 
 更多 Tag 使用方法详见：https://gorm.io/docs/models.html。
 
+#### 根据数据表创建模型
+
+```shell
+./artisan make:model --table=users User
+
+// 如果 Model 已存在可以使用 -f 选项强制覆盖
+./artisan make:model --table=users -f User
+```
+
+如果数据表中有字段类型框架无法识别，可以在 `app/providers/database_service_provider.go` 文件的 `Boot` 方法中调用 `facades.Schema().Extend` 方法扩展字段类型：
+
+```go
+import "github.com/goravel/framework/contracts/schema"
+
+facades.Schema().Extend(&schema.Extension{
+  GoTypes: []schema.GoType{
+    {
+        Pattern: "uuid", 
+        Type: "uuid.UUID", 
+        NullType: "uuid.NullUUID", 
+        Imports: []string{"github.com/google/uuid"},
+    },
+    {
+        Pattern: "point", 
+        Type: "geom.Point", 
+        NullType: "*geom.Point", 
+        Imports: []string{"github.com/twpayne/go-geom"},
+    },
+  },
+})
+```
+
 ### 指定表名
 
 ```go
@@ -206,6 +133,27 @@ func (r *User) Connection() string {
 }
 ```
 
+### 设置 Global Scope
+
+Model 中支持设置 `GlobalScope` 方法，在查找、更新和删除操作时限制作用域：
+
+```go
+import "github.com/goravel/framework/contracts/orm"
+
+type User struct {
+  orm.Model
+  Name string
+}
+
+func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
+  return []func(orm.Query) orm.Query{
+    func(query orm.Query) orm.Query {
+      return query.Where("name", "goravel")
+    },
+  }
+}
+```
+
 ## facades.Orm() 可用方法
 
 | 方法名       | 作用                              |
@@ -220,7 +168,7 @@ func (r *User) Connection() string {
 
 | 方法名         | 作用                                    |
 | ------------- | --------------------------------------- |
-| Begin         | [手动开始事务](#事务)                   |
+| BeginTransaction         | [手动开始事务](#事务)                   |
 | Commit        | [提交事务](#事务)                       |
 | Count         | [检索聚合](#检索聚合)                     |
 | Create        | [创建数据](#创建)                       |
@@ -254,6 +202,11 @@ func (r *User) Connection() string {
 | OrWhereNotIn  | [查询条件](#where-条件)                  |
 | OrWhereNull   | [查询条件](#where-条件)                  |
 | OrWhereIn     | [查询条件](#where-条件)                  |
+| OrWhereJsonContains | [查询条件](#where-条件)                  |
+| OrWhereJsonContainsKey | [查询条件](#where-条件)                  |
+| OrWhereJsonDoesntContain | [查询条件](#where-条件)                  |
+| OrWhereJsonDoesntContainKey | [查询条件](#where-条件)                  |
+| OrWhereJsonLength | [查询条件](#where-条件)                  |
 | Paginate      | [分页](#分页)                  |
 | Pluck         | [查询单列](#查询单列)                    |
 | Raw           | [执行原生查询 SQL](#执行原生查询-sql)    |
@@ -277,6 +230,11 @@ func (r *User) Connection() string {
 | WhereNotIn    | [查询条件](#where-条件)                  |
 | WhereNull     | [查询条件](#where-条件)                  |
 | WhereIn       | [查询条件](#where-条件)                  |
+| WhereJsonContains | [查询条件](#where-条件)                  |
+| WhereJsonContainsKey | [查询条件](#where-条件)                  |
+| WhereJsonDoesntContain | [查询条件](#where-条件)                  |
+| WhereJsonDoesntContainKey | [查询条件](#where-条件)                  |
+| WhereJsonLength | [查询条件](#where-条件)                  |
 | WithoutEvents | [静默事件](#静默事件)               |
 | WithTrashed   | [查询软删除](#查询软删除)               |
 
@@ -429,23 +387,53 @@ err := facades.Orm().Query().FirstOrFail(&user)
 facades.Orm().Query().Where("name", "tom")
 facades.Orm().Query().Where("name = 'tom'")
 facades.Orm().Query().Where("name = ?", "tom")
+facades.Orm().Query().Where("name", "tom").Where(func(query orm.Query) orm.Query {
+  return query.Where("height", 180).Where("age", 18)
+})
+
 facades.Orm().Query().WhereBetween("age", 1, 10)
 facades.Orm().Query().WhereNotBetween("age", 1, 10)
 facades.Orm().Query().WhereNotIn("name", []any{"a"})
 facades.Orm().Query().WhereNull("name")
 facades.Orm().Query().WhereIn("name", []any{"a"})
 
-facades.Orm().Query().OrWhere("name = ?", "tom")
+facades.Orm().Query().OrWhere("name", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
 facades.Orm().Query().OrWhereNUll("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
+```
+
+JSON 字段查询
+
+```go
+facades.Orm().Query().Where("preferences->dining->meal", "salad").First(&user)
+facades.Orm().Query().Where("options->languages[0]", "en").First(&user)
+facades.Orm().Query().WhereJsonContainsKey("contacts->personal->email").First(&user)
+facades.Orm().Query().WhereJsonDoesntContainKey("contacts->personal->email").First(&user)
+facades.Orm().Query().WhereJsonContains("options->languages", "en").First(&user)
+facades.Orm().Query().WhereJsonContains("options->languages", []string{"en", "de"}).First(&user)
+facades.Orm().Query().WhereJsonDoesntContain("options->languages", "en").First(&user)
+facades.Orm().Query().WhereJsonDoesntContain("options->languages", []string{"en", "de"}).First(&user)
+facades.Orm().Query().WhereJsonLength('options->languages', 1).First(&user)
+facades.Orm().Query().WhereJsonLength('options->languages > ?', 1).First(&user)
+
+facades.Orm().Query().OrWhere("preferences->dining->meal", "salad").First(&user)
+facades.Orm().Query().OrWhere("options->languages[0]", "en").First(&user)
+facades.Orm().Query().OrWhereJsonContainsKey("contacts->personal->email").First(&user)
+facades.Orm().Query().OrWhereJsonDoesntContainKey("contacts->personal->email").First(&user)
+facades.Orm().Query().OrWhereJsonContains("options->languages", "en").First(&user)
+facades.Orm().Query().OrWhereJsonContains("options->languages", []string{"en", "de"}).First(&user)
+facades.Orm().Query().OrWhereJsonDoesntContain("options->languages", "en").First(&user)
+facades.Orm().Query().OrWhereJsonDoesntContain("options->languages", []string{"en", "de"}).First(&user)
+facades.Orm().Query().OrWhereJsonLength('options->languages', 1).First(&user)
+facades.Orm().Query().OrWhereJsonLength('options->languages > ?', 1).First(&user)
 ```
 
 ### 指定查询数量
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
+facades.Orm().Query().Where("name", "tom").Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3;
 ```
 
@@ -453,7 +441,7 @@ facades.Orm().Query().Where("name = ?", "tom").Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
+facades.Orm().Query().Where("name", "tom").Offset(5).Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3 OFFSET 5;
 ```
 
@@ -461,19 +449,16 @@ facades.Orm().Query().Where("name = ?", "tom").Offset(5).Limit(3).Get(&users)
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("name = ?", "tom").Order("sort asc").Order("id desc").Get(&users)
+facades.Orm().Query().Where("name", "tom").Order("sort asc").Order("id desc").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc,id desc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort").Get(&users)
+facades.Orm().Query().Where("name", "tom").OrderBy("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort asc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderBy("sort", "desc").Get(&users)
+facades.Orm().Query().Where("name", "tom").OrderByDesc("sort").Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
 
-facades.Orm().Query().Where("name = ?", "tom").OrderByDesc("sort").Get(&users)
-// SELECT * FROM `users` WHERE name = 'tom' ORDER BY sort desc;
-
-facades.Orm().Query().Where("name = ?", "tom").InRandomOrder().Get(&users)
+facades.Orm().Query().Where("name", "tom").InRandomOrder().Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY RAND();
 ```
 
@@ -502,16 +487,14 @@ facades.Orm().Query().Model(&models.User{}).Pluck("age", &ages)
 使用模型指定
 
 ```go
-var count int64
-facades.Orm().Query().Model(&models.User{}).Count(&count)
+count, err := facades.Orm().Query().Model(&models.User{}).Count()
 // SELECT count(*) FROM `users` WHERE deleted_at IS NULL;
 ```
 
 使用表名指定
 
 ```go
-var count int64
-facades.Orm().Query().Table("users").Count(&count)
+count, err := facades.Orm().Query().Table("users").Count()
 // SELECT count(*) FROM `users`; // get all records, whether deleted or not
 ```
 
@@ -536,8 +519,7 @@ facades.Orm().Query().ToRawSql().Get(models.User{})
 ### 检索聚合
 
 ```go
-var count int
-facades.Orm().Query().Where("name = ?", "tom").Count(&count)
+count, err := facades.Orm().Query().Table("users").Count()
 // SELECT count(*) FROM `users` WHERE name = 'tom';
 ```
 
@@ -547,9 +529,6 @@ facades.Orm().Query().Where("name = ?", "tom").Count(&count)
 
 ```go
 facades.Orm().Query().Select("name", "age").Get(&users)
-// SELECT `name`,`age` FROM `users`;
-
-facades.Orm().Query().Select([]string{"name", "age"}).Get(&users)
 // SELECT `name`,`age` FROM `users`;
 ```
 
@@ -661,6 +640,19 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 
 > 当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
 
+#### 更新 JSON 字段
+
+```go
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->enabled", true)
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->languages[0]", "en")
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->languages", []string{"en", "de"})
+facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update(map[string]any{
+    "preferences->dining->meal": "salad",
+    "options->languages[0]":     "en",
+    "options->enabled":          true,
+})
+```
+
 #### 更新或创建一条数据
 
 根据 `name` 查询，如果不存在，则根据 `name`, `avatar` 创建，如果存在，则根据 `name` 更新 `avatar`：
@@ -690,7 +682,7 @@ num := res.RowsAffected
 批量删除
 
 ```go
-facades.Orm().Query().Where("name = ?", "tom").Delete(&models.User{})
+facades.Orm().Query().Where("name", "tom").Delete(&models.User{})
 // DELETE FROM `users` WHERE name = 'tom';
 ```
 
@@ -722,10 +714,10 @@ facades.Orm().Query().Select("Account").Delete(&users)
 
 ```go
 // 会删除所有 name=`goravel` 的 user，但这些 user 的 account 不会被删除
-facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{})
+facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.User{})
 
 // 会删除 name = `goravel` 且 id = `1` 的 user，并且 user `1` 的 account 也会被删除
-facades.Orm().Query().Select("Account").Where("name = ?", "goravel").Delete(&models.User{ID: 1})
+facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.User{ID: 1})
 
 // 会删除 id = `1` 的 user，并且 account 也会被删除
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
@@ -783,8 +775,7 @@ num := res.RowsAffected
 ### 数据是否存在
 
 ```go
-var exists bool
-facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists(&exists)
+exists, err := facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists()
 ```
 
 ### 恢复软删除
@@ -819,7 +810,7 @@ return facades.Orm().Transaction(func(tx orm.Query) error {
 也可以自己手动控制事务的流程：
 
 ```go
-tx, err := facades.Orm().Query().Begin()
+tx, err := facades.Orm().Query().BeginTransaction()
 user := models.User{Name: "Goravel"}
 if err := tx.Create(&user); err != nil {
   err := tx.Rollback()
@@ -879,11 +870,7 @@ facades.Orm().Query().Where("votes", ">", 100).LockForUpdate().Get(&users)
 ### 求和
 
 ```go
-var sum int
-if err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum); err != nil {
-  return err
-}
-fmt.Println(sum)
+sum, err := facades.Orm().Query().Model(models.User{}).Sum("id")
 ```
 
 ## Events

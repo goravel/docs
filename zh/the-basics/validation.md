@@ -110,12 +110,16 @@ go run . artisan make:request user/StorePostRequest
 package requests
 
 import (
+  "mime/multipart"
+  
   "github.com/goravel/framework/contracts/http"
   "github.com/goravel/framework/contracts/validation"
 )
 
 type StorePostRequest struct {
   Name string `form:"name" json:"name"`
+  File *multipart.FileHeader `form:"file" json:"file"`
+  Files []*multipart.FileHeader `form:"files" json:"files"`
 }
 
 func (r *StorePostRequest) Authorize(ctx http.Context) error {
@@ -126,6 +130,9 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
   return map[string]string{
     // 键与传入的键保持一致
     "name": "required|max_len:255",
+    "file": "required|file",
+    "files": "required|array",
+    "files.*": "required|file",
   }
 }
 ```
@@ -462,7 +469,7 @@ func (receiver *Uppercase) Message() string {
 
 ```
 
-然后将该规则注册到 `app/providers/validation_service_provider.go` 文件的 `rules` 方法中，之后该规则就可以像其他规则一样使用了：
+然后将该规则注册到 `app/providers/validation_service_provider.go` 文件的 `rules` 方法中，之后该规则就可以像其他规则一样使用了，如果是通过 `make:rule` 命令生成的规则，则不需要手动注册，框架会自动注册。
 
 ```go
 package providers
@@ -558,7 +565,7 @@ func (receiver *ToInt) Handle() any {
 }
 ```
 
-然后将该过滤器注册到 `app/providers/validation_service_provider.go` 文件的 `filters` 方法中，之后就可以像其他过滤器一样使用了：
+然后将该过滤器注册到 `app/providers/validation_service_provider.go` 文件的 `filters` 方法中，之后就可以像其他过滤器一样使用了，如果是通过 `make:filter` 命令生成的过滤器，则不需要手动注册，框架会自动注册。
 
 ```go
 package providers

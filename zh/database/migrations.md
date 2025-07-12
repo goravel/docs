@@ -8,12 +8,10 @@
 
 ## 配置
 
-数据库迁移文件存放在 `database/migrations` 目录下，你可以在 `config/database.go` 文件中配置数据库连接信息。当前支持 Go 语言迁移和 SQL 迁移两个驱动，但 SQL 迁移将在后续版本中移除。
+数据库迁移文件存放在 `database/migrations` 目录下，你可以在 `config/database.go` 文件中配置数据库连接信息。
 
 ```go
-// Available Drivers: "default", "sql"
 "migrations": map[string]any{
-  "driver": "default",
   // You can cumstomize the table name of migrations
   "table":  "migrations",
 },
@@ -99,28 +97,9 @@ func (r *M20241207095921CreateUsersTable) Connection() string {
 }
 ```
 
-### SQL 迁移
-
-迁移命令会同时生成两个迁移文件：`***.up.sql`、`***.down.sql`，分别对应执行、回滚。你可以在这两个文件中直接编写 SQL 语句。
-
-```sql
--- ***.up.sql
-CREATE TABLE `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ***.down.sql
-DROP TABLE `users`;
-```
-
 ## 注册迁移
 
-使用 Go 语言迁移时，迁移文件生成后需要再在 `database/kernel.go` 文件中注册迁移文件：
+迁移文件生成后需要在 `database/kernel.go` 文件中注册，如果是通过 `make:migration` 命令生成的迁移文件，则不需要手动注册，框架会自动注册。
 
 ```go
 // database/kernel.go
@@ -130,8 +109,6 @@ func (kernel Kernel) Migrations() []schema.Migration {
 	}
 }
 ```
-
-SQL 迁移不需要注册，框架会自动扫描 `database/migrations` 目录下的 SQL 文件。
 
 ## 执行迁移
 
@@ -227,6 +204,22 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
 })
 ```
 
+### 重命名字段
+
+```go
+facades.Schema().Table("users", func(table schema.Blueprint) {
+  table.RenameColumn("old_name", "new_name")
+})
+```
+
+### 添加表注释
+
+```go
+facades.Schema().Table("users", func(table schema.Blueprint) {
+  table.Comment("user table")
+})
+```
+
 ### 重命名 / 删除表
 
 ```go
@@ -240,19 +233,25 @@ facades.Schema().DropIfExists("users")
 
 ### 可用的字段类型
 
-|     |     |     |     |
-|-----|-----|-----|-----|
-| BigIncrements | BigInteger | Boolean | Char |
-| Date | DateTime | DateTimeTz | Decimal |
-| Double | [Enum](#enum) | Float | [ID](#id) |
-| Increments | Integer | IntegerIncrements | Json |
-| Increments | LongText | MediumIncrements | MediumInteger |
-| MediumText | SmallIncrements | SmallInteger | [SoftDeletes](#softdeletes) |
-| SoftDeletesTz | String | Text | Time |
-| TimeTz | Timestamp | Timestamps | TimestampsTz |
-| TimestampTz | UnsignedBigInteger | TinyIncrements | TinyInteger |
-| TinyText | UnsignedInteger | UnsignedMediumInteger | UnsignedSmallInteger |
-| UnsignedTinyInteger |  |  |  |
+#### 布尔类型
+
+Boolean
+
+#### 字符串 & 文本类型
+
+Char, Json, LongText, MediumText, String, Text, LongText, TinyText, Uuid, Ulid
+
+#### 数字类型
+
+BigIncrements, BigInteger, Decimal, Double, Float, [ID](#id), Increments, Integer, IntegerIncrements, MediumIncrements, MediumInteger, SmallIncrements, SmallInteger, TinyIncrements, TinyInteger, UnsignedBigInteger, UnsignedInteger, UnsignedMediumInteger, UnsignedSmallInteger, UnsignedTinyInteger
+
+#### 日期 & 时间类型
+
+Date, DateTime, DateTimeTz, [SoftDeletes](#softdeletes), SoftDeletesTz, Time, TimeTz, Timestamp, TimestampTz, Timestamps, TimestampsTz
+
+#### 其他类型
+
+[Enum](#enum), Morphs, NullableMorphs, NumericMorphs, UuidMorphs, UlidMorphs
 
 #### Enum
 
@@ -302,9 +301,14 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
 
 | 修饰符 | 描述 |
 |-----|-----|
+| `.Always()` | 该列的值始终由数据库系统自动生成，用户不能直接插入或修改（仅限 PostgreSQL） |
 | `.AutoIncrement()` | 设置整数列为自动增长的（主键） |
+| `.After("column")` | 将列设置为指定列之后（适用于 MySQL） |
 | `.Comment("my comment")` | 向列添加注释（MySQL / PostgreSQL） |
+| `.Change()` | 修改列（MySQL / PostgreSQL / Sqlserver） |
 | `.Default(value)` | 为列指定「默认」值 |
+| `.First()` | 将列设置为表的第一个字段（适用于 MySQL） |
+| `.GeneratedAs()` | 设置列的值由数据库系统自动生成（仅限 PostgreSQL） |
 | `.Nullable()` | 允许插入 NULL 值到列中 |
 | `.Unsigned()` | 设置整数列为 UNSIGNED（仅限 MySQL） |
 | `.UseCurrent()` | 设置时间戳列使用 CURRENT_TIMESTAMP 作为默认值 |
