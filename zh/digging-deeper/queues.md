@@ -151,7 +151,7 @@ go func() {
   }
 }()
 
-// 监听 redis 链接的 processing 队列，并发数 10
+// 监听 redis 链接的 processing 队列，并发数 10，重试次数 3
 go func() {
   if err := facades.Queue().Worker(queue.Args{
     Connection: "redis",
