@@ -208,6 +208,10 @@ export function getEnSidebar(): SidebarConfigArray {
           link: "/database/getting-started",
         },
         {
+          text: "Query Builder",
+          link: "/database/queries",
+        },
+        {
           text: "Migrations",
           link: "/database/migrations",
         },

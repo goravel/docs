@@ -208,6 +208,10 @@ export function getZhSidebar(): SidebarConfigArray {
           link: "/zh/database/getting-started",
         },
         {
+          text: "查询构建器",
+          link: "/zh/database/queries",
+        },
+        {
           text: "数据库迁移",
           link: "/zh/database/migrations",
         },
