@@ -169,6 +169,12 @@ func main() {
 }
 ```
 
+也可以使用 `schedule:run` 命令手动运行任务：
+
+```shell
+./artisan schedule:run
+```
+
 ## 关闭调度程序
 
 你可以调用 `Shutdown` 方法优雅的关闭调度程序，该方法将会等待所有任务处理完毕后再执行关闭操作。
@@ -195,6 +201,14 @@ go func() {
 }()
 
 select {}
+```
+
+## 查看所有任务
+
+你可以使用 `schedule:list` 命令查看所有任务：
+
+```shell
+./artisan schedule:list
 ```
 
 <CommentService/>

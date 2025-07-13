@@ -168,6 +168,12 @@ func main() {
 }
 ```
 
+You can also use the `schedule:run` command to manually run tasks:
+
+```shell
+./artisan schedule:run
+```
+
 ## Stopping The Scheduler
 
 You can call the `Shutdown` method to gracefully shut down the scheduler. This method will wait for all tasks to complete before shutting down.
@@ -194,6 +200,14 @@ go func() {
 }()
 
 select {}
+```
+
+## View All Tasks 
+
+You can use the `schedule:list` command to view all tasks:
+
+```shell
+./artisan schedule:list
 ```
 
 <CommentService/>
