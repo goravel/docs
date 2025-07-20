@@ -21,7 +21,9 @@ facades.Route().Get("/", func(ctx http.Context) {
 ### 获取请求路径
 
 ```go
-path := ctx.Request().Path() // /users
+path := ctx.Request().Path() // /users/1
+
+originPath := ctx.Request().OriginPath() // /users/{id}
 ```
 
 ### 获取请求 URL
@@ -46,6 +48,18 @@ url := ctx.Request().FullUrl() // http://**/users?name=Goravel
 
 ```go
 method := ctx.Request().Method()
+```
+
+### 获取请求路由信息
+
+```go
+info := ctx.Request().Info()
+```
+
+### 获取请求路由名称
+
+```go
+name := ctx.Request().Name()
 ```
 
 ### 获取请求头
@@ -113,6 +127,7 @@ name := ctx.Request().InputInt64("name")
 name := ctx.Request().InputBool("name")
 name := ctx.Request().InputArray("name")
 name := ctx.Request().InputMap("name")
+name := ctx.Request().InputMapArray("name")
 ```
 
 ### 绑定 json/form
@@ -160,6 +175,7 @@ value := ctx.Request().Cookie("name", "default")
 
 ```go
 file, err := ctx.Request().File("file")
+files, err := ctx.Request().Files("file")
 ```
 
 ### 储存上传的文件

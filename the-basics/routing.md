@@ -21,6 +21,13 @@ To define routing files, simply navigate to the `/routes` directory. By default,
 
 If you require more precise management, you can add routing files to the `/routes` directory and register them in the `app/providers/route_service_provider.go` file.
 
+## Get Routes List
+
+Use the `route:list` command to view routes list:
+
+```shell
+./artisan route:list
+```
 
 ## Start HTTP Server
 
@@ -121,6 +128,9 @@ select {}
 | StaticFile | [File Routing](#file-routing)           |
 | StaticFS   | [File Routing](#file-routing)           |
 | Middleware | [Middleware](#middleware)               |
+| GetRoutes  | [Get All Routes](#get-all-routes)       |
+| Name       | [Set Route Name](#set-route-name)       |
+| Info       | [Get Route Info](#get-route-info)       |
 
 ## Basic Routing
 
@@ -209,6 +219,24 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 Detail [Middleware](./middleware.md)
+
+## Get All Routes
+
+```go
+routes := facades.Route().GetRoutes()
+```
+
+## Set Route Name
+
+```go
+facades.Route().Get("users", userController.Index).Name("users.index")
+```
+
+## Get Route Info
+
+```go
+route := facades.Route().Info("users.index")
+```
 
 ## Fallback Routes
 

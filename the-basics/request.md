@@ -21,7 +21,9 @@ facades.Route().Get("/", func(ctx http.Context) {
 ### Retrieving The Request Path
 
 ```go
-path := ctx.Request().Path() // /users
+path := ctx.Request().Path() // /users/1
+
+originPath := ctx.Request().OriginPath() // /users/{id}
 ```
 
 ### Retrieving The Request URL
@@ -46,6 +48,18 @@ url := ctx.Request().FullUrl() // http://**/users?name=Goravel
 
 ```go
 method := ctx.Request().Method()
+```
+
+### Retrieving The Request Route Information
+
+```go
+info := ctx.Request().Info()
+```
+
+### Retrieving The Request Route Name
+
+```go
+name := ctx.Request().Name()
 ```
 
 ### Request Headers
@@ -115,6 +129,7 @@ name := ctx.Request().InputInt64("name")
 name := ctx.Request().InputBool("name")
 name := ctx.Request().InputArray("name")
 name := ctx.Request().InputMap("name")
+name := ctx.Request().InputMapArray("name")
 ```
 
 ### Bind Json/Form
@@ -162,6 +177,7 @@ value := ctx.Request().Cookie("name", "default")
 
 ```go
 file, err := ctx.Request().File("file")
+files, err := ctx.Request().Files("file")
 ```
 
 ### Save File

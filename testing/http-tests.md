@@ -44,14 +44,16 @@ func (s *ExampleTestSuite) TestIndex() {
 You may use either `WithCookie` or `WithCookies` method to set cookies value before making a request.
 
 ```go
-func (s *ExampleTestSuite) TestIndex() {
-	response, err := s.Http(s.T()).WithCookie("name", "krishan").Get("/users/1")
+import "github.com/goravel/framework/testing/http"
 
-	// or use WithHeaders for multiple Headers
-	response, err := s.Http(s.T()).WithHeader(map[string]string{
+func (s *ExampleTestSuite) TestIndex() {
+	response, err := s.Http(s.T()).WithCookie(http.Cookie("name", "krishan")).Get("/users/1")
+
+	// or use WithCookies for multiple Cookies
+	response, err := s.Http(s.T()).WithCookies(http.Cookies(map[string]string{
         "name": "krishan",
         "lang": "en",
-    }).Get("/users/1")
+    })).Get("/users/1")
 }
 ```
 

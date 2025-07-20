@@ -10,12 +10,12 @@ export function getEnSidebar(): SidebarConfigArray {
           text: "Upgrade Guide",
           children: [
             {
-              text: "Upgrading To v1.15 From v1.14",
-              link: "/upgrade/v1.15",
+              text: "Upgrading To v1.16 From v1.15",
+              link: "/upgrade/v1.16",
             },
             {
-              text: "Upgrading To v1.14 From v1.13",
-              link: "/upgrade/v1.14",
+              text: "Upgrading To v1.15 From v1.14",
+              link: "/upgrade/v1.15",
             },
             {
               text: "History Upgrade",
@@ -200,6 +200,28 @@ export function getEnSidebar(): SidebarConfigArray {
       ],
     },
     {
+      text: "Database",
+      // collapsible: true,
+      children: [
+        {
+          text: "Getting Started",
+          link: "/database/getting-started",
+        },
+        {
+          text: "Query Builder",
+          link: "/database/queries",
+        },
+        {
+          text: "Migrations",
+          link: "/database/migrations",
+        },
+        {
+          text: "Seeding",
+          link: "/database/seeding",
+        },
+      ],
+    },
+    {
       text: "ORM",
       // collapsible: true,
       children: [
@@ -210,14 +232,6 @@ export function getEnSidebar(): SidebarConfigArray {
         {
           text: "Relationships",
           link: "/orm/relationships",
-        },
-        {
-          text: "Migrations",
-          link: "/orm/migrations",
-        },
-        {
-          text: "Seeding",
-          link: "/orm/seeding",
         },
         {
           text: "Factories",

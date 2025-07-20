@@ -10,12 +10,12 @@ export function getZhSidebar(): SidebarConfigArray {
           text: "升级指南",
           children: [
             {
-              text: "从 v1.14 升级到 v1.15",
-              link: "/zh/upgrade/v1.15",
+              text: "从 v1.15 升级到 v1.16",
+              link: "/zh/upgrade/v1.16",
             },
             {
-              text: "从 v1.13 升级到 v1.14",
-              link: "/zh/upgrade/v1.14",
+              text: "从 v1.14 升级到 v1.15",
+              link: "/zh/upgrade/v1.15",
             },
             {
               text: "历史版本升级",
@@ -200,6 +200,28 @@ export function getZhSidebar(): SidebarConfigArray {
       ],
     },
     {
+      text: "Database",
+      // collapsible: true,
+      children: [
+        {
+          text: "快速入门",
+          link: "/zh/database/getting-started",
+        },
+        {
+          text: "查询构建器",
+          link: "/zh/database/queries",
+        },
+        {
+          text: "数据库迁移",
+          link: "/zh/database/migrations",
+        },
+        {
+          text: "数据填充",
+          link: "/zh/database/seeding",
+        },
+      ],
+    },
+    {
       text: "ORM",
       // collapsible: true,
       children: [
@@ -210,14 +232,6 @@ export function getZhSidebar(): SidebarConfigArray {
         {
           text: "模型关联",
           link: "/zh/orm/relationships",
-        },
-        {
-          text: "数据库迁移",
-          link: "/zh/orm/migrations",
-        },
-        {
-          text: "数据填充",
-          link: "/zh/orm/seeding",
         },
         {
           text: "模型工厂",

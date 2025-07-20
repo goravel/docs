@@ -38,7 +38,7 @@ func (database *ServiceProvider) Boot() {
 
 | Facade     | Document                                                |
 | --------   | ------------------------------------------------------- |
-| App        | [Container](../architecutre-concepts/service-container.md) |
+| App        | [Container](../architecture-concepts/service-container.md) |
 | Artisan    | [Command Console](../digging-deeper/artisan-console.md) |
 | Auth       | [Authentication](../security/authentication.md)   |
 | Cache      | [Cache](../digging-deeper/cache.md)                     |
@@ -54,7 +54,7 @@ func (database *ServiceProvider) Boot() {
 | Queue      | [Queue](../digging-deeper/queues.md)                    |
 | RateLimiter| [RateLimiter](../the-basics/routing.md)                       |
 | Route      | [Route](../the-basics/routing.md)                       |
-| Seeder     | [Seeder](../orm/seeding.md)                   |
+| Seeder     | [Seeder](../database/seeding.md)                   |
 | Schedule   | [Schedule](../digging-deeper/task-scheduling.md)        |
 | Storage    | [Storage](../digging-deeper/task-scheduling.md)        |
 | Testing    | [Testing](../testing/getting-started.md)   |

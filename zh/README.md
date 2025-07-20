@@ -27,7 +27,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 |                     |                      |                      |                      |                      |
 |--------------       | --------------       | --------------       | --------------       | --------------       |
 | [自定义配置](/zh/getting-started/configuration.md)     | [HTTP 服务](/zh/the-basics/routing.md)  | [用户认证](/zh/security/authentication.md)  | [用户授权](/zh/security/authorization.md)  | [数据库 ORM](/zh/orm/getting-started.md)             |
-| [数据库迁移](/zh/orm/migrations.md)  | [日志](/the-basics/logging.md)  | [缓存](/digging-deeper/cache.md)  | [Grpc](/the-basics/grpc.md)                    | [Artisan 命令行](/zh/digging-deeper/artisan-console.md)  |
+| [数据库迁移](/zh/database/migrations.md)  | [日志](/the-basics/logging.md)  | [缓存](/digging-deeper/cache.md)  | [Grpc](/the-basics/grpc.md)                    | [Artisan 命令行](/zh/digging-deeper/artisan-console.md)  |
 | [任务调度](/zh/digging-deeper/task-scheduling.md)  | [队列](/zh/digging-deeper/queues.md)  | [事件系统](/zh/digging-deeper/event.md)               | [文件存储](/zh/digging-deeper/filesystem.md)  | [邮件](/zh/digging-deeper/mail.md)  |
 | [表单验证](/zh/the-basics/validation.md)  | [Mock](/zh/testing/mock.md)                       | [Hash](/zh/security/hashing.md)  | [Crypt](/zh/security/encryption.md)  | [Carbon](/zh/digging-deeper/helpers.md)  |
 | [扩展包开发](/zh/digging-deeper/package-development.md) | [测试](/zh/testing/getting-started.md) | [本地化](/zh/digging-deeper/localization.md)  | [Session](/zh/the-basics/session.md)  |   |
