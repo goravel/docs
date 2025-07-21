@@ -415,6 +415,10 @@ if validator.Errors().Has("email") {
 | `ipv4`  | 检查值是 IPv4 字符串 |
 | `ipv6`  | 检查值是 IPv6 字符串 |
 | `regex`  | 检查该值是否可以通过正则验证 |
+| `uuid`  | 检查值是UUID字符串 |
+| `uuid3`  | 检查值是UUID3字符串 |
+| `uuid4`  | 检查值是UUID4字符串 |
+| `uuid5`  | 检查值是UUID5字符串 |
 
 ### 规则使用注意事项
 
