@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
+
+:root {
+    --vp-nav-logo-height: 36px;
+    --vp-home-hero-name-color: transparent;
+    --vp-home-hero-name-background: -webkit-linear-gradient(
+            120deg,
+            #bd34fe 30%,
+            #41d1ff
+    );
+}
+
+.VPHero .VPImage {
+    filter: drop-shadow(-2px 4px 6px rgba(0, 0, 0, 0.2));
+    padding: 18px;
+}
+
+.icon {
+    font-family: 'Noto Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Apple Color Emoji', emoji;
+}
