@@ -420,6 +420,10 @@ Below is a list of all available validation rules and their function:
 | `ipv4`  | Check value is IPv4 string |
 | `ipv6`  | Check value is IPv6 string |
 | `regex`  | Check if the value can pass the regular verification |
+| `uuid`  | Check value is UUID string |
+| `uuid3`  | Check value is UUID3 string |
+| `uuid4`  | Check value is UUID4 string |
+| `uuid5`  | Check value is UUID5 string |
 
 ### Points For Using Rules
 
