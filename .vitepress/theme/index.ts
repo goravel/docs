@@ -24,7 +24,7 @@ export default {
                 repoId: 'R_kgDOGR4SdA',
                 category: 'Announcements',
                 categoryId: 'DIC_kwDOGR4SdM4CUEsk',
-                mapping: 'og:title',
+                mapping: 'pathname',
                 inputPosition: 'top',
                 lang: 'en',
                 // i18n setting (Note: This configuration will override the default language set by lang)
