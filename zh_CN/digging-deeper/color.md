@@ -4,7 +4,7 @@
 
 ## 简介
 
-`color` 包提供一系列的方法以便在控制台上输出带颜色的内容，该功能由 [PTerm](github.com/pterm/pterm) 提供驱动。
+`color` 包提供一系列的方法以便在控制台上输出带颜色的内容，该功能由 [PTerm](https://github.com/pterm/pterm) 提供驱动。
 
 ## 特定颜色
 

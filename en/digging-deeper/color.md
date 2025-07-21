@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The `color` package provides a set of functions to colorize the output of the terminal using [PTerm](github.com/pterm/pterm) library.
+The `color` package provides a set of functions to colorize the output of the terminal using [PTerm](https://github.com/pterm/pterm) library.
 
 ## Specific Color
 

@@ -28,7 +28,7 @@ head:
 
 </div>
 
-English | [中文](zh/README.md)
+English | [中文](/zh_CN/README.md)
 
 ## About Goravel
 

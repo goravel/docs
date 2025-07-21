@@ -26,11 +26,11 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 |                     |                      |                      |                      |                      |
 |--------------       | --------------       | --------------       | --------------       | --------------       |
-| [自定义配置](/zh/getting-started/configuration.md)     | [HTTP 服务](/zh/the-basics/routing.md)  | [用户认证](/zh/security/authentication.md)  | [用户授权](/zh/security/authorization.md)  | [数据库 ORM](/zh/orm/getting-started.md)             |
-| [数据库迁移](/zh/database/migrations.md)  | [日志](/the-basics/logging.md)  | [缓存](/digging-deeper/cache.md)  | [Grpc](/the-basics/grpc.md)                    | [Artisan 命令行](/zh/digging-deeper/artisan-console.md)  |
-| [任务调度](/zh/digging-deeper/task-scheduling.md)  | [队列](/zh/digging-deeper/queues.md)  | [事件系统](/zh/digging-deeper/event.md)               | [文件存储](/zh/digging-deeper/filesystem.md)  | [邮件](/zh/digging-deeper/mail.md)  |
-| [表单验证](/zh/the-basics/validation.md)  | [Mock](/zh/testing/mock.md)                       | [Hash](/zh/security/hashing.md)  | [Crypt](/zh/security/encryption.md)  | [Carbon](/zh/digging-deeper/helpers.md)  |
-| [扩展包开发](/zh/digging-deeper/package-development.md) | [测试](/zh/testing/getting-started.md) | [本地化](/zh/digging-deeper/localization.md)  | [Session](/zh/the-basics/session.md)  |   |
+| [自定义配置](/zh_CN/getting-started/configuration.md)     | [HTTP 服务](/zh_CN/the-basics/routing.md)  | [用户认证](/zh_CN/security/authentication.md)  | [用户授权](/zh_CN/security/authorization.md)  | [数据库 ORM](/zh_CN/orm/getting-started.md)             |
+| [数据库迁移](/zh_CN/database/migrations.md)  | [日志](/the-basics/logging.md)  | [缓存](/digging-deeper/cache.md)  | [Grpc](/the-basics/grpc.md)                    | [Artisan 命令行](/zh_CN/digging-deeper/artisan-console.md)  |
+| [任务调度](/zh_CN/digging-deeper/task-scheduling.md)  | [队列](/zh_CN/digging-deeper/queues.md)  | [事件系统](/zh_CN/digging-deeper/event.md)               | [文件存储](/zh_CN/digging-deeper/filesystem.md)  | [邮件](/zh_CN/digging-deeper/mail.md)  |
+| [表单验证](/zh_CN/the-basics/validation.md)  | [Mock](/zh_CN/testing/mock.md)                       | [Hash](/zh_CN/security/hashing.md)  | [Crypt](/zh_CN/security/encryption.md)  | [Carbon](/zh_CN/digging-deeper/helpers.md)  |
+| [扩展包开发](/zh_CN/digging-deeper/package-development.md) | [测试](/zh_CN/testing/getting-started.md) | [本地化](/zh_CN/digging-deeper/localization.md)  | [Session](/zh_CN/the-basics/session.md)  |   |
 
 ## 路线图
 
@@ -38,7 +38,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## 优秀扩展包
 
-[查看详情](/zh/prologue/packages.md)
+[查看详情](/zh_CN/prologue/packages.md)
 
 ## 文档
 
@@ -50,7 +50,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## Contributors
 
-这个项目的存在要归功于所有做出贡献的人，参与贡献请查看[贡献指南](/zh/prologue/contributions.md)。
+这个项目的存在要归功于所有做出贡献的人，参与贡献请查看[贡献指南](/zh_CN/prologue/contributions.md)。
 
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
