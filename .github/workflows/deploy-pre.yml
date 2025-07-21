@@ -42,6 +42,7 @@ jobs:
           publish_branch: gh-pages-pre
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -55,7 +56,3 @@ jobs:
         allenvs: true
         script: |
           cd /data/wwwroot/pre.goravel.dev/ && git pull origin gh-pages-pre
-<<<<<<< HEAD
-=======
-          
->>>>>>> 81a4c40 (add action)
