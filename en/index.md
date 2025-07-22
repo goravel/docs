@@ -54,7 +54,7 @@ hero:
   actions:
     - theme: brand
       text: Quick Start
-      link: /en/getting-started/installation
+      link: /getting-started/installation
     - theme: alt
       text: 🌟 Github Star
       link: https://github.com/goravel/goravel
