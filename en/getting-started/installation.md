@@ -8,7 +8,6 @@
 
 ## Installation
 
-
 ### Using Goravel Installer
 
 Initialize the installer according to the [documentation](https://github.com/goravel/installer), and then initialize a new Goravel project using the following command:

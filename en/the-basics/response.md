@@ -156,9 +156,9 @@ origin := ctx.Response().Origin()
 
 `origin` contains some methods as shown below：
 
-| Method        | Action           |
-| -----------  | -------------- |
-| Body         | Get response data     |
-| Header       | Get response header |
-| Size         | Get response size     |
-| Status       | Get response status   |
+| Method | Action              |
+| ------ | ------------------- |
+| Body   | Get response data   |
+| Header | Get response header |
+| Size   | Get response size   |
+| Status | Get response status |

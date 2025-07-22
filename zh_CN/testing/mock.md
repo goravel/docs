@@ -89,7 +89,7 @@ func Cache() string {
 func TestCache(t *testing.T) {
   mockFactory := mock.Factory()
   mockCache := mockFactory.Cache()
-  
+
   mockCache.On("Put", "name", "goravel", mock.Anything).Return(nil).Once()
   mockCache.On("Get", "name", "test").Return("Goravel").Once()
 
@@ -182,6 +182,7 @@ func TestEvent(t *testing.T) {
 ```
 
 ## Mock facades.Gate
+
 ```go
 import (
   "testing"

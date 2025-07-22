@@ -299,20 +299,20 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
 
 以下表格包含所有可用的列修饰符：
 
-| 修饰符 | 描述 |
-|-----|-----|
-| `.Always()` | 该列的值始终由数据库系统自动生成，用户不能直接插入或修改（仅限 PostgreSQL） |
-| `.AutoIncrement()` | 设置整数列为自动增长的（主键） |
-| `.After("column")` | 将列设置为指定列之后（适用于 MySQL） |
-| `.Comment("my comment")` | 向列添加注释（MySQL / PostgreSQL） |
-| `.Change()` | 修改列（MySQL / PostgreSQL / Sqlserver） |
-| `.Default(value)` | 为列指定「默认」值 |
-| `.First()` | 将列设置为表的第一个字段（适用于 MySQL） |
-| `.GeneratedAs()` | 设置列的值由数据库系统自动生成（仅限 PostgreSQL） |
-| `.Nullable()` | 允许插入 NULL 值到列中 |
-| `.Unsigned()` | 设置整数列为 UNSIGNED（仅限 MySQL） |
-| `.UseCurrent()` | 设置时间戳列使用 CURRENT_TIMESTAMP 作为默认值 |
-| `.UseCurrentOnUpdate()` | 设置记录更新时，时间戳列使用 CURRENT_TIMESTAMP（仅限 MySQL） |
+| 修饰符                   | 描述                                                                        |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `.Always()`              | 该列的值始终由数据库系统自动生成，用户不能直接插入或修改（仅限 PostgreSQL） |
+| `.AutoIncrement()`       | 设置整数列为自动增长的（主键）                                              |
+| `.After("column")`       | 将列设置为指定列之后（适用于 MySQL）                                        |
+| `.Comment("my comment")` | 向列添加注释（MySQL / PostgreSQL）                                          |
+| `.Change()`              | 修改列（MySQL / PostgreSQL / Sqlserver）                                    |
+| `.Default(value)`        | 为列指定「默认」值                                                          |
+| `.First()`               | 将列设置为表的第一个字段（适用于 MySQL）                                    |
+| `.GeneratedAs()`         | 设置列的值由数据库系统自动生成（仅限 PostgreSQL）                           |
+| `.Nullable()`            | 允许插入 NULL 值到列中                                                      |
+| `.Unsigned()`            | 设置整数列为 UNSIGNED（仅限 MySQL）                                         |
+| `.UseCurrent()`          | 设置时间戳列使用 CURRENT_TIMESTAMP 作为默认值                               |
+| `.UseCurrentOnUpdate()`  | 设置记录更新时，时间戳列使用 CURRENT_TIMESTAMP（仅限 MySQL）                |
 
 ### 删除列
 
@@ -387,4 +387,3 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
   table.DropForeignByName("user_id_foreign")
 })
 ```
-

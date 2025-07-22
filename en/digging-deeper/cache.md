@@ -6,8 +6,8 @@
 
 Goravel provides an expandable cache module that can be operated using `facades.Cache()`. Goravel comes with a `memory` driver, for other drivers, please check the corresponding independent extension packages:
 
-| Driver | Link                             |
-| ------ | -------------------------------- |
+| Driver | Link                                                                 |
+| ------ | -------------------------------------------------------------------- |
 | Redis  | [https://github.com/goravel/redis](https://github.com/goravel/redis) |
 
 ## Configuration

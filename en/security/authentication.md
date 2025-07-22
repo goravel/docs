@@ -175,4 +175,3 @@ Finally, you can reference this provider in the `guards` configuration:
   },
 },
 ```
-

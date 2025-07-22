@@ -22,6 +22,7 @@ By default, the `.env` file in the root directory is used to inject configuratio
     - user_test.go
 - .env
 ```
+
 In addition, you may create a `.env.testing` file at the root of your project. This file will be used instead of the `.env` file when running `go test` with the `--env` option, note that this option needs to follow the test directory, for example:
 
 ```shell
@@ -143,7 +144,7 @@ You can use the `Database` or `Cache` method to create an image, or you can pass
 
 ```go
 database, err := facades.Testing().Docker().Database()
-database, err := facades.Testing().Docker().Database("postgres")  
+database, err := facades.Testing().Docker().Database("postgres")
 
 cache, err := facades.Testing().Docker().Cache()
 cache, err := facades.Testing().Docker().Cache("redis")

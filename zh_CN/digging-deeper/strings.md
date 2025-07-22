@@ -475,7 +475,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("abc123def456def").MatchAll(`\d+`) // []string{"123", "456"}
 ```
 
-### `IsMatch` 
+### `IsMatch`
 
 `IsMatch` 方法确定给定字符串是否与给定的正则表达式匹配。
 
@@ -1037,4 +1037,3 @@ str.Of("Hello, World!").Words(1) // "Hello..."
 
 str.Of("Hello, World!").Words(1, " (****)") // "Hello (****)"
 ```
-

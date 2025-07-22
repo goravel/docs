@@ -74,15 +74,15 @@ import "github.com/goravel/framework/contracts/schema"
 facades.Schema().Extend(&schema.Extension{
   GoTypes: []schema.GoType{
     {
-        Pattern: "uuid", 
-        Type: "uuid.UUID", 
-        NullType: "uuid.NullUUID", 
+        Pattern: "uuid",
+        Type: "uuid.UUID",
+        NullType: "uuid.NullUUID",
         Imports: []string{"github.com/google/uuid"},
     },
     {
-        Pattern: "point", 
-        Type: "geom.Point", 
-        NullType: "*geom.Point", 
+        Pattern: "point",
+        Type: "geom.Point",
+        NullType: "*geom.Point",
         Imports: []string{"github.com/twpayne/go-geom"},
     },
   },
@@ -156,87 +156,87 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 
 ## facades.Orm() available functions
 
-| Name        | Action                                                      |
-| ----------- | ----------------------------------------------------------- |
-| Connection  | [Specify Database Connection](#specify-database-connection) |
+| Name        | Action                                                                  |
+| ----------- | ----------------------------------------------------------------------- |
+| Connection  | [Specify Database Connection](#specify-database-connection)             |
 | DB          | [Generic Database Interface sql.DB](#generic-database-interface-sql-db) |
-| Query       | [Get Database Instance](#get-database-instance)             |
-| Transaction | [Transaction](#transaction)                                 |
-| WithContext | [Inject Context](#inject-context)                           |
+| Query       | [Get Database Instance](#get-database-instance)                         |
+| Transaction | [Transaction](#transaction)                                             |
+| WithContext | [Inject Context](#inject-context)                                       |
 
 ## facades.Orm().Query() available functions
 
-| Functions     | Action                                                  |
-| ------------- | ------------------------------------------------------- |
-| BeginTransaction         | [Begin transaction](#transaction)                       |
-| Commit        | [Commit transaction](#transaction)                      |
-| Count         | [Count](#count)                                         |
-| Create        | [Create](#create)                                       |
-| Cursor        | [Cursor](#cursor)                                       |
-| Delete        | [Delete](#delete)                                       |
-| Distinct      | [Filter Repetition](#filter-repetition)                 |
-| Driver        | [Get Driver](#get-driver)                               |
-| Exec          | [Execute native update SQL](#execute-native-update-sql) |
-| Exists        | [Exists](#exists) |
-| Find          | [Query one or multiple lines by ID](#query-one-or-multiple-lines-by-id)            |
-| FindOrFail    | [Not found return error](#not-found-return-error)            |
-| First         | [Query one line](#query-one-line)                       |
-| FirstOr | [Query or return data through callback](#query-one-line)                     |
-| FirstOrCreate | [Retrieving Or Creating Models](#retrieving-or-creating-models)                     |
-| FirstOrNew | [Retrieving Or New Models](#retrieving-or-creating-models)                     |
-| FirstOrFail | [Not Found Error](#not-found-error)                     |
-| ForceDelete   | [Force delete](#delete)                                 |
-| Get           | [Query multiple lines](#query-multiple-lines)           |
-| Group         | [Group](#group-by--having)                             |
-| Having        | [Having](#group-by-having)                            |
-| Join          | [Join](#join)                                           |
-| Limit         | [Limit](#limit)                                         |
-| LockForUpdate | [Pessimistic Locking](#pessimistic-locking)           |
-| Model         | [Specify a model](#specify-table-query)                 |
-| Offset        | [Offset](#offset)                                       |
-| Order         | [Order](#order)                                         |
-| OrderBy       | [Order](#order)                           |
-| OrderByDesc   | [Order](#order)                           |
-| InRandomOrder | [Order](#order)                           |
-| OrWhere       | [OrWhere](#where)                                       |
-| OrWhereNotIn  | [OrWhereNotIn](#where)                  |
-| OrWhereNull   | [OrWhereNull](#where)                  |
-| OrWhereIn     | [OrWhereIn](#where)                  |
-| OrWhereJsonContains | [查询条件](#where-条件)                  |
-| OrWhereJsonContainsKey | [查询条件](#where-条件)                  |
-| OrWhereJsonDoesntContain | [查询条件](#where-条件)                  |
-| OrWhereJsonDoesntContainKey | [查询条件](#where-条件)                  |
-| OrWhereJsonLength | [查询条件](#where-条件)                  |
-| Paginate      | [Paginate](#paginate)             |
-| Pluck         | [Query single column](#query-single-column)             |
-| Raw           | [Execute native SQL](#execute-native-sql)               |
-| Restore       | [Restore](#restore)                   |
-| Rollback      | [Rollback transaction](#transaction)                    |
-| Save          | [Update a existing model](#update-a-existing-model)                  |
-| SaveQuietly          | [Saving a single model without events](#saving-a-single-model-without-events)                  |
-| Scan          | [Scan struct](#execute-native-sql)                      |
-| Scopes        | [Scopes](#scopes)                           |
-| Select        | [Specify Fields](#specify-fields)                       |
-| SharedLock | [Pessimistic Locking](#pessimistic-locking)           |
-| Sum | [Sum](#sum)           |
-| Table         | [Specify a table](#specify-table-query)                 |
-| ToSql         | [Get SQL](#get-sql)                   |
-| ToRawSql      | [Get SQL](#get-sql)                   |
-| Update        | [Update a single column](#update-a-single-column)                   |
-| UpdateOrCreate | [Update or create](#update-or-create)                  |
-| Where         | [Where](#where)                                         |
-| WhereBetween  | [WhereBetween](#where)                  |
-| WhereNotBetween | [WhereNotBetween](#where)                  |
-| WhereNotIn    | [WhereNotIn](#where)                  |
-| WhereNull     | [WhereNull](#where)                  |
-| WhereIn       | [WhereIn](#where)                  |
-| WhereJsonContains | [查询条件](#where-条件)                  |
-| WhereJsonContainsKey | [查询条件](#where-条件)                  |
-| WhereJsonDoesntContain | [查询条件](#where-条件)                  |
-| WhereJsonDoesntContainKey | [查询条件](#where-条件)                  |
-| WhereJsonLength | [查询条件](#where-条件)                  |
-| WithoutEvents | [Muting events](#muting-events)               |
-| WithTrashed   | [Query soft delete data](#query-soft-delete-data)       |
+| Functions                   | Action                                                                        |
+| --------------------------- | ----------------------------------------------------------------------------- |
+| BeginTransaction            | [Begin transaction](#transaction)                                             |
+| Commit                      | [Commit transaction](#transaction)                                            |
+| Count                       | [Count](#count)                                                               |
+| Create                      | [Create](#create)                                                             |
+| Cursor                      | [Cursor](#cursor)                                                             |
+| Delete                      | [Delete](#delete)                                                             |
+| Distinct                    | [Filter Repetition](#filter-repetition)                                       |
+| Driver                      | [Get Driver](#get-driver)                                                     |
+| Exec                        | [Execute native update SQL](#execute-native-update-sql)                       |
+| Exists                      | [Exists](#exists)                                                             |
+| Find                        | [Query one or multiple lines by ID](#query-one-or-multiple-lines-by-id)       |
+| FindOrFail                  | [Not found return error](#not-found-return-error)                             |
+| First                       | [Query one line](#query-one-line)                                             |
+| FirstOr                     | [Query or return data through callback](#query-one-line)                      |
+| FirstOrCreate               | [Retrieving Or Creating Models](#retrieving-or-creating-models)               |
+| FirstOrNew                  | [Retrieving Or New Models](#retrieving-or-creating-models)                    |
+| FirstOrFail                 | [Not Found Error](#not-found-error)                                           |
+| ForceDelete                 | [Force delete](#delete)                                                       |
+| Get                         | [Query multiple lines](#query-multiple-lines)                                 |
+| Group                       | [Group](#group-by--having)                                                    |
+| Having                      | [Having](#group-by-having)                                                    |
+| Join                        | [Join](#join)                                                                 |
+| Limit                       | [Limit](#limit)                                                               |
+| LockForUpdate               | [Pessimistic Locking](#pessimistic-locking)                                   |
+| Model                       | [Specify a model](#specify-table-query)                                       |
+| Offset                      | [Offset](#offset)                                                             |
+| Order                       | [Order](#order)                                                               |
+| OrderBy                     | [Order](#order)                                                               |
+| OrderByDesc                 | [Order](#order)                                                               |
+| InRandomOrder               | [Order](#order)                                                               |
+| OrWhere                     | [OrWhere](#where)                                                             |
+| OrWhereNotIn                | [OrWhereNotIn](#where)                                                        |
+| OrWhereNull                 | [OrWhereNull](#where)                                                         |
+| OrWhereIn                   | [OrWhereIn](#where)                                                           |
+| OrWhereJsonContains         | [查询条件](#where-条件)                                                       |
+| OrWhereJsonContainsKey      | [查询条件](#where-条件)                                                       |
+| OrWhereJsonDoesntContain    | [查询条件](#where-条件)                                                       |
+| OrWhereJsonDoesntContainKey | [查询条件](#where-条件)                                                       |
+| OrWhereJsonLength           | [查询条件](#where-条件)                                                       |
+| Paginate                    | [Paginate](#paginate)                                                         |
+| Pluck                       | [Query single column](#query-single-column)                                   |
+| Raw                         | [Execute native SQL](#execute-native-sql)                                     |
+| Restore                     | [Restore](#restore)                                                           |
+| Rollback                    | [Rollback transaction](#transaction)                                          |
+| Save                        | [Update a existing model](#update-a-existing-model)                           |
+| SaveQuietly                 | [Saving a single model without events](#saving-a-single-model-without-events) |
+| Scan                        | [Scan struct](#execute-native-sql)                                            |
+| Scopes                      | [Scopes](#scopes)                                                             |
+| Select                      | [Specify Fields](#specify-fields)                                             |
+| SharedLock                  | [Pessimistic Locking](#pessimistic-locking)                                   |
+| Sum                         | [Sum](#sum)                                                                   |
+| Table                       | [Specify a table](#specify-table-query)                                       |
+| ToSql                       | [Get SQL](#get-sql)                                                           |
+| ToRawSql                    | [Get SQL](#get-sql)                                                           |
+| Update                      | [Update a single column](#update-a-single-column)                             |
+| UpdateOrCreate              | [Update or create](#update-or-create)                                         |
+| Where                       | [Where](#where)                                                               |
+| WhereBetween                | [WhereBetween](#where)                                                        |
+| WhereNotBetween             | [WhereNotBetween](#where)                                                     |
+| WhereNotIn                  | [WhereNotIn](#where)                                                          |
+| WhereNull                   | [WhereNull](#where)                                                           |
+| WhereIn                     | [WhereIn](#where)                                                             |
+| WhereJsonContains           | [查询条件](#where-条件)                                                       |
+| WhereJsonContainsKey        | [查询条件](#where-条件)                                                       |
+| WhereJsonDoesntContain      | [查询条件](#where-条件)                                                       |
+| WhereJsonDoesntContainKey   | [查询条件](#where-条件)                                                       |
+| WhereJsonLength             | [查询条件](#where-条件)                                                       |
+| WithoutEvents               | [Muting events](#muting-events)                                               |
+| WithTrashed                 | [Query soft delete data](#query-soft-delete-data)                             |
 
 ## Query Builder
 
@@ -348,7 +348,7 @@ facades.Orm().Query().Where("id in ?", []int{1,2,3}).Get(&users)
 
 #### Retrieving Or Creating Models
 
-The `FirstOrCreate` method searches for a database record using the specified column/value pairs. If the model cannot be found in the database, it creates a new record with the attributes from merging the first argument with the optional second argument. 
+The `FirstOrCreate` method searches for a database record using the specified column/value pairs. If the model cannot be found in the database, it creates a new record with the attributes from merging the first argument with the optional second argument.
 
 Similarly, the `FirstOrNew` method also tries to locate a record in the database based on the attributes given. However, if it is not found, a new instance of the model is returned. It's important to note that this new model has not been saved to the database yet and you need to manually call the `Save` method to do so.
 
@@ -664,6 +664,7 @@ facades.Orm().Query().UpdateOrCreate(&user, models.User{Name: "name"}, models.Us
 // INSERT INTO `users` (`created_at`,`updated_at`,`deleted_at`,`name`,`avatar`) VALUES ('2023-03-11 10:11:08.869','2023-03-11 10:11:08.869',NULL,'name','avatar');
 // UPDATE `users` SET `name`='name',avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE users`.`deleted_at` IS NULL AND `id` = 1;
 ```
+
 ### Delete
 
 Delete by model, the number of rows affected by the statement is returned by the method:
@@ -851,7 +852,7 @@ facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
 
 ### Pessimistic Locking
 
-The query builder also includes a few functions to help you achieve "pessimistic locking" when executing your `select` statements. 
+The query builder also includes a few functions to help you achieve "pessimistic locking" when executing your `select` statements.
 
 To execute a statement with a "shared lock", you may call the `SharedLock` method. A shared lock prevents the selected rows from being modified until your transaction is committed:
 
@@ -1016,15 +1017,15 @@ func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener 
 
 The `event` parameter will be passed to all observers:
 
-| Method   | Action                                                |
-| -------- | ------------------------------------------------------- |
-| Context  | Get context that passed by `facades.Orm().WithContext()` |
-| GetAttribute  | Get the modified value, if not modified, get the original value, if there is no original value, return nil |
-| GetOriginal  | Get the original value, if there is no original value, return nil |
-| IsDirty  | Determine whether the field is modified |
-| IsClean  | IsDirty reverse   |
-| Query  | Get a new Query, which can be used with transaction |
-| SetAttribute  | Set a new value for a field |
+| Method       | Action                                                                                                     |
+| ------------ | ---------------------------------------------------------------------------------------------------------- |
+| Context      | Get context that passed by `facades.Orm().WithContext()`                                                   |
+| GetAttribute | Get the modified value, if not modified, get the original value, if there is no original value, return nil |
+| GetOriginal  | Get the original value, if there is no original value, return nil                                          |
+| IsDirty      | Determine whether the field is modified                                                                    |
+| IsClean      | IsDirty reverse                                                                                            |
+| Query        | Get a new Query, which can be used with transaction                                                        |
+| SetAttribute | Set a new value for a field                                                                                |
 
 ### Muting Events
 
@@ -1045,4 +1046,3 @@ err := facades.Orm().Query().FindOrFail(&user, 1)
 user.Name = "Goravel"
 err := facades.Orm().Query().SaveQuietly(&user)
 ```
-

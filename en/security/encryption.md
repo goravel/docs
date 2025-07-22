@@ -22,7 +22,7 @@ secret, err := facades.Crypt().EncryptString("goravel")
 
 ### Decrypting A Value
 
-You can use the `DecryptString` method from `facades.Crypt()` to decrypt values.  If the value can not be properly decrypted, such as when the message authentication code is invalid, an error will be returned.
+You can use the `DecryptString` method from `facades.Crypt()` to decrypt values. If the value can not be properly decrypted, such as when the message authentication code is invalid, an error will be returned.
 
 ```go
 str, err := facades.Crypt().DecryptString(secret)

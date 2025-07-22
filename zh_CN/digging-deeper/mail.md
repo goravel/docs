@@ -131,4 +131,3 @@ func (m *OrderShipped) Queue() *mail.Queue {
 err := facades.Mail().Send(mails.NewOrderShipped())
 err := facades.Mail().Queue(mails.NewOrderShipped())
 ```
-

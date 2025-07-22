@@ -42,7 +42,7 @@ The `storage` directory contains the `logs` directory, and the `logs` directory 
 
 ### `tests` Directory
 
-The `tests` directory contains your automated tests. 
+The `tests` directory contains your automated tests.
 
 ## `app` Directory
 

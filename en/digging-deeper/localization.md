@@ -69,7 +69,7 @@ In language files, you can define single-level or multi-level structures:
 
 ### Retrieving Translation Strings
 
-You can use the `facades.Lang(ctx).Get()` method to retrieve translation strings from language files. If the language file contains multiple levels, you can use `.` to connect them, and if the language file is in multiple levels of folders, you can use `/` to connect them. 
+You can use the `facades.Lang(ctx).Get()` method to retrieve translation strings from language files. If the language file contains multiple levels, you can use `.` to connect them, and if the language file is in multiple levels of folders, you can use `/` to connect them.
 
 For example:
 
@@ -153,7 +153,7 @@ facades.Lang(ctx).Choice("time.minutes_ago", 5, translation.Option{
 })
 ```
 
-## Embed Loading  
+## Embed Loading
 
 When using embed loading, the language files will be compiled into the binary file and no longer need to be deployed. The independent language files and embed loading can be used at the same time, just configure `lang_path` and `lang_fs` in the `config/app.go` file. When using, the independent language file mode will be used first, and when the independent language file does not exist, the embed loading will be used.
 
@@ -185,4 +185,3 @@ import "lang"
 "lang_path": "lang",
 "lang_fs":   lang.Fs,
 ```
-

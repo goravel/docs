@@ -10,14 +10,14 @@ The Goravel routing module can be operated by `facades.Route()`.
 
 Goravel uses [gin](https://github.com/gin-gonic/gin) as its default HTTP driver. To use other drivers, configure them in the `config/http.go` file. The official default supports [gin](https://github.com/gin-gonic/gin) and [fiber](https://github.com/gofiber/fiber).
 
-| Driver | Link                             |
-|--------|----------------------------------|
-| Gin    | [https://github.com/goravel/gin](https://github.com/goravel/gin)   |
+| Driver | Link                                                                 |
+| ------ | -------------------------------------------------------------------- |
+| Gin    | [https://github.com/goravel/gin](https://github.com/goravel/gin)     |
 | Fiber  | [https://github.com/goravel/fiber](https://github.com/goravel/fiber) |
 
 ## Default Routing File
 
-To define routing files, simply navigate to the `/routes` directory. By default, the framework utilizes a sample route located in `/routes/web.go`. To establish routing binding, the `func Web()` method is registered in the `app/providers/route_service_provider.go` file. 
+To define routing files, simply navigate to the `/routes` directory. By default, the framework utilizes a sample route located in `/routes/web.go`. To establish routing binding, the `func Web()` method is registered in the `app/providers/route_service_provider.go` file.
 
 If you require more precise management, you can add routing files to the `/routes` directory and register them in the `app/providers/route_service_provider.go` file.
 
@@ -111,26 +111,26 @@ select {}
 
 ### Routing Methods
 
-| Methods    | Action                                  |
-| ---------- | --------------------------------------- |
-| Group      | [Group Routing](#group-routing)         |
-| Prefix     | [Routing Prefix](#routing-prefix)       |
-| ServeHTTP  | [Testing Routing](#testing-routing)     |
-| Get        | [Basic Routing](#basic-routing)         |
-| Post       | [Basic Routing](#basic-routing)         |
-| Put        | [Basic Routing](#basic-routing)         |
-| Delete     | [Basic Routing](#basic-routing)         |
-| Patch      | [Basic Routing](#basic-routing)         |
-| Options    | [Basic Routing](#basic-routing)         |
-| Any        | [Basic Routing](#basic-routing)         |
-| Resource   | [Resource Routing](#resource-routing)         |
-| Static     | [File Routing](#file-routing)           |
-| StaticFile | [File Routing](#file-routing)           |
-| StaticFS   | [File Routing](#file-routing)           |
-| Middleware | [Middleware](#middleware)               |
-| GetRoutes  | [Get All Routes](#get-all-routes)       |
-| Name       | [Set Route Name](#set-route-name)       |
-| Info       | [Get Route Info](#get-route-info)       |
+| Methods    | Action                                |
+| ---------- | ------------------------------------- |
+| Group      | [Group Routing](#group-routing)       |
+| Prefix     | [Routing Prefix](#routing-prefix)     |
+| ServeHTTP  | [Testing Routing](#testing-routing)   |
+| Get        | [Basic Routing](#basic-routing)       |
+| Post       | [Basic Routing](#basic-routing)       |
+| Put        | [Basic Routing](#basic-routing)       |
+| Delete     | [Basic Routing](#basic-routing)       |
+| Patch      | [Basic Routing](#basic-routing)       |
+| Options    | [Basic Routing](#basic-routing)       |
+| Any        | [Basic Routing](#basic-routing)       |
+| Resource   | [Resource Routing](#resource-routing) |
+| Static     | [File Routing](#file-routing)         |
+| StaticFile | [File Routing](#file-routing)         |
+| StaticFS   | [File Routing](#file-routing)         |
+| Middleware | [Middleware](#middleware)             |
+| GetRoutes  | [Get All Routes](#get-all-routes)     |
+| Name       | [Set Route Name](#set-route-name)     |
+| Info       | [Get Route Info](#get-route-info)     |
 
 ## Basic Routing
 

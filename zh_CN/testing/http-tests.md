@@ -30,7 +30,7 @@ func (s *ExampleTestSuite) TestIndex() {
 func (s *ExampleTestSuite) TestIndex() {
     // Single header
     response, err := s.Http(s.T()).WithHeader("X-Custom-Header", "Value").Get("/users/1")
-    
+
     // Multiple headers
     response, err := s.Http(s.T()).WithHeaders(map[string]string{
         "X-Custom-Header": "Value",
@@ -74,15 +74,15 @@ func (s *ExampleTestSuite) TestIndex() {
 ```go
 func (s *ExampleTestSuite) TestIndex() {
 	response, err := s.Http(s.T()).WithSession(map[string]any{"role": "admin"}).Get("/users/1")
-	
+
 	content, err := response.Content()
-	
+
 	cookies := response.Cookies()
-	
+
 	headers := response.Headers()
-	
+
 	json, err := response.Json() // response body parsed as json(map[string]any)
-	
+
 	session, err := response.Session() // returns all values stored in the current request session
 }
 ```
@@ -96,7 +96,7 @@ import "github.com/goravel/framework/support/http"
 
 func (s *ExampleTestSuite) TestIndex() {
     builder := http.NewBody().SetField("name", "krishan")
-    
+
     body, err := builder.Build()
 
     response, err := s.Http(s.T()).WithHeader("Content-Type", body.ContentType()).Post("/users", body)
@@ -111,7 +111,7 @@ Goravel 提供了多个帮助方法来有效地测试 JSON API 响应。它尝�
 func (s *ExampleTestSuite) TestIndex() {
     response, err := s.Http(s.T()).WithHeader("Content-Type", body.ContentType()).Post("/users", nil)
 	s.Nil(err)
-	
+
 	response.AssertStatus(201).
 		AssertJson(map[string]any{
 			"created": true,
@@ -127,7 +127,7 @@ s.Nil(err)
 s.True(json["created"])
 ```
 
-::: tip 
+::: tip
 `AssertJson` 方法检查响应是否包含所有指定的值，即使响应包含额外的字段。除非使用 `AssertExactJson`，否则不需要完全匹配。
 :::
 
@@ -139,7 +139,7 @@ s.True(json["created"])
 func (s *ExampleTestSuite) TestIndex() {
     response, err := s.Http(s.T()).WithHeader("Content-Type", body.ContentType()).Post("/users", nil)
 	s.Nil(err)
-	
+
 	response.AssertStatus(201).
 		AssertExactJson(map[string]any{
 			"created": true,
@@ -159,7 +159,7 @@ import contractstesting "github.com/goravel/framework/contracts/testing"
 func (s *ExampleTestSuite) TestIndex() {
     response, err := s.Http(s.T()).Get("/users/1")
 	s.Nil(err)
-	
+
 	response.AssertStatus(201).
 		AssertFluentJson(func (json contractstesting.AssertableJSON) {
 			json.Where("id", float64(1)).
@@ -255,21 +255,21 @@ response.AssertStatus(200).
 
 ### 断言响应
 
-|                                                      |                                                            |                                                           |
-|------------------------------------------------------|------------------------------------------------------------|-----------------------------------------------------------|
-| [AssertAccepted](#assertaccepted)                   | [AssertBadRequest](#assertbadrequest)                    | [AssertConflict](#assertconflict)                        |
-| [AssertCookie](#assertcookie)                       | [AssertCookieExpired](#assertcookieexpired)              | [AssertCookieMissing](#assertcookiemissing)             |
-| [AssertCookieNotExpired](#assertcookienotexpired) | [AssertCreated](#assertcreated)                           | [AssertDontSee](#assertdontsee)                         |
-| [AssertExactJson](#assertexactjson)                | [AssertFluentJson](#assertfluentjson)                    | [AssertForbidden](#assertforbidden)                      |
-| [AssertFound](#assertfound)                         | [AssertGone](#assertgone)                                 | [AssertHeader](#assertheader)                            |
-| [AssertHeaderMissing](#assertheadermissing)        | [AssertInternalServerError](#assertinternalservererror) | [AssertJson](#assertjson)                                |
-| [AssertJsonMissing](#assertjsonmissing)            | [AssertMethodNotAllowed](#assertmethodnotallowed)       | [AssertMovedPermanently](#assertmovedpermanently)       |
-| [AssertNoContent](#assertnocontent)                | [AssertNotAcceptable](#assertnotacceptable)              | [AssertNotFound](#assertnotfound)                       |
-| [AssertNotModified](#assertnotmodified)            | [AssertOk](#assertok)                                     | [AssertPartialContent](#assertpartialcontent)           |
-| [AssertPaymentRequired](#assertpaymentrequired)    | [AssertRequestTimeout](#assertrequesttimeout)            | [AssertSee](#assertsee)                                  |
-| [AssertSeeInOrder](#assertseeinorder)             | [AssertServerError](#assertservererror)                  | [AssertServiceUnavailable](#assertserviceunavailable)   |
-| [AssertStatus](#assertstatus)                       | [AssertSuccessful](#assertsuccessful)                     | [AssertTemporaryRedirect](#asserttemporaryredirect)     |
-| [AssertTooManyRequests](#asserttoomanyrequests)   | [AssertUnauthorized](#assertunauthorized)                 | [AssertUnprocessableEntity](#assertunprocessableentity) |
+|                                                   |                                                         |                                                         |
+| ------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| [AssertAccepted](#assertaccepted)                 | [AssertBadRequest](#assertbadrequest)                   | [AssertConflict](#assertconflict)                       |
+| [AssertCookie](#assertcookie)                     | [AssertCookieExpired](#assertcookieexpired)             | [AssertCookieMissing](#assertcookiemissing)             |
+| [AssertCookieNotExpired](#assertcookienotexpired) | [AssertCreated](#assertcreated)                         | [AssertDontSee](#assertdontsee)                         |
+| [AssertExactJson](#assertexactjson)               | [AssertFluentJson](#assertfluentjson)                   | [AssertForbidden](#assertforbidden)                     |
+| [AssertFound](#assertfound)                       | [AssertGone](#assertgone)                               | [AssertHeader](#assertheader)                           |
+| [AssertHeaderMissing](#assertheadermissing)       | [AssertInternalServerError](#assertinternalservererror) | [AssertJson](#assertjson)                               |
+| [AssertJsonMissing](#assertjsonmissing)           | [AssertMethodNotAllowed](#assertmethodnotallowed)       | [AssertMovedPermanently](#assertmovedpermanently)       |
+| [AssertNoContent](#assertnocontent)               | [AssertNotAcceptable](#assertnotacceptable)             | [AssertNotFound](#assertnotfound)                       |
+| [AssertNotModified](#assertnotmodified)           | [AssertOk](#assertok)                                   | [AssertPartialContent](#assertpartialcontent)           |
+| [AssertPaymentRequired](#assertpaymentrequired)   | [AssertRequestTimeout](#assertrequesttimeout)           | [AssertSee](#assertsee)                                 |
+| [AssertSeeInOrder](#assertseeinorder)             | [AssertServerError](#assertservererror)                 | [AssertServiceUnavailable](#assertserviceunavailable)   |
+| [AssertStatus](#assertstatus)                     | [AssertSuccessful](#assertsuccessful)                   | [AssertTemporaryRedirect](#asserttemporaryredirect)     |
+| [AssertTooManyRequests](#asserttoomanyrequests)   | [AssertUnauthorized](#assertunauthorized)               | [AssertUnprocessableEntity](#assertunprocessableentity) |
 
 ### AssertAccepted
 
@@ -586,4 +586,3 @@ response.AssertUnauthorized()
 ```go
 response.AssertUnprocessableEntity()
 ```
-

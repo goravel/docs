@@ -19,7 +19,7 @@
 | 名称     | 描述             |
 | -------- | ---------------- |
 | `stack`  | 允许使用多个通道 |
-| `single` | 单日志文件 |
+| `single` | 单日志文件       |
 | `daily`  | 每天一个日志文件 |
 | `custom` | 自定义驱动       |
 
@@ -68,18 +68,18 @@ Goravel 提供有便捷的链式方式，方便在日志中插入更多有用信
 facades.Log().User("John").Debug(message)
 ```
 
-| Method       | Action           |
-| -----------  | -------------- |
-| Code         | 设置日志代码。     |
-| Hint         | 设置提示，方便调试。     |
-| In           | 设置日志相关的分类。     |
-| Owner        | 设置日志归属人。     |
-| Request      | 记录重要的 Request。     |
-| Response     | 记录重要的 Response。     |
-| Tags         | 为日志添加标签。     |
-| User         | 记录触发日志的用户。     |
-| With         | 为日志附加数据。   |
-| WithTrace    | 为日志附加堆栈信息。   |
+| Method    | Action                |
+| --------- | --------------------- |
+| Code      | 设置日志代码。        |
+| Hint      | 设置提示，方便调试。  |
+| In        | 设置日志相关的分类。  |
+| Owner     | 设置日志归属人。      |
+| Request   | 记录重要的 Request。  |
+| Response  | 记录重要的 Response。 |
+| Tags      | 为日志添加标签。      |
+| User      | 记录触发日志的用户。  |
+| With      | 为日志附加数据。      |
+| WithTrace | 为日志附加堆栈信息。  |
 
 ## 创建自定义通道
 

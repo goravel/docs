@@ -2,17 +2,17 @@
 
 [[toc]]
 
-## 简介 
+## 简介
 
 Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Minio 和 Cloudinary 提供了简单易用的驱动程序。 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。框架自带 `local` 驱动，如需其他驱动，请查看对应的独立扩展包：
 
-| 驱动          | 地址           |
-| -----------  | -------------- |
-| S3           | [https://github.com/goravel/s3](https://github.com/goravel/s3)     |
-| OSS          | [https://github.com/goravel/oss](https://github.com/goravel/oss)     |
-| COS          | [https://github.com/goravel/cos](https://github.com/goravel/cos)     |
-| Minio        | [https://github.com/goravel/minio](https://github.com/goravel/minio)     |
-| Cloudinary   | [https://github.com/goravel/cloudinary](https://github.com/goravel/cloudinary)     |
+| 驱动       | 地址                                                                           |
+| ---------- | ------------------------------------------------------------------------------ |
+| S3         | [https://github.com/goravel/s3](https://github.com/goravel/s3)                 |
+| OSS        | [https://github.com/goravel/oss](https://github.com/goravel/oss)               |
+| COS        | [https://github.com/goravel/cos](https://github.com/goravel/cos)               |
+| Minio      | [https://github.com/goravel/minio](https://github.com/goravel/minio)           |
+| Cloudinary | [https://github.com/goravel/cloudinary](https://github.com/goravel/cloudinary) |
 
 ## 配置
 
@@ -293,7 +293,7 @@ err := facades.Storage().MakeDirectory(directory)
 
 最后，`DeleteDirectory` 方法可用于删除一个目录及其下所有的文件：
 
-```go 
+```go
 err := facades.Storage().DeleteDirectory(directory)
 ```
 

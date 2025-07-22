@@ -50,4 +50,3 @@ import "github.com/goravel/framework/support/color"
 
 color.New(color.FgRed).Println("Hello, Goravel!")
 ```
-

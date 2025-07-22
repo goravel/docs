@@ -39,7 +39,7 @@ func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
   facades.Gate().Define("update-post", func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
     user := ctx.Value("user").(models.User)
     post := arguments["post"].(models.Post)
-    
+
     if user.ID == post.UserID {
       return access.NewAllowResponse()
     } else {
@@ -67,7 +67,7 @@ func (r *UserController) Show(ctx http.Context) http.Response {
   if facades.Gate().Allows("update-post", map[string]any{
     "post": post,
   }) {
-    
+
   }
 }
 ```
@@ -179,7 +179,7 @@ func NewPostPolicy() *PostPolicy {
 func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contractsaccess.Response {
   user := ctx.Value("user").(models.User)
   post := arguments["post"].(models.Post)
-    
+
   if user.ID == post.UserID {
     return access.NewAllowResponse()
   } else {

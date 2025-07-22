@@ -168,7 +168,7 @@ Goravel provides a simple way to work with `cookie`. Use the `Cookie` method on 
 
 ```go
 value := ctx.Request().Cookie("name")
-value := ctx.Request().Cookie("name", "default") 
+value := ctx.Request().Cookie("name", "default")
 ```
 
 ## File

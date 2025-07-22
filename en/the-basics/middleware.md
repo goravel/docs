@@ -25,6 +25,7 @@ func Auth() http.Middleware {
 ```
 
 ### Create Middleware By Command
+
 ```
 go run . artisan make:middleware Auth
 
@@ -44,7 +45,7 @@ package http
 
 import (
   "github.com/goravel/framework/contracts/http"
-  
+
   "goravel/app/http/middleware"
 )
 

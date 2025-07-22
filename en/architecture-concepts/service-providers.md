@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The most important thing in the kernel boot operation is to load the `ServiceProvider`. All `ServiceProvider` under the application are configured in the `providers` array in  `config/app.go`.
+The most important thing in the kernel boot operation is to load the `ServiceProvider`. All `ServiceProvider` under the application are configured in the `providers` array in `config/app.go`.
 
 First, the kernel will call the `Register` method of all service providers. After all service providers have been registered, the kernel will call the `Boot` method of all `ServiceProvider` again.
 
@@ -38,5 +38,3 @@ func (r *ServiceProvider) Register(app foundation.Application) {}
 
 func (r *ServiceProvider) Boot(app foundation.Application) {}
 ```
-
-

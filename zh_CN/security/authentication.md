@@ -175,4 +175,3 @@ facades.Auth().Provider("custom-provider", func(ctx http.Context) (auth.UserProv
   },
 },
 ```
-

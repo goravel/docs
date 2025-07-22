@@ -25,6 +25,7 @@ func Auth() http.Middleware {
 ```
 
 ### 命令创建中间件
+
 ```
 go run . artisan make:middleware Auth
 

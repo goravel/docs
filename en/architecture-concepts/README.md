@@ -1,2 +1,1 @@
 # Architecture Concepts
-

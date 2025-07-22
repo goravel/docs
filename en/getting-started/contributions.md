@@ -90,33 +90,33 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 
 ## Local Environment
 
-| Software                                                 | Action                                |
-| -------------------------------------------------        | --------------                        |
-| Golang v1.20                                             | The minimum version                   |
-| [vektra/mockery](https://github.com/vektra/mockery)      | Provider mock files for unit tests    |
+| Software                                            | Action                             |
+| --------------------------------------------------- | ---------------------------------- |
+| Golang v1.20                                        | The minimum version                |
+| [vektra/mockery](https://github.com/vektra/mockery) | Provider mock files for unit tests |
 
 ## Goravel Repository
 
-| Repository                                                             | Action                   |
-| -------------------------------------------------------                | --------------         |
-| [goravel/goravel](https://github.com/goravel/goravel)                  | Goravel artisans       |
-| [goravel/framework](https://github.com/goravel/framework)              | Goravel main repository   |
-| [goravel/example](https://github.com/goravel/example)                  | Goravel example            |
-| [goravel/example-client](https://github.com/goravel/example-client)    | Example for Grpc client    |
-| [goravel/example-proto](https://github.com/goravel/example-proto)      | The proto dependency of example  |
-| [goravel/example-package](https://github.com/goravel/example-package)  | Example for package              |
-| [goravel/docs](https://github.com/goravel/docs)                        | Document                 |
-| [goravel/docs-web](https://github.com/goravel/docs-web)                | Goravel Website                  |
-| [goravel/s3](https://github.com/goravel/s3)                            | The S3 driver of Storage module     |
-| [goravel/oss](https://github.com/goravel/oss)                          | The OSS driver of Storage module    |
-| [goravel/cos](https://github.com/goravel/cos)                          | The COS driver of Storage module    |
-| [goravel/minio](https://github.com/goravel/minio)                      | The Minio driver of Storage module  |
-| [goravel/cloudinary](https://github.com/goravel/cloudinary)            | The Cloudinary driver of Storage module  |
-| [goravel/redis](https://github.com/goravel/redis)                      | The Redis driver of Cache module    |
-| [goravel/gin](https://github.com/goravel/gin)                          | The Gin driver of Route module    |
-| [goravel/fiber](https://github.com/goravel/fiber)                      | The Fiber driver of Route module    |
-| [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs)  | Providers log splitting functionality for Log module |
-| [goravel/.github](https://github.com/goravel/.github)                  | [Community health file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file)    |
+| Repository                                                            | Action                                                                                                                                                     |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [goravel/goravel](https://github.com/goravel/goravel)                 | Goravel artisans                                                                                                                                           |
+| [goravel/framework](https://github.com/goravel/framework)             | Goravel main repository                                                                                                                                    |
+| [goravel/example](https://github.com/goravel/example)                 | Goravel example                                                                                                                                            |
+| [goravel/example-client](https://github.com/goravel/example-client)   | Example for Grpc client                                                                                                                                    |
+| [goravel/example-proto](https://github.com/goravel/example-proto)     | The proto dependency of example                                                                                                                            |
+| [goravel/example-package](https://github.com/goravel/example-package) | Example for package                                                                                                                                        |
+| [goravel/docs](https://github.com/goravel/docs)                       | Document                                                                                                                                                   |
+| [goravel/docs-web](https://github.com/goravel/docs-web)               | Goravel Website                                                                                                                                            |
+| [goravel/s3](https://github.com/goravel/s3)                           | The S3 driver of Storage module                                                                                                                            |
+| [goravel/oss](https://github.com/goravel/oss)                         | The OSS driver of Storage module                                                                                                                           |
+| [goravel/cos](https://github.com/goravel/cos)                         | The COS driver of Storage module                                                                                                                           |
+| [goravel/minio](https://github.com/goravel/minio)                     | The Minio driver of Storage module                                                                                                                         |
+| [goravel/cloudinary](https://github.com/goravel/cloudinary)           | The Cloudinary driver of Storage module                                                                                                                    |
+| [goravel/redis](https://github.com/goravel/redis)                     | The Redis driver of Cache module                                                                                                                           |
+| [goravel/gin](https://github.com/goravel/gin)                         | The Gin driver of Route module                                                                                                                             |
+| [goravel/fiber](https://github.com/goravel/fiber)                     | The Fiber driver of Route module                                                                                                                           |
+| [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | Providers log splitting functionality for Log module                                                                                                       |
+| [goravel/.github](https://github.com/goravel/.github)                 | [Community health file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
 
 ## Code of Conduct
 

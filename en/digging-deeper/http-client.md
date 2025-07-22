@@ -5,21 +5,23 @@
 ## Introduction
 
 In software development, there are many instances when you need to call an API to fetch data—
-whether it's connecting to a microservice or accessing a third-party API. In such cases, 
-Goravel offers an easy-to-use, expressive, and minimalist API built on the standard `net/http` library, 
+whether it's connecting to a microservice or accessing a third-party API. In such cases,
+Goravel offers an easy-to-use, expressive, and minimalist API built on the standard `net/http` library,
 all designed to enhance the developer experience.
 
 ## Configuration
 
-Goravel's HTTP client is built on top of the `net/http.Client` for making HTTP requests. If you need to tweak its internal settings, 
-just update the `client` property in the `config/http.go` file. 
+Goravel's HTTP client is built on top of the `net/http.Client` for making HTTP requests. If you need to tweak its internal settings,
+just update the `client` property in the `config/http.go` file.
 Here are the available configuration options:
-- `base_url`:  Sets the root URL for relative paths. Automatically prefixes requests that don't start with `http://` or `https://`.
+
+- `base_url`: Sets the root URL for relative paths. Automatically prefixes requests that don't start with `http://` or `https://`.
 - `timeout`(`DEFAULT`: `30s`): Global timeout duration for complete request lifecycle (connection + any redirects + reading the response body). A Timeout of zero means no timeout.
 - `max_idle_conns`: Maximum number of idle (keep-alive) connections across all hosts. Zero means no limit.
 - `max_idle_conns_per_host`: Maximum idle (keep-alive) connections to keep per-host
 - `max_conns_per_host`: Limits the total number of connections per host, including connections in the dialing, active, and idle states. Zero means no limit.
-- `idle_conn_timeout`:  Maximum amount of the time of an idle (keep-alive) connection will remain idle before closing itself.
+- `idle_conn_timeout`: Maximum amount of the time of an idle (keep-alive) connection will remain idle before closing itself.
+
 ```go
 "client": map[string]any{
     "base_url":                config.GetString("HTTP_CLIENT_BASE_URL"),  // "https://api.example.com"
@@ -36,6 +38,7 @@ Here are the available configuration options:
 The Http facade provides a convenient way to make HTTP requests using familiar verbs: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, and `OPTIONS`.
 
 **Example: GET Request**
+
 ```go
 import "github.com/goravel/framework/facades"
 
@@ -47,6 +50,7 @@ Each HTTP verb method returns a `response` of type `framework/contracts/http/cli
 ### Response Interface
 
 The `framework/contracts/http/client.Response` interface provides the following methods to interact with the HTTP response:
+
 ```go
 type Response interface {
     Body() (string, error)           // Get the response body as a string
@@ -61,9 +65,9 @@ type Response interface {
     ServerError() bool              // Check if the status code is in the 5xx range
     Status() int                    // Get the HTTP status code
     Successful() bool               // Check if the status code is in the 2xx range
-    
+
     /* status code related methods */
-    
+
     OK() bool                  // 200 OK
     Created() bool             // 201 Created
     Accepted() bool            // 202 Accepted
@@ -84,7 +88,7 @@ type Response interface {
 
 ### URI Templates
 
-URI Templates let you build dynamic request URLs using placeholders. 
+URI Templates let you build dynamic request URLs using placeholders.
 You can define these placeholders in your URL and then provide the values to replace them before making the request.
 To achieve this, you can use `WithUrlParameter` for single parameters or `WithUrlParameters` for multiple parameters.
 
@@ -105,7 +109,7 @@ response, err := facades.Http().
 
 ### Request Query Parameters
 
-Add query parameters to your requests using `WithQueryParameter` for single parameters or 
+Add query parameters to your requests using `WithQueryParameter` for single parameters or
 `WithQueryParameters` for multiple parameters via a map.
 
 ```go
@@ -134,7 +138,7 @@ response, err := facades.Http().
 
 ### Sending a Request Body
 
-For HTTP verbs like `POST`, `PUT`, `PATCH` and `DELETE` accept `io.Reader` as the second argument. 
+For HTTP verbs like `POST`, `PUT`, `PATCH` and `DELETE` accept `io.Reader` as the second argument.
 To simplify building payloads, the framework provides utility methods for constructing request bodies.
 
 ```go
@@ -149,7 +153,7 @@ response, err := facades.Http().WithHeader("Content-Type", body.ContentType()).P
 
 ### Headers
 
-You can add headers to your requests using `WithHeader` for a single header 
+You can add headers to your requests using `WithHeader` for a single header
 or `WithHeaders` for multiple headers provided as a map.
 
 ```go
@@ -167,6 +171,7 @@ response, err = facades.Http().
 ```
 
 You may use the `Accept` method to specify the content type that your application is expecting in response to your request:
+
 ```go
 response, err := facades.Http().
     Accept("application/xml").
@@ -216,7 +221,7 @@ response, err := facades.Http().
 
 #### Bearer Tokens
 
-To quickly add a bearer token to the request's `Authorization` header, 
+To quickly add a bearer token to the request's `Authorization` header,
 you can use the `WithToken` method:
 
 ```go
@@ -226,13 +231,15 @@ response, err := facades.Http().
 ```
 
 ::: tip
-The `WithToken` method also accepts an optional second argument to specify the token type (e.g., "Bearer", "Token"). 
+The `WithToken` method also accepts an optional second argument to specify the token type (e.g., "Bearer", "Token").
 If no type is provided, it defaults to "Bearer".
+
 ```go
 response, err := facades.Http().
     WithToken("custom_token", "Token").
     Get("https://api.example.com/api/resource")
 ```
+
 :::
 
 To remove the bearer token from the request, use the `WithoutToken` method:
@@ -245,7 +252,7 @@ response, err := facades.Http().
 
 ### Context
 
-You can use `WithContext` to make your HTTP requests context-aware. 
+You can use `WithContext` to make your HTTP requests context-aware.
 This allows you to control the lifecycle of a request, for instance, by setting timeouts or enabling cancellation.
 
 ```go
@@ -258,6 +265,7 @@ response, err := facades.Http().WithContext(ctx).Get("https://example.com")
 ### Bind Response
 
 You can use the `Bind` method directly on the `Http` facade to specify the struct that the response should be bound to.
+
 ```go
 type User struct {
     ID   int    `json:"id"`
@@ -271,7 +279,7 @@ func main() {
         fmt.Println("Error making request:", err)
         return
     }
-    
+
     fmt.Printf("User ID: %d, Name: %s\n", user.ID, user.Name)
 }
 ```
@@ -301,4 +309,3 @@ response, err := facades.Http().
 	WithoutCookie("language").
 	Get("https://example.com")
 ```
-

@@ -56,7 +56,7 @@ func (r *PostController) Store(ctx http.Context) {
 
 ### Writing The Validation Logic
 
-Now we are ready to fill in our `Store` method with the logic to validate the new blog post. 
+Now we are ready to fill in our `Store` method with the logic to validate the new blog post.
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
@@ -365,65 +365,65 @@ if validator.Errors().Has("email") {
 
 Below is a list of all available validation rules and their function:
 
-| Name        | Description                   |
-| ----------- | ---------------------  |
-| `required`  | Check value is required and cannot be zero value. For example, field type is `bool`, the passing value is `false`, it can not pass the validation.  |
-| `required_if`  | `required_if:anotherfield,value,...` The field under validation must be present and not empty if the anotherField field is equal to any value.  |
-| `required_unless`  | `required_unless:anotherfield,value,...` The field under validation must be present and not empty unless the anotherField field is equal to any value.  |
-| `required_with`  | `required_with:foo,bar,...` The field under validation must be present and not empty only if any of the other specified fields are present. |
-| `required_with_all`  | `required_with_all:foo,bar,...` The field under validation must be present and not empty only if all of the other specified fields are present.  |
-| `required_without`  | `required_without:foo,bar,...` The field under validation must be present and not empty only when any of the other specified fields are not present.  |
-| `required_without_all`  | `required_without_all:foo,bar,...` The field under validation must be present and not empty only when all of the other specified fields are not present. |
-| `int`  | Check value is `intX` `uintX` type, and support size checking. eg: `int` `int:2` `int:2,12`. Notice: [Points for using rules](#int)  |
-| `uint`  | Check value is `uint(uintX)` type, `value >= 0`  |
-| `bool`  | Check value is bool string(`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false"). |
-| `string`  | Check value is string type, and support size checking. eg:`string` `string:2` `string:2,12` |
-| `float`  | Check value is `float(floatX)` type |
-| `slice`  | Check value is slice type(`[]intX` `[]uintX` `[]byte` `[]string`) |
-| `in`  | `in:foo,bar,…` Check if the value is in the given enumeration |
-| `not_in`  | `not_in:foo,bar,…` Check if the value is not in the given enumeration |
-| `starts_with`  | `starts_with:foo` Check if the input string value is starts with the given sub-string |
-| `ends_with`  | `ends_with:foo` Check if the input string value is ends with the given sub-string |
-| `between`  | `between:min,max` Check that the value is a number and is within the given range |
-| `max`  | `max:value` Check value is less than or equal to the given value(`intX` `uintX` `floatX`) |
-| `min`  | `min:value` Check value is greater than or equal to the given value(`intX` `uintX` `floatX`) |
-| `eq`  | `eq:value` Check that the input value is equal to the given value |
-| `ne`  | `ne:value` Check that the input value is not equal to the given value |
-| `lt`  | `lt:value` Check value is less than the given value(`intX` `uintX` `floatX`) |
-| `gt`  | `gt:value` Check value is greater than the given value(`intX` `uintX` `floatX`) |
-| `len`  | `len:value` Check value length is equals to the given size(`string` `array` `slice` `map`) |
-| `min_len`  | `min_len:value` Check the minimum length of the value is the given size(`string` `array` `slice` `map`) |
-| `max_len`  | `max_len:value` Check the maximum length of the value is the given size(`string` `array` `slice` `map`) |
-| `email`  | Check value is email address string |
-| `array`  | Check value is array, slice type |
-| `map`  | Check value is a MAP type |
-| `eq_field`  | `eq_field:field` Check that the field value is equals to the value of another field |
-| `ne_field`  | `ne_field:field` Check that the field value is not equals to the value of another field |
-| `gt_field`  | `gt_field:field` Check that the field value is greater than the value of another field |
-| `gte_field`  | `gte_field:field` Check that the field value is greater than or equal to the value of another field |
-| `lt_field`  | `lt_field:field` Check that the field value is less than the value of another field |
-| `lte_field`  | `lte_field:field` Check if the field value is less than or equal to the value of another field |
-| `file`  | Verify if it is an uploaded file |
-| `image`  | Check if it is an uploaded image file and support suffix check |
-| `date`  | Check the field value is date string |
-| `gt_date`  | `gt_date:value` Check that the input value is greater than the given date string |
-| `lt_date`  | `lt_date:value` Check that the input value is less than the given date string |
-| `gte_date`  | `gte_date:value` Check that the input value is greater than or equal to the given date string |
-| `lte_date`  | `lte_date:value` Check that the input value is less than or equal to the given date string |
-| `alpha`  | Verify that the value contains only alphabetic characters |
-| `alpha_num`  | Check that only letters, numbers are included |
-| `alpha_dash`  | Check to include only letters, numbers, dashes ( - ), and underscores ( _ ) |
-| `json`  | Check value is JSON string |
-| `number`  | Check value is number string `>= 0` |
-| `full_url`  | Check value is full URL string(must start with http,https) |
-| `ip`  | Check value is IP(v4 or v6) string |
-| `ipv4`  | Check value is IPv4 string |
-| `ipv6`  | Check value is IPv6 string |
-| `regex`  | Check if the value can pass the regular verification |
-| `uuid`  | Check value is UUID string |
-| `uuid3`  | Check value is UUID3 string |
-| `uuid4`  | Check value is UUID4 string |
-| `uuid5`  | Check value is UUID5 string |
+| Name                   | Description                                                                                                                                              |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `required`             | Check value is required and cannot be zero value. For example, field type is `bool`, the passing value is `false`, it can not pass the validation.       |
+| `required_if`          | `required_if:anotherfield,value,...` The field under validation must be present and not empty if the anotherField field is equal to any value.           |
+| `required_unless`      | `required_unless:anotherfield,value,...` The field under validation must be present and not empty unless the anotherField field is equal to any value.   |
+| `required_with`        | `required_with:foo,bar,...` The field under validation must be present and not empty only if any of the other specified fields are present.              |
+| `required_with_all`    | `required_with_all:foo,bar,...` The field under validation must be present and not empty only if all of the other specified fields are present.          |
+| `required_without`     | `required_without:foo,bar,...` The field under validation must be present and not empty only when any of the other specified fields are not present.     |
+| `required_without_all` | `required_without_all:foo,bar,...` The field under validation must be present and not empty only when all of the other specified fields are not present. |
+| `int`                  | Check value is `intX` `uintX` type, and support size checking. eg: `int` `int:2` `int:2,12`. Notice: [Points for using rules](#int)                      |
+| `uint`                 | Check value is `uint(uintX)` type, `value >= 0`                                                                                                          |
+| `bool`                 | Check value is bool string(`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false").                                                        |
+| `string`               | Check value is string type, and support size checking. eg:`string` `string:2` `string:2,12`                                                              |
+| `float`                | Check value is `float(floatX)` type                                                                                                                      |
+| `slice`                | Check value is slice type(`[]intX` `[]uintX` `[]byte` `[]string`)                                                                                        |
+| `in`                   | `in:foo,bar,…` Check if the value is in the given enumeration                                                                                            |
+| `not_in`               | `not_in:foo,bar,…` Check if the value is not in the given enumeration                                                                                    |
+| `starts_with`          | `starts_with:foo` Check if the input string value is starts with the given sub-string                                                                    |
+| `ends_with`            | `ends_with:foo` Check if the input string value is ends with the given sub-string                                                                        |
+| `between`              | `between:min,max` Check that the value is a number and is within the given range                                                                         |
+| `max`                  | `max:value` Check value is less than or equal to the given value(`intX` `uintX` `floatX`)                                                                |
+| `min`                  | `min:value` Check value is greater than or equal to the given value(`intX` `uintX` `floatX`)                                                             |
+| `eq`                   | `eq:value` Check that the input value is equal to the given value                                                                                        |
+| `ne`                   | `ne:value` Check that the input value is not equal to the given value                                                                                    |
+| `lt`                   | `lt:value` Check value is less than the given value(`intX` `uintX` `floatX`)                                                                             |
+| `gt`                   | `gt:value` Check value is greater than the given value(`intX` `uintX` `floatX`)                                                                          |
+| `len`                  | `len:value` Check value length is equals to the given size(`string` `array` `slice` `map`)                                                               |
+| `min_len`              | `min_len:value` Check the minimum length of the value is the given size(`string` `array` `slice` `map`)                                                  |
+| `max_len`              | `max_len:value` Check the maximum length of the value is the given size(`string` `array` `slice` `map`)                                                  |
+| `email`                | Check value is email address string                                                                                                                      |
+| `array`                | Check value is array, slice type                                                                                                                         |
+| `map`                  | Check value is a MAP type                                                                                                                                |
+| `eq_field`             | `eq_field:field` Check that the field value is equals to the value of another field                                                                      |
+| `ne_field`             | `ne_field:field` Check that the field value is not equals to the value of another field                                                                  |
+| `gt_field`             | `gt_field:field` Check that the field value is greater than the value of another field                                                                   |
+| `gte_field`            | `gte_field:field` Check that the field value is greater than or equal to the value of another field                                                      |
+| `lt_field`             | `lt_field:field` Check that the field value is less than the value of another field                                                                      |
+| `lte_field`            | `lte_field:field` Check if the field value is less than or equal to the value of another field                                                           |
+| `file`                 | Verify if it is an uploaded file                                                                                                                         |
+| `image`                | Check if it is an uploaded image file and support suffix check                                                                                           |
+| `date`                 | Check the field value is date string                                                                                                                     |
+| `gt_date`              | `gt_date:value` Check that the input value is greater than the given date string                                                                         |
+| `lt_date`              | `lt_date:value` Check that the input value is less than the given date string                                                                            |
+| `gte_date`             | `gte_date:value` Check that the input value is greater than or equal to the given date string                                                            |
+| `lte_date`             | `lte_date:value` Check that the input value is less than or equal to the given date string                                                               |
+| `alpha`                | Verify that the value contains only alphabetic characters                                                                                                |
+| `alpha_num`            | Check that only letters, numbers are included                                                                                                            |
+| `alpha_dash`           | Check to include only letters, numbers, dashes ( - ), and underscores ( \_ )                                                                             |
+| `json`                 | Check value is JSON string                                                                                                                               |
+| `number`               | Check value is number string `>= 0`                                                                                                                      |
+| `full_url`             | Check value is full URL string(must start with http,https)                                                                                               |
+| `ip`                   | Check value is IP(v4 or v6) string                                                                                                                       |
+| `ipv4`                 | Check value is IPv4 string                                                                                                                               |
+| `ipv6`                 | Check value is IPv6 string                                                                                                                               |
+| `regex`                | Check if the value can pass the regular verification                                                                                                     |
+| `uuid`                 | Check value is UUID string                                                                                                                               |
+| `uuid3`                | Check value is UUID3 string                                                                                                                              |
+| `uuid4`                | Check value is UUID4 string                                                                                                                              |
+| `uuid5`                | Check value is UUID5 string                                                                                                                              |
 
 ### Points For Using Rules
 
@@ -439,7 +439,7 @@ Option 2: Use `facades.Validation().Make()` for rule validation;
 
 ## Custom Validation Rules
 
-Goravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you can simply use the `make:rule` Artisan command. 
+Goravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you can simply use the `make:rule` Artisan command.
 
 For instance, if you want to verify that a string is uppercase, you can create a rule with this command. Goravel will then save this new rule in the `app/rules` directory. If this directory does not exist, Goravel will create it when you run the Artisan command to create your rule.
 
@@ -513,29 +513,29 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 
 ## Available Validation Filters
 
- Name       | Description                   
- ----------- | --------------------- 
-`int/toInt`  | Convert value(string/intX/floatX) to `int` type `v.FilterRule("id", "int")`
-`uint/toUint`  | Convert value(string/intX/floatX) to `uint` type `v.FilterRule("id", "uint")`
-`int64/toInt64`  | Convert value(string/intX/floatX) to `int64` type `v.FilterRule("id", "int64")`
-`float/toFloat`  | Convert value(string/intX/floatX) to `float` type
-`bool/toBool`  | Convert string value to bool. (`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false")
-`trim/trimSpace`  | Clean up whitespace characters on both sides of the string
-`ltrim/trimLeft`  | Clean up whitespace characters on left sides of the string
-`rtrim/trimRight`  | Clean up whitespace characters on right sides of the string
-`int/integer`  | Convert value(string/intX/floatX) to `int` type `v.FilterRule("id", "int")`
-`lower/lowercase` | Convert string to lowercase
-`upper/uppercase` | Convert string to uppercase
-`lcFirst/lowerFirst` | Convert the first character of a string to lowercase
-`ucFirst/upperFirst` | Convert the first character of a string to uppercase
-`ucWord/upperWord` | Convert the first character of each word to uppercase
-`camel/camelCase` | Convert string to camel naming style
-`snake/snakeCase` | Convert string to snake naming style
-`escapeJs/escapeJS` | Escape JS string.
-`escapeHtml/escapeHTML` | Escape HTML string.
-`str2ints/strToInts` | Convert string to int slice `[]int` 
-`str2time/strToTime` | Convert date string to `time.Time`.
-`str2arr/str2array/strToArray` | Convert string to string slice `[]string`
+| Name                           | Description                                                                                          |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `int/toInt`                    | Convert value(string/intX/floatX) to `int` type `v.FilterRule("id", "int")`                          |
+| `uint/toUint`                  | Convert value(string/intX/floatX) to `uint` type `v.FilterRule("id", "uint")`                        |
+| `int64/toInt64`                | Convert value(string/intX/floatX) to `int64` type `v.FilterRule("id", "int64")`                      |
+| `float/toFloat`                | Convert value(string/intX/floatX) to `float` type                                                    |
+| `bool/toBool`                  | Convert string value to bool. (`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false") |
+| `trim/trimSpace`               | Clean up whitespace characters on both sides of the string                                           |
+| `ltrim/trimLeft`               | Clean up whitespace characters on left sides of the string                                           |
+| `rtrim/trimRight`              | Clean up whitespace characters on right sides of the string                                          |
+| `int/integer`                  | Convert value(string/intX/floatX) to `int` type `v.FilterRule("id", "int")`                          |
+| `lower/lowercase`              | Convert string to lowercase                                                                          |
+| `upper/uppercase`              | Convert string to uppercase                                                                          |
+| `lcFirst/lowerFirst`           | Convert the first character of a string to lowercase                                                 |
+| `ucFirst/upperFirst`           | Convert the first character of a string to uppercase                                                 |
+| `ucWord/upperWord`             | Convert the first character of each word to uppercase                                                |
+| `camel/camelCase`              | Convert string to camel naming style                                                                 |
+| `snake/snakeCase`              | Convert string to snake naming style                                                                 |
+| `escapeJs/escapeJS`            | Escape JS string.                                                                                    |
+| `escapeHtml/escapeHTML`        | Escape HTML string.                                                                                  |
+| `str2ints/strToInts`           | Convert string to int slice `[]int`                                                                  |
+| `str2time/strToTime`           | Convert date string to `time.Time`.                                                                  |
+| `str2arr/str2array/strToArray` | Convert string to string slice `[]string`                                                            |
 
 ## Custom filter
 

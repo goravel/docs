@@ -441,7 +441,7 @@ for _, book := range books {
 }
 ```
 
-To retrieve all the books in the database table along with their authors, the loop code executes a query for each book. This means that for a collection of 25 books, the loop would run 26 queries - one for the collection of books and 25 more to get the author of each book. 
+To retrieve all the books in the database table along with their authors, the loop code executes a query for each book. This means that for a collection of 25 books, the loop would run 26 queries - one for the collection of books and 25 more to get the author of each book.
 
 However, we can simplify this process using eager loading. By using the `With` method, we can specify which relationships need to be eagerly loaded and reduce the number of queries to just two.
 
@@ -495,7 +495,7 @@ facades.Orm().Query().With("Author", func(query orm.Query) orm.Query {
 }).Find(&book)
 ```
 
-In this example, Orm will only eager load posts where the post's `name` column equals the word `author`. 
+In this example, Orm will only eager load posts where the post's `name` column equals the word `author`.
 
 ### Lazy Eager Loading
 

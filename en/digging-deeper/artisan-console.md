@@ -32,6 +32,7 @@ artisan make:controller DemoController
 ```
 
 You can also use `artisan` shell script like this:
+
 ```shell
 ./artisan make:controller DemoController
 ```
@@ -165,7 +166,7 @@ In addition to arguments and options, you may also prompt the user for input dur
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
   email, err := ctx.Ask("What is your email address?")
-  
+
   return err
 }
 ```
@@ -177,7 +178,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
     name, err := ctx.Ask("What is your name?", console.AskOption{
         Default: "Krishan",
     })
-    
+
     return err
 }
 
@@ -214,7 +215,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
             return nil
         },
     })
-    
+
     return err
 }
 
@@ -231,7 +232,7 @@ type SecretOption struct {
     // Validate the input validation function.
     Validate func(string) error
 }
- ```
+```
 
 #### Confirming Actions
 
@@ -380,7 +381,7 @@ ctx.NewLine(2)
 
 #### Progress Bars
 
-For long-running tasks, it is often helpful to provide the user with some indication of how much time the task will take. You may use the `WithProgressBar` method to display a progress bar. 
+For long-running tasks, it is often helpful to provide the user with some indication of how much time the task will take. You may use the `WithProgressBar` method to display a progress bar.
 
 ```go
 items := []any{"item1", "item2", "item3"}
@@ -401,8 +402,8 @@ err := bar.Start()
 for _, user := range users {
     // process user
     bar.Advance()
-	
-	// sleep for a while to simulate processing 
+
+	// sleep for a while to simulate processing
     time.Sleep(time.Millisecond * 50)
 }
 
@@ -438,7 +439,7 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 
 ## Registering Commands
 
-All of your console commands need to be registered within the `Commands` function in  `app\console\kernel.go`.
+All of your console commands need to be registered within the `Commands` function in `app\console\kernel.go`.
 
 ```go
 func (kernel Kernel) Commands() []console.Command {
@@ -466,4 +467,3 @@ Some commands print colors by default, such as the `list` command. However, in s
 ```shell
 go run . artisan list --no-ansi
 ```
-

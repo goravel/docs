@@ -475,7 +475,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("abc123def456def").MatchAll(`\d+`) // []string{"123", "456"}
 ```
 
-### `IsMatch` 
+### `IsMatch`
 
 The `IsMatch` method determines if the given string matches (any of) the given regular expression.
 
@@ -1037,4 +1037,3 @@ str.Of("Hello, World!").Words(1) // "Hello..."
 
 str.Of("Hello, World!").Words(1, " (****)") // "Hello (****)"
 ```
-

@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Packages are the primary way of adding functionality to Goravel. These packages may contain routes, controllers, and configurations that are specifically designed to enhance a Goravel application. This guide focuses on developing Goravel-specific packages. 
+Packages are the primary way of adding functionality to Goravel. These packages may contain routes, controllers, and configurations that are specifically designed to enhance a Goravel application. This guide focuses on developing Goravel-specific packages.
 
 Here is an example for building a third-party package: [goravel/example-package](https://github.com/goravel/example-package)
 
@@ -166,10 +166,9 @@ go run . artisan vendor:publish --package={You package name}
 
 The command can use the following options:
 
-| Option Name  | Alias  | Action           |
-| -----------  | ------ | -------------- |
-| --package    | -p     | Package name, can be a remote package: `github.com/goravel/example-package`, and also can be a local package: `./packages/example-package`, note that when using a local package name, it needs to start with `./`. |
-| --tag        | -t     | Resource Group     |
-| --force      | -f     | Overwrite any existing files     |
-| --existing   | -e     | Publish and overwrite only the files that have already been published     |
-
+| Option Name | Alias | Action                                                                                                                                                                                                              |
+| ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --package   | -p    | Package name, can be a remote package: `github.com/goravel/example-package`, and also can be a local package: `./packages/example-package`, note that when using a local package name, it needs to start with `./`. |
+| --tag       | -t    | Resource Group                                                                                                                                                                                                      |
+| --force     | -f    | Overwrite any existing files                                                                                                                                                                                        |
+| --existing  | -e    | Publish and overwrite only the files that have already been published                                                                                                                                               |

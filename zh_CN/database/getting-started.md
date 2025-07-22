@@ -6,12 +6,12 @@
 
 几乎所有的应用程序都需要和数据库进行交互，Goravel 为此提供了一套非常简单易用的数据库交互方式。开发者可以使用原生 SQL，查询构造器，以及 [Orm](../orm/getting-started) 等方式与数据库交互。目前，Goravel 为以下四种数据库提供了官方支持：
 
-| 数据库 | 驱动 |
-| --- | --- |
-| PostgreSQL | [github.com/goravel/postgres](https://github.com/goravel/postgres) |
-| MySQL | [github.com/goravel/mysql](https://github.com/goravel/mysql) |
+| 数据库     | 驱动                                                                 |
+| ---------- | -------------------------------------------------------------------- |
+| PostgreSQL | [github.com/goravel/postgres](https://github.com/goravel/postgres)   |
+| MySQL      | [github.com/goravel/mysql](https://github.com/goravel/mysql)         |
 | SQL Server | [github.com/goravel/sqlserver](https://github.com/goravel/sqlserver) |
-| SQLite | [github.com/goravel/sqlite](https://github.com/goravel/sqlite) |
+| SQLite     | [github.com/goravel/sqlite](https://github.com/goravel/sqlite)       |
 
 ## 配置
 
@@ -21,12 +21,12 @@
 
 可以在配置文件中配置数据库连接池，合理的配置连接池参数，可以极大的提高并发性能：
 
-| 配置键        | 作用           |
-| -----------  | -------------- |
-| pool.max_idle_conns         | 最大空闲连接    |
-| pool.max_open_conns     | 最大连接数 |
-| pool.conn_max_idletime     | 连接最大空闲时间 |
-| pool.conn_max_lifetime     | 连接最大生命周期 |
+| 配置键                 | 作用             |
+| ---------------------- | ---------------- |
+| pool.max_idle_conns    | 最大空闲连接     |
+| pool.max_open_conns    | 最大连接数       |
+| pool.conn_max_idletime | 连接最大空闲时间 |
+| pool.conn_max_lifetime | 连接最大生命周期 |
 
 ### 读写分离
 

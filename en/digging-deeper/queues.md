@@ -4,15 +4,13 @@
 
 ## Introduction
 
-When building your web application, there may be tasks, like parsing and storing an uploaded CSV file, that take too long to complete during a web request. Fortunately, Goravel offers a solution by allowing you to create queued jobs that can run in the background. This way, by moving time-intensive tasks to a queue, your application can respond to web requests much faster and provide a better user experience for your customers. To implement this feature, we use `facades.Queue()`.  
+When building your web application, there may be tasks, like parsing and storing an uploaded CSV file, that take too long to complete during a web request. Fortunately, Goravel offers a solution by allowing you to create queued jobs that can run in the background. This way, by moving time-intensive tasks to a queue, your application can respond to web requests much faster and provide a better user experience for your customers. To implement this feature, we use `facades.Queue()`.
 
 ### Connections Vs. Queues
 
-Before delving into Goravel queues, it's important to understand the difference between "connections" and "queues". In the configuration file, `config/queue.go`, you'll find an array for `connections` configuration. This option specifies the connections to backend queue services like Redis. However, every queue connection can have multiple "queues", which can be thought of as different stacks or piles of queued jobs. 
+Before delving into Goravel queues, it's important to understand the difference between "connections" and "queues". In the configuration file, `config/queue.go`, you'll find an array for `connections` configuration. This option specifies the connections to backend queue services like Redis. However, every queue connection can have multiple "queues", which can be thought of as different stacks or piles of queued jobs.
 
 It's essential to note that each connection configuration example in the queue configuration file includes a `queue` attribute. This attribute is the default queue to which jobs will be dispatched when they are sent to a given connection. In simpler terms, if you dispatch a job without explicitly defining which queue it should be dispatched to, the job will be placed in the queue defined in the queue attribute of the connection configuration.
-
-
 
 ```go
 // This job is sent to the default connection's default queue

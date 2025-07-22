@@ -10,9 +10,9 @@ Goravel 路由模块可以使用 `facades.Route()` 进行操作。
 
 Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动，如果想使用其他驱动，可以到 `config/http.go` 中进行配置，目前官方默认支持 [gin](https://github.com/gin-gonic/gin) 与 [fiber](https://github.com/gofiber/fiber) 两种驱动：
 
-| 驱动    | 地址                               |
-|-------|----------------------------------|
-| Gin   | [https://github.com/goravel/gin](https://github.com/goravel/gin)   |
+| 驱动  | 地址                                                                 |
+| ----- | -------------------------------------------------------------------- |
+| Gin   | [https://github.com/goravel/gin](https://github.com/goravel/gin)     |
 | Fiber | [https://github.com/goravel/fiber](https://github.com/goravel/fiber) |
 
 ## 默认路由文件
@@ -111,26 +111,26 @@ select {}
 
 ### 路由方法
 
-| 方法       | 作用                                  |
-| ---------- | ------------------------------------- |
-| Group      | [路由分组](#路由分组)                 |
-| Prefix     | [路由前缀](#路由前缀)                 |
-| ServeHTTP  | [测试路由](#测试路由)                 |
-| Get        | [基本路由](#基本路由)                 |
-| Post       | [基本路由](#基本路由)                 |
-| Put        | [基本路由](#基本路由)                 |
-| Delete     | [基本路由](#基本路由)                 |
-| Patch      | [基本路由](#基本路由)                 |
-| Options    | [基本路由](#基本路由)                 |
-| Any        | [基本路由](#基本路由)                 |
-| Resource   | [资源路由](#资源路由)                 |
-| Static     | [文件路由](#文件路由)                 |
-| StaticFile | [文件路由](#文件路由)                 |
-| StaticFS   | [文件路由](#文件路由)                 |
-| Middleware | [中间件](#中间件)                     |
-| GetRoutes  | [获取所有路由](#获取所有路由)           |
-| Name       | [设置路由名称](#设置路由名称)           |
-| Info       | [获取路由信息](#获取路由信息)           |
+| 方法       | 作用                          |
+| ---------- | ----------------------------- |
+| Group      | [路由分组](#路由分组)         |
+| Prefix     | [路由前缀](#路由前缀)         |
+| ServeHTTP  | [测试路由](#测试路由)         |
+| Get        | [基本路由](#基本路由)         |
+| Post       | [基本路由](#基本路由)         |
+| Put        | [基本路由](#基本路由)         |
+| Delete     | [基本路由](#基本路由)         |
+| Patch      | [基本路由](#基本路由)         |
+| Options    | [基本路由](#基本路由)         |
+| Any        | [基本路由](#基本路由)         |
+| Resource   | [资源路由](#资源路由)         |
+| Static     | [文件路由](#文件路由)         |
+| StaticFile | [文件路由](#文件路由)         |
+| StaticFS   | [文件路由](#文件路由)         |
+| Middleware | [中间件](#中间件)             |
+| GetRoutes  | [获取所有路由](#获取所有路由) |
+| Name       | [设置路由名称](#设置路由名称) |
+| Info       | [获取路由信息](#获取路由信息) |
 
 ## 基本路由
 
@@ -351,4 +351,3 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 Goravel 已默认启用 CORS，详细配置可以到 `config/cors.go` 文件中进行修改。
 
 > 有关 CORS 和 CORS 标头的更多信息，请参阅 [MDN 关于 CORS 的 Web 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
-

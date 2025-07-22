@@ -166,7 +166,7 @@ Goravel 提供了一种简单的方法来处理 `cookie`。使用 `Request` 实�
 
 ```go
 value := ctx.Request().Cookie("name")
-value := ctx.Request().Cookie("name", "default") 
+value := ctx.Request().Cookie("name", "default")
 ```
 
 ## 文件

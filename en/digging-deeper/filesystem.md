@@ -6,13 +6,13 @@
 
 The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS, Tencent COS, Minio and Cloudinary. Even better, switching between these storage options between your local development machine and production server is amazingly simple as the API remains the same for each system. Goravel comes with a `local` driver, for other drivers, please check the corresponding independent extension package:
 
-| Driver       | Link           |
-| -----------  | -------------- |
-| S3           | [https://github.com/goravel/s3](https://github.com/goravel/s3)     |
-| OSS          | [https://github.com/goravel/oss](https://github.com/goravel/oss)     |
-| COS          | [https://github.com/goravel/cos](https://github.com/goravel/cos)     |
-| Minio        | [https://github.com/goravel/minio](https://github.com/goravel/minio)     |
-| Cloudinary   | [https://github.com/goravel/cloudinary](https://github.com/goravel/cloudinary)     |
+| Driver     | Link                                                                           |
+| ---------- | ------------------------------------------------------------------------------ |
+| S3         | [https://github.com/goravel/s3](https://github.com/goravel/s3)                 |
+| OSS        | [https://github.com/goravel/oss](https://github.com/goravel/oss)               |
+| COS        | [https://github.com/goravel/cos](https://github.com/goravel/cos)               |
+| Minio      | [https://github.com/goravel/minio](https://github.com/goravel/minio)           |
+| Cloudinary | [https://github.com/goravel/cloudinary](https://github.com/goravel/cloudinary) |
 
 ## Configuration
 
@@ -30,7 +30,7 @@ facades.Storage().Put("example.txt", "Contents")
 
 ### The Public Disk
 
-The `public`` disk included in your application's `filesystems` configuration file is intended for files that are going to be publicly accessible. By default, the `public` disk uses the `local` driver and stores its files in `storage/app/public`. If you want to visit these file from web, you can create a file routing:
+The `public`` disk included in your application's `filesystems`configuration file is intended for files that are going to be publicly accessible. By default, the`public`disk uses the`local`driver and stores its files in`storage/app/public`. If you want to visit these file from web, you can create a file routing:
 
 ```go
 facades.Route().Static("storage", "./storage/app/public")
@@ -264,6 +264,7 @@ err := facades.Storage().Disk("s3").Delete("file.jpg")
 ## Directories
 
 ### Get All Files Within A Directory
+
 The `Files` method returns a slice of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `AllFiles` method:
 
 ```go
@@ -292,7 +293,7 @@ err := facades.Storage().MakeDirectory(directory)
 
 Finally, the `DeleteDirectory` method may be used to remove a directory and all of its files:
 
-```go 
+```go
 err := facades.Storage().DeleteDirectory(directory)
 ```
 
@@ -338,4 +339,3 @@ type Driver interface {
 ```
 
 > Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config().Env` to obtain the configuration in the custom driver.
-

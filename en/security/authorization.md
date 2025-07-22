@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Goravel offers built-in [authentication](./authentication.md) services and an easy-to-use authorization feature to manage user actions on resources. Even if a user is authenticated, they may not have the authority to modify or delete certain Eloquent models or database records. Goravel's authorization feature allows for a systematic way of managing these authorization checks. 
+Goravel offers built-in [authentication](./authentication.md) services and an easy-to-use authorization feature to manage user actions on resources. Even if a user is authenticated, they may not have the authority to modify or delete certain Eloquent models or database records. Goravel's authorization feature allows for a systematic way of managing these authorization checks.
 
 There are two ways to authorize actions in Goravel: [gates](#Gates) and [policies](#Policies). Imagine gates and policies as similar to routes and controllers. Gates are based on closures and provide a simple approach to authorization, whereas policies group logic around a specific resource, similar to controllers. This documentation will first cover gates and then delve into policies.
 
@@ -70,7 +70,7 @@ func (r *UserController) Show(ctx http.Context) http.Response {
   if facades.Gate().Allows("update-post", map[string]any{
     "post": post,
   }) {
-    
+
   }
 }
 ```
@@ -199,4 +199,3 @@ facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
 ```
 
 As you work on authorizing different actions, you can add more methods to your policy. For instance, you can create `View` or `Delete` methods to authorize various model-related actions. Feel free to name your policy methods as you see fit.
-

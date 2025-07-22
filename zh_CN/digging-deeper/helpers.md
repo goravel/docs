@@ -7,35 +7,35 @@
 ### 路径
 
 |                                   |                                 |                               |
-|-----------------------------------|---------------------------------|-------------------------------|
+| --------------------------------- | ------------------------------- | ----------------------------- |
 | [path.App()](#path-app)           | [path.Base()](#path-base)       | [path.Config()](#path-config) |
 | [path.Database()](#path-database) | [path.Storage()](#path-storage) | [path.Public()](#path-public) |
-| [path.Resource()](#path-resource) |  |  |
+| [path.Resource()](#path-resource) |                                 |                               |
 
 ### 时间
 
-|                                                         |                                                                |                                                           |
-|---------------------------------------------------------|----------------------------------------------------------------|-----------------------------------------------------------|
-| [carbon.Now()](#carbon-now)                             | [carbon.SetTimezone()](#carbon-settimezone)                    | [carbon.SetLocale()](#carbon-setlocale)                   |
-| [carbon.SetTestNow()](#carbon-settestnow)               | [carbon.ClearTestNow()](#carbon-cleartestnow)                  | [carbon.IsTestNow()](#carbon-istestnow)                   |
-| [carbon.Parse()](#carbon-parse)                         | [carbon.ParseByLayout()](#carbon-parsebylayout)                | [carbon.ParseByFormat()](#carbon-parsebyformat)           |
-| [carbon.FromTimestamp()](#carbon-fromtimestamp)         | [carbon.FromTimestampMilli()](#carbon-fromtimestampmilli)      | [carbon.FromTimestampMicro()](#carbon-fromtimestampmicro) |
-| [carbon.FromTimestampNano()](#carbon-fromtimestampnano) | [carbon.FromDateTime()](#carbon-fromdatetime)                  | [carbon.FromDateTimeMilli()](#carbon-fromdatetimemilli)   |
-| [carbon.FromDateTimeMicro()](#carbon-fromdatetimemicro) | [carbon.FromDateTimeNano()](#carbon-fromdatetimenano)          | [carbon.FromDate()](#carbon-fromdate)                     |
-| [carbon.FromDateMilli()](#carbon-fromdatemilli)         | [carbon.FromDateMicro()](#carbon-fromdatemicro)                | [carbon.FromDateNano()](#carbon-fromdatenano)             |
-| [carbon.FromTime()](#carbon-fromtime)                   | [carbon.FromTimeMilli()](#carbon-fromtimemilli)                | [carbon.FromTimeMicro()](#carbon-fromtimemicro)           |
-| [carbon.FromTimeNano()](#carbon-fromtimenano)           | [carbon.FromStdTime()](#carbon-fromstdtime)                    |                                                           |
+|                                                         |                                                           |                                                           |
+| ------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
+| [carbon.Now()](#carbon-now)                             | [carbon.SetTimezone()](#carbon-settimezone)               | [carbon.SetLocale()](#carbon-setlocale)                   |
+| [carbon.SetTestNow()](#carbon-settestnow)               | [carbon.ClearTestNow()](#carbon-cleartestnow)             | [carbon.IsTestNow()](#carbon-istestnow)                   |
+| [carbon.Parse()](#carbon-parse)                         | [carbon.ParseByLayout()](#carbon-parsebylayout)           | [carbon.ParseByFormat()](#carbon-parsebyformat)           |
+| [carbon.FromTimestamp()](#carbon-fromtimestamp)         | [carbon.FromTimestampMilli()](#carbon-fromtimestampmilli) | [carbon.FromTimestampMicro()](#carbon-fromtimestampmicro) |
+| [carbon.FromTimestampNano()](#carbon-fromtimestampnano) | [carbon.FromDateTime()](#carbon-fromdatetime)             | [carbon.FromDateTimeMilli()](#carbon-fromdatetimemilli)   |
+| [carbon.FromDateTimeMicro()](#carbon-fromdatetimemicro) | [carbon.FromDateTimeNano()](#carbon-fromdatetimenano)     | [carbon.FromDate()](#carbon-fromdate)                     |
+| [carbon.FromDateMilli()](#carbon-fromdatemilli)         | [carbon.FromDateMicro()](#carbon-fromdatemicro)           | [carbon.FromDateNano()](#carbon-fromdatenano)             |
+| [carbon.FromTime()](#carbon-fromtime)                   | [carbon.FromTimeMilli()](#carbon-fromtimemilli)           | [carbon.FromTimeMicro()](#carbon-fromtimemicro)           |
+| [carbon.FromTimeNano()](#carbon-fromtimenano)           | [carbon.FromStdTime()](#carbon-fromstdtime)               |                                                           |
 
 ### 调试
 
 |                             |                               |                               |
-|-----------------------------|-------------------------------|-------------------------------|
+| --------------------------- | ----------------------------- | ----------------------------- |
 | [debug.Dump()](#debug-dump) | [debug.SDump()](#debug-sdump) | [debug.FDump()](#debug-fdump) |
 
 ### Maps
 
 |                             |                               |                               |
-|-----------------------------|-------------------------------|-------------------------------|
+| --------------------------- | ----------------------------- | ----------------------------- |
 | [maps.Add()](#maps-add)     | [maps.Exists()](#maps-exists) | [maps.Forget()](#maps-forget) |
 | [maps.Get()](#maps-get)     | [maps.Has()](#maps-has)       | [maps.HasAny()](#maps-hasany) |
 | [maps.Only()](#maps-only)   | [maps.Pull()](#maps-pull)     | [maps.Set()](#maps-set)       |
@@ -44,14 +44,14 @@
 ### 转换
 
 |                                       |                                       |                                           |
-|---------------------------------------|---------------------------------------|-------------------------------------------|
+| ------------------------------------- | ------------------------------------- | ----------------------------------------- |
 | [convert.Tap()](#convert-tap)         | [convert.With()](#convert-with)       | [convert.Transform()](#convert-transform) |
 | [convert.Default()](#convert-default) | [convert.Pointer()](#convert-pointer) |                                           |
 
 ### 集合
 
 |                                     |                                       |                                       |
-|-------------------------------------|---------------------------------------|---------------------------------------|
+| ----------------------------------- | ------------------------------------- | ------------------------------------- |
 | [collect.Count()](#collect-count)   | [collect.CountBy()](#collect-countby) | [collect.Each()](#collect-each)       |
 | [collect.Filter()](#collect-filter) | [collect.GroupBy()](#collect-groupby) | [collect.Keys()](#collect-keys)       |
 | [collect.Map()](#collect-map)       | [collect.Max()](#collect-max)         | [collect.Merge()](#collect-merge)     |

@@ -277,6 +277,7 @@ type Comment struct {
   CommentableType string
 }
 ```
+
 您可以使用标签 `polymorphicValue` 来更改多态类型的值，例如：
 
 ```go

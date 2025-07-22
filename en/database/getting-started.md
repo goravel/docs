@@ -6,12 +6,12 @@
 
 Almost all applications need to interact with databases, so Goravel provides a very simple and easy-to-use database interaction. Developers can use native SQL, query builder, and [Orm](../orm/getting-started) to interact with databases. Currently, Goravel provides official support for the following four databases:
 
-| Database | Driver |
-| --- | --- |
-| PostgreSQL | [github.com/goravel/postgres](https://github.com/goravel/postgres) |
-| MySQL | [github.com/goravel/mysql](https://github.com/goravel/mysql) |
+| Database   | Driver                                                               |
+| ---------- | -------------------------------------------------------------------- |
+| PostgreSQL | [github.com/goravel/postgres](https://github.com/goravel/postgres)   |
+| MySQL      | [github.com/goravel/mysql](https://github.com/goravel/mysql)         |
 | SQL Server | [github.com/goravel/sqlserver](https://github.com/goravel/sqlserver) |
-| SQLite | [github.com/goravel/sqlite](https://github.com/goravel/sqlite) |
+| SQLite     | [github.com/goravel/sqlite](https://github.com/goravel/sqlite)       |
 
 ## Configuration
 
@@ -21,12 +21,12 @@ The database configuration file is `config/database.go`. You can configure all d
 
 You can configure the database connection pool in the configuration file to improve the concurrency performance by properly configuring the connection pool parameters:
 
-| Configuration Key | Description |
-| ----------- | -------------- |
-| pool.max_idle_conns         | Maximum idle connections    |
-| pool.max_open_conns     | Maximum connections |
-| pool.conn_max_idletime     | Connection maximum idle time |
-| pool.conn_max_lifetime     | Connection maximum lifetime |
+| Configuration Key      | Description                  |
+| ---------------------- | ---------------------------- |
+| pool.max_idle_conns    | Maximum idle connections     |
+| pool.max_open_conns    | Maximum connections          |
+| pool.conn_max_idletime | Connection maximum idle time |
+| pool.conn_max_lifetime | Connection maximum lifetime  |
 
 ### Read-Write Splitting
 

@@ -178,7 +178,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
     name, err := ctx.Ask("What is your name?", console.AskOption{
         Default: "Krishan",
     })
-    
+
     return err
 }
 
@@ -215,7 +215,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
             return nil
         },
     })
-    
+
     return err
 }
 
@@ -232,7 +232,7 @@ type SecretOption struct {
     // 验证输入的函数
     Validate func(string) error
 }
- ```
+```
 
 #### 确认操作
 
@@ -399,7 +399,7 @@ err := bar.Start()
 for _, user := range users {
     // process user
     bar.Advance()
-	
+
 	// sleep for a while to simulate processing
     time.Sleep(time.Millisecond * 50)
 }
@@ -464,4 +464,3 @@ facades.Route().GET("/", func(c *gin.Context) {
 ```shell
 go run . artisan list --no-ansi
 ```
-

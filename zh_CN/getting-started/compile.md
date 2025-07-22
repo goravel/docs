@@ -18,7 +18,7 @@ go run . artisan build -o=linux
 go run . artisan build --static
 go run . artisan build -s
 
-// 指定输出文件名 
+// 指定输出文件名
 go run . artisan build --name=goravel
 go run . artisan build -n=goravel
 ```
@@ -145,4 +145,3 @@ import (
 ## 减小打包体积
 
 将 `config/app.go::providers` 中未用到的 `ServiceProvider` 注释掉将能有效地减少打包体积。
-

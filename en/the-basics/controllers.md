@@ -75,10 +75,10 @@ This command will generate a controller at `app/http/controllers/photo_controlle
 facades.Route().Resource("photos", controllers.NewPhotoController())
 ```
 
-|Verb         | URI                    | Action       
---------------|------------------------|--------------
-GET           | `/photos`              | Index        
-POST          | `/photos`              | Store        
-GET           | `/photos/{photo}`      | Show         
-PUT/PATCH     | `/photos/{photo}`      | Update       
-DELETE        | `/photos/{photo}`      | Destroy      
+| Verb      | URI               | Action  |
+| --------- | ----------------- | ------- |
+| GET       | `/photos`         | Index   |
+| POST      | `/photos`         | Store   |
+| GET       | `/photos/{photo}` | Show    |
+| PUT/PATCH | `/photos/{photo}` | Update  |
+| DELETE    | `/photos/{photo}` | Destroy |

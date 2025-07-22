@@ -43,7 +43,7 @@ var user User
 err := facades.DB().Table("users").Where("id", 1).First(&user)
 ```
 
-可以使用 `Value` 方法检索单个列的值：  
+可以使用 `Value` 方法检索单个列的值：
 
 ```go
 var name string

@@ -157,9 +157,9 @@ origin := ctx.Response().Origin()
 
 `origin` 包含以下方法：
 
-| 方法名        | 作用           |
-| -----------  | -------------- |
-| Body         | 获取响应数据     |
-| Header       | 获取响应 header |
-| Size         | 获取响应大小     |
-| Status       | 获取响应状态码   |
+| 方法名 | 作用            |
+| ------ | --------------- |
+| Body   | 获取响应数据    |
+| Header | 获取响应 header |
+| Size   | 获取响应大小    |
+| Status | 获取响应状态码  |

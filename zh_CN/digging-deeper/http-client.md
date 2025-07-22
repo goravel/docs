@@ -17,7 +17,7 @@ Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP
 - `max_idle_conns`: 最大空闲（保持活动）连接数。零表示没有限制。
 - `max_idle_conns_per_host`: 最大空闲（保持活动）连接数。
 - `max_conns_per_host`: 限制总连接数，包括正在拨号、活动和空闲状态的连接。零表示没有限制。
-- `idle_conn_timeout`:  空闲（保持活动）连接在自行关闭之前保持空闲的最大时长。
+- `idle_conn_timeout`: 空闲（保持活动）连接在自行关闭之前保持空闲的最大时长。
 
 ```go
 "client": map[string]any{
@@ -35,6 +35,7 @@ Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP
 Http facade 提供了一种便捷的方式来使用熟悉的动词（`GET`、`POST`、`PUT`、`DELETE`、`PATCH`、`HEAD` 和 `OPTIONS`）发起 HTTP 请求。
 
 **示例：GET 请求**
+
 ```go
 import "github.com/goravel/framework/facades"
 
@@ -46,6 +47,7 @@ response, err := facades.Http().Get("https://example.com")
 ### 响应接口
 
 `framework/contracts/http/client.Response` 接口提供了以下方法来与 HTTP 响应进行交互：
+
 ```go
 type Response interface {
     Body() (string, error)           // 获取响应体为字符串
@@ -60,9 +62,9 @@ type Response interface {
     ServerError() bool              // 检查状态码是否在 5xx 范围内
     Status() int                    // 获取 HTTP 状态码
     Successful() bool               // 检查状态码是否在 2xx 范围内
-    
+
     /* 状态码相关方法 */
-    
+
     OK() bool                  // 200 OK
     Created() bool             // 201 Created
     Accepted() bool            // 202 Accepted
@@ -221,11 +223,13 @@ response, err := facades.Http().
 
 ::: tip
 `WithToken` 方法还接受一个可选的第二个参数，用于指定令牌类型（例如，“Bearer”、“Token”）。如果未提供类型，则默认为“Bearer”。
+
 ```go
 response, err := facades.Http().
     WithToken("custom_token", "Token").
     Get("https://api.example.com/api/resource")
 ```
+
 :::
 
 要从请求中移除 Bearer Token，请使用 `WithoutToken` 方法：
@@ -250,6 +254,7 @@ response, err := facades.Http().WithContext(ctx).Get("https://example.com")
 ### 绑定响应
 
 你可以直接在 `Http` facade 上使用 `Bind` 方法来指定响应应该绑定到的结构体。
+
 ```go
 type User struct {
     ID   int    `json:"id"`
@@ -263,7 +268,7 @@ func main() {
         fmt.Println("Error making request:", err)
         return
     }
-    
+
     fmt.Printf("User ID: %d, Name: %s\n", user.ID, user.Name)
 }
 ```
@@ -293,4 +298,3 @@ response, err := facades.Http().
 	WithoutCookie("language").
 	Get("https://example.com")
 ```
-
