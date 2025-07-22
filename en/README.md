@@ -1,19 +1,3 @@
----
-head:
-  - ['meta', { name: description, content: Goravel is a web application framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications. }]
-  - ['meta', { property: og:url, content: https://www.goravel.dev }]
-  - ['meta', { property: og:type, content: website }]
-  - ['meta', { property: og:title, content: Goravel - The Golang Framework For Web Artisans }]
-  - ['meta', { property: og:description, content: Goravel is a web application framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications. }]
-  - ['meta', { property: og:image, content: https://www.goravel.dev/meta.png }]
-  - ['meta', { name: twitter:card, content: summary_large_image }]
-  - ['meta', { property: twitter:domain, content: www.goravel.dev }]
-  - ['meta', { property: twitter:url, content: https://www.goravel.dev }]
-  - ['meta', { name: twitter:title, content: Goravel - The Golang Framework For Web Artisans }]
-  - ['meta', { name: twitter:description, content: Goravel is a web application framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications. }]
-  - ['meta', { name: twitter:image, content: https://www.goravel.dev/meta.png }]
----
-
 <div align="center">
 
 <img src="/logo.png" width="300" alt="Logo">
@@ -54,7 +38,7 @@ We are open to receiving stars, PRs, and issues!
 
 ## Excellent Extend Packages
 
-[For Detail](/prologue/packages.md)
+[For Detail](getting-started/packages.md)
 
 ## Documentation
 
@@ -66,7 +50,7 @@ Example [https://github.com/goravel/example](https://github.com/goravel/example)
 
 ## Contributors
 
-This project is made possible by everyone who contributes. To contribute, please consult the [Contribution Guide](/prologue/contributions.md).
+This project is made possible by everyone who contributes. To contribute, please consult the [Contribution Guide](getting-started/contributions.md).
 
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>

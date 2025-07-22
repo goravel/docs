@@ -1,18 +1,62 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
+@import "tailwindcss";
 
 :root {
     --vp-nav-logo-height: 36px;
     --vp-home-hero-name-color: transparent;
     --vp-home-hero-name-background: -webkit-linear-gradient(
             120deg,
-            #bd34fe 30%,
-            #41d1ff
+            #bd34fe 10%,
+            #00A0E5
     );
+    /* --vp-home-hero-image-background-image: linear-gradient(135deg, #bbe2fe 10%, #bfe2fc 100%);
+    --vp-home-hero-image-filter: blur(50px); */
+    --vp-button-brand-bg: #00A0E5;
 }
 
 .VPHero .VPImage {
     filter: drop-shadow(-2px 4px 6px rgba(0, 0, 0, 0.2));
     padding: 18px;
+}
+
+.VPHome .heading {
+    align-items: center;
+}
+
+.VPHome .heading .name {
+    max-width: 100%;
+    margin-bottom: 20px;
+    font-size: 70px;
+}
+
+.VPHome .heading .text {
+    max-width: 100%;
+    font-size: 45px;
+    text-align: center;
+}
+
+.VPHome .tagline {
+    text-align: center;
+    align-items: center;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .VPHome .heading .name {
+        font-size: 50px;
+    }
+
+    .VPHome .heading .text {
+        font-size: 30px;
+    }
+
+    .VPHome .tagline {
+        font-size: 16px;
+    }
+}
+
+.VPHome .actions {
+    justify-content: center;
 }
 
 .icon {

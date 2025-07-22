@@ -31,13 +31,13 @@ export default {
                 // Configured as an object with key-value pairs inside:
                 // [your i18n configuration name]: [corresponds to the language pack name in Giscus]
                 locales: {
-                    'zh-Hans': 'zh-CN',
-                    'en-US': 'en'
+                    'zh-CN': 'zh-CN',
+                    'en': 'en'
                 },
-                strict: false,
-                reactionsEnabled: true,
-                lazyLoad: true,
-                homePageShowComment: false,
+                strict: '0',
+                reactionsEnabled: '1',
+                lazyLoad: '1',
+                homePageShowComment: '0',
                 lightTheme: 'preferred_color_scheme',
                 darkTheme: 'preferred_color_scheme',
             }, {

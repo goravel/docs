@@ -118,8 +118,8 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
             link: 'compile'
         },
         {
-            text: 'Contributing',
-            link: 'contributing'
+            text: 'Contribution Guide',
+            link: 'contributions'
         },
         {
             text: 'Excellent Packages',
@@ -177,8 +177,8 @@ function sidebarBasic(): DefaultTheme.SidebarItem[] {
             link: 'routing'
         },
         {
-            text: 'Middlewares',
-            link: 'middlewares'
+            text: 'Middleware',
+            link: 'middleware'
         },
         {
             text: 'Controllers',
@@ -226,8 +226,8 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
             link: 'cache'
         },
         {
-            text: 'Events',
-            link: 'events'
+            text: 'Event',
+            link: 'event'
         },
         {
             text: 'File Storage',
@@ -338,8 +338,8 @@ function sidebarTesting(): DefaultTheme.SidebarItem[] {
             link: 'http-tests'
         },
         {
-            text: 'Mocks',
-            link: 'mocks'
+            text: 'Mock',
+            link: 'mock'
         },
     ]
 }

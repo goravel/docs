@@ -3,6 +3,7 @@ import {createFileSystemTypesCache} from '@shikijs/vitepress-twoslash/cache-fs'
 import {transformerTwoslash} from '@shikijs/vitepress-twoslash'
 import timeline from "vitepress-markdown-timeline";
 import {defineConfig} from "vitepress";
+import tailwindcss from '@tailwindcss/vite'
 
 // import {enSearch, zh_CNSearch} from './search'
 
@@ -14,18 +15,10 @@ export const shared = defineConfig({
     },
 
     lastUpdated: true,
-    cleanUrls: true,
+    cleanUrls: false,
     metaChunk: true,
 
     head: [
-        [
-            "script",
-            {
-                crossorigin: "anonymous",
-                async: "true",
-                src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4978322804450032",
-            },
-        ],
         [
             "script",
             {
@@ -90,7 +83,8 @@ export const shared = defineConfig({
 
     vite: {
         plugins: [
-            groupIconVitePlugin()
+            groupIconVitePlugin(),
+            tailwindcss() as any
         ],
     },
 })

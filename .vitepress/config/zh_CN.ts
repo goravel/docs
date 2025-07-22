@@ -96,8 +96,8 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
     text: "编译",
     link: 'compile'
   }, {
-    text: "贡献",
-    link: 'contributing'
+    text: "贡献指南",
+    link: 'contributions'
   }, {
     text: "优秀拓展包",
     link: 'packages'
@@ -108,11 +108,11 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "从 v1.15 升级",
-    link: 'v1.15'
+    text: "从 v1.15 升级到 v1.16",
+    link: 'v1.16'
   }, {
-    text: "从 v1.14 升级",
-    link: 'v1.14'
+    text: "从 v1.14 升级到 v1.15",
+    link: 'v1.15'
   }, {
     text: "历史",
     link: 'history'
@@ -139,7 +139,7 @@ function sidebarBasic(): DefaultTheme.SidebarItem[] {
     link: 'routing'
   }, {
     text: "中间件",
-    link: 'middlewares'
+    link: 'middleware'
   }, {
     text: "控制器",
     link: 'controllers'
@@ -175,7 +175,7 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     link: 'cache'
   }, {
     text: "事件",
-    link: 'events'
+    link: 'event'
   }, {
     text: "文件存储",
     link: 'filesystem'
@@ -253,9 +253,9 @@ function sidebarTesting(): DefaultTheme.SidebarItem[] {
     link: 'getting-started'
   }, {
     text: "HTTP 测试",
-    link: 'http'
+    link: 'http-tests'
   }, {
     text: "模拟",
-    link: 'mocks'
+    link: 'mock'
   }];
 }
