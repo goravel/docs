@@ -287,7 +287,7 @@ function sidebarSecurity(): DefaultTheme.SidebarItem[] {
 function sidebarDatabase(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: '开始使用',
+      text: '快速入门',
       link: 'getting-started'
     },
     {
@@ -307,7 +307,7 @@ function sidebarDatabase(): DefaultTheme.SidebarItem[] {
 function sidebarOrm(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: '开始使用',
+      text: '快速入门',
       link: 'getting-started'
     },
     {
@@ -323,7 +323,7 @@ function sidebarOrm(): DefaultTheme.SidebarItem[] {
 function sidebarTesting(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: '开始使用',
+      text: '快速入门',
       link: 'getting-started'
     },
     {

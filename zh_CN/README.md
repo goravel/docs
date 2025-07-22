@@ -42,7 +42,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## 文档
 
-在线文档 [https://www.goravel.dev/zh](https://www.goravel.dev/zh)
+在线文档 [https://www.goravel.dev/zh_CN](https://www.goravel.dev/zh_CN)
 
 示例 [https://github.com/goravel/example](https://github.com/goravel/example)
 
