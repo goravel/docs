@@ -1,6 +1,5 @@
 node_modules
-.temp
-.cache
-.DS_Store
-.vscode
+.vitepress/cache
+.vitepress/dist
 .idea
+.vscode

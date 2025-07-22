@@ -1,15 +1,10 @@
-name: Deploy-Pre
+name: Deploy
 
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'The branch for preview'
-        required: true
-        type: string
 
 concurrency:
-  group: deploy-pre
+  group: deploy
 
 jobs:
   build:
@@ -17,8 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -34,19 +27,19 @@ jobs:
       - name: Build with VitePress
         run: pnpm docs:build
 
-      - name: Push gh-pages-pre
+      - name: Push gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .vitepress/dist
-          publish_branch: gh-pages-pre
+          publish_branch: gh-pages
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy-Pre
+      - name: Deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -55,4 +48,4 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           allenvs: true
           script: |
-            cd /data/wwwroot/pre.goravel.dev/ && git pull origin gh-pages-pre
+            cd /data/wwwroot/www.goravel.dev/ && git pull origin gh-pages

@@ -1,0 +1,7 @@
+commit_message: '[skip ci] Update translations (%language%) %original_file_name%'
+pull_request_title: 'l10n: update translations'
+files:
+  - source: /en/**/*.md
+    translation: /%locale_with_underscore%/**/%file_name%.md
+  - source: /.vitepress/config/en.ts
+    translation: /.vitepress/config/%locale_with_underscore%.ts
