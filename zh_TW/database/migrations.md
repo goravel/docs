@@ -1,17 +1,23 @@
 # Migrations
 
-[[toc]]
+[Enum](#enum)
 
 ## Introduction
 
-When multiple people collaborate to develop applications, it's crucial to have a standardized database structure for synchronization. Without this, there could be chaos as everyone's individual data won't match up. Database migration is the solution to this problem. The database structure is version-controlled to ensure its consistency within all developers.
+When multiple people collaborate to develop applications, it's crucial to have a standardized database structure for
+synchronization. Without this, there could be chaos as everyone's individual data won't match up. Database migration is
+the solution to this problem. The database structure is version-controlled to ensure its consistency within all
+developers.
 
 ## Configuration
 
-The database migration files are stored in the `database/migrations` directory. You can configure the database connection information in the `config/database.go` file.
+The database migration files are stored in the `database/migrations` directory. You can configure the database
+connection information in the `config/database.go` file.
 
 ```go
+// Available Drivers: "default", "sql"
 "migrations": map[string]any{
+  "driver": "default",
   // You can cumstomize the table name of migrations
   "table":  "migrations",
 },
@@ -25,7 +31,8 @@ Use the `make:migration` command to create the migration:
 go run . artisan make:migration create_users_table
 ```
 
-This command will generate migration files in the `database/migrations` directory. Each migration file will begin with a timestamp, which Goravel will use to determine the execution order of the migration files.
+This command will generate migration files in the `database/migrations` directory. Each migration file will begin with a
+timestamp, which Goravel will use to determine the execution order of the migration files.
 
 ### Quickly Create
 
@@ -49,14 +56,17 @@ If the above conditions are not matched, the framework will generate an empty mi
 
 ### Go Language Migration
 
-The migration struct contains two methods: `Up` and `Down`. The `Up` method is used to add new tables, columns, or indexes to the database, while the `Down` method is used to undo the operations performed by the `Up` method. In these two methods, you can use `facades.Schema()` to create and operate database tables. For available methods, see the [documentation](#tables). The following migration will create a `users` table:
+The migration struct contains two methods: `Up` and `Down`. The `Up` method is used to add new tables, columns, or
+indexes to the database, while the `Down` method is used to undo the operations performed by the `Up` method. In these
+two methods, you can use `facades.Schema()` to create and operate database tables. For available methods, see
+the [documentation](#tables). The following migration will create a `users` table:
 
 ```go
 package migrations
 
 import (
-	"github.com/goravel/framework/contracts/database/schema"
-	"github.com/goravel/framework/facades"
+ "github.com/goravel/framework/contracts/database/schema"
+ "github.com/goravel/framework/facades"
 )
 
 type M20241207095921CreateUsersTable struct {
@@ -64,32 +74,33 @@ type M20241207095921CreateUsersTable struct {
 
 // Signature The unique signature for the migration.
 func (r *M20241207095921CreateUsersTable) Signature() string {
-	return "20241207095921_create_users_table"
+ return "20241207095921_create_users_table"
 }
 
 // Up Run the migrations.
 func (r *M20241207095921CreateUsersTable) Up() error {
-	if !facades.Schema().HasTable("users") {
-		return facades.Schema().Create("users", func(table schema.Blueprint) {
-			table.ID()
-			table.String("name").Nullable()
-			table.String("email").Nullable()
-			table.Timestamps()
-		})
-	}
+ if !facades.Schema().HasTable("users") {
+  return facades.Schema().Create("users", func(table schema.Blueprint) {
+   table.ID()
+   table.String("name").Nullable()
+   table.String("email").Nullable()
+   table.Timestamps()
+  })
+ }
 
-	return nil
+ return nil
 }
 
 // Down Reverse the migrations.
 func (r *M20241207095921CreateUsersTable) Down() error {
-	return facades.Schema().DropIfExists("users")
+ return facades.Schema().DropIfExists("users")
 }
 ```
 
 #### Set Migration Connection
 
-If the migration will interact with a database connection other than the application's default database connection, you should use the migration's `Connection` method:
+If the migration will interact with a database connection other than the application's default database connection, you
+should use the migration's `Connection` method:
 
 ```go
 func (r *M20241207095921CreateUsersTable) Connection() string {
@@ -99,14 +110,15 @@ func (r *M20241207095921CreateUsersTable) Connection() string {
 
 ## Register Migrations
 
-You need to register the migration files in the `database/kernel.go` file after the migration files are generated, if the migration files are generated by the `make:migration` command, the framework will automatically register them.
+When using Go language migrations, you need to register the migration files in the `database/kernel.go` file after the
+migration files are generated:
 
 ```go
 // database/kernel.go
 func (kernel Kernel) Migrations() []schema.Migration {
-	return []schema.Migration{
-		&migrations.M20241207095921CreateUsersTable{},
-	}
+ return []schema.Migration{
+  &migrations.M20241207095921CreateUsersTable{},
+ }
 }
 ```
 
@@ -126,13 +138,15 @@ go run . artisan migrate:status
 
 ## Rolling Back Migrations
 
-To roll back the latest migration, use the `rollback` Artisan command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
+To roll back the latest migration, use the `rollback` Artisan command. This command rolls back the last "batch" of
+migrations, which may include multiple migration files:
 
 ```shell
 go run . artisan migrate:rollback
 ```
 
-You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:
+You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example,
+the following command will roll back the last five migrations:
 
 ```shell
 go run . artisan migrate:rollback --step=5
@@ -146,7 +160,8 @@ go run . artisan migrate:reset
 
 ### Roll Back & Migrate Using A Single Command
 
-The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
+The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command
+effectively re-creates your entire database:
 
 ```shell
 go run . artisan migrate:refresh
@@ -245,7 +260,7 @@ Char, Json, LongText, MediumText, String, Text, LongText, TinyText, Uuid, Ulid
 
 BigIncrements, BigInteger, Decimal, Double, Float, [ID](#id), Increments, Integer, IntegerIncrements, MediumIncrements, MediumInteger, SmallIncrements, SmallInteger, TinyIncrements, TinyInteger, UnsignedBigInteger, UnsignedInteger, UnsignedMediumInteger, UnsignedSmallInteger, UnsignedTinyInteger
 
-#### Date & Time Types
+#### DateTime
 
 Date, DateTime, DateTimeTz, [SoftDeletes](#softdeletes), SoftDeletesTz, Time, TimeTz, Timestamp, TimestampTz, Timestamps, TimestampsTz
 
@@ -255,7 +270,8 @@ Date, DateTime, DateTimeTz, [SoftDeletes](#softdeletes), SoftDeletesTz, Time, Ti
 
 #### Enum
 
-Create an `Enum` field that can be stored in `Mysql` according to the type in `[]any`, but in `Postgres`, `Sqlite`, and `Sqlserver` databases, it is a `String` type.
+Create an `Enum` field that can be stored in `Mysql` according to the type in `[]any`, but in `Postgres`, `SQLite`, and
+`Sqlserver` databases, it is a `String` type.
 
 ```go
 table.Enum("difficulty", []any{"easy", "hard"})
@@ -264,7 +280,8 @@ table.Enum("num", []any{1, 2})
 
 #### ID
 
-The `ID` method is an alias for the `BigIncrements` method. By default, this method will create an `id` column; however, if you would like to assign a different name to the column, you may pass the column name:
+The `ID` method is an alias for the `BigIncrements` method. By default, this method will create an `id` column; however,
+if you would like to assign a different name to the column, you may pass the column name:
 
 ```go
 table.ID()
@@ -273,7 +290,8 @@ table.ID("user_id")
 
 #### SoftDeletes
 
-The `SoftDeletes` method adds a nullable `deleted_at` `TIMESTAMP` column. This column is intended to store the `deleted_at` timestamp required for the Orm "soft delete" feature:
+The `SoftDeletes` method adds a nullable `deleted_at` `TIMESTAMP` column. This column is intended to store the
+`deleted_at` timestamp required for the Orm "soft delete" feature:
 
 ```go
 table.SoftDeletes()
@@ -281,7 +299,8 @@ table.SoftDeletes()
 
 #### Custom column
 
-If you are using column types that framework does not support yet, you can use the `Column` method to customize the field type:
+If you are using column types that framework does not support yet, you can use the `Column` method to customize the
+field type:
 
 ```go
 table.Column("geometry", "geometry")
@@ -289,7 +308,8 @@ table.Column("geometry", "geometry")
 
 ### Column Modifiers
 
-In addition to the column types listed above, when adding a column to a database table, you can also add "modifiers" to the column. For example, to allow a column to be "nullable," you can use the `Nullable` method:
+In addition to the column types listed above, when adding a column to a database table, you can also add "modifiers" to
+the column. For example, to allow a column to be "nullable," you can use the `Nullable` method:
 
 ```go
 facades.Schema().Table("users", func(table schema.Blueprint) {
