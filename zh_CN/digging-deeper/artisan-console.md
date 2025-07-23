@@ -1,37 +1,38 @@
-# Artisan Console
+# Artisan 控制台
 
 [[toc]]
 
 ## 简介
 
-Artisan 是 Goravel 自带的命令行工具，该模块可以使用 `facades.Artisan()` 进行操作。它提供了许多有用的命令，这些命令可以在构建应用时为你提供帮助。你可以通过命令查看所有可用的 Artisan 命令： You can access it using `facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
+Artisan 是 Goravel 附带的用于与命令行交互的 CLI 工具。 你可以使用
+`facades.Artisan()`来访问它。 这个工具有几个有用的命令，可以帮助你开发应用程序。
+使用以下命令查看所有可用的命令。 You can access it using `facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
 
 ```shell
-go run . artisan list
-
-# or
-./artisan list
+您可以将一组命令设置为相同的类别，方便在`go run .`中使用。 artisan list\`中使用：
 ```
 
-每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。只需要在命令前加上 help 即可查看命令帮助界面： To see the help screen, just add "help" before the command name.
+每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。只需要在命令前加上 help 即可查看命令帮助界面： 每个命令还有一个"帮助"功能，用于显示和解释与命令相关的参数和选项。 要
+查看帮助屏幕，只需在命令名称前添加"help"。
 
 ```shell
 go run . artisan help migrate
 ```
 
-如果您不想重复输入 `go run . artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
+与其重复输入 `go run . artisan ...` 命令，你可能想通过以下
+终端命令在你的 shell 配置中添加一个别名：
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 ```
 
-随后您就可以简单的运行以下命令：
+然后你可以像这样简单地运行你的命令：
 
 ```shell
 artisan make:controller DemoController
 ```
 
-你也可以使用 `artisan` shell 脚本来运行：
+你也可以像这样使用 `artisan` shell 脚本：
 
 ```shell
 ./artisan make:controller DemoController
@@ -39,7 +40,8 @@ artisan make:controller DemoController
 
 ### 生成命令
 
-使用 `make:command` 命令将在 `app/console/commands` 目录中创建一个新的命令。如果你的应用程序中不存在此目录，请不要担心，它将在你第一次运行 make:command 命令时自动创建： Don't worry if this directory does not exist in your application, it will be created the first time you run the `make:command` command:
+你可以使用 `make:command` 命令在 `app/console/commands` 目录中创建一个新命令。 不用担心如果
+你的应用程序中不存在这个目录，它会在你第一次运行 `make:command` 命令时被创建： Don't worry if this directory does not exist in your application, it will be created the first time you run the `make:command` command:
 
 ```shell
 go run . artisan make:command SendEmails
@@ -48,7 +50,8 @@ go run . artisan make:command user/SendEmails
 
 ### 命令结构
 
-生成命令后，需要给该类的 signature 和 description 属性定义适当的值。执行命令时将调用`handle`方法。你可以将命令逻辑放在此方法中。 The `Handle` method will be called when your command is executed. You need to implement your logic in this method.
+生成命令后，为结构体的 signature 和 description 属性分配合适的值。 当你的命令被执行时，
+`Handle` 方法将被调用。 你需要在这个方法中实现你的逻辑。 The `Handle` method will be called when your command is executed. You need to implement your logic in this method.
 
 ```go
 package commands
@@ -61,36 +64,37 @@ import (
 type SendEmails struct {
 }
 
-// Signature The name and signature of the console command.
+// Signature 控制台命令的名称和签名。
 func (receiver *SendEmails) Signature() string {
-  return "emails"
+  return "send:emails"
 }
 
-// Description The console command description.
+// Description 控制台命令的描述。
 func (receiver *SendEmails) Description() string {
-  return "Send emails"
+  return "发送邮件"
 }
 
-// Extend The console command extend.
+// Extend 控制台命令的扩展。
 func (receiver *SendEmails) Extend() command.Extend {
   return command.Extend{}
 }
 
-// Handle Execute the console command.
+// Handle 执行控制台命令。
 func (receiver *SendEmails) Handle(ctx console.Context) error {
   return nil
 }
 ```
 
-## 命令 I/O
+## 命令输入/输出
 
-### 检索输入
+### 获取输入
 
-When you write console commands, it's typical to collect user input through `arguments` or `options`. 在编写控制台命令时，通常是通过 `arguments` 或 `options` 来收集用户输入的。 Goravel 让你可以非常方便的获取用户输入的内容。
+When you write console commands, it's typical to collect user input through `arguments` or `options`. 当你编写控制台命令时，通常会通过 `arguments` 或 `options` 收集用户输入。 使用 Goravel，
+获取用户提供的参数和选项非常简单。
 
 #### Arguments
 
-直接在命令后跟参数：
+按照命令后的参数：
 
 ```shell
 go run . artisan send:emails NAME EMAIL
@@ -139,14 +143,14 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 }
 ```
 
-使用：
+用法：
 
 ```shell
 go run . artisan emails --lang=Chinese
 go run . artisan emails -l=Chinese
 ```
 
-注意：同时使用参数与选项时，选项要在参数之前定义，例如： Example:
+注意：当同时使用参数和选项时，请在参数之前定义选项。 示例： Example:
 
 ```shell
 // 正确
@@ -155,138 +159,127 @@ go run . artisan emails --lang=Chinese name
 go run . artisan emails name --lang=Chinese name
 ```
 
-除了 `command.StringFlag`，我们还可以其他类型的 `Flag` 与 `Option*`：`StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`。
+除了`command.StringFlag`，我们还可以使用其他类型的`Flag`和`Option*`：`StringSliceFlag`、`BoolFlag`、
+`Float64Flag`、`Float64SliceFlag`、`IntFlag`、`IntSliceFlag`、`Int64Flag`、`Int64SliceFlag`。
 
-### 交互式输入
+### 提示输入
 
-#### 问题
+#### 提问
 
-除了参数和选项，你还可以在命令执行过程中提示用户输入。`Ask` 方法将提示用户回答问题并返回他们的响应： The `Ask` method will prompt the user with the given question and return their response:
-
-```go
-func (receiver *SendEmails) Handle(ctx console.Context) error {
-  email, err := ctx.Ask("What is your email address?")
-
-  return err
-}
-```
-
-另外，你可以传递第二个参数给 `Ask` 方法：
+除了参数和选项，你还可以在命令执行过程中提示用户输入。 该`Ask`方法将使用给定的问题提示用户并返回他们的回答： The `Ask` method will prompt the user with the given question and return their response:
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
     name, err := ctx.Ask("What is your name?", console.AskOption{
         Default: "Krishan",
     })
-
+    
     return err
 }
 
-// 可用选项
+// Available options
 type AskOption struct {
-    // 默认值
+    // Default 输入的默认值。
     Default string
-    // 描述
+    // Description 输入的描述。
     Description string
-    // 输入框行数（多行文本时使用）
+    // Lines 输入的行数。(用于多行文本)
     Lines int
-    // 限制输入字符数
+    // Limit 输入的字符限制。
     Limit int
-    // 是否多行文本
+    // Multiple 确定输入是单行还是多行文本
     Multiple bool
-    // 占位符
+    // Placeholder 输入的占位符。
     Placeholder string
-    // 提示（用于单行文本）
+    // Prompt 提示消息。(用于单行输入)
     Prompt string
-    // 验证输入的函数
+    // Validate 输入验证函数。
     Validate func(string) error
 }
 ```
 
-有时你可能需要隐藏用户输入，例如提示用户输入密码。你可以使用 `Secret` 方法隐藏用户输入： You can use the `Secret` method to hide the user input:
+此外，您可以将选项作为可选的第二个参数传递给`Ask`方法：
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-    password, err := ctx.Secret("What is the password?", console.SecretOption{
+    password, err := ctx.Secret("请输入密码：", console.SecretOption{
         Validate: func (s string) error {
             if len(s) < 8 {
-                return errors.New("password length should be at least 8")
+                return errors.New("密码长度应至少为8个字符")
             }
             return nil
         },
     })
-
+    
     return err
 }
 
 // 可用选项
 type SecretOption struct {
-    // 默认值
+    // Default 输入的默认值。
     Default string
-    // 描述
+    // Description 输入的描述。
     Description string
-    // 字数限制
+    // Limit 输入的字符限制。
     Limit int
-    // 占位符
+    // Placeholder 输入的占位符。
     Placeholder string
-    // 验证输入的函数
+    // Validate 输入的验证函数。
     Validate func(string) error
+}
+```
+
+有时您可能需要隐藏用户输入,例如在提示输入密码时。 您可以使用`Secret`方法来
+隐藏用户输入： You can use the `Secret` method to hide the user input:
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+  email, err := ctx.Ask("What is your email address?")
+  
+  return err
 }
 ```
 
 #### 确认操作
 
-If you need to ask the user to confirm an action before proceeding, you may use the `Confirm` method. 如果你需要在继续之前要求用户确认操作，你可以使用 `Confirm` 方法。默认情况下，除非用户选择肯定选项，否则此方法将返回 `false`。
+If you need to ask the user to confirm an action before proceeding, you may use the `Confirm` method. 如果您需要在继续之前询问用户确认操作，可以使用`Confirm`方法。 默认情况下，除非用户选择肯定选项，否则此方法将返回`false`。
 
 ```go
-if ctx.Confirm("Do you wish to continue?") {
+if answer, _ := ctx.Confirm("您确定要继续吗？"); !answer {
     // ...
 }
 ```
 
-你还可以传递第二个参数给 `Confirm` 方法：
+您还可以向`Confirm`方法传递第二个参数，以自定义默认值、肯定和否定按钮的标签：
 
 ```go
-if ctx.Confirm("Do you wish to continue?", console.ConfirmOption {
-	Default : true,
-	Affirmative : "确认",
-	Negative : "取消",
+if answer, _ := ctx.Confirm("您是否希望继续？", console.ConfirmOption{
+ Default : true,
+ Affirmative : "是",
+ Negative : "否",
 }) {
     // ...
 }
 
 // 可用选项
 type ConfirmOption struct {
-    // 肯定回答文本
+    // Affirmative 肯定按钮的标签。
     Affirmative string
-    // 默认值
+    // Default 输入的默认值。
     Default bool
-    // 描述
+    // Description 输入的描述。
     Description string
-    // 否定回答文本
+    // Negative 否定按钮的标签。
     Negative string
 }
 ```
 
 #### 单选问题
 
-If you need to ask the user to select an option from a list of options, you may use the `Choice` method. 如果你需要让用户从一组选项中选择一个选项，你可以使用 `Choice` 方法。`Choice` 方法将返回所选选项的值：
+如果您需要让用户从选项列表中选择一个选项，可以使用`Choice`方法。 `Choice`方法将返回所选选项的值： 如果你需要让用户从一组选项中选择一个选项，你可以使用 `Choice` 方法。`Choice` 方法将返回所选选项的值：
 
 ```go
-question := "What is your favorite programming language?"
-options := []console.Choice{
-    {Key: "go", Value: "Go"},
-    {Key: "php", Value: "PHP"},
-    {Key: "python", Value: "Python"},
-    {Key: "cpp", Value: "C++", Selected: true},
-}
-color, err := ctx.Choice(question, options)
-```
-
-另外，你可以传递第二个参数给 `Choice` 方法：
-
-```go
-question := "What is your favorite programming language?"
+question := "你最喜欢的编程语言是什么？"
 options := []console.Choice{
     {Key: "go", Value: "Go"},
     {Key: "php", Value: "PHP"},
@@ -300,34 +293,34 @@ color, err := ctx.Choice(question, options, console.ChoiceOption{
 
 // 可用选项
 type ChoiceOption struct {
-    // 默认值
+    // Default 输入的默认值。
     Default string
-    // 描述
+    // Description 输入的描述。
     Description string
-    // 验证输入的函数
+    // Validate 输入验证函数。
     Validate func(string) error
 }
 ```
 
-#### 多选问题
-
-如果你需要让用户从一组选项中选择多个选项，你可以使用 `MultiSelect` 方法。`MultiSelect` 方法将返回所选选项的值： The `MultiSelect` method will return the values of the selected options:
+此外，您可以将选项作为可选的第二个参数传递给`Choice`方法：
 
 ```go
-question := "What are your favorite programming languages?"
+question := "您最喜欢的编程语言是什么？"
 options := []console.Choice{
     {Key: "go", Value: "Go"},
     {Key: "php", Value: "PHP"},
     {Key: "python", Value: "Python"},
     {Key: "cpp", Value: "C++", Selected: true},
 }
-colors, err := ctx.MultiSelect(question, options)
+color, err := ctx.Choice(question, options)
 ```
 
-另外，你可以传递第二个参数给 `MultiSelect` 方法：
+#### 多选问题
+
+如果你需要让用户从选项列表中选择多个选项，你可以使用`MultiSelect`方法。 `MultiSelect`方法将返回所选选项的值： The `MultiSelect` method will return the values of the selected options:
 
 ```go
-question := "What are your favorite programming languages?"
+question := "你最喜欢的编程语言是什么？"
 options := []console.Choice{
     {Key: "go", Value: "Go"},
     {Key: "php", Value: "PHP"},
@@ -341,44 +334,60 @@ colors, err := ctx.MultiSelect(question, options, console.MultiSelectOption{
 
 // 可用选项
 type MultiSelectOption struct {
-    // 默认值
+    // Default 输入的默认值。
     Default []string
-    // 描述
+    // Description 输入的描述。
     Description string
-    // 过滤选项，输入 `/` 开始过滤
+    // Filterable 决定是否可以过滤选项，输入 `/` 开始过滤。
     Filterable bool
-    // 字数限制
+    // Limit 可以选择的选项数量限制。
     Limit int
-    // 验证输入的函数
+    // Validate 输入验证函数。
     Validate func([]string) error
 }
 ```
 
-### 文字输出
+此外，你可以将选项作为可选的第二个参数传递给`MultiSelect`方法：
 
-Sometimes you may need to write output to the console. 有时你可能需要将输出写入控制台。Goravel 提供了几种方法来帮助你将输出写入控制台。每种方法都有适当的颜色化输出。例如，`Error` 将以红色显示文本。 Each of the method have their appropriate colorized output. For example, `Error` will display the text in red.
+```go
+question := "你最喜欢的编程语言有哪些？"
+options := []console.Choice{
+    {Key: "go", Value: "Go"},
+    {Key: "php", Value: "PHP"},
+    {Key: "python", Value: "Python"},
+    {Key: "cpp", Value: "C++", Selected: true},
+}
+colors, err := ctx.MultiSelect(question, options)
+```
+
+### 输出内容
+
+Sometimes you may need to write output to the console. 有时你可能需要向控制台写入输出。 Goravel 提供了几种方法来帮助你向控制台写入输出。 每种方法都有其适当的彩色输出。 例如，`Error` 将以红色显示文本。 Each of the method have their appropriate colorized output. For example, `Error` will display the text in red.
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-  ctx.Comment("This is a comment message")
-  ctx.Info("This is an info message")
-  ctx.Error("This is an error message")
-  ctx.Line("This is a line message")
-  ctx.Warning("This is a warning message")
+  ctx.Comment("这是一条注释消息")
+  ctx.Info("这是一条信息消息")
+  ctx.Error("这是一条错误消息")
+  ctx.Line("这是一条行消息")
+  ctx.Warning("这是一条警告消息")
   return nil
 }
 ```
 
-你可以使用 `NewLine` 方法在控制台中写入新行：
+您可以使用 `NewLine` 方法在控制台中写入新行：
 
 ```go
+// 写入单个空行
 ctx.NewLine()
+
+// 写入多个空行
 ctx.NewLine(2)
 ```
 
 #### Progress Bars
 
-For long-running tasks, it is often helpful to provide the user with some indication of how much time the task will take. 对于长时间运行的任务，通常需要向用户提供任务所需时间的指示。你可以使用 `WithProgressBar` 方法显示一个进度条。
+For long-running tasks, it is often helpful to provide the user with some indication of how much time the task will take. 对于长时间运行的任务，通常向用户提供任务将花费多长时间的指示会很有帮助。 您可以使用 `WithProgressBar` 方法来显示进度条。
 
 ```go
 items := []any{"item1", "item2", "item3"}
@@ -388,7 +397,7 @@ _, err := ctx.WithProgressBar(items, func(item any) error {
 })
 ```
 
-Sometimes you may need to update the progress bar manually. 有时你可能需要手动更新进度条。你可以使用 `CreateProgressBar` 方法来更新进度条：
+Sometimes you may need to update the progress bar manually. 有时您可能需要手动更新进度条。 您可以使用 `CreateProgressBar` 方法来更新进度条：
 
 ```go
 users := []string{"user1", "user2", "user3"}
@@ -397,10 +406,10 @@ bar := ctx.CreateProgressBar(len(users))
 err := bar.Start()
 
 for _, user := range users {
-    // process user
+    // 处理用户
     bar.Advance()
-
-	// sleep for a while to simulate processing
+ 
+ // 休眠一段时间以模拟处理过程
     time.Sleep(time.Millisecond * 50)
 }
 
@@ -409,19 +418,19 @@ err = bar.Finish()
 
 #### Spinner
 
-如果你需要在任务运行时显示一个旋转器，你可以使用 `Spinner` 方法。
+如果您需要在任务运行时显示旋转器，可以使用`Spinner`方法。
 
 ```go
-err := ctx.Spinner("Loading...", console.SpinnerOption{
+err := ctx.Spinner("加载中...", console.SpinnerOption{
     Action: func() error {
-        // when to stop the spinner
+        // 何时停止旋转器
         time.Sleep(2 * time.Second)
         return nil
     },
 })
 ```
 
-## 分类
+## 类别
 
 可以将一组命令设置为同一个分类，方便在 `go run . artisan list` 中查看：
 
@@ -436,7 +445,7 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 
 ## 注册命令
 
-你的所有命令都需要在 `app\console\kernel.go` 文件的 `Commands` 方法中注册。
+所有的控制台命令都需要在 `app\console\kernel.go` 的 `Commands` 函数中注册。
 
 ```go
 func (kernel Kernel) Commands() []console.Command {
@@ -448,12 +457,12 @@ func (kernel Kernel) Commands() []console.Command {
 
 ## 以编程方式执行命令
 
-有时你可能希望在 CLI 之外执行 Artisan 命令，可以使用 `facades.Artisan()` 上的 `Call` 方法来完成此操作。
+有时您可能希望在 CLI 之外执行 Artisan 命令，您可以使用 `facades.Artisan()` 上的 `Call` 方法来操作。
 
 ```go
-facades.Route().GET("/", func(c *gin.Context) {
+facades.Route().Get("/", func(c *gin.Context) {
   facades.Artisan().Call("emails")
-  facades.Artisan().Call("emails --lang Chinese name") // 携带参数与选项
+  facades.Artisan().Call("emails --lang Chinese name") // 带参数和选项
 })
 ```
 
@@ -462,5 +471,5 @@ facades.Route().GET("/", func(c *gin.Context) {
 有些命令默认会打印颜色，例如 `list` 命令，但在某些终端或日志中颜色值会是乱码，这时你可以使用 `--no-ansi` 选项禁用打印颜色： However, in some terminals or logs, the color values may be garbled. You can use the `--no-ansi` option to disable the print colors:
 
 ```shell
-go run . artisan list --no-ansi
+go run . artisan list
 ```
