@@ -20,9 +20,8 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
-  Headers(map[string]string{"X-Mailer": "Goravel"}).
   Subject("Subject").
-  Send()
+  Queue()
 ```
 
 ## Send Mail By Queue
@@ -35,9 +34,8 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
-  Headers(map[string]string{"X-Mailer": "Goravel"}).
   Subject("Subject").
-  Queue()
+  Queue(mail.Queue().Connection("redis").Queue("mail"))
 ```
 
 You can also customize the queue:
@@ -51,13 +49,13 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
   Subject("Subject").
-  Headers(map[string]string{"X-Mailer": "Goravel"}).
-  Queue(mail.Queue().Connection("redis").Queue("mail"))
+  Send()
 ```
 
 ## Setting Sender
 
-Framework uses `MAIL_FROM_ ADDRESS` and `MAIL_FROM_ NAME` in the `config/mail.go` configuration file as global senders. You can also customize the sender, but you need to note that the mail address needs to be consistent with the configured STMP:
+Framework uses `MAIL_FROM_ ADDRESS` and `MAIL_FROM_ NAME` in the `config/mail.go` configuration file as global senders. You can also customize the sender, but you need to note that the mail address needs to be consistent with the configured
+STMP:
 
 ```go
 import "github.com/goravel/framework/mail"
@@ -68,7 +66,6 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
-  Headers(map[string]string{"X-Mailer": "Goravel"}).
   Subject("Subject").
   Queue(mail.Queue().Connection("redis").Queue("mail"))
 ```
@@ -90,31 +87,25 @@ type OrderShipped struct {
 }
 
 func NewOrderShipped() *OrderShipped {
-	return &OrderShipped{}
-}
-
-func (m *OrderShipped) Headers() map[string]string {
-	return map[string]string{
-		"X-Mailer": "goravel",
-	}
+ return &OrderShipped{}
 }
 
 func (m *OrderShipped) Attachments() []string {
-	return []string{"../logo.png"}
+ return []string{"../logo.png"}
 }
 
 func (m *OrderShipped) Content() *mail.Content {
-	return &mail.Content{Html: "<h1>Hello Goravel</h1>"}
+ return &mail.Content{Html: "<h1>Hello Goravel</h1>"}
 }
 
 func (m *OrderShipped) Envelope() *mail.Envelope {
-	return &mail.Envelope{
-		Bcc:     []string{"bcc@goravel.dev"},
-		Cc:      []string{"cc@goravel.dev"},
-		From:    mail.From{Address: "from@goravel.dev", Name: "from"},
-		Subject: "Goravel",
-		To:      []string{"to@goravel.dev"},
-	}
+ return &mail.Envelope{
+  Bcc:     []string{"bcc@goravel.dev"},
+  Cc:      []string{"cc@goravel.dev"},
+  From:    mail.From{Address: "from@goravel.dev", Name: "from"},
+  Subject: "Goravel",
+  To:      []string{"to@goravel.dev"},
+ }
 }
 
 func (m *OrderShipped) Queue() *mail.Queue {
