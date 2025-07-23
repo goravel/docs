@@ -1,12 +1,12 @@
-# 模型工厂
+# 工厂
 
 [[toc]]
 
 ## 介绍
 
-When testing your application or seeding your database, it might be necessary to insert a few records into your database beforehand. 测试时您可能需要在执行测试之前向数据库中插入一些记录。Goravel 允许你使用模型工厂为每个模型定义一组默认属性，而不是在创建测试数据时手动指定每一列的值。
+When testing your application or seeding your database, it might be necessary to insert a few records into your database beforehand. 在测试应用程序或填充数据库时，可能需要预先向数据库中插入一些记录。 Goravel允许您通过创建模型工厂为每个模型定义一组默认属性，而不是手动输入每个列的值。
 
-要了解如何编写工厂，请查看应用程序中的 `database/factories/user_factory.go` 文件：
+要查看如何编写工厂的示例，您可以查看应用程序的`database/factories`目录中的`user_factory.go`文件。
 
 ```go
 package factories
@@ -14,7 +14,7 @@ package factories
 type UserFactory struct {
 }
 
-// Definition Define the model's default state.
+// Definition 定义模型的默认状态。
 func (f *UserFactory) Definition() map[string]any {
   return map[string]any{
     "Name": "Goravel",
@@ -24,19 +24,19 @@ func (f *UserFactory) Definition() map[string]any {
 
 As you can see, in their most basic form, factories are structs that have a `Definition` method. The method returns the default set of attribute values that should be used when creating a model with the factory. To generate a range of random data, you can rely on [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit).
 
-## 创建工厂
+## 生成工厂
 
-可以使用 Artisan 命令 `make:factory` 创建工厂：
+要创建一个工厂，运行 `make:factory` Artisan 命令：
 
 ```
 go run . artisan make:factory PostFactory
 ```
 
-新工厂将放置在您的 `database/factories` 目录下。
+新的工厂 `struct` 将被放置在你的 `database/factories` 目录中。
 
-### 模型和工厂的关联约定
+### 模型和工厂发现约定
 
-定义工厂后，可以在模型中使用 `Factory()` 方法将工厂与模型绑定在一起：
+定义工厂后，你可以在模型中使用 `Factory()` 方法将工厂绑定到模型：
 
 ```go
 package models
@@ -62,23 +62,23 @@ func (u *User) Factory() factory.Factory {
 
 ## 使用工厂创建模型
 
-### 实例化模型
+### 持久化模型
 
-我们可以使用 `Make` 方法来创建模型而且不需要将它们持久化到数据库中：
+我们可以使用 `Make` 方法创建模型而不将它们持久化到数据库中：
 
 ```go
 var user models.User
 err := facades.Orm().Factory().Make(&user)
 ```
 
-也可以使用 `Count` 方法创建许多模型的集合：
+你可以使用 `Count` 方法创建多个模型的集合：
 
 ```go
 var users []models.User
 err := facades.Orm().Factory().Count(2).Make(&users)
 ```
 
-如果您想覆盖模型的一些默认值，你可以将 `map[string]any` 传递给 `Make` 方法。只有指定的属性将被替换，而这些属性的其余部分保持设置为其默认值： Only the specified attributes will be replaced while the rest of the attributes remain set to their default values as specified by the factory:
+如果你想覆盖模型的一些默认值，你可以将 `map[string]any` 传递给 `Make` 方法。 只有指定的属性会被替换，而其他属性将保持工厂指定的默认值： Only the specified attributes will be replaced while the rest of the attributes remain set to their default values as specified by the factory:
 
 ```go
 var user models.User
@@ -87,9 +87,9 @@ err := facades.Orm().Factory().Make(&user, map[string]any{
 })
 ```
 
-### 持久化模型
+### 实例化模型
 
-`Create` 方法创建模型实例，并使用 Orm 的 `Save` 方法其持久化到数据库中：
+`Create` 方法使用 Orm 的 `Save` 方法创建并保存模型实例到数据库。
 
 ```go
 var user models.User
@@ -99,7 +99,7 @@ var users []models.User
 err := facades.Orm().Factory().Count(2).Create(&users)
 ```
 
-您可以通过将 `map[string]any` 传递给 `Create` 方法来覆盖模型上的属性：
+你可以通过将 `map[string]any` 属性传递给 `Create` 方法来覆盖工厂的默认模型属性：
 
 ```go
 var user models.User
@@ -110,7 +110,7 @@ err := facades.Orm().Factory().Create(&user, map[string]any{
 
 ### 忽略模型事件
 
-在模型上可能会定义有[模型事件](../orm/getting-started.md#events)，您可以使用 `CreateQuietly` 忽略这些事件：
+模型上可能定义了[模型事件](../orm/getting-started#events)，你可以使用`CreateQuietly`方法忽略这些事件：
 
 ```go
 var user models.User
