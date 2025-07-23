@@ -37,7 +37,8 @@ func (r *UserController) Show(ctx context.Context, req *protos.UserRequest) (pro
 
 ## Define routing
 
-All routing files can be defined in the `/routes` directory, such as `/routes/grpc.go`. Then bind routes in the `app/providers/grpc_service_provider.go` file.
+All routing files can be defined in the `/routes` directory, such as `/routes/grpc.go`. Then bind routes in the
+`app/providers/grpc_service_provider.go` file.
 
 ```go
 // routes/grpc.go
@@ -116,7 +117,8 @@ func (kernel *Kernel) UnaryServerInterceptors() []grpc.UnaryServerInterceptor {
 
 **Client Interceptor**
 
-You can set the client interceptor in the `app/grpc/kernel.go:UnaryClientInterceptorGroups` method, the method can group interceptors. For example, `interceptors.Client` is included under the `trace` group.
+You can set the client interceptor in the `app/grpc/kernel.go:UnaryClientInterceptorGroups` method, the method can group
+interceptors. For example, `interceptors.Client` is included under the `trace` group.
 
 ```go
 // app/grpc/kernel.go
@@ -135,7 +137,8 @@ func (kernel *Kernel) UnaryClientInterceptorGroups() map[string][]grpc.UnaryClie
 }
 ```
 
-the `trace` group can be applied to the configuration item `grpc.clients.interceptors`, in this way, the Client will be applied to all interceptors under the group. For example:
+the `trace` group can be applied to the configuration item `grpc.clients.interceptors`, in this way, the Client will be
+applied to all interceptors under the group. For example:
 
 ```go
 package config
