@@ -15,13 +15,16 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 
 ## 核心开发者
 
+<div class="flex flex-wrap gap-2 mt-5" :class="$style.contributors">
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
 <a href="https://github.com/kkumar-gcc" target="_blank"><img src="https://avatars.githubusercontent.com/u/84431594?v=4" width="48" height="48"></a>
 <a href="https://github.com/almas-x" target="_blank"><img src="https://avatars.githubusercontent.com/u/9382335?v=4" width="48" height="48"></a>
+</div>
 
 ## 贡献者
 
+<div class="flex flex-wrap gap-2 mt-5" :class="$style.contributors">
 <a href="https://github.com/merouanekhalili" target="_blank"><img src="https://avatars.githubusercontent.com/u/1122628?v=4" width="48" height="48"></a>
 <a href="https://github.com/hongyukeji" target="_blank"><img src="https://avatars.githubusercontent.com/u/23145983?v=4" width="48" height="48"></a>
 <a href="https://github.com/sidshrivastav" target="_blank"><img src="https://avatars.githubusercontent.com/u/28773690?v=4" width="48" height="48"></a>
@@ -49,6 +52,7 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 <a href="https://github.com/vendion" target="_blank"><img src="https://avatars.githubusercontent.com/u/145018?v=4" width="48" height="48"></a>
 <a href="https://github.com/tzsk" target="_blank"><img src="https://avatars.githubusercontent.com/u/13273787?v=4" width="48" height="48"></a>
 <a href="https://github.com/ycb1986" target="_blank"><img src="https://avatars.githubusercontent.com/u/12908032?v=4" width="48" height="48"></a>
+</div>
 
 ## Bug 报告
 
@@ -126,3 +130,12 @@ Goravel 行为准则源自 Laravel 行为准则。任何违反行为准则的行
 - 参与者必须确保他们的语言和行为没有人身攻击和贬低个人言论。
 - 在解释他人的言行时，参与者应始终保持良好的意图。
 - 不能容忍可合理视为骚扰的行为。
+
+<style module>
+.contributors {
+  img {
+    border-radius: 50%;
+  }
+}
+
+</style>

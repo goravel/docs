@@ -15,13 +15,16 @@ Let's make Goravel more efficient together!
 
 ## Core Developers
 
+<div class="flex flex-wrap gap-2 mt-5" :class="$style.contributors">
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
 <a href="https://github.com/kkumar-gcc" target="_blank"><img src="https://avatars.githubusercontent.com/u/84431594?v=4" width="48" height="48"></a>
 <a href="https://github.com/almas-x" target="_blank"><img src="https://avatars.githubusercontent.com/u/9382335?v=4" width="48" height="48"></a>
+</div>
 
 ## Contributors
 
+<div class="flex flex-wrap gap-2 mt-5" :class="$style.contributors">
 <a href="https://github.com/merouanekhalili" target="_blank"><img src="https://avatars.githubusercontent.com/u/1122628?v=4" width="48" height="48"></a>
 <a href="https://github.com/hongyukeji" target="_blank"><img src="https://avatars.githubusercontent.com/u/23145983?v=4" width="48" height="48"></a>
 <a href="https://github.com/sidshrivastav" target="_blank"><img src="https://avatars.githubusercontent.com/u/28773690?v=4" width="48" height="48"></a>
@@ -49,6 +52,7 @@ Let's make Goravel more efficient together!
 <a href="https://github.com/vendion" target="_blank"><img src="https://avatars.githubusercontent.com/u/145018?v=4" width="48" height="48"></a>
 <a href="https://github.com/tzsk" target="_blank"><img src="https://avatars.githubusercontent.com/u/13273787?v=4" width="48" height="48"></a>
 <a href="https://github.com/ycb1986" target="_blank"><img src="https://avatars.githubusercontent.com/u/12908032?v=4" width="48" height="48"></a>
+</div>
 
 ## Bug Feedback
 
@@ -126,3 +130,12 @@ The Goravel code of conduct is derived from the Laravel code of conduct. Any vio
 - Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks.
 - When interpreting the words and actions of others, participants should always assume good intentions.
 - Behavior that can be reasonably considered harassment will not be tolerated.
+
+<style module>
+.contributors {
+  img {
+    border-radius: 50%;
+  }
+}
+
+</style>
