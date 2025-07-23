@@ -8,8 +8,6 @@
 
 ## 安装 Goravel
 
-安装前需先设置 GOPROXY（[详见文章](https://learnku.com/go/wikis/38122)），或开启 VPN。
-
 ### 使用 Goravel 安装器
 
 根据[文档](https://github.com/goravel/installer)初始化安装器，然后使用下面命令初始化一个新的 Goravel 项目：
@@ -35,17 +33,15 @@ cp .env.example .env
 go run . artisan key:generate
 ```
 
-如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
-
 ## 启动 HTTP 服务
 
-### 根据根目录下的 .env 文件启动服务
+### 指定 .env 文件启动服务
 
 ```shell
 go run .
 ```
 
-### 指定 .env 文件启动服务
+### 根据根目录下的 .env 文件启动服务
 
 ```shell
 go run . --env=../.env
@@ -57,17 +53,17 @@ go run . --env=../.env
 APP_ENV=production APP_DEBUG=true go run .
 ```
 
-### 热更新
+### Live reload
 
 安装 [cosmtrek/air](https://github.com/cosmtrek/air)，框架内置配置文件，可直接使用：
 
-```shell
+```
 air
 ```
 
 如果是 Windows 系统，需要修改根目录下 `.air.toml` 文件，为下面两行增加 `.exe` 后缀：
 
-```
+```shell
 [build]
   bin = "./storage/temp/main.exe"
   cmd = "go build -o ./storage/temp/main.exe ."
@@ -77,11 +73,11 @@ air
 
 ### 配置文件
 
-Goravel 框架所有的配置文件都放在 `config` 目录中。每个配置项都有注释，可以根据自身需求进行调整。
+Goravel 框架所有的配置文件都放在 `config` 目录中。每个配置项都有注释，可以根据自身需求进行调整。 All configuration items have annotations, you can adjust them according to your needs.
 
 ### 生成密钥
 
-Goravel 安装到本地后，要生成应用程序的密钥。运行下面命令后会在 `.env` 文件的 `APP_KEY` 键上生成 32 位字符串，该密钥主要作用于数据加解密等功能。
+Goravel 安装到本地后，要生成应用程序的密钥。运行下面命令后会在 `.env` 文件的 `APP_KEY` 键上生成 32 位字符串，该密钥主要作用于数据加解密等功能。 Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
 
 ```shell
 go run . artisan key:generate
@@ -97,7 +93,7 @@ go run . artisan jwt:secret
 
 ### 加解密 env 文件
 
-你也许想将生产环境的 env 文件添加到版本控制中，但又不想将敏感信息暴露出来，这时你可以使用 `env:encrypt` 命令来加密 env 文件：
+然后再生产环境使用 `env:decrypt` 命令来解密 env 文件：
 
 ```shell
 go run . artisan env:encrypt
@@ -106,7 +102,7 @@ go run . artisan env:encrypt
 go run . artisan env.encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
-然后再生产环境使用 `env:decrypt` 命令来解密 env 文件：
+你也许想将生产环境的 env 文件添加到版本控制中，但又不想将敏感信息暴露出来，这时你可以使用 `env:encrypt` 命令来加密 env 文件：
 
 ```shell
 GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc go run . artisan env:decrypt
