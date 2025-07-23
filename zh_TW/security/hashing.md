@@ -4,11 +4,13 @@
 
 ## Introduction
 
-The Goravel `facades.Hash()` provides secure Argon2id and Bcrypt hashing for storing user passwords. If you are using one of the Goravel application starter kits, Argon2id will be used for registration and authentication by default.
+The Goravel `facades.Hash()` provides secure Argon2id and Bcrypt hashing for storing user passwords. If you are using
+one of the Goravel application starter kits, Argon2id will be used for registration and authentication by default.
 
 ## Configuration
 
-The default hashing driver for your application is configured in your application's `config/hashing.go` configuration file. There are currently several supported drivers: Argon2id and Bcrypt.
+The default hashing driver for your application is configured in your application's `config/hashing.go` configuration
+file. There are currently several supported drivers: Argon2id and Bcrypt.
 
 ## Basic Usage
 
@@ -22,7 +24,8 @@ password, err := facades.Hash().Make(password)
 
 ### Verifying That A Password Matches A Hash
 
-The `Check` method provided by the Hash facade allows you to verify that a given plain-text string corresponds to a given hash:
+The `Check` method provided by the Hash facade allows you to verify that a given plain-text string corresponds to a
+given hash:
 
 ```go
 if facades.Hash().Check('plain-text', hashedPassword) {
@@ -32,7 +35,9 @@ if facades.Hash().Check('plain-text', hashedPassword) {
 
 ### Determining If A Password Needs To Be Rehashed
 
-The `NeedsRehash` method provided by the Hash facade allows you to determine if the work factor used by the hasher has changed since the password was hashed. Some applications choose to perform this check during the application's authentication process:
+The `NeedsRehash` method provided by the Hash facade allows you to determine if the work factor used by the hasher has
+changed since the password was hashed. Some applications choose to perform this check during the application's
+authentication process:
 
 ```go
 if facades.Hash().NeedsRehash(hashed) {
