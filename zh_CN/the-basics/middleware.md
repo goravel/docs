@@ -1,10 +1,10 @@
-# Middleware
+# 中间件
 
 [[toc]]
 
 ## 简介
 
-中间件可以过滤进入应用程序的 HTTP 请求。
+中间件为检查和过滤进入应用程序的 HTTP 请求提供了一种便捷的机制。
 
 ## 定义中间件
 
@@ -24,7 +24,7 @@ func Auth() http.Middleware {
 }
 ```
 
-### 命令创建中间件
+### 通过命令创建中间件
 
 ```
 go run . artisan make:middleware Auth
@@ -37,7 +37,7 @@ go run . artisan make:middleware user/Auth
 
 ### Global Middleware
 
-如果你希望在应用程序的每一个 HTTP 请求应用中间件，那么只需要在 `app/http/kernel.go` 文件中的 `Middleware` 注册中间件。
+如果你想为应用程序的每个 HTTP 请求应用中间件，只需要在 `app/http/kernel.go` 文件中的 `Middleware` 中注册该中间件。
 
 ```go
 // app/http/kernel.go
@@ -45,7 +45,7 @@ package http
 
 import (
   "github.com/goravel/framework/contracts/http"
-
+  
   "goravel/app/http/middleware"
 )
 
@@ -61,7 +61,7 @@ func (kernel *Kernel) Middleware() []http.Middleware {
 
 ### 为路由分配中间件
 
-你可以为某一些路由单独注册中间件：
+你可以单独为某些路由注册中间件：
 
 ```go
 import "github.com/goravel/framework/http/middleware"
@@ -69,7 +69,7 @@ import "github.com/goravel/framework/http/middleware"
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
 
-## 中断请求
+## 中止请求
 
 在中间件中，如果需要中断请求，可以使用 `Abort` 方法。
 
