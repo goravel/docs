@@ -6,43 +6,43 @@ export const config = defineConfig({
     nav: nav(),
     sidebar: [{
       text: "快速开始",
-      base: "/zh_CN/getting-started/",
+      base: "/zh_CN/quickstart/",
       items: sidebarQuickstart()
     }, {
       text: "升级",
       base: "/zh_CN/upgrade/",
       items: sidebarUpgrade()
     }, {
-      text: "核心架构",
-      base: "/zh_CN/architecture-concepts/",
+      text: "基础",
+      base: "/zh_CN/foundation/",
       items: sidebarFoundation()
     }, {
-      text: "基本功能",
-      base: "/zh_CN/the-basics/",
+      text: "基本",
+      base: "/zh_CN/basic/",
       items: sidebarBasic()
     }, {
-      text: "高级功能",
-      base: "/zh_CN/digging-deeper/",
+      text: "高级",
+      base: "/zh_CN/advanced/",
       items: sidebarAdvanced()
     }, {
       text: "安全",
       base: "/zh_CN/security/",
       items: sidebarSecurity()
     }, {
-      text: "数据库",
-      base: "/zh_CN/database/",
-      items: sidebarDatabase()
-    }, {
-      text: 'ORM',
+      text: "ORM",
       base: "/zh_CN/orm/",
-      items: sidebarOrm()
+      items: sidebarDatabase()
     }, {
       text: "测试",
       base: "/zh_CN/testing/",
+      items: sidebarOrm()
+    }, {
+      text: "其他",
+      base: "/zh_CN/other/",
       items: sidebarTesting()
     }],
     editLink: {
-      pattern: 'https://github.com/goravel/docs/edit/master/:path',
+      pattern: "https://github.com/goravel/goravel.github.io/edit/main/:path",
       text: "在 GitHub 上编辑此页面"
     },
     footer: {
@@ -75,11 +75,11 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [{
     text: "快速开始",
-    link: "/zh_CN/getting-started/installation",
-    activeMatch: "/zh_CN/getting-started/"
+    link: "/zh_CN/quickstart/installation",
+    activeMatch: "/zh_CN/quickstart/"
   }, {
-    text: "视频教程",
-    link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
+    text: "升级",
+    link: "/zh_CN/upgrade/v1.15"
   }];
 }
 function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
@@ -108,11 +108,11 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "从 v1.15 升级到 v1.16",
-    link: 'v1.16'
+    text: "从 v1.15 升级",
+    link: "v1.15"
   }, {
-    text: "从 v1.14 升级到 v1.15",
-    link: 'v1.15'
+    text: "从 v1.14 升级",
+    link: "v1.14"
   }, {
     text: "历史",
     link: 'history'
@@ -121,13 +121,13 @@ function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
 function sidebarFoundation(): DefaultTheme.SidebarItem[] {
   return [{
     text: "生命周期",
-    link: 'request-lifecycle'
+    link: "lifecycle"
   }, {
     text: "服务容器",
-    link: 'service-container'
+    link: "container"
   }, {
     text: "服务提供者",
-    link: 'service-providers'
+    link: "providers"
   }, {
     text: "门面",
     link: 'facades'
@@ -139,19 +139,19 @@ function sidebarBasic(): DefaultTheme.SidebarItem[] {
     link: 'routing'
   }, {
     text: "中间件",
-    link: 'middleware'
+    link: "middlewares"
   }, {
     text: "控制器",
     link: 'controllers'
   }, {
     text: "请求",
-    link: 'request'
+    link: "requests"
   }, {
     text: "响应",
-    link: 'response'
+    link: "responses"
   }, {
     text: "视图",
-    link: 'views'
+    link: "视图"
   }, {
     text: 'Grpc',
     link: 'grpc'
@@ -168,17 +168,17 @@ function sidebarBasic(): DefaultTheme.SidebarItem[] {
 }
 function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Artisan Console',
-    link: 'artisan-console'
+    text: "Artisan",
+    link: "artisan"
   }, {
     text: "缓存",
     link: 'cache'
   }, {
     text: "事件",
-    link: 'event'
+    link: "events"
   }, {
     text: "文件存储",
-    link: 'filesystem'
+    link: "fs"
   }, {
     text: "邮件",
     link: 'mail'
@@ -187,13 +187,13 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     link: 'queues'
   }, {
     text: "任务调度",
-    link: 'task-scheduling'
+    link: "schedule"
   }, {
     text: "本地化",
     link: 'localization'
   }, {
     text: "包开发",
-    link: 'package-development'
+    link: "package"
   }, {
     text: "彩色输出",
     link: 'color'
@@ -240,25 +240,25 @@ function sidebarDatabase(): DefaultTheme.SidebarItem[] {
 }
 function sidebarOrm(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "快速入门",
+    text: "开始使用",
     link: 'getting-started'
   }, {
     text: "关系",
     link: 'relationships'
   }, {
-    text: "工厂",
-    link: 'factories'
+    text: "迁移",
+    link: "migrations"
   }];
 }
 function sidebarTesting(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "快速入门",
+    text: "开始使用",
     link: 'getting-started'
   }, {
     text: "HTTP 测试",
-    link: 'http-tests'
+    link: "http"
   }, {
     text: "模拟",
-    link: 'mock'
+    link: "mocks"
   }];
 }
