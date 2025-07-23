@@ -1,4 +1,4 @@
-# 请求
+# HTTP Requests
 
 [[toc]]
 
@@ -85,7 +85,7 @@ ip := ctx.Request().Ip()
 data := ctx.Request().All()
 ```
 
-### 获取路由中的参数
+### Retrieving a Route Value
 
 ```go
 // /users/{id}
@@ -115,9 +115,11 @@ names := ctx.Request().QueryMap("names")
 queries := ctx.Request().Queries()
 ```
 
+> Note: Only one-dimensional Json data can be obtained, otherwise it will return empty.
+
 ### 检索一个输入值
 
-获取所有的用户输入数据，而不用在意用户使用的是哪种 HTTP 动词，不管是什么 HTTP 动词。检索顺序为：`json`, `form`。
+Access all of the user input without worrying about which HTTP verb was used for the request. Retrieve order: `json`, `form`.
 
 ```go
 name := ctx.Request().Input("name")
@@ -162,16 +164,16 @@ err := ctx.Request().BindQuery(&test)
 
 ### 获取 Cookie
 
-Goravel 提供了一种简单的方法来处理 `cookie`。使用 `Request` 实例上的 `Cookie` 方法获取 `cookie` 的值，如果 `cookie` 不存在，则返回空字符串。也可以在第二个参数上定义一个默认值。
+Goravel 提供了一种简单的方法来处理 `cookie`。使用 `Request` 实例上的 `Cookie` 方法获取 `cookie` 的值，如果 `cookie` 不存在，则返回空字符串。也可以在第二个参数上定义一个默认值。 Use the `Cookie` method on the `Request` instance to retrieve a `cookie` value, will return an empty string if the `cookie` is not present. You can also define a default value in the second argument.
 
 ```go
 value := ctx.Request().Cookie("name")
 value := ctx.Request().Cookie("name", "default")
 ```
 
-## 文件
+## 获取上传的文件
 
-### 获取上传的文件
+### 文件
 
 ```go
 file, err := ctx.Request().File("file")
