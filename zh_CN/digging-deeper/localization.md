@@ -4,9 +4,9 @@
 
 ## 简介
 
-Goravel的本地化功能提供了一种方便的方式来检索各种语言的字符串，使得在应用程序中支持多种语言变得容易。 语言字符串存储在`lang`目录的文件中，Goravel支持两种组织语言文件的方式： Language strings are stored in files in the `lang` directory, and Goravel supports two ways to organize language files:
+Goravel 的本地化功能提供了一种方便的方法来检索各种语言的字符串，从而使你可以轻松地在应用程序中支持多种语言。语言字符串存储在 `lang` 目录里的文件中，Goravel 支持两种方式组织语言文件： Language strings are stored in files in the `lang` directory, and Goravel supports two ways to organize language files:
 
-每种语言有自己的文件：
+每一种语言文件独立一个文件：
 
 ```
 /lang
@@ -14,7 +14,7 @@ Goravel的本地化功能提供了一种方便的方式来检索各种语言的�
   cn.json
 ```
 
-或者，当有太多翻译时，可以进行分类：
+或者当语言过多时，可以对其进行分类：
 
 ```
 /lang
@@ -26,9 +26,9 @@ Goravel的本地化功能提供了一种方便的方式来检索各种语言的�
 
 ## 配置区域设置
 
-应用程序的默认语言存储在`config/app.go`配置文件中的`locale`配置选项中。 您可以根据需要修改此值以适应应用程序的要求。 You can modify this value as needed to suit your application's requirements.
+应用程序的默认语言存储在 `config/app.go` 配置文件的 `locale` 配置选项中。你可以随意修改此值以适合你的应用程序的需求。 You can modify this value as needed to suit your application's requirements.
 
-您还可以使用App Facade提供的`SetLocale`方法在运行时为单个`HTTP`请求修改默认语言：
+你也可以使用 App Facade 提供的 `SetLocale` 方法，在运行时为单个 `HTTP` 请求修改默认语言：
 
 ```
 facades.Route().Get("/", func(ctx http.Context) http.Response {
@@ -38,15 +38,15 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 })
 ```
 
-You can configure a "fallback locale" that will be used when the current language does not contain the given translation string. 您可以配置一个"回退语言环境"，当当前语言不包含给定的翻译字符串时，将使用该环境。 与默认语言一样，回退语言也在`config/app.go`配置文件中配置。
+You can configure a "fallback locale" that will be used when the current language does not contain the given translation string. 你可以配置一个「备用语言」，当当前语言不包含给定的翻译字符串时，将使用该语言。和默认语言一样，备用语言也是在 `config/app.go` 配置文件中配置。
 
 ```
 "fallback_locale": "en",
 ```
 
-### 确定当前语言环境
+### 确定当前的语言环境
 
-您可以使用`CurrentLocale`和`IsLocale`方法来确定当前的`locale`或检查`locale`是否为给定值。
+你可以使用 `CurrentLocale` 和 `IsLocale` 方法来确定当前的 `locale` 或检查 `locale` 是否是一个给定值。
 
 ```
 locale := facades.App().CurrentLocale(ctx)
@@ -55,30 +55,30 @@ if facades.App().IsLocale(ctx, "en") {}
 
 ### 定义翻译字符串
 
-在语言文件中，您可以定义单级或多级结构：
+在语言文件中，可以定义一级或多级结构：
 
 ```
 // lang/en.json
 {
-  "name": "这是你的名字",
+  "name": "It's your name",
   "required": {
-    "user_id": "需要UserID"
+    "user_id": "UserID is required"
   }
 }
 ```
 
-### 获取翻译字符串
+### 检索翻译字符串
 
-您可以使用 `facades.Lang(ctx).Get()` 方法从语言文件中获取翻译字符串。 如果语言文件包含多个层级，您可以使用 `.` 连接它们，如果语言文件在多层文件夹中，您可以使用 `/` 连接它们。 If the language file contains multiple levels, you can use `.` to connect them, and if the language file is in multiple levels of folders, you can use `/` to connect them.
+你可以使用 `facades.Lang(ctx).Get()` 方法从语言文件中检索翻译字符串。如果语言文件包含多个层级，可以使用 `.` 进行连接，如果语言文件在多层级的文件夹中，可以使用 `/` 进行连接。 例如： If the language file contains multiple levels, you can use `.` to connect them, and if the language file is in multiple levels of folders, you can use `/` to connect them.
 
 例如：
 
 ```
 // lang/en.json
 {
-  "name": "这是你的名字",
+  "name": "It's your name",
   "required": {
-    "user_id": "需要UserID"
+    "user_id": "UserID is required"
   }
 }
 
@@ -87,9 +87,9 @@ facades.Lang(ctx).Get("required.user_id")
 
 // lang/en/role/user.json
 {
-  "name": "这是你的名字",
+  "name": "It's your name",
   "required": {
-    "user_id": "需要UserID"
+    "user_id": "UserID is required"
   }
 }
 
@@ -103,11 +103,11 @@ You can define placeholders in translation strings. All placeholders have the pr
 
 ```
 {
-  "welcome": "欢迎，:name"
+  "welcome": "Welcome, :name"
 }
 ```
 
-要在检索翻译字符串时替换占位符，您可以将带有替换映射的翻译选项作为第二个参数传递给 `facades.Lang(ctx).Get()` 方法：
+在要检索翻译字符串时替换占位符，可以将替换数组作为第二个参数传递给 `facades.Lang(ctx).Get()` 方法：
 
 ```
 facades.Lang(ctx).Get("welcome", translation.Option{
@@ -123,29 +123,28 @@ Pluralization is a complex problem because different languages have various plur
 
 ```
 {
-  "apples": "{0} 没有苹果|[1,19] 有一些苹果|[20,*] 有很多苹果"
+  "apples": "There is one apple|There are many apples"
 }
 ```
 
-您甚至可以通过为多个值范围指定翻译字符串来创建更复杂的复数规则：
+你甚至可以创建更复杂的复数化规则，为多个值范围指定转换字符串：
 
 ```
 {
-  "apples": "有一个苹果|有很多苹果"
+  "apples": "{0} There are none|[1,19] There are some|[20,*] There are many"
 }
 ```
 
-定义带有复数选项的翻译字符串后，您可以使用 `facades.Lang(ctx).Choice()` 方法来
-根据给定的 `count` 获取对应的行。 在这个例子中，因为计数大于1，所以返回了翻译字符串的复数形式： In this example, because the count is greater than 1, the plural form of the translation string is returned:
+定义具有复数选项的翻译字符串后，可以使用 `facades.Lang(ctx).Choice()` 方法检索给定「count」的行。在本例中，由于计数大于 1 ，因此返回翻译字符串的复数形式： In this example, because the count is greater than 1, the plural form of the translation string is returned:
 
 ```
 facades.Lang(ctx).Choice("messages.apples", 10)
 ```
 
-You can also define placeholder attributes in pluralization strings. 您还可以在复数化字符串中定义占位符属性。 通过将数组作为第三个参数传递给 `facades.Lang(ctx).Choice()` 方法，您可以替换这些占位符：
+You can also define placeholder attributes in pluralization strings. 也可以在复数化字符串中定义占位符属性。通过将数组作为第三个参数传递给 `facades.Lang(ctx).Choice()` 方法，可以替换这些占位符：
 
 ```
-"minutes_ago": "{1} :value 分钟前|[2,*] :value 分钟前",
+"minutes_ago": "{1} :value minute ago|[2,*] :value minutes ago",
 
 facades.Lang(ctx).Choice("time.minutes_ago", 5, translation.Option{
   Replace: map[string]string{
