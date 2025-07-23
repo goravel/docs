@@ -4,11 +4,11 @@
 
 ## 简介
 
-Goravel 路由模块可以通过 `facades.Route()` 进行操作。
+Goravel 路由模块可以使用 `facades.Route()` 进行操作。
 
 ## HTTP 驱动
 
-Goravel 使用 [gin](https://github.com/gin-gonic/gin) 作为其默认 HTTP 驱动。 要使用其他驱动，请在 `config/http.go` 文件中进行配置。 官方默认支持 [gin](https://github.com/gin-gonic/gin) 和 [fiber](https://github.com/gofiber/fiber)。 To use other drivers, configure them in the `config/http.go` file. The official default supports [gin](https://github.com/gin-gonic/gin) and [fiber](https://github.com/gofiber/fiber).
+Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动，如果想使用其他驱动，可以到 `config/http.go` 中进行配置，目前官方默认支持 [gin](https://github.com/gin-gonic/gin) 与 [fiber](https://github.com/gofiber/fiber) 两种驱动： To use other drivers, configure them in the `config/http.go` file. The official default supports [gin](https://github.com/gin-gonic/gin) and [fiber](https://github.com/gofiber/fiber).
 
 | 驱动    | 链接                                                                                                   |
 | ----- | ---------------------------------------------------------------------------------------------------- |
@@ -19,7 +19,7 @@ Goravel 使用 [gin](https://github.com/gin-gonic/gin) 作为其默认 HTTP 驱�
 
 To define routing files, simply navigate to the `/routes` directory. By default, the framework utilizes a sample route located in `/routes/web.go`. 所有路由文件都在 `/routes` 目录中进行定义。框架默认有一个示例路由 `/routes/web.go`，其中 `func Web()` 方法被注册到 `app/providers/route_service_provider.go` 文件中，以实现路由的绑定。
 
-如果您需要更精确的管理，可以在 `/routes` 目录中添加路由文件，并在 `app/providers/route_service_provider.go` 文件中注册它们。
+你可以在 `routes` 目录下新增路由文件，以进行更细颗粒的管理，然后在 `app/providers/route_service_provider.go` 文件中进行注册。
 
 ## 获取路由列表
 
@@ -34,26 +34,6 @@ To define routing files, simply navigate to the `/routes` directory. By default,
 在根目录下 `main.go` 中启动 HTTP 服务器，`facades.Route().Run()` 将会自动获取 `route.host` 的配置。 This will automatically fetch the `route.host` configuration.
 
 ```go
-// main.go
-if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
-  facades.Log().Errorf("路由运行错误：%v", err)
-}
-```
-
-## 关闭HTTP/HTTPS服务器
-
-在使用HTTPS之前，请先完成`config/http.go`中`http.tls`的配置，`facades.Route().RunTLS()`方法将根据相关配置启动HTTPS服务器：
-
-```go
-// main.go
-if err := facades.Route().RunTLS(); err != nil {
-  facades.Log().Errorf("路由运行错误：%v", err)
-}
-```
-
-你也可以使用`facades.Route().RunTLSWithCert()`方法来自定义主机和证书。
-
-```go
 package main
 
 import (
@@ -63,10 +43,10 @@ import (
 )
 
 func main() {
-  // 这会引导框架并使其准备就绪。
+  // This bootstraps the framework and gets it ready for use.
   bootstrap.Boot()
 
-  // 通过facades.Route()启动http服务器。
+  // Start http server by facades.Route().
   go func() {
     if err := facades.Route().Run(); err != nil {
       facades.Log().Errorf("Route run error: %v", err)
@@ -77,26 +57,46 @@ func main() {
 }
 ```
 
-## 启动HTTPS服务器
+## 启动 HTTPS 服务器
 
-你可以通过调用 `Shutdown` 方法来优雅地关闭 HTTP/HTTPS 服务器，该方法会等待所有请求处理完毕后再关闭。
+使用前请先完善 `config/http.go` 中的 `http.tls` 配置，`facades.Route().RunTLS()` 方法将会根据相关配置启动 HTTPS 服务：
+
+```go
+// main.go
+if err := facades.Route().RunTLS(); err != nil {
+  facades.Log().Errorf("Route run error: %v", err)
+}
+```
+
+你也可以使用 `facades.Route().RunTLSWithCert()` 方法，自定义 host 与 证书：
+
+```go
+// main.go
+if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
+  facades.Log().Errorf("Route run error: %v", err)
+}
+```
+
+## 关闭 HTTP/HTTPS 服务器
+
+你可以调用 `Shutdown` 方法优雅的关闭 HTTP/HTTPS 服务器，该方法将会等待所有请求处理完毕后再执行关闭操作。
 
 ```go
 // main.go
 bootstrap.Boot()
 
-// 创建一个通道来监听操作系统信号
+// Create a channel to listen for OS signals
 quit := make(chan os.Signal)
 signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
-// 通过 facades.Route() 启动 http 服务器
+// Start http server by facades.Route().
 go func() {
   if err := facades.Route().Run(); err != nil {
     facades.Log().Errorf("Route run error: %v", err)
   }
 }()
 
-// 监听操作系统信号
+// Listen for the OS signal
 go func() {
   <-quit
   if err := facades.Route().Shutdown(); err != nil {
@@ -111,26 +111,26 @@ select {}
 
 ### 路由方法
 
-| 方法                                                                                                                                                               | 操作                                                                                                                                         |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Group                                                                                                                                                            | [分组路由](#group-routing)                                                                                                                     |
-| Prefix                                                                                                                                                           | [路由前缀](#routing-prefix)                                                                                                                    |
-| ServeHTTP                                                                                                                                                        | [测试路由](#testing-routing)                                                                                                                   |
-| Get                                                                                                                                                              | [基本路由](#basic-routing)                                                                                                                     |
-| Post                                                                                                                                                             | [基本路由](#basic-routing)                                                                                                                     |
-| Put                                                                                                                                                              | [基本路由](#basic-routing)                                                                                                                     |
-| Delete                                                                                                                                                           | [基本路由](#basic-routing)                                                                                                                     |
-| Patch                                                                                                                                                            | [基本路由](#basic-routing)                                                                                                                     |
-| Options                                                                                                                                                          | [基本路由](#basic-routing)                                                                                                                     |
-| Any                                                                                                                                                              | [基本路由](#basic-routing)                                                                                                                     |
-| Resource                                                                                                                                                         | [资源路由](#resource-routing)                                                                                                                  |
-| Static                                                                                                                                                           | [文件路由](#file-routing)                                                                                                                      |
-| StaticFile                                                                                                                                                       | [文件路由](#file-routing)                                                                                                                      |
-| StaticFS                                                                                                                                                         | [文件路由](#file-routing)                                                                                                                      |
-| Middleware                                                                                                                                                       | [中间件](#middleware)                                                                                                                         |
-| Goravel 包含强大且可自定义的限流服务，您可以使用它来限制给定路由或路由组的流量。 要开始使用，您应该定义满足应用程序需求的限流器配置。 通常，这应该在应用程序的 `app/providers/route_service_provider.go` 类的 `configureRateLimiting` 方法中完成。 | 如果需要，你可以为给定的速率限制器配置返回一个速率限制数组。 每个速率限制将根据它们在数组中的顺序对路由进行评估：                                                                                  |
-| Name                                                                                                                                                             | 可以使用 throttle 中间件将速率限制器附加到路由或路由组。 Throttle 中间件接受您希望分配给路由的速率限制器的名称：                                                                         |
-| Info                                                                                                                                                             | 要定义路由文件，只需导航到 `/routes` 目录。 默认情况下，框架使用位于 `/routes/web.go` 的示例路由。 要建立路由绑定，`func Web()` 方法在 `app/providers/route_service_provider.go` 文件中注册。 |
+| 方法         | 作用                |
+| ---------- | ----------------- |
+| Group      | [路由分组](#路由分组)     |
+| Prefix     | [路由前缀](#路由前缀)     |
+| ServeHTTP  | [测试路由](#测试路由)     |
+| Get        | [基本路由](#基本路由)     |
+| Post       | [基本路由](#基本路由)     |
+| Put        | [基本路由](#基本路由)     |
+| Delete     | [基本路由](#基本路由)     |
+| Patch      | [基本路由](#基本路由)     |
+| Options    | [基本路由](#基本路由)     |
+| Any        | [基本路由](#基本路由)     |
+| Resource   | [资源路由](#资源路由)     |
+| Static     | [文件路由](#文件路由)     |
+| StaticFile | [文件路由](#文件路由)     |
+| StaticFS   | [文件路由](#文件路由)     |
+| Middleware | [中间件](#中间件)       |
+| GetRoutes  | [获取所有路由](#获取所有路由) |
+| Name       | [设置路由名称](#设置路由名称) |
+| Info       | [获取路由信息](#获取路由信息) |
 
 ## 基本路由
 
@@ -172,7 +172,7 @@ func (c *ResourceController) Update(ctx http.Context) {}
 func (c *ResourceController) Destroy(ctx http.Context) {}
 ```
 
-## 分组路由
+## 路由分组
 
 ```go
 facades.Route().Group(func(router route.Router) {
@@ -198,7 +198,7 @@ facades.Route().StaticFile("static-file", "./public/logo.png")
 facades.Route().StaticFS("static-fs", http.Dir("./public"))
 ```
 
-## 路由参数
+## 路由传参
 
 ```go
 facades.Route().Get("/input/{id}", func(ctx http.Context) http.Response {
@@ -208,7 +208,7 @@ facades.Route().Get("/input/{id}", func(ctx http.Context) http.Response {
 })
 ```
 
-详情 [请求](./requests)
+详见[请求](./request.md)
 
 ## Middleware
 
@@ -218,13 +218,12 @@ import "github.com/goravel/framework/http/middleware"
 facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
-详情 [中间件](./middlewares)
+详见[中间件](./middleware.md)
 
 ## 获取所有路由
 
 ```go
-限流器使用 `facades.RateLimiter()` 的 `For` 方法定义。 `For` 方法接受一个限流器名称和一个闭包，该闭包返回应用于分配给该限流器的路由的限制配置。
-限流器名称可以是您希望的任何字符串：
+routes := facades.Route().GetRoutes()
 ```
 
 ## 设置路由名称
@@ -236,16 +235,16 @@ facades.Route().Get("users", userController.Index).Name("users.index")
 ## 获取路由信息
 
 ```go
-通过调用 `facades.Route().Run()` 在根目录的 `main.go` 中启动 HTTP 服务器。 这将自动获取 `route.host` 配置。
+route := facades.Route().Info("users.index")
 ```
 
-## 回退路由
+## Fallback 路由
 
-使用 `Fallback` 方法，您可以定义一个在没有其他路由匹配传入请求时将执行的路由。
+使用 `Fallback` 方法，你可以定义一个在没有其他路由匹配传入请求时将执行的路由。
 
 ```go
 facades.Route().Fallback(func(ctx http.Context) http.Response {
-  return ctx.Response().String(404, "未找到")
+  return ctx.Response().String(404, "not found")
 })
 ```
 
@@ -271,7 +270,7 @@ func (receiver *RouteServiceProvider) configureRateLimiting() {
 }
 ```
 
-如果传入的请求超过指定的速率限制，Goravel 将自动返回一个 HTTP 状态码为 429 的响应。 如果您想定义自己的速率限制响应，可以使用 response 方法： If you would like to define your own response that should be returned by a rate limit, you may use the response method:
+如果传入的请求超过指定的速率限制，Goravel 将自动返回一个带有 429 HTTP 状态码的响应。如果你想定义自己的响应，应该由速率限制返回，你可以使用 `Response` 方法： If you would like to define your own response that should be returned by a rate limit, you may use the response method:
 
 ```go
 facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
@@ -281,7 +280,7 @@ facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
 })
 ```
 
-由于速率限制器回调接收传入的 HTTP 请求实例，您可以根据传入的请求或已认证的用户动态构建适当的速率限制：
+由于速率限制器回调接收传入的 HTTP 请求实例，你可以根据传入的请求或经过身份验证的用户动态构建适当的速率限制：
 
 ```go
 facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
@@ -308,7 +307,7 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
 })
 ```
 
-为了说明这个功能，我们可以使用另一个例子，限制每分钟每个已认证用户ID访问路由100次，或者对于访客每分钟每个IP地址访问10次：
+为了使用另一个示例来说明此功能，我们可以将每个经过身份验证的用户 ID 的路由访问限制为每分钟 100 次，或者对于访客来说，每个 IP 地址每分钟访问 10 次：
 
 ```go
 facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
@@ -320,7 +319,7 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
 })
 ```
 
-#### 多重速率限制
+#### 多个速率限制
 
 If needed, you may return an array of rate limits for a given rate limiter configuration. 如果需要，你可以返回给定速率限制器配置的速率限制数组。将根据路由在数组中的放置顺序评估每个速率限制：
 
@@ -347,8 +346,8 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 })
 ```
 
-## 跨源资源共享 (CORS)
+## 跨域资源共享 (CORS)
 
-Goravel 默认启用了 CORS，可以在 `config/cors.go` 中修改配置。
+Goravel 已默认启用 CORS，详细配置可以到 `config/cors.go` 文件中进行修改。
 
-> 有关 CORS 和 CORS 头的更多信息，请参阅 [MDN 关于 CORS 的 Web 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
+> 有关 CORS 和 CORS 标头的更多信息，请参阅 [MDN 关于 CORS 的 Web 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
