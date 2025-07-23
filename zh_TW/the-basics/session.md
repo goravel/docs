@@ -4,15 +4,21 @@
 
 ## Introduction
 
-Session enables you to store user information across multiple requests, providing a stateful experience within the inherently stateless HTTP protocol. This user information is stored persistently on the server side. Goravel offers a unified interface for interacting with various persistent storage drivers.
+Session enables you to store user information across multiple requests, providing a stateful experience within the
+inherently stateless HTTP protocol. This user information is stored persistently on the server side. Goravel offers a
+unified interface for interacting with various persistent storage drivers.
 
 ## Configuration
 
-The `session` configuration file is located at `config/session.go`. The default driver is `file`, which stores sessions in the `storage/framework/sessions` directory. Goravel allows you to create a custom `session` driver by implementing the `contracts/session/driver` interface.
+The `session` configuration file is located at `config/session.go`. The default driver is `file`, which stores sessions
+in the `storage/framework/sessions` directory. Goravel allows you to create a custom `session` driver by implementing
+the `contracts/session/driver` interface.
 
 ### Register Middleware
 
-By default, Goravel does not start a session automatically. However, it provides middleware to start a session. You can register the session middleware in the `app/http/kernel.go` file to apply it to all routes, or you can add it to specific routes:
+By default, Goravel does not start a session automatically. However, it provides middleware to start a session. You can
+register the session middleware in the `app/http/kernel.go` file to apply it to all routes, or you can add it to
+specific routes:
 
 ```go
 import (
@@ -37,7 +43,8 @@ You can use the `Get` method to retrieve data from the session. If the value doe
 value := ctx.Request().Session().Get("key")
 ```
 
-You may also pass a default value as the second argument to the `Get` method. This value will be returned if the specified key does not exist in the session:
+You may also pass a default value as the second argument to the `Get` method. This value will be returned if the
+specified key does not exist in the session:
 
 ```go
 value := ctx.Request().Session().Get("key", "default")
@@ -61,7 +68,8 @@ data := ctx.Request().Session().Only([]string{"username", "email"})
 
 ### Determining If An Item Exists In The Session
 
-To determine if an item is present in the session, you may use the `Has` method. The `Has` method returns `true` if the item is present and is not `nil`:
+To determine if an item is present in the session, you may use the `Has` method. The `Has` method returns `true` if the
+item is present and is not `nil`:
 
 ```go
 if ctx.Request().Session().Has("user") {
@@ -103,7 +111,8 @@ value := ctx.Request().Session().Pull("key")
 
 ### Deleting Data
 
-The `Forget` method can be used to remove a piece of data from the session. If you would like to remove all data from the session, you can use the `Flush` method:
+The `Forget` method can be used to remove a piece of data from the session. If you would like to remove all data from
+the session, you can use the `Flush` method:
 
 ```go
 ctx.Request().Session().Forget("username", "email")
@@ -113,13 +122,15 @@ ctx.Request().Session().Flush()
 
 ### Regenerating The Session ID
 
-Regenerating the session ID is often done in order to prevent malicious users from exploiting a session fixation attack on your application. You may regenerate the session ID using the `Regenerate` method:
+Regenerating the session ID is often done in order to prevent malicious users from exploiting a session fixation attack
+on your application. You may regenerate the session ID using the `Regenerate` method:
 
 ```go
 ctx.Request().Session().Regenerate()
 ```
 
-If you would like to regenerate the session ID and forget all data that was in the session, you may use the `Invalidate` method:
+If you would like to regenerate the session ID and forget all data that was in the session, you may use the `Invalidate`
+method:
 
 ```go
 ctx.Request().Session().Invalidate()
@@ -142,7 +153,8 @@ ctx.Response().Cookie(http.Cookie{
 
 ### Flash Data
 
-Flash data is session data that will only be available during the subsequent HTTP request, and then will be deleted. Flash data is useful for storing temporary messages such as status messages. You may use the `Flash` method to store flash data in the session:
+Flash data is session data that will only be available during the subsequent HTTP request, and then will be deleted. Flash data is useful for storing temporary messages such as status messages. You may use the `Flash` method to store
+flash data in the session:
 
 ```go
 ctx.Request().Session().Flash("status", "Task was successful!")
@@ -170,7 +182,8 @@ ctx.Request().Session().Now("status", "Task was successful!")
 
 ### Building A Custom Session
 
-Use the `Session` facade to build a custom session. The `Session` facade provides the `BuildSession` method, which takes a driver instance and an optional session ID if you want to specify a custom session ID:
+Use the `Session` facade to build a custom session. The `Session` facade provides the `BuildSession` method, which takes
+a driver instance and an optional session ID if you want to specify a custom session ID:
 
 ```go
 import "github.com/goravel/framework/facades"
@@ -204,7 +217,8 @@ type Driver interface {
 
 #### Registering The Driver
 
-After implementing the driver, you only need to add it to the `config/session.go` configuration file:
+After implementing the driver, you need to register it in Goravel. You can do this using `Extend` method of the
+`facades.Session`.
 
 ```go
 // config/session.go
@@ -225,7 +239,8 @@ After implementing the driver, you only need to add it to the `config/session.go
 
 ### Retrieving driver instance
 
-Use the `Driver` method to retrieve the driver instance from the session manager. It accepts an optional driver name, if not provided, it returns the default driver instance:
+Use the `Driver` method to retrieve the driver instance from the session manager. It accepts an optional driver name, if
+not provided, it returns the default driver instance:
 
 ```go
 driver, err := facades.Session().Driver("file")
