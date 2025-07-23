@@ -4,12 +4,12 @@
 
 Goravel welcomes rich and diverse contributions from different talents, such as coding, translations, articles, tutorials, etc. After completing two features(5 `Good First Issue` == 1 `Feature`), you will be recognized as a core contributor. By completing one feature every three months, you can maintain this status.
 
-让我们一起将 Goravel 变得更高效！
+让我们一起让Goravel更高效！
 
 ## 奖励
 
-- 核心贡献者将可以在未来从 Goravel 中获得收益；
-- 完成一个 `Feature`，即可获得 Goravel 官方 T-Shirt 一件，一个大版本发布周期中最多可获得 1 件； (PS: Because of the difference of country, you may need to help us to find a suitable supplier.)
+- 当Goravel在未来获得收益时，核心开发者将有资格获得福利。
+- 完成一个`Feature`后，您将收到一件官方Goravel T恤，每个主要版本发布周期最多1件。 （注：由于国家差异，您可能需要帮助我们找到合适的供应商。） (PS: Because of the difference of country, you may need to help us to find a suitable supplier.)
 
 <p align="left"><img src="/t-shirt.jpg" width="500"></p>
 
@@ -52,82 +52,82 @@ Goravel welcomes rich and diverse contributions from different talents, such as 
 <a href="https://github.com/ycb1986" target="_blank"><img src="https://avatars.githubusercontent.com/u/12908032?v=4" width="48" height="48"></a>
 </div>
 
-## Bug 报告
+## Bug 反馈
 
-您可以在[这里](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+)提交一个 Bug 报告，在提交前请搜索 [Issue 列表](https://github.com/goravel/goravel/issues?q=is%3Aissue) 中是否已存在类似问题。该报告应该包含一个标题和对问题的清晰描述，还应该包含尽可能多的相关信息以及演示该问题的代码示例。错误报告的目标是使您自己（以及其他人）能够轻松地复现错误并开发修复程序。Goravel 鼓励提交者同时创建 PR 进行 Bug 修复，使开源项目得到更积极的发展。 The report should contain a title and a clear description of the problem, as much relevant information as possible, and a code sample that demonstrates the problem. The goal of Bug Feedback is to make it easy for yourself and other persons to reproduce the Bug and develop fixes. Goravel encourages committers to create a PR for the Bug repair at the same time, making the open-source project more actively developed.
+您可以在这里报告Bug反馈，提交前请先在问题列表中搜索类似问题。 报告应包含标题和问题的清晰描述，尽可能多的相关信息，以及演示问题的代码示例。 Bug 反馈的目的是让您自己和其他人能够轻松重现 Bug 并开发修复方案。 Goravel 鼓励提交者同时为 Bug 修复创建 PR，使开源项目得到更积极的开发。 The report should contain a title and a clear description of the problem, as much relevant information as possible, and a code sample that demonstrates the problem. The goal of Bug Feedback is to make it easy for yourself and other persons to reproduce the Bug and develop fixes. Goravel encourages committers to create a PR for the Bug repair at the same time, making the open-source project more actively developed.
 
-## 帮助支持
+## 支持问题
 
-Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过以下途径进行讨论： Instead, use one of the following channels:
+Goravel的GitHub问题跟踪器不是用来提供Goravel帮助或支持的。 相反，请使用以下渠道之一： Instead, use one of the following channels:
 
-- [GitHub 讨论区](https://github.com/goravel/goravel/discussions)
-- [Discord](https://github.com/goravel/goravel/tree/master#group)
-- [微信群](https://github.com/goravel/goravel/blob/master/README_zh.md#%E7%BE%A4%E7%BB%84)
+- [GitHub讨论](https://github.com/goravel/goravel/discussions)
+- [Telegram](https://github.com/goravel/goravel/tree/master#group)
+- [微信](https://github.com/goravel/goravel/blob/master/README_zh.md#%E7%BE%A4%E7%BB%84)
 
 ## 开发讨论
 
-You may propose new features or improvements to existing Goravel behavior in the Goravel framework repository's [GitHub discussion board](https://github.com/goravel/goravel/discussions). Informal discussion regarding bugs, new features, and implementation of existing features takes place in Discord or WeChat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
+您可以在Goravel框架仓库的[GitHub讨论板](https://github.com/goravel/goravel/discussions)上提出新功能或对现有Goravel行为的改进建议。 关于错误、新功能和现有功能实现的非正式讨论在 Telegram 或微信群中进行。 Goravel 的维护者 Bowen 通常在工作日上午9:00至下午18:00（UTC+08:00）出现在群里，在其他时间偶尔出现在群里。 Informal discussion regarding bugs, new features, and implementation of existing features takes place in Discord or WeChat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
 
-## 提交贡献
+## 贡献
 
-### 寻找/创建 Issue
+### 查找/创建问题
 
-您可以在 [Issue 列表](https://github.com/goravel/goravel/issues) 中寻找或创建一个 Issue，留言表达想要处理该 Issue 的意愿，得到仓库维护者的确认后，即可开始处理。
+您可以在[问题列表](https://github.com/goravel/goravel/issues)中查找或创建问题，留言表达您处理该问题的意愿，一旦得到仓库维护者的确认，就可以开始处理了。
 
 ### 创建 PR
 
-- 如果您对该流程不太了解，可以查看[这篇文章](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)；
-- 在开发过程中，如果遇到问题可以随时在 Issue 中详尽描述该问题，以进一步沟通，但在此之前请确保自己已通过 Google 等方式尽可能的尝试解决问题；
-- 在创建 PR 前，请尽可能的提高单元测试覆盖率，以提供更稳定的功能；
-- 如果修改了 `contracts` 文件夹下的任意文件，请在根目录运行 `go run github.com/vektra/mockery/v2` 命令生成 mock 文件；
-- 当 PR 开发完毕后，请为其添加 `Review Ready` 标签，维护者将及时进行评审；
-- PR 合并后，如果描述设置正确，Issue 将被自动关闭；
-- Goravel 非常感谢您的贡献，将在下次发版时将您添加到首页贡献列表中；❤️
+- 如果你对这个过程不熟悉，可以查看[这篇文章](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)；
+- 在开发过程中，如果遇到问题，可以随时在 issue 中详细描述问题以便未来沟通，但在此之前，请确保你已尽可能通过 Google 等方法尝试解决问题；
+- 创建 PR 前，请尽可能提高单元测试覆盖率，以提供更稳定的功能；
+- 如果你修改了 `contracts` 文件夹下的任何文件，请在根目录运行 `go run github.com/vektra/mockery/v2` 命令生成 mock 文件；
+- 当 PR 开发完成后，请添加 `Review Ready`，维护者将及时进行审核。
+- PR 合并后，如果 PR 描述设置正确，相关 issue 将自动关闭；
+- Goravel 非常感谢您的贡献，并将在下一个版本中将您添加到主页贡献列表中；❤️
 
 ## 哪个分支？
 
-**所有**错误修复应发送到最新的稳定分支，除非它们修复了仅存在于 `master` 分支中的功能。
+**所有**错误修复都应发送到支持错误修复的最新版本，除非它们修复了仅存在于即将发布的版本中的功能。
 
-**新功能**或有**破坏性**变化的功能应始终合并到 `master` 分支。
+**新功能**或具有破坏性变更的功能应始终发送到 `master` 分支。
 
 ## 本地环境
 
-| 软件                                                  | 作用              |
-| --------------------------------------------------- | --------------- |
-| Golang v1.20                        | 最低版本            |
-| [vektra/mockery](https://github.com/vektra/mockery) | 为单元测试提供 mock 文件 |
+| 软件                                                  | 操作          |
+| --------------------------------------------------- | ----------- |
+| Golang v1.20                        | 最低版本        |
+| [vektra/mockery](https://github.com/vektra/mockery) | 为单元测试提供模拟文件 |
 
 ## Goravel 仓库
 
-| 仓库                                                                    | 作用                                                                                                                                          |
+| 仓库                                                                    | 操作                                                                                                                                          |
 | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| [goravel/goravel](https://github.com/goravel/goravel)                 | Goravel 脚手架                                                                                                                                 |
+| [goravel/goravel](https://github.com/goravel/goravel)                 | Goravel 工匠                                                                                                                                  |
 | [goravel/framework](https://github.com/goravel/framework)             | Goravel 主仓库                                                                                                                                 |
 | [goravel/example](https://github.com/goravel/example)                 | Goravel 示例                                                                                                                                  |
 | [goravel/example-client](https://github.com/goravel/example-client)   | Grpc 客户端示例                                                                                                                                  |
-| [goravel/example-proto](https://github.com/goravel/example-proto)     | example 仓库 proto 依赖                                                                                                                         |
-| [goravel/example-package](https://github.com/goravel/example-package) | 扩展包示例                                                                                                                                       |
-| [goravel/docs](https://github.com/goravel/docs)                       | 使用文档                                                                                                                                        |
-| [goravel/docs-web](https://github.com/goravel/docs-web)               | Goravel Website                                                                                                                             |
-| [goravel/s3](https://github.com/goravel/s3)                           | Storage 模块 S3 驱动                                                                                                                            |
-| [goravel/oss](https://github.com/goravel/oss)                         | Storage 模块 OSS 驱动                                                                                                                           |
-| [goravel/cos](https://github.com/goravel/cos)                         | Storage 模块 COS 驱动                                                                                                                           |
-| [goravel/minio](https://github.com/goravel/minio)                     | Storage 模块 Minio 驱动                                                                                                                         |
-| [goravel/cloudinary](https://github.com/goravel/cloudinary)           | Storage 模块 Cloudinary 驱动                                                                                                                    |
-| [goravel/redis](https://github.com/goravel/redis)                     | Cache 模块 Redis 驱动                                                                                                                           |
-| [goravel/gin](https://github.com/goravel/gin)                         | Route 模块 Gin 驱动                                                                                                                             |
-| [goravel/fiber](https://github.com/goravel/fiber)                     | Route 模块 Fiber 驱动                                                                                                                           |
-| [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | 为 Log 模块提供日志分割功能                                                                                                                            |
+| [goravel/example-proto](https://github.com/goravel/example-proto)     | 示例的proto依赖                                                                                                                                  |
+| [goravel/example-package](https://github.com/goravel/example-package) | 包的示例                                                                                                                                        |
+| [goravel/docs](https://github.com/goravel/docs)                       | 文档                                                                                                                                          |
+| [goravel/docs-web](https://github.com/goravel/docs-web)               | Goravel网站                                                                                                                                   |
+| [goravel/s3](https://github.com/goravel/s3)                           | 存储模块的S3驱动                                                                                                                                   |
+| [goravel/oss](https://github.com/goravel/oss)                         | 存储模块的OSS驱动                                                                                                                                  |
+| [goravel/cos](https://github.com/goravel/cos)                         | 存储模块的COS驱动                                                                                                                                  |
+| [goravel/minio](https://github.com/goravel/minio)                     | 存储模块的Minio驱动                                                                                                                                |
+| [goravel/cloudinary](https://github.com/goravel/cloudinary)           | 存储模块的Cloudinary驱动                                                                                                                           |
+| [goravel/redis](https://github.com/goravel/redis)                     | 缓存模块的Redis驱动                                                                                                                                |
+| [goravel/gin](https://github.com/goravel/gin)                         | Route模块的Gin驱动                                                                                                                               |
+| [goravel/fiber](https://github.com/goravel/fiber)                     | Route模块的Fiber驱动                                                                                                                             |
+| [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | 为Log模块提供日志分割功能                                                                                                                              |
 | [goravel/.github](https://github.com/goravel/.github) | [社区健康文件](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
 
 ## 行为准则
 
-Goravel 行为准则源自 Laravel 行为准则。任何违反行为准则的行为都可以报告给 Bowen： Any violations of the code of conduct may be reported to Bowen.
+Goravel的行为准则源自Laravel的行为准则。 任何违反行为准则的行为都可以向Bowen报告。 Any violations of the code of conduct may be reported to Bowen.
 
-- 参与者将容忍反对意见。
-- 参与者必须确保他们的语言和行为没有人身攻击和贬低个人言论。
-- 在解释他人的言行时，参与者应始终保持良好的意图。
-- 不能容忍可合理视为骚扰的行为。
+- 参与者将容忍不同的观点。
+- 参与者必须确保他们的语言和行为不包含人身攻击和贬低性的个人评论。
+- 在解释他人的言行时，参与者应始终假定对方有良好的意图。
+- 合理认为是骚扰的行为将不被容忍。
 
 <style module>
 .contributors {
