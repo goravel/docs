@@ -52,7 +52,7 @@ head:
       'meta',
       {
           name: twitter:title,
-          content: Goravel - The Golang Framework For Web Artisans
+          content: The Go Framework For Web Artisans
         }
     ]
   - [
@@ -78,24 +78,24 @@ hero:
   actions:
     - theme: brand
       text: Quick Start
-      link: /getting-started/installation
+      link: /quickstart
     - theme: alt
-      text: 🌟 Github Star
+      text: 🌟 Star
       link: https://github.com/goravel/goravel
       target: _blank
 features:
-  - title: 🚀 High-performance
-    details: Built with Golang, integrating multiple excellent extensions to create fast and responsive applications.
-  - title: 🧰 Full-featured
-    details: Includes ORM, HTTP, queue, task scheduling, logging, caching, and other basic tools for all web development.
+  - title: High Performance
+    details: Built with Golang, Goravel leverages Go's efficiency and concurrency model for fast and responsive applications.
+  - title: Comprehensive Feature Set
+    details: Includes ORM, Routing, Task scheduling, Logging, Caching, and more, providing all essential tools for web development.
   - title: 📈 Easy-to-extend
-    details: The module provides multiple drivers, and can develop extension packages according to needs, suitable for applications of any scale, from small projects to large systems.
+    details: Designed to support growth, making it suitable for applications of any size, from small projects to large-scale systems.
   - title: 💻 Easy-to-deploy
     details: Provides multiple packaging commands, supports Docker image deployment, no additional dependencies.
-  - title: 👥 Active community
-    details: Supported by an active community, they contribute to its development, documentation, and continuous support.
+  - title: Active Community
+    details: Supported by an active community that contributes to its development, documentation, and ongoing support.
   - title: 🔄 PHPers' first choice
-    details: The framework style is consistent with Laravel, allowing PHPer to create powerful Golang applications without learning a new framework. Tribute to Laravel!
+    details: The framework's design is consistent with Laravel. Kudos to Laravel!
 ---
 
 <div class="text-center mt-10 text-3xl font-bold">Contributors</div>
