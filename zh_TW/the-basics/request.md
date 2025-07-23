@@ -4,7 +4,8 @@
 
 ## Introduction
 
-The `contracts/http/Request` method of Goravel can interact with the current HTTP request processed by the application, and get the input and files submitted together.
+The `contracts/http/Request` method of Goravel can interact with the current HTTP request processed by the application,
+and get the input and files submitted together.
 
 ## Interacting With The Request
 
@@ -21,9 +22,7 @@ facades.Route().Get("/", func(ctx http.Context) {
 ### Retrieving The Request Path
 
 ```go
-path := ctx.Request().Path() // /users/1
-
-originPath := ctx.Request().OriginPath() // /users/{id}
+path := ctx.Request().Path() // /users
 ```
 
 ### Retrieving The Request URL
@@ -79,7 +78,8 @@ ip := ctx.Request().Ip()
 
 ### Retrieving All Input Data
 
-You may retrieve all of the incoming request's input data as `map[string]any` using the `All` method, which is a collection of `json`, `form` and `query`(priority from front to back).
+You may retrieve all of the incoming request's input data as `map[string]any` using the `All` method, which is a
+collection of `json`, `form` and `query`(priority from front to back).
 
 ```go
 data := ctx.Request().All()
@@ -119,7 +119,8 @@ queries := ctx.Request().Queries()
 
 ### Retrieving An Input Value
 
-Access all of the user input without worrying about which HTTP verb was used for the request. Retrieve order: `json`, `form`.
+Access all of the user input without worrying about which HTTP verb was used for the request. Retrieve order: `json`,
+`form`.
 
 ```go
 name := ctx.Request().Input("name")
@@ -129,7 +130,6 @@ name := ctx.Request().InputInt64("name")
 name := ctx.Request().InputBool("name")
 name := ctx.Request().InputArray("name")
 name := ctx.Request().InputMap("name")
-name := ctx.Request().InputMapArray("name")
 ```
 
 ### Bind Json/Form
@@ -164,11 +164,13 @@ err := ctx.Request().BindQuery(&test)
 
 ### Retrieving a Cookie Value
 
-Goravel provides a simple way to work with `cookie`. Use the `Cookie` method on the `Request` instance to retrieve a `cookie` value, will return an empty string if the `cookie` is not present. You can also define a default value in the second argument.
+Goravel provides a simple way to work with `cookie`. Use the `Cookie` method on the `Request` instance to retrieve a
+`cookie` value, will return an empty string if the `cookie` is not present. You can also define a default value in the
+second argument.
 
 ```go
 value := ctx.Request().Cookie("name")
-value := ctx.Request().Cookie("name", "default")
+value := ctx.Request().Cookie("name", "default") 
 ```
 
 ## File
@@ -177,7 +179,6 @@ value := ctx.Request().Cookie("name", "default")
 
 ```go
 file, err := ctx.Request().File("file")
-files, err := ctx.Request().Files("file")
 ```
 
 ### Save File
