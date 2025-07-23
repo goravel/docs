@@ -4,16 +4,16 @@
 
 ## 服务器要求
 
-- Golang >= 1.21
+- Golang >= 1.23
 
-## 安装
+## 安装 Goravel
 
-### 使用Goravel安装程序
+### 使用 Goravel 安装器
 
-根据[文档](https://github.com/goravel/installer)初始化安装程序，然后使用以下命令初始化一个新的Goravel项目：
+根据[文档](https://github.com/goravel/installer)初始化安装器，然后使用下面命令初始化一个新的 Goravel 项目：
 
 ```shell
-// 进入您想要安装项目的目录
+// 进入想要安装项目的目录
 goravel new blog
 ```
 
@@ -26,22 +26,22 @@ git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.gi
 // 安装依赖
 cd goravel && go mod tidy
 
-// 创建.env环境配置文件
+// 创建 .env 环境配置文件
 cp .env.example .env
 
 // 生成应用密钥
 go run . artisan key:generate
 ```
 
-## 启动HTTP服务
+## 启动 HTTP 服务
 
-### 根据根目录中的.env文件启动服务
+### 指定 .env 文件启动服务
 
 ```shell
 go run .
 ```
 
-### 指定 .env 文件启动服务
+### 根据根目录下的 .env 文件启动服务
 
 ```shell
 go run . --env=../.env
@@ -55,13 +55,13 @@ APP_ENV=production APP_DEBUG=true go run .
 
 ### 实时重载
 
-安装 [cosmtrek/air](https://github.com/cosmtrek/air)，Goravel 内置了可直接使用的配置文件：
+安装 [cosmtrek/air](https://github.com/cosmtrek/air)，框架内置配置文件，可直接使用：
 
 ```
 air
 ```
 
-如果您使用的是 Windows 系统，需要修改根目录下的 `.air.toml` 文件，在以下两行末尾添加 `.exe` 后缀：
+如果是 Windows 系统，需要修改根目录下 `.air.toml` 文件，为下面两行增加 `.exe` 后缀：
 
 ```shell
 [build]
@@ -73,19 +73,19 @@ air
 
 ### 配置文件
 
-Goravel框架的所有配置文件都放置在`config`目录中。 所有配置项都有注释，您可以根据需要进行调整。 All configuration items have annotations, you can adjust them according to your needs.
+Goravel 框架所有的配置文件都放在 `config` 目录中。每个配置项都有注释，可以根据自身需求进行调整。 All configuration items have annotations, you can adjust them according to your needs.
 
-### 生成应用程序密钥
+### 生成密钥
 
-在Goravel本地安装后，您需要生成应用程序密钥。 运行以下命令，将在`.env`文件的`APP_KEY`键上生成一个32位字符串。 这个密钥主要用于数据加密和解密。 Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
+Goravel 安装到本地后，要生成应用程序的密钥。运行下面命令后会在 `.env` 文件的 `APP_KEY` 键上生成 32 位字符串，该密钥主要作用于数据加解密等功能。 Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
 
 ```shell
 go run . artisan key:generate
 ```
 
-### 生成JWT令牌
+### 生成 JWT Token
 
-如果您使用[身份验证](../security/authentication)，则需要生成JWT令牌。
+如果使用到了 [用户认证](../security/authentication.md) 功能，需要初始化 JWT Token。
 
 ```shell
 go run . artisan jwt:secret
