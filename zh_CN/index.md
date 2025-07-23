@@ -7,7 +7,7 @@ head:
       'meta',
       {
           name: description,
-          content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。 As a starting scaffolding to help Gopher quickly build their own applications.
+          content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。 作为起始脚手架帮助 Gopher 快速构建自己的应用。
         }
     ]
   - [
@@ -23,7 +23,7 @@ head:
       'meta',
       {
           property: og:description,
-          content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。 As a starting scaffolding to help Gopher quickly build their own applications.
+          content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。 作为起始脚手架帮助 Gopher 快速构建自己的应用。
         }
     ]
   - [
@@ -47,13 +47,13 @@ head:
     ]
   - [
       'meta',
-      { name: twitter:title, content: 为 Web 工匠打造的 Go 框架 }
+      { name: twitter:title, content: Goravel - 全功能 Golang 开发框架 }
     ]
   - [
       'meta',
       {
           name: twitter:description,
-          content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。 As a starting scaffolding to help Gopher quickly build their own applications.
+          content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。 作为起始脚手架帮助 Gopher 快速构建自己的应用。
         }
     ]
   - [
@@ -72,24 +72,24 @@ hero:
   actions:
     - theme: brand
       text: 快速开始
-      link: /zh_CN/quickstart
+      link: /zh_CN/getting-started/installation
     - theme: alt
       text: 🌟 Github Star
       link: https://github.com/goravel/goravel
       target: _blank
 features:
-  - title: 高性能
-    details: 使用 Golang 构建，Goravel 利用 Go 的高效率和并发模型来创建快速且响应灵敏的应用程序。
-  - title: 全面的功能
-    details: 包括 ORM、路由、任务调度、日志记录、缓存等，提供所有 Web 开发所需的基本工具。
+  - title: 🚀 高性能
+    details: 使用 Golang 构建，整合多种优秀扩展来创建快速且响应灵敏的应用程序。
+  - title: 🧰 全功能
+    details: 包括 ORM、HTTP、队列、任务调度、日志、缓存等，提供所有 Web 开发所需的基本工具。
   - title: 📈 易扩展
     details: 模块提供多种驱动，且可根据需求开发扩展包，适合任何规模的应用程序，从小型项目到大型系统。
   - title: 💻 易部署
     details: 提供多种打包命令，支持 Docker 镜像部署，无额外依赖。
-  - title: 活跃的社区
+  - title: 👥 活跃的社区
     details: 由活跃的社区支持，他们为其开发、撰写文档和持续支持做出贡献。
   - title: 🔄 PHPers 过渡首选
-    details: 为 Laravel 开发者提供熟悉的结构和风格，简化向 Golang 的过渡。 该框架的设计与 Laravel 一致。 向 Laravel 致敬！
+    details: 框架风格与 Laravel 保持一致，让 PHPer 不用学习新的框架即可创建强大的 Golang 应用程序。致敬 Laravel！ 该框架的设计与 Laravel 一致。 向 Laravel 致敬！
 ---
 
 <div class="text-center mt-10 text-3xl font-bold">贡献者</div>
@@ -129,17 +129,12 @@ features:
 
 <div class="flex flex-col items-center">
 <div class="text-center mt-10 text-3xl font-bold">群组</div>
-<div class="text-sm mt-5">Welcome more discussion in Discord.</div>
-<div class="mt-10"><a href="https://discord.gg/cFc5csczzS" target="_blank">
-<svg style="fill: #5865F2;" xmlns="http://www.w3.org/2000/svg" width="180" height="180" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
-  <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/>
-</svg>
-</a>
-</div>
+<div class="text-sm mt-5">微信入群，请备注 Goravel</div>
+<div class="mt-10"><img src="/wechat.jpg" width="200"></div>
 </div>
 
 <div class="flex flex-col items-center">
-<div class="text-center mt-10 text-3xl font-bold mb-5">Reward</div>
+<div class="text-center mt-10 text-3xl font-bold mb-5">赞助</div>
 <img src="/reward.png" width="200">
 </div>
 
