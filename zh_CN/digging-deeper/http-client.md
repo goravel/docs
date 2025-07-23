@@ -4,19 +4,22 @@
 
 ## 简介
 
-在软件开发中，有很多时候你需要调用 API 来获取数据——无论是连接到微服务还是访问第三方 API。在这种情况下，Goravel 提供了一个易于使用、富有表现力且极简的 API，它基于标准的 `net/http` 库构建，所有这些都旨在提升开发者的体验。
+In software development, there are many instances when you need to call an API to fetch data—
+whether it's connecting to a microservice or accessing a third-party API. In such cases,
+Goravel offers an easy-to-use, expressive, and minimalist API built on the standard `net/http` library,
+all designed to enhance the developer experience.
 
 ## 配置
 
-Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP 请求。如果你需要调整其内部设置，只需更新 `config/http.go` 文件中的 `client` 属性即可。
+Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP 请求。如果你需要调整其内部设置，只需更新 `config/http.go` 文件中的 `client` 属性即可。 If you need to tweak its internal settings,
+just update the `client` property in the `config/http.go` file.
+Here are the available configuration options:
 
-以下是可用的配置选项：
-
-- `base_url`: 设置相对路径的根 URL。自动为不以 `http://` 或 `https://` 开头的请求添加前缀。
-- `timeout`（默认值：`30s`）: 完整请求生命周期的全局超时时长（连接 + 任何重定向 + 读取响应体）。零表示不超时。
-- `max_idle_conns`: 最大空闲（保持活动）连接数。零表示没有限制。
+- `base_url`: 设置相对路径的根 URL。自动为不以 `http://` 或 `https://` 开头的请求添加前缀。 Automatically prefixes requests that don't start with `http://` or `https://`.
+- `timeout`（默认值：`30s`）: 完整请求生命周期的全局超时时长（连接 + 任何重定向 + 读取响应体）。零表示不超时。 A Timeout of zero means no timeout.
+- `max_idle_conns`: 最大空闲（保持活动）连接数。零表示没有限制。 Zero means no limit.
 - `max_idle_conns_per_host`: 最大空闲（保持活动）连接数。
-- `max_conns_per_host`: 限制总连接数，包括正在拨号、活动和空闲状态的连接。零表示没有限制。
+- `max_conns_per_host`: 限制总连接数，包括正在拨号、活动和空闲状态的连接。零表示没有限制。 Zero means no limit.
 - `idle_conn_timeout`: 空闲（保持活动）连接在自行关闭之前保持空闲的最大时长。
 
 ```go
@@ -86,6 +89,8 @@ type Response interface {
 ### URI 模板
 
 URI 模板允许你使用占位符构建动态的请求 URL。你可以在 URL 中定义这些占位符，然后在发起请求之前提供值来替换它们。要实现这一点，你可以使用 `WithUrlParameter` 来设置单个参数，或者使用 `WithUrlParameters` 来设置多个参数。
+You can define these placeholders in your URL and then provide the values to replace them before making the request.
+To achieve this, you can use `WithUrlParameter` for single parameters or `WithUrlParameters` for multiple parameters.
 
 ```go
 response, err := facades.Http().
@@ -133,6 +138,7 @@ response, err := facades.Http().
 ### 发送请求体
 
 对于像 `POST`、`PUT`、`PATCH` 和 `DELETE` 这样的 HTTP 动词，它们接受 `io.Reader` 作为第二个参数。为了简化构建请求负载（payload），框架提供了构建请求体的实用方法。
+To simplify building payloads, the framework provides utility methods for constructing request bodies.
 
 ```go
 import "github.com/goravel/framework/support/http"
@@ -144,7 +150,7 @@ body, err := builder.Build()
 response, err := facades.Http().WithHeader("Content-Type", body.ContentType()).Post("https://example.com/users", body)
 ```
 
-### 请求头
+### Headers
 
 你可以使用 `WithHeader` 为你的请求添加单个请求头，或者使用 `WithHeaders` 通过 map 提供多个请求头。
 
@@ -221,8 +227,9 @@ response, err := facades.Http().
     Get("https://api.example.com/api/resource")
 ```
 
-::: tip
+:::tip
 `WithToken` 方法还接受一个可选的第二个参数，用于指定令牌类型（例如，“Bearer”、“Token”）。如果未提供类型，则默认为“Bearer”。
+If no type is provided, it defaults to "Bearer".
 
 ```go
 response, err := facades.Http().
@@ -243,6 +250,7 @@ response, err := facades.Http().
 ### 上下文
 
 你可以使用 `WithContext` 使你的 HTTP 请求具有上下文感知能力。这允许你控制请求的生命周期，例如，通过设置超时或启用取消。
+This allows you to control the lifecycle of a request, for instance, by setting timeouts or enabling cancellation.
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
