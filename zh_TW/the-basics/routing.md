@@ -8,7 +8,9 @@ The Goravel routing module can be operated by `facades.Route()`.
 
 ## HTTP Driver
 
-Goravel uses [gin](https://github.com/gin-gonic/gin) as its default HTTP driver. To use other drivers, configure them in the `config/http.go` file. The official default supports [gin](https://github.com/gin-gonic/gin) and [fiber](https://github.com/gofiber/fiber).
+Goravel uses [gin](https://github.com/gin-gonic/gin) as its default HTTP driver. To use other drivers, configure them in
+the `config/http.go` file. The official default supports [gin](https://github.com/gin-gonic/gin)
+and [fiber](https://github.com/gofiber/fiber).
 
 | Driver | Link                                                                                                 |
 | ------ | ---------------------------------------------------------------------------------------------------- |
@@ -17,9 +19,12 @@ Goravel uses [gin](https://github.com/gin-gonic/gin) as its default HTTP driver.
 
 ## Default Routing File
 
-To define routing files, simply navigate to the `/routes` directory. By default, the framework utilizes a sample route located in `/routes/web.go`. To establish routing binding, the `func Web()` method is registered in the `app/providers/route_service_provider.go` file.
+To define routing files, simply navigate to the `/routes` directory. By default, the framework utilizes a sample route
+located in `/routes/web.go`. To establish routing binding, the `func Web()` method is registered in the
+`app/providers/route_service_provider.go` file.
 
-If you require more precise management, you can add routing files to the `/routes` directory and register them in the `app/providers/route_service_provider.go` file.
+If you require more precise management, you can add routing files to the `/routes` directory and register them in the
+`app/providers/route_service_provider.go` file.
 
 ## Get Routes List
 
@@ -31,7 +36,8 @@ Use the `route:list` command to view routes list:
 
 ## Start HTTP Server
 
-Start the HTTP server in `main.go` in the root directory by calling `facades.Route().Run()`. This will automatically fetch the `route.host` configuration.
+Start the HTTP server in `main.go` in the root directory by calling `facades.Route().Run()`. This will automatically
+fetch the `route.host` configuration.
 
 ```go
 package main
@@ -59,7 +65,8 @@ func main() {
 
 ## Start HTTPS Server
 
-Please complete the configuration of `http.tls` in `config/http.go` before using HTTPS, the `facades.Route().RunTLS()` method will start the HTTPS server according to the relevant configuration:
+Please complete the configuration of `http.tls` in `config/http.go` before using HTTPS, the `facades.Route().RunTLS()`
+method will start the HTTPS server according to the relevant configuration:
 
 ```go
 // main.go
@@ -79,7 +86,8 @@ if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); 
 
 ## Close HTTP/HTTPS Server
 
-You can gracefully close the HTTP/HTTPS server by calling the `Shutdown` method, which will wait for all requests to be processed before closing.
+You can gracefully close the HTTP/HTTPS server by calling the `Shutdown` method, which will wait for all requests to be
+processed before closing.
 
 ```go
 // main.go
@@ -208,7 +216,7 @@ facades.Route().Get("/input/{id}", func(ctx http.Context) http.Response {
 })
 ```
 
-Detail [Request](./request.md)
+Detail [Request](./requests)
 
 ## Middleware
 
@@ -218,7 +226,7 @@ import "github.com/goravel/framework/http/middleware"
 facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
-Detail [Middleware](./middleware.md)
+Detail [Middleware](./middlewares)
 
 ## Get All Routes
 
@@ -240,7 +248,8 @@ route := facades.Route().Info("users.index")
 
 ## Fallback Routes
 
-Using the `Fallback` method, you may define a route that will be executed when no other route matches the incoming request.
+Using the `Fallback` method, you may define a route that will be executed when no other route matches the incoming
+request.
 
 ```go
 facades.Route().Fallback(func(ctx http.Context) http.Response {
@@ -252,9 +261,13 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 
 ### Defining Rate Limiters
 
-Goravel includes powerful and customizable rate-limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `app/providers/route_service_provider.go` class.
+Goravel includes powerful and customizable rate-limiting services that you may utilize to restrict the amount of traffic
+for a given route or group of routes. To get started, you should define rate limiter configurations that meet your
+application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's
+`app/providers/route_service_provider.go` class.
 
-Rate limiters are defined using the `facades.RateLimiter()`'s `For` method. The `For` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. The rate limiter name may be any string you wish:
+Rate limiters are defined using the `facades.RateLimiter()`'s `For` method. The `For` method accepts a rate limiter name
+and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. The rate limiter name may be any string you wish:
 
 ```go
 import (
@@ -270,7 +283,9 @@ func (receiver *RouteServiceProvider) configureRateLimiting() {
 }
 ```
 
-If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Goravel. If you would like to define your own response that should be returned by a rate limit, you may use the response method:
+If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be
+returned by Goravel. If you would like to define your own response that should be returned by a rate limit, you may use
+the response method:
 
 ```go
 facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
@@ -280,7 +295,8 @@ facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
 })
 ```
 
-Since rate limiter callbacks receive the incoming HTTP request instance, you may build the appropriate rate limit dynamically based on the incoming request or authenticated user:
+Since rate limiter callbacks receive the incoming HTTP request instance, you may build the appropriate rate limit
+dynamically based on the incoming request or authenticated user:
 
 ```go
 facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
@@ -295,7 +311,9 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
 
 #### Segmenting Rate Limits
 
-Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `By` method when building your rate limit:
+Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to
+access a given route 100 times per minute per IP address. To accomplish this, you may use the `By` method when building
+your rate limit:
 
 ```go
 facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
@@ -307,7 +325,8 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
 })
 ```
 
-To illustrate this feature using another example, we can limit access to the route to 100 times per minute per authenticated user ID or 10 times per minute per IP address for guests:
+To illustrate this feature using another example, we can limit access to the route to 100 times per minute per
+authenticated user ID or 10 times per minute per IP address for guests:
 
 ```go
 facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
@@ -321,7 +340,8 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
 
 #### Multiple Rate Limits
 
-If needed, you may return an array of rate limits for a given rate limiter configuration. Each rate limit will be evaluated for the route based on the order they are placed within the array:
+If needed, you may return an array of rate limits for a given rate limiter configuration. Each rate limit will be
+evaluated for the route based on the order they are placed within the array:
 
 ```go
 facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []contractshttp.Limit {
@@ -334,7 +354,8 @@ facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []c
 
 ### Attaching Rate Limiters To Routes
 
-Rate limiters may be attached to routes or route groups using the throttle middleware. The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
+Rate limiters may be attached to routes or route groups using the throttle middleware. The throttle middleware accepts
+the name of the rate limiter you wish to assign to the route:
 
 ```go
 import github.com/goravel/framework/http/middleware
@@ -350,4 +371,5 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 
 Goravel has CORS enabled by default, the configuration can be modified in `config/cors.go`.
 
-> For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+> For more information on CORS and CORS headers, please consult
+> the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
