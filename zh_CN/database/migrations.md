@@ -1,14 +1,14 @@
-# 数据库迁移
+# Migrations
 
 [[toc]]
 
 ## 简介
 
-当多人协作开发应用程序时，如果同步数据库结构没有一个统一的规范，以保证所有人的本地数据都是一致的，那将是灾难。数据库迁移就是为了解决这个问题，将数据库的结构进行版本控制，以保证所有开发人员的数据库结构的一致性。
+当多人协作开发应用程序时，如果同步数据库结构没有一个统一的规范，以保证所有人的本地数据都是一致的，那将是灾难。数据库迁移就是为了解决这个问题，将数据库的结构进行版本控制，以保证所有开发人员的数据库结构的一致性。 Without this, there could be chaos as everyone's individual data won't match up. 数据库迁移 The database structure is version-controlled to ensure its consistency within all developers.
 
 ## 配置
 
-数据库迁移文件存放在 `database/migrations` 目录下，你可以在 `config/database.go` 文件中配置数据库连接信息。
+数据库迁移文件存放在 `database/migrations` 目录下，你可以在 `config/database.go` 文件中配置数据库连接信息。 You can configure the database connection information in the `config/database.go` file.
 
 ```go
 "migrations": map[string]any{
@@ -25,7 +25,7 @@
 go run . artisan make:migration create_users_table
 ```
 
-该命令会在 `database/migrations` 目录下生成迁移文件，所有迁移文件都以一个时间戳为开头，Goravel 将以此作为迁移文件的执行顺序。
+This command will generate migration files in the `database/migrations` directory. 该命令会在 `database/migrations` 目录下生成迁移文件，所有迁移文件都以一个时间戳为开头，Goravel 将以此作为迁移文件的执行顺序。
 
 ### 快捷生成
 
@@ -49,7 +49,7 @@ _(to|from|in)_(\w+)$
 
 ### Go 语言迁移
 
-迁移类包含两个方法：`Up` 和 `Down`。`Up` 方法用于向数据库中添加新表、列或索引，而 `Down` 方法用于撤销 `Up` 方法执行的操作。在这两种方法中，可以使用 `facades.Schema()` 来创建和操作数据库表，起可用方法[详见文档](#tables)。以下迁移会创建一个 `users` 表：
+The migration struct contains two methods: `Up` and `Down`. The `Up` method is used to add new tables, columns, or indexes to the database, while the `Down` method is used to undo the operations performed by the `Up` method. In these two methods, you can use `facades.Schema()` to create and operate database tables. For available methods, see the [documentation](#tables). The following migration will create a `users` table:
 
 ```go
 package migrations
@@ -126,13 +126,13 @@ go run . artisan migrate:status
 
 ## 回滚迁移
 
-如果要回滚最后一次迁移操作，可以使用 Artisan 命令 `rollback`。该命令会回滚最后「一批」的迁移，这可能包含多个迁移文件：
+如果要回滚最后一次迁移操作，可以使用 Artisan 命令 `rollback`。该命令会回滚最后「一批」的迁移，这可能包含多个迁移文件： This command rolls back the last "batch" of migrations, which may include multiple migration files:
 
 ```shell
 go run . artisan migrate:rollback
 ```
 
-通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。例如，以下命令将回滚最后五个迁移：
+通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。例如，以下命令将回滚最后五个迁移： For example, the following command will roll back the last five migrations:
 
 ```shell
 go run . artisan migrate:rollback --step=5
@@ -146,13 +146,13 @@ go run . artisan migrate:reset
 
 ### 使用单个命令同时进行回滚和迁移操作
 
-命令 `migrate:refresh` 首先会回滚已运行过的所有迁移，随后会执行 `migrate`。这一命令可以高效地重建你的整个数据库：
+命令 `migrate:refresh` 首先会回滚已运行过的所有迁移，随后会执行 `migrate`。这一命令可以高效地重建你的整个数据库： This command effectively re-creates your entire database:
 
 ```shell
 go run . artisan migrate:refresh
 ```
 
-通过在命令 `refresh` 中使用 `step` 参数，你可以回滚并重新执行指定数量的迁移操作。例如，下列命令会回滚并重新执行最后五个迁移操作：
+通过在命令 `refresh` 中使用 `step` 参数，你可以回滚并重新执行指定数量的迁移操作。例如，下列命令会回滚并重新执行最后五个迁移操作： For example, the following command will roll back and re-migrate the last five migrations:
 
 ```shell
 go run . artisan migrate:refresh --step=5
@@ -204,7 +204,7 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
 })
 ```
 
-### 重命名字段
+### Rename Column
 
 ```go
 facades.Schema().Table("users", func(table schema.Blueprint) {
@@ -229,7 +229,7 @@ facades.Schema().DropIfExists("users")
 
 ```
 
-## 字段
+## Columns
 
 ### 可用的字段类型
 
@@ -264,7 +264,7 @@ table.Enum("num", []any{1, 2})
 
 #### ID
 
-`ID` 方法是 `BigIncrements` 方法的别名。默认情况下，该方法将创建一个 `id` 列；但是，如果你想要为该列分配一个不同的名称，可以传递一个列名称：
+The `ID` method is an alias for the `BigIncrements` method. `ID` 方法是 `BigIncrements` 方法的别名。默认情况下，该方法将创建一个 `id` 列；但是，如果你想要为该列分配一个不同的名称，可以传递一个列名称：
 
 ```go
 table.ID()
@@ -273,13 +273,13 @@ table.ID("user_id")
 
 #### SoftDeletes
 
-`SoftDeletes` 方法添加了一个可以为空的 `deleted_at` `TIMESTAMP` 列。此列旨在存储 Orm 「软删除」功能所需的 `deleted_at` 时间戳：
+The `SoftDeletes` method adds a nullable `deleted_at` `TIMESTAMP` column. `SoftDeletes` 方法添加了一个可以为空的 `deleted_at` `TIMESTAMP` 列。此列旨在存储 Orm 「软删除」功能所需的 `deleted_at` 时间戳：
 
 ```go
 table.SoftDeletes()
 ```
 
-#### 自定义字段
+#### Custom column
 
 如果你正在使用框架尚不支持的字段类型，可以通过 `Column` 方法自定义字段类型：
 
@@ -289,7 +289,7 @@ table.Column("geometry", "geometry")
 
 ### 列修饰符
 
-除了上面列出的列类型之外，当给数据库表添加一个列时，你还可以给列添加「修饰符」。例如，要使列可以「为空」，你可以使用 `Nullable` 方法：
+In addition to the column types listed above, when adding a column to a database table, you can also add "modifiers" to the column. 除了上面列出的列类型之外，当给数据库表添加一个列时，你还可以给列添加「修饰符」。例如，要使列可以「为空」，你可以使用 `Nullable` 方法：
 
 ```go
 facades.Schema().Table("users", func(table schema.Blueprint) {
@@ -299,20 +299,20 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
 
 以下表格包含所有可用的列修饰符：
 
-| 修饰符                   | 描述                                                                        |
-| ------------------------ | --------------------------------------------------------------------------- |
-| `.Always()`              | 该列的值始终由数据库系统自动生成，用户不能直接插入或修改（仅限 PostgreSQL） |
-| `.AutoIncrement()`       | 设置整数列为自动增长的（主键）                                              |
-| `.After("column")`       | 将列设置为指定列之后（适用于 MySQL）                                        |
-| `.Comment("my comment")` | 向列添加注释（MySQL / PostgreSQL）                                          |
-| `.Change()`              | 修改列（MySQL / PostgreSQL / Sqlserver）                                    |
-| `.Default(value)`        | 为列指定「默认」值                                                          |
-| `.First()`               | 将列设置为表的第一个字段（适用于 MySQL）                                    |
-| `.GeneratedAs()`         | 设置列的值由数据库系统自动生成（仅限 PostgreSQL）                           |
-| `.Nullable()`            | 允许插入 NULL 值到列中                                                      |
-| `.Unsigned()`            | 设置整数列为 UNSIGNED（仅限 MySQL）                                         |
-| `.UseCurrent()`          | 设置时间戳列使用 CURRENT_TIMESTAMP 作为默认值                               |
-| `.UseCurrentOnUpdate()`  | 设置记录更新时，时间戳列使用 CURRENT_TIMESTAMP（仅限 MySQL）                |
+| Modified                 | 描述                                                              |
+| ------------------------ | --------------------------------------------------------------- |
+| `.Always()`              | 该列的值始终由数据库系统自动生成，用户不能直接插入或修改（仅限 PostgreSQL）                     |
+| `.AutoIncrement()`       | 设置整数列为自动增长的（主键）                                                 |
+| `.After("column")`       | 将列设置为指定列之后（适用于 MySQL）                                           |
+| `.Comment("my comment")` | 向列添加注释（MySQL / PostgreSQL）                                      |
+| `.Change()`              | 修改列（MySQL / PostgreSQL / Sqlserver）                             |
+| `.Default(value)`        | 为列指定「默认」值                                                       |
+| `.First()`               | 将列设置为表的第一个字段（适用于 MySQL）                                         |
+| `.GeneratedAs()`         | 设置列的值由数据库系统自动生成（仅限 PostgreSQL）                                  |
+| `.Nullable()`            | 允许插入 NULL 值到列中                                                  |
+| `.Unsigned()`            | 设置整数列为 UNSIGNED（仅限 MySQL）                                       |
+| `.UseCurrent()`          | 设置时间戳列使用 CURRENT_TIMESTAMP 作为默认值           |
+| `.UseCurrentOnUpdate()`  | 设置记录更新时，时间戳列使用 CURRENT_TIMESTAMP（仅限 MySQL） |
 
 ### 删除列
 
