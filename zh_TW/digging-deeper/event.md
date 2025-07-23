@@ -4,13 +4,22 @@
 
 ## Introduction
 
-Goravel's events provide a simple observer pattern implementation, allowing you to subscribe and listen to various events that occur within your application. Event classes are typically stored in the `app/events` directory, while their listeners are stored in `app/listeners`. Don't worry if you don't see these directories in your application as they will be created for you as you generate events and listeners using Artisan console commands.
+Goravel's events provide a simple observer pattern implementation, allowing you to subscribe and listen to various
+events that occur within your application. Event classes are typically stored in the `app/events` directory, while their
+listeners are stored in `app/listeners`. Don't worry if you don't see these directories in your application as they will
+be created for you as you generate events and listeners using Artisan console commands.
 
-Events serve as a great way to decouple various aspects of your application, as a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order is shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `app\events\OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
+Events serve as a great way to decouple various aspects of your application, as a single event can have multiple
+listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each
+time an order is shipped. Instead of coupling your order processing code to your Slack notification code, you can raise
+an `app\events\OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
 
 ## Registering Events & Listeners
 
-The `app\providers\EventServiceProvider` included with your Goravel application provides a convenient place to register all of your application's event listeners. The `listen` method contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add an `OrderShipped` event:
+The `app\providers\EventServiceProvider` included with your Goravel application provides a convenient place to register
+all of your application's event listeners. The `listen` method contains an array of all events (keys) and their
+listeners (values). You may add as many events to this array as your application requires. For example, let's add an
+`OrderShipped` event:
 
 ```go
 package providers
@@ -51,7 +60,9 @@ go run . artisan make:listener user/SendPodcastNotification
 
 ## Defining Events
 
-An event class is essentially a data container that holds the information related to the event, the `Handle` method of `event` passes in and returns the `[]event.Arg` structure, which can be used to process data. The processed data will then be passed on to all associated `listeners`. For example, let's assume an `app\events\OrderShipped` event:
+An event class is essentially a data container that holds the information related to the event, the `Handle` method of
+`event` passes in and returns the `[]event.Arg` structure, which can be used to process data. The processed data will
+then be passed on to all associated `listeners`. For example, let's assume an `app\events\OrderShipped` event:
 
 ```go
 package events
@@ -68,7 +79,8 @@ func (receiver *OrderShipped) Handle(args []event.Arg) ([]event.Arg, error) {
 
 ## Defining Listeners
 
-Next, let's take a look at the listener for our example event. Event listeners receive `[]event.Arg` of the event `Handle` method returns. Within the `Handle` method, you may perform any actions necessary to respond to the event:
+Next, let's take a look at the listener for our example event. Event listeners receive `[]event.Arg` of the event
+`Handle` method returns. Within the `Handle` method, you may perform any actions necessary to respond to the event:
 
 ```go
 package listeners
@@ -99,11 +111,14 @@ func (receiver *SendShipmentNotification) Handle(args ...any) error {
 
 ### Stopping The Propagation Of An Event
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning an error from your listener's `Handle` method.
+Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning an error from
+your listener's `Handle` method.
 
 ## Queued Event Listeners
 
-Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making an HTTP request. Before using queued listeners, make sure to [configure your queue](queues.md) and start a queue worker on your server or local development environment.
+Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making
+an HTTP request. Before using queued listeners, make sure to [configure your queue](queues) and start a queue worker
+on your server or local development environment.
 
 ```go
 package listeners
@@ -127,7 +142,12 @@ func (receiver *SendShipmentNotification) Handle(args ...any) error {
 
 ### Queued Event Listeners & Database Transactions
 
-When queued listeners are dispatched within database transactions, the queue may process them before the database transaction has been committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can occur when the job that dispatches the queued listener is processed. At this time, the event needs to be placed outside the database transactions.
+When queued listeners are dispatched within database transactions, the queue may process them before the database
+transaction has been committed. When this happens, any updates you have made to models or database records during the
+database transaction may not yet be reflected in the database. In addition, any models or database records created
+within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can
+occur when the job that dispatches the queued listener is processed. At this time, the event needs to be placed outside
+the database transactions.
 
 ## Dispatching Events
 
