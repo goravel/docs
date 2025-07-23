@@ -4,7 +4,9 @@
 
 ## Description
 
-All functions of Goravel are implemented using `facades`, and all `facades` are made up of interfaces. So with the mock function from [stretchr/testify](http://github.com/stretchr/testify), Goravel can deliver an exceptional testing experience.
+All functions of Goravel are implemented using `facades`, and all `facades` are made up of interfaces. So with the mock
+function from [stretchr/testify](http://github.com/stretchr/testify), Goravel can deliver an exceptional testing
+experience.
 
 ## Mock facades.App
 
@@ -89,7 +91,7 @@ func Cache() string {
 func TestCache(t *testing.T) {
   mockFactory := mock.Factory()
   mockCache := mockFactory.Cache()
-
+  
   mockCache.On("Put", "name", "goravel", mock.Anything).Return(nil).Once()
   mockCache.On("Get", "name", "test").Return("Goravel").Once()
 
@@ -133,25 +135,25 @@ import (
 )
 
 func Crypt(str string) (string, error) {
-	res, err := facades.Crypt().EncryptString(str)
-	if err != nil {
-		return "", err
-	}
+ res, err := facades.Crypt().EncryptString(str)
+ if err != nil {
+  return "", err
+ }
 
-	return facades.Crypt().DecryptString(res)
+ return facades.Crypt().DecryptString(res)
 }
 
 func TestCrypt(t *testing.T) {
   mockFactory := mock.Factory()
-	mockCrypt := mockFactory.Crypt()
-	mockCrypt.On("EncryptString", "Goravel").Return("test", nil).Once()
-	mockCrypt.On("DecryptString", "test").Return("Goravel", nil).Once()
+ mockCrypt := mockFactory.Crypt()
+ mockCrypt.On("EncryptString", "Goravel").Return("test", nil).Once()
+ mockCrypt.On("DecryptString", "test").Return("Goravel", nil).Once()
 
-	res, err := Crypt("Goravel")
-	assert.Equal(t, "Goravel", res)
-	assert.Nil(t, err)
+ res, err := Crypt("Goravel")
+ assert.Equal(t, "Goravel", res)
+ assert.Nil(t, err)
 
-	mockCrypt.AssertExpectations(t)
+ mockCrypt.AssertExpectations(t)
 }
 ```
 
@@ -193,21 +195,21 @@ import (
 )
 
 func Gate() bool {
-	return facades.Gate().Allows("update-post", map[string]any{
-		"post": "test",
-	})
+ return facades.Gate().Allows("update-post", map[string]any{
+  "post": "test",
+ })
 }
 
 func TestGate(t *testing.T) {
   mockFactory := mock.Factory()
-	mockGate := mockFactory.Gate()
-	mockGate.On("Allows", "update-post", map[string]any{
-		"post": "test",
-	}).Return(true).Once()
+ mockGate := mockFactory.Gate()
+ mockGate.On("Allows", "update-post", map[string]any{
+  "post": "test",
+ }).Return(true).Once()
 
-	assert.True(t, Gate())
+ assert.True(t, Gate())
 
-	mockGate.AssertExpectations(t)
+ mockGate.AssertExpectations(t)
 }
 ```
 
@@ -257,19 +259,19 @@ import (
 )
 
 func Hash() (string, error) {
-	return facades.Hash().Make("Goravel")
+ return facades.Hash().Make("Goravel")
 }
 
 func TestHash(t *testing.T) {
   mockFactory := mock.Factory()
   mockHash := mockFactory.Hash()
-	mockHash.On("Make", "Goravel").Return("test", nil).Once()
+ mockHash.On("Make", "Goravel").Return("test", nil).Once()
 
-	res, err := Hash()
-	assert.Equal(t, "test", res)
-	assert.Nil(t, err)
+ res, err := Hash()
+ assert.Equal(t, "test", res)
+ assert.Nil(t, err)
 
-	mockHash.AssertExpectations(t)
+ mockHash.AssertExpectations(t)
 }
 ```
 
@@ -532,10 +534,10 @@ func View() bool {
 func TestView(t *testing.T) {
   mockFactory := mock.Factory()
   mockView := mockFactory.View()
-	mockView.On("Exists", "welcome.tmpl").Return(true).Once()
+ mockView.On("Exists", "welcome.tmpl").Return(true).Once()
 
-	assert.True(t, View())
+ assert.True(t, View())
 
-	mockView.AssertExpectations(t)
+ mockView.AssertExpectations(t)
 }
 ```
