@@ -6,33 +6,63 @@ head:
   - [
       'meta',
       {
-        name: description,
-        content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。
-      }
+          name: description,
+          content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。 作为起始脚手架帮助 Gopher 快速构建自己的应用。
+        }
     ]
-  - ['meta', { property: og:url, content: https://www.goravel.dev }]
-  - ['meta', { property: og:type, content: website }]
-  - ['meta', { property: og:title, content: Goravel - 全功能 Golang 开发框架 }]
+  - [
+      'meta',
+      { property: og:url, content: https://www.goravel.dev }
+    ]
+  - [ 'meta', { property: og:type, content: website } ]
+  - [
+      'meta',
+      { property: og:title, content: Goravel - 全功能 Golang 开发框架 }
+    ]
   - [
       'meta',
       {
-        property: og:description,
-        content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。
-      }
+          property: og:description,
+          content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。 作为起始脚手架帮助 Gopher 快速构建自己的应用。
+        }
     ]
-  - ['meta', { property: og:image, content: https://www.goravel.dev/meta.png }]
-  - ['meta', { name: twitter:card, content: summary_large_image }]
-  - ['meta', { property: twitter:domain, content: www.goravel.dev }]
-  - ['meta', { property: twitter:url, content: https://www.goravel.dev }]
-  - ['meta', { name: twitter:title, content: Goravel - 全功能 Golang 开发框架 }]
   - [
       'meta',
       {
-        name: twitter:description,
-        content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。
-      }
+          property: og:image,
+          content: https://www.goravel.dev/meta.png
+        }
     ]
-  - ['meta', { name: twitter:image, content: https://www.goravel.dev/meta.png }]
+  - [
+      'meta',
+      { name: twitter:card, content: summary_large_image }
+    ]
+  - [
+      'meta',
+      { property: twitter:domain, content: www.goravel.dev }
+    ]
+  - [
+      'meta',
+      { property: twitter:url, content: https://www.goravel.dev }
+    ]
+  - [
+      'meta',
+      { name: twitter:title, content: Goravel - 全功能 Golang 开发框架 }
+    ]
+  - [
+      'meta',
+      {
+          name: twitter:description,
+          content: Goravel 是一个 Golang 开发框架，具有完整功能和卓越的可扩展性。作为起始脚手架帮助 Gopher 快速构建自己的应用。 作为起始脚手架帮助 Gopher 快速构建自己的应用。
+        }
+    ]
+  - [
+      'meta',
+      {
+          name: twitter:image,
+          content: https://www.goravel.dev/meta.png
+        }
+    ]
 
 hero:
   name: Goravel
@@ -59,13 +89,12 @@ features:
   - title: 👥 活跃的社区
     details: 由活跃的社区支持，他们为其开发、撰写文档和持续支持做出贡献。
   - title: 🔄 PHPers 过渡首选
-    details: 框架风格与 Laravel 保持一致，让 PHPer 不用学习新的框架即可创建强大的 Golang 应用程序。致敬 Laravel！
+    details: 框架风格与 Laravel 保持一致，让 PHPer 不用学习新的框架即可创建强大的 Golang 应用程序。致敬 Laravel！ 该框架的设计与 Laravel 一致。 向 Laravel 致敬！
 ---
 
 <div class="text-center mt-10 text-3xl font-bold">贡献者</div>
 
-<div class="flex flex-wrap justify-center gap-2 mt-10" :class="$style.contributors">
-<a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
+<div class="flex flex-wrap justify-center gap-2 mt-10" :class="$style.contributors"><a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
 <a href="https://github.com/kkumar-gcc" target="_blank"><img src="https://avatars.githubusercontent.com/u/84431594?v=4" width="48" height="48"></a>
 <a href="https://github.com/almas-x" target="_blank"><img src="https://avatars.githubusercontent.com/u/9382335?v=4" width="48" height="48"></a>
@@ -100,13 +129,13 @@ features:
 
 <div class="flex flex-col items-center">
 <div class="text-center mt-10 text-3xl font-bold">群组</div>
-<div class="text-base mt-10">微信入群，请备注 Goravel</div>
-<img src="/wechat.jpg" width="200">
+<div class="text-sm mt-5">微信入群，请备注 Goravel</div>
+<div class="mt-10"><img src="/wechat.jpg" width="200"></div>
 </div>
 
 <div class="flex flex-col items-center">
-<div class="text-center mt-10 text-3xl font-bold mb-10">打赏</div>
-<img src="/reward-wechat.jpg" width="200">
+<div class="text-center mt-10 text-3xl font-bold mb-5">赞助</div>
+<img src="/reward.png" width="200">
 </div>
 
 <style module>
