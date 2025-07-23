@@ -4,7 +4,8 @@
 
 ## Introduction
 
-`facades` provide a "static" interface for the core functionality of the application and provide a more flexible, more elegant, and easy-to-test syntax.
+`facades` provide a "static" interface for the core functionality of the application and provide a more flexible, more
+elegant, and easy-to-test syntax.
 
 All `facades` of Goravel are defined under `github.com/goravel/framework/facades`. We can easily use `facades`:
 
@@ -36,26 +37,26 @@ func (database *ServiceProvider) Boot() {
 
 ## Facade Class Reference
 
-| Facade      | Document                                                   |
-| ----------- | ---------------------------------------------------------- |
-| App         | [Container](../architecture-concepts/service-container.md) |
-| Artisan     | [Command Console](../digging-deeper/artisan-console.md)    |
-| Auth        | [Authentication](../security/authentication.md)            |
-| Cache       | [Cache](../digging-deeper/cache.md)                        |
-| Config      | [Configuration](../getting-started/configuration.md)       |
-| Crypt       | [Encryption](../security/encryption.md)                    |
-| Event       | [Event](../digging-deeper/event.md)                        |
-| Gate        | [Authorization](../security/authorization.md)              |
-| Grpc        | [Grpc](../the-basics/grpc.md)                              |
-| Hash        | [Hashing](../security/hashing.md)                          |
-| Log         | [Log](../the-basics/logging.md)                            |
-| Mail        | [Mail](../digging-deeper/mail.md)                          |
-| Orm         | [ORM](../orm/getting-started.md)                           |
-| Queue       | [Queue](../digging-deeper/queues.md)                       |
-| RateLimiter | [RateLimiter](../the-basics/routing.md)                    |
-| Route       | [Route](../the-basics/routing.md)                          |
-| Seeder      | [Seeder](../database/seeding.md)                           |
-| Schedule    | [Schedule](../digging-deeper/task-scheduling.md)           |
-| Storage     | [Storage](../digging-deeper/task-scheduling.md)            |
-| Testing     | [Testing](../testing/getting-started.md)                   |
-| Validation  | [Validation](../digging-deeper/task-scheduling.md)         |
+| Facade      | Document                                     |
+| ----------- | -------------------------------------------- |
+| App         | [Container](../foundation/container)         |
+| Artisan     | [Command Console](../advanced/artisan)       |
+| Auth        | [Authentication](../security/authentication) |
+| Cache       | [Cache](../advanced/cache)                   |
+| Config      | [Configuration](../quickstart/configuration) |
+| Crypt       | [Encryption](../security/encryption)         |
+| Event       | [Event](../advanced/events)                  |
+| Gate        | [Authorization](../security/authorization)   |
+| Grpc        | [Grpc](../basic/grpc)                        |
+| Hash        | [Hashing](../security/hashing)               |
+| Log         | [Log](../basic/logging)                      |
+| Mail        | [Mail](../advanced/mail)                     |
+| Orm         | [ORM](../orm/getting-started)                |
+| Queue       | [Queue](../advanced/queues)                  |
+| RateLimiter | [RateLimiter](../basic/routing)              |
+| Route       | [Route](../basic/routing)                    |
+| Seeder      | [Seeder](../orm/seeding)                     |
+| Schedule    | [Schedule](../advanced/schedule)             |
+| Storage     | [Storage](../advanced/schedule)              |
+| Testing     | [Testing](../testing/getting-started)        |
+| Validation  | [Validation](../advanced/schedule)           |
