@@ -4,7 +4,8 @@
 
 ## Introduction
 
-Artisan is the CLI tool that comes with Goravel for interacting with the command line. You can access it using `facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
+Artisan is the CLI tool that comes with Goravel for interacting with the command line. You can access it using
+`facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
 
 ```shell
 go run . artisan list
@@ -13,13 +14,15 @@ go run . artisan list
 ./artisan list
 ```
 
-Each command also has a "help" feature that shows and explains the arguments and options associated with the command. To see the help screen, just add "help" before the command name.
+Each command also has a "help" feature that shows and explains the arguments and options associated with the command. To
+see the help screen, just add "help" before the command name.
 
 ```shell
 go run . artisan help migrate
 ```
 
-Instead of repeating `go run . artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
+Instead of repeating `go run . artisan ...` command, you may want to add an alias to your shell configuration with the
+terminal command below:
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
@@ -39,7 +42,8 @@ You can also use `artisan` shell script like this:
 
 ### Generating Commands
 
-You can use the `make:command` command to create a new command in the `app/console/commands` directory. Don't worry if this directory does not exist in your application, it will be created the first time you run the `make:command` command:
+You can use the `make:command` command to create a new command in the `app/console/commands` directory. Don't worry if
+this directory does not exist in your application, it will be created the first time you run the `make:command` command:
 
 ```shell
 go run . artisan make:command SendEmails
@@ -48,7 +52,8 @@ go run . artisan make:command user/SendEmails
 
 ### Command Structure
 
-After generating your command, assign suitable values to the signature and description properties of the struct. The `Handle` method will be called when your command is executed. You need to implement your logic in this method.
+After generating your command, assign suitable values to the signature and description properties of the struct. The
+`Handle` method will be called when your command is executed. You need to implement your logic in this method.
 
 ```go
 package commands
@@ -86,7 +91,8 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 
 ### Retrieving Input
 
-When you write console commands, it's typical to collect user input through `arguments` or `options`. With Goravel, it's extremely easy to retrieve the arguments and options that the user provides.
+When you write console commands, it's typical to collect user input through `arguments` or `options`. With Goravel, it's
+extremely easy to retrieve the arguments and options that the user provides.
 
 #### Arguments
 
@@ -110,7 +116,8 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 
 #### Options
 
-Options, like arguments, are another form of user input. Options are prefixed by two hyphens (--) when they are provided via the command line.
+Options, like arguments, are another form of user input. Options are prefixed by two hyphens (--) when they are provided
+via the command line.
 
 Definition：
 
@@ -155,30 +162,22 @@ go run . artisan emails --lang=Chinese name
 go run . artisan emails name --lang=Chinese name
 ```
 
-Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
+Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`,
+`Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
 
 ### Prompting For Input
 
 #### Asking Questions
 
-In addition to arguments and options, you may also prompt the user for input during the execution of a command. The `Ask` method will prompt the user with the given question and return their response:
-
-```go
-func (receiver *SendEmails) Handle(ctx console.Context) error {
-  email, err := ctx.Ask("What is your email address?")
-
-  return err
-}
-```
-
-Additionally, you can pass options to the `Ask` method as optional second argument:
+In addition to arguments and options, you may also prompt the user for input during the execution of a command. The
+`Ask` method will prompt the user with the given question and return their response:
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
     name, err := ctx.Ask("What is your name?", console.AskOption{
         Default: "Krishan",
     })
-
+    
     return err
 }
 
@@ -203,7 +202,7 @@ type AskOption struct {
 }
 ```
 
-Sometimes you may need to hide the user input, such as when prompting for a password. You can use the `Secret` method to hide the user input:
+Additionally, you can pass options to the `Ask` method as optional second argument:
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
@@ -215,7 +214,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
             return nil
         },
     })
-
+    
     return err
 }
 
@@ -234,23 +233,36 @@ type SecretOption struct {
 }
 ```
 
-#### Confirming Actions
-
-If you need to ask the user to confirm an action before proceeding, you may use the `Confirm` method. By default, this method will return `false` unless the user select affirmative option.
+Sometimes you may need to hide the user input, such as when prompting for a password. You can use the `Secret` method to
+hide the user input:
 
 ```go
-if ctx.Confirm("Do you wish to continue?") {
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+  email, err := ctx.Ask("What is your email address?")
+  
+  return err
+}
+```
+
+#### Confirming Actions
+
+If you need to ask the user to confirm an action before proceeding, you may use the `Confirm` method. By default, this
+method will return `false` unless the user select affirmative option.
+
+```go
+if answer, _ := ctx.Confirm("Do you wish to continue?"); !answer {
     // ...
 }
 ```
 
-You can also pass a second argument to the `Confirm` method to customize the default value, label of the affirmative and negative buttons:
+You can also pass a second argument to the `Confirm` method to customize the default value, label of the affirmative and
+negative buttons:
 
 ```go
-if ctx.Confirm("Do you wish to continue?", console.ConfirmOption{
-	Default : true,
-	Affirmative : "Yes",
-	Negative : "No",
+if answer, _ := ctx.Confirm("Do you wish to continue?", console.ConfirmOption; !answer {
+ Default : true,
+ Affirmative : "Yes",
+ Negative : "No",
 }) {
     // ...
 }
@@ -270,7 +282,8 @@ type ConfirmOption struct {
 
 #### Single Select Questions
 
-If you need to ask the user to select an option from a list of options, you may use the `Choice` method. The `Choice` method will return the value of the selected option:
+If you need to ask the user to select an option from a list of options, you may use the `Choice` method. The `Choice`
+method will return the value of the selected option:
 
 ```go
 question := "What is your favorite programming language?"
@@ -311,7 +324,8 @@ type ChoiceOption struct {
 
 #### Multiple Select Questions
 
-If you need to ask the user to select multiple options from a list of options, you may use the `MultiSelect` method. The `MultiSelect` method will return the values of the selected options:
+If you need to ask the user to select multiple options from a list of options, you may use the `MultiSelect` method. The
+`MultiSelect` method will return the values of the selected options:
 
 ```go
 question := "What are your favorite programming languages?"
@@ -356,7 +370,9 @@ type MultiSelectOption struct {
 
 ### Writing Output
 
-Sometimes you may need to write output to the console. Goravel provides several methods to assist you in writing output to the console. Each of the method have their appropriate colorized output. For example, `Error` will display the text in red.
+Sometimes you may need to write output to the console. Goravel provides several methods to assist you in writing output
+to the console. Each of the method have their appropriate colorized output. For example, `Error` will display the text
+in red.
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
@@ -381,7 +397,8 @@ ctx.NewLine(2)
 
 #### Progress Bars
 
-For long-running tasks, it is often helpful to provide the user with some indication of how much time the task will take. You may use the `WithProgressBar` method to display a progress bar.
+For long-running tasks, it is often helpful to provide the user with some indication of how much time the task will
+take. You may use the `WithProgressBar` method to display a progress bar.
 
 ```go
 items := []any{"item1", "item2", "item3"}
@@ -391,7 +408,8 @@ _, err := ctx.WithProgressBar(items, func(item any) error {
 })
 ```
 
-Sometimes you may need to update the progress bar manually. You can use the `CreateProgressBar` method to update the progress bar:
+Sometimes you may need to update the progress bar manually. You can use the `CreateProgressBar` method to update the
+progress bar:
 
 ```go
 users := []string{"user1", "user2", "user3"}
@@ -402,8 +420,8 @@ err := bar.Start()
 for _, user := range users {
     // process user
     bar.Advance()
-
-	// sleep for a while to simulate processing
+ 
+ // sleep for a while to simulate processing 
     time.Sleep(time.Millisecond * 50)
 }
 
@@ -439,7 +457,7 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 
 ## Registering Commands
 
-All of your console commands need to be registered within the `Commands` function in `app\console\kernel.go`.
+All of your console commands need to be registered within the `Commands` function in  `app\console\kernel.go`.
 
 ```go
 func (kernel Kernel) Commands() []console.Command {
@@ -451,7 +469,8 @@ func (kernel Kernel) Commands() []console.Command {
 
 ## Programmatically Executing Commands
 
-Sometimes you may wish to execute an Artisan command outside of the CLI, you can use the `Call` method on the `facades.Artisan()` to operate this.
+Sometimes you may wish to execute an Artisan command outside of the CLI, you can use the `Call` method on the
+`facades.Artisan()` to operate this.
 
 ```go
 facades.Route().Get("/", func(c *gin.Context) {
@@ -465,5 +484,5 @@ facades.Route().Get("/", func(c *gin.Context) {
 Some commands print colors by default, such as the `list` command. However, in some terminals or logs, the color values may be garbled. You can use the `--no-ansi` option to disable the print colors:
 
 ```shell
-go run . artisan list --no-ansi
+go run . artisan list
 ```
