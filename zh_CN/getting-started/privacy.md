@@ -32,5 +32,5 @@ that some parts of our website may not function properly.
 
 ## 本政策的变更
 
-我们可能会不时更新本隐私政策。 任何变更都将在本页面上发布，修订后的政策将在发布后立即生效。 Any changes will be posted on this page, and the revised policy
+我们可能会不时更新本隐私政策。任何变更都将在本页面上发布，修订后的政策将在发布后立即生效。 Any changes will be posted on this page, and the revised policy
 will take effect immediately upon posting.
