@@ -2,14 +2,17 @@
 
 [[toc]]
 
-Goravel welcomes rich and diverse contributions from different talents, such as coding, translations, articles, tutorials, etc. After completing two features(5 `Good First Issue` == 1 `Feature`), you will be recognized as a core contributor. By completing one feature every three months, you can maintain this status.
+Goravel welcomes rich and diverse contributions from different talents, such as coding, translations, articles,
+tutorials, etc. After completing two features(5 `Good First Issue` == 1 `Feature`), you will be recognized as a core
+contributor. By completing one feature every three months, you can maintain this status.
 
 Let's make Goravel more efficient together!
 
 ## Reward
 
 - Core developers will be eligible for benefits when Goravel benefits in the future.
-- After completing a `Feature`, you will receive an official Goravel T-Shirt, with a maximum of 1 per major version release cycle. (PS: Because of the difference of country, you may need to help us to find a suitable supplier.)
+- After completing a `Feature`, you will receive an official Goravel T-Shirt, with a maximum of 1 per major version
+  release cycle. (PS: Because of the difference of country, you may need to help us to find a suitable supplier.)
 
 <p align="left"><img src="/t-shirt.jpg" width="500"></p>
 
@@ -54,39 +57,56 @@ Let's make Goravel more efficient together!
 
 ## Bug Feedback
 
-You can report Bug Feedback [here](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+), please search [Issue List](https://github.com/goravel/goravel/issues?q=is%3Aissue) for similar questions before submitting. The report should contain a title and a clear description of the problem, as much relevant information as possible, and a code sample that demonstrates the problem. The goal of Bug Feedback is to make it easy for yourself and other persons to reproduce the Bug and develop fixes. Goravel encourages committers to create a PR for the Bug repair at the same time, making the open-source project more actively developed.
+You can report Bug
+Feedback [here](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+),
+please search [Issue List](https://github.com/goravel/goravel/issues?q=is%3Aissue) for similar questions before
+submitting. The report should contain a title and a clear description of the problem, as much relevant information as
+possible, and a code sample that demonstrates the problem. The goal of Bug Feedback is to make it easy for yourself and
+other persons to reproduce the Bug and develop fixes. Goravel encourages committers to create a PR for the Bug repair at
+the same time, making the open-source project more actively developed.
 
 ## Support Questions
 
-Goravel's GitHub issue trackers are not intended to provide Goravel help or support. Instead, use one of the following channels:
+Goravel's GitHub issue trackers are not intended to provide Goravel help or support. Instead, use one of the following
+channels:
 
 - [GitHub Discussions](https://github.com/goravel/goravel/discussions)
-- [Discord](https://github.com/goravel/goravel/tree/master#group)
+- [Telegram](https://github.com/goravel/goravel/tree/master#group)
 - [WeChat](https://github.com/goravel/goravel/blob/master/README_zh.md#%E7%BE%A4%E7%BB%84)
 
 ## Development Discussion
 
-You may propose new features or improvements to existing Goravel behavior in the Goravel framework repository's [GitHub discussion board](https://github.com/goravel/goravel/discussions). Informal discussion regarding bugs, new features, and implementation of existing features takes place in Discord or WeChat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
+You may propose new features or improvements to existing Goravel behavior in the Goravel framework
+repository's [GitHub discussion board](https://github.com/goravel/goravel/discussions). Informal discussion regarding
+bugs, new features, and implementation of existing features takes place in Telegram or WeChat. Bowen, the maintainer of
+Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group
+at other times.
 
 ## Contribution
 
 ### Find/Create Issue
 
-You can find or create an issue in [Issue List](https://github.com/goravel/goravel/issues), leave a message to express your willingness to deal with the issue, once confirmed by the repository maintainer, the process can be started.
+You can find or create an issue in [Issue List](https://github.com/goravel/goravel/issues), leave a message to express
+your willingness to deal with the issue, once confirmed by the repository maintainer, the process can be started.
 
 ### Create PR
 
-- You can check out [this article](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) if you are new to the process;
-- During the development process, if you encounter a problem, you can describe the problem in detail in issue at any time for future communication, but before that, please make sure that you have tried to solve the problem through Google and other methods as much as possible;
+- You can check out [this article](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) if you
+  are new to the process;
+- During the development process, if you encounter a problem, you can describe the problem in detail in issue at any
+  time for future communication, but before that, please make sure that you have tried to solve the problem through
+  Google and other methods as much as possible;
 - Before creating a PR, please improve the unit test coverage as much as possible to provide more stable functions;
-- If you modify any file under the `contracts` folder, please run the `go run github.com/vektra/mockery/v2` command in the root directory to generate the mock file;
-- When the PR is developed, please add the `Review Ready `, the maintainer will review it in a timely manner.
+- If you modify any file under the `contracts` folder, please run the `go run github.com/vektra/mockery/v2` command in
+  the root directory to generate the mock file;
+- When the PR is developed, please add the `Review Ready`, the maintainer will review it in a timely manner.
 - After the PR is merged, the issue will be closed automatically if the description in the PR is set correctly;
 - Goravel greatly appreciates your contribution and will add you to the home contribution list at the next release; ❤️
 
 ## Which Branch?
 
-**All** bug fixes should be sent to the latest version that supports bug fixes, unless they fix features that exist only in the upcoming release.
+**All** bug fixes should be sent to the latest version that supports bug fixes, unless they fix features that exist only
+in the upcoming release.
 
 **New features** or features with breaking changes should always be sent to the `master` branch.
 
@@ -94,7 +114,7 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 
 | Software                                            | Action                             |
 | --------------------------------------------------- | ---------------------------------- |
-| Golang v1.20                        | The minimum version                |
+| Golang v1.22                        | The minimum version                |
 | [vektra/mockery](https://github.com/vektra/mockery) | Provider mock files for unit tests |
 
 ## Goravel Repository
@@ -122,10 +142,12 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 
 ## Code of Conduct
 
-The Goravel code of conduct is derived from the Laravel code of conduct. Any violations of the code of conduct may be reported to Bowen.
+The Goravel code of conduct is derived from the Laravel code of conduct. Any violations of the code of conduct may be
+reported to Bowen.
 
 - Participants will be tolerant of opposing views.
-- Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks.
+- Participants must ensure that their language and actions are free of personal attacks and disparaging personal
+  remarks.
 - When interpreting the words and actions of others, participants should always assume good intentions.
 - Behavior that can be reasonably considered harassment will not be tolerated.
 
