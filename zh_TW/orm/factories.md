@@ -4,9 +4,12 @@
 
 ## Introduction
 
-When testing your application or seeding your database, it might be necessary to insert a few records into your database beforehand. Instead of manually inputting values for each column, Goravel allows you to define a set of default attributes for each of your models by creating model factories.
+When testing your application or seeding your database, it might be necessary to insert a few records into your database
+beforehand. Instead of manually inputting values for each column, Goravel allows you to define a set of default
+attributes for each of your models by creating model factories.
 
-To see an example of how to write a factory, you can check out the `user_factory.go` file located in your application's `database/factories` directory.
+To see an example of how to write a factory, you can check out the `user_factory.go` file located in your application's
+`database/factories` directory.
 
 ```go
 package factories
@@ -22,7 +25,9 @@ func (f *UserFactory) Definition() map[string]any {
 }
 ```
 
-As you can see, in their most basic form, factories are structs that have a `Definition` method. The method returns the default set of attribute values that should be used when creating a model with the factory. To generate a range of random data, you can rely on [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit).
+As you can see, in their most basic form, factories are structs that have a `Definition` method. The method returns the
+default set of attribute values that should be used when creating a model with the factory. To generate a range of
+random data, you can rely on [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit).
 
 ## Generating Factories
 
@@ -78,7 +83,9 @@ var users []models.User
 err := facades.Orm().Factory().Count(2).Make(&users)
 ```
 
-If you would like to override some of the default values of your models, you may pass `map[string]any` to the `Make` method. Only the specified attributes will be replaced while the rest of the attributes remain set to their default values as specified by the factory:
+If you would like to override some of the default values of your models, you may pass `map[string]any` to the `Make`
+method. Only the specified attributes will be replaced while the rest of the attributes remain set to their default
+values as specified by the factory:
 
 ```go
 var user models.User
@@ -99,7 +106,8 @@ var users []models.User
 err := facades.Orm().Factory().Count(2).Create(&users)
 ```
 
-You may override the factory's default model attributes by passing `map[string]any` of the attributes to the `Create` method:
+You may override the factory's default model attributes by passing `map[string]any` of the attributes to the `Create`
+method:
 
 ```go
 var user models.User
@@ -110,7 +118,8 @@ err := facades.Orm().Factory().Create(&user, map[string]any{
 
 ### Ignore Model Event
 
-There may be [model event](../orm/getting-started.md#events) defined on the model, you can ignore those events with the `CreateQuietly` method:
+There may be [model event](../orm/getting-started#events) defined on the model, you can ignore those events with the
+`CreateQuietly` method:
 
 ```go
 var user models.User
