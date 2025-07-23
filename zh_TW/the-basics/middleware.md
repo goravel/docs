@@ -37,7 +37,8 @@ go run . artisan make:middleware user/Auth
 
 ### Global Middleware
 
-If you want to apply middleware for every HTTP request of your application, you only need to register the middleware in the `Middleware` in the `app/http/kernel.go` file.
+If you want to apply middleware for every HTTP request of your application, you only need to register the middleware in
+the `Middleware` in the `app/http/kernel.go` file.
 
 ```go
 // app/http/kernel.go
@@ -45,7 +46,7 @@ package http
 
 import (
   "github.com/goravel/framework/contracts/http"
-
+  
   "goravel/app/http/middleware"
 )
 
