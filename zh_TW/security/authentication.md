@@ -4,26 +4,27 @@
 
 ## Introduction
 
-Authentication is an indispensable feature in Web Applications, the `facades.Auth()` module of Goravel provides support for JWT and Session drivers, and you can customize the driver and user provider.
+Authentication is an indispensable feature in Web Applications, the `facades.Auth()` module of Goravel provides support
+for JWT.
 
 ## Configuration
 
-You can configure `defaults` guard and multiple `guards` in the `config/auth.go` file to switch different user identities in the application.
+You can configure `defaults` guard and multiple `guards` in the `config/auth.go` file to switch different user
+identities in the application.
 
 You can configure the parameters of JWT in the `config/jwt.go` file, such as `secret`, `ttl`, `refresh_ttl`.
 
-### Different JWT Guard supports different configurations
+### Configure TTL for different Guards
 
-You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/auth.go` file, if not set, the `jwt.ttl` configuration is used by default.
+You can set TTL for each Guard separately in the `config/auth.go` file, if not set, the `jwt.ttl` configuration is used
+by default.
 
 ```go
 // config/auth.go
 "guards": map[string]any{
   "user": map[string]any{
     "driver": "jwt",
-++    "ttl": 60,
-++    "refresh_ttl": 0,
-++    "secret": "your-secret",
+++  "ttl": 60,
   },
 },
 ```
@@ -36,7 +37,8 @@ go run . artisan jwt:secret
 
 ## Generate Token Using User
 
-You can generate a token by Model, there is no extra configuration if the model uses `orm.Model`, otherwise, you need to configure Tag on the model primary key field, for example:
+You can generate a token by Model, there is no extra configuration if the model uses `orm.Model`, otherwise, you need to
+configure Tag on the model primary key field, for example:
 
 ```go
 type User struct {
