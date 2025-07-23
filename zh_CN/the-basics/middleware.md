@@ -1,4 +1,4 @@
-# HTTP 中间件
+# Middleware
 
 [[toc]]
 
@@ -35,7 +35,7 @@ go run . artisan make:middleware user/Auth
 
 ## 注册中间件
 
-### 全局中间件
+### Global Middleware
 
 如果你希望在应用程序的每一个 HTTP 请求应用中间件，那么只需要在 `app/http/kernel.go` 文件中的 `Middleware` 注册中间件。
 
