@@ -38,6 +38,7 @@ The Following files and folders need to be uploaded to the server during deploym
 ```
 ./main // Compile the resulting binary file
 .env
+./database
 ./public
 ./storage
 ./resources
@@ -45,7 +46,8 @@ The Following files and folders need to be uploaded to the server during deploym
 
 ### Static compilation
 
-The package by regular compilation also needs to rely on the support of the deployment environment, the statically compiled files can be freely put to run on the specified platform without environment configuration.
+The package by regular compilation also needs to rely on the support of the deployment environment, the statically
+compiled files can be freely put to run on the specified platform without environment configuration.
 
 ```shell
 go build --ldflags "-extldflags -static" -o main .
@@ -53,7 +55,8 @@ go build --ldflags "-extldflags -static" -o main .
 
 ### Cross compile
 
-Compilation is differentiated by platform, you need to select a matching compilation method according to the deployment situation.
+Compilation is differentiated by platform, you need to select a matching compilation method according to the deployment
+situation.
 
 ```shell
 // Compile Linux environment
@@ -68,7 +71,8 @@ CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 
 ## Docker
 
-Goravel has a default `Dockerfile` and `docker-compose.yml` file, you can use it directly, note that `APP_HOST` should be `0.0.0.0` at this time.
+Goravel has a default `Dockerfile` and `docker-compose.yml` file, you can use it directly, note that `APP_HOST` should
+be `0.0.0.0` at this time.
 
 ```shell
 docker build .
