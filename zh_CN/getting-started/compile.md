@@ -4,13 +4,13 @@
 
 ## 编译命令
 
-Goravel 项目可以通过以下命令编译：
+Goravel 项目可以使用以下命令进行编译：
 
 ```
-// 选择系统进行编译
+// 选择要编译的系统
 go run . artisan build
 
-// 指定系统进行编译
+// 指定要编译的系统
 go run . artisan build --os=linux
 go run . artisan build -o=linux
 
@@ -33,11 +33,12 @@ go build .
 
 #### 部署服务器
 
-部署时需要将下列文件与文件夹上传至服务器：
+在部署过程中，需要将以下文件和文件夹上传到服务器：
 
 ```
 ./main // 编译生成的二进制文件
 .env
+./database
 ./public
 ./storage
 ./resources
@@ -45,7 +46,7 @@ go build .
 
 ### 静态编译
 
-常规编译后的包还需要依赖部署环境的支持，静态编译出的文件可以任意放到指定平台下运行，不需要环境配置。
+通过常规编译的包也需要依赖部署环境的支持，而静态编译的文件可以自由地放在指定平台上运行，无需环境配置。
 
 ```shell
 go build --ldflags "-extldflags -static" -o main .
@@ -53,22 +54,22 @@ go build --ldflags "-extldflags -static" -o main .
 
 ### 交叉编译
 
-编译有平台区分，需要根据部署情况，选择匹配的编译方式。
+编译根据平台有所区分，您需要根据部署情况选择匹配的编译方法。
 
 ```shell
-// 编译 Linux 环境
+// 编译Linux环境
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build .
 
-// 编译 Windows 环境
+// 编译Windows环境
 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build .
 
-// 编译 Mac 环境
+// 编译Mac环境
 CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 ```
 
 ## Docker
 
-Goravel 默认自带 `Dockerfile` 与 `docker-compose.yml` 文件，可以直接使用，注意此时 `APP_HOST` 应为 `0.0.0.0`。
+Goravel有一个默认的`Dockerfile`和`docker-compose.yml`文件，您可以直接使用它，注意此时`APP_HOST`应该为`0.0.0.0`。
 
 ```shell
 docker build .
@@ -83,7 +84,7 @@ docker-compose build
 docker-compose up
 ```
 
-> 注意：如需外部访问，需要将 APP_HOST 改为 0.0.0.0
+> 注意：如果需要外部访问，你需要将APP_HOST更改为0.0.0.0
 
 ## 设置时区
 
@@ -109,6 +110,6 @@ import (
 )
 ```
 
-## 减小打包体积
+## 减少包大小
 
-将 `config/app.go::providers` 中未用到的 `ServiceProvider` 注释掉将能有效地减少打包体积。
+在`config/app.go::providers`中注释掉未使用的`ServiceProvider`将有效减少打包体积。
