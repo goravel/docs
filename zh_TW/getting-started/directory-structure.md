@@ -4,7 +4,8 @@
 
 ## Introduction
 
-The default file structure can make you better start project advancement, and you can also add new folders freely, but do not modify the default folders.
+The default file structure can make you better start project advancement, and you can also add new folders freely, but
+do not modify the default folders.
 
 ## Root Directory
 
@@ -18,7 +19,8 @@ The `bootstrap` directory contains the framework startup file `app.go`.
 
 ### `config` Directory
 
-The `config` directory contains all configuration files of the application. It is best to browse through these files and familiarize yourself with all the available options.
+The `config` directory contains all configuration files of the application. It is best to browse through these files and
+familiarize yourself with all the available options.
 
 ### `database` Directory
 
@@ -30,7 +32,8 @@ The `public` directory contains some static resources, such as images, certifica
 
 ### `resources` Directory
 
-The `resources` directory contains your [views](../the-basics/views.md) as well as your raw, un-compiled assets such as CSS or JavaScript.
+The `resources` directory contains your [views](../basic/views) as well as your raw, un-compiled assets such as
+CSS or JavaScript.
 
 ### `routes` Directory
 
@@ -48,15 +51,18 @@ The `tests` directory contains your automated tests.
 
 ### `console` Directory
 
-The `console` directory contains all the custom `Artisan` commands of the application, and the console boot file `kernel.go`, which can be registered in this file [Task Scheduling](../digging-deeper/task-scheduling.md)
+The `console` directory contains all the custom `Artisan` commands of the application, and the console boot file
+`kernel.go`, which can be registered in this file [Task Scheduling](../advanced/schedule)
 
 ### `http` Directory
 
-The `http` directory contains controllers, middleware, etc., and almost all requests that enter the application via the Web are processed here.
+The `grpc` directory contains controllers, middleware, etc., and almost all requests that enter the application via the
+Grpc are processed here.
 
 ### `grpc` Directory
 
-The `grpc` directory contains controllers, middleware, etc., and almost all requests that enter the application via the Grpc are processed here.
+The `http` directory contains controllers, middleware, etc., and almost all requests that enter the application via the
+Web are processed here.
 
 ### `models` Directory
 
@@ -64,4 +70,6 @@ The `models` directory contains all data models.
 
 ### `providers` Directory
 
-The `providers` directory contains all [Service Providers](../architecture-concepts/service-providers.md) in the program. The service provider guides the application to respond to incoming requests by binding services, registering for events, or performing any other tasks.
+The `providers` directory contains all [Service Providers](../foundation/providers) in the
+program. The service provider guides the application to respond to incoming requests by binding services, registering
+for events, or performing any other tasks.
