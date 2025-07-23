@@ -2,15 +2,16 @@
 
 [[toc]]
 
-## Server Requirements
+## Requirements
 
-- Golang >= 1.23
+- Golang >= 1.22
 
 ## Installation
 
 ### Using Goravel Installer
 
-Initialize the installer according to the [documentation](https://github.com/goravel/installer), and then initialize a new Goravel project using the following command:
+Initialize the installer according to the [documentation](https://github.com/goravel/installer), and then initialize a
+new Goravel project using the following command:
 
 ```shell
 // Enter the directory where you want to install the project
@@ -55,13 +56,15 @@ APP_ENV=production APP_DEBUG=true go run .
 
 ### Live reload
 
-Install [cosmtrek/air](https://github.com/cosmtrek/air), Goravel has a built-in configuration file that can be used directly:
+Install [cosmtrek/air](https://github.com/cosmtrek/air), Goravel has a built-in configuration file that can be used
+directly:
 
 ```
 air
 ```
 
-If you are using Windows system, you need to modify the `.air.toml` file in the root directory, and add the `.exe` suffix to the following two lines:
+If you are using Windows system, you need to modify the `.air.toml` file in the root directory, and add the `.exe`
+suffix to the following two lines:
 
 ```shell
 [build]
@@ -73,11 +76,13 @@ If you are using Windows system, you need to modify the `.air.toml` file in the 
 
 ### Configuration files
 
-All configuration files of the Goravel framework are placed in the `config` directory. All configuration items have annotations, you can adjust them according to your needs.
+All configuration files of the Goravel framework are placed in the `config` directory. All configuration items have
+annotations, you can adjust them according to your needs.
 
 ### Generate Application key
 
-You need to generate the application key after Goravel is installed locally. Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
+You need to generate the application key after Goravel is installed locally. Running the command below, a 32-bit string
+will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
 
 ```shell
 go run . artisan key:generate
@@ -85,7 +90,7 @@ go run . artisan key:generate
 
 ### Generate JWT Token
 
-You need to generate JWT Token if you use [Authentication](../security/authentication.md).
+You need to generate JWT Token if you use [Authentication](../security/authentication).
 
 ```shell
 go run . artisan jwt:secret
