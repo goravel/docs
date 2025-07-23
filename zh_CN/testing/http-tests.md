@@ -4,13 +4,13 @@
 
 ## 介绍
 
-在构建Web应用程序时，您通常需要从头到尾测试您的HTTP请求是否正常工作。Goravel的测试工具使这变得简单——您可以模拟请求并验证响应，而无需设置复杂的测试环境。
+When building web applications, you'll often need to test if your HTTP requests work correctly from start to finish. 在构建Web应用程序时，您通常需要从头到尾测试您的HTTP请求是否正常工作。Goravel的测试工具使这变得简单——您可以模拟请求并验证响应，而无需设置复杂的测试环境。
 
-## 发起 HTTP 请求
+## Make Requests
 
-测试 Goravel 中的 HTTP 接口使用了一个简单的模式。使用 `TestCase` 的 `Http` 方法，它需要一个 `*testing.T` 参数用于断言。该方法将返回一个实例(`framework/contracts/testing.TestRequest`)，它处理所有常见的 HTTP 请求，如 `Get` 、`Post` 和 `Put`。
+测试 Goravel 中的 HTTP 接口使用了一个简单的模式。使用 `TestCase` 的 `Http` 方法，它需要一个 `*testing.T` 参数用于断言。该方法将返回一个实例(`framework/contracts/testing.TestRequest`)，它处理所有常见的 HTTP 请求，如 `Get` 、`Post` 和 `Put`。 Start with the `Http` method from your `TestCase`, which needs a `*testing.T` parameter for assertions. This gives you a request object (`framework/contracts/testing.TestRequest`) that handles all common HTTP verbs like `Get`, `Post`, and `Put`.
 
-不需要真正的 HTTP 调用，这些方法在内部模拟了应用程序的请求周期。每个请求都返回一个响应对象(`framework/contracts/testing.TestResponse`)，其中包含检查结果的方法。
+Instead of making real HTTP calls, these methods simulate your application's request cycle internally. Each request returns a response object (`framework/contracts/testing.TestResponse`) with methods to check the results.
 
 一个简单的例子：
 
@@ -87,9 +87,9 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-## 构建请求体
+## Building Body
 
-如 `Post`、`Put`、`Delete` 等方法。Goravel 接受 `io.Reader` 作为第二个参数。为了简化构建请求体，框架提供了用于构建请求体的实用方法。
+For method like `Post`, `Put`, `Delete` etc. 如 `Post`、`Put`、`Delete` 等方法。Goravel 接受 `io.Reader` 作为第二个参数。为了简化构建请求体，框架提供了用于构建请求体的实用方法。 To simplify building payloads, the framework provides utility methods for constructing request bodies.
 
 ```go
 import "github.com/goravel/framework/support/http"
@@ -105,7 +105,7 @@ func (s *ExampleTestSuite) TestIndex() {
 
 ## 测试 JSON API
 
-Goravel 提供了多个帮助方法来有效地测试 JSON API 响应。它尝试将响应体解析为 Go `map[string]any`。如果解析失败，相关的断言也会失败。
+Goravel 提供了多个帮助方法来有效地测试 JSON API 响应。它尝试将响应体解析为 Go `map[string]any`。如果解析失败，相关的断言也会失败。 It attempts to unmarshal the response body into a Go `map[string]any`. If unmarshalling fails, the associated assertions will also fail.
 
 ```go
 func (s *ExampleTestSuite) TestIndex() {
@@ -119,7 +119,7 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-使用 `TestResponse` 的 `Json` 方法可以直接访问解析后的 JSON，这样你可以检查响应体的各个元素。
+使用 `TestResponse` 的 `Json` 方法可以直接访问解析后的 JSON，这样你可以检查响应体的各个元素。 This lets you inspect individual elements of the response body.
 
 ```go
 json, err := response.Json()
@@ -127,8 +127,8 @@ s.Nil(err)
 s.True(json["created"])
 ```
 
-::: tip
-`AssertJson` 方法检查响应是否包含所有指定的值，即使响应包含额外的字段。除非使用 `AssertExactJson`，否则不需要完全匹配。
+:::tip
+`AssertJson` 方法检查响应是否包含所有指定的值，即使响应包含额外的字段。除非使用 `AssertExactJson`，否则不需要完全匹配。 It doesn't require an exact match unless you use `AssertExactJson`.
 :::
 
 ### 断言精确匹配的 JSON
@@ -149,7 +149,7 @@ func (s *ExampleTestSuite) TestIndex() {
 
 ### Fluent JSON Testing
 
-Goravel 可以轻松地对 JSON 响应执行流畅的断言。使用 `AssertFluentJson` 方法，你可以传递一个闭包，该闭包提供了 `framework/contracts/testing.AssertableJSON` 的实例。这个实例允许你检查请求返回的 JSON 响应中的特定值或条件。
+Goravel 可以轻松地对 JSON 响应执行流畅的断言。使用 `AssertFluentJson` 方法，你可以传递一个闭包，该闭包提供了 `framework/contracts/testing.AssertableJSON` 的实例。这个实例允许你检查请求返回的 JSON 响应中的特定值或条件。 Using the `AssertFluentJson` method, you can pass a closure that provides an instance of `framework/contracts/testing.AssertableJSON`. This instance allows you to check specific values or conditions in the JSON response returned by your request.
 
 例如，你可以使用 `Where` 方法来断言 JSON 响应中是否存在特定值，使用 `Missing` 方法来确保属性不存在。
 
@@ -221,7 +221,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 }
 ```
 
-你可以使用 `Count` 方法验证集合中元素的数量。要断言第一个元素的属性，请使用 `First` 方法，该方法提供了一个 `AssertableJson` 实例。同样，使用 `Each` 方法可以遍历所有元素并逐个断言其属性。另外，`HasWithScope` 方法结合了 `First` 和 `Count` 的功能，允许你断言第一个元素及其内容，同时为范围断言提供一个 `AssertableJson` 实例。
+You can use the `Count` method to verify the number of elements in the collection. To assert properties of the first element, use the `First` method, which provides an instance of `AssertableJson`. Similarly, the `Each` method allows you to iterate over all elements and assert their properties individually. 你可以使用 `Count` 方法验证集合中元素的数量。要断言第一个元素的属性，请使用 `First` 方法，该方法提供了一个 `AssertableJson` 实例。同样，使用 `Each` 方法可以遍历所有元素并逐个断言其属性。另外，`HasWithScope` 方法结合了 `First` 和 `Count` 的功能，允许你断言第一个元素及其内容，同时为范围断言提供一个 `AssertableJson` 实例。
 
 ```go
 // Count and First
@@ -337,7 +337,7 @@ response.AssertCreated()
 
 ### AssertDontSee
 
-断言响应不包含指定的值。第二个参数（可选）确定在检查之前是否转义值中的特殊字符。如果未提供，则默认为 `true`。
+Asserts that the response does not contain the specified values. The second parameter (optional) determines whether to escape special characters in the values before checking. If not provided, it defaults to true.
 
 ```go
 response.AssertDontSee([]string{"<div>"}, false)  // Do not escape special characters
@@ -509,7 +509,7 @@ response.AssertRequestTimeout()
 
 ### AssertSee
 
-断言响应包含指定的值。第二个参数（可选）确定在检查之前是否转义值中的特殊字符。如果未提供，则默认为 `true`。
+Asserts that the response contains the specified values. The second parameter (optional) determines whether to escape special characters in the values before checking. If not provided, it defaults to `true`.
 
 ```go
 response.AssertSee([]string{"<div>"}, false)  // Do not escape special characters
@@ -517,7 +517,7 @@ response.AssertSee([]string{"<div>"}, false)  // Do not escape special character
 
 ### AssertSeeInOrder
 
-断言响应按给定顺序包含指定的值。第二个参数（可选）确定在检查之前是否转义值中的特殊字符。如果未提供，则默认为 `true`。
+Asserts that the response contains the specified values in the given order. The second parameter (optional) determines whether to escape special characters in the values before checking. If not provided, it defaults to `true`.
 
 ```go
 response.AssertSeeInOrder([]string{"First", "Second"}, false)  // Do not escape special characters
