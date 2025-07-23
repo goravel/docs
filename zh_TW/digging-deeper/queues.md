@@ -4,13 +4,23 @@
 
 ## Introduction
 
-When building your web application, there may be tasks, like parsing and storing an uploaded CSV file, that take too long to complete during a web request. Fortunately, Goravel offers a solution by allowing you to create queued jobs that can run in the background. This way, by moving time-intensive tasks to a queue, your application can respond to web requests much faster and provide a better user experience for your customers. To implement this feature, we use `facades.Queue()`.
+When building your web application, there may be tasks, like parsing and storing an uploaded CSV file, that take too
+long to complete during a web request. Fortunately, Goravel offers a solution by allowing you to create queued jobs that
+can run in the background. This way, by moving time-intensive tasks to a queue, your application can respond to web
+requests much faster and provide a better user experience for your customers. To implement this feature, we use
+`facades.Queue()`.
 
 ### Connections Vs. Queues
 
-Before delving into Goravel queues, it's important to understand the difference between "connections" and "queues". In the configuration file, `config/queue.go`, you'll find an array for `connections` configuration. This option specifies the connections to backend queue services like Redis. However, every queue connection can have multiple "queues", which can be thought of as different stacks or piles of queued jobs.
+Before delving into Goravel queues, it's important to understand the difference between "connections" and "queues". In
+the configuration file, `config/queue.go`, you'll find an array for `connections` configuration. This option specifies
+the connections to backend queue services like Redis. However, every queue connection can have multiple "queues", which
+can be thought of as different stacks or piles of queued jobs.
 
-It's essential to note that each connection configuration example in the queue configuration file includes a `queue` attribute. This attribute is the default queue to which jobs will be dispatched when they are sent to a given connection. In simpler terms, if you dispatch a job without explicitly defining which queue it should be dispatched to, the job will be placed in the queue defined in the queue attribute of the connection configuration.
+It's essential to note that each connection configuration example in the queue configuration file includes a `queue`
+attribute. This attribute is the default queue to which jobs will be dispatched when they are sent to a given
+connection. In simpler terms, if you dispatch a job without explicitly defining which queue it should be dispatched to,
+the job will be placed in the queue defined in the queue attribute of the connection configuration.
 
 ```go
 // This job is sent to the default connection's default queue
@@ -26,7 +36,7 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 
 ## Driver
 
-The queue configuration file is stored in `config/queue.go`, and different queue drivers can be set in the configuration file.
+Goravel's queue configuration options are saved in your application's `config/queue.go` configuration file.
 
 ### Sync Driver
 
@@ -62,7 +72,8 @@ After implementing the custom driver, you can add the configuration to `config/q
 
 ### Generating Job Classes
 
-By default, all of the jobs for your application are stored in the `app/jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the `make:job` Artisan command:
+By default, all of the jobs for your application are stored in the `app/jobs` directory. If the `app/Jobs` directory
+doesn't exist, it will be created when you run the `make:job` Artisan command:
 
 ```shell
 go run . artisan make:job ProcessPodcast
@@ -71,7 +82,9 @@ go run . artisan make:job user/ProcessPodcast
 
 ### Class Structure
 
-Job classes are very simple, consisting of two methods: `Signature` and `Handle`. `Signature` serves as a task's distinct identifier, while `Handle` executes when the queue processes the task. Additionally, the `[]queue.Arg{}` passed when the task executes will be transmitted into `Handle`:
+Job classes are very simple, consisting of two methods: `Signature` and `Handle`. `Signature` serves as a task's
+distinct identifier, while `Handle` executes when the queue processes the task. Additionally, the `[]queue.Arg{}` passed
+when the task executes will be transmitted into `Handle`:
 
 ```go
 package jobs
@@ -80,12 +93,12 @@ type ProcessPodcast struct {
 }
 
 // Signature The name and signature of the job.
-func (r *ProcessPodcast) Signature() string {
+func (receiver *ProcessPodcast) Signature() string {
   return "process_podcast"
 }
 
 // Handle Execute the job.
-func (r *ProcessPodcast) Handle(args ...any) error {
+func (receiver *ProcessPodcast) Handle(args ...any) error {
   return nil
 }
 ```
@@ -95,10 +108,8 @@ func (r *ProcessPodcast) Handle(args ...any) error {
 Job classes support an optional `ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration)` method, which is used to control job retry.
 
 ```go
-// ShouldRetry determines if the job should be retried based on the error.
-func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration) {
-  return true, 10 * time.Second
-}
+After creating the job, you need to register it in `app/provides/queue_service_provider.go`, so that it can be called
+correctly.
 ```
 
 ### Register Job
@@ -141,7 +152,8 @@ func main() {
 }
 ```
 
-Different parameters can be passed in the `facades.Queue().Worker` method, you can monitor multiple queues by starting multiple `facades.Queue().Worker`.
+Different parameters can be passed in the `facades.Queue().Worker` method, you can monitor multiple queues by starting
+multiple `facades.Queue().Worker`.
 
 ```go
 // No parameters, default listens to the configuration in the `config/queue.go`, and the number of concurrency is 1
@@ -151,13 +163,12 @@ go func() {
   }
 }()
 
-// Monitor processing queue for redis link, and the number of concurrency is 10, and the number of retries is 3
+// Monitor processing queue for redis link, and the number of concurrency is 10
 go func() {
   if err := facades.Queue().Worker(queue.Args{
     Connection: "redis",
     Queue: "processing",
     Concurrent: 10,
-    Tries: 3,
   }).Run(); err != nil {
     facades.Log().Errorf("Queue run error: %v", err)
   }
@@ -200,7 +211,8 @@ func (r *UserController) Show(ctx http.Context) {
 
 ### Synchronous Dispatching
 
-If you want to dispatch a job immediately (synchronously), you can use the `DispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process:
+If you want to dispatch a job immediately (synchronously), you can use the `DispatchSync` method. When using this
+method, the job will not be queued and will be executed immediately within the current process:
 
 ```go
 package controllers
@@ -226,7 +238,9 @@ func (r *UserController) Show(ctx http.Context) {
 
 ### Job Chaining
 
-Job chaining allows you to specify a list of queued jobs to be executed in a specific order. If any job in the sequence fails, the rest of the jobs will not be executed. To run a queued job chain, you can use the `Chain` method provided by the `facades.Queue()`:
+Job chaining allows you to specify a list of queued jobs to be executed in a specific order. If any job in the sequence
+fails, the rest of the jobs will not be executed. To run a queued job chain, you can use the `Chain` method provided by
+the `facades.Queue()`:
 
 ```go
 err := facades.Queue().Chain([]queue.Jobs{
@@ -247,7 +261,9 @@ err := facades.Queue().Chain([]queue.Jobs{
 
 ### Delayed Dispatching
 
-If you would like to specify that a job should not be immediately processed by a queue worker, you may use the `Delay` method during job dispatch. For example, let's specify that a job should not be available for processing after 100 seconds of dispatching:
+If you would like to specify that a job should not be immediately processed by a queue worker, you may use the `Delay`
+method during job dispatch. For example, let's specify that a job should not be available for processing after 100
+seconds of dispatching:
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*time.Second)).Dispatch()
@@ -257,7 +273,8 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100
 
 #### Dispatching To A Particular Queue
 
-By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you assign to various queues.
+By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you
+assign to various queues.
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Dispatch()
@@ -265,7 +282,8 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Di
 
 #### Dispatching To A Particular Connection
 
-If your application interacts with multiple queue connections, you can use the `OnConnection` method to specify the connection to which the task is pushed.
+If your application interacts with multiple queue connections, you can use the `OnConnection` method to specify the
+connection to which the task is pushed.
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dispatch()
