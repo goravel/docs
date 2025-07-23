@@ -47,7 +47,7 @@ head:
     ]
   - [
       'meta',
-      { name: twitter:title, content: Goravel - 全功能 Golang 开发框架 }
+      { name: twitter:title, content: 为 Web 工匠打造的 Go 框架 }
     ]
   - [
       'meta',
@@ -72,24 +72,24 @@ hero:
   actions:
     - theme: brand
       text: 快速开始
-      link: /zh_CN/getting-started/installation
+      link: /zh_CN/quickstart
     - theme: alt
       text: 🌟 Github Star
       link: https://github.com/goravel/goravel
       target: _blank
 features:
-  - title: 🚀 高性能
-    details: 使用 Golang 构建，整合多种优秀扩展来创建快速且响应灵敏的应用程序。
-  - title: 🧰 全功能
-    details: 包括 ORM、HTTP、队列、任务调度、日志、缓存等，提供所有 Web 开发所需的基本工具。
+  - title: 高性能
+    details: 使用 Golang 构建，Goravel 利用 Go 的高效率和并发模型来创建快速且响应灵敏的应用程序。
+  - title: 全面的功能
+    details: 包括 ORM、路由、任务调度、日志记录、缓存等，提供所有 Web 开发所需的基本工具。
   - title: 📈 易扩展
     details: 模块提供多种驱动，且可根据需求开发扩展包，适合任何规模的应用程序，从小型项目到大型系统。
   - title: 💻 易部署
     details: 提供多种打包命令，支持 Docker 镜像部署，无额外依赖。
-  - title: 👥 活跃的社区
+  - title: 活跃的社区
     details: 由活跃的社区支持，他们为其开发、撰写文档和持续支持做出贡献。
   - title: 🔄 PHPers 过渡首选
-    details: 框架风格与 Laravel 保持一致，让 PHPer 不用学习新的框架即可创建强大的 Golang 应用程序。致敬 Laravel！ Tribute to Laravel!
+    details: 为 Laravel 开发者提供熟悉的结构和风格，简化向 Golang 的过渡。 该框架的设计与 Laravel 一致。 向 Laravel 致敬！
 ---
 
 <div class="text-center mt-10 text-3xl font-bold">贡献者</div>
