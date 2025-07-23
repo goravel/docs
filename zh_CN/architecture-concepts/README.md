@@ -1,1 +1,1 @@
-# 核心架构
+# Architecture Concepts
