@@ -2,11 +2,11 @@
 
 [[toc]]
 
-## 简介
+## 描述
 
-All functions of Goravel are implemented using `facades`, and all `facades` are made up of interfaces. Goravel 所有功能都使用 `facades` 实现，而所有的 `facades` 均由接口构成。因此配合 [stretchr/testify](http://github.com/stretchr/testify) 的 mock 功能，Goravel 可以提供优秀的测试体验。
+All functions of Goravel are implemented using `facades`, and all `facades` are made up of interfaces. Goravel 的所有功能都是使用 `facades` 实现的，所有的 `facades` 都由接口组成。 因此，通过使用 [stretchr/testify](http://github.com/stretchr/testify) 的 mock 函数，Goravel 可以提供卓越的测试体验。
 
-## Mock facades.App
+## 模拟 facades.App
 
 ```go
 func CurrentLocale() string {
@@ -23,7 +23,7 @@ func TestCurrentLocale(t *testing.T) {
 }
 ```
 
-## Mock facades.Artisan
+## 模拟 facades.Artisan
 
 ```go
 import "github.com/goravel/framework/testing/mock"
@@ -45,7 +45,7 @@ func TestArtisan(t *testing.T) {
 }
 ```
 
-## Mock facades.Auth
+## 模拟 facades.Auth
 
 ```go
 import (
@@ -73,14 +73,14 @@ func TestAuth(t *testing.T) {
 }
 ```
 
-## Mock facades.Cache
+## 模拟 facades.Cache
 
 ```go
 import "github.com/goravel/framework/testing/mock"
 
 func Cache() string {
   if err := facades.Cache().Put("name", "goravel", 1*time.Minute); err != nil {
-    fmt.Println("cache.put.error", err)
+    fmt.Println("缓存放置错误", err)
   }
 
   return facades.Cache().Get("name", "test").(string)
@@ -89,7 +89,7 @@ func Cache() string {
 func TestCache(t *testing.T) {
   mockFactory := mock.Factory()
   mockCache := mockFactory.Cache()
-
+  
   mockCache.On("Put", "name", "goravel", mock.Anything).Return(nil).Once()
   mockCache.On("Get", "name", "test").Return("Goravel").Once()
 
@@ -100,7 +100,7 @@ func TestCache(t *testing.T) {
 }
 ```
 
-## Mock facades.Config
+## 模拟 facades.Config
 
 ```go
 import "github.com/goravel/framework/testing/mock"
@@ -121,7 +121,7 @@ func TestConfig(t *testing.T) {
 }
 ```
 
-## Mock facades.Crypt
+## 模拟 facades.Crypt
 
 ```go
 import (
@@ -133,29 +133,29 @@ import (
 )
 
 func Crypt(str string) (string, error) {
-	res, err := facades.Crypt().EncryptString(str)
-	if err != nil {
-		return "", err
-	}
+ res, err := facades.Crypt().EncryptString(str)
+ if err != nil {
+  return "", err
+ }
 
-	return facades.Crypt().DecryptString(res)
+ return facades.Crypt().DecryptString(res)
 }
 
 func TestCrypt(t *testing.T) {
   mockFactory := mock.Factory()
-	mockCrypt := mockFactory.Crypt()
-	mockCrypt.On("EncryptString", "Goravel").Return("test", nil).Once()
-	mockCrypt.On("DecryptString", "test").Return("Goravel", nil).Once()
+ mockCrypt := mockFactory.Crypt()
+ mockCrypt.On("EncryptString", "Goravel").Return("test", nil).Once()
+ mockCrypt.On("DecryptString", "test").Return("Goravel", nil).Once()
 
-	res, err := Crypt("Goravel")
-	assert.Equal(t, "Goravel", res)
-	assert.Nil(t, err)
+ res, err := Crypt("Goravel")
+ assert.Equal(t, "Goravel", res)
+ assert.Nil(t, err)
 
-	mockCrypt.AssertExpectations(t)
+ mockCrypt.AssertExpectations(t)
 }
 ```
 
-## Mock facades.Event
+## 模拟 facades.Event
 
 ```go
 import "github.com/goravel/framework/testing/mock"
@@ -181,7 +181,7 @@ func TestEvent(t *testing.T) {
 }
 ```
 
-## Mock facades.Gate
+## 模拟 facades.Gate
 
 ```go
 import (
@@ -193,25 +193,25 @@ import (
 )
 
 func Gate() bool {
-	return facades.Gate().Allows("update-post", map[string]any{
-		"post": "test",
-	})
+ return facades.Gate().Allows("update-post", map[string]any{
+  "post": "test",
+ })
 }
 
 func TestGate(t *testing.T) {
   mockFactory := mock.Factory()
-	mockGate := mockFactory.Gate()
-	mockGate.On("Allows", "update-post", map[string]any{
-		"post": "test",
-	}).Return(true).Once()
+ mockGate := mockFactory.Gate()
+ mockGate.On("Allows", "update-post", map[string]any{
+  "post": "test",
+ }).Return(true).Once()
 
-	assert.True(t, Gate())
+ assert.True(t, Gate())
 
-	mockGate.AssertExpectations(t)
+ mockGate.AssertExpectations(t)
 }
 ```
 
-## Mock facades.Grpc
+## 模拟 facades.Grpc
 
 ```go
 
@@ -243,7 +243,7 @@ func TestGrpc(t *testing.T) {
 }
 ```
 
-## Mock facades.Hash
+## 模拟 facades.Hash
 
 ```go
 import (
@@ -257,23 +257,23 @@ import (
 )
 
 func Hash() (string, error) {
-	return facades.Hash().Make("Goravel")
+ return facades.Hash().Make("Goravel")
 }
 
 func TestHash(t *testing.T) {
   mockFactory := mock.Factory()
   mockHash := mockFactory.Hash()
-	mockHash.On("Make", "Goravel").Return("test", nil).Once()
+ mockHash.On("Make", "Goravel").Return("test", nil).Once()
 
-	res, err := Hash()
-	assert.Equal(t, "test", res)
-	assert.Nil(t, err)
+ res, err := Hash()
+ assert.Equal(t, "test", res)
+ assert.Nil(t, err)
 
-	mockHash.AssertExpectations(t)
+ mockHash.AssertExpectations(t)
 }
 ```
 
-## Mock facades.Lang
+## 模拟 facades.Lang
 
 ```go
 func Lang() string {
@@ -290,9 +290,9 @@ func TestLang(t *testing.T) {
 }
 ```
 
-## Mock facades.Log
+## 模拟 facades.Log
 
-`facades.Log()` 没有实现 mock，而是使用 `fmt` 代替了实际的日志输出，便于测试过程中调试。
+`facades.Log()` 没有实现模拟，在测试过程中使用 `fmt` 代替实际的日志输出，便于调试。
 
 ```go
 import "github.com/goravel/framework/testing/mock"
@@ -309,7 +309,7 @@ func TestLog(t *testing.T) {
 }
 ```
 
-## Mock facades.Mail
+## 模拟 facades.Mail
 
 ```go
 import "github.com/goravel/framework/testing/mock"
@@ -335,7 +335,7 @@ func TestMail(t *testing.T) {
 }
 ```
 
-## Mock facades.Orm
+## 模拟 facades.Orm
 
 ```go
 import "github.com/goravel/framework/testing/mock"
@@ -411,7 +411,7 @@ func Begin() error {
 }
 ```
 
-## Mock facades.Queue
+## 模拟 facades.Queue
 
 ```go
 import "github.com/goravel/framework/testing/mock"
@@ -434,7 +434,7 @@ func TestQueue(t *testing.T) {
 }
 ```
 
-## Mock facades.Storage
+## 模拟 facades.Storage
 
 ```go
 import (
@@ -470,7 +470,7 @@ func TestStorage(t *testing.T) {
 
 ```
 
-## Mock facades.Validation
+## 模拟 facades.Validation
 
 ```go
 import (
@@ -514,7 +514,7 @@ func TestValidation(t *testing.T) {
 }
 ```
 
-## Mock facades.View
+## 模拟 facades.View
 
 ```go
 import (
@@ -532,10 +532,10 @@ func View() bool {
 func TestView(t *testing.T) {
   mockFactory := mock.Factory()
   mockView := mockFactory.View()
-	mockView.On("Exists", "welcome.tmpl").Return(true).Once()
+ mockView.On("Exists", "welcome.tmpl").Return(true).Once()
 
-	assert.True(t, View())
+ assert.True(t, View())
 
-	mockView.AssertExpectations(t)
+ mockView.AssertExpectations(t)
 }
 ```
