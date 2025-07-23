@@ -1,20 +1,14 @@
-# 授权
+# 用户授权
 
 [[toc]]
 
 ## 简介
 
-Goravel 提供内置的[身份验证](./authentication)服务和易于使用的授权功能，用于
-管理用户对资源的操作。 即使用户已经通过身份验证，他们可能没有权限修改或删除
-某些 Eloquent 模型或数据库记录。 Goravel 的授权功能提供了一种系统化的方式来管理
-这些授权检查。 Even if a user is authenticated, they may not have the authority to modify or delete certain Eloquent models or database records. Goravel's authorization feature allows for a systematic way of managing these authorization checks.
+除了提供内置的 [身份验证（authentication)](./authentication.md) 服务外，Goravel 还提供了一种可以很简单就进行使用的方法，来对用户与资源的授权关系进行管理。即使用户已经通过了「身份验证（authentication)」， 用户也可能无权对应用程序中的模型或数据库记录进行删除或更改。 Even if a user is authenticated, they may not have the authority to modify or delete certain Eloquent models or database records. Goravel's authorization feature allows for a systematic way of managing these authorization checks.
 
-在 Goravel 中有两种授权操作的方式：[Gates](#gates) 和 [Policies](#policies)。 可以将 gates 和
-policies 想象为类似于路由和控制器。 Gates 基于闭包并提供了一种简单的授权方法，而 Policies 则围绕特定资源组织逻辑，类似于控制器。 本文档将
-首先介绍 Gates，然后深入探讨 Policies。 Imagine gates and policies as similar to routes and controllers. Gates are based on closures and provide a simple approach to authorization, whereas policies group logic around a specific resource, similar to controllers. This documentation will first cover gates and then delve into policies.
+Goravel 主要提供了两种授权操作的方法: [拦截器](#拦截器（Gates）) 和 [策略](#策略（Policies）)。可以把拦截器（gates）和策略（policies）想象成路由和控制器。拦截器（Gates）提供了一种轻便的基于闭包函数的授权方法，像是路由。而策略（policies)，就像是一个控制器，对特定模型或资源进行管理。在本文档中，我们将首先探讨拦截器（gates），然后是策略（policies)。 Imagine gates and policies as similar to routes and controllers. Gates are based on closures and provide a simple approach to authorization, whereas policies group logic around a specific resource, similar to controllers. This documentation will first cover gates and then delve into policies.
 
-在构建应用程序时，没有必要专门使用 Gates 或 Policies。 大多数应用程序将
-同时使用两者的组合，这是完全可以接受的！ Most applications will use a combination of both, which is perfectly acceptable!
+您在构建应用程序时，不用为是使用拦截器（gates）或是使用策略（policies）而担心，并不需要在两者中进行唯一选择。大多数的应用程序都同时包含两种方法，并且同时使用两者。 Most applications will use a combination of both, which is perfectly acceptable!
 
 ## Gates
 
@@ -39,26 +33,23 @@ type AuthServiceProvider struct {
 }
 
 func (receiver *AuthServiceProvider) Register(app foundation.Application) {
-
 }
 
 func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
-  facades.Gate().Define("update-post",
-    func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
-      user := ctx.Value("user").(models.User)
-      post := arguments["post"].(models.Post)
+  facades.Gate().Define("update-post", func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
+    user := ctx.Value("user").(models.User)
+    post := arguments["post"].(models.Post)
 
-      if user.ID == post.UserID {
-        return access.NewAllowResponse()
-      } else {
-        return access.NewDenyResponse("错误")
-      }
-    },
-  )
+    if user.ID == post.UserID {
+      return access.NewAllowResponse()
+    } else {
+      return access.NewDenyResponse("error")
+    }
+  })
 }
 ```
 
-### 授权操作
+### 行为授权控制
 
 要使用门控授权操作，您应该使用 Gate 门面提供的 `Allows` 或 `Denies` 方法：
 
@@ -76,24 +67,24 @@ func (r *UserController) Show(ctx http.Context) http.Response {
   if facades.Gate().Allows("update-post", map[string]any{
     "post": post,
   }) {
-    
+
   }
 }
 ```
 
-您可以使用 `Any` 或 `None` 方法同时授权多个操作。
+您还可以通过 `any` 或 `none` 方法来一次性授权多个行为:
 
 ```go
 if facades.Gate().Any([]string{"update-post", "delete-post"}, map[string]any{
   "post": post,
 }) {
-  // 用户可以更新或删除帖子...
+  // 用户可以提交update或delete...
 }
 
 if facades.Gate().None([]string{"update-post", "delete-post"}, map[string]any{
   "post": post,
 }) {
-  // 用户不能更新或删除帖子...
+  // 用户不可以提交update和delete...
 }
 ```
 
@@ -104,10 +95,10 @@ The `Allows` method returns a boolean value. `Allows` 方法返回一个布尔�
 ```go
 response := facades.Gate().Inspect("edit-settings", nil);
 
-if response.Allowed() {
-    // 操作已授权...
+if (response.Allowed()) {
+    // 行为进行授权...
 } else {
-    fmt.Println(response.Message())
+    fmt.Println(response.Message());
 }
 ```
 
@@ -126,9 +117,9 @@ facades.Gate().Before(func(ctx context.Context, ability string, arguments map[st
 })
 ```
 
-如果`Before`闭包返回非空结果，该结果将被视为授权检查的结果。
+如果 `Before` 返回的是非 nil 结果，则该返回将会被视为最终的检查结果。
 
-`After`方法可用于定义一个闭包，该闭包将在所有其他授权检查之后执行。
+您还可以使用 `After` 方法，来定义在所有授权拦截规则执行后，再次进行授权拦截规则判定：
 
 ```go
 facades.Gate().After(func(ctx context.Context, ability string, arguments map[string]any, result contractsaccess.Response) contractsaccess.Response {
@@ -141,11 +132,11 @@ facades.Gate().After(func(ctx context.Context, ability string, arguments map[str
 })
 ```
 
-> 注意：`After` 的返回结果仅在 `facades.Gate().Define` 返回 nil 时才会被应用。
+> 注意：只有当 `facades.Gate().Define` 返回 nil 时，才会应用 `After` 的返回结果。
 
-### 注入上下文
+### 注入 Context
 
-`context` 将被传递给 `Before`、`After` 和 `Define` 方法。
+`context` 将被传入到 `Before`, `After`, `Define` 方法中。
 
 ```go
 facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
@@ -153,11 +144,11 @@ facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
 })
 ```
 
-## 策略
+## 策略（Policies）
 
 ### 生成策略
 
-You can use the `make:policy` Artisan command to generate a policy. The generated policy will be saved in the `app/policies` directory. 你可以使用 `make:policy` Artisan 命令来生成策略。 生成的策略将保存在 `app/policies` 目录中。 如果该目录在你的应用程序中不存在，Goravel 将为你创建它。
+You can use the `make:policy` Artisan command to generate a policy. The generated policy will be saved in the `app/policies` directory. 您可以使用 `make:policy` Artisan 命令生成策略。生成的策略将放置在 `app/policies` 目录中。如果应用程序中不存在此目录，Goravel 将自动创建：
 
 ```go
 go run . artisan make:policy PostPolicy
@@ -166,16 +157,15 @@ go run . artisan make:policy user/PostPolicy
 
 ### 编写策略
 
-让我们在 `PostPolicy` 上定义一个 `Update` 方法来检查 `User` 是否可以更新 `Post`。
+可以为策略添加具体的方法，例如，让我们在 `PostPolicy` 上定义一个 `Update` 方法，该方法判断 `models.User` 是否可以更新 `models.Post`。
 
 ```go
 package policies
 
 import (
   "context"
-  "goravel/app/models"
 
-  "github.com/goravel/framework/auth/access"
+  "github.com/goravel/framework/contracts/auth/access"
   contractsaccess "github.com/goravel/framework/contracts/auth/access"
 )
 
@@ -193,15 +183,15 @@ func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contr
   if user.ID == post.UserID {
     return access.NewAllowResponse()
   } else {
-    return access.NewDenyResponse("您不拥有这篇文章。")
+    return access.NewDenyResponse("You do not own this post.")
   }
 }
 ```
 
-然后我们可以在 `app/providers/auth_service_provider.go` 中注册这个策略：
+然后我们就可以在 `app/providers/auth_service_provider.go` 中注册策略：
 
 ```go
 facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
 ```
 
-As you work on authorizing different actions, you can add more methods to your policy. 在授权不同操作时，您可以向策略添加更多方法。 例如，您可以创建 `View` 或 `Delete` 方法来授权各种与模型相关的操作。 您可以根据需要自由命名策略方法。 Feel free to name your policy methods as you see fit.
+As you work on authorizing different actions, you can add more methods to your policy. 您可以继续根据需要为策略授权的各种操作定义其他方法。例如，您可以定义 `View` 或 `Delete` 方法来授权各种与 `models.Post` 相关的操作，但请记住，您可以自由地为策略方法命名任何您喜欢的名称。 Feel free to name your policy methods as you see fit.
