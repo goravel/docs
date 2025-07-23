@@ -4,7 +4,10 @@
 
 ## Introduction
 
-The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS, Tencent COS, Minio and Cloudinary. Even better, switching between these storage options between your local development machine and production server is amazingly simple as the API remains the same for each system. Goravel comes with a `local` driver, for other drivers, please check the corresponding independent extension package:
+The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS, Tencent COS, Minio and
+Cloudinary. Even better, switching between these storage options between your local development machine and production
+server is amazingly simple as the API remains the same for each system. Goravel comes with a `local` driver, for other
+drivers, please check the corresponding independent extension package:
 
 | Driver     | Link                                                                                                           |
 | ---------- | -------------------------------------------------------------------------------------------------------------- |
@@ -16,13 +19,16 @@ The Goravel provides simple drivers for working with local filesystems, Amazon S
 
 ## Configuration
 
-Goravel's filesystem configuration file is located at `config/filesystems.go`. Within this file, you may configure all of your filesystem "disks", each disk represents a particular storage driver and storage location.
+Goravel's filesystem configuration file is located at `config/filesystems.go`. Within this file, you may configure all
+of your filesystem "disks", each disk represents a particular storage driver and storage location.
 
 > You may configure as many disks as you like and may even have multiple disks that use the same driver.
 
 ### The Local Driver
 
-When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would write to `storage/app/example.txt`:
+When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems`
+configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would
+write to `storage/app/example.txt`:
 
 ```go
 facades.Storage().Put("example.txt", "Contents")
@@ -30,7 +36,10 @@ facades.Storage().Put("example.txt", "Contents")
 
 ### The Public Disk
 
-The `public`` disk included in your application's `filesystems`configuration file is intended for files that are going to be publicly accessible. By default, the`public`disk uses the`local`driver and stores its files in`storage/app/public\`. If you want to visit these file from web, you can create a file routing:
+The `public`` disk included in your application's`filesystems
+`configuration file is intended for files that are going to be publicly accessible. By default, the`public
+`disk uses the`local`driver and stores its files in`storage/app/public\\`. If you want to visit these file from web,
+you can create a file routing:
 
 ```go
 facades.Route().Static("storage", "./storage/app/public")
@@ -38,13 +47,16 @@ facades.Route().Static("storage", "./storage/app/public")
 
 ## Obtaining Disk Instances
 
-The `Storage` facade may be used to interact with any of your configured disks. For example, you may use the `Put` method on the facade to store an avatar on the default disk. If you call methods on the `Storage` facade without first calling the `Disk` method, the method will automatically be passed to the default disk:
+The `Storage` facade may be used to interact with any of your configured disks. For example, you may use the `Put`
+method on the facade to store an avatar on the default disk. If you call methods on the `Storage` facade without first
+calling the `Disk` method, the method will automatically be passed to the default disk:
 
 ```go
 facades.Storage().Put("avatars/1.png", "Contents")
 ```
 
-If your application interacts with multiple disks, you may use the `Disk` method on the `Storage` facade to work with files on a particular disk:
+If your application interacts with multiple disks, you may use the `Disk` method on the `Storage` facade to work with
+files on a particular disk:
 
 ```go
 facades.Storage().Disk("s3").Put("avatars/1.png", "Contents")
@@ -58,7 +70,8 @@ facades.Storage().WithContext(ctx).Put("avatars/1.png", "Contents")
 
 ## Retrieving Files
 
-The `Get` method may be used to retrieve the contents of a file. The raw string contents of the file will be returned by the method. Remember, all file paths should be specified relative to the disk's `root` location:
+The `Get` method may be used to retrieve the contents of a file. The raw string contents of the file will be returned by
+the method. Remember, all file paths should be specified relative to the disk's `root` location:
 
 ```go
 contents := facades.Storage().Get("file.jpg")
@@ -82,17 +95,21 @@ if (facades.Storage().Disk("s3").Missing("file.jpg")) {
 
 ### File URLs
 
-You may use the `Url` method to get the URL for a given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` driver, the fully qualified remote URL will be returned:
+You may use the `Url` method to get the URL for a given file. If you are using the `local` driver, this will typically
+just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` driver, the
+fully qualified remote URL will be returned:
 
 ```go
 url := facades.Storage().Url("file.jpg")
 ```
 
-> When using the `local` driver, the return value of `Url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
+> When using the `local` driver, the return value of `Url` is not URL encoded. For this reason, we recommend always
+> storing your files using names that will create valid URLs.
 
 #### Temporary URLs
 
-Using the `TemporaryUrl` method, you may create temporary URLs to files stored using the Non-local driver. This method accepts a path and a `Time` instance specifying when the URL should expire:
+Using the `TemporaryUrl` method, you may create temporary URLs to files stored using the Non-local driver. This method
+accepts a path and a `Time` instance specifying when the URL should expire:
 
 ```go
 url, err := facades.Storage().TemporaryUrl(
@@ -133,7 +150,9 @@ mime, err := file.MimeType()
 
 ### File Paths
 
-To obtain the path for a specific file, you can utilize the `Path` method. When using the `local` driver, this will provide you with the relative path to the file. However, if you are using a driver like `s3`, the method will give you the file's relative path within the bucket:
+To obtain the path for a specific file, you can utilize the `Path` method. When using the `local` driver, this will
+provide you with the absolute path to the file. However, if you are using a driver like `s3`, the method will give you
+the file's relative path within the bucket:
 
 ```go
 path := facades.Storage().Path("file.jpg")
@@ -141,7 +160,8 @@ path := facades.Storage().Path("file.jpg")
 
 ## Storing Files
 
-The `Put` method may be used to store file contents on a disk. Remember, all file paths should be specified relative to the "root" location configured for the disk:
+The `Put` method may be used to store file contents on a disk. Remember, all file paths should be specified relative to
+the "root" location configured for the disk:
 
 ```go
 err := facades.Storage().Put("file.jpg", contents)
@@ -161,11 +181,15 @@ file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFileAs("photos", file, "photo.jpg")
 ```
 
-There are a few important things to note about the `PutFile` method. Note that we only specified a directory name and not a filename. By default, the `PutFile` method will generate a unique ID to serve as the filename. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `PutFile` method so you can store the path, including the generated filename, in your database.
+There are a few important things to note about the `PutFile` method. Note that we only specified a directory name and
+not a filename. By default, the `PutFile` method will generate a unique ID to serve as the filename. The file's
+extension will be determined by examining the file's MIME type. The path to the file will be returned by the `PutFile`
+method so you can store the path, including the generated filename, in your database.
 
 ### Copying & Moving Files
 
-The `Copy` method may be used to copy an existing file to a new location on the disk, while the `Move` method may be used to rename or move an existing file to a new location:
+The `Copy` method may be used to copy an existing file to a new location on the disk, while the `Move` method may be
+used to rename or move an existing file to a new location:
 
 ```go
 err := facades.Storage().Copy("old/file.jpg", "new/file.jpg")
@@ -175,7 +199,8 @@ err := facades.Storage().Move("old/file.jpg", "new/file.jpg")
 
 ### File Uploads
 
-In web applications, one of the most common use cases for storing files is storing user-uploaded files such as photos and documents. Goravel makes it very easy to store uploaded files using the `Store` method on an uploaded file instance. Call the `Store` method with the path at which you wish to store the uploaded file:
+In web applications, one of the most common use cases for storing files is storing user-uploaded files such as photos
+and documents. Goravel makes it very easy to store uploaded files using the `Store` method on an uploaded file instance. Call the `Store` method with the path at which you wish to store the uploaded file:
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
@@ -184,9 +209,13 @@ func (r *UserController) Show(ctx http.Context) {
 }
 ```
 
-There are a few important things to note about this example. Note that we only specified a directory name, not a filename. By default, the `Store` method will generate a unique ID to serve as the filename. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `Store` method so you can store the path, including the generated filename, in your database.
+There are a few important things to note about this example. Note that we only specified a directory name, not a
+filename. By default, the `Store` method will generate a unique ID to serve as the filename. The file's extension will
+be determined by examining the file's MIME type. The path to the file will be returned by the `Store` method so you can
+store the path, including the generated filename, in your database.
 
-You may also call the `PutFile` method on the `Storage` facade to perform the same file storage operation as the example above:
+You may also call the `PutFile` method on the `Storage` facade to perform the same file storage operation as the example
+above:
 
 ```go
 import "github.com/goravel/framework/filesystem"
@@ -197,14 +226,16 @@ path := facades.Storage().PutFile("photos", file)
 
 ### Specifying A File Name
 
-If you do not want a filename to be automatically assigned to your stored file, you may use the `StoreAs` method, which receives the path, the filename, and the (optional) disk as its arguments:
+If you do not want a filename to be automatically assigned to your stored file, you may use the `StoreAs` method, which
+receives the path, the filename, and the (optional) disk as its arguments:
 
 ```go
 file, err := ctx.Request().File("avatar")
 path, err := file.StoreAs("avatars", "name")
 ```
 
-You may also use the `PutFileAs` method on the Storage facade, which will perform the same file storage operation as the example above:
+You may also use the `PutFileAs` method on the Storage facade, which will perform the same file storage operation as the
+example above:
 
 ```go
 import "github.com/goravel/framework/filesystem"
@@ -213,11 +244,13 @@ file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFileAs("photos", file, "name")
 ```
 
-> If the file name specified by `StoreAs` and `PutFileAs` doesn't have a suffix, the suffix is automatically added based on the MIME of the file; otherwise, the specified file name is used directly.
+> If the file name specified by `StoreAs` and `PutFileAs` doesn't have a suffix, the suffix is automatically added based
+> on the MIME of the file; otherwise, the specified file name is used directly.
 
 ### Specifying A Disk
 
-By default, this uploaded file's `Store` method will use your default disk. If you would like to specify another disk, please use the `Disk` method:
+By default, this uploaded file's `Store` method will use your default disk. If you would like to specify another disk,
+please use the `Disk` method:
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
@@ -228,7 +261,8 @@ func (r *UserController) Show(ctx http.Context) {
 
 ### Other Uploaded File Information
 
-If you would like to get the original name and extension of the uploaded file, you may do so using the `GetClientOriginalName` and `GetClientOriginalExtension` methods:
+If you would like to get the original name and extension of the uploaded file, you may do so using the
+`GetClientOriginalName` and `GetClientOriginalExtension` methods:
 
 ```go
 file, err := ctx.Request().File("avatar")
@@ -237,7 +271,9 @@ name := file.GetClientOriginalName()
 extension := file.GetClientOriginalExtension()
 ```
 
-However, keep in mind that the `GetClientOriginalName` and `GetClientOriginalExtension` methods are considered unsafe, as the file name and extension may be tampered with by a malicious user. For this reason, you should typically prefer the `HashName` and `Extension` methods to get a name and an extension for the given file upload:
+However, keep in mind that the `GetClientOriginalName` and `GetClientOriginalExtension` methods are considered unsafe,
+as the file name and extension may be tampered with by a malicious user. For this reason, you should typically prefer
+the `HashName` and `Extension` methods to get a name and an extension for the given file upload:
 
 ```go
 file, err := ctx.Request().File("avatar")
@@ -265,7 +301,8 @@ err := facades.Storage().Disk("s3").Delete("file.jpg")
 
 ### Get All Files Within A Directory
 
-The `Files` method returns a slice of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `AllFiles` method:
+The `Files` method returns a slice of all of the files in a given directory. If you would like to retrieve a list of all
+files within a given directory including all subdirectories, you may use the `AllFiles` method:
 
 ```go
 files, err := facades.Storage().Disk("s3").Files("directory")
@@ -274,7 +311,8 @@ files, err := facades.Storage().Disk("s3").AllFiles("directory")
 
 ### Get All Directories Within A Directory
 
-The `Directories` method returns a slice of all the directories within a given directory. Additionally, you may use the `AllDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
+The `Directories` method returns a slice of all the directories within a given directory. Additionally, you may use the
+`AllDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
 
 ```go
 directories, err := facades.Storage().Disk("s3").Directories("directory")
@@ -308,7 +346,8 @@ You can set the `custom` driver in the `config/filesystems.go` file.
 },
 ```
 
-You need to implement the `github.com/goravel/framework/contracts/filesystem/Driver` interface in the `via` configuration item.
+You need to implement the `github.com/goravel/framework/contracts/filesystem/Driver` interface in the `via`
+configuration item.
 
 ```go
 type Driver interface {
@@ -338,4 +377,5 @@ type Driver interface {
 }
 ```
 
-> Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config().Env` to obtain the configuration in the custom driver.
+> Note: Since the configuration has not been loaded when the custom driver is registered, so please use
+> `facades.Config().Env` to obtain the configuration in the custom driver.
