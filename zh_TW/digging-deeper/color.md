@@ -4,11 +4,13 @@
 
 ## Introduction
 
-The `color` package provides a set of functions to colorize the output of the terminal using [PTerm](https://github.com/pterm/pterm) library.
+The `color` package provides a set of functions to colorize the output of the terminal
+using [PTerm](https://github.com/pterm/pterm) library.
 
 ## Specific Color
 
-The package provides methods to create printers for specific colors. These methods allow you to easily colorize terminal output.
+The package provides methods to create printers for specific colors. These methods allow you to easily colorize terminal
+output.
 
 - `color.Red()`
 - `color.Green()`
