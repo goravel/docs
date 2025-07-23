@@ -68,7 +68,8 @@ ctx.Response().Header("Content", "Goravel").String(http.StatusOK, "Hello Goravel
 
 ### Set Cookie
 
-Use the `Cookie` method on the `response` instance to set a `cookie`. The `Cookie` method accepts a `http.Cookie` instance, which allows you to set various cookie options.
+Use the `Cookie` method on the `response` instance to set a `cookie`. The `Cookie` method accepts a `http.Cookie`
+instance, which allows you to set various cookie options.
 
 ```go
 import (
