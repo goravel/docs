@@ -4,25 +4,24 @@
 
 ## 简介
 
-当然，直接从路由和控制器返回整个HTML文档字符串是不切实际的。
-幸运的是，视图提供了一种便捷的方式，可以将所有HTML放在单独的文件中。 视图将控制器/应用逻辑与展示逻辑分离，并存储在`resources/views`目录中。 Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory.
+当然，直接从路由和控制器返回整个 HTML 文档字符串是不切实际的。值得庆幸的是，视图提供了一种方便的方式来将我们所有的 HTML 放在单独的文件中。视图将你的控制器 / 应用程序逻辑与你的表现逻辑分开并存储在 `resources/views` 目录中。 Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory.
 
 ## 创建和渲染视图
 
-当使用Goravel默认模板`html/template`时，你可以通过在应用的`resources/views`目录中添加带有`.tmpl`扩展名的文件来创建视图。
+使用框架默认模版 `html/template` 时，可以通过在应用程序 `resources/views` 目录中放置具有 `.tmpl` 扩展名的文件来创建视图。
 
 ```
 // resources/views/welcome.tmpl
 {{ define "welcome.tmpl" }}
 <html>
   <body>
-  <h1>你好，{{ .name }}</h1>
+  <h1>Hello, {{ .name }}</h1>
   </body>
 </html>
 {{ end }}
 ```
 
-创建视图后，你可以使用`View`方法从应用的路由或控制器中返回视图：
+创建视图后，可以使用 `View` 方法从应用程序的某个路由或控制器返回视图：
 
 ```go
 facades.Route().Get("/", func(ctx http.Context) http.Response {
@@ -34,22 +33,22 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### 嵌套视图目录
 
-Views may also be nested within subdirectories of the `resources/views` directory. 视图也可以嵌套在 `resources/views` 目录的子目录中。 例如，如果您的视图存储在 `resources/views/admin/profile.tmpl`，您可以从应用程序的路由或控制器中返回它，请注意视图需要定义为 `define "admin/profile.tmpl"`，如下所示：
+Views may also be nested within subdirectories of the `resources/views` directory. 视图也可以嵌套在目录 `resources/views` 的子目录中。例如，如果视图存储在 `resources/views/admin/profile.tmpl`，您可以从应用程序的路由或控制器中返回它，注意视图需要定义为 `define "admin/profile.tmpl"`，如下所示：
 
 ```go
 // resources/views/admin/profile.tmpl
 {{ define "admin/profile.tmpl" }}
-<h1>欢迎来到管理面板</h1>
+<h1>Welcome to the Admin Panel</h1>
 {{ end }}
 
 ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
-  "name": "Goravel",
+  "Name": "Goravel",
 })
 ```
 
-### 创建第一个可用的视图
+### 使用第一个可用视图
 
-使用 `First` 方法，您可以使用给定视图数组中存在的第一个视图。 如果您的应用程序或包允许自定义或覆盖视图，这可能会很有用： This may be useful if your application or package allows views to be customized or overwritten:
+使用 `View` 的 `First` 方法，您可以使用给定数组视图中第一个存在的视图。如果您的应用程序或开发的第三方包允许定制或覆盖视图，这会非常有用： This may be useful if your application or package allows views to be customized or overwritten:
 
 ```go
 ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[string]any{
@@ -57,9 +56,9 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 })
 ```
 
-### 确定视图是否存在
+### 判断视图文件是否存在
 
-如果你需要确定一个视图是否存在，你可以使用 `facades.View()` 方法：
+如果需要判断视图文件是否存在，可以使用 `facades.View()`：
 
 ```go
 if facades.View().Exist("welcome.tmpl") {
@@ -69,8 +68,7 @@ if facades.View().Exist("welcome.tmpl") {
 
 ## 向视图传递数据
 
-As you saw in the previous examples, you may pass an array of data to views to make that data available to the view. 正如你在前面的例子中看到的，你可以向视图传递一个数据数组，使这些数据在视图中可用。
-请注意，传递的数据格式需要根据所使用的模板驱动进行更改，在以下示例中，使用默认的 `html/template` 驱动：
+As you saw in the previous examples, you may pass an array of data to views to make that data available to the view. 正如您在前面的示例中看到的，您可以将数据数组传递给视图，以使该数据可用于视图。请注意，传递的数据格式需要根据所使用的模版驱动而变化，在下面例子中，使用默认的 `html/template` 驱动：
 
 ```go
 facades.Route().Get("/", func(ctx http.Context) http.Response {
@@ -82,15 +80,14 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### 与所有视图共享数据
 
-Occasionally, you may need to share data with all views that are rendered by your application. 有时，你可能需要与应用程序渲染的所有视图共享数据。 你可以使用 `facades.View()` 中的 `Share` 方法来实现这一点。 通常，你应该在服务提供者的 `Boot` 方法中调用 `Share` 方法。 您可以自由地将它们添加到 `app/providers/app_service_provider.go` 类中或生成一个单独的
-服务提供者来存放它们： Typically, you should place calls to the `Share` method within a service provider's `Boot` method. You are free to add them to the `app/providers/app_service_provider.go` class or generate a separate service provider to house them:
+Occasionally, you may need to share data with all views that are rendered by your application. 有时，您可能需要与应用程序呈现的所有视图共享数据，可以使用 `facades.View()` 的 `Share` 方法。您可以在服务提供器的 `Boot` 方法中调用视图 `Share` 方法。例如，可以将它们添加到 `app/providers/app_service_provider.go` 或者为它们生成一个单独的服务提供器： Typically, you should place calls to the `Share` method within a service provider's `Boot` method. You are free to add them to the `app/providers/app_service_provider.go` class or generate a separate service provider to house them:
 
 ```go
 package providers
 
 import (
- "github.com/goravel/framework/contracts/foundation"
-    "github.com/goravel/framework/facades"
+	"github.com/goravel/framework/contracts/foundation"
+    "github.com/goravel/framework/facades
 )
 
 type AppServiceProvider struct {
