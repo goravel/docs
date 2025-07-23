@@ -74,39 +74,6 @@ Goravel 默认自带 `Dockerfile` 与 `docker-compose.yml` 文件，可以直接
 docker build .
 ```
 
-国内会有下载依赖较慢与时区问题，可以将 Dockerfile 内容替换为下面脚本：
-
-```
-FROM golang:alpine AS builder
-
-ENV GO111MODULE=on \
-    CGO_ENABLED=0  \
-    GOARCH="amd64" \
-    GOOS=linux   \
-    GOPROXY=https://goproxy.cn,direct
-
-WORKDIR /build
-COPY . .
-RUN go mod tidy
-RUN go build --ldflags "-extldflags -static" -o main .
-
-FROM alpine:latest
-
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
-RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone
-WORKDIR /www
-
-COPY --from=builder /build/main /www/
-COPY --from=builder /build/database/ /www/database/
-COPY --from=builder /build/public/ /www/public/
-COPY --from=builder /build/storage/ /www/storage/
-COPY --from=builder /build/resources/ /www/resources/
-COPY --from=builder /build/.env /www/.env
-
-ENTRYPOINT ["/www/main"]
-```
-
 ### Docker Compose
 
 您也可以使用以下命令快速启动服务：
@@ -120,7 +87,7 @@ docker-compose up
 
 ## 设置时区
 
-当你在 `app.timezone` 配置中非 `UTC` 时区时，在编译时需要通过将时区设置到应用中，可以选择下面三种方式中的任意一种：
+当你在 `app.timezone` 配置中非 `UTC` 时区时，在编译时需要通过将时区设置到应用中，可以选择下面三种方式中的任意一种： You can choose any of the following three methods:
 
 1. 在 Dockerfile 中添加时区设置
 
