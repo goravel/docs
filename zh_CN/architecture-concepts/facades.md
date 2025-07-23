@@ -4,9 +4,9 @@
 
 ## 简介
 
-`facades` 为应用程序的核心功能提供了一个"静态"接口，并提供了更灵活、更优雅且易于测试的语法。
+`facades` 为应用的核心功能提供一个「静态」接口，能够提供更加灵活、更加优雅、易于测试的语法。
 
-Goravel 的所有 `facades` 都定义在 `github.com/goravel/framework/facades` 下。 我们可以轻松使用 `facades`： We can easily use `facades`:
+Goravel 所有的 `facades` 都定义在 `github.com/goravel/framework/facades` 下。 我们可以很轻松的使用 `facades`：
 
 ```go
 import "github.com/goravel/framework/facades"
@@ -14,9 +14,9 @@ import "github.com/goravel/framework/facades"
 facades.Route().Run(facades.Config().GetString("app.host"))
 ```
 
-## 外观如何工作
+## facades 工作原理
 
-`facades` 通常在每个模块 `ServerProvider` 的 `Register` 或 `Boot` 阶段实例化。
+`facades` 一般会在各模块 `ServerProvider` 的 `Register` 或 `Boot` 阶段进行实例化。
 
 ```go
 func (config *ServiceProvider) Register() {
@@ -25,7 +25,7 @@ func (config *ServiceProvider) Register() {
 }
 ```
 
-如果 `facades` 使用其他 `facades`，则在 `ServerProvider` 的 `Boot` 阶段实例化它们：
+如果该 `facades` 使用了其他 `facades`，那么就在 `ServerProvider` 的 `Boot` 阶段进行实例化：
 
 ```go
 func (database *ServiceProvider) Boot() {
@@ -34,28 +34,28 @@ func (database *ServiceProvider) Boot() {
 }
 ```
 
-## Facade 类参考
+## facade 类参考
 
-| Facade      | 文档                                |
-| ----------- | --------------------------------- |
-| App         | [容器](../foundation/container)     |
-| Artisan     | [命令行控制台](../advanced/artisan)     |
-| Auth        | [认证](../security/authentication)  |
-| Cache       | [缓存](../advanced/cache)           |
-| Config      | [配置](../quickstart/configuration) |
-| Crypt       | [加密](../security/encryption)      |
-| Event       | [事件](../advanced/events)          |
-| Gate        | [授权](../security/authorization)   |
-| Grpc        | [Grpc](../basic/grpc)             |
-| Hash        | [哈希](../security/hashing)         |
-| Log         | [日志](../basic/logging)            |
-| Mail        | [邮件](../advanced/mail)            |
-| Orm         | [ORM](../orm/getting-started)     |
-| Queue       | [队列](../advanced/queues)          |
-| RateLimiter | [速率限制器](../basic/routing)         |
-| Route       | [路由](../basic/routing)            |
-| Seeder      | [种子](../orm/seeding)              |
-| Schedule    | [调度](../advanced/schedule)        |
-| Storage     | [存储](../advanced/schedule)        |
-| Testing     | [测试](../testing/getting-started)  |
-| Validation  | [验证](../advanced/schedule)        |
+| Facade      | 文档                                                  |
+| ----------- | --------------------------------------------------- |
+| App         | [容器](../architecture-concepts/service-container.md) |
+| Artisan     | [命令行工具](../digging-deeper/artisan-console.md)       |
+| Auth        | [用户认证](../security/authentication.md)               |
+| Cache       | [缓存系统](../digging-deeper/cache.md)                  |
+| Config      | [配置信息](../getting-started/configuration.md)         |
+| Crypt       | [加密解密](../security/encryption.md)                   |
+| Event       | [事件系统](../digging-deeper/event.md)                  |
+| Gate        | [用户授权](../security/authorization.md)                |
+| Grpc        | [Grpc](../the-basics/grpc.md)                       |
+| Hash        | [哈希](../security/hashing.md)                        |
+| Log         | [日志](../the-basics/logging.md)                      |
+| Mail        | [邮件](../digging-deeper/mail.md)                     |
+| Orm         | [ORM](../orm/getting-started.md)                    |
+| Queue       | [队列](../digging-deeper/queues.md)                   |
+| RateLimiter | [限流器](../the-basics/routing.md)                     |
+| Route       | [路由](../the-basics/routing.md)                      |
+| Seeder      | [数据填充](../database/seeding.md)                      |
+| Schedule    | [任务调度](../digging-deeper/task-scheduling.md)        |
+| Storage     | [文件系统](../digging-deeper/filesystem.md)             |
+| Testing     | [测试](../testing/getting-started.md)                 |
+| Validation  | [表单验证](../the-basics/validation.md)                 |
