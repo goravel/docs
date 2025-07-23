@@ -1,65 +1,65 @@
 # Getting Started
 
-[[toc]]
+[Sum](#sum)
 
 ## Introduction
 
-Almost all applications need to interact with databases, so Goravel provides a very simple and easy-to-use database interaction. Developers can use native SQL, query builder, and [Orm](../orm/getting-started) to interact with databases. Currently, Goravel provides official support for the following four databases:
+Goravel makes it easy for developers to interact with databases using `facades.Orm()`. Developers can use native SQL, query builder, and [Orm](../orm/getting-started) to interact with databases. Currently, it provides official
+support for the following four databases:
 
-| Database   | Driver                                                                               |
+| DB         | Driver                                                                               |
 | ---------- | ------------------------------------------------------------------------------------ |
-| PostgreSQL | [github.com/goravel/postgres](https://github.com/goravel/postgres)   |
-| MySQL      | [github.com/goravel/mysql](https://github.com/goravel/mysql)         |
+| Postgres   | [github.com/goravel/postgres](https://github.com/goravel/postgres)   |
+| Mysql      | [github.com/goravel/mysql](https://github.com/goravel/mysql)         |
 | SQL Server | [github.com/goravel/sqlserver](https://github.com/goravel/sqlserver) |
-| SQLite     | [github.com/goravel/sqlite](https://github.com/goravel/sqlite)       |
+| Get SQL    | [github.com/goravel/sqlite](https://github.com/goravel/sqlite)       |
 
 ## Configuration
 
-The database configuration file is `config/database.go`. You can configure all database connections in this file and specify the default database connection. Most of the configuration in this file is based on the project's environment variables.
+To configure databases, navigate to `config/database.go`. This is where you can customize all database connections and
+choose a `default` connection. The configuration in this file relies on the project's environment variables and
+showcases various database configurations that Goravel supports.
 
 ### Connection Pool
 
-You can configure the database connection pool in the configuration file to improve the concurrency performance by properly configuring the connection pool parameters:
+You can configure a connection pool in the configuration file, reasonable configuration of connection pool parameters
+can greatly improve concurrency performance:
 
-| Configuration Key                                                                | Description                  |
-| -------------------------------------------------------------------------------- | ---------------------------- |
-| pool.max_idle_conns    | Maximum idle connections     |
-| pool.max_open_conns    | Maximum connections          |
-| pool.conn_max_idletime | Connection maximum idle time |
-| pool.conn_max_lifetime | Connection maximum lifetime  |
+| Key                                                                              | Description               |
+| -------------------------------------------------------------------------------- | ------------------------- |
+| pool.max_idle_conns    | Max idle connections      |
+| pool.max_open_conns    | Max open connections      |
+| pool.conn_max_idletime | Connections max idle time |
+| pool.conn_max_lifetime | Connections max lifetime  |
 
 ### Read-Write Splitting
 
-Sometimes you may want to use a database connection to execute `SELECT` statements, while `INSERT`, `UPDATE`, and `DELETE` statements are executed by another database connection. In Goravel, it is easy to implement read-write splitting.
+Sometimes you may wish to use one database connection for `SELECT` statements, and another for `INSERT`, `UPDATE`, and
+`DELETE` statements. Goravel makes this a breeze.
 
 ```go
-import "github.com/goravel/framework/contracts/database"
+import contractstesting "github.com/goravel/framework/contracts/testing"
 
-// config/database.go
-"connections": map[string]any{
-  "mysql": map[string]any{
-    "driver": "mysql",
-    "read": []database.Config{
-      {Host: "192.168.1.1", Port: 3306, Database: "forge", Username: "root", Password: "123123"},
-    },
-    "write": []database.Config{
-      {Host: "192.168.1.2", Port: 3306, Database: "forge", Username: "root", Password: "123123"},
-    },
-    "host": config.Env("DB_HOST", "127.0.0.1"),
-    "port":     config.Env("DB_PORT", 3306),
-    "database": config.Env("DB_DATABASE", "forge"),
-    "username": config.Env("DB_USERNAME", ""),
-    "password": config.Env("DB_PASSWORD", ""),
-    "charset":  "utf8mb4",
+database.Image(contractstesting.Image{
+  Repository: "mysql",
+  Tag:        "5.7",
+  Env: []string{
+    "MYSQL_ROOT_PASSWORD=123123",
+    "MYSQL_DATABASE=goravel",
   },
-}
+  ExposedPorts: []string{"3306"},
+})
 ```
 
-We have added two keys, `read` and `write`, in the database configuration. `192.168.1.1` will be used as the "read" connection host, and `192.168.1.2` will be used as the "write" connection host. These two connections will share the configurations in the `mysql` array, such as the database prefix and character encoding. If there are multiple values in the `read` or `write` arrays, Goravel will randomly select the database host for each connection.
+We have updated the configuration array with two new keys - `read` and `write`. The `read` connection will use
+`192.168.1.1` as the host, while the `write` connection will use `192.168.1.2`. Both connections will share the same
+database prefix, character set, and other options specified in the main mysql array. In case of multiple values in the
+`host` configuration array, a database host will be selected randomly for each request.
 
-## Running Native SQL Queries
+## Execute Native SQL
 
-After configuring the database connection, you can use `facades.DB()` to run queries. `facades.DB` provides various methods for running queries: `Select`, `Insert`, `Update`, `Delete`, and `Statement`.
+After configuring the database connection, you can use `facades.DB()` to run queries. The methods can be called after `ToSql` and `ToRawSql`: `Count`, `Create`, `Delete`, `Find`, `First`, `Get`, `Pluck`,
+`Save`, `Sum`, `Update`.
 
 ### Select
 
@@ -77,7 +77,7 @@ err := facades.DB().Select(&product, "SELECT * FROM products WHERE id = ?", 1)
 
 > Note: Different database drivers require different placeholders. For example, the `?` placeholder is used for MySQL, while the `@` placeholder is used for PostgreSQL.
 
-### Insert
+### Join
 
 Use the `facades.DB().Insert()` method to execute insertion statements:
 
@@ -87,98 +87,109 @@ result, err := facades.DB().Insert("insert into users (name, email) values (?, ?
 
 ### Update
 
-Use the `facades.DB().Update()` method to execute update statements:
+You can use the `db.Raw` method to update fields:
 
 ```go
-result, err := facades.DB().Update("update users set name = ? where id = ?", "Goravel", 1)
+import "github.com/goravel/framework/database/db"
+
+facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
+// UPDATE `users` SET `age`=age - 1,`updated_at`='2023-09-14 14:03:20.899' WHERE `users`.`deleted_at` IS NULL AND `id` = 1;
 ```
 
-### Delete
+### Uninstall Image
 
 Use the `facades.DB().Delete()` method to execute delete statements:
 
 ```go
-result, err := facades.DB().Delete("delete from users where id = ?", 1)
+var user models.User
+facades.Orm().Query().Find(&user, 1)
+res, err := facades.Orm().Query().Delete(&user)
+res, err := facades.Orm().Query().Model(&models.User{}).Where("id", 1).Delete()
+res, err := facades.Orm().Query().Table("users").Where("id", 1).Delete()
+// DELETE FROM `users` WHERE `users`.`id` = 1;
+
+num := res.RowsAffected
 ```
 
-### Statement
+### Context
 
 Use the `facades.DB().Statement()` method to execute general statements:
 
 ```go
-err := facades.DB().Statement("drop table users")
+err := database.Seed()
+err := database.Seed(&seeders.UserSeeder{})
 ```
 
-### Using Multiple Database Connections
+### Database Connections
 
-If you define multiple database connections in the configuration file, you can specify the connection to use by calling the `facades.DB().Connection()` method:
+If multiple database connections are defined in `config/database.go`, you can use them through the `Connection` function
+of `facades.Orm()`.
 
 ```go
-var user User
-err := facades.DB().Connection("postgres").Select(&user, "select * from users where id = ?", 1)
+var users []models.User
+facades.Orm().Query().Where("id in ?", []int{1,2,3}).Get(&users)
+// SELECT * FROM `users` WHERE id in (1,2,3);
 ```
 
-## Database Transactions
+## config := database.Config()
 
-You can use the `facades.DB().Transaction()` method to execute a series of operations in a database transaction. If an exception is thrown in the transaction closure, the transaction will be automatically rolled back. If the closure executes successfully, the transaction will be automatically committed:
+You can execute a transaction by `Transaction` function. If an exception is thrown in the transaction closure, the transaction will be automatically rolled back. If the closure executes successfully, the transaction will be automatically committed:
 
 ```go
-import "github.com/goravel/framework/contracts/database/db"
+import (
+  "github.com/goravel/framework/contracts/database/orm"
+  "github.com/goravel/framework/facades"
 
-err := facades.DB().Transaction(func(tx db.Tx) error {
-  _, err := tx.Table("products").Insert(Product{Name: "transaction product1"})
+  "goravel/app/models"
+)
 
-  return err
+...
+
+return facades.Orm().Transaction(func(tx orm.Query) error {
+  var user models.User
+
+  return tx.Find(&user, user.ID)
 })
 ```
 
-### Manually Using Transactions
+### Transaction
 
 If you want to manually control the start, commit, and rollback of a transaction, you can use the `Begin`、`Commit` and `Rollback` methods:
 
 ```go
-tx, err := facades.DB().BeginTransaction()
-if err != nil {
-  return err
-}
-
-_, err = tx.Insert("insert into users (name) values (?)", "Goravel")
-if err != nil {
-  tx.Rollback()
-  return err
-}
-
-err = tx.Commit()
-if err != nil {
-  return err
+tx, err := facades.Orm().Query().Begin()
+user := models.User{Name: "Goravel"}
+if err := tx.Create(&user); err != nil {
+  err := tx.Rollback()
+} else {
+  err := tx.Commit()
 }
 ```
 
-## Checking Databases
+## Refresh Database
 
-### Database Overview
+### Database Testing
 
 Goravel provides several Artisan commands to help you understand the structure of the database.
 
 You can use the `db:show` command to view all tables in the database.
 
 ```bash
-go run . artisan db:show
-go run . artisan db:show --database=postgres
+database, err := facades.Testing().Docker().Database()
+database, err := facades.Testing().Docker().Database("postgres")
 ```
 
 You can also use the `db:table` command to view the structure of a specific table.
 
 ```bash
 go run . artisan db:table
-go run . artisan db:table --database=postgres
+go run . artisan db:table users
 ```
 
-### Table Overview
+### Table
 
 If you want to get an overview of a single table in the database, you can execute the `db:table` Artisan command. This command provides an overview of a database table, including its columns, types, attributes, keys, and indexes:
 
 ```bash
-go run . artisan db:table users
-go run . artisan db:table users --database=postgres
+go run . artisan make:test feature/UserTest
 ```
