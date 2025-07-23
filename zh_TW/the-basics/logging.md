@@ -4,7 +4,8 @@
 
 ## Introduction
 
-In order to understand the running status of the application, Goravel provides a powerful log service that can record log messages and system errors to a file or other channels through `facades.Log()`.
+In order to understand the running status of the application, Goravel provides a powerful log service that can record
+log messages and system errors to a file or other channels through `facades.Log()`.
 
 ## Configuration
 
@@ -83,7 +84,8 @@ facades.Log().User("John").Debug(message)
 
 ## Create a custom channel
 
-If you want to define a completely custom channel, you can specify the `custom` driver type in the `config/logging.go` configuration file.
+If you want to define a completely custom channel, you can specify the `custom` driver type in the `config/logging.go`
+configuration file.
 Then include a `via` option to implement a `framework\contracts\log\Logger` structure:
 
 ```go
