@@ -1,4 +1,4 @@
-# 辅助函数
+# Helpers
 
 [[toc]]
 
@@ -6,16 +6,16 @@
 
 ### 路径
 
-|                                   |                                 |                               |
-| --------------------------------- | ------------------------------- | ----------------------------- |
+|                                                                      |                                                                    |                                                                  |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------- |
 | [path.App()](#path-app)           | [path.Base()](#path-base)       | [path.Config()](#path-config) |
 | [path.Database()](#path-database) | [path.Storage()](#path-storage) | [path.Public()](#path-public) |
-| [path.Resource()](#path-resource) |                                 |                               |
+| [path.Resource()](#path-resource) |                                                                    |                                                                  |
 
-### 时间
+### Carbon
 
-|                                                         |                                                           |                                                           |
-| ------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
+|                                                                                            |                                                                                              |                                                                                              |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | [carbon.Now()](#carbon-now)                             | [carbon.SetTimezone()](#carbon-settimezone)               | [carbon.SetLocale()](#carbon-setlocale)                   |
 | [carbon.SetTestNow()](#carbon-settestnow)               | [carbon.ClearTestNow()](#carbon-cleartestnow)             | [carbon.IsTestNow()](#carbon-istestnow)                   |
 | [carbon.Parse()](#carbon-parse)                         | [carbon.ParseByLayout()](#carbon-parsebylayout)           | [carbon.ParseByFormat()](#carbon-parsebyformat)           |
@@ -24,40 +24,40 @@
 | [carbon.FromDateTimeMicro()](#carbon-fromdatetimemicro) | [carbon.FromDateTimeNano()](#carbon-fromdatetimenano)     | [carbon.FromDate()](#carbon-fromdate)                     |
 | [carbon.FromDateMilli()](#carbon-fromdatemilli)         | [carbon.FromDateMicro()](#carbon-fromdatemicro)           | [carbon.FromDateNano()](#carbon-fromdatenano)             |
 | [carbon.FromTime()](#carbon-fromtime)                   | [carbon.FromTimeMilli()](#carbon-fromtimemilli)           | [carbon.FromTimeMicro()](#carbon-fromtimemicro)           |
-| [carbon.FromTimeNano()](#carbon-fromtimenano)           | [carbon.FromStdTime()](#carbon-fromstdtime)               |                                                           |
+| [carbon.FromTimeNano()](#carbon-fromtimenano)           | [carbon.FromStdTime()](#carbon-fromstdtime)               |                                                                                              |
 
-### 调试
+### Debug
 
-|                             |                               |                               |
-| --------------------------- | ----------------------------- | ----------------------------- |
+|                                                                |                                                                  |                                                                  |
+| -------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
 | [debug.Dump()](#debug-dump) | [debug.SDump()](#debug-sdump) | [debug.FDump()](#debug-fdump) |
 
 ### Maps
 
-|                             |                               |                               |
-| --------------------------- | ----------------------------- | ----------------------------- |
+|                                                                |                                                                  |                                                                  |
+| -------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
 | [maps.Add()](#maps-add)     | [maps.Exists()](#maps-exists) | [maps.Forget()](#maps-forget) |
 | [maps.Get()](#maps-get)     | [maps.Has()](#maps-has)       | [maps.HasAny()](#maps-hasany) |
 | [maps.Only()](#maps-only)   | [maps.Pull()](#maps-pull)     | [maps.Set()](#maps-set)       |
-| [maps.Where()](#maps-where) |                               |                               |
+| [maps.Where()](#maps-where) |                                                                  |                                                                  |
 
-### 转换
+### Convert
 
-|                                       |                                       |                                           |
-| ------------------------------------- | ------------------------------------- | ----------------------------------------- |
+|                                                                          |                                                                          |                                                                              |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
 | [convert.Tap()](#convert-tap)         | [convert.With()](#convert-with)       | [convert.Transform()](#convert-transform) |
-| [convert.Default()](#convert-default) | [convert.Pointer()](#convert-pointer) |                                           |
+| [convert.Default()](#convert-default) | [convert.Pointer()](#convert-pointer) |                                                                              |
 
-### 集合
+### Collect
 
-|                                     |                                       |                                       |
-| ----------------------------------- | ------------------------------------- | ------------------------------------- |
+|                                                                        |                                                                          |                                                                          |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
 | [collect.Count()](#collect-count)   | [collect.CountBy()](#collect-countby) | [collect.Each()](#collect-each)       |
 | [collect.Filter()](#collect-filter) | [collect.GroupBy()](#collect-groupby) | [collect.Keys()](#collect-keys)       |
 | [collect.Map()](#collect-map)       | [collect.Max()](#collect-max)         | [collect.Merge()](#collect-merge)     |
 | [collect.Min()](#collect-min)       | [collect.Reverse()](#collect-reverse) | [collect.Shuffle()](#collect-shuffle) |
 | [collect.Split()](#collect-split)   | [collect.Sum()](#collect-sum)         | [collect.Unique()](#collect-unique)   |
-| [collect.Values()](#collect-values) |                                       |                                       |
+| [collect.Values()](#collect-values) |                                                                          |                                                                          |
 
 ## 路径
 
@@ -67,7 +67,7 @@ import "github.com/goravel/framework/support/path"
 
 ### `path.App()`
 
-`path.App()` 函数返回 app 目录的绝对路径。你也可以用来生成应用目录下特定文件的路径：
+The `path.App()` function returns the absolute path to your application's app directory. `path.App()` 函数返回 app 目录的绝对路径。你也可以用来生成应用目录下特定文件的路径：
 
 ```go
 path := path.App()
@@ -76,7 +76,7 @@ path := path.App("http/controllers/controller.go")
 
 ### `path.Base()`
 
-`path.Base()` 函数返回项目根目录的绝对路径。你也可以用来生成项目根目录下特定文件的路径：
+The `path.Base()` function returns the absolute path to your application's root directory. `path.Base()` 函数返回项目根目录的绝对路径。你也可以用来生成项目根目录下特定文件的路径：
 
 ```go
 path := path.Base()
@@ -85,7 +85,7 @@ path := path.Base("vendor/bin")
 
 ### `path.Config()`
 
-`path.Config()` 函数返回项目配置目录 (config) 的绝对路径。你也可以用来生成应用配置目录中的特定文件的路径：
+The `path.Config()` function returns the absolute path to your application's config directory. `path.Config()` 函数返回项目配置目录 (config) 的绝对路径。你也可以用来生成应用配置目录中的特定文件的路径：
 
 ```go
 path := path.Config()
@@ -94,7 +94,7 @@ path := path.Config("app.go")
 
 ### `path.Database()`
 
-`path.Database()` 函数返回 `database` 目录的绝对路径。你也可以用来生成数据库目录下特定文件的路径：
+The `path.Database()` function returns the absolute path to your application's database directory. `path.Database()` 函数返回 `database` 目录的绝对路径。你也可以用来生成数据库目录下特定文件的路径：
 
 ```go
 path := path.Database()
@@ -103,7 +103,7 @@ path := path.Database("factories/user_factory.go")
 
 ### `path.Storage()`
 
-`path.Storage()` 函数返回 `storage` 目录的绝对路径。你也可以用来生成位于资源路径中的特定路径：
+The `path.Storage()` function returns the absolute path to your application's storage directory. `path.Storage()` 函数返回 `storage` 目录的绝对路径。你也可以用来生成位于资源路径中的特定路径：
 
 ```go
 path := path.Storage()
@@ -112,7 +112,7 @@ path := path.Storage("app/file.txt")
 
 ### `path.Public()`
 
-`path.Public()` 函数返回 `public` 目录的绝对路径。你也可以用来生成 `public` 目录下特定文件的路径：
+The `path.Public()` function returns the absolute path to your application's public directory. `path.Public()` 函数返回 `public` 目录的绝对路径。你也可以用来生成 `public` 目录下特定文件的路径：
 
 ```go
 path := path.Public()
@@ -121,7 +121,7 @@ path := path.Public("css/app.css")
 
 ### `path.Lang()`
 
-`path.Lang()` 函数返回 `lang` 目录的绝对路径。你也可以用来生成 `lang` 目录下特定文件的路径：
+The `path.Lang()` function returns the absolute path to the `lang` directory. `path.Lang()` 函数返回 `lang` 目录的绝对路径。你也可以用来生成 `lang` 目录下特定文件的路径：
 
 ```go
 path := path.Lang()
@@ -130,14 +130,14 @@ path := path.Lang("en.json")
 
 ### `path.Resource()`
 
-`path.Resource()` 函数返回 `resource` 目录的绝对路径。你也可以用来生成 `resource` 目录下特定文件的路径：
+The `path.Resource()` function returns the absolute path to the `resource` directory. `path.Resource()` 函数返回 `resource` 目录的绝对路径。你也可以用来生成 `resource` 目录下特定文件的路径：
 
 ```go
 path := path.Resource()
 path := path.Resource("css/app.css")
 ```
 
-## 时间
+## Carbon
 
 Goravel 的 `carbon` 是 [dromara/carbon](https://github.com/dromara/carbon) 的一个扩展，详细用法请参考其官方文档。
 
@@ -147,7 +147,7 @@ import "github.com/goravel/framework/support/carbon"
 
 ### `carbon.Now()`
 
-获取当前时间：
+The `carbon.Now()` function gets current time:
 
 ```go
 carbon.Now()
@@ -179,7 +179,7 @@ carbon.SetTestNow(carbon.Now())
 
 ### `carbon.CleanTestNow()`
 
-清除系统时间为正常值：
+The `carbon.CleanTestNow()` function clears the test now Carbon object:
 
 ```go
 carbon.CleanTestNow()
@@ -203,7 +203,7 @@ carbon.Parse("2020-08-05 13:14:15")
 
 ### `carbon.ParseByLayout()`
 
-通过指定布局模板解析 `Carbon` 对象:
+The `carbon.ParseByLayout()` function gets `Carbon` object by given value and layout:
 
 ```go
 carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
@@ -387,6 +387,10 @@ debug.SDump(myVar1, myVar2, ...)
 
 ## Maps
 
+```go
+import "github.com/goravel/framework/support/maps"
+```
+
 ### `maps.Add()`
 
 `maps.Add()` 方法用于向给定的 map 中添加不存在的键值对：
@@ -426,7 +430,7 @@ maps.Forget(mp, "name", "age")
 
 ### `maps.Get()`
 
-`maps.Get()` 函数从提供的 map 中检索给定键的值。如果键不存在，则返回默认值：
+`maps.Get()` 函数从提供的 map 中检索给定键的值。如果键不存在，则返回默认值： If the key does not exist, the default value will be returned:
 
 ```go
 mp := map[string]any{"name": "Bowen"}
@@ -481,7 +485,7 @@ maps.Pull(mp, "name")
 // map[string]any{"language": "Go"}
 ```
 
-`maps.Pull()` 可以设置默认值在第三个参数，如果键不存在，则返回默认值：
+`maps.Pull()` 可以设置默认值在第三个参数，如果键不存在，则返回默认值： This value will be returned if the key does not exist in the map:
 
 ```go
 mp := map[string]any{"name": "Goravel", "language": "Go"}
@@ -563,7 +567,7 @@ convert.With("Goravel", func(value string) string {
 
 ### `convert.Default()`
 
-`convert.Default()` 方法返回第一个非零值。如果所有值都为零，则返回零值。
+`convert.Default()` 方法返回第一个非零值。如果所有值都为零，则返回零值。 If all values are zero, it returns zero value.
 
 ```go
 convert.Default("", "foo") // foo
@@ -718,7 +722,7 @@ collect.Shuffle([]int{1, 2, 3, 4, 5})
 
 ### `collect.Split()`
 
-`collect.Split()` 函数将集合分成给定长度的组。如果集合无法均匀分割，则最后一个块将包含剩余的项目：
+`collect.Split()` 函数将集合分成给定长度的组。如果集合无法均匀分割，则最后一个块将包含剩余的项目： If the collection can't be split evenly, the final chunk will contain the remaining items:
 
 ```go
 collect.Split([]int{1, 2, 3, 4, 5}, 2)
