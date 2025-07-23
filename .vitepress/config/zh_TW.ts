@@ -6,43 +6,43 @@ export const config = defineConfig({
     nav: nav(),
     sidebar: [{
       text: 'Quickstart',
-      base: '/getting-started/',
+      base: "/quickstart/",
       items: sidebarQuickstart()
     }, {
       text: 'Upgrade',
       base: '/upgrade/',
       items: sidebarUpgrade()
     }, {
-      text: 'Architecture Concepts',
-      base: '/architecture-concepts/',
+      text: "Foundation",
+      base: "/foundation/",
       items: sidebarFoundation()
     }, {
-      text: 'The Basics',
-      base: '/the-basics/',
+      text: "Basic",
+      base: "/basic/",
       items: sidebarBasic()
     }, {
-      text: 'Digging Deeper',
-      base: '/digging-deeper/',
+      text: "Advanced",
+      base: "/advanced/",
       items: sidebarAdvanced()
     }, {
       text: 'Security',
       base: '/security/',
       items: sidebarSecurity()
     }, {
-      text: 'Database',
-      base: '/database/',
+      text: "ORM",
+      base: "/orm/",
       items: sidebarDatabase()
     }, {
-      text: 'ORM',
-      base: '/orm/',
+      text: "Testing",
+      base: "/testing/",
       items: sidebarOrm()
     }, {
-      text: 'Testing',
-      base: '/testing/',
+      text: "Other",
+      base: "/other/",
       items: sidebarTesting()
     }],
     editLink: {
-      pattern: 'https://github.com/goravel/docs/edit/master/:path',
+      pattern: "https://github.com/goravel/goravel.github.io/edit/main/:path",
       text: 'Edit this page on GitHub'
     },
     footer: {
@@ -75,11 +75,11 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [{
     text: 'Quickstart',
-    link: '/getting-started/installation',
-    activeMatch: '/getting-started/'
+    link: "/quickstart/installation",
+    activeMatch: "/quickstart/"
   }, {
-    text: 'Video Tutorials',
-    link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
+    text: "Upgrade",
+    link: "/upgrade/v1.15"
   }];
 }
 function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
@@ -108,11 +108,11 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Upgrading To v1.16 From v1.15',
-    link: 'v1.16'
+    text: "Upgrade from v1.15",
+    link: "v1.15"
   }, {
-    text: 'Upgrading To v1.15 From v1.14',
-    link: 'v1.15'
+    text: "Upgrade from v1.14",
+    link: "v1.14"
   }, {
     text: 'History',
     link: 'history'
@@ -121,13 +121,13 @@ function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
 function sidebarFoundation(): DefaultTheme.SidebarItem[] {
   return [{
     text: 'Lifecycle',
-    link: 'request-lifecycle'
+    link: "lifecycle"
   }, {
     text: 'Service Container',
-    link: 'service-container'
+    link: "container"
   }, {
     text: 'Service Providers',
-    link: 'service-providers'
+    link: "providers"
   }, {
     text: 'Facades',
     link: 'facades'
@@ -138,17 +138,17 @@ function sidebarBasic(): DefaultTheme.SidebarItem[] {
     text: 'Routing',
     link: 'routing'
   }, {
-    text: 'Middleware',
-    link: 'middleware'
+    text: "Middlewares",
+    link: "middlewares"
   }, {
     text: 'Controllers',
     link: 'controllers'
   }, {
     text: 'Requests',
-    link: 'request'
+    link: "requests"
   }, {
     text: 'Responses',
-    link: 'response'
+    link: "responses"
   }, {
     text: 'Views',
     link: 'views'
@@ -168,17 +168,17 @@ function sidebarBasic(): DefaultTheme.SidebarItem[] {
 }
 function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Artisan Console',
-    link: 'artisan-console'
+    text: "Artisan",
+    link: "artisan"
   }, {
     text: 'Cache',
     link: 'cache'
   }, {
-    text: 'Event',
-    link: 'event'
+    text: "Events",
+    link: "events"
   }, {
     text: 'File Storage',
-    link: 'filesystem'
+    link: "fs"
   }, {
     text: 'Mail',
     link: 'mail'
@@ -187,13 +187,13 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     link: 'queues'
   }, {
     text: 'Task Scheduling',
-    link: 'task-scheduling'
+    link: "schedule"
   }, {
     text: 'Localization',
     link: 'localization'
   }, {
     text: 'Package Development',
-    link: 'package-development'
+    link: "package"
   }, {
     text: 'Color Output',
     link: 'color'
@@ -240,25 +240,25 @@ function sidebarDatabase(): DefaultTheme.SidebarItem[] {
 }
 function sidebarOrm(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Getting Started',
-    link: 'getting-started'
+    text: "Quickstart",
+    link: "quickstart"
   }, {
     text: 'Relationships',
     link: 'relationships'
   }, {
-    text: 'Factories',
-    link: 'factories'
+    text: "Migrations",
+    link: "migrations"
   }];
 }
 function sidebarTesting(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Getting Started',
-    link: 'getting-started'
+    text: "Quickstart",
+    link: "quickstart"
   }, {
     text: 'HTTP Tests',
-    link: 'http-tests'
+    link: "http"
   }, {
-    text: 'Mock',
-    link: 'mock'
+    text: "Mocks",
+    link: "mocks"
   }];
 }
