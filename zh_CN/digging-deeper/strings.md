@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 提供了一个流畅的字符串操作库，允许你轻松地操作字符串。可以使用 `String` 方法创建一个 `string` 实例，允许你调用各种方法，每个方法都会返回当前字符串实例，允许您将多个方法链接在一起。
+Goravel 提供了一个流畅的字符串操作库，允许你轻松地操作字符串。可以使用 `String` 方法创建一个 `string` 实例，允许你调用各种方法，每个方法都会返回当前字符串实例，允许您将多个方法链接在一起。 Fluent Strings allows you to combine multiple string operations through method chaining, where most of the methods returns an instance of `support/str.String`, letting you chain additional methods. To get the final string value after applying the chained operations, you can call the `String` method, which returns the underlying `string` value.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -26,7 +26,7 @@ str.Of("Goravel")
 
 ### `After`
 
-`After` 方法返回字符串中指定值之后的部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。
+`After` 方法返回字符串中指定值之后的部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。 If the value is an empty string or does not exist within the original string, the full string is returned.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -36,7 +36,7 @@ str.Of("Hello World!").After("Hello").String() // " World!"
 
 ### `AfterLast`
 
-`AfterLast` 方法返回字符串中指定值最后一次出现之后的部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。
+`AfterLast` 方法返回字符串中指定值最后一次出现之后的部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。 If the value is an empty string or does not exist within the original string, the full string is returned.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -68,7 +68,7 @@ str.Of("framework/support/str.go").Basename(".go").String() // "str"
 
 ### `Before`
 
-`Before` 方法返回指定值之前的字符串部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。
+`Before` 方法返回指定值之前的字符串部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。 If the value is an empty string or does not exist within the original string, the full string is returned.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -78,7 +78,7 @@ str.Of("Hello World!").Before("World").String() // "Hello "
 
 ### `BeforeLast`
 
-`BeforeLast` 方法返回指定值最后一次出现之前的字符串部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。
+`BeforeLast` 方法返回指定值最后一次出现之前的字符串部分。如果值为空字符串或不存在于原始字符串中，则返回完整字符串。 If the value is an empty string or does not exist within the original string, the full string is returned.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -118,7 +118,7 @@ str.Of("hello_world").Camel().String() // "helloWorld"
 
 ### `CharAt`
 
-`CharAt` 方法返回给定索引处的字符。如果索引超出范围，则返回空字符串。
+`CharAt` 方法返回给定索引处的字符。如果索引超出范围，则返回空字符串。 If the index is out of bounds, an empty string will be returned.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -148,7 +148,7 @@ str.Of("https://goravel.dev").ChopStart("http://", "https://").String() // gorav
 
 ### `Contains`
 
-`Contains` 方法确定给定字符串是否包含给定值。该方法区分大小写。如果提供多个值，则如果字符串包含任何值，则返回 `true`。
+The `Contains` method determines if the given string contains the given value. The method is case-sensitive. `Contains` 方法确定给定字符串是否包含给定值。该方法区分大小写。如果提供多个值，则如果字符串包含任何值，则返回 `true`。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -160,7 +160,7 @@ str.Of("Hello World").Contains("Gor", "Hello") // true
 
 ### `ContainsAll`
 
-`ContainsAll` 方法确定给定字符串是否包含所有给定值。该方法区分大小写。
+`ContainsAll` 方法确定给定字符串是否包含所有给定值。该方法区分大小写。 The method is case-sensitive.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -190,7 +190,7 @@ str.Of("framework/support/str").Dirname(2).String() // "framework"
 
 ### `EndsWith`
 
-`EndsWith` 方法确定给定字符串是否以给定值结尾。该方法区分大小写。
+`EndsWith` 方法确定给定字符串是否以给定值结尾。该方法区分大小写。 The method is case-sensitive.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -208,7 +208,7 @@ str.Of("Goravel").EndsWith("vel", "lie") // true
 
 ### `Exactly`
 
-`Exactly` 方法确定给定字符串是否与给定值完全相等。该方法区分大小写。
+`Exactly` 方法确定给定字符串是否与给定值完全相等。该方法区分大小写。 The method is case-sensitive.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -253,7 +253,7 @@ str.Of("Hello World").Explode(" ") // []string{"Hello", "World"}
 
 ### `Finish`
 
-`Finish` 方法确保给定字符串以给定值结尾。如果字符串已经以该值结尾，则不会再次添加。
+The `Finish` method ensures that the given string ends with the given value. `Finish` 方法确保给定字符串以给定值结尾。如果字符串已经以该值结尾，则不会再次添加。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -277,7 +277,7 @@ str.Of("HelloWorld").Headline().String() // "Hello World"
 
 ### `Is`
 
-`Is` 方法确定给定字符串是否与给定模式匹配。该方法区分大小写。
+`Is` 方法确定给定字符串是否与给定模式匹配。该方法区分大小写。 The method is case-sensitive.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -579,7 +579,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello World").Replace("World", "Krishan").String() // "Hello Krishan"
 ```
 
-`Replace` 方法默认区分大小写。如果您希望方法不区分大小写，可以将 `false` 作为第三个参数传递。
+By default, the `Replace` method is case-sensitive. If you would like the method to be case-insensitive, you may pass `false` as the third argument.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -697,7 +697,7 @@ str.Of("/framework").Start("/").String() // "/framework"
 
 ### `StartsWith`
 
-`StartsWith` 方法确定给定字符串是否以给定值开头。该方法区分大小写。
+`StartsWith` 方法确定给定字符串是否以给定值开头。该方法区分大小写。 The method is case-sensitive.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -1028,7 +1028,7 @@ str.Of("Hello, World!").WordCount() // 2
 
 ### `Words`
 
-`Words` 方法限制字符串中的单词数。如果需要，您可以提供第二个参数来更改用于指示截断的字符串。
+`Words` 方法限制字符串中的单词数。如果需要，您可以提供第二个参数来更改用于指示截断的字符串。 If necessary, you may provide the second argument to change the string that is used to indicate the truncation.
 
 ```go
 import "github.com/goravel/framework/support/str"
