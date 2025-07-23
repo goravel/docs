@@ -4,15 +4,15 @@
 
 ## 简介
 
-Session 使你可以在多个请求之间存储用户信息，为本质上无状态的 HTTP 协议提供有状态的体验。这些用户信息在服务器端持久存储。Goravel 提供了一个统一的接口，用于与各种持久存储驱动进行交互。
+Session enables you to store user information across multiple requests, providing a stateful experience within the inherently stateless HTTP protocol. This user information is stored persistently on the server side. Goravel offers a unified interface for interacting with various persistent storage drivers.
 
 ## Configuration
 
-`session` 配置文件位于 `config/session.go`。默认驱动是 `file`，它会把 `session` 存储在 `storage/framework/sessions` 目录中。Goravel 允许你通过实现 `contracts/session/driver` 接口来创建自定义 `session` 驱动。
+The `session` configuration file is located at `config/session.go`. The default driver is `file`, which stores sessions in the `storage/framework/sessions` directory. `session` 配置文件位于 `config/session.go`。默认驱动是 `file`，它会把 `session` 存储在 `storage/framework/sessions` 目录中。Goravel 允许你通过实现 `contracts/session/driver` 接口来创建自定义 `session` 驱动。
 
 ### 注册 Middleware
 
-Goravel 默认情况下未启动 `Session` 功能，但是框架提供了用于启动会话的中间件。你可以在 `app/http/kernel.go` 文件中注册 `Session` 中间件，以将其应用于所有路由，或者将其添加到特定路由中：
+Goravel 默认情况下未启动 `Session` 功能，但是框架提供了用于启动会话的中间件。你可以在 `app/http/kernel.go` 文件中注册 `Session` 中间件，以将其应用于所有路由，或者将其添加到特定路由中： However, it provides middleware to start a session. You can register the session middleware in the `app/http/kernel.go` file to apply it to all routes, or you can add it to specific routes:
 
 ```go
 import (
@@ -31,13 +31,13 @@ func (kernel Kernel) Middleware() []http.Middleware {
 
 ### 获取数据
 
-你可以使用 `Get` 方法从 `Session` 中检索数据。如果值不存在，则返回 `nil`。
+你可以使用 `Get` 方法从 `Session` 中检索数据。如果值不存在，则返回 `nil`。 If the value does not exist, `nil` will be returned.
 
 ```go
 value := ctx.Request().Session().Get("key")
 ```
 
-你还可以将默认值作为第二个参数传递给 `Get` 方法。如果会话中不存在指定的键，则返回该值：
+你还可以将默认值作为第二个参数传递给 `Get` 方法。如果会话中不存在指定的键，则返回该值： This value will be returned if the specified key does not exist in the session:
 
 ```go
 value := ctx.Request().Session().Get("key", "default")
@@ -61,7 +61,7 @@ data := ctx.Request().Session().Only([]string{"username", "email"})
 
 ### 确定会话中是否存在项目
 
-确定会话中是否存在项目，你可以使用 `Has` 方法。如果项目存在且不为 `nil`，则 `Has` 方法返回 `true`：
+To determine if an item is present in the session, you may use the `Has` method. 确定会话中是否存在项目，你可以使用 `Has` 方法。如果项目存在且不为 `nil`，则 `Has` 方法返回 `true`：
 
 ```go
 if ctx.Request().Session().Has("user") {
@@ -103,7 +103,7 @@ value := ctx.Request().Session().Pull("key")
 
 ### 删除数据
 
-`Forget` 方法可用于从会话中删除数据。如果你想从会话中删除所有数据，可以使用 `Flush` 方法：
+The `Forget` method can be used to remove a piece of data from the session. `Forget` 方法可用于从会话中删除数据。如果你想从会话中删除所有数据，可以使用 `Flush` 方法：
 
 ```go
 ctx.Request().Session().Forget("username", "email")
@@ -113,7 +113,7 @@ ctx.Request().Session().Flush()
 
 ### 重新生成会话 ID
 
-重新生成会话 ID 通常是为了防止恶意用户利用会话固定攻击来利用你的应用程序。你可以使用 `Regenerate` 方法重新生成会话 ID：
+Regenerating the session ID is often done in order to prevent malicious users from exploiting a session fixation attack on your application. 重新生成会话 ID 通常是为了防止恶意用户利用会话固定攻击来利用你的应用程序。你可以使用 `Regenerate` 方法重新生成会话 ID：
 
 ```go
 ctx.Request().Session().Regenerate()
@@ -142,7 +142,7 @@ ctx.Response().Cookie(http.Cookie{
 
 ### 闪存数据
 
-闪存数据一种仅在随后的 HTTP 请求中可用的数据，请求结束后将被删除。闪存数据对于存储临时消息（如状态消息）非常有用。你可以使用 `Flash` 方法将闪存数据存储在会话中：
+闪存数据一种仅在随后的 HTTP 请求中可用的数据，请求结束后将被删除。闪存数据对于存储临时消息（如状态消息）非常有用。你可以使用 `Flash` 方法将闪存数据存储在会话中： Flash data is useful for storing temporary messages such as status messages. You may use the `Flash` method to store flash data in the session:
 
 ```go
 ctx.Request().Session().Flash("status", "Task was successful!")
@@ -162,8 +162,6 @@ ctx.Request().Session().Keep("status", "username")
 
 If you would like to keep specific data around for immediate use, you may use the `Now` method:
 
-如果你希望保留特定数据以供立即使用，可以使用 `Now` 方法：
-
 ```go
 ctx.Request().Session().Now("status", "Task was successful!")
 ```
@@ -172,7 +170,7 @@ ctx.Request().Session().Now("status", "Task was successful!")
 
 ### 构建自定义会话
 
-使用 `Session` 门面构建自定义会话。`Session` 门面提供了 `BuildSession` 方法，它接受一个驱动实例和一个可选的会话 ID，如果你想指定自定义会话 ID：
+Use the `Session` facade to build a custom session. 使用 `Session` 门面构建自定义会话。`Session` 门面提供了 `BuildSession` 方法，它接受一个驱动实例和一个可选的会话 ID，如果你想指定自定义会话 ID：
 
 ```go
 import "github.com/goravel/framework/facades"
@@ -227,7 +225,7 @@ type Driver interface {
 
 ### 获取驱动实例
 
-使用 `Driver` 方法从会话管理器中检索驱动实例。它接受一个可选的驱动名称，如果未提供，则返回默认驱动实例：
+Use the `Driver` method to retrieve the driver instance from the session manager. 使用 `Driver` 方法从会话管理器中检索驱动实例。它接受一个可选的驱动名称，如果未提供，则返回默认驱动实例：
 
 ```go
 driver, err := facades.Session().Driver("file")
