@@ -460,7 +460,7 @@ facades.Route().GET("/", func(c *gin.Context) {
 
 ## 禁用打印颜色
 
-有些命令默认会打印颜色，例如 `list` 命令，但在某些终端或日志中颜色值会是乱码，这时你可以使用 `--no-ansi` 选项禁用打印颜色： However, in some terminals or logs, the color values may be garbled. You can use the `--no-ansi` option to disable the print colors:
+有些命令默认会打印颜色，例如 `list` 命令，但在某些终端或日志中颜色值会是乱码，这时你可以使用 `--no-ansi` 选项禁用打印颜色： 但在某些终端或日志中颜色值会是乱码。 这时你可以使用 `--no-ansi` 选项禁用打印颜色：
 
 ```shell
 go run . artisan list --no-ansi
