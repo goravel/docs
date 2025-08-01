@@ -61,7 +61,7 @@ go run . artisan make:controller user/UserController
 
 ## 资源型控制器
 
-如果你将应用程序中的每个Eloquent模型视为一个"资源"，那么对应用程序中的每个资源执行相同的一组操作是很常见的。 例如，假设你的应用程序包含一个`Photo`模型和一个`Movie`模型。 用户很可能可以创建、读取、更新或删除这些资源。 For example, imagine your application contains a `Photo` model and a `Movie` model. It is likely that users can create, read, update, or delete these resources.
+If you think of each Eloquent model in your application as a "resource", it is typical to perform the same sets of actions against each resource in your application. For example, imagine your application contains a `Photo` model and a `Movie` model. It is likely that users can create, read, update, or delete these resources.
 
 Goravel 的资源路由通过单行代码即可将典型的「CURD (增删改查)」路由分配给控制器。首先，我们可以使用 Artisan 命令 `make:controller` 的 `--resource` 选项来快速创建一个控制器： To get started, we can use the `make:controller` Artisan command's `--resource` option to quickly create a controller to handle these actions:
 
@@ -75,7 +75,7 @@ go run . artisan make:controller --resource PhotoController
 facades.Route().Resource("photos", controllers.NewPhotoController())
 ```
 
-| 动词        | 请求URI             | 行为      |
+| Verb      | 请求URI             | 行为      |
 | --------- | ----------------- | ------- |
 | GET       | `/photos`         | Index   |
 | POST      | `/photos`         | Store   |
