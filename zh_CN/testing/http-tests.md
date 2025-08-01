@@ -6,9 +6,9 @@
 
 When building web applications, you'll often need to test if your HTTP requests work correctly from start to finish. 在构建Web应用程序时，您通常需要从头到尾测试您的HTTP请求是否正常工作。Goravel的测试工具使这变得简单——您可以模拟请求并验证响应，而无需设置复杂的测试环境。
 
-## 发送请求
+## Make Requests
 
-测试 Goravel 中的 HTTP 接口使用了一个简单的模式。使用 `TestCase` 的 `Http` 方法，它需要一个 `*testing.T` 参数用于断言。该方法将返回一个实例(`framework/contracts/testing.TestRequest`)，它处理所有常见的 HTTP 请求，如 `Get` 、`Post` 和 `Put`。 Start with the `Http` method from your `TestCase`, which needs a `*testing.T` parameter for assertions. 这些方法不会发出真正的 HTTP 调用，而是在内部模拟您应用程序的请求周期。 每个请求都会返回一个响应对象（`framework/contracts/testing.TestResponse`），该对象具有检查结果的方法。
+测试 Goravel 中的 HTTP 接口使用了一个简单的模式。使用 `TestCase` 的 `Http` 方法，它需要一个 `*testing.T` 参数用于断言。该方法将返回一个实例(`framework/contracts/testing.TestRequest`)，它处理所有常见的 HTTP 请求，如 `Get` 、`Post` 和 `Put`。 Start with the `Http` method from your `TestCase`, which needs a `*testing.T` parameter for assertions. This gives you a request object (`framework/contracts/testing.TestRequest`) that handles all common HTTP verbs like `Get`, `Post`, and `Put`.
 
 Instead of making real HTTP calls, these methods simulate your application's request cycle internally. Each request returns a response object (`framework/contracts/testing.TestResponse`) with methods to check the results.
 
