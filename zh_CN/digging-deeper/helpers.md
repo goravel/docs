@@ -12,7 +12,7 @@
 | [path.Database()](#path-database) | [path.Storage()](#path-storage) | [path.Public()](#path-public) |
 | [path.Resource()](#path-resource) |                                                                    |                                                                  |
 
-### 调试
+### Carbon
 
 |                                                                                            |                                                                                              |                                                                                              |
 | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -137,7 +137,7 @@ path := path.Resource()
 path := path.Resource("css/app.css")
 ```
 
-## 调试
+## Carbon
 
 Goravel 的 `carbon` 是 [dromara/carbon](https://github.com/dromara/carbon) 的一个扩展，详细用法请参考其官方文档。
 
@@ -179,8 +179,7 @@ carbon.SetTestNow(carbon.Now())
 
 ### `carbon.CleanTestNow()`
 
-函数 `maps.Get()` 从提供的映射中检索给定键的值。 如果键不存在，将
-返回默认值：
+The `carbon.CleanTestNow()` function clears the test now Carbon object:
 
 ```go
 carbon.CleanTestNow()
@@ -389,9 +388,7 @@ debug.SDump(myVar1, myVar2, ...)
 ## Maps
 
 ```go
-import "github.com/goravel/framework/support/debug"
-
-debug.SDump(myVar1, myVar2, ...)
+import "github.com/goravel/framework/support/maps"
 ```
 
 ### `maps.Add()`
