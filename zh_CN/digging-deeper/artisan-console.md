@@ -1,4 +1,4 @@
-# Artisan 控制台
+# Artisan Console
 
 [[toc]]
 
@@ -13,8 +13,7 @@ go run . artisan list
 ./artisan list
 ```
 
-每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。只需要在命令前加上 help 即可查看命令帮助界面： 每个命令还有一个"帮助"功能，用于显示和解释与命令相关的参数和选项。 要
-查看帮助屏幕，只需在命令名称前添加"help"。
+每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。只需要在命令前加上 help 即可查看命令帮助界面： To see the help screen, just add "help" before the command name.
 
 ```shell
 go run . artisan help migrate
@@ -271,7 +270,7 @@ type ConfirmOption struct {
 
 #### 单选问题
 
-如果您需要让用户从选项列表中选择一个选项，可以使用`Choice`方法。 `Choice`方法将返回所选选项的值： 如果你需要让用户从一组选项中选择一个选项，你可以使用 `Choice` 方法。`Choice` 方法将返回所选选项的值：
+If you need to ask the user to select an option from a list of options, you may use the `Choice` method. 如果你需要让用户从一组选项中选择一个选项，你可以使用 `Choice` 方法。`Choice` 方法将返回所选选项的值：
 
 ```go
 question := "What is your favorite programming language?"
@@ -460,7 +459,7 @@ facades.Route().GET("/", func(c *gin.Context) {
 
 ## 禁用打印颜色
 
-有些命令默认会打印颜色，例如 `list` 命令，但在某些终端或日志中颜色值会是乱码，这时你可以使用 `--no-ansi` 选项禁用打印颜色： 但在某些终端或日志中颜色值会是乱码。 这时你可以使用 `--no-ansi` 选项禁用打印颜色：
+有些命令默认会打印颜色，例如 `list` 命令，但在某些终端或日志中颜色值会是乱码，这时你可以使用 `--no-ansi` 选项禁用打印颜色： However, in some terminals or logs, the color values may be garbled. You can use the `--no-ansi` option to disable the print colors:
 
 ```shell
 go run . artisan list --no-ansi
