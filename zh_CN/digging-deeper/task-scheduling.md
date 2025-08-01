@@ -112,10 +112,10 @@ func (kernel *Kernel) Schedule() []schedule.Event {
 
 默认情况下，即使之前的任务实例还在执行，调度内的任务也会执行。为避免这种情况的发生，你可以使用 `SkipIfStillRunning` 或 `DelayIfStillRunning` 方法： To prevent this, use the following methods:
 
-| 方法                       | 描述        |
-| ------------------------ | --------- |
-| `.SkipIfStillRunning()`  | 如果仍在运行则跳过 |
-| `.DelayIfStillRunning()` | 如果仍在运行则延迟 |
+| 方法                       | 描述                     |
+| ------------------------ | ---------------------- |
+| `.SkipIfStillRunning()`  | Skip if still running  |
+| `.DelayIfStillRunning()` | Delay if still running |
 
 ```go
 facades.Schedule().Command("send:emails name").EveryMinute().SkipIfStillRunning()
