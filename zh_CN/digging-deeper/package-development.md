@@ -4,7 +4,7 @@
 
 ## 简介
 
-包是向 Goravel 添加功能的主要方式。 这些包可能包含专门设计用于增强 Goravel 应用程序的路由、控制器和配置。 本指南重点介绍开发 Goravel 特定的包。 These packages may contain routes, controllers, and configurations that are specifically designed to enhance a Goravel application. This guide focuses on developing Goravel-specific packages.
+Packages are the primary way of adding functionality to Goravel. These packages may contain routes, controllers, and configurations that are specifically designed to enhance a Goravel application. This guide focuses on developing Goravel-specific packages.
 
 包是向 Goravel 添加功能的主要方式，这些包可能包含专门用于增强 Goravel 应用程序的路由、控制器和配置。本指南主要涵盖了那些特定于 Goravel 的包的开发。这里有一个关于包开发的官方示例：[goravel/example-package](https://github.com/goravel/example-package)
 
@@ -24,8 +24,7 @@ go run . artisan make:package --root=pkg sms
 
 ## 服务提供者
 
-[服务提供者](../architecture-concepts/service-providers.md)是您的包和 Goravel 之间的连接点，通常位于包的根目录中：`service_provider.go`。服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。 They are typically located in the root of the package as a `service_provider.go` file. [服务提供者](../foundation/providers)充当您的包和 Goravel 之间的桥梁。
-它们通常位于包的根目录中，作为一个 `service_provider.go` 文件。 它们的主要功能是将项目绑定到 Goravel 的服务容器中，并指导 Goravel 加载包资源。
+[服务提供者](../architecture-concepts/service-providers.md)是您的包和 Goravel 之间的连接点，通常位于包的根目录中：`service_provider.go`。服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。 They are typically located in the root of the package as a `service_provider.go` file. Their main function is to bind items into Goravel's service container and guide Goravel in loading package resources.
 
 ## 使用
 
@@ -171,5 +170,5 @@ go run . artisan vendor:publish --package={您的包名}
 | ---------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | --package  | -p    | 包名，可以使远程包，例如：github.com/goravel/example-package，也可以使用本地包名：./packages/example-package，注意当使用本地包名时，需要以 `./` 开头 |
 | --tag      | -t    | 资源分组                                                                                                                                        |
-| --force    | -f    | 覆盖任何现有文件                                                                                                                                    |
+| --force    | -f    | Overwrite any existing files                                                                                                                |
 | --existing | -e    | 只发布已存在的资源，并强制覆盖                                                                                                                             |
