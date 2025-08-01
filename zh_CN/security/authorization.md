@@ -12,11 +12,11 @@ Goravel 主要提供了两种授权操作的方法: [拦截器](#拦截器（Gat
 
 ## Gates
 
-### 编写门控
+### Writing Gates
 
 Gates serve as closures that verify whether a user is authorized to perform a specific action. They are commonly set up in the `app/providers/auth_service_provider.go` file's `Boot` method using the Gate facade.
 
-在这个场景中，我们将建立一个门控来检查用户是否可以修改特定的 Post 模型，方法是比较其 ID 与帖子创建者的 user_id。
+In this scenario, we will establish a gate to check if a user can modify a particular Post model by comparing its ID to the user_id of the post's creator.
 
 ```go
 package providers
@@ -51,7 +51,7 @@ func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
 
 ### 行为授权控制
 
-要使用门控授权操作，您应该使用 Gate 门面提供的 `Allows` 或 `Denies` 方法：
+To authorize an action using gates, you should use the `Allows` or `Denies` methods provided by the Gate facade:
 
 ```go
 package controllers
@@ -88,9 +88,9 @@ if facades.Gate().None([]string{"update-post", "delete-post"}, map[string]any{
 }
 ```
 
-### 门控响应
+### Gate Responses
 
-The `Allows` method returns a boolean value. `Allows` 方法返回一个布尔值。 要获取完整的授权响应，请使用 `Inspect` 方法。
+The `Allows` method returns a boolean value. To get the full authorization response, use the `Inspect` method.
 
 ```go
 response := facades.Gate().Inspect("edit-settings", nil);
@@ -102,9 +102,9 @@ if (response.Allowed()) {
 }
 ```
 
-### 拦截访问权限检查
+### Intercepting Gate Checks
 
-Sometimes, you may wish to grant all abilities to a specific user. 有时，您可能希望向特定用户授予所有权限。 您可以使用`Before`方法定义一个闭包，该闭包会在任何其他授权检查之前运行：
+Sometimes, you may wish to grant all abilities to a specific user. You can define a closure using the `Before` method, which runs before any other authorization checks:
 
 ```go
 facades.Gate().Before(func(ctx context.Context, ability string, arguments map[string]any) contractsaccess.Response {
