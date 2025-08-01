@@ -53,7 +53,7 @@ go run . --env=../.env
 APP_ENV=production APP_DEBUG=true go run .
 ```
 
-### 实时重载
+### Live reload
 
 安装 [cosmtrek/air](https://github.com/cosmtrek/air)，框架内置配置文件，可直接使用：
 
