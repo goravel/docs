@@ -26,7 +26,7 @@ facades.Route().Post("/post", postController.Store)
 
 ### 创建控制器
 
-接下来，让我们看一个简单的控制器，它处理这些路由的传入请求。 我们暂时将 `Store` 方法保留为空： We'll leave the `Store` method empty for now:
+Next, let's take a look at a simple controller that handles incoming requests to these routes. We'll leave the `Store` method empty for now:
 
 ```go
 package controllers
@@ -68,7 +68,7 @@ func (r *PostController) Store(ctx http.Context) {
 }
 ```
 
-### 嵌套属性
+### Nested Attributes
 
 如果您的 HTTP 请求包含「嵌套」参数，您可以在验证规则中使用 `.` 语法来指定这些参数：
 
@@ -136,7 +136,7 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
 }
 ```
 
-So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. 那么，验证规则是如何被评估的呢？ 你只需要在控制器方法中类型提示请求即可。 传入的表单请求在控制器方法被调用之前就会被验证，这意味着你不需要在控制器中添加任何验证逻辑：
+So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
 
 然后您可以在控制器中使用 `ValidateRequest` 方法验证该表单：
 
@@ -302,7 +302,7 @@ func (r *PostController) Store(ctx http.Context) http.Response {
 }
 ```
 
-## 使用验证后的输入
+## Working With Validated Input
 
 在使用表单请求或手动创建的验证器实例验证传入请求数据后，您依然希望将请求数据绑定至 `struct`，有两种可以实现方法：
 
