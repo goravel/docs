@@ -4,7 +4,7 @@
 
 ## 简介
 
-Session enables you to store user information across multiple requests, providing a stateful experience within the inherently stateless HTTP protocol. This user information is stored persistently on the server side. 会话使您能够在多个请求中存储用户信息，在本质上无状态的HTTP协议中提供有状态的体验。 这些用户信息被持久地存储在服务器端。 Goravel提供了一个统一的接口来与各种持久存储驱动程序交互。
+Session enables you to store user information across multiple requests, providing a stateful experience within the inherently stateless HTTP protocol. This user information is stored persistently on the server side. Goravel offers a unified interface for interacting with various persistent storage drivers.
 
 ## Configuration
 
