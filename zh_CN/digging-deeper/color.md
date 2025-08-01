@@ -23,14 +23,14 @@
 
 ### 打印方法
 
-`contracts/support.Printer` 提供以下方法来打印或格式化带颜色的文本：
+A `contracts/support.Printer` provides the following methods to print or format text with color:
 
 - `Print`
-- `Println` - 打印文本并换行
+- `Println` - Print text with a new line
 - `Printf`
-- `Sprint` - 返回带颜色的文本
-- `Sprintln` - 返回带颜色的文本并换行
-- `Sprintf` - 返回格式化的带颜色文本
+- `Sprint` - Return colored text
+- `Sprintln` - Return colored text with a new line
+- `Sprintf` - Return formatted colored text
 
 ```go
 import "github.com/goravel/framework/support/color"
