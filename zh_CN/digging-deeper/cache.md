@@ -6,7 +6,7 @@
 
 Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache()` 进行操作。框架默认自带 `memory` 驱动，如需其他驱动，请查看对应的独立扩展包： Goravel comes with a `memory` driver, for other drivers, please check the corresponding independent extension packages:
 
-| 驱动    | 链接                                                                                                   |
+| 驱动    | Link                                                                                                 |
 | ----- | ---------------------------------------------------------------------------------------------------- |
 | Redis | [https://github.com/goravel/redis](https://github.com/goravel/redis) |
 
@@ -30,7 +30,7 @@ You may access various cache stores via the `Store` method. 您可以通过 `Sto
 value := facades.Cache().Store("redis").Get("foo")
 ```
 
-### 从缓存中检索项目
+### Retrieving Items From The Cache
 
 ```go
 value := facades.Cache().Get("goravel", "default")
@@ -47,7 +47,7 @@ value := facades.Cache().Get("goravel", any {
 })
 ```
 
-### 检查项目是否存在
+### Checking For Item Existence
 
 ```go
 bool := facades.Cache().Has("goravel")
@@ -134,7 +134,7 @@ bool := facades.Cache().Flush()
 
 ### 管理锁
 
-原子锁允许操作分布式锁而不用担心竞争条件。您可以使用 `Lock` 方法创建和管理锁： 原子锁允许操作分布式锁而无需担心竞态条件。 您可以使用 `Lock` 方法创建和管理锁：
+原子锁允许操作分布式锁而不用担心竞争条件。您可以使用 `Lock` 方法创建和管理锁： You may create and manage locks using the `Lock` method:
 
 ```go
 lock := facades.Cache().Lock("foo", 10*time.Second)
