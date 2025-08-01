@@ -10,7 +10,7 @@
 
 ### app 目录
 
-`app` 包含程序的核心代码。 程序中几乎所有的逻辑都将在这个文件夹中。 `app` 包含了程序的核心代码，程序中几乎所有的逻辑都将在这个文件夹中。
+`app` contains the core code of the program. `app` 包含了程序的核心代码，程序中几乎所有的逻辑都将在这个文件夹中。
 
 ### bootstrap 目录
 
@@ -64,4 +64,4 @@
 
 ### providers 目录
 
-`providers` 目录包含程序中所有的 [服务提供者](../architecture-concepts/service-providers.md)。服务提供者通过绑定服务、注册事件或执行任何其他任务来引导应用程序以应对传入的请求。 `providers` 目录包含程序中的所有[服务提供者](../foundation/providers)。 服务提供者通过绑定服务、注册事件或执行任何其他任务来指导应用程序响应传入请求。
+`providers` 目录包含程序中所有的 [服务提供者](../architecture-concepts/service-providers.md)。服务提供者通过绑定服务、注册事件或执行任何其他任务来引导应用程序以应对传入的请求。 The service provider guides the application to respond to incoming requests by binding services, registering for events, or performing any other tasks.
