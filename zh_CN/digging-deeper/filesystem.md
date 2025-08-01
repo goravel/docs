@@ -4,9 +4,9 @@
 
 ## 简介
 
-Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Minio 和 Cloudinary 提供了简单易用的驱动程序。 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。框架自带 `local` 驱动，如需其他驱动，请查看对应的独立扩展包： Even better, switching between these storage options between your local development machine and production server is amazingly simple as the API remains the same for each system. Goravel 提供了简单的驱动程序，用于处理本地文件系统、Amazon S3、阿里云 OSS、腾讯云 COS、Minio 和 Cloudinary。 更好的是，在本地开发机器和生产服务器之间切换这些存储选项非常简单，因为每个系统的 API 保持一致。 Goravel 自带 `local` 驱动程序，对于其他驱动程序，请查看相应的独立扩展包：
+Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Minio 和 Cloudinary 提供了简单易用的驱动程序。 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。框架自带 `local` 驱动，如需其他驱动，请查看对应的独立扩展包： Even better, switching between these storage options between your local development machine and production server is amazingly simple as the API remains the same for each system. Goravel comes with a `local` driver, for other drivers, please check the corresponding independent extension package:
 
-| 驱动         | 链接                                                                                                             |
+| 驱动         | Link                                                                                                           |
 | ---------- | -------------------------------------------------------------------------------------------------------------- |
 | S3         | [https://github.com/goravel/s3](https://github.com/goravel/s3)                 |
 | OSS        | [https://github.com/goravel/oss](https://github.com/goravel/oss)               |
@@ -22,7 +22,7 @@ Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Min
 
 ### 本地驱动
 
-当使用 `local` 驱动程序时，所有文件操作都是相对于 `filesystems` 配置文件中定义的 `root` 目录。 默认情况下，该值设置为 `storage/app` 目录。 因此，以下方法将写入 `storage/app/example.txt`： By default, this value is set to the `storage/app` directory. Therefore, the following method would write to `storage/app/example.txt`:
+When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would write to `storage/app/example.txt`:
 
 ```go
 facades.Storage().Put("example.txt", "Contents")
@@ -217,7 +217,7 @@ path := facades.Storage().PutFileAs("photos", file, "name")
 
 ### 指定一个磁盘
 
-默认情况下，上传文件的 `Store` 方法将使用您的默认磁盘。 如果您想指定另一个磁盘，请使用 `Disk` 方法： 默认情况下，`Store` 等方法将使用默认磁盘。如果要指定另一个磁盘，请使用 `Disk` 方法：
+By default, this uploaded file's `Store` method will use your default disk. 默认情况下，`Store` 等方法将使用默认磁盘。如果要指定另一个磁盘，请使用 `Disk` 方法：
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
@@ -272,7 +272,7 @@ files, err := facades.Storage().Disk("s3").Files("directory")
 files, err := facades.Storage().Disk("s3").AllFiles("directory")
 ```
 
-### 获取目录内的所有目录
+### Get All Directories Within A Directory
 
 The `Directories` method returns a slice of all the directories within a given directory. `Directories` 方法以数组的形式返回给定目录中的所有目录。此外，你还可以使用 `AllDirectories` 方法递归地获取给定目录中的所有目录及其子目录中的目录：
 
