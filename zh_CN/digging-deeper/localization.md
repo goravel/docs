@@ -24,7 +24,7 @@ Goravel 的本地化功能提供了一种方便的方法来检索各种语言的
     user.json
 ```
 
-## 配置区域设置
+## Configuring the Locale
 
 应用程序的默认语言存储在 `config/app.go` 配置文件的 `locale` 配置选项中。你可以随意修改此值以适合你的应用程序的需求。 You can modify this value as needed to suit your application's requirements.
 
@@ -71,7 +71,7 @@ if facades.App().IsLocale(ctx, "en") {}
 
 你可以使用 `facades.Lang(ctx).Get()` 方法从语言文件中检索翻译字符串。如果语言文件包含多个层级，可以使用 `.` 进行连接，如果语言文件在多层级的文件夹中，可以使用 `/` 进行连接。 例如： If the language file contains multiple levels, you can use `.` to connect them, and if the language file is in multiple levels of folders, you can use `/` to connect them.
 
-例如：
+For example:
 
 ```
 // lang/en.json
