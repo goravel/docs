@@ -32,7 +32,7 @@ if facades.Hash().Check("plain-text", hashedPassword) {
 
 ### 检查密码是否需要重新散列 / 哈希
 
-Hash facade 提供的 `NeedsRehash` 方法允许你确定自密码被哈希后，哈希器使用的工作因子是否已经改变。 一些应用程序选择在应用程序的认证过程中执行此检查： Some applications choose to perform this check during the application's authentication process:
+The `NeedsRehash` method provided by the Hash facade allows you to determine if the work factor used by the hasher has changed since the password was hashed. Some applications choose to perform this check during the application's authentication process:
 
 ```go
 if facades.Hash().NeedsRehash(hashed) {
