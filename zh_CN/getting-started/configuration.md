@@ -8,9 +8,9 @@ Goravel 框架所有配置文件都保存在 `config` 目录中。你可以进�
 
 ## 环境配置
 
-在不同环境中运行应用程序通常需要不同的配置。 例如，您可能希望在本地开启调试模式，但在生产环境中不需要。 在不同的环境运行应用程序，通常需要不同的配置。例如，你可能希望在本地打开 Debug 模式，但生产环境不需要。
+Running applications in different environments usually requires different configurations. 在不同的环境运行应用程序，通常需要不同的配置。例如，你可能希望在本地打开 Debug 模式，但生产环境不需要。
 
-因此，框架在根目录提供了 `.env.example` 文件，需要你在开发前，复制该文件并重命名为 `.env`，根据项目需要修改 `.env` 文件中的配置项。 因此，框架在根目录提供了 `.env.example` 文件。 在开始开发之前，您需要复制此文件，将其重命名为 `.env`，并根据项目需求修改 `.env` 文件中的配置项。
+因此，框架在根目录提供了 `.env.example` 文件，需要你在开发前，复制该文件并重命名为 `.env`，根据项目需要修改 `.env` 文件中的配置项。 You need to copy this file, rename it to `.env` before you start development, and modify the configuration items in the `.env` file according to your project needs.
 
 注意，`.env` 文件不应该加入版本控制，因为多人协作时，不同的开发人员有可能使用不同的配置，不同的部署环境配置也不相同。
 
