@@ -71,11 +71,11 @@ app.BindWith(Binding, func(app foundation.Application, parameters map[string]any
 })
 ```
 
-## Resolving
+## 解析
 
 ### `Make` 方法
 
-您可以使用 `Make` 方法从容器中解析类实例。`Make` 方法接受您希望解析的 `key`： The `Make` method accepts the `key` you wish to resolve:
+您可以使用 `Make` 方法从容器中解析类实例。`Make` 方法接受您希望解析的 `key`： `Make` 方法接受您希望解析的 `key`：
 
 ```go
 instance, err := app.Make(key)
