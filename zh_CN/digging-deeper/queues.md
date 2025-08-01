@@ -90,7 +90,7 @@ func (r *ProcessPodcast) Handle(args ...interface{}) error {
 }
 ```
 
-#### 调度任务
+#### Job Retry
 
 任务类支持一个可选的 `ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration)` 方法，用于控制任务重试。
 
@@ -172,7 +172,7 @@ go func() {
 err := facades.Queue().Worker().Shutdown()
 ```
 
-## Job 类非常简单，由两个方法组成：`Signature` 和 `Handle`。 `Signature` 作为任务的唯一标识符，而 `Handle` 在队列处理任务时执行。 此外，任务执行时传递的 `[]queue.Arg{}` 将被传输到 `Handle` 中：
+## Dispatching Jobs
 
 一旦写好了任务类，你可以使用任务本身的 `Dispatch` 方法来调度它：
 
