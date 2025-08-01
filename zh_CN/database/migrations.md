@@ -1,4 +1,4 @@
-# 迁移
+# Migrations
 
 [[toc]]
 
@@ -204,7 +204,7 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
 })
 ```
 
-### String
+### Rename Column
 
 ```go
 facades.Schema().Table("users", func(table schema.Blueprint) {
@@ -229,7 +229,7 @@ facades.Schema().DropIfExists("users")
 
 ```
 
-## 列
+## Columns
 
 ### 可用的字段类型
 
@@ -279,7 +279,7 @@ The `SoftDeletes` method adds a nullable `deleted_at` `TIMESTAMP` column. `SoftD
 table.SoftDeletes()
 ```
 
-#### 自定义列
+#### Custom column
 
 如果你正在使用框架尚不支持的字段类型，可以通过 `Column` 方法自定义字段类型：
 
