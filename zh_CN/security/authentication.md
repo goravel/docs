@@ -106,7 +106,7 @@ token, err := facades.Auth(ctx).Refresh()
 err := facades.Auth(ctx).Logout()
 ```
 
-## 多重守卫
+## Multiple Guards
 
 ```go
 token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
