@@ -1,21 +1,21 @@
-# 隐私政策
+# Privacy Policy
 
-## 信息收集
+## Collection of Information
 
-当您访问 goravel.dev 时，我们会收集关于您的某些信息。 这些信息可能包括： This information may include:
+We collect certain information about you when you visit goravel.dev. This information may include:
 
-- 关于您在我们网站上访问的页面的信息
-- 您自愿提供的任何其他信息
+- Information about the pages you visit on our website
+- Any other information you provide voluntarily
 
-## 信息使用
+## Use of Information
 
-我们可能会将收集的信息用于各种目的，包括：
+We may use the collected information for various purposes, including:
 
-- 个性化您在我们网站上的体验
-- 改进我们的网站和服务
-- 就您的询问或请求与您联系
+- Personalizing your experience on our website
+- Improving our website and services
+- Contacting you regarding your inquiries or requests
 
-## 数据安全
+## Data Security
 
 We take the security of your data seriously. We implement appropriate technical and organizational measures to protect your information from unauthorized access, disclosure, alteration, or destruction.
 
@@ -23,7 +23,7 @@ We take the security of your data seriously. We implement appropriate technical 
 
 We may share your information with trusted third parties who assist us in operating our website or providing services to you. These third parties are contractually obligated to keep your information confidential and secure.
 
-## Cookie
+## Cookies
 
 Our website may use cookies to enhance your browsing experience. Cookies are small files stored on your device that enable certain features and functionality. You may choose to disable cookies in your browser settings, but please note that some parts of our website may not function properly.
 
