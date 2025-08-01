@@ -2,15 +2,15 @@
 
 [[toc]]
 
-## 介绍
+## Introduction
 
-Goravel 的测试功能依托于 Golang 自带的 test 官方组件，是对单元测试的扩展，使 Goravel 应用程序支持集成测试，让应用变得更加健壮。
+The testing function of Goravel relies on Golang's official test component, extending unit testing to support integration testing and improve application robustness.
 
-## 环境
+## Environment
 
-### 自定义环境配置文件
+### Custom Environment File
 
-By default, the `.env` file in the root directory is used to inject configuration information during testing. 测试时默认使用根目录下的 `.env` 文件注入配置信息，如果想为不同的包使用不同的 `.env` 文件，可以在包目录下创建 `.env` 文件，测试时会优先读取该文件。
+By default, the `.env` file in the root directory is used to inject configuration information during testing. If you want to use different `.env` files for different packages, you can create a `.env` file in the package directory, and the test will read this file first.
 
 ```
 - /app
@@ -23,7 +23,7 @@ By default, the `.env` file in the root directory is used to inject configuratio
 - .env
 ```
 
-In addition, you may create a `.env.testing` file at the root of your project. 您也可以在运行 `go test` 时使用 `--env=.env.testing` 选项自定义配置文件，但需注意，此选项需跟在测试目录后面，例如：
+In addition, you may create a `.env.testing` file at the root of your project. This file will be used instead of the `.env` file when running `go test` with the `--env` option, note that this option needs to follow the test directory, for example:
 
 ```shell
 go test ./... --env=.env.testing
@@ -32,17 +32,17 @@ go test ./... -e=.env.testing
 
 ### `TestCase` Struct
 
-Goravel 包含一个 `TestCase` Struct，在未来该 Struct 将提供一些便捷测试方法，此外同一个文件中还存在一个 `init` 方法，该方法在运行测试之前引导注册 Goravel 应用程序，如果需要您可以在此方法中添加在运行测试前需要前置运行的逻辑。 You may include any necessary logic in this method that needs to be executed before the test.
+There is a `TestCase` Struct in Goravel, and the Struct will provide some convenient test methods in the future, in addition, there is an `init` method in the same file, this method guides the registration of the Goravel application before running the test. You may include any necessary logic in this method that needs to be executed before the test.
 
-## 创建测试
+## Creating Tests
 
-要创建新的测试用例，可以使用 Artisan 命令：`make:test`：
+To create a new test case, use the `make:test` Artisan command:
 
 ```shell
 go run . artisan make:test feature/UserTest
 ```
 
-默认我们使用 [stretchr/testify](https://github.com/stretchr/testify) 包的 `suit` 功能编写我们的测试，该功能支持配置测试前、测试后、子测试、断言等，可以使我们的测试用例更加有条理，具体使用请详见官方文档。 This function enables us to configure pre-test, post-test, sub-test, and assertion, among other things, which results in more organized test cases. For further information, kindly refer to the official documentation.
+Our test cases are written using the suite function of the [stretchr/testify](https://github.com/stretchr/testify) package by default. This function enables us to configure pre-test, post-test, sub-test, and assertion, among other things, which results in more organized test cases. For further information, kindly refer to the official documentation.
 
 ```go
 package feature
@@ -77,22 +77,22 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-## 数据库测试
+## Database Testing
 
-Goravel 模型工厂和 Seeders 可以轻松地为应用程序的模型创建测试数据库记录。
+Goravel model factories and Seeders can easily create test database records for the application's model.
 
-### 模型工厂
+### Factories
 
-If you're conducting tests, it might be necessary to add some records to your database before running the test. You don't have to manually input the values of each column for the test data creation. 当我们测试的时候，可能需要在执行测试之前向数据库插入一些数据。Goravel 允许你使用 [模型工厂](../orm/factories.md) 为每个模型定义一组默认值，而不是在创建测试数据时手动指定每一列的值。
+If you're conducting tests, it might be necessary to add some records to your database before running the test. You don't have to manually input the values of each column for the test data creation. With Goravel, you can set default attributes for your models via [factories](../orm/factories.md).
 
 ```go
 var user models.User
 err := facades.Orm().Factory().Create(&user)
 ```
 
-### 运行 seeders
+### Running Seeders
 
-如果你在功能测试时希望使用 [数据库 seeders](../database/seeding.md) 来填充你的数据库，你可以调用 `Seed` 方法。默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它将会执行你的所有其他 seeders。或者，你可以传递指定的 seeder 给 `Seed` 方法： By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
+If you would like to use [database seeders](../database/seeding.md) to populate your database during a feature test, you may invoke the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
 
 ```go
 package feature
@@ -132,15 +132,15 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-### 使用 Docker
+### Using Docker
 
 When using `go test`, multiple packages are tested in parallel. As a result, refreshing the database or cache in a test case using a local database or cache can potentially affect other parallel test cases. To address this, Goravel offers Docker-based testing. With Docker, a database or cache image can be created and used independently across different packages.
 
-> 由于 Docker 镜像对 windows 系统的支持有限，目前 Docker 测试仅支持在非 windows 环境下运行。
+> Due to the limited support of the Docker image for the windows system, currently, the Docker test can only be run in non-windows environments.
 
 #### Initiate Docker
 
-你可以使用 `Database` 或 `Cache` 方法创建镜像，也可以向该方法传入连接名称：
+You can use the `Database` or `Cache` method to create an image, or you can pass the connection name to this method:
 
 ```go
 database, err := facades.Testing().Docker().Database()
@@ -150,7 +150,7 @@ cache, err := facades.Testing().Docker().Cache()
 cache, err := facades.Testing().Docker().Cache("redis")
 ```
 
-也可以使用 `Image` 方法自定义镜像：
+You can also use the `Image` method to customize the image:
 
 ```go
 import contractstesting "github.com/goravel/framework/contracts/testing"
@@ -166,16 +166,16 @@ image, err := facades.Testing().Docker().Image(contractstesting.Image{
 })
 ```
 
-#### 构建镜像
+#### Build Image
 
-镜像初始化完毕后，您可以使用 `Build` 方法构建镜像：
+After the image is initiated, you can use the `Build` method to build the image:
 
 ```go
 err := database.Build()
 err := cache.Build()
 ```
 
-这时使用 `docker ps` 命令可以看到镜像已运行在系统中，通过 `Config` 方法可以获取链接数据库的配置信息，方便连接调试：
+At this time, you can use the `docker ps` command to see that the image is already running on the system, and you can obtain the configuration information of the database through the `Config` method to facilitate connection debugging:
 
 ```go
 config := database.Config()
@@ -184,23 +184,23 @@ config := cache.Config()
 
 #### Running Seeders
 
-如果您在测试时希望使用 [数据填充](../database/seeding.md) 来填充数据库，可以调用 `Seed` 方法。 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它应该执行您的所有其他种子器。或者，您可以传递指定的种子器类名给 `Seed` 方法： By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
+If you wish to use [seeder](../database/seeding.md) to populate the database during testing, you can call the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
 
 ```go
 err := database.Seed()
-err := database.Seed(&seeders.UserSeeder{}, &seeders.PhotoSeeder{})
+err := database.Seed(&seeders.UserSeeder{})
 ```
 
-#### 重置数据库或缓存
+#### Refresh Database or Cache
 
-由于子包内测试用例是串行执行的，所以在单个测试用例运行后刷新数据库或缓存将不会产生负面影响，可以使用 `Fresh` 方法：
+Because the test cases in the same package are executed serially, refreshing the database or cache after a single test case run will have no negative impact, we can use the `Fresh` method:
 
 ```go
 err := database.Fresh()
 err := cache.Fresh()
 ```
 
-对于数据库，也可以使用 `RefreshDatabase` 方法执行该操作：
+For the database, you can also use the `RefreshDatabase` method:
 
 ```go
 package feature
@@ -235,18 +235,17 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-#### 卸载镜像
+#### Uninstall Image
 
-子包内测试用例执行完毕后，镜像将在一小时后自动卸载，您也可以使用 `Shutdown` 方法手动卸载镜像。
+After the test cases in the sub-package are executed, the image will be uninstalled automatically in one hour, you can also use the `Shutdown` method to uninstall the image manually.
 
 ```go
 err := database.Shutdown()
-err := cache.Shutdown()
 ```
 
-#### 示例
+#### Example
 
-我们可以在子包中创建 `TestMain` 函数，添加测试用例的前置逻辑：
+We can create a `TestMain` method in the sub-package and add the pre-logic of the test case:
 
 ```go
 // tests/feature/main_test.go
@@ -276,10 +275,10 @@ func TestMain(m *testing.M) {
     panic(err)
   }
 
-  // 执行测试用例
+  // Execute test cases
   exit := m.Run()
 
-  // 所有测试用例运行完毕后卸载镜像
+  // Uninstall the image after all test cases have been run
   if err := database.Shutdown(); err != nil {
     panic(err)
   }
@@ -288,4 +287,4 @@ func TestMain(m *testing.M) {
 }
 ```
 
-> 关于 TestMain 方法的更多使用，参见[官方文档](https://pkg.go.dev/testing#hdr-Main)。
+> For more usage of the TestMain method, see [Official Documentation](https://pkg.go.dev/testing#hdr-Main).
