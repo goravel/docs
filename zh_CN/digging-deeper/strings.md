@@ -148,7 +148,7 @@ str.Of("https://goravel.dev").ChopStart("http://", "https://").String() // gorav
 
 ### `Contains`
 
-`Contains` 方法用于判断给定字符串是否包含指定的值。 此方法区分大小写。 如果提供了多个值，只要字符串包含其中任何一个值，就会返回 `true`。 The method is case-sensitive. `Contains` 方法确定给定字符串是否包含给定值。该方法区分大小写。如果提供多个值，则如果字符串包含任何值，则返回 `true`。
+The `Contains` method determines if the given string contains the given value. The method is case-sensitive. `Contains` 方法确定给定字符串是否包含给定值。该方法区分大小写。如果提供多个值，则如果字符串包含任何值，则返回 `true`。
 
 ```go
 import "github.com/goravel/framework/support/str"
