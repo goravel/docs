@@ -10,8 +10,7 @@ Events serve as a great way to decouple various aspects of your application, as 
 
 ## 生成事件和监听器
 
-Goravel 应用程序中包含的 `app\providers\EventServiceProvider` 提供了一个方便的地方来注册应用程序的所有事件监听器。 该 `listen` 方法包含一个数组,其中包含所有事件(键)及其监听器(值)。 您可以根据应用程序的需要向此数组添加任意数量的事件。 例如，让我们添加一个
-`OrderShipped` 事件： The `listen` method contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add an `OrderShipped` event:
+The `app\providers\EventServiceProvider` included with your Goravel application provides a convenient place to register all of your application's event listeners. The `listen` method contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add an `OrderShipped` event:
 
 ```go
 package providers
