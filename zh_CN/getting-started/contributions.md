@@ -66,7 +66,7 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过�
 
 ## 开发讨论
 
-您可以在Goravel框架仓库的[GitHub讨论板](https://github.com/goravel/goravel/discussions)上提出新功能或对现有Goravel行为的改进建议。 关于错误、新功能和现有功能实现的非正式讨论在 Telegram 或微信群中进行。 Goravel 的维护者 Bowen 通常在工作日上午9:00至下午18:00（UTC+08:00）出现在群里，在其他时间偶尔出现在群里。 Informal discussion regarding bugs, new features, and implementation of existing features takes place in Discord or WeChat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
+You may propose new features or improvements to existing Goravel behavior in the Goravel framework repository's [GitHub discussion board](https://github.com/goravel/goravel/discussions). Informal discussion regarding bugs, new features, and implementation of existing features takes place in Discord or WeChat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
 
 ## 提交贡献
 
@@ -108,7 +108,7 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。您可以通过�
 | [goravel/example-proto](https://github.com/goravel/example-proto)     | example 仓库 proto 依赖                                                                                                                         |
 | [goravel/example-package](https://github.com/goravel/example-package) | 扩展包示例                                                                                                                                       |
 | [goravel/docs](https://github.com/goravel/docs)                       | 使用文档                                                                                                                                        |
-| [goravel/docs-web](https://github.com/goravel/docs-web)               | Goravel网站                                                                                                                                   |
+| [goravel/docs-web](https://github.com/goravel/docs-web)               | Goravel Website                                                                                                                             |
 | [goravel/s3](https://github.com/goravel/s3)                           | Storage 模块 S3 驱动                                                                                                                            |
 | [goravel/oss](https://github.com/goravel/oss)                         | Storage 模块 OSS 驱动                                                                                                                           |
 | [goravel/cos](https://github.com/goravel/cos)                         | Storage 模块 COS 驱动                                                                                                                           |
