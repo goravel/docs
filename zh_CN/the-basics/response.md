@@ -1,4 +1,4 @@
-# HTTP 响应
+# HTTP Response
 
 [[toc]]
 
@@ -140,7 +140,7 @@ ctx.Response().Stream(http.StatusCreated, func(w http.StreamWriter) error {
 ctx.Response().Redirect(http.StatusMovedPermanently, "https://goravel.dev")
 ```
 
-## 无内容
+## No Content
 
 ```go
 ctx.Response().NoContent()
