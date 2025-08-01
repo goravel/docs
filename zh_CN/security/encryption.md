@@ -10,7 +10,7 @@ Goravel's encryption services provide a simple, convenient interface for encrypt
 
 在使用 Goravel 的加密工具之前，你必须先设置 `config/app.go` 配置文件中的 `key` 配置项。该配置项由环境变量 `APP_KEY` 设定。你应当使用 `go run . This option is driven by the `APP_KEY`environment variable. Use the`go run . artisan key:generate` 命令来生成该变量的值，`key:generate\` 命令将使用 Golang 的安全随机字节生成器为你的应用程序构建加密安全密钥。
 
-## 使用加密器
+## Using The Encrypter
 
 ### 加密一个值
 
