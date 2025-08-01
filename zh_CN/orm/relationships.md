@@ -1,4 +1,4 @@
-# 关系
+# Relationships
 
 [[toc]]
 
@@ -15,7 +15,7 @@ It's common for database tables to be interconnected. For instance, a blog post 
 
 ### 一对一
 
-一对一关系是一种非常基本的数据库关系类型。 例如，一个 `User` 模型可能与一个 `Phone` 模型相关联。 一对一是最基本的数据库关系。 例如，一个 `User` 模型可能与一个 `Phone` 模型相关联。为了定义这个关联关系，我们要在 `User` 模型中定义一个 `Phone`：
+A one-to-one relationship is a very basic type of database relationship. 一对一是最基本的数据库关系。 例如，一个 `User` 模型可能与一个 `Phone` 模型相关联。为了定义这个关联关系，我们要在 `User` 模型中定义一个 `Phone`：
 
 ```go
 type User struct {
@@ -31,7 +31,7 @@ type Phone struct {
 }
 ```
 
-使用 `Orm` 时，它会根据父模型名称自动为关系分配外键。 例如，默认情况下，`Phone` 模型被假定有一个 `UserID` 外键。 但是，如果你想改变这个约定，你可以在 `User` 模型的 `Phone` 字段中添加一个 `foreignKey` 标签。 （这也适用于其他关系。） For instance, the `Phone` model is assumed to have a `UserID` foreign key by default. However, if you wish to change this convention, you can add a `foreignKey` tag to the `Phone` field in `User` model. (This also applies to other relationships.)
+When using `Orm`, it automatically assigns the foreign key to the relationship based on the parent model name. For instance, the `Phone` model is assumed to have a `UserID` foreign key by default. However, if you wish to change this convention, you can add a `foreignKey` tag to the `Phone` field in `User` model. (This also applies to other relationships.)
 
 ```go
 type User struct {
@@ -103,7 +103,7 @@ Remember, `Orm` will automatically determine the proper foreign key column for t
 
 ### 一对多 (反向) / 属于
 
-Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. 现在我们可以访问一篇文章的所有评论，让我们定义一个关系来允许评论访问其父文章。 要定义`一对多`关系的反向关系，在子模型上定义一个调用`belongsTo`方法的关系方法：
+Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `One To Many` relationship, define a relationship method on the child model which calls the `belongsTo` method:
 
 ```go
 type Post struct {
@@ -122,7 +122,7 @@ type Comment struct {
 
 ## 多对多关联
 
-Many-to-many relations are slightly more complicated than `One To One` and `One To Many` relationships. 多对多关系比`一对一`和`一对多`关系稍微复杂一些。 多对多关系的一个例子是一个用户拥有多个角色，而这些角色也被应用程序中的其他用户共享。 例如，一个用户可能被分配"作者"和"编辑"的角色；然而，这些角色也可能被分配给其他用户。 因此，一个用户有多个角色，一个角色也有多个用户。 For example, a user may be assigned the role of "Author" and "Editor"; however, those roles may also be assigned to other users as well. So, a user has many roles and a role has many users.
+Many-to-many relations are slightly more complicated than `One To One` and `One To Many` relationships. An example of a many-to-many relationship is a user that has many roles and those roles are also shared by other users in the application. For example, a user may be assigned the role of "Author" and "Editor"; however, those roles may also be assigned to other users as well. So, a user has many roles and a role has many users.
 
 ### 表结构
 
@@ -218,7 +218,7 @@ A polymorphic relationship allows the child model to belong to more than one typ
 
 ### 表结构
 
-A polymorphic relation is similar to a normal relation; however, the child model can belong to more than one type of model using a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. 多态关系类似于普通关系；然而，子模型可以使用单个关联属于多种类型的模型。 例如，博客 `Post` 和 `User` 可能共享与 `Image` 模型的多态关系。 使用多态关系允许您拥有一个唯一图像的表，这些图像可以与文章和用户相关联。 首先，让我们检查表结构： First, let's examine the table structure:
+A polymorphic relation is similar to a normal relation; however, the child model can belong to more than one type of model using a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a polymorphic relation allows you to have a single table of unique images that may be associated with posts and users. First, let's examine the table structure:
 
 ```
 posts
@@ -242,7 +242,7 @@ comments
   commentable_type - string
 ```
 
-要特别留意 `images` 表的 `imageable_id` 和 `imageable_type` 列。`imageable_id` 列包含文章或用户的 ID 值，而 `imageable_type` 列包含的则是父模型的类名。Orm 在访问 `imageable` 时使用 `imageable_type` 列来判断父模型的「类型」。`comments` 表类同。 The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. 注意 `images` 表上的 `imageable_id` 和 `imageable_type` 列。 `imageable_id` 列将包含文章或用户的 ID 值，而 `imageable_type` 列将包含父模型的类名。 列 `imageable_type` 被 Orm 用于在访问 `imageable` 关系时确定要返回哪种"类型"的父模型。 `comments` 表也类似。 The `comments` table is similar.
+要特别留意 `images` 表的 `imageable_id` 和 `imageable_type` 列。`imageable_id` 列包含文章或用户的 ID 值，而 `imageable_type` 列包含的则是父模型的类名。Orm 在访问 `imageable` 时使用 `imageable_type` 列来判断父模型的「类型」。`comments` 表类同。 The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Orm to determine which "type" of parent model to return when accessing the `imageable` relation. The `comments` table is similar.
 
 ### 模型结构
 
@@ -288,7 +288,7 @@ type Post struct {
 }
 ```
 
-## 查询关联
+## Querying Associations
 
 假设有一个博客系统，它的 `User` 模型有许多关联的 `Post` 模型：
 
@@ -372,7 +372,7 @@ facades.Orm().Query().Model(&user).Association("Posts").Delete(Post1, Post2)
 
 ### 清空关联
 
-移除源和关联之间的所有引用，不会删除这些关联：
+Remove all reference between source & association, won’t delete those associations:
 
 ```go
 facades.Orm().Query().Model(&user).Association("Posts").Clear()
@@ -441,8 +441,7 @@ for _, book := range books {
 }
 ```
 
-该循环将执行一个查询以检索数据库表中的所有书籍，然后对每本书执行另一个查询以检索该书的作者。 因此，如果我们有 25 本书，上面的代码将运行 26 个查询：一个查询原本的书籍信息，另外 25 个查询来检索每本书的作者。 要检索数据库表中的所有书籍及其作者，循环代码会为每本书执行一次查询。
-这意味着对于包含25本书的集合，循环将运行26个查询 - 一个用于书籍集合，25个用于获取每本书的作者。
+该循环将执行一个查询以检索数据库表中的所有书籍，然后对每本书执行另一个查询以检索该书的作者。 因此，如果我们有 25 本书，上面的代码将运行 26 个查询：一个查询原本的书籍信息，另外 25 个查询来检索每本书的作者。 This means that for a collection of 25 books, the loop would run 26 queries - one for the collection of books and 25 more to get the author of each book.
 
 However, we can simplify this process using eager loading. 值得庆幸的是，我们可以使用预加载将这个操作减少到两个查询。 在构建查询时，可以使用 with 方法指定应该预加载哪些关系：
 
@@ -474,7 +473,7 @@ facades.Orm().Query().With("Author").With("Publisher").Find(&book)
 
 ### 嵌套预加载
 
-To eager load a relationship's relationships, you may use "dot" syntax. 要预加载一个关系的关系，您可以使用 "点" 语法。 例如，我们可以预加载所有书籍的作者以及所有作者的个人联系方式：
+To eager load a relationship's relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts:
 
 ```go
 var book models.Book
@@ -498,7 +497,7 @@ facades.Orm().Query().With("Author", func(query orm.Query) orm.Query {
 
 在这个例子中，Orm 只会预加载作者的 `name` 列等于 `author` 的书籍。
 
-### 懒惰的预加载
+### Lazy Eager Loading
 
 有时你可能需要在已检索到父模型后立即加载关系。例如，你需要动态决定是否加载相关模型，这可能很有用： For example, this may be useful if you need to dynamically decide whether to load related models:
 
