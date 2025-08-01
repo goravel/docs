@@ -1,4 +1,4 @@
-# HTTP 请求
+# HTTP Requests
 
 [[toc]]
 
@@ -85,7 +85,7 @@ ip := ctx.Request().Ip()
 data := ctx.Request().All()
 ```
 
-### 获取路由值
+### Retrieving a Route Value
 
 ```go
 // /users/{id}
@@ -115,7 +115,7 @@ names := ctx.Request().QueryMap("names")
 queries := ctx.Request().Queries()
 ```
 
-> 注意：只能获取一维 Json 数据，否则将返回空。
+> Note: Only one-dimensional Json data can be obtained, otherwise it will return empty.
 
 ### 检索一个输入值
 
