@@ -68,18 +68,18 @@ Goravel 提供有便捷的链式方式，方便在日志中插入更多有用信
 facades.Log().User("John").Debug(message)
 ```
 
-| Method    | Action                              |
-| --------- | ----------------------------------- |
-| Code      | 设置日志代码。                             |
-| Hint      | 设置提示以加快调试速度。                        |
-| In        | 设置日志条目相关的功能类别或域。                    |
-| Owner     | 对警报目的很有用。                           |
-| Request   | 提供一个 http.Request。  |
-| Response  | 提供一个 http.Response。 |
-| Tags      | 添加多个标签，描述返回错误的功能。                   |
-| User      | 记录触发日志的用户。                          |
-| With      | 向日志条目的上下文添加键值对。                     |
-| WithTrace | 为日志附加堆栈信息。                          |
+| Method    | Action                                                                                 |
+| --------- | -------------------------------------------------------------------------------------- |
+| Code      | 设置日志代码。                                                                                |
+| Hint      | Set a hint for faster debugging.                                       |
+| In        | Set the feature category or domain in which the log entry is relevant. |
+| Owner     | Useful for alerting purposes.                                          |
+| Request   | Supplies a http.Request.                               |
+| Response  | Supplies a http.Response.                              |
+| Tags      | Add multiple tags, describing the feature returning an error.          |
+| User      | 记录触发日志的用户。                                                                             |
+| With      | Add key-value pairs to the context of the log entry.                   |
+| WithTrace | 为日志附加堆栈信息。                                                                             |
 
 ## 创建自定义通道
 
