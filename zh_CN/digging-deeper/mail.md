@@ -75,8 +75,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
 
 ## 使用 Mailable
 
-邮件的所有参数都可以在一个 `Mailable` struct 中设置。这些 struct 存储在 `app/mails` 目录中。可以通过 `make:mail` Artisan 命令快速创建一个 `Mailable`： These structs are stored in the `app/mails` directory. 邮件的参数可以在 `Mailable` 结构体中设置。 这些结构体存储在 `app/mails` 目录中。
-你可以使用 `make:mail` Artisan 命令快速创建一个 `Mailable`：
+邮件的所有参数都可以在一个 `Mailable` struct 中设置。这些 struct 存储在 `app/mails` 目录中。可以通过 `make:mail` Artisan 命令快速创建一个 `Mailable`： These structs are stored in the `app/mails` directory. You can quickly create a `Mailable` using the `make:mail` Artisan command:
 
 ```bash
 go run . artisan make:mail OrderShipped
