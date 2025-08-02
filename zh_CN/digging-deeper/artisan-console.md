@@ -356,7 +356,7 @@ type MultiSelectOption struct {
 
 ### 文字输出
 
-有时你可能需要将输出写入控制台。 Goravel 提供了几种方法来帮助你将输出写入控制台。 每种方法都有适当的颜色化输出。例如，`Error` 将以红色显示文本。 For example, `Error` will display the text in red.
+有时你可能需要将输出写入控制台。 Goravel 提供了几种方法来帮助你将输出写入控制台。 每种方法都有适当的颜色化输出。 例如，`Error` 将以红色显示文本。
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
