@@ -67,7 +67,7 @@ import "github.com/goravel/framework/support/path"
 
 ### `path.App()`
 
-The `path.App()` function returns the absolute path to your application's app directory. `path.App()` 函数返回 app 目录的绝对路径。你也可以用来生成应用目录下特定文件的路径：
+`path.App()` 函数返回 app 目录的绝对路径。 你也可以用来生成应用目录下特定文件的路径：
 
 ```go
 path := path.App()
@@ -76,7 +76,7 @@ path := path.App("http/controllers/controller.go")
 
 ### `path.Base()`
 
-The `path.Base()` function returns the absolute path to your application's root directory. `path.Base()` 函数返回项目根目录的绝对路径。你也可以用来生成项目根目录下特定文件的路径：
+`path.Base()` 函数返回项目根目录的绝对路径。 你也可以用来生成项目根目录下特定文件的路径：
 
 ```go
 path := path.Base()
@@ -85,7 +85,7 @@ path := path.Base("vendor/bin")
 
 ### `path.Config()`
 
-The `path.Config()` function returns the absolute path to your application's config directory. `path.Config()` 函数返回项目配置目录 (config) 的绝对路径。你也可以用来生成应用配置目录中的特定文件的路径：
+`path.Config()` 函数返回项目配置目录 (config) 的绝对路径。 你也可以用来生成应用配置目录中的特定文件的路径：
 
 ```go
 path := path.Config()
@@ -94,7 +94,7 @@ path := path.Config("app.go")
 
 ### `path.Database()`
 
-The `path.Database()` function returns the absolute path to your application's database directory. `path.Database()` 函数返回 `database` 目录的绝对路径。你也可以用来生成数据库目录下特定文件的路径：
+`path.Database()` 函数返回 `database` 目录的绝对路径。 你也可以用来生成数据库目录下特定文件的路径：
 
 ```go
 path := path.Database()
@@ -103,7 +103,7 @@ path := path.Database("factories/user_factory.go")
 
 ### `path.Storage()`
 
-The `path.Storage()` function returns the absolute path to your application's storage directory. `path.Storage()` 函数返回 `storage` 目录的绝对路径。你也可以用来生成位于资源路径中的特定路径：
+`path.Storage()` 函数返回 `storage` 目录的绝对路径。 你也可以用来生成位于资源路径中的特定路径：
 
 ```go
 path := path.Storage()
@@ -112,7 +112,7 @@ path := path.Storage("app/file.txt")
 
 ### `path.Public()`
 
-The `path.Public()` function returns the absolute path to your application's public directory. `path.Public()` 函数返回 `public` 目录的绝对路径。你也可以用来生成 `public` 目录下特定文件的路径：
+`path.Public()` 函数返回 `public` 目录的绝对路径。 你也可以用来生成 `public` 目录下特定文件的路径：
 
 ```go
 path := path.Public()
@@ -121,7 +121,7 @@ path := path.Public("css/app.css")
 
 ### `path.Lang()`
 
-The `path.Lang()` function returns the absolute path to the `lang` directory. `path.Lang()` 函数返回 `lang` 目录的绝对路径。你也可以用来生成 `lang` 目录下特定文件的路径：
+`path.Lang()` 函数返回 `lang` 目录的绝对路径。 你也可以用来生成 `lang` 目录下特定文件的路径：
 
 ```go
 path := path.Lang()
@@ -130,7 +130,7 @@ path := path.Lang("en.json")
 
 ### `path.Resource()`
 
-The `path.Resource()` function returns the absolute path to the `resource` directory. `path.Resource()` 函数返回 `resource` 目录的绝对路径。你也可以用来生成 `resource` 目录下特定文件的路径：
+`path.Resource()` 函数返回 `resource` 目录的绝对路径。 你也可以用来生成 `resource` 目录下特定文件的路径：
 
 ```go
 path := path.Resource()
