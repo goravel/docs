@@ -879,6 +879,8 @@ Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节�
 
 当从数据库中检索到现有模型时，将调度 `Retrieved` 事件。当一个新模型第一次被保存时，`Creating` 和 `Created` 事件将被触发。 `Updating` / `Updated` 事件将在修改现有模型并调用 `Save` 方法时触发。`Saving` / `Saved` 事件将在创建或更新模型时触发 - 即使模型的属性没有更改。以「-ing」结尾的事件名称在模型的任何更改被持久化之前被调度，而以「-ed」结尾的事件在对模型的更改被持久化之后被调度。
 
+注意：所有事件都只会在操作一个模型时触发。例如在调用 `Update` 方法时，想要触发 `Updating` 和 `Updated` 事件，需要将现有模型传入到 `Model` 方法中：`facades.Orm().Query().Model(&user).Update("name", "Goravel")`。
+
 要开始监听模型事件，请在模型上定义一个 `DispatchesEvents` 方法。此方法将模型生命周期的各个点映射到您定义的事件类中。
 
 ```go

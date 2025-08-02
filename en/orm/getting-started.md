@@ -880,6 +880,8 @@ Orm models dispatch several events, allowing you to hook into the following mome
 
 The `Retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `Creating` and `Created` events will dispatch. The `Updating` / `Updated` events will dispatch when an existing model is modified and the `Save` method is called. The `Saving` / `Saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
 
+Note: All events will only be triggered when operating a model. For example, if you want to trigger the `Updating` and `Updated` events when calling the `Update` method, you need to pass the existing model to the `Model` method: `facades.Orm().Query().Model(&user).Update("name", "Goravel")`.
+
 To start listening to model events, define a `DispatchesEvents` method on your model. This property maps various points of the model's lifecycle to your own event classes.
 
 ```go
