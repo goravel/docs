@@ -147,7 +147,7 @@ import "github.com/goravel/framework/support/carbon"
 
 ### `carbon.Now()`
 
-The `carbon.Now()` function gets current time:
+获取当前时间：
 
 ```go
 carbon.Now()
@@ -179,7 +179,7 @@ carbon.SetTestNow(carbon.Now())
 
 ### `carbon.CleanTestNow()`
 
-The `carbon.CleanTestNow()` function clears the test now Carbon object:
+清除系统时间为正常值：
 
 ```go
 carbon.CleanTestNow()
@@ -203,7 +203,7 @@ carbon.Parse("2020-08-05 13:14:15")
 
 ### `carbon.ParseByLayout()`
 
-The `carbon.ParseByLayout()` function gets `Carbon` object by given value and layout:
+通过指定布局模板解析 `Carbon` 对象：
 
 ```go
 carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
@@ -430,7 +430,7 @@ maps.Forget(mp, "name", "age")
 
 ### `maps.Get()`
 
-`maps.Get()` 函数从提供的 map 中检索给定键的值。如果键不存在，则返回默认值： If the key does not exist, the default value will be returned:
+`maps.Get()` 函数从提供的 map 中检索给定键的值。 如果键不存在，则返回默认值：
 
 ```go
 mp := map[string]any{"name": "Bowen"}
@@ -485,7 +485,7 @@ maps.Pull(mp, "name")
 // map[string]any{"language": "Go"}
 ```
 
-`maps.Pull()` 可以设置默认值在第三个参数，如果键不存在，则返回默认值： This value will be returned if the key does not exist in the map:
+`maps.Pull()` 可以设置默认值在第三个参数。 如果键不存在，则返回默认值：
 
 ```go
 mp := map[string]any{"name": "Goravel", "language": "Go"}
@@ -567,7 +567,7 @@ convert.With("Goravel", func(value string) string {
 
 ### `convert.Default()`
 
-`convert.Default()` 方法返回第一个非零值。如果所有值都为零，则返回零值。 If all values are zero, it returns zero value.
+`convert.Default()` 方法返回第一个非零值。 如果所有值都为零，则返回零值。
 
 ```go
 convert.Default("", "foo") // foo
@@ -722,7 +722,7 @@ collect.Shuffle([]int{1, 2, 3, 4, 5})
 
 ### `collect.Split()`
 
-`collect.Split()` 函数将集合分成给定长度的组。如果集合无法均匀分割，则最后一个块将包含剩余的项目： If the collection can't be split evenly, the final chunk will contain the remaining items:
+`collect.Split()` 函数将集合分成给定长度的组。 如果集合无法均匀分割，则最后一个块将包含剩余的项目：
 
 ```go
 collect.Split([]int{1, 2, 3, 4, 5}, 2)
