@@ -4,9 +4,9 @@
 
 ## 简介
 
-Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache()` 进行操作。框架默认自带 `memory` 驱动，如需其他驱动，请查看对应的独立扩展包： Goravel comes with a `memory` driver, for other drivers, please check the corresponding independent extension packages:
+Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache()` 进行操作。 框架默认自带 `memory` 驱动，如需其他驱动，请查看对应的独立扩展包：
 
-| 驱动    | Link                                                                                                 |
+| 驱动    | 链接                                                                                                   |
 | ----- | ---------------------------------------------------------------------------------------------------- |
 | Redis | [https://github.com/goravel/redis](https://github.com/goravel/redis) |
 
@@ -24,13 +24,13 @@ facades.Cache().WithContext(ctx)
 
 ### 访问多个缓存存储
 
-You may access various cache stores via the `Store` method. 您可以通过 `Store` 方法访问各种缓存存储。传递给 `Store` 方法的键应该对应于 `cache` 配置文件中的 `stores` 配置数组中列出的存储之一：
+你可以通过 `Store` 方法访问各种缓存存储。 传递给 `Store` 方法的键应该对应于 `cache` 配置文件中的 `stores` 配置数组中列出的存储之一：
 
 ```go
 value := facades.Cache().Store("redis").Get("foo")
 ```
 
-### Retrieving Items From The Cache
+### 从缓存中获取数据
 
 ```go
 value := facades.Cache().Get("goravel", "default")
@@ -39,7 +39,7 @@ value := facades.Cache().GetInt("goravel", 1)
 value := facades.Cache().GetString("goravel", "default")
 ```
 
-You can pass a `func` as the default value. If the specified data does not exist in the cache, the result of `func` will be returned. The transitive closure method allows you to obtain default values from the database or other external services. Note the closure structure `func() any`.
+你可以传递一个 `func` 作为默认值。 如果指定的数据在缓存中不存在，将返回 `func` 的结果。 传递闭包的方法允许你从数据库或其他外部服务中获取默认值。 注意闭包结构 `func() any`。
 
 ```go
 value := facades.Cache().Get("goravel", any {
@@ -47,7 +47,7 @@ value := facades.Cache().Get("goravel", any {
 })
 ```
 
-### Checking For Item Existence
+### 检查缓存项是否存在
 
 ```go
 bool := facades.Cache().Has("goravel")
@@ -55,7 +55,7 @@ bool := facades.Cache().Has("goravel")
 
 ### 递增 / 递减值
 
-The `Increment` and `Decrement` methods may be used to adjust the value of integer items in the cache. `Increment` 和 `Decrement` 方法可用于调整缓存中整数项的值。这两种方法都接受一个可选的第二个参数，指示增加或减少项目值的数量：
+`Increment` 和 `Decrement` 方法可用于调整缓存中整数项的值。 这两种方法都接受一个可选的第二个参数，指示增加或减少项目值的数量：
 
 ```go
 facades.Cache().Increment("key")
@@ -102,9 +102,9 @@ err := facades.Cache().Put("goravel", "value", 5 * time.Second)
 err := facades.Cache().Put("goravel", "value", 0)
 ```
 
-### Store If Not Present
+### 只存储没有的数据
 
-The `Add` method stores data only if it's not in the cache. `Add` 方法将只存储缓存中不存在的数据。如果存储成功，将返回 `true` ，否则返回 `false` ：
+`Add` 方法将只存储缓存中不存在的数据。 如果存储成功，将返回 `true` ，否则返回 `false` 。
 
 ```go
 bool := facades.Cache().Add("goravel", "value", 5 * time.Second)
@@ -112,7 +112,7 @@ bool := facades.Cache().Add("goravel", "value", 5 * time.Second)
 
 ### 数据永久存储
 
-The `Forever` method can be used to store data persistently in the cache. `Forever` 方法可用于将数据持久化存储到缓存中。因为这些数据不会过期，所以必须通过 `Forget` 方法从缓存中手动删除它们：
+因为这些数据不会过期，所以必须通过 `Forget` 方法从缓存中手动删除它们。 `Forever` 方法可用于将数据持久化存储到缓存中：
 
 ```go
 bool := facades.Cache().Forever("goravel", "value")
@@ -134,7 +134,7 @@ bool := facades.Cache().Flush()
 
 ### 管理锁
 
-原子锁允许操作分布式锁而不用担心竞争条件。您可以使用 `Lock` 方法创建和管理锁： You may create and manage locks using the `Lock` method:
+原子锁允许操作分布式锁而不用担心竞争条件。 你可以使用 `Lock` 方法创建和管理锁：
 
 ```go
 lock := facades.Cache().Lock("foo", 10*time.Second)
@@ -146,7 +146,7 @@ if (lock.Get()) {
 }
 ```
 
-The `Get` method also accepts a closure. `Get` 方法也接受一个闭包。闭包执行后，Goravel 会自动释放锁：
+`Get` 方法也接受一个闭包。 闭包执行后，Goravel 会自动释放锁：
 
 ```go
 facades.Cache().Lock("foo").Get(func () {
@@ -154,7 +154,7 @@ facades.Cache().Lock("foo").Get(func () {
 });
 ```
 
-如果在您请求时锁不可用，您可以指示 Goravel 等待指定的秒数。如果在指定的时间限制内无法获取锁，则会返回 `false`： If the lock can not be acquired within the specified time limit, will return `false`:
+如果在您请求时锁不可用，您可以指示 Goravel 等待指定的秒数。 如果在指定的时间限制内无法获取锁，则会返回 `false`：
 
 ```go
 lock := facades.Cache().Lock("foo", 10*time.Second)
@@ -164,7 +164,7 @@ if (lock.Block(5*time.Second)) {
 }
 ```
 
-The example above may be simplified by passing a closure to the `Block` method. 上面的例子可以通过将闭包传递给 `Block` 方法来简化。当一个闭包被传递给这个方法时，Goravel 将尝试在指定的秒数内获取锁，并在闭包执行后自动释放锁：
+上面的例子可以通过将闭包传递给 `Block` 方法来简化。 当一个闭包被传递给这个方法时，Goravel 将尝试在指定的秒数内获取锁，并在闭包执行后自动释放锁：
 
 ```go
 facades.Cache().Lock("foo", 10*time.Second).Block(5*time.Second, func () {
@@ -184,7 +184,6 @@ facades.Cache().Lock("processing").ForceRelease();
 
 如果你想定义一个完全自定义的驱动，可以在 `config/cache.go` 配置文件中指定 `custom` 驱动类型。
 然后包含一个 `via` 选项，实现一个 `framework/contracts/cache/Driver` 接口：
-Then include a `via` option to implement a `framework/contracts/cache/Driver` interface:
 
 ```go
 //config/cache.go
