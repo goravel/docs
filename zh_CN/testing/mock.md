@@ -4,7 +4,7 @@
 
 ## 简介
 
-All functions of Goravel are implemented using `facades`, and all `facades` are made up of interfaces. Goravel 所有功能都使用 `facades` 实现，而所有的 `facades` 均由接口构成。因此配合 [stretchr/testify](http://github.com/stretchr/testify) 的 mock 功能，Goravel 可以提供优秀的测试体验。
+Goravel 所有功能都使用 `facades` 实现，而所有的 `facades` 均由接口构成。 因此配合 [stretchr/testify](http://github.com/stretchr/testify) 的 mock 功能，Goravel 可以提供优秀的测试体验。
 
 ## Mock facades.App
 
