@@ -53,7 +53,7 @@ go run . --env=../.env
 APP_ENV=production APP_DEBUG=true go run .
 ```
 
-### Live reload
+### 热加载
 
 安装 [cosmtrek/air](https://github.com/cosmtrek/air)，框架内置配置文件，可直接使用：
 
@@ -73,11 +73,11 @@ air
 
 ### 配置文件
 
-Goravel 框架所有的配置文件都放在 `config` 目录中。每个配置项都有注释，可以根据自身需求进行调整。 All configuration items have annotations, you can adjust them according to your needs.
+Goravel 框架所有的配置文件都放在 `config` 目录中。 每个配置项都有注释，可以根据自身需求进行调整。
 
 ### 生成密钥
 
-Goravel 安装到本地后，要生成应用程序的密钥。运行下面命令后会在 `.env` 文件的 `APP_KEY` 键上生成 32 位字符串，该密钥主要作用于数据加解密等功能。 Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
+Goravel 安装到本地后，要生成应用程序的密钥。 运行下面命令后会在 `.env` 文件的 `APP_KEY` 键上生成 32 位字符串。 该密钥主要作用于数据加解密等功能。
 
 ```shell
 go run . artisan key:generate
