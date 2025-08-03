@@ -1,10 +1,10 @@
-# Relationships
+# 模型关联
 
 [[toc]]
 
 ## 简介
 
-It's common for database tables to be interconnected. For instance, a blog post may have many comments, or an order may be linked to the user who placed it. `Orm` simplifies managing and dealing with such relationships, and it can handle various common relationships:
+数据库表通常相互关联。 例如，一篇博客文章可能有许多评论，或者一个订单对应一个下单用户。 Orm 让这些关联的管理和使用变得简单，并支持多种常用的关联类型：
 
 - [一对一](#一对一)
 - [一对多](#一对多)
@@ -15,7 +15,7 @@ It's common for database tables to be interconnected. For instance, a blog post 
 
 ### 一对一
 
-A one-to-one relationship is a very basic type of database relationship. 一对一是最基本的数据库关系。 例如，一个 `User` 模型可能与一个 `Phone` 模型相关联。为了定义这个关联关系，我们要在 `User` 模型中定义一个 `Phone`：
+一对一是最基本的数据库关系。 例如，一个 `User` 模型可能与一个 `Phone` 模型相关联。为了定义这个关联关系，我们要在 `User` 模型中定义一个 `Phone`。
 
 ```go
 type User struct {
@@ -31,7 +31,7 @@ type Phone struct {
 }
 ```
 
-When using `Orm`, it automatically assigns the foreign key to the relationship based on the parent model name. For instance, the `Phone` model is assumed to have a `UserID` foreign key by default. However, if you wish to change this convention, you can add a `foreignKey` tag to the `Phone` field in `User` model. (This also applies to other relationships.)
+Orm 基于父模型（`User`）的名称来确定关联模型（`Phone`）的外键名称。 在本例中，会自动假定 `Phone` 模型有一个 `UserID` 的外键。 如果你想重写这个约定，可以在 `User` 模型中为 `Phone` 字段添加 `foreignKey` Tag。 （其他关联关系类同）
 
 ```go
 type User struct {
@@ -47,7 +47,7 @@ type Phone struct {
 }
 ```
 
-Additionally, when using `Orm`, it is assumed that the foreign key should match the primary key column of the parent. This means that `Orm` will search for the user's `ID` column value in the `UserId` column of the `Phone` record. 另外，`Orm` 假设外键的值是与父模型的主键（Primary Key）相同的。换句话说，`Orm` 将会通过 `Phone` 记录的 `UserID` 列中查找与用户表的 `id` 列相匹配的值。如果你希望使用自定义的主键值，可以在 `User` 模型中为 `Phone` 字段添加 `references` Tag（其他关联关系类同）： To do this, simply pass a third argument to the `hasOne` method. (Other relationship setups are similar.)
+另外，`Orm` 假设外键的值是与父模型的主键（Primary Key）相同的。 换句话说，`Orm` 将会通过 `Phone` 记录的 `UserID` 列中查找与用户表的 `id` 列相匹配的值。 如果你希望使用自定义的主键值，可以在 `User` 模型中为 `Phone` 字段添加 `references` Tag。 要做到这一点，可以将第三个参数传递到 "hasOne" 方法。 （其他关联关系类同）
 
 ```go
 type User struct {
@@ -65,7 +65,7 @@ type Phone struct {
 
 #### 定义反向关联
 
-We can access the `Phone` model from our `User` model. Now, we need to establish a relationship on `Phone` model that allows us to access the phone's owner. 我们已经能从 `User` 模型访问到 `Phone` 模型了。接下来，让我们再在 `Phone` 模型上定义一个关联，它能让我们访问到拥有该电话的用户。我们可以在 `Phone` 模型中定义一个 `User` 字段：
+我们已经能从 `User` 模型访问到 `Phone` 模型了。 接下来，让我们再在 `Phone` 模型上定义一个关联，它能让我们访问到拥有该电话的用户。 我们可以在 `Phone` 模型中定义一个 `User` 字段。
 
 ```go
 type User struct {
@@ -83,7 +83,7 @@ type Phone struct {
 
 ### 一对多
 
-A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a blog post may have an infinite number of comments. 当要定义一个模型是其他 （一个或者多个）模型的父模型这种关系时，可以使用一对多关联。例如，一篇博客可以有很多条评论。和一对一模型关联一样，一对多关联也是在 Orm 模型文件中定义一个字段：
+当要定义一个模型是其他 （一个或者多个）模型的父模型这种关系时，可以使用一对多关联。 例如，一篇博客可以有很多条评论。 和一对一模型关联一样，一对多关联也是在 Orm 模型文件中定义一个字段：
 
 ```go
 type Post struct {
@@ -99,11 +99,11 @@ type Comment struct {
 }
 ```
 
-Remember, `Orm` will automatically determine the proper foreign key column for the `Comment` model. By convention, Orm will take the "hump case" name of the parent model and suffix it with `ID`. 注意，Orm 将会自动为 `Comment` 模型选择一个合适的外键。通常，这个外键是通过使用父模型的「驼峰命名」方式，然后再加上 `ID` 的方式来命名的。因此，在上面这个例子中，Orm 将会默认 `Comment` 模型的外键是 `PostID` 字段。
+注意，Orm 将会自动为 `Comment` 模型选择一个合适的外键。 通常，这个外键是通过使用父模型的「驼峰命名」方式，然后再加上 `ID` 的方式来命名的。 因此，在上面这个例子中，Orm 将会默认 `Comment` 模型的外键是 `PostID` 字段。
 
 ### 一对多 (反向) / 属于
 
-Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `One To Many` relationship, define a relationship method on the child model which calls the `belongsTo` method:
+目前我们可以访问一篇文章的所有评论，下面我们可以定义一个关联关系，从而让我们可以通过一条评论来获取到它所属的文章。 这个关联关系是 `One To Many` 的反向，可以在子模型中通过定义父模型字段：
 
 ```go
 type Post struct {
@@ -122,13 +122,13 @@ type Comment struct {
 
 ## 多对多关联
 
-Many-to-many relations are slightly more complicated than `One To One` and `One To Many` relationships. An example of a many-to-many relationship is a user that has many roles and those roles are also shared by other users in the application. For example, a user may be assigned the role of "Author" and "Editor"; however, those roles may also be assigned to other users as well. So, a user has many roles and a role has many users.
+多对多关联比 `hasOne` 和 `hasMany` 关联稍微复杂些。 举个例子，一个用户可以拥有多个角色，同时这些角色也可以分配给其他用户。 例如，一个用户可是「作者」和「编辑」；当然，这些角色也可以分配给其他用户。 所以，一个用户可以拥有多个角色，一个角色可以分配给多个用户。
 
 ### 表结构
 
-要定义这种关联，需要三个数据库表: `users`, `roles` 和 `role_user`。`role_user` 表的命名可以自定义。该表包含了 `user_id` 和 `role_id` 字段，用作链接 `users` 和 `roles` 的中间表。 The `role_user` table naming can be customized and it contains `user_id` and `role_id` columns. This table is used as an intermediate table linking users and roles.
+要定义这种关联，需要三个数据库表: `users`, `roles` 和 `role_user`。 `role_user` 表的命名可以自定义，该表包含了 `user_id` 和 `role_id` 字段， 用作链接 `users` 和 `roles` 的中间表。
 
-特别提醒，由于角色可以属于多个用户，因此我们不能简单地在 `roles` 表上放置 `user_id` 列。如果这样，这意味着角色只能属于一个用户。为了支持将角色分配给多个用户，需要使用 `role_user` 表。我们可以这样定义表结构： This would mean that a role could only belong to a single user. In order to provide support for roles being assigned to multiple users, the `role_user` table is needed. We can summarize the relationship's table structure like so:
+特别提醒，由于角色可以属于多个用户，因此我们不能简单地在 `roles` 表上放置 `user_id` 列。 如果这样，这意味着角色只能属于一个用户。 为了支持将角色分配给多个用户，需要使用 `role_user` 表。 我们可以这样定义表结构：
 
 ```
 users
@@ -214,11 +214,11 @@ role_user
 
 ## 多态
 
-A polymorphic relationship allows the child model to belong to more than one type of model using a single association. For example, imagine you are building an application that allows users to share blog posts and videos. In such an application, a `Comment` model might belong to both the `Post` and `Video` models.
+多态关联允许目标模型借助单个关联从属于多个模型。 例如，你正在构建一个允许用户共享博客文章和视频的应用程序，其中 `Comment` 模型可能同时从属于 `Post` 和 `Video` 模型。 目前仅有 `One To One` 与 `One To Many` 支持多态。
 
 ### 表结构
 
-A polymorphic relation is similar to a normal relation; however, the child model can belong to more than one type of model using a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a polymorphic relation allows you to have a single table of unique images that may be associated with posts and users. First, let's examine the table structure:
+多态关联与简单的关联类似，不过，目标模型能够在一个关联上从属于多个模型。 例如，博客 `Post` 和 `Video` 可能共享一个关联到 `Image` 模型的关系。 同时共享多个关联到 `Comment` 模型。 让我们先看看表结构：
 
 ```
 posts
@@ -242,7 +242,7 @@ comments
   commentable_type - string
 ```
 
-要特别留意 `images` 表的 `imageable_id` 和 `imageable_type` 列。`imageable_id` 列包含文章或用户的 ID 值，而 `imageable_type` 列包含的则是父模型的类名。Orm 在访问 `imageable` 时使用 `imageable_type` 列来判断父模型的「类型」。`comments` 表类同。 The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Orm to determine which "type" of parent model to return when accessing the `imageable` relation. The `comments` table is similar.
+要特别留意 `images` 表的 `imageable_id` 和 `imageable_type` 列。 `imageable_id` 列包含文章或用户的 ID 值，而 `imageable_type` 列包含的则是父模型的类名。 Orm 在访问 `imageable` 时使用 `imageable_type` 列来判断父模型的「类型」。 `comments` 表类同。
 
 ### 模型结构
 
@@ -288,7 +288,7 @@ type Post struct {
 }
 ```
 
-## Querying Associations
+## 关联操作
 
 假设有一个博客系统，它的 `User` 模型有许多关联的 `Post` 模型：
 
@@ -308,7 +308,7 @@ type Post struct {
 
 ### 创建/更新关联
 
-可以使用 `Select`, `Omit` 方法，对关联的创建和更新进行更细颗粒度控制。这两个方法不可同时使用，且对关联的控制功能只适用于 `Create`, `Update`, `Save`： These two method cannot be used at the same time and the associated control functions are only applicable to `Create`, `Update`, `Save`:
+可以使用 `Select`, `Omit` 方法，对关联的创建和更新进行更细颗粒度控制。 这两个方法不可同时使用，且对关联的控制功能只适用于 `Create`, `Update`, `Save`：
 
 ```go
 user := models.User{Name: "user", Posts: []*models.Post{{Name: "post"}}}
@@ -372,7 +372,7 @@ facades.Orm().Query().Model(&user).Association("Posts").Delete(Post1, Post2)
 
 ### 清空关联
 
-Remove all reference between source & association, won’t delete those associations:
+删除父模型与子模型之间的所有引用，但不会删除这些关联：
 
 ```go
 facades.Orm().Query().Model(&user).Association("Posts").Clear()
@@ -413,7 +413,7 @@ facades.Orm().Query().Model(&users).Association("Team").Replace(&userA, &userB, 
 
 ## 预加载
 
-Eager loading conveniences for querying multiple models, and alleviates the "N + 1" query problem. 预加载为多个模型的查询提供方便，同时减轻了 `N + 1` 查询问题。 为了说明 `N + 1` 查询问题，请参考属于 `Author` 模型的 `Book` 模型：
+预加载为多个模型的查询提供方便，同时减轻了 `N + 1` 查询问题。 为了说明 `N + 1` 查询问题，请参考属于 `Author` 模型的 `Book` 模型：
 
 ```go
 type Author struct {
@@ -441,9 +441,9 @@ for _, book := range books {
 }
 ```
 
-该循环将执行一个查询以检索数据库表中的所有书籍，然后对每本书执行另一个查询以检索该书的作者。 因此，如果我们有 25 本书，上面的代码将运行 26 个查询：一个查询原本的书籍信息，另外 25 个查询来检索每本书的作者。 This means that for a collection of 25 books, the loop would run 26 queries - one for the collection of books and 25 more to get the author of each book.
+该循环将执行一个查询以检索数据库表中的所有书籍，然后对每本书执行另一个查询以检索该书的作者。 因此，如果我们有 25 本书，上面的代码将运行 26 个查询：一个查询原本的书籍信息，另外 25 个查询来检索每本书的作者。
 
-However, we can simplify this process using eager loading. 值得庆幸的是，我们可以使用预加载将这个操作减少到两个查询。 在构建查询时，可以使用 with 方法指定应该预加载哪些关系：
+值得庆幸的是，我们可以使用预加载将这个操作减少到两个查询。 值得庆幸的是，我们可以使用预加载将这个操作减少到两个查询。 在构建查询时，可以使用 with 方法指定应该预加载哪些关系：
 
 ```go
 var books models.Book
@@ -464,7 +464,7 @@ select * from `authors` where `id` in (1, 2, 3, 4, 5, ...);
 
 ### 预加载多个关联
 
-Sometimes you may need to eager load several different relationships. 有时，你可能需要在单一操作中预加载几个不同的关联。要达成此目的，只需要多次调用 `With` 方法：
+有时，你可能需要在单一操作中预加载几个不同的关联。 要达成此目的，只需要多次调用 `With` 方法：
 
 ```go
 var book models.Book
@@ -473,16 +473,17 @@ facades.Orm().Query().With("Author").With("Publisher").Find(&book)
 
 ### 嵌套预加载
 
-To eager load a relationship's relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts:
+可以使用 「点」 语法预加载嵌套关联。
+比如在一个 Orm 语句中预加载所有书籍作者及其联系方式：
 
 ```go
 var book models.Book
 facades.Orm().Query().With("Author").With("Author.Contacts").Find(&book)
 ```
 
-### Constraining Eager Loads
+### 为预加载添加约束
 
-有时，你可能希望预加载一个关联，同时为预加载查询添加额外查询条件。您可以通过下面方法来实现这一点： You can accomplish this as below:
+有时，你可能希望预加载一个关联，同时为预加载查询添加额外查询条件。 你可以通过下面方法来实现这一点：
 
 ```go
 import "github.com/goravel/framework/contracts/database/orm"
@@ -497,9 +498,9 @@ facades.Orm().Query().With("Author", func(query orm.Query) orm.Query {
 
 在这个例子中，Orm 只会预加载作者的 `name` 列等于 `author` 的书籍。
 
-### Lazy Eager Loading
+### 延迟预加载
 
-有时你可能需要在已检索到父模型后立即加载关系。例如，你需要动态决定是否加载相关模型，这可能很有用： For example, this may be useful if you need to dynamically decide whether to load related models:
+有时你可能需要在已检索到父模型后立即加载关系。 例如，你需要动态决定是否加载相关模型，这可能很有用：
 
 ```go
 var books models.Book
