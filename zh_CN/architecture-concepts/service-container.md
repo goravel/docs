@@ -4,13 +4,13 @@
 
 ## 简介
 
-The Goravel service container is a powerful tool for managing class dependencies and performing dependency injection. It contains all the modules of Goravel, and allows you to bind your own services to container and resolve them when needed. Goravel的服务容器是一个功能强大的工具，用于管理类依赖和实现依赖注入。它包含了框架所有模块，并允许您将自己的服务绑定到容器中，在需要时进行解析。服务容器为Goravel周边的第三方包提供了有力的支持。
+Goravel的服务容器是一个功能强大的工具，用于管理类依赖和实现依赖注入。 它包含了框架所有模块，并允许您将自己的服务绑定到容器中，在需要时进行解析。 服务容器为Goravel周边的第三方包提供了有力的支持。
 
 ## 绑定
 
 ### 简单绑定
 
-Almost all of your service container bindings will be registered within [service providers](./service-providers.md). 几乎所有的服务容器绑定都会在 [服务提供者](./service-providers.md) 中注册，在服务提供者中，您可以通过 `app` 参数访问容器，然后通过容器的 `Bind` 方法注册绑定，`Bind` 方法的第一个参数为要绑定 `key`，第二个参数是一个返回类实例的闭包：
+几乎所有的服务容器绑定都会在 [服务提供者](./service-providers.md) 中注册。 在服务提供者中，您可以通过 `app` 参数访问容器，然后通过容器的 `Bind` 方法注册绑定，`Bind` 方法的第一个参数为要绑定 `key`，第二个参数是一个返回类实例的闭包：
 
 ```go
 package route
@@ -45,7 +45,7 @@ facades.App().Bind("key", func(app foundation.Application) (any, error) {
 
 ### 单例的绑定
 
-The `Singleton` method binds a class or interface into the container that should only be resolved one time. `Singleton` 方法将类或接口绑定到只应解析一次的容器中。解析单例绑定后，后续调用容器时将返回相同的对象实例：
+`Singleton` 方法将类或接口绑定到只应解析一次的容器中。 解析单例绑定后，后续调用容器时将返回相同的对象实例：
 
 ```go
 app.Singleton(key, func(app foundation.Application) (any, error) {
@@ -55,7 +55,7 @@ app.Singleton(key, func(app foundation.Application) (any, error) {
 
 ### 绑定实例
 
-还可以使用 `Instance` 方法将现有对象实例绑定到容器中。给定实例将始终在后续调用容器时返回： The given instance will always be returned on subsequent calls into the container:
+还可以使用 `Instance` 方法将现有对象实例绑定到容器中。 给定实例将始终在后续调用容器时返回：
 
 ```go
 app.Instance(key, instance)
@@ -71,11 +71,11 @@ app.BindWith(Binding, func(app foundation.Application, parameters map[string]any
 })
 ```
 
-## Resolving
+## 解析
 
 ### `Make` 方法
 
-您可以使用 `Make` 方法从容器中解析类实例。`Make` 方法接受您希望解析的 `key`： The `Make` method accepts the `key` you wish to resolve:
+您可以使用 `Make` 方法从容器中解析类实例。`Make` 方法接受您希望解析的 `key`： `Make` 方法接受您希望解析的 `key`：
 
 ```go
 instance, err := app.Make(key)
