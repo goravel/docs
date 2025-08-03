@@ -1,16 +1,16 @@
-# Queues
+# 队列
 
 [[toc]]
 
 ## 简介
 
-When building your web application, there may be tasks, like parsing and storing an uploaded CSV file, that take too long to complete during a web request. Fortunately, Goravel offers a solution by allowing you to create queued jobs that can run in the background. This way, by moving time-intensive tasks to a queue, your application can respond to web requests much faster and provide a better user experience for your customers. To implement this feature, we use `facades.Queue()`.
+在构建 Web 应用程序时，你可能需要执行一些比较耗时的任务（例如解析和存储上传的 CSV 文件）。 Goravel 可以让你轻松地创建可在后台排队处理的任务。 通过将耗时的任务移到队列中，你的应用程序可以以超快的速度响应 Web 请求，并为客户提供更好的用户体验。 我们使用 `facades.Queue()` 实现这些功能。
 
-### 连接 Vs 队列 Queues
+### 连接 Vs  队列
 
-Before delving into Goravel queues, it's important to understand the difference between "connections" and "queues". In the configuration file, `config/queue.go`, you'll find an array for `connections` configuration. This option specifies the connections to backend queue services like Redis. However, every queue connection can have multiple "queues", which can be thought of as different stacks or piles of queued jobs.
+在开始使用 Goravel 队列之前，理解「连接」和「队列」之间的区别非常重要。 在 `config/queue.go` 配置文件中，有一个 `connections` 配置选项。 此选项定义到后端服务（如 Redis）的特定连接。 然而，任何给定的队列连接都可能有多个「队列」，这些「队列」可能被认为是不同的堆栈或成堆的排队任务。
 
-It's essential to note that each connection configuration example in the queue configuration file includes a `queue` attribute. This attribute is the default queue to which jobs will be dispatched when they are sent to a given connection. In simpler terms, if you dispatch a job without explicitly defining which queue it should be dispatched to, the job will be placed in the queue defined in the queue attribute of the connection configuration.
+请注意，`config/queue.go` 文件中的每个连接配置示例都包含一个 `queue` 属性。  这是将任务发送到给定连接时将被分配到的默认队列。 换句话说，如果你没有显式地定义任务应该被发送到哪个队列，那么该任务将被放置在 `queue` 定义的队列上。
 
 ```go
 // 这个任务将被推送到默认队列
@@ -34,11 +34,11 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 
 ### 数据库驱动
 
-为使用 `database` 驱动，需要先创建一个数据库表来存储任务：[20210101000002_create_jobs_table.go](https://github.com/goravel/goravel/blob/master/database/migrations/20210101000002_create_jobs_table.go)。该迁移文件默认在 `database/migrations` 目录下。 The migration file is located in the `database/migrations` directory by default.
+为使用 `database` 驱动，需要先创建一个数据库表来存储任务：[20210101000002_create_jobs_table.go](https://github.com/goravel/goravel/blob/master/database/migrations/20210101000002_create_jobs_table.go)。 该迁移文件默认在 `database/migrations` 目录下。
 
 ### 自定义驱动
 
-If the current driver cannot meet your needs, you can customize the driver. 如果当前驱动无法满足需求，你可以自定义驱动。需要实现 `contracts/queue/driver.go` 中的 [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) 接口。
+如果当前驱动无法满足需求，你可以自定义驱动。 需要实现 `contracts/queue/driver.go` 中的 [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) 接口。
 
 官方实现了 `Redis` 驱动，你可以参考 [Redis Driver](https://github.com/goravel/framework/blob/master/queue/drivers/redis/driver.go) 实现自己的自定义驱动。
 
@@ -62,7 +62,7 @@ If the current driver cannot meet your needs, you can customize the driver. 如�
 
 ### 生成任务类
 
-By default, all of the jobs for your application are stored in the `app/jobs` directory. 默认情况下，应用程序的所有的任务都被存储在了 `app/jobs` 目录中。如果 `app/jobs` 目录不存在，当你运行 `make:job` Artisan 命令时，将会自动创建该目录：
+默认情况下，应用程序的所有的任务都被存储在了 `app/jobs` 目录中。 如果 `app/jobs` 目录不存在，当你运行 `make:job` Artisan 命令时，将会自动创建该目录：
 
 ```shell
 go run . artisan make:job ProcessPodcast
@@ -71,7 +71,7 @@ go run . artisan make:job user/ProcessPodcast
 
 ### 类结构
 
-Job classes are very simple, consisting of two methods: `Signature` and `Handle`. 任务类非常简单，包含 `Signature`, `Handle` 方法，`Signature` 是任务类的唯一标识，`Handle` 在队列处理任务时将会被调用，在调用任务时传入的 `[]queue.Arg{}` 将会被传入 `Handle` 中： Additionally, the `[]queue.Arg{}` passed when the task executes will be transmitted into `Handle`:
+任务类非常简单，包含 `Signature`, `Handle` 方法。 `Signature` 是任务类的唯一标识，`Handle` 在队列处理任务时将会被调用。 在调用任务时传入的 `[]queue.Arg{}` 将会被传入 `Handle` 中：
 
 ```go
 package jobs
@@ -90,7 +90,7 @@ func (r *ProcessPodcast) Handle(args ...interface{}) error {
 }
 ```
 
-#### Job Retry
+#### 任务重试
 
 任务类支持一个可选的 `ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration)` 方法，用于控制任务重试。
 
@@ -103,7 +103,7 @@ func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, de
 
 ### 注册任务
 
-当任务创建好后，需要注册到 `app/provides/queue_service_provider.go`，以便能够正确调用。如果是通过 `make:job` 命令生成的任务，则不需要手动注册，框架会自动注册。 If the job is generated by the `make:job` command, the framework will automatically register it.
+当任务创建好后，需要注册到 `app/provides/queue_service_provider.go`，以便能够正确调用。 如果是通过 `make:job` 命令生成的任务，则不需要手动注册，框架会自动注册。
 
 ```go
 func (receiver *QueueServiceProvider) Jobs() []queue.Job {
@@ -172,7 +172,7 @@ go func() {
 err := facades.Queue().Worker().Shutdown()
 ```
 
-## Dispatching Jobs
+## 调度任务
 
 一旦写好了任务类，你可以使用任务本身的 `Dispatch` 方法来调度它：
 
@@ -200,7 +200,7 @@ func (r *UserController) Show(ctx http.Context) {
 
 ### 同步调度
 
-如果你想立即（同步）调度任务，你可以使用 `DispatchSync` 方法。使用此方法时，任务不会排队，会在当前进程内立即执行： When using this method, the job will not be queued and will be executed immediately within the current process:
+如果你想立即（同步）调度任务，你可以使用 `DispatchSync` 方法。 使用此方法时，任务不会排队，会在当前进程内立即执行：
 
 ```go
 package controllers
@@ -226,7 +226,7 @@ func (r *serController) Show(ctx http.Context) {
 
 ### 任务链
 
-Job chaining allows you to specify a list of queued jobs to be executed in a specific order. If any job in the sequence fails, the rest of the jobs will not be executed. 任务链允许你指定一组按顺序运行的排队任务。如果序列中的一个任务失败，其余的任务将不会运行。要执行一个排队的任务链，你可以使用 `facades.Queue()` 提供的 `Chain` 方法：
+任务链允许你指定一组按顺序运行的排队任务。 如果序列中的一个任务失败，其余的任务将不会运行。 要执行一个排队的任务链，你可以使用 `facades.Queue()` 提供的 `Chain` 方法：
 
 ```go
 err := facades.Queue().Chain([]queue.Jobs{
@@ -247,7 +247,7 @@ err := facades.Queue().Chain([]queue.Jobs{
 
 ### 延迟调度
 
-如果您想指定任务不应立即被队列处理，您可以在调度任务时使用 `Delay` 方法。例如，让我们指定一个任务在分派 10 分钟后处理： For example, let's specify that a job should not be available for processing after 100 seconds of dispatching:
+如果您想指定任务不应立即被队列处理，您可以在调度任务时使用 `Delay` 方法。 例如，让我们指定一个任务在分派 100 秒后处理：
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*time.Second)).Dispatch()
@@ -277,7 +277,7 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dis
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
 ```
 
-## View Failed Jobs
+## 获取失败任务
 
 你可以使用 `queue:failed` 命令来获取失败任务，该命令会从数据库 `failed_jobs` 表中获取失败任务：
 
@@ -287,7 +287,7 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQ
 
 ## 重试失败任务
 
-If a job fails during processing, you can use the `queue:retry` command to retry the job. 如果任务在处理过程中失败，你可以使用 `queue:retry` 命令来重试该任务，在重试任务前请先从数据库 `failed_jobs` 表中获取要重试的任务 UUID：
+如果任务在处理过程中失败，你可以使用 `queue:retry` 命令来重试该任务。 在重试任务前请先从数据库 `failed_jobs` 表中获取要重试的任务 UUID：
 
 ```shell
 # 重试单个任务
