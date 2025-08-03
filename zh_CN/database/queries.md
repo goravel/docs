@@ -4,13 +4,13 @@
 
 ## 简介
 
-Goravel 的数据库查询构造器提供了一个方便的接口来创建和执行数据库查询。它可以用于执行应用程序中的大部分数据库操作，并且可以在所有支持的数据库系统上工作。 It can be used to perform most database operations in your application and works with all supported database systems.
+Goravel 的数据库查询构造器提供了一个方便的接口来创建和执行数据库查询。 它可以用于执行应用程序中的大部分数据库操作，并且可以在所有支持的数据库系统上工作。
 
-Query builder uses parameter binding to protect your application from SQL injection. You don't need to clean or escape strings passed to the query builder.
+Goravel 查询构造器使用参数绑定来保护你的应用程序免受 SQL 注入攻击。 不需要清理或转义传递给查询构造器的字符串。
 
 ## 运行查询
 
-Framework provides various query methods, you can query, create, update and delete data in the database. 框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。注意，当你想将数据绑定至 struct 或[模型](../orm/getting-started.md#模型)，需要为字段添加 tag `db`：
+框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。 框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。注意，当你想将数据绑定至 struct 或[模型](../orm/getting-started.md#模型)，需要为字段添加 tag `db`：
 
 ```go
 type User struct {
@@ -27,7 +27,7 @@ type User struct {
 
 ### 检索所有行
 
-你可以使用 `facades.DB()` 提供的 `table` 方法开始查询。`table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果： The `table` method returns a chainable query builder instance for the specified table, allowing you to chain more constraints, and finally use the `Get` method to retrieve the query results:
+你可以使用 `facades.DB()` 提供的 `table` 方法开始查询。`table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果： `table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果：
 
 ```go
 var users []User
@@ -110,7 +110,7 @@ err := facades.DB().Table("products").Each(func(rows []db.Row) error {
 
 ### 分块结果
 
-If you need to process thousands of database records, consider using the `Chunk` method. This method retrieves a small chunk of results at a time and passes each chunk to a closure function for processing:
+如果你需要处理数千条数据库记录，可以考虑使用 `Chunk` 方法。 这个方法一次检索一小块结果，并将每个块传递给闭包函数进行处理：
 
 ```go
 var products []Product
@@ -130,7 +130,7 @@ err := facades.DB().Table("products").Chunk(2, func(rows []db.Row) error {
 
 ### 游标
 
-游标可以用于处理大量数据，它不会一次性将所有数据加载到内存中，而是逐条处理数据。 It processes data one by one instead of loading all data at once.
+游标可以用于处理大量数据，它不会一次性将所有数据加载到内存中， 而是逐条处理数据。
 
 ```go
 rows, err := facades.DB().Table("products").Cursor()
@@ -147,7 +147,7 @@ for row := range rows {
 }
 ```
 
-### Aggregates
+### 聚合
 
 查询构造器提供了聚合方法： `Count` `Sum`。
 
@@ -182,7 +182,7 @@ err := facades.DB().Table("users").Where("name", "John").Paginate(1, 10, &users,
 
 ## Select 语句
 
-You may not always want to retrieve all columns from a database table. 可能你并不总是希望从数据库表中获取所有列。 使用 `Select` 方法，可以自定义一个 「select」 查询语句来查询指定的字段：
+可能你并不总是希望从数据库表中获取所有列。  使用 `Select` 方法，可以自定义一个 「select」 查询语句来查询指定的字段：
 
 ```go
 var users []User
@@ -198,7 +198,7 @@ err := facades.DB().Table("users").Distinct().Select("name").Get(&users)
 
 ## 原生表达式
 
-Sometimes you may need to use raw expressions in your queries. 有时候你可能需要在查询中使用原生表达式。你可以使用 `db.Raw` 创建一个原生表达式：
+有时候你可能需要在查询中使用原生表达式。 你可以使用 `db.Raw` 创建一个原生表达式：
 
 ```go
 import "github.com/goravel/framework/database/db"
@@ -210,7 +210,7 @@ facades.DB().Model(&user).Update("age", db.Raw("age - ?", 1))
 
 ### 指定一个 Select 子句
 
-Of course, you may not always want to retrieve all columns from a database table. 当然你可能并不总是希望从数据库表中获取所有列。使用 `Select` 方法，你可以为查询指定一个自定义的 select 子句：
+当然你可能并不总是希望从数据库表中获取所有列。 使用 `Select` 方法，你可以为查询指定一个自定义的 select 子句：
 
 ```go
 // 选择特定字段
@@ -233,7 +233,7 @@ facades.DB().Distinct("name").Find(&users)
 
 ### WhereRaw / OrWhereRaw
 
-`WhereRaw` 和 `OrWhereRaw` 方法可用于将原始 「where」子句注入你的查询。这些方法接受一个可选的绑定数组作为它们的第二个参数： These methods accept an optional binding array as their second parameter:
+`WhereRaw` 和 `OrWhereRaw` 方法可用于将原始 「where」子句注入你的查询。这些方法接受一个可选的绑定数组作为它们的第二个参数： 这些方法接受一个可选的绑定数组作为它们的第二个参数：
 
 ```go
 var users []User
@@ -257,7 +257,7 @@ err := facades.DB().OrderByRaw("age DESC, id ASC").Get(&users)
 
 ### Inner Join 语句
 
-The query builder can be used to write join statements. 查询构造器也可以用于编写 join 语句。要执行基本的 SQL "inner join"，你可以在查询构造器实例上使用 `Join` 方法：
+查询构造器也可以用于编写 join 语句。 查询构造器也可以用于编写 join 语句。要执行基本的 SQL "inner join"，你可以在查询构造器实例上使用 `Join` 方法：
 
 ```go
 var users []User
@@ -419,7 +419,7 @@ facades.DB().OrderByDesc("name")
 
 **Latest**
 
-`Latest` 方法可以使你轻松地通过日期对结果进行排序。默认情况下，结果将根据 `created_at` 列进行排序： By default, results will be sorted by the `created_at` column:
+`Latest` 方法可以使你轻松地通过日期对结果进行排序。 默认情况下，结果将根据 `created_at` 列进行排序：
 
 ```go
 facades.DB().Table("users").Latest().First(&user)
@@ -453,7 +453,7 @@ err := facades.DB().Table("users").Offset(10).Limit(5).Get(&users)
 
 ## 条件子句
 
-Sometimes you may want a clause to only execute when a given condition is true. For example, you may only want to apply a where clause when a given value exists in the request. You can accomplish this by using the `When` method:
+有时你可能想要子句只适用于某个情况为真时才执行查询。 例如，你可能只想给定值在请求中存在的情况下才应用 where 语句。 你可以通过使用 `When` 方法来实现这种功能：
 
 ```go
 import "github.com/goravel/framework/contracts/database/db"
@@ -463,7 +463,7 @@ facades.DB().Table("users").When(1 == 1, func(query db.Query) db.Query {
 }).First(&user)
 ```
 
-你也可以将另一个闭包作为第三个参数传递给 `When` 方法。这个闭包则旨在第一个参数结果为 false 时才会执行： This closure will execute if the first parameter results in false:
+你也可以将另一个闭包作为第三个参数传递给 `When` 方法。 这个闭包则旨在第一个参数结果为 false 时才会执行：
 
 ```go
 facades.DB().Table("users").When(1 != 1, func(query db.Query) db.Query {
@@ -562,9 +562,9 @@ facades.DB().Table("users").Where("id", 1).Update(map[string]any{
 
 ### 更新或插入
 
-Sometimes you may want to update a record in the database, but if the specified record does not exist, create it. This can be done using the `UpdateOrInsert` method. 有时你可能希望更新数据库中的记录，但如果指定记录不存在的时候则创建它。这是可以使用 `UpdateOrInsert` 方法。`UpdateOrInsert` 方法接受两个参数：一个用于查找记录的条件，以及一个包含要更改记录的键值对。
+有时你可能希望更新数据库中的记录，但如果指定记录不存在的时候则创建它。 这时可以使用 `UpdateOrInsert` 方法。 这是可以使用 `UpdateOrInsert` 方法。`UpdateOrInsert` 方法接受两个参数：一个用于查找记录的条件，以及一个包含要更改记录的键值对。
 
-`UpdateOrInsert` 方法将尝试使用第一个参数的列名和值来定位匹配的数据库记录。如果记录存在，则使用第二个参数更新其值。如果找不到指定记录，则会合并两个参数的属性来创建一条记录并将其插入： If a record exists, its values will be updated using the second parameter. If no matching record is found, a record will be created and its values will be merged from the two parameters:
+`UpdateOrInsert` 方法将尝试使用第一个参数的列名和值来定位匹配的数据库记录。如果记录存在，则使用第二个参数更新其值。如果找不到指定记录，则会合并两个参数的属性来创建一条记录并将其插入： 如果记录存在，则使用第二个参数更新其值。 如果找不到指定记录，则会合并两个参数的属性来创建一条记录并将其插入：
 
 ```go
 // use struct
@@ -598,7 +598,7 @@ err := facades.DB().Table("users").Where("id", 1).Decrement("votes", 2)
 
 ## 删除语句
 
-The query builder also includes some functions that can help you implement "pessimistic locking" in your `select` statements:
+查询构造器也可以使用 `Delete` 方法从表中删除记录：
 
 ```go
 result, err := facades.DB().Table("users").Where("id", 1).Delete()
@@ -606,21 +606,21 @@ result, err := facades.DB().Table("users").Where("id", 1).Delete()
 
 ## 悲观锁
 
-查询构造器也包含了一些可以帮助你在 `select` 语句中实现「悲观锁定」的函数。若要在查询中使用「共享锁」，你可以使用 `SharedLock` 方法。共享锁可防止选中的行被篡改，直到事务被提交为止：
+查询构造器也包含了一些可以帮助你在 `select` 语句中实现「悲观锁定」的函数。
 
-To use a "shared lock", you may use the `SharedLock` method. A shared lock prevents the selected rows from being modified until the transaction is committed:
+若要在查询中使用「共享锁」，你可以使用 `SharedLock` 方法。 共享锁可防止选中的行被篡改，直到事务被提交为止：
 
 ```go
 facades.DB().Table("users").Where("votes", ">", 100).SharedLock().Get(&users)
 ```
 
-You can also use the `LockForUpdate` method. 此外，你也可以使用 `LockForUpdate` 方法。使用「更新」锁可避免行被其它共享锁修改或选取：
+此外，你也可以使用 `LockForUpdate` 方法。 使用「更新」锁可避免行被其它共享锁修改或选取：
 
 ```go
 facades.DB().Table("users").Where("votes", ">", 100).LockForUpdate().Get(&users)
 ```
 
-## Debugging
+## 调试
 
 你可以在构建查询时使用 `ToSQL` 和 `ToRawSql` 方法获取当前查询绑定和 SQL。
 
