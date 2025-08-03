@@ -13,7 +13,7 @@
 | [goravel/oss](https://github.com/goravel/oss)                                     | `facades.Storage()` 模块 Oss 驱动        | 76.5% |
 | [goravel/installer](https://github.com/goravel/installer)                         | Goravel 安装器                          | 76.2% |
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)                       | `facades.Storage()` 模块 Cloudinary 驱动 | 75.4% |
-| [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | A workflow package                   | 4.4%  |
-| [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud)         | A goravel crud package               | 4.2%  |
-| [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                     | A goravel tinker package             | 3.6%  |
-| [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)     | A webSocket package                  | 0%                    |
+| [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | 工作流                                  | 4.4%  |
+| [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud)         | CRUD                                 | 4.2%  |
+| [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                     | Tinker                               | 3.6%  |
+| [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)     | WebSocket                            | 0%                    |
