@@ -80,7 +80,7 @@ payload, err := facades.Auth(ctx).Parse(token)
 errors.Is(err, auth.ErrorTokenExpired)
 ```
 
-> The token can be parsed normally with or without the Bearer prefix.
+> Token 带不带 Bearer 前缀均可正常解析。
 
 ## 获取用户
 
@@ -106,7 +106,7 @@ token, err := facades.Auth(ctx).Refresh()
 err := facades.Auth(ctx).Logout()
 ```
 
-## Multiple Guards
+## 多用户授权
 
 ```go
 token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
@@ -155,7 +155,7 @@ facades.Auth().Provider("custom-provider", func(ctx http.Context) (auth.UserProv
 })
 ```
 
-使用 `Provider` 方法注册提供器后，你可以在 `auth.go` 配置文件中使用自定义的用户提供器。 首先，定义一个使用新驱动程序的 `provider`: First, define a `provider` that uses the new driver:
+使用 `Provider` 方法注册提供器后，你可以在 `auth.go` 配置文件中使用自定义的用户提供器。 首先，定义一个使用新驱动程序的 `provider`：
 
 ```go
 "providers": map[string]any{
