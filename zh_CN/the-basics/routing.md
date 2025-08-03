@@ -8,16 +8,16 @@ Goravel 路由模块可以使用 `facades.Route()` 进行操作。
 
 ## HTTP 驱动
 
-Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动，如果想使用其他驱动，可以到 `config/http.go` 中进行配置，目前官方默认支持 [gin](https://github.com/gin-gonic/gin) 与 [fiber](https://github.com/gofiber/fiber) 两种驱动： To use other drivers, configure them in the `config/http.go` file. The official default supports [gin](https://github.com/gin-gonic/gin) and [fiber](https://github.com/gofiber/fiber).
+Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动。 如果想使用其他驱动，可以到 `config/http.go` 中进行配置。 目前官方默认支持 [gin](https://github.com/gin-gonic/gin) 与 [fiber](https://github.com/gofiber/fiber) 两种驱动。
 
-| 驱动    | Link                                                                                                 |
+| 驱动    | 链接                                                                                                   |
 | ----- | ---------------------------------------------------------------------------------------------------- |
 | Gin   | [https://github.com/goravel/gin](https://github.com/goravel/gin)     |
 | Fiber | [https://github.com/goravel/fiber](https://github.com/goravel/fiber) |
 
 ## 默认路由文件
 
-To define routing files, simply navigate to the `/routes` directory. By default, the framework utilizes a sample route located in `/routes/web.go`. 所有路由文件都在 `/routes` 目录中进行定义。框架默认有一个示例路由 `/routes/web.go`，其中 `func Web()` 方法被注册到 `app/providers/route_service_provider.go` 文件中，以实现路由的绑定。
+所有路由文件都在 `/routes` 目录中进行定义。 框架默认有一个示例路由 `/routes/web.go`。 其中 `func Web()` 方法被注册到 `app/providers/route_service_provider.go` 文件中，以实现路由的绑定。
 
 你可以在 `routes` 目录下新增路由文件，以进行更细颗粒的管理，然后在 `app/providers/route_service_provider.go` 文件中进行注册。
 
@@ -31,7 +31,7 @@ To define routing files, simply navigate to the `/routes` directory. By default,
 
 ## 启动 HTTP 服务器
 
-在根目录下 `main.go` 中启动 HTTP 服务器，`facades.Route().Run()` 将会自动获取 `route.host` 的配置。 This will automatically fetch the `route.host` configuration.
+在根目录下 `main.go` 中使用`facades.Route().Run()` 启动 HTTP 服务器， 将会自动获取 `route.host` 的配置。
 
 ```go
 package main
@@ -252,9 +252,9 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 
 ### 定义速率限制器
 
-Goravel 包含强大且可自定义的速率限制服务，你可以利用这些服务来限制给定路由或一组路由的流量。首先，你应该定义满足应用程序需求的速率限制器配置。通常，这应该在应用程序的 `app/providers/route_service_provider.go` 文件的 `configureRateLimiting` 方法中完成。 To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `app/providers/route_service_provider.go` class.
+Goravel 包含强大且可自定义的速率限制服务，你可以利用这些服务来限制给定路由或一组路由的流量。 首先，你应该定义满足应用程序需求的速率限制器配置。 通常，这应该在应用程序的 `app/providers/route_service_provider.go` 文件的 `configureRateLimiting` 方法中完成。
 
-Rate limiters are defined using the `facades.RateLimiter()`'s `For` method. The `For` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. The rate limiter name may be any string you wish:
+速率限制器使用 `facades.RateLimiter()` 的 `For` 方法进行定义。 `For` 方法接受一个速率限制器名称和一个闭包，该闭包返回应该应用于分配给速率限制器的路由的限制配置。 速率限制器名称可以是你希望的任何字符串：
 
 ```go
 import (
@@ -270,7 +270,7 @@ func (receiver *RouteServiceProvider) configureRateLimiting() {
 }
 ```
 
-如果传入的请求超过指定的速率限制，Goravel 将自动返回一个带有 429 HTTP 状态码的响应。如果你想定义自己的响应，应该由速率限制返回，你可以使用 `Response` 方法： If you would like to define your own response that should be returned by a rate limit, you may use the response method:
+如果传入的请求超过指定的速率限制，Goravel 将自动返回一个带有 429 HTTP 状态码的响应。 如果你想定义自己的响应，应该由速率限制返回，你可以使用 `Response` 方法：
 
 ```go
 facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
@@ -295,7 +295,7 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
 
 #### 分段速率限制
 
-Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `By` method when building your rate limit:
+有时你可能希望按某个任意值对速率限制进行分段。 例如，你可能希望每个 IP 地址每分钟允许用户访问给定路由 100 次。 为此，你可以在构建速率限制时使用 `By` 方法：
 
 ```go
 facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
@@ -321,7 +321,7 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
 
 #### 多个速率限制
 
-If needed, you may return an array of rate limits for a given rate limiter configuration. 如果需要，你可以返回给定速率限制器配置的速率限制数组。将根据路由在数组中的放置顺序评估每个速率限制：
+如果需要，你可以返回给定速率限制器配置的速率限制数组。 将根据路由在数组中的放置顺序评估每个速率限制：
 
 ```go
 facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []contractshttp.Limit {
@@ -334,7 +334,7 @@ facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []c
 
 ### 将速率限制器附加到路由
 
-Rate limiters may be attached to routes or route groups using the throttle middleware. 可以使用 `Throttle` middleware 将速率限制器附加到路由或路由组。路由中间件接受你希望分配给路由的速率限制器的名称：
+可以使用 `Throttle` middleware 将速率限制器附加到路由或路由组。 路由中间件接受你希望分配给路由的速率限制器的名称：
 
 ```go
 import github.com/goravel/framework/http/middleware
