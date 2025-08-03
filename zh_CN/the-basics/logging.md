@@ -68,24 +68,23 @@ Goravel 提供有便捷的链式方式，方便在日志中插入更多有用信
 facades.Log().User("John").Debug(message)
 ```
 
-| Method    | Action                                                                                 |
-| --------- | -------------------------------------------------------------------------------------- |
-| Code      | 设置日志代码。                                                                                |
-| Hint      | Set a hint for faster debugging.                                       |
-| In        | Set the feature category or domain in which the log entry is relevant. |
-| Owner     | Useful for alerting purposes.                                          |
-| Request   | Supplies a http.Request.                               |
-| Response  | Supplies a http.Response.                              |
-| Tags      | Add multiple tags, describing the feature returning an error.          |
-| User      | 记录触发日志的用户。                                                                             |
-| With      | Add key-value pairs to the context of the log entry.                   |
-| WithTrace | 为日志附加堆栈信息。                                                                             |
+| Method    | Action       |
+| --------- | ------------ |
+| Code      | 设置日志代码。      |
+| Hint      | 设置提示，方便调试。   |
+| In        | 设置日志相关的分类。   |
+| Owner     | 设置日志归属人。     |
+| Request   | 记录 Request。  |
+| Response  | 记录 Response。 |
+| Tags      | 为日志添加标签。     |
+| User      | 记录触发日志的用户。   |
+| With      | 为日志附加数据。     |
+| WithTrace | 为日志附加堆栈信息。   |
 
 ## 创建自定义通道
 
 如果你想定义一个完全自定义的驱动，可以在 `config/logging.go` 配置文件中指定 `custom` 驱动类型。
 然后包含 `via` 选项，实现 `framework\contracts\log\Logger` 接口：
-Then include a `via` option to implement a `framework\contracts\log\Logger` structure:
 
 ```go
 // config/logging.go 配置
@@ -109,7 +108,7 @@ type Logger interface {
 }
 ```
 
-文件可以储存到 `app/extensions` 文件夹中（可修改）。例如： Example:
+文件可以储存到 `app/extensions` 文件夹中（可修改）。 例如：
 
 ```go
 package extensions
