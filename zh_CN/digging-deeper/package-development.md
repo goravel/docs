@@ -10,13 +10,13 @@
 
 ## 创建包
 
-您可以使用 Artisan 命令便捷的创建一个包模板：
+你可以使用 Artisan 命令便捷的创建一个包模板：
 
 ```shell
 go run . artisan make:package sms
 ```
 
-创建的文件默认保存在根目录 `packages` 文件夹中，您可以使用 `--root` 选项自定义：
+创建的文件默认保存在根目录 `packages` 文件夹中，你可以使用 `--root` 选项自定义：
 
 ```shell
 go run . artisan make:package --root=pkg sms
@@ -24,7 +24,7 @@ go run . artisan make:package --root=pkg sms
 
 ## 服务提供者
 
-[服务提供者](../architecture-concepts/service-providers.md)是您的包和 Goravel 之间的连接点。 通常位于包的根目录中：`service_provider.go`。 服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
+[服务提供者](../architecture-concepts/service-providers.md)是你的包和 Goravel 之间的连接点。 通常位于包的根目录中：`service_provider.go`。 服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
 
 ## 使用
 
@@ -84,7 +84,7 @@ func main() {
 
 ### 配置
 
-通常，您需要将包的配置文件发布到应用程序的 `config` 目录。 这将允许您的包的用户轻松覆盖您的默认配置选项。 要允许发布配置文件，请从服务提供者的 `Boot` 方法中调用 `Publishes` 方法，该方法第一个参数为包名，第二个参数为当前包文件路径与项目路径的映射：
+通常，你需要将包的配置文件发布到应用程序的 `config` 目录。 这将允许您的包的用户轻松覆盖您的默认配置选项。 要允许发布配置文件，请从服务提供者的 `Boot` 方法中调用 `Publishes` 方法，该方法第一个参数为包名，第二个参数为当前包文件路径与项目路径的映射：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -96,7 +96,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ### 路由
 
-如果您的包包含[路由](../the-basics/routing.md)，可以使用 `app.MakeRoute()` 解析出 `facades.Route()`，然后添加到项目
+如果你的包包含[路由](../the-basics/routing.md)，可以使用 `app.MakeRoute()` 解析出 `facades.Route()`，然后添加到项目：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -107,7 +107,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ### 迁移
 
-如果您的包包含[数据库迁移](../database/migrations.md)，也可以使用 `Publishes` 方法进行发布：
+如果你的包包含[数据库迁移](../database/migrations.md)，也可以使用 `Publishes` 方法进行发布：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -119,7 +119,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ## 命令
 
-可以在服务提供者中使用 `Commands` 方法注册 `Artisan` 命令，注册命令后，您可以使用[Artisan CLI](../digging-deeper/artisan-console.md)执行它们：
+可以在服务提供者中使用 `Commands` 方法注册 `Artisan` 命令，注册命令后，你可以使用[Artisan CLI](../digging-deeper/artisan-console.md)执行它们。
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -158,10 +158,10 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ## 发布资源
 
-在项目中，您可以使用 Artisan 命令 `vendor:publish` 发布包中注册的资源：
+在项目中，你可以使用 Artisan 命令 `vendor:publish` 发布包中注册的资源：
 
 ```shell
-go run . artisan vendor:publish --package={您的包名}
+go run . artisan vendor:publish --package={你的包名}
 ```
 
 该命令可以使用如下参数：
