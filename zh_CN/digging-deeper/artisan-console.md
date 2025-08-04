@@ -19,7 +19,7 @@ go run . artisan list
 go run . artisan help migrate
 ```
 
-如果您不想重复输入 `go run . artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
+如果你不想重复输入 `go run . artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
@@ -86,7 +86,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 
 ### 检索输入
 
-在编写控制台命令时，通常是通过 `arguments` 或 `options` 来收集用户输入的。 在编写控制台命令时，通常是通过 `arguments` 或 `options` 来收集用户输入的。 Goravel 让你可以非常方便的获取用户输入的内容。
+在编写控制台命令时，通常是通过 `arguments` 或 `options` 来收集用户输入的。 Goravel 让你可以非常方便的获取用户输入的内容。
 
 #### 参数
 
