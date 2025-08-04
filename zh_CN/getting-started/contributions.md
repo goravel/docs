@@ -2,7 +2,7 @@
 
 [[toc]]
 
-Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、文章、教程等。 完成两个 `Feature`（5 个 `Good First Issue` == 1 个 `Feature`）后，您将成为核心贡献者。 之后每三个月至少完成一个 `Feature`，可以保持这个头衔。
+Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、文章、教程等。 完成两个 `Feature`（5 个 `Good First Issue` == 1 个 `Feature`）后，你将成为核心贡献者。 之后每三个月至少完成一个 `Feature`，可以保持这个头衔。
 
 让我们一起将 Goravel 变得更高效！
 
@@ -54,11 +54,11 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 
 ## Bug 报告
 
-你可以在[这里](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+)提交一个 Bug 报告，在提交前请搜索 [Issue 列表](https://github.com/goravel/goravel/issues?q=is%3Aissue) 中是否已存在类似问题。 该报告应该包含一个标题和对问题的清晰描述，还应该包含尽可能多的相关信息以及演示该问题的代码示例。 错误报告的目标是使您自己（以及其他人）能够轻松地复现错误并开发修复程序。 Goravel 鼓励提交者同时创建 PR 进行 Bug 修复，使开源项目得到更积极的发展。
+你可以在[这里](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+)提交一个 Bug 报告，在提交前请搜索 [Issue 列表](https://github.com/goravel/goravel/issues?q=is%3Aissue) 中是否已存在类似问题。 该报告应该包含一个标题和对问题的清晰描述，还应该包含尽可能多的相关信息以及演示该问题的代码示例。 错误报告的目标是使你自己（以及其他人）能够轻松地复现错误并开发修复程序。 Goravel 鼓励提交者同时创建 PR 进行 Bug 修复，使开源项目得到更积极的发展。
 
 ## 帮助支持
 
-Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 您可以通过以下途径进行讨论：
+Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 你可以通过以下途径进行讨论：
 
 - [GitHub 讨论区](https://github.com/goravel/goravel/discussions)
 - [Discord](https://github.com/goravel/goravel/tree/master#group)
