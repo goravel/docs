@@ -84,7 +84,7 @@ func main() {
 
 ### 配置
 
-通常，你需要将包的配置文件发布到应用程序的 `config` 目录。 这将允许您的包的用户轻松覆盖您的默认配置选项。 要允许发布配置文件，请从服务提供者的 `Boot` 方法中调用 `Publishes` 方法，该方法第一个参数为包名，第二个参数为当前包文件路径与项目路径的映射：
+通常，你需要将包的配置文件发布到应用程序的 `config` 目录。 这将允许你的包的用户轻松覆盖您的默认配置选项。 要允许发布配置文件，请从服务提供者的 `Boot` 方法中调用 `Publishes` 方法，该方法第一个参数为包名，第二个参数为当前包文件路径与项目路径的映射：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -131,7 +131,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ## 公共资源
 
-您的包可能包含 JavaScript、CSS 和图像等资产。 要将这些资产发布到应用程序的 `public` 目录，请使用服务提供者的 `Publishes` 方法：
+你的包可能包含 JavaScript、CSS 和图像等资产。 要将这些资产发布到应用程序的 `public` 目录，请使用服务提供者的 `Publishes` 方法：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -143,7 +143,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ## 发布文件组
 
-您可能希望单独发布包资产和资源组。例如，您可能希望允许用户发布包的配置文件，而不是被迫发布包的全部资产。您可以在包的服务提供者中调用 `Publishes` 方法时定义「标签」来做到这一点。 这允许您为用户提供发布某些文件的选项，如配置文件，而不必发布所有软件包的资产。 例如，让我们使用标签在包的服务提供者的 `Boot` 方法中为 `sms` 包定义两个发布组（`sms-config` 和 `sms-migrations`）。
+可能希望单独发布包资产和资源组。例如，你可能希望允许用户发布包的配置文件，而不是被迫发布包的全部资产。你可以在包的服务提供者中调用 `Publishes` 方法时定义「标签」来做到这一点。 这允许你为用户提供发布某些文件的选项，如配置文件，而不必发布所有软件包的资产。 例如，让我们使用标签在包的服务提供者的 `Boot` 方法中为 `sms` 包定义两个发布组（`sms-config` 和 `sms-migrations`）。
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
