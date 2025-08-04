@@ -9,10 +9,9 @@
 ## 配置
 
 Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP 请求。 如果你需要调整其内部设置，只需更新 `config/http.go` 文件中的 `client` 属性即可。
-以下是可用的配置选项： 如果你需要调整其内部设置，只需更新 `config/http.go` 文件中的 `client` 属性即可。
 以下是可用的配置选项：
 
-- `base_url`: 设置相对路径的根 URL。 自动为不以 `http://` 或 `https://` 开头的请求添加前缀。 自动为不以 `http://` 或 `https://` 开头的请求添加前缀。
+- `base_url`: 设置相对路径的根 URL。 自动为不以 `http://` 或 `https://` 开头的请求添加前缀。
 - `timeout`（默认值：`30s`）: 完整请求生命周期的全局超时时长（连接 + 任何重定向 + 读取响应体）。 零表示不超时。 零表示不超时。
 - `max_idle_conns`: 最大空闲（保持活动）连接数。 零表示没有限制。 零表示没有限制。
 - `max_idle_conns_per_host`: 最大空闲（保持活动）连接数。
@@ -86,8 +85,6 @@ type Response interface {
 ### URI 模板
 
 URI 模板允许你使用占位符构建动态的请求 URL。
-你可以在 URL 中定义这些占位符，然后在发起请求之前提供值来替换它们。
-要实现这一点，你可以使用 `WithUrlParameter` 来设置单个参数，或者使用 `WithUrlParameters` 来设置多个参数。
 你可以在 URL 中定义这些占位符，然后在发起请求之前提供值来替换它们。
 要实现这一点，你可以使用 `WithUrlParameter` 来设置单个参数，或者使用 `WithUrlParameters` 来设置多个参数。
 
