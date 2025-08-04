@@ -90,7 +90,7 @@ if facades.Gate().None([]string{"update-post", "delete-post"}, map[string]any{
 
 ### 拦截器（Gates）返回（Responses）
 
-使用 `Allows` 方法，将仅返回一个简单的布尔值。 您也还可以使用 `Inspect` 方法来返回拦截器（Gates）中的所有响应值。
+使用 `Allows` 方法，将仅返回一个简单的布尔值。 你也还可以使用 `Inspect` 方法来返回拦截器（Gates）中的所有响应值。
 
 ```go
 response := facades.Gate().Inspect("edit-settings", nil);
