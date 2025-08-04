@@ -62,7 +62,7 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 
 ### 生成任务类
 
-默认情况下，应用程序的所有的任务都被存储在了 `app/jobs` 目录中。 默认情况下，应用程序的所有的任务都被存储在了 `app/jobs` 目录中。 如果 `app/jobs` 目录不存在，当你运行 `make:job` Artisan 命令时，将会自动创建该目录：
+默认情况下，应用程序的所有的任务都被存储在了 `app/jobs` 目录中。 如果 `app/jobs` 目录不存在，当你运行 `make:job` Artisan 命令时，将会自动创建该目录：
 
 ```shell
 go run . artisan make:job ProcessPodcast
@@ -71,7 +71,7 @@ go run . artisan make:job user/ProcessPodcast
 
 ### 类结构
 
-任务类非常简单，包含 `Signature`, `Handle` 方法。 任务类非常简单，包含 `Signature`, `Handle` 方法。 `Signature` 是任务类的唯一标识，`Handle` 在队列处理任务时将会被调用。 在调用任务时传入的 `[]queue.Arg{}` 将会被传入 `Handle` 中： 在调用任务时传入的 `[]queue.Arg{}` 将会被传入 `Handle` 中：
+任务类非常简单，包含 `Signature`, `Handle` 方法。 `Signature` 是任务类的唯一标识，`Handle` 在队列处理任务时将会被调用。 在调用任务时传入的 `[]queue.Arg{}` 将会被传入 `Handle` 中：
 
 ```go
 package jobs
@@ -226,7 +226,7 @@ func (r *serController) Show(ctx http.Context) {
 
 ### 任务链
 
-任务链允许你指定一组按顺序运行的排队任务。 如果序列中的一个任务失败，其余的任务将不会运行。 任务链允许你指定一组按顺序运行的排队任务。 如果序列中的一个任务失败，其余的任务将不会运行。 要执行一个排队的任务链，你可以使用 `facades.Queue()` 提供的 `Chain` 方法：
+任务链允许你指定一组按顺序运行的排队任务。 如果序列中的一个任务失败，其余的任务将不会运行。 要执行一个排队的任务链，你可以使用 `facades.Queue()` 提供的 `Chain` 方法：
 
 ```go
 err := facades.Queue().Chain([]queue.Jobs{
@@ -247,7 +247,7 @@ err := facades.Queue().Chain([]queue.Jobs{
 
 ### 延迟调度
 
-如果你想指定任务不应立即被队列处理，你可以在调度任务时使用 `Delay` 方法。 例如，让我们指定一个任务在分派 100 秒后处理： 例如，让我们指定一个任务在分派 100 秒后处理：
+如果您想指定任务不应立即被队列处理，您可以在调度任务时使用 `Delay` 方法。 例如，让我们指定一个任务在分派 100 秒后处理：
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*time.Second)).Dispatch()
@@ -287,7 +287,7 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQ
 
 ## 重试失败任务
 
-如果任务在处理过程中失败，你可以使用 `queue:retry` 命令来重试该任务。 如果任务在处理过程中失败，你可以使用 `queue:retry` 命令来重试该任务。 在重试任务前请先从数据库 `failed_jobs` 表中获取要重试的任务 UUID：
+如果任务在处理过程中失败，你可以使用 `queue:retry` 命令来重试该任务。 在重试任务前请先从数据库 `failed_jobs` 表中获取要重试的任务 UUID：
 
 ```shell
 # 重试单个任务
