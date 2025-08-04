@@ -4,11 +4,11 @@
 
 ## 简介
 
-除了提供内置的 [身份验证（authentication)](./authentication.md) 服务外，Goravel 还提供了一种可以很简单就进行使用的方法，来对用户与资源的授权关系进行管理。 即使用户已经通过了「身份验证（authentication)」， 用户也可能无权对应用程序中的模型或数据库记录进行删除或更改。 Goravel的授权功能允许有系统地管理这些授权检查。 即使用户已经通过了「身份验证（authentication)」， 用户也可能无权对应用程序中的模型或数据库记录进行删除或更改。 Goravel的授权功能允许有系统地管理这些授权检查。
+除了提供内置的 [身份验证（authentication)](./authentication.md) 服务外，Goravel 还提供了一种可以很简单就进行使用的方法，来对用户与资源的授权关系进行管理。 即使用户已经通过了「身份验证（authentication)」， 用户也可能无权对应用程序中的模型或数据库记录进行删除或更改。 Goravel的授权功能允许有系统地管理这些授权检查。
 
-Goravel 主要提供了两种授权操作的方法: [拦截器](#拦截器（Gates）) 和 [策略](#策略（Policies）)。 可以把拦截器（gates）和策略（policies）想象成路由和控制器。 拦截器（Gates）提供了一种轻便的基于闭包函数的授权方法，像是路由。而策略（policies)，就像是一个控制器，对特定模型或资源进行管理。 在本文档中，我们将首先探讨拦截器（gates），然后是策略（policies)。 可以把拦截器（gates）和策略（policies）想象成路由和控制器。 拦截器（Gates）提供了一种轻便的基于闭包函数的授权方法，像是路由。而策略（policies)，就像是一个控制器，对特定模型或资源进行管理。 在本文档中，我们将首先探讨拦截器（gates），然后是策略（policies)。
+Goravel 主要提供了两种授权操作的方法: [拦截器](#拦截器（Gates）) 和 [策略](#策略（Policies）)。 可以把拦截器（gates）和策略（policies）想象成路由和控制器。 拦截器（Gates）提供了一种轻便的基于闭包函数的授权方法，像是路由。而策略（policies)，就像是一个控制器，对特定模型或资源进行管理。 在本文档中，我们将首先探讨拦截器（gates），然后是策略（policies)。
 
-你在构建应用程序时，不用为是使用拦截器（gates）或是使用策略（policies）而担心，并不需要在两者中进行唯一选择。 大多数的应用程序都同时包含两种方法，并且同时使用两者！ 大多数的应用程序都同时包含两种方法，并且同时使用两者！
+您在构建应用程序时，不用为是使用拦截器（gates）或是使用策略（policies）而担心，并不需要在两者中进行唯一选择。 大多数的应用程序都同时包含两种方法，并且同时使用两者！
 
 ## 拦截器（Gates）
 
@@ -51,7 +51,7 @@ func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
 
 ### 行为授权控制
 
-如果需要通过拦截器（Gates）来对行为进行授权控制，你可以通过调用 `Gate` 中的 `Allows` 或 `Denies` 方法：
+如果需要通过拦截器（Gates）来对行为进行授权控制，您可以通过调用 `Gate` 中的 `Allows` 或 `Denies` 方法：
 
 ```go
 package controllers
@@ -72,7 +72,7 @@ func (r *UserController) Show(ctx http.Context) http.Response {
 }
 ```
 
-你还可以通过 `any` 或 `none` 方法来一次性授权多个行为:
+您还可以通过 `any` 或 `none` 方法来一次性授权多个行为:
 
 ```go
 if facades.Gate().Any([]string{"update-post", "delete-post"}, map[string]any{
@@ -119,7 +119,7 @@ facades.Gate().Before(func(ctx context.Context, ability string, arguments map[st
 
 如果 `Before` 返回的是非 nil 结果，则该返回将会被视为最终的检查结果。
 
-你还可以使用 `After` 方法，来定义在所有授权拦截规则执行后，再次进行授权拦截规则判定：
+您还可以使用 `After` 方法，来定义在所有授权拦截规则执行后，再次进行授权拦截规则判定：
 
 ```go
 facades.Gate().After(func(ctx context.Context, ability string, arguments map[string]any, result contractsaccess.Response) contractsaccess.Response {
@@ -148,7 +148,7 @@ facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
 
 ### 生成策略
 
-你可以使用 `make:policy` Artisan 命令生成策略。 生成的策略将放置在 `app/policies` 目录中。 你可以使用 `make:policy` Artisan 命令生成策略。 生成的策略将放置在 `app/policies` 目录中。 如果应用程序中不存在此目录，Goravel 将自动创建。
+你可以使用 `make:policy` Artisan 命令生成策略。 生成的策略将放置在 `app/policies` 目录中。 如果应用程序中不存在此目录，Goravel 将自动创建。
 
 ```go
 go run . artisan make:policy PostPolicy
