@@ -4,7 +4,7 @@
 
 ## 简介
 
-Artisan 是 Goravel 自带的命令行工具。 该模块可以使用 `facades.Artisan()` 进行操作。 它提供了许多有用的命令，这些命令可以在构建应用时为你提供帮助。 你可以通过命令查看所有可用的 Artisan 命令。
+Artisan 是 Goravel 自带的命令行工具。 该模块可以使用 `facades.Artisan()` 进行操作。 它提供了许多有用的命令，这些命令可以在构建应用时为你提供帮助。 你可以通过命令查看所有可用的 Artisan 命令。 该模块可以使用 `facades.Artisan()` 进行操作。 它提供了许多有用的命令，这些命令可以在构建应用时为你提供帮助。 你可以通过命令查看所有可用的 Artisan 命令。
 
 ```shell
 go run . artisan list
@@ -13,7 +13,7 @@ go run . artisan list
 ./artisan list
 ```
 
-每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。 只需要在命令前加上 help 即可查看命令帮助界面。
+每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。 只需要在命令前加上 help 即可查看命令帮助界面。 只需要在命令前加上 help 即可查看命令帮助界面。
 
 ```shell
 go run . artisan help migrate
@@ -39,7 +39,7 @@ artisan make:controller DemoController
 
 ### 生成命令
 
-使用 `make:command` 命令将在 `app/console/commands` 目录中创建一个新的命令。 如果你的应用程序中不存在此目录，请不要担心，它将在你第一次运行 make:command 命令时自动创建：
+使用 `make:command` 命令将在 `app/console/commands` 目录中创建一个新的命令。 如果你的应用程序中不存在此目录，请不要担心，它将在你第一次运行 make:command 命令时自动创建： 如果你的应用程序中不存在此目录，请不要担心，它将在你第一次运行 make:command 命令时自动创建：
 
 ```shell
 go run . artisan make:command SendEmails
@@ -48,7 +48,7 @@ go run . artisan make:command user/SendEmails
 
 ### 命令结构
 
-生成命令后，需要给该类的 signature 和 description 属性定义适当的值。 执行命令时将调用`handle`方法。 你可以将命令逻辑放在此方法中。
+生成命令后，需要给该类的 signature 和 description 属性定义适当的值。 执行命令时将调用`handle`方法。 你可以将命令逻辑放在此方法中。 执行命令时将调用`handle`方法。 你可以将命令逻辑放在此方法中。
 
 ```go
 package commands
@@ -86,7 +86,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 
 ### 检索输入
 
-在编写控制台命令时，通常是通过 `arguments` 或 `options` 来收集用户输入的。 Goravel 让你可以非常方便的获取用户输入的内容。
+在编写控制台命令时，通常是通过 `arguments` 或 `options` 来收集用户输入的。 在编写控制台命令时，通常是通过 `arguments` 或 `options` 来收集用户输入的。 Goravel 让你可以非常方便的获取用户输入的内容。
 
 #### 参数
 
@@ -146,7 +146,7 @@ go run . artisan emails --lang=Chinese
 go run . artisan emails -l=Chinese
 ```
 
-注意：同时使用参数与选项时，选项要在参数之前定义。 例如：
+注意：同时使用参数与选项时，选项要在参数之前定义。 例如： 例如：
 
 ```shell
 // 正确
@@ -161,7 +161,7 @@ go run . artisan emails name --lang=Chinese name
 
 #### 问题
 
-除了参数和选项，你还可以在命令执行过程中提示用户输入。 `Ask` 方法将提示用户回答问题并返回他们的响应：
+除了参数和选项，你还可以在命令执行过程中提示用户输入。 `Ask` 方法将提示用户回答问题并返回他们的响应： `Ask` 方法将提示用户回答问题并返回他们的响应：
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
@@ -203,7 +203,7 @@ type AskOption struct {
 }
 ```
 
-有时你可能需要隐藏用户输入，例如提示用户输入密码。 你可以使用 `Secret` 方法隐藏用户输入：
+有时你可能需要隐藏用户输入，例如提示用户输入密码。 你可以使用 `Secret` 方法隐藏用户输入： 你可以使用 `Secret` 方法隐藏用户输入：
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
@@ -236,7 +236,7 @@ type SecretOption struct {
 
 #### 确认操作
 
-如果你需要在继续之前要求用户确认操作，你可以使用 `Confirm` 方法。 默认情况下，除非用户选择肯定选项，否则此方法将返回 `false`。
+如果你需要在继续之前要求用户确认操作，你可以使用 `Confirm` 方法。 如果你需要在继续之前要求用户确认操作，你可以使用 `Confirm` 方法。 默认情况下，除非用户选择肯定选项，否则此方法将返回 `false`。
 
 ```go
 if ctx.Confirm("Do you wish to continue?") {
@@ -270,7 +270,7 @@ type ConfirmOption struct {
 
 #### 单选问题
 
-如果你需要让用户从一组选项中选择一个选项，你可以使用 `Choice` 方法。 `Choice` 方法将返回所选选项的值：
+如果你需要让用户从一组选项中选择一个选项，你可以使用 `Choice` 方法。 如果你需要让用户从一组选项中选择一个选项，你可以使用 `Choice` 方法。 `Choice` 方法将返回所选选项的值：
 
 ```go
 question := "What is your favorite programming language?"
@@ -311,7 +311,7 @@ type ChoiceOption struct {
 
 #### 多选问题
 
-如果你需要让用户从一组选项中选择多个选项，你可以使用 `MultiSelect` 方法。 `MultiSelect` 方法将返回所选选项的值：
+如果你需要让用户从一组选项中选择多个选项，你可以使用 `MultiSelect` 方法。 `MultiSelect` 方法将返回所选选项的值： `MultiSelect` 方法将返回所选选项的值：
 
 ```go
 question := "What are your favorite programming languages?"
@@ -356,7 +356,7 @@ type MultiSelectOption struct {
 
 ### 文字输出
 
-有时你可能需要将输出写入控制台。 Goravel 提供了几种方法来帮助你将输出写入控制台。 每种方法都有适当的颜色化输出。 例如，`Error` 将以红色显示文本。
+有时你可能需要将输出写入控制台。 有时你可能需要将输出写入控制台。 Goravel 提供了几种方法来帮助你将输出写入控制台。 每种方法都有适当的颜色化输出。 例如，`Error` 将以红色显示文本。 每种方法都有适当的颜色化输出。 例如，`Error` 将以红色显示文本。
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
@@ -378,7 +378,7 @@ ctx.NewLine(2)
 
 #### 进度条
 
-对于长时间运行的任务，通常需要向用户提供任务所需时间的指示。 你可以使用 `WithProgressBar` 方法显示一个进度条。
+对于长时间运行的任务，通常需要向用户提供任务所需时间的指示。 对于长时间运行的任务，通常需要向用户提供任务所需时间的指示。 你可以使用 `WithProgressBar` 方法显示一个进度条。
 
 ```go
 items := []any{"item1", "item2", "item3"}
@@ -388,7 +388,7 @@ _, err := ctx.WithProgressBar(items, func(item any) error {
 })
 ```
 
-有时你可能需要手动更新进度条。 你可以使用 `CreateProgressBar` 方法来更新进度条：
+有时你可能需要手动更新进度条。 有时你可能需要手动更新进度条。 你可以使用 `CreateProgressBar` 方法来更新进度条：
 
 ```go
 users := []string{"user1", "user2", "user3"}
@@ -459,7 +459,7 @@ facades.Route().GET("/", func(c *gin.Context) {
 
 ## 禁用打印颜色
 
-有些命令默认会打印颜色，例如 `list` 命令。 但在某些终端或日志中颜色值会是乱码。 这时你可以使用 `--no-ansi` 选项禁用打印颜色：
+有些命令默认会打印颜色，例如 `list` 命令。 但在某些终端或日志中颜色值会是乱码。 有些命令默认会打印颜色，例如 `list` 命令。 但在某些终端或日志中颜色值会是乱码。 这时你可以使用 `--no-ansi` 选项禁用打印颜色：
 
 ```shell
 go run . artisan list --no-ansi
