@@ -76,7 +76,7 @@ docker build .
 
 ### Docker Compose
 
-你也可以使用以下命令快速启动服务：
+您也可以使用以下命令快速启动服务：
 
 ```shell
 docker-compose build
@@ -87,7 +87,7 @@ docker-compose up
 
 ## 设置时区
 
-当你在 `app.timezone` 配置中非 `UTC` 时区时，在编译时需要通过将时区设置到应用中。 可以选择下面三种方式中的任意一种： 可以选择下面三种方式中的任意一种：
+当你在 `app.timezone` 配置中非 `UTC` 时区时，在编译时需要通过将时区设置到应用中。 可以选择下面三种方式中的任意一种：
 
 1. 在 Dockerfile 中添加时区设置
 
