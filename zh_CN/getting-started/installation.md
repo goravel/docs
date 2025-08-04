@@ -33,7 +33,7 @@ cp .env.example .env
 go run . artisan key:generate
 ```
 
-Please confirm your network if you encounter slow download dependencies.
+如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
 
 ## 启动 HTTP 服务
 
