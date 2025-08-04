@@ -104,7 +104,7 @@ err := facades.Cache().Put("goravel", "value", 0)
 
 ### 只存储没有的数据
 
-`Add` 方法将只存储缓存中不存在的数据。 `Add` 方法将只存储缓存中不存在的数据。 如果存储成功，将返回 `true` ，否则返回 `false` 。
+`Add` 方法将只存储缓存中不存在的数据。 如果存储成功，将返回 `true` ，否则返回 `false` 。
 
 ```go
 bool := facades.Cache().Add("goravel", "value", 5 * time.Second)
@@ -134,7 +134,7 @@ bool := facades.Cache().Flush()
 
 ### 管理锁
 
-原子锁允许操作分布式锁而不用担心竞争条件。 你可以使用 `Lock` 方法创建和管理锁： 你可以使用 `Lock` 方法创建和管理锁：
+原子锁允许操作分布式锁而不用担心竞争条件。 你可以使用 `Lock` 方法创建和管理锁：
 
 ```go
 lock := facades.Cache().Lock("foo", 10*time.Second)
@@ -146,7 +146,7 @@ if (lock.Get()) {
 }
 ```
 
-`Get` 方法也接受一个闭包。 `Get` 方法也接受一个闭包。 闭包执行后，Goravel 会自动释放锁：
+`Get` 方法也接受一个闭包。 闭包执行后，Goravel 会自动释放锁：
 
 ```go
 facades.Cache().Lock("foo").Get(func () {
