@@ -154,7 +154,7 @@ facades.Cache().Lock("foo").Get(func () {
 });
 ```
 
-如果在您请求时锁不可用，您可以指示 Goravel 等待指定的秒数。 如果在指定的时间限制内无法获取锁，则会返回 `false`：
+如果在你请求时锁不可用，你可以指示 Goravel 等待指定的秒数。 如果在指定的时间限制内无法获取锁，则会返回 `false`：
 
 ```go
 lock := facades.Cache().Lock("foo", 10*time.Second)
