@@ -4,7 +4,7 @@
 
 ## 简介
 
-当然，直接从路由和控制器返回整个 HTML 文档字符串是不切实际的。 值得庆幸的是，视图提供了一种方便的方式来将我们所有的 HTML 放在单独的文件中。 视图将你的控制器 / 应用程序逻辑与你的表现逻辑分开并存储在 `resources/views` 目录中。 值得庆幸的是，视图提供了一种方便的方式来将我们所有的 HTML 放在单独的文件中。 视图将你的控制器 / 应用程序逻辑与你的表现逻辑分开并存储在 `resources/views` 目录中。
+当然，直接从路由和控制器返回整个 HTML 文档字符串是不切实际的。 值得庆幸的是，视图提供了一种方便的方式来将我们所有的 HTML 放在单独的文件中。 视图将你的控制器 / 应用程序逻辑与你的表现逻辑分开并存储在 `resources/views` 目录中。
 
 ## 创建和渲染视图
 
@@ -33,7 +33,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### 嵌套视图目录
 
-视图也可以嵌套在目录 `resources/views` 的子目录中。 视图也可以嵌套在目录 `resources/views` 的子目录中。 例如，如果视图存储在 `resources/views/admin/profile.tmpl`，你可以从应用程序的路由或控制器中返回它，注意视图需要定义为 `define "admin/profile.tmpl"`，如下所示：
+视图也可以嵌套在目录 `resources/views` 的子目录中。 例如，如果视图存储在 `resources/views/admin/profile.tmpl`，您可以从应用程序的路由或控制器中返回它，注意视图需要定义为 `define "admin/profile.tmpl"`，如下所示：
 
 ```go
 // resources/views/admin/profile.tmpl
@@ -48,7 +48,7 @@ ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
 
 ### 使用第一个可用视图
 
-使用 `View` 的 `First` 方法，你可以使用给定数组视图中第一个存在的视图。 如果你的应用程序或开发的第三方包允许定制或覆盖视图，这会非常有用： 如果您的应用程序或开发的第三方包允许定制或覆盖视图，这会非常有用：
+使用 `View` 的 `First` 方法，您可以使用给定数组视图中第一个存在的视图。 如果您的应用程序或开发的第三方包允许定制或覆盖视图，这会非常有用：
 
 ```go
 ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[string]any{
@@ -68,7 +68,7 @@ if facades.View().Exist("welcome.tmpl") {
 
 ## 向视图传递数据
 
-正如你在前面的示例中看到的，你可以将数据数组传递给视图，以使该数据可用于视图。 正如你在前面的示例中看到的，你可以将数据数组传递给视图，以使该数据可用于视图。 请注意，传递的数据格式需要根据所使用的模版驱动而变化，在下面例子中，使用默认的 `html/template` 驱动：
+正如你在前面的示例中看到的，你可以将数据数组传递给视图，以使该数据可用于视图。 请注意，传递的数据格式需要根据所使用的模版驱动而变化，在下面例子中，使用默认的 `html/template` 驱动：
 
 ```go
 facades.Route().Get("/", func(ctx http.Context) http.Response {
@@ -80,7 +80,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### 与所有视图共享数据
 
-有时，您可能需要与应用程序呈现的所有视图共享数据， 有时，你可能需要与应用程序呈现的所有视图共享数据， 可以使用 `facades.View()` 的 `Share` 方法。 你可以在服务提供器的 `Boot` 方法中调用视图 `Share` 方法。 例如，可以将它们添加到 `app/providers/app_service_provider.go` 或者为它们生成一个单独的服务提供器： 你可以在服务提供器的 `Boot` 方法中调用视图 `Share` 方法。 例如，可以将它们添加到 `app/providers/app_service_provider.go` 或者为它们生成一个单独的服务提供器：
+有时，您可能需要与应用程序呈现的所有视图共享数据， 可以使用 `facades.View()` 的 `Share` 方法。 你可以在服务提供器的 `Boot` 方法中调用视图 `Share` 方法。 例如，可以将它们添加到 `app/providers/app_service_provider.go` 或者为它们生成一个单独的服务提供器：
 
 ```go
 package providers
