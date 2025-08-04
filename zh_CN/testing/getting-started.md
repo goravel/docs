@@ -184,7 +184,7 @@ config := cache.Config()
 
 #### 运行填充
 
-如果你在测试时希望使用 [数据填充](../database/seeding.md) 来填充数据库，可以调用 `Seed` 方法。 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它应该执行您的所有其他种子器。 或者，您可以传递指定的种子器类名给 `Seed` 方法：
+如果你在测试时希望使用 [数据填充](../database/seeding.md) 来填充数据库，可以调用 `Seed` 方法。 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它应该执行你的所有其他种子器。 或者，你可以传递指定的种子器类名给 `Seed` 方法：
 
 ```go
 err := database.Seed()
