@@ -217,7 +217,7 @@ path := facades.Storage().PutFileAs("photos", file, "name")
 
 ### 指定一个磁盘
 
-默认情况下，`Store` 等方法将使用默认磁盘。 默认情况下，`Store` 等方法将使用默认磁盘。 如果要指定另一个磁盘，请使用 `Disk` 方法：
+默认情况下，`Store` 等方法将使用默认磁盘。 如果要指定另一个磁盘，请使用 `Disk` 方法：
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
@@ -237,7 +237,7 @@ name := file.GetClientOriginalName()
 extension := file.GetClientOriginalExtension()
 ```
 
-但是，请记住，`GetClientOriginalName` 和 `GetClientOriginalExtension` 方法被认为是不安全的，因为文件名和扩展名可能被恶意用户篡改。 出于这个原因，你应该更喜欢 `HashName` 和 `Extension` 方法来获取给定文件上传的名称和扩展名： 出于这个原因，你应该更喜欢 `HashName` 和 `Extension` 方法来获取给定文件上传的名称和扩展名：
+但是，请记住，`GetClientOriginalName` 和 `GetClientOriginalExtension` 方法被认为是不安全的，因为文件名和扩展名可能被恶意用户篡改。 出于这个原因，你应该更喜欢 `HashName` 和 `Extension` 方法来获取给定文件上传的名称和扩展名：
 
 ```go
 file, err := ctx.Request().File("avatar")
@@ -265,7 +265,7 @@ err := facades.Storage().Disk("s3").Delete("file.jpg")
 
 ### 获取目录下所有的文件
 
-`Files` 将以数组的形式返回给定目录下所有的文件。 `Files` 将以数组的形式返回给定目录下所有的文件。 如果你想要检索给定目录的所有文件及其子目录的所有文件，你可以使用 `AllFiles` 方法：
+`Files` 将以数组的形式返回给定目录下所有的文件。 如果你想要检索给定目录的所有文件及其子目录的所有文件，你可以使用 `AllFiles` 方法：
 
 ```go
 files, err := facades.Storage().Disk("s3").Files("directory")
