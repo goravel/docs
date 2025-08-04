@@ -143,7 +143,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ## 发布文件组
 
-可能希望单独发布包资产和资源组。例如，你可能希望允许用户发布包的配置文件，而不是被迫发布包的全部资产。你可以在包的服务提供者中调用 `Publishes` 方法时定义「标签」来做到这一点。 这允许你为用户提供发布某些文件的选项，如配置文件，而不必发布所有软件包的资产。 例如，让我们使用标签在包的服务提供者的 `Boot` 方法中为 `sms` 包定义两个发布组（`sms-config` 和 `sms-migrations`）。
+你可能希望允许用户发布包的配置文件，而不是被迫发布包的全部资产。你可以在包的服务提供者中调用 `Publishes` 方法时定义「标签」来做到这一点。 这允许你为用户提供发布某些文件的选项，如配置文件，而不必发布所有软件包的资产。 例如，让我们使用标签在包的服务提供者的 `Boot` 方法中为 `sms` 包定义两个发布组（`sms-config` 和 `sms-migrations`）。
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
