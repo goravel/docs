@@ -76,7 +76,7 @@ docker build .
 
 ### Docker Compose
 
-您也可以使用以下命令快速启动服务：
+你也可以使用以下命令快速启动服务：
 
 ```shell
 docker-compose build
