@@ -430,7 +430,7 @@ maps.Forget(mp, "name", "age")
 
 ### `maps.Get()`
 
-`maps.Get()` 函数从提供的 map 中检索给定键的值。 如果键不存在，则返回默认值： 如果键不存在，则返回默认值：
+`maps.Get()` 函数从提供的 map 中检索给定键的值。 如果键不存在，则返回默认值：
 
 ```go
 mp := map[string]any{"name": "Bowen"}
@@ -485,7 +485,7 @@ maps.Pull(mp, "name")
 // map[string]any{"language": "Go"}
 ```
 
-`maps.Pull()` 可以设置默认值在第三个参数。 如果键不存在，则返回默认值： 如果键不存在，则返回默认值：
+`maps.Pull()` 可以设置默认值在第三个参数。 如果键不存在，则返回默认值：
 
 ```go
 mp := map[string]any{"name": "Goravel", "language": "Go"}
@@ -567,7 +567,7 @@ convert.With("Goravel", func(value string) string {
 
 ### `convert.Default()`
 
-`convert.Default()` 方法返回第一个非零值。 如果所有值都为零，则返回零值。 如果所有值都为零，则返回零值。
+`convert.Default()` 方法返回第一个非零值。 如果所有值都为零，则返回零值。
 
 ```go
 convert.Default("", "foo") // foo
@@ -722,7 +722,7 @@ collect.Shuffle([]int{1, 2, 3, 4, 5})
 
 ### `collect.Split()`
 
-`collect.Split()` 函数将集合分成给定长度的组。 如果集合无法均匀分割，则最后一个块将包含剩余的项目： 如果集合无法均匀分割，则最后一个块将包含剩余的项目：
+`collect.Split()` 函数将集合分成给定长度的组。 如果集合无法均匀分割，则最后一个块将包含剩余的项目：
 
 ```go
 collect.Split([]int{1, 2, 3, 4, 5}, 2)
