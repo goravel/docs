@@ -33,6 +33,8 @@ cp .env.example .env
 go run . artisan key:generate
 ```
 
+Please confirm your network if you encounter slow download dependencies.
+
 ## 启动 HTTP 服务
 
 ### 根据根目录下的 .env 文件启动服务
