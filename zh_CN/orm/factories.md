@@ -32,7 +32,7 @@ func (f *UserFactory) Definition() map[string]any {
 go run . artisan make:factory PostFactory
 ```
 
-新工厂将放置在您的 `database/factories` 目录下。
+新工厂将放置在你的 `database/factories` 目录下。
 
 ### 模型和工厂的关联约定
 
@@ -78,7 +78,7 @@ var users []models.User
 err := facades.Orm().Factory().Count(2).Make(&users)
 ```
 
-如果您想覆盖模型的一些默认值，你可以将 `map[string]any` 传递给 `Make` 方法。 只有指定的属性将被替换，而这些属性的其余部分保持设置为其默认值：
+如果你想覆盖模型的一些默认值，你可以将 `map[string]any` 传递给 `Make` 方法。 只有指定的属性将被替换，而这些属性的其余部分保持设置为其默认值：
 
 ```go
 var user models.User
@@ -99,7 +99,7 @@ var users []models.User
 err := facades.Orm().Factory().Count(2).Create(&users)
 ```
 
-您可以通过将 `map[string]any` 传递给 `Create` 方法来覆盖模型上的属性：
+你可以通过将 `map[string]any` 传递给 `Create` 方法来覆盖模型上的属性：
 
 ```go
 var user models.User
@@ -110,7 +110,7 @@ err := facades.Orm().Factory().Create(&user, map[string]any{
 
 ### 忽略模型事件
 
-在模型上可能会定义有[模型事件](../orm/getting-started.md#events)，您可以使用 `CreateQuietly` 忽略这些事件：
+在模型上可能会定义有[模型事件](../orm/getting-started.md#events)，你可以使用 `CreateQuietly` 忽略这些事件：
 
 ```go
 var user models.User
