@@ -54,11 +54,11 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 
 ## Bug 报告
 
-你可以在[这里](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+)提交一个 Bug 报告，在提交前请搜索 [Issue 列表](https://github.com/goravel/goravel/issues?q=is%3Aissue) 中是否已存在类似问题。 该报告应该包含一个标题和对问题的清晰描述，还应该包含尽可能多的相关信息以及演示该问题的代码示例。 错误报告的目标是使你自己（以及其他人）能够轻松地复现错误并开发修复程序。 Goravel 鼓励提交者同时创建 PR 进行 Bug 修复，使开源项目得到更积极的发展。 该报告应该包含一个标题和对问题的清晰描述，还应该包含尽可能多的相关信息以及演示该问题的代码示例。 错误报告的目标是使您自己（以及其他人）能够轻松地复现错误并开发修复程序。 Goravel 鼓励提交者同时创建 PR 进行 Bug 修复，使开源项目得到更积极的发展。
+您可以在[这里](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+)提交一个 Bug 报告，在提交前请搜索 [Issue 列表](https://github.com/goravel/goravel/issues?q=is%3Aissue) 中是否已存在类似问题。 该报告应该包含一个标题和对问题的清晰描述，还应该包含尽可能多的相关信息以及演示该问题的代码示例。 错误报告的目标是使您自己（以及其他人）能够轻松地复现错误并开发修复程序。 Goravel 鼓励提交者同时创建 PR 进行 Bug 修复，使开源项目得到更积极的发展。
 
 ## 帮助支持
 
-Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 你可以通过以下途径进行讨论： 您可以通过以下途径进行讨论：
+Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 您可以通过以下途径进行讨论：
 
 - [GitHub 讨论区](https://github.com/goravel/goravel/discussions)
 - [Discord](https://github.com/goravel/goravel/tree/master#group)
@@ -72,17 +72,17 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 你可以通过
 
 ### 寻找/创建 Issue
 
-你可以在 [Issue 列表](https://github.com/goravel/goravel/issues) 中寻找或创建一个 Issue，留言表达想要处理该 Issue 的意愿，得到仓库维护者的确认后，即可开始处理。
+您可以在 [Issue 列表](https://github.com/goravel/goravel/issues) 中寻找或创建一个 Issue，留言表达想要处理该 Issue 的意愿，得到仓库维护者的确认后，即可开始处理。
 
 ### 创建 PR
 
-- 如果你对该流程不太了解，可以查看[这篇文章](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)；
+- 如果您对该流程不太了解，可以查看[这篇文章](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)；
 - 在开发过程中，如果遇到问题可以随时在 Issue 中详尽描述该问题，以进一步沟通，但在此之前请确保自己已通过 Google 等方式尽可能的尝试解决问题；
 - 在创建 PR 前，请尽可能的提高单元测试覆盖率，以提供更稳定的功能；
 - 如果修改了 `contracts` 文件夹下的任意文件，请在根目录运行 `go run github.com/vektra/mockery/v2` 命令生成 mock 文件；
 - 当 PR 开发完毕后，请为其添加 `Review Ready` 标签，维护者将及时进行评审；
 - PR 合并后，如果描述设置正确，Issue 将被自动关闭；
-- Goravel 非常感谢你的贡献，将在下次发版时将你添加到首页贡献列表中；❤️
+- Goravel 非常感谢您的贡献，将在下次发版时将您添加到首页贡献列表中；❤️
 
 ## 哪个分支？
 
