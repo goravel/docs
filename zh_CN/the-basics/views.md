@@ -33,7 +33,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### 嵌套视图目录
 
-视图也可以嵌套在目录 `resources/views` 的子目录中。 例如，如果视图存储在 `resources/views/admin/profile.tmpl`，您可以从应用程序的路由或控制器中返回它，注意视图需要定义为 `define "admin/profile.tmpl"`，如下所示：
+视图也可以嵌套在目录 `resources/views` 的子目录中。 例如，如果视图存储在 `resources/views/admin/profile.tmpl`，你可以从应用程序的路由或控制器中返回它，注意视图需要定义为 `define "admin/profile.tmpl"`，如下所示：
 
 ```go
 // resources/views/admin/profile.tmpl
@@ -48,7 +48,7 @@ ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
 
 ### 使用第一个可用视图
 
-使用 `View` 的 `First` 方法，您可以使用给定数组视图中第一个存在的视图。 如果您的应用程序或开发的第三方包允许定制或覆盖视图，这会非常有用：
+使用 `View` 的 `First` 方法，你可以使用给定数组视图中第一个存在的视图。 如果您的应用程序或开发的第三方包允许定制或覆盖视图，这会非常有用：
 
 ```go
 ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[string]any{
