@@ -694,7 +694,7 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").ForceDelete()
 facades.Orm().Query().Table("users").Where("name", "tom").ForceDelete()
 ```
 
-您可以通过 `Select` 来删除具有模型关联的记录：
+你可以通过 `Select` 来删除具有模型关联的记录：
 
 ```go
 // 删除 user 时，也删除 user 的 account
@@ -851,9 +851,9 @@ facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
 
 ### 悲观锁
 
-查询构建器还包括一些函数，可帮助您在执行 `select` 语句时实现「悲观锁」。
+查询构建器还包括一些函数，可帮助你在执行 `select` 语句时实现「悲观锁」。
 
-您可以调用 `SharedLock` 方法使用「共享锁」执行语句。 共享锁可防止选定的行被修改，直到您的事务被提交：
+您可以调用 `SharedLock` 方法使用「共享锁」执行语句。 共享锁可防止选定的行被修改，直到你的事务被提交：
 
 ```go
 var users []models.User
