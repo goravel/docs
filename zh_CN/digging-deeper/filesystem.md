@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Minio 和 Cloudinary 提供了简单易用的驱动程序。 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。 框架自带 `local` 驱动，如需其他驱动，请查看对应的独立扩展包：
+Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Minio 和 Cloudinary 提供了简单易用的驱动程序。 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。 框架自带 `local` 驱动，如需其他驱动，请查看对应的独立扩展包： 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。 框架自带 `local` 驱动，如需其他驱动，请查看对应的独立扩展包：
 
 | 驱动         | 链接                                                                                                             |
 | ---------- | -------------------------------------------------------------------------------------------------------------- |
@@ -16,7 +16,7 @@ Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Min
 
 ## 配置
 
-配置文件位于 `config/filesystems.go`。 在这个文件中你可以配置所有的「磁盘」，每个磁盘代表特定的存储驱动及存储位置。
+配置文件位于 `config/filesystems.go`。 在这个文件中你可以配置所有的「磁盘」，每个磁盘代表特定的存储驱动及存储位置。 在这个文件中你可以配置所有的「磁盘」，每个磁盘代表特定的存储驱动及存储位置。
 
 > 技巧：你可以配置任意数量的磁盘，甚至可以添加多个使用相同驱动的磁盘。
 
@@ -30,7 +30,7 @@ facades.Storage().Put("example.txt", "Contents")
 
 ### 公共磁盘
 
-在 `filesystems` 配置文件中定义的 `public` 磁盘适用于要公开访问的文件。 默认情况下，`public` 磁盘使用 `local` 驱动，并且将这些文件存储在 `storage/app/public` 目录下。 要使这些文件可从 web 访问，可以创建一个文件路由：
+在 `filesystems` 配置文件中定义的 `public` 磁盘适用于要公开访问的文件。 默认情况下，`public` 磁盘使用 `local` 驱动，并且将这些文件存储在 `storage/app/public` 目录下。 要使这些文件可从 web 访问，可以创建一个文件路由： 使用 `local` 驱动时，所有文件操作都与 `filesystems` 配置文件中定义的 `root` 目录相关。 默认情况下，此值设置为 `storage/app` 目录。 因此，以下方法会把文件存储在 `storage/app/example.txt` 中： 要使这些文件可从 web 访问，可以创建一个文件路由：
 
 ```go
 facades.Route().Static("storage", "./storage/app/public")
@@ -82,17 +82,17 @@ if (facades.Storage().Disk("s3").Missing("file.jpg")) {
 
 ### 文件地址
 
-你可以使用 `Url` 方法来获取给定文件的 url。 如果你使用的是 `local` 驱动程序，这通常会将 `/storage` 添加到给定的路径，并返回文件的相对 URL。 如果你使用的是 `s3` 驱动程序，则会返回完整路径的远程 URL：
+你可以使用 `Url` 方法来获取给定文件的 url。 如果你使用的是 `local` 驱动程序，这通常会将 `/storage` 添加到给定的路径，并返回文件的相对 URL。 你可以使用 `Url` 方法来获取给定文件的 url。 如果你使用的是 `local` 驱动程序，这通常会将 `/storage` 添加到给定的路径，并返回文件的相对 URL。 如果你使用的是 `s3` 驱动程序，则会返回完整路径的远程 URL：
 
 ```go
 url := facades.Storage().Url("file.jpg")
 ```
 
-> 注意：当使用 `local` 驱动时， `Url` 的返回值不是 url 编码的。 因此，我们建议总是使用可以创建有效 url 的名称来存储文件。
+> 注意：当使用 `local` 驱动时， `Url` 的返回值不是 url 编码的。 因此，我们建议总是使用可以创建有效 url 的名称来存储文件。 因此，我们建议总是使用可以创建有效 url 的名称来存储文件。
 
 #### 临时地址
 
-使用 `TemporaryUrl` 方法，你可以为使用非本地驱动程序存储的文件创建临时 URL。 此方法接受一个路径和一个 `time` 实例，指定 URL 何时过期：
+使用 `TemporaryUrl` 方法，你可以为使用非本地驱动程序存储的文件创建临时 URL。 此方法接受一个路径和一个 `time` 实例，指定 URL 何时过期： 此方法接受一个路径和一个 `time` 实例，指定 URL 何时过期：
 
 ```go
 url, err := facades.Storage().TemporaryUrl(
@@ -133,7 +133,7 @@ mime, err := file.MimeType()
 
 ### 文件路径
 
-可以使用 `Path` 方法获取给定文件的路径。 如果你使用的是 `local` 驱动程序，这将返回文件的相对路径。 如果你使用的是 `s3` 等驱动程序，此方法将返回 bucket 中文件的相对路径：
+可以使用 `Path` 方法获取给定文件的路径。 如果你使用的是 `local` 驱动程序，这将返回文件的相对路径。 可以使用 `Path` 方法获取给定文件的路径。 如果你使用的是 `local` 驱动程序，这将返回文件的相对路径。 如果你使用的是 `s3` 等驱动程序，此方法将返回 bucket 中文件的相对路径：
 
 ```go
 path := facades.Storage().Path("file.jpg")
@@ -141,7 +141,7 @@ path := facades.Storage().Path("file.jpg")
 
 ## 储存文件
 
-可以使用 `Put` 方法将文件内容存储在磁盘上。 请记住，应相对于为磁盘配置的根目录指定所有文件路径：
+可以使用 `Put` 方法将文件内容存储在磁盘上。 可以使用 `Put` 方法将文件内容存储在磁盘上。 请记住，应相对于为磁盘配置的根目录指定所有文件路径：
 
 ```go
 err := facades.Storage().Put("file.jpg", contents)
@@ -175,7 +175,7 @@ err := facades.Storage().Move("old/file.jpg", "new/file.jpg")
 
 ### 文件上传
 
-在 web 应用程序中，存储文件最常见的用例之一是存储用户上传的文件，如照片和文档。 Goravel 使得在上传的文件实例上使用 `Store` 方法存储上传的文件变得非常容易。 可以在要存储的上传文件上调用 `Store` 方法：
+在 web 应用程序中，存储文件最常见的用例之一是存储用户上传的文件，如照片和文档。 在 web 应用程序中，存储文件最常见的用例之一是存储用户上传的文件，如照片和文档。 Goravel 使得在上传的文件实例上使用 `Store` 方法存储上传的文件变得非常容易。 可以在要存储的上传文件上调用 `Store` 方法： 可以在要存储的上传文件上调用 `Store` 方法：
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
@@ -217,7 +217,7 @@ path := facades.Storage().PutFileAs("photos", file, "name")
 
 ### 指定一个磁盘
 
-默认情况下，`Store` 等方法将使用默认磁盘。 如果要指定另一个磁盘，请使用 `Disk` 方法：
+默认情况下，`Store` 等方法将使用默认磁盘。 默认情况下，`Store` 等方法将使用默认磁盘。 如果要指定另一个磁盘，请使用 `Disk` 方法：
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
@@ -237,7 +237,7 @@ name := file.GetClientOriginalName()
 extension := file.GetClientOriginalExtension()
 ```
 
-但是，请记住，`GetClientOriginalName` 和 `GetClientOriginalExtension` 方法被认为是不安全的，因为文件名和扩展名可能被恶意用户篡改。 出于这个原因，你应该更喜欢 `HashName` 和 `Extension` 方法来获取给定文件上传的名称和扩展名：
+但是，请记住，`GetClientOriginalName` 和 `GetClientOriginalExtension` 方法被认为是不安全的，因为文件名和扩展名可能被恶意用户篡改。 出于这个原因，你应该更喜欢 `HashName` 和 `Extension` 方法来获取给定文件上传的名称和扩展名： 出于这个原因，你应该更喜欢 `HashName` 和 `Extension` 方法来获取给定文件上传的名称和扩展名：
 
 ```go
 file, err := ctx.Request().File("avatar")
@@ -265,7 +265,7 @@ err := facades.Storage().Disk("s3").Delete("file.jpg")
 
 ### 获取目录下所有的文件
 
-`Files` 将以数组的形式返回给定目录下所有的文件。 如果你想要检索给定目录的所有文件及其子目录的所有文件，你可以使用 `AllFiles` 方法：
+`Files` 将以数组的形式返回给定目录下所有的文件。 `Files` 将以数组的形式返回给定目录下所有的文件。 如果你想要检索给定目录的所有文件及其子目录的所有文件，你可以使用 `AllFiles` 方法：
 
 ```go
 files, err := facades.Storage().Disk("s3").Files("directory")
@@ -274,7 +274,7 @@ files, err := facades.Storage().Disk("s3").AllFiles("directory")
 
 ### 获取特定目录下的子目录
 
-`Directories` 方法以数组的形式返回给定目录中的所有目录。 此外，你还可以使用 `AllDirectories` 方法递归地获取给定目录中的所有目录及其子目录中的目录：
+`Directories` 方法以数组的形式返回给定目录中的所有目录。 `Directories` 方法以数组的形式返回给定目录中的所有目录。 此外，你还可以使用 `AllDirectories` 方法递归地获取给定目录中的所有目录及其子目录中的目录：
 
 ```go
 directories, err := facades.Storage().Disk("s3").Directories("directory")
