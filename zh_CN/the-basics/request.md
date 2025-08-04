@@ -171,9 +171,9 @@ value := ctx.Request().Cookie("name")
 value := ctx.Request().Cookie("name", "default")
 ```
 
-## 获取上传的文件
+## 上传
 
-### 文件
+### 获取上传的文件
 
 ```go
 file, err := ctx.Request().File("file")
