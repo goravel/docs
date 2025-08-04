@@ -176,7 +176,7 @@ go run . artisan db:table --database=postgres
 
 ### 表的摘要信息
 
-如果你想获得数据库中单张表的概览，你可以执行 `db:table` Artisan命令。 这个命令提供了一个数据库表的概览，包括它的列、类型、属性、键和索引: 这个命令提供了一个数据库表的概览，包括它的列、类型、属性、键和索引:
+如果你想获得数据库中单张表的概览，你可以执行 `db:table` Artisan命令。 这个命令提供了一个数据库表的概览，包括它的列、类型、属性、键和索引:
 
 ```bash
 go run . artisan db:table users
