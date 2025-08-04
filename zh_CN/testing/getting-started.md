@@ -10,7 +10,7 @@ Goravel 的测试功能依托于 Golang 自带的 test 官方组件，是对单�
 
 ### 自定义环境配置文件
 
-测试时默认使用根目录下的 `.env` 文件注入配置信息。 如果想为不同的包使用不同的 `.env` 文件，可以在包目录下创建 `.env` 文件，测试时会优先读取该文件。
+测试时默认使用根目录下的 `.env` 文件注入配置信息。 测试时默认使用根目录下的 `.env` 文件注入配置信息。 如果想为不同的包使用不同的 `.env` 文件，可以在包目录下创建 `.env` 文件，测试时会优先读取该文件。
 
 ```
 - /app
@@ -23,7 +23,7 @@ Goravel 的测试功能依托于 Golang 自带的 test 官方组件，是对单�
 - .env
 ```
 
-此外，你也可以在项目根目录创建一个`.env.testing`文件。 此文件将被用来在使用 `--env` 选项运行 `go test` 时代替 `.env` 文件，但需注意，此选项需跟在测试目录后面，例如：
+此外，你也可以在项目根目录创建一个`.env.testing`文件。 此外，你也可以在项目根目录创建一个`.env.testing`文件。 此文件将被用来在使用 `--env` 选项运行 `go test` 时代替 `.env` 文件，但需注意，此选项需跟在测试目录后面，例如：
 
 ```shell
 go test ./... --env=.env.testing
@@ -32,7 +32,7 @@ go test ./... -e=.env.testing
 
 ### `TestCase` Struct
 
-Goravel 包含一个 `TestCase` Struct，在未来该 Struct 将提供一些便捷测试方法，此外同一个文件中还存在一个 `init` 方法，该方法在运行测试之前引导注册 Goravel 应用程序。 如果需要你可以在此方法中添加在运行测试前需要前置运行的逻辑。
+Goravel 包含一个 `TestCase` Struct，在未来该 Struct 将提供一些便捷测试方法，此外同一个文件中还存在一个 `init` 方法，该方法在运行测试之前引导注册 Goravel 应用程序。 如果需要你可以在此方法中添加在运行测试前需要前置运行的逻辑。 如果需要你可以在此方法中添加在运行测试前需要前置运行的逻辑。
 
 ## 创建测试
 
@@ -42,7 +42,7 @@ Goravel 包含一个 `TestCase` Struct，在未来该 Struct 将提供一些便�
 go run . artisan make:test feature/UserTest
 ```
 
-默认我们使用 [stretchr/testify](https://github.com/stretchr/testify) 包的 `suit` 功能编写我们的测试。 该功能支持配置测试前、测试后、子测试、断言等，可以使我们的测试用例更加有条理。 具体使用请详见官方文档。
+默认我们使用 [stretchr/testify](https://github.com/stretchr/testify) 包的 `suit` 功能编写我们的测试。 该功能支持配置测试前、测试后、子测试、断言等，可以使我们的测试用例更加有条理。 具体使用请详见官方文档。 该功能支持配置测试前、测试后、子测试、断言等，可以使我们的测试用例更加有条理。 具体使用请详见官方文档。
 
 ```go
 package feature
@@ -83,7 +83,7 @@ Goravel 模型工厂和 Seeders 可以轻松地为应用程序的模型创建测
 
 ### 模型工厂
 
-当我们测试的时候，可能需要在执行测试之前向数据库插入一些数据。 你不需要在创建测试数据时手动指定每一列的值。 Goravel 允许你使用 [模型工厂](../orm/factories.md) 为每个模型定义一组默认值。
+当我们测试的时候，可能需要在执行测试之前向数据库插入一些数据。 你不需要在创建测试数据时手动指定每一列的值。 当我们测试的时候，可能需要在执行测试之前向数据库插入一些数据。 你不需要在创建测试数据时手动指定每一列的值。 Goravel 允许你使用 [模型工厂](../orm/factories.md) 为每个模型定义一组默认值。
 
 ```go
 var user models.User
@@ -92,7 +92,7 @@ err := facades.Orm().Factory().Create(&user)
 
 ### 运行 seeders
 
-如果你在功能测试时希望使用 [数据库 seeders](../database/seeding.md) 来填充你的数据库，你可以调用 `Seed` 方法。 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它将会执行你的所有其他 seeders。 或者，你可以传递指定的 seeder 给 `Seed` 方法：
+如果你在功能测试时希望使用 [数据库 seeders](../database/seeding.md) 来填充你的数据库，你可以调用 `Seed` 方法。 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它将会执行你的所有其他 seeders。 或者，你可以传递指定的 seeder 给 `Seed` 方法： 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它将会执行你的所有其他 seeders。 或者，你可以传递指定的 seeder 给 `Seed` 方法：
 
 ```go
 package feature
@@ -184,7 +184,7 @@ config := cache.Config()
 
 #### 运行填充
 
-如果你在测试时希望使用 [数据填充](../database/seeding.md) 来填充数据库，可以调用 `Seed` 方法。 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它应该执行你的所有其他种子器。 或者，你可以传递指定的种子器类名给 `Seed` 方法：
+如果你在测试时希望使用 [数据填充](../database/seeding.md) 来填充数据库，可以调用 `Seed` 方法。 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它应该执行你的所有其他种子器。 或者，你可以传递指定的种子器类名给 `Seed` 方法： 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它应该执行您的所有其他种子器。 或者，您可以传递指定的种子器类名给 `Seed` 方法：
 
 ```go
 err := database.Seed()
