@@ -210,7 +210,7 @@ facades.Route().Get("/input/{id}", func(ctx http.Context) http.Response {
 
 详见[请求](./request.md)
 
-## Middleware
+## 中间件
 
 ```go
 import "github.com/goravel/framework/http/middleware"
