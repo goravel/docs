@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 提供了一个流畅的字符串操作库，允许你轻松地操作字符串。 可以使用 `String` 方法创建一个 `string` 实例，允许你调用各种方法，每个方法都会返回当前字符串实例，允许您将多个方法链接在一起。 要在应用链式操作后获得最终字符串值，您可以调用 `String` 方法，返回底部的 `string` 值。
+Goravel 提供了一个流畅的字符串操作库，允许你轻松地操作字符串。 可以使用 `String` 方法创建一个 `string` 实例，允许你调用各种方法，每个方法都会返回当前字符串实例，允许你将多个方法链接在一起。 要在应用链式操作后获得最终字符串值，你可以调用 `String` 方法，返回底部的 `string` 值。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -579,7 +579,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello World").Replace("World", "Krishan").String() // "Hello Krishan"
 ```
 
-`Replace` 方法默认区分大小写。 如果您希望方法不区分大小写，可以将 `false` 作为第三个参数传递。
+`Replace` 方法默认区分大小写。 如果你希望方法不区分大小写，可以将 `false` 作为第三个参数传递。
 
 ```go
 import "github.com/goravel/framework/support/str"
