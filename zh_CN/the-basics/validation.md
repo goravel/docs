@@ -4,11 +4,11 @@
 
 ## 简介
 
-Goravel 提供了几种不同的方法来验证传入应用程序的数据。 最常见的做法是在所有传入的 HTTP 请求中使用 `Validate` 方法。Goravel 包含了各种方便的验证规则。 Goravel 包含了各种方便的验证规则。 最常见的做法是在所有传入的 HTTP 请求中使用 `Validate` 方法。Goravel 包含了各种方便的验证规则。 Goravel 包含了各种方便的验证规则。
+Goravel 提供了几种不同的方法来验证传入应用程序的数据。 最常见的做法是在所有传入的 HTTP 请求中使用 `Validate` 方法。Goravel 包含了各种方便的验证规则。 Goravel 包含了各种方便的验证规则。
 
 ## 快速验证
 
-让我们来看一个表单验证并将错误消息展示给用户的完整示例， 让我们来看一个表单验证并将错误消息展示给用户的完整示例， 这将会对你如何使用 Goravel 验证传入的请求数据有一个很好的理解。
+让我们来看一个表单验证并将错误消息展示给用户的完整示例， 这将会对你如何使用 Goravel 验证传入的请求数据有一个很好的理解。
 
 ### 定义路由
 
@@ -22,7 +22,7 @@ facades.Route().Get("/post/create", postController.Create)
 facades.Route().Post("/post", postController.Store)
 ```
 
-`GET` 路由会显示一个供用户创建新博客文章的表单， 而 `POST` 路由会将新的博客文章存储到数据库中。 而 `POST` 路由会将新的博客文章存储到数据库中。
+`GET` 路由会显示一个供用户创建新博客文章的表单， 而 `POST` 路由会将新的博客文章存储到数据库中。
 
 ### 创建控制器
 
@@ -70,7 +70,7 @@ func (r *PostController) Store(ctx http.Context) {
 
 ### 嵌套字段
 
-如果你的 HTTP 请求包含「嵌套」参数，你可以在验证规则中使用 `.` 语法来指定这些参数：
+如果您的 HTTP 请求包含「嵌套」参数，您可以在验证规则中使用 `.` 语法来指定这些参数：
 
 ```go
 validator, err := ctx.Request().Validate(map[string]string{
@@ -82,7 +82,7 @@ validator, err := ctx.Request().Validate(map[string]string{
 
 ### Slice 验证
 
-如果你的 HTTP 请求包含「数组」参数，你可以在验证规则中使用 `*` 进行校验：
+如果您的 HTTP 请求包含「数组」参数，您可以在验证规则中使用 `*` 进行校验：
 
 ```go
 validator, err := ctx.Request().Validate(map[string]string{
@@ -94,7 +94,7 @@ validator, err := ctx.Request().Validate(map[string]string{
 
 ### 创建表单请求验证
 
-面对更复杂的验证场景，您可以创建一个「表单请求」。 表单请求是一个包含了验证逻辑的自定义请求类。 面对更复杂的验证场景，你可以创建一个「表单请求」。 表单请求是一个包含了验证逻辑的自定义请求类。 要创建一个表单请求类，请使用 `make:request` Artisan CLI 命令：
+面对更复杂的验证场景，您可以创建一个「表单请求」。 表单请求是一个包含了验证逻辑的自定义请求类。 要创建一个表单请求类，请使用 `make:request` Artisan CLI 命令：
 
 ```go
 go run . artisan make:request StorePostRequest
@@ -136,7 +136,7 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
 }
 ```
 
-然后你可以在控制器中使用 `ValidateRequest` 方法验证该表单：
+然后您可以在控制器中使用 `ValidateRequest` 方法验证该表单：
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
@@ -175,7 +175,7 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
 
 ### 过滤输入数据
 
-你可以通过完善表单请求的 `Filters` 方法来格式化输入数据。 此方法应返回 `属性/过滤器` 的数组 Map： 此方法应返回 `属性/过滤器` 的数组 Map：
+您可以通过完善表单请求的 `Filters` 方法来格式化输入数据。 此方法应返回 `属性/过滤器` 的数组 Map：
 
 ```go
 func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
@@ -212,7 +212,7 @@ func (r *StorePostRequest) Attributes() map[string]string {
 
 ### 准备验证输入
 
-如果你需要在应用验证规则之前修改或清理请求中的任何数据，你可以使用 `PrepareForValidation` 方法：
+如果您需要在应用验证规则之前修改或清理请求中的任何数据，您可以使用 `PrepareForValidation` 方法：
 
 ```go
 func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validation.Data) error {
@@ -225,7 +225,7 @@ func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validatio
 
 ## 手动创建验证器
 
-如果你不想在请求中使用 `Validate` 方法，你可以使用 `facades.Validator` 手动创建一个验证器实例。 facades 中的 `Make` 方法将会生成一个新的验证器实例： facades 中的 `Make` 方法将会生成一个新的验证器实例：
+如果您不想在请求中使用 `Validate` 方法，您可以使用 `facades.Validator` 手动创建一个验证器实例。 facades 中的 `Make` 方法将会生成一个新的验证器实例：
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
@@ -247,11 +247,11 @@ func (r *PostController) Store(ctx http.Context) {
 }
 ```
 
-`Make` 方法中的第一个参数是期望校验的数据，可以是 `map[string]any` 与 `struct`。 第二个参数是应用到数据上的校验规则。 第二个参数是应用到数据上的校验规则。
+`Make` 方法中的第一个参数是期望校验的数据，可以是 `map[string]any` 与 `struct`。 第二个参数是应用到数据上的校验规则。
 
 ### 自定义错误消息
 
-如果需要，你可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。 你可以将自定义消息作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)： 你可以将自定义消息作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
+如果需要，您可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。 你可以将自定义消息作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
 
 ```go
 validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
@@ -261,7 +261,7 @@ validator, err := facades.Validation().Make(input, rules, validation.Messages(ma
 
 ### 为给定属性指定自定义消息
 
-有时你可能希望只为特定属性指定自定义错误消息， 你可以使用 `.` 表示法。 有时你可能希望只为特定属性指定自定义错误消息， 你可以使用 `.` 表示法。 首先指定属性名称，然后指定规则(也适用于`ctx.Request().Validate()`)：
+有时你可能希望只为特定属性指定自定义错误消息， 你可以使用 `.` 表示法。 首先指定属性名称，然后指定规则(也适用于`ctx.Request().Validate()`)：
 
 ```go
 validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
@@ -271,7 +271,7 @@ validator, err := facades.Validation().Make(input, rules, validation.Messages(ma
 
 ### 指定自定义属性值
 
-Goravel 的许多内置验证规则错误消息都包含 `:attribute` 占位符。 如果你希望将验证消息的 `:attribute` 部分替换为自定义属性名称，则可以重写 `Attributes` 方法来指定自定义名称。 此方法应返回属性 / 名称对的数组： Goravel 的许多内置验证规则错误消息都包含 `:attribute` 占位符。 为特定字段自定义替换这些占位符的值， 你可以将一个数组自定义属性作为第三个参数传递到 `Make` 方法(也适用于 `ctx.Request().Validate()`）：
+Goravel 的许多内置验证规则错误消息都包含 `:attribute` 占位符。 为特定字段自定义替换这些占位符的值， 你可以将一个数组自定义属性作为第三个参数传递到 `Make` 方法(也适用于 `ctx.Request().Validate()`）：
 
 ```go
 validator, err := facades.Validation().Make(input, rules, validation.Attributes(map[string]string{
@@ -281,7 +281,7 @@ validator, err := facades.Validation().Make(input, rules, validation.Attributes(
 
 ### 验证前格式化数据
 
-你可以在验证数据前先格式化数据，以便更灵活的进行数据校验，你可以将格式化数据的方法作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
+您可以在验证数据前先格式化数据，以便更灵活的进行数据校验，您可以将格式化数据的方法作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
 
 ```go
 import (
@@ -302,7 +302,7 @@ func (r *PostController) Store(ctx http.Context) http.Response {
 
 ## 处理验证字段
 
-在使用表单请求或手动创建的验证器实例验证传入请求数据后，你依然希望将请求数据绑定至 `struct`，有两种可以实现方法：
+在使用表单请求或手动创建的验证器实例验证传入请求数据后，您依然希望将请求数据绑定至 `struct`，有两种可以实现方法：
 
 1. 使用 `Bind` 方法，这将会绑定所有传入的数据，包括未通过校验的数据：
 
@@ -359,16 +359,16 @@ if validator.Errors().Has("email") {
 
 下方列出了所有可用的验证规则及其功能：
 
-| 规则名                    | 描述                                                                                                                                                                                                                                         |
+| 名称                     | 描述                                                                                                                                                                                                                                         |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `required`             | 字段为必填项，值不能为零值。 字段为必填项，值不能为零值。 例如字段类型为 `bool`，传入值为 `false`，也将无法通过校验。                                                                                                                                                                        |
+| `required`             | 字段为必填项，值不能为零值。 例如字段类型为 `bool`，传入值为 `false`，也将无法通过校验。                                                                                                                                                                                       |
 | `required_if`          | `required_if:anotherfield,value,...` 如果其它字段 anotherField 为任一值 value ，则此验证字段必须存在且不为空。                                                                                                                                                       |
 | `required_unless`      | `required_unless:anotherfield,value,...` 如果其它字段 anotherField 不等于任一值 value ，则此验证字段必须存在且不为空。                                                                                                                                                 |
 | `required_with`        | `required_with:foo,bar,...` 在其他任一指定字段出现时，验证的字段才必须存在且不为空。                                                                                                                                                                                   |
 | `required_with_all`    | `required_with_all:foo,bar,...` 只有在其他指定字段全部出现时，验证的字段才必须存在且不为空。                                                                                                                                                                             |
 | `required_without`     | `required_without:foo,bar,...` 在其他指定任一字段不出现时，验证的字段才必须存在且不为空。                                                                                                                                                                               |
 | `required_without_all` | `required_without_all:foo,bar,...` 只有在其他指定字段全部不出现时，验证的字段才必须存在且不为空。                                                                                                                                                                         |
-| `int`                  | 检查值是 `intX` `uintX` 类型，同时支持大小检查 `int` `int:2` `int:2,12`。 注意：[使用注意事项](#int) `int` `int:2` `int:2,12`。 注意：[使用注意事项](#int)                                                                                                                    |
+| `int`                  | 检查值是 `intX` `uintX` 类型，同时支持大小检查 `int` `int:2` `int:2,12`。 注意：[使用注意事项](#int)                                                                                                                                                                |
 | `uint`                 | 检查值是 `uintX` 类型(`value >= 0`)                                                                                                                                                                                           |
 | `bool`                 | 检查值是布尔字符串(`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false")                                                                                                         |
 | `string`               | 检查值是字符串类型，同时支持长度检查 `string` `string:2` `string:2,12` `string` `string:2` `string:2,12`                                                                                                                                                     |
@@ -433,7 +433,7 @@ if validator.Errors().Has("email") {
 
 ## 自定义验证规则
 
-Goravel 提供了各种有用的验证规则，但是，你可能希望定义自己的规则。 注册自定义验证规则的方法之一是使用规则对象。 要生成新的规则，你可以使用 `make:rule` Artisan 命令。 注册自定义验证规则的方法之一是使用规则对象。 要生成新的规则，您可以使用 `make:rule` Artisan 命令。
+Goravel 提供了各种有用的验证规则，但是，你可能希望定义自己的规则。 注册自定义验证规则的方法之一是使用规则对象。 要生成新的规则，您可以使用 `make:rule` Artisan 命令。
 
 让我们使用这个命令生成一个验证字符串是否为大写的规则。 Goravel 会将新规则放在 `app/rules` 目录中。 如果此目录不存在，Goravel 将在您执行 Artisan 命令创建规则时创建它。
 
@@ -508,33 +508,33 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 
 ## 可用的过滤器
 
-| 名称                             | 描述                                                                                                                                                          |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `int/toInt`                    | 转换(string/intX/floatX) 到 `int` 类型                                                                                                        |
-| `uint/toUint`                  | 转换(string/intX/floatX) 到 `uint` 类型                                                                                                       |
-| `int64/toInt64`                | 转换(string/intX/floatX) 到 `int64` 类型                                                                                                      |
-| `float/toFloat`                | 转换(string/intX/floatX) 到 `float` 类型                                                                                                      |
-| `bool/toBool`                  | 转换 string 到 bool 转换 string 到 bool (`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false") |
-| `trim/trimSpace`               | 清除字符串两端的空格                                                                                                                                                  |
-| `ltrim/trimLeft`               | 清除字符串左侧的空格                                                                                                                                                  |
-| `rtrim/trimRight`              | 清除字符串右侧的空格                                                                                                                                                  |
-| `int/integer`                  | 转换(string/intX/floatX) 到 `int` 类型                                                                                                        |
-| `lower/lowercase`              | 转换 string 为小写                                                                                                                                               |
-| `upper/uppercase`              | 转换 string 为大写                                                                                                                                               |
-| `lcFirst/lowerFirst`           | 转换 string 的第一个字符为小写                                                                                                                                         |
-| `ucFirst/upperFirst`           | 转换 string 的第一个字符为大写                                                                                                                                         |
-| `ucWord/upperWord`             | 转换每个单词的首字母为大写                                                                                                                                               |
-| `camel/camelCase`              | 转换 string 到 camelCase 命名风格                                                                                                                                  |
-| `snake/snakeCase`              | 转换 string 到 snake_case 命名风格                                                                                                            |
-| `escapeJs/escapeJS`            | 脱敏 JS string.                                                                                                                               |
-| `escapeHtml/escapeHTML`        | 脱敏 HTML string.                                                                                                                             |
-| `str2ints/strToInts`           | 转换 string 到 `[]int`                                                                                                                                         |
-| `str2time/strToTime`           | 转换 date string 到 `time.Time`.                                                                                                               |
-| `str2arr/str2array/strToArray` | 转换 string 到 `[]string`                                                                                                                                      |
+| 规则名                            | 描述                                                                                                                                         |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `int/toInt`                    | 转换(string/intX/floatX) 到 `int` 类型                                                                                       |
+| `uint/toUint`                  | 转换(string/intX/floatX) 到 `uint` 类型                                                                                      |
+| `int64/toInt64`                | 转换(string/intX/floatX) 到 `int64` 类型                                                                                     |
+| `float/toFloat`                | 转换(string/intX/floatX) 到 `float` 类型                                                                                     |
+| `bool/toBool`                  | 转换 string 到 bool (`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false") |
+| `trim/trimSpace`               | 清除字符串两端的空格                                                                                                                                 |
+| `ltrim/trimLeft`               | 清除字符串左侧的空格                                                                                                                                 |
+| `rtrim/trimRight`              | 清除字符串右侧的空格                                                                                                                                 |
+| `int/integer`                  | 转换(string/intX/floatX) 到 `int` 类型                                                                                       |
+| `lower/lowercase`              | 转换 string 为小写                                                                                                                              |
+| `upper/uppercase`              | 转换 string 为大写                                                                                                                              |
+| `lcFirst/lowerFirst`           | 转换 string 的第一个字符为小写                                                                                                                        |
+| `ucFirst/upperFirst`           | 转换 string 的第一个字符为大写                                                                                                                        |
+| `ucWord/upperWord`             | 转换每个单词的首字母为大写                                                                                                                              |
+| `camel/camelCase`              | 转换 string 到 camelCase 命名风格                                                                                                                 |
+| `snake/snakeCase`              | 转换 string 到 snake_case 命名风格                                                                                           |
+| `escapeJs/escapeJS`            | 脱敏 JS string.                                                                                                              |
+| `escapeHtml/escapeHTML`        | 脱敏 HTML string.                                                                                                            |
+| `str2ints/strToInts`           | 转换 string 到 `[]int`                                                                                                                        |
+| `str2time/strToTime`           | 转换 date string 到 `time.Time`.                                                                                              |
+| `str2arr/str2array/strToArray` | 转换 string 到 `[]string`                                                                                                                     |
 
 ## 自定义过滤规则
 
-Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自己的规则。 要生成新的规则，您可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个转换 string 为 int 的规则。 这个规则框架已经内置，这里只是为了示例。 Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自己的规则。 要生成新的规则，你可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个转换 string 为 int 的规则。 这个规则框架已经内置，这里只是为了示例。 Goravel 会将新规则放在 `app/filters` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建规则时创建它： 让我们使用这个命令生成一个验证字符串是否为大写的规则。 Goravel 会将新规则放在 `app/rules` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建规则时创建它。
+Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自己的规则。 要生成新的规则，您可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个转换 string 为 int 的规则。 这个规则框架已经内置，这里只是为了示例。 Goravel 会将新规则放在 `app/filters` 目录中。 如果此目录不存在，Goravel 将在您执行 Artisan 命令创建规则时创建它：
 
 ```go
 go run . artisan make:filter ToInt
@@ -542,7 +542,7 @@ go run . artisan make:filter ToInt
 go run . artisan make:filter user/ToInt
 ```
 
-一个过滤器包含两个方法：`Signature` 和 `Handle`。 `Signature` 方法设置该过滤器的名称。 `Handle` 方法执行具体的过滤逻辑： `Signature` 方法设置该过滤器的名称。 `Handle` 方法执行具体的过滤逻辑：
+一个过滤器包含两个方法：`Signature` 和 `Handle`。 `Signature` 方法设置该过滤器的名称。 `Handle` 方法执行具体的过滤逻辑：
 
 ```go
 package filters
