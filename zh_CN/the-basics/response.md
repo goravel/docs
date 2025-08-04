@@ -68,7 +68,7 @@ ctx.Response().Header("Content", "Goravel").String(http.StatusOK, "Hello Goravel
 
 ### 设置 Cookie
 
-使用 `response` 实例中的 `Cookie` 方法设置 `cookie`。 `Cookie` 方法接受一个 `http.Cookie` 实例，允许您设置各种 `cookie` 选项。
+使用 `response` 实例中的 `Cookie` 方法设置 `cookie`。 `Cookie` 方法接受一个 `http.Cookie` 实例，允许你设置各种 `cookie` 选项。
 
 ```go
 import (
