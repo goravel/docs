@@ -64,7 +64,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 微信入群，请备注 Goravel。
 
-<p align="left"><img src="/reward-wechat.jpg" width="200"></p>
+<p align="left"><img src="/wechat.jpg" width="200"></p>
 
 ## 开源许可
 
