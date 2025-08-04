@@ -25,7 +25,7 @@ go run . artisan help migrate
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 ```
 
-随后您就可以简单的运行以下命令：
+随后你就可以简单的运行以下命令：
 
 ```shell
 artisan make:controller DemoController
