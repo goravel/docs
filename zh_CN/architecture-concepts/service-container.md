@@ -75,7 +75,7 @@ app.BindWith(Binding, func(app foundation.Application, parameters map[string]any
 
 ### `Make` 方法
 
-你可以使用 `Make` 方法从容器中解析类实例。`Make` 方法接受你希望解析的 `key`： `Make` 方法接受你希望解析的 `key`：
+你可以使用 `Make` 方法从容器中解析类实例。 `Make` 方法接受你希望解析的 `key`：
 
 ```go
 instance, err := app.Make(key)

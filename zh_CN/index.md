@@ -59,13 +59,12 @@ features:
   - title: 👥 活跃的社区
     details: 由活跃的社区支持，他们为其开发、撰写文档和持续支持做出贡献。
   - title: 🔄 PHPers 过渡首选
-    details: 框架风格与 Laravel 保持一致，让 PHPer 不用学习新的框架即可创建强大的 Golang 应用程序。致敬 Laravel！
+    details: 框架风格与 Laravel 保持一致，让 PHPer 不用学习新的框架即可创建强大的 Golang 应用程序。 致敬 Laravel！
 ---
 
 <div class="text-center mt-10 text-3xl font-bold">贡献者</div>
 
-<div class="flex flex-wrap justify-center gap-2 mt-10" :class="$style.contributors">
-<a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
+<div class="flex flex-wrap justify-center gap-2 mt-10" :class="$style.contributors"><a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
 <a href="https://github.com/kkumar-gcc" target="_blank"><img src="https://avatars.githubusercontent.com/u/84431594?v=4" width="48" height="48"></a>
 <a href="https://github.com/almas-x" target="_blank"><img src="https://avatars.githubusercontent.com/u/9382335?v=4" width="48" height="48"></a>

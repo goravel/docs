@@ -3,3 +3,4 @@ node_modules
 .vitepress/dist
 .idea
 .vscode
+.DS_Store

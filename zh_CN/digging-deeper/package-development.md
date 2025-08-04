@@ -84,7 +84,7 @@ func main() {
 
 ### 配置
 
-通常，你需要将包的配置文件发布到应用程序的 `config` 目录。 这将允许你的包的用户轻松覆盖你的默认配置选项。 要允许发布配置文件，请从服务提供者的 `Boot` 方法中调用 `Publishes` 方法，该方法第一个参数为包名，第二个参数为当前包文件路径与项目路径的映射：
+通常，你需要将包的配置文件发布到应用程序的 `config` 目录。 这将允许你的包的用户轻松覆盖默认配置选项。 要允许发布配置文件，请从服务提供者的 `Boot` 方法中调用 `Publishes` 方法，该方法第一个参数为包名，第二个参数为当前包文件路径与项目路径的映射：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -96,7 +96,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ### 路由
 
-如果你的包包含[路由](../the-basics/routing.md)，可以使用 `app.MakeRoute()` 解析出 `facades.Route()`，然后添加到项目
+如果你的包包含[路由](../the-basics/routing.md)，可以使用 `app.MakeRoute()` 解析出 `facades.Route()`，然后添加到项目：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -119,7 +119,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ## 命令
 
-可以在服务提供者中使用 `Commands` 方法注册 `Artisan` 命令，注册命令后，你可以使用[Artisan CLI](../digging-deeper/artisan-console.md)执行它们：
+可以在服务提供者中使用 `Commands` 方法注册 `Artisan` 命令，注册命令后，你可以使用[Artisan CLI](../digging-deeper/artisan-console.md)执行它们。
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -143,7 +143,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ## 发布文件组
 
-你可能希望单独发布包资产和资源组。例如，你可能希望允许用户发布包的配置文件，而不是被迫发布包的全部资产。你可以在包的服务提供者中调用 `Publishes` 方法时定义「标签」来做到这一点。 这允许你为用户提供发布某些文件的选项，如配置文件，而不必发布所有软件包的资产。 例如，让我们使用标签在包的服务提供者的 `Boot` 方法中为 `sms` 包定义两个发布组（`sms-config` 和 `sms-migrations`）。
+你可能希望允许用户发布包的配置文件，而不是被迫发布包的全部资产。你可以在包的服务提供者中调用 `Publishes` 方法时定义「标签」来做到这一点。 这允许你为用户提供发布某些文件的选项，如配置文件，而不必发布所有软件包的资产。 例如，让我们使用标签在包的服务提供者的 `Boot` 方法中为 `sms` 包定义两个发布组（`sms-config` 和 `sms-migrations`）。
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -166,9 +166,9 @@ go run . artisan vendor:publish --package={你的包名}
 
 该命令可以使用如下参数：
 
-| 参数名     | 别名 | 作用                                                                                                                                                 |
-| ---------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| --package  | -p   | 包名，可以使远程包，例如：github.com/goravel/example-package，也可以使用本地包名：./packages/example-package，注意当使用本地包名时，需要以 `./` 开头 |
-| --tag      | -t   | 资源分组                                                                                                                                             |
-| --force    | -f   | 请覆盖任何已经存在的文件                                                                                                                             |
-| --existing | -e   | 只发布已存在的资源，并强制覆盖                                                                                                                       |
+| 参数名        | 别名 | 作用                                                                                                                                          |
+| ---------- | -- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| --package  | -p | 包名，可以使远程包，例如：github.com/goravel/example-package，也可以使用本地包名：./packages/example-package，注意当使用本地包名时，需要以 `./` 开头 |
+| --tag      | -t | 资源分组                                                                                                                                        |
+| --force    | -f | 请覆盖任何已经存在的文件                                                                                                                                |
+| --existing | -e | 只发布已存在的资源，并强制覆盖                                                                                                                             |

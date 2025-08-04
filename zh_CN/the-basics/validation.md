@@ -359,65 +359,65 @@ if validator.Errors().Has("email") {
 
 下方列出了所有可用的验证规则及其功能：
 
-| 名称                   | 描述                                                                                                                   |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `required`             | 字段为必填项，值不能为零值。 例如字段类型为 `bool`，传入值为 `false`，也将无法通过校验。                               |
-| `required_if`          | `required_if:anotherfield,value,...` 如果其它字段 anotherField 为任一值 value ，则此验证字段必须存在且不为空。         |
-| `required_unless`      | `required_unless:anotherfield,value,...` 如果其它字段 anotherField 不等于任一值 value ，则此验证字段必须存在且不为空。 |
-| `required_with`        | `required_with:foo,bar,...` 在其他任一指定字段出现时，验证的字段才必须存在且不为空。                                   |
-| `required_with_all`    | `required_with_all:foo,bar,...` 只有在其他指定字段全部出现时，验证的字段才必须存在且不为空。                           |
-| `required_without`     | `required_without:foo,bar,...` 在其他指定任一字段不出现时，验证的字段才必须存在且不为空。                              |
-| `required_without_all` | `required_without_all:foo,bar,...` 只有在其他指定字段全部不出现时，验证的字段才必须存在且不为空。                      |
-| `int`                  | 检查值是 `intX` `uintX` 类型，同时支持大小检查 `int` `int:2` `int:2,12`。 注意：[使用注意事项](#int)                   |
-| `uint`                 | 检查值是 `uintX` 类型(`value >= 0`)                                                                                    |
-| `bool`                 | 检查值是布尔字符串(`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false")                               |
-| `string`               | 检查值是字符串类型，同时支持长度检查 `string` `string:2` `string:2,12`                                                 |
-| `float`                | 检查值是 `float(floatX)` 类型                                                                                          |
-| `slice`                | 检查值是 `slice` 类型(`[]intX` `[]uintX` `[]byte` `[]string` 等)                                                       |
-| `in`                   | `in:foo,bar,…` 检查值是否在给定的枚举列表([]string, []intX, []uintX)中                                                 |
-| `not_in`               | `not_in:foo,bar,…` 检查值不在给定的枚举列表([]string, []intX, []uintX)中                                               |
-| `starts_with`          | `starts_with:foo` 检查输入的 string 值是否以给定 sub-string 开始                                                       |
-| `ends_with`            | `ends_with:foo` 检查输入的 string 值是否以给定 sub-string 结束                                                         |
-| `between`              | `between:min,max` 检查值是否为数字且在给定范围内                                                                       |
-| `max`                  | `max:value` 检查输入值小于或等于给定值(`intX` `uintX` `floatX`)                                                        |
-| `min`                  | `min:value` 检查输入值大于或等于给定值(`intX` `uintX` `floatX`)                                                        |
-| `eq`                   | `eq:value` 检查输入值是否等于给定值                                                                                    |
-| `ne`                   | `ne:value` 检查输入值是否不等于给定值                                                                                  |
-| `lt`                   | `lt:value` 检查值小于给定大小(`intX` `uintX` `floatX`)                                                                 |
-| `gt`                   | `gt:value` 检查值大于给定大小(`intX` `uintX` `floatX`)                                                                 |
-| `len`                  | `len:value` 检查值长度等于给定大小(`string` `array` `slice` `map`)                                                     |
-| `min_len`              | `min_len:value` 检查值的最小长度是给定大小(`string` `array` `slice` `map`)                                             |
-| `max_len`              | `max_len:value` 检查值的最大长度是给定大小(`string` `array` `slice` `map`)                                             |
-| `email`                | 检查值是 Email 地址字符串                                                                                              |
-| `array`                | 检查值是 `array` 或 `slice` 类型                                                                                       |
-| `map`                  | 检查值是 `map` 类型                                                                                                    |
-| `eq_field`             | `eq_field:field` 检查字段值是否等于另一个字段的值                                                                      |
-| `ne_field`             | `ne_field:field` 检查字段值是否不等于另一个字段的值                                                                    |
-| `gt_field`             | `gte_field:field` 检查字段值是否大于另一个字段的值                                                                     |
-| `gte_field`            | `gt_field:field` 检查字段值是否大于或等于另一个字段的值                                                                |
-| `lt_field`             | `lt_field:field` 检查字段值是否小于另一个字段的值                                                                      |
-| `lte_field`            | `lte_field:field` 检查字段值是否小于或等于另一个字段的值                                                               |
-| `file`                 | 验证是否是上传的文件                                                                                                   |
-| `image`                | 验证是否是上传的图片文件                                                                                               |
-| `date`                 | 检查字段值是否为日期字符串                                                                                             |
-| `gt_date`              | `gt_date:value` 检查输入值是否大于给定的日期字符串                                                                     |
-| `lt_date`              | `lt_date:value` 检查输入值是否小于给定的日期字符串                                                                     |
-| `gte_date`             | `gte_date:value` 检查输入值是否大于或等于给定的日期字符串                                                              |
-| `lte_date`             | `lte_date:value` 检查输入值是否小于或等于给定的日期字符串                                                              |
-| `alpha`                | 验证值是否仅包含字母字符                                                                                               |
-| `alpha_num`            | 验证是否仅包含字母、数字                                                                                               |
-| `alpha_dash`           | 验证是否仅包含字母、数字、破折号（ - ）以及下划线（ \_ ）                                                              |
-| `json`                 | 检查值是 JSON 字符串                                                                                                   |
-| `number`               | 检查值是数字 `>= 0`                                                                                                    |
-| `full_url`             | 检查值是完整的URL字符串(必须以 http, https 开始的 URL)                                                                 |
-| `ip`                   | 检查值是 IP（v4或v6）字符串                                                                                            |
-| `ipv4`                 | 检查值是 IPv4 字符串                                                                                                   |
-| `ipv6`                 | 检查值是 IPv6 字符串                                                                                                   |
-| `regex`                | 检查该值是否可以通过正则验证                                                                                           |
-| `uuid`                 | 检查值是UUID字符串                                                                                                     |
-| `uuid3`                | 检查值是UUID3字符串                                                                                                    |
-| `uuid4`                | 检查值是UUID4字符串                                                                                                    |
-| `uuid5`                | 检查值是UUID5字符串                                                                                                    |
+| 名称                     | 描述                                                                                                                                                                                                                                         |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `required`             | 字段为必填项，值不能为零值。 例如字段类型为 `bool`，传入值为 `false`，也将无法通过校验。                                                                                                                                                                                       |
+| `required_if`          | `required_if:anotherfield,value,...` 如果其它字段 anotherField 为任一值 value ，则此验证字段必须存在且不为空。                                                                                                                                                       |
+| `required_unless`      | `required_unless:anotherfield,value,...` 如果其它字段 anotherField 不等于任一值 value ，则此验证字段必须存在且不为空。                                                                                                                                                 |
+| `required_with`        | `required_with:foo,bar,...` 在其他任一指定字段出现时，验证的字段才必须存在且不为空。                                                                                                                                                                                   |
+| `required_with_all`    | `required_with_all:foo,bar,...` 只有在其他指定字段全部出现时，验证的字段才必须存在且不为空。                                                                                                                                                                             |
+| `required_without`     | `required_without:foo,bar,...` 在其他指定任一字段不出现时，验证的字段才必须存在且不为空。                                                                                                                                                                               |
+| `required_without_all` | `required_without_all:foo,bar,...` 只有在其他指定字段全部不出现时，验证的字段才必须存在且不为空。                                                                                                                                                                         |
+| `int`                  | 检查值是 `intX` `uintX` 类型，同时支持大小检查 `int` `int:2` `int:2,12`。 注意：[使用注意事项](#int)                                                                                                                                                                |
+| `uint`                 | 检查值是 `uintX` 类型(`value >= 0`)                                                                                                                                                                                           |
+| `bool`                 | 检查值是布尔字符串(`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false")                                                                                                         |
+| `string`               | 检查值是字符串类型，同时支持长度检查 `string` `string:2` `string:2,12`                                                                                                                                                                                       |
+| `float`                | 检查值是 `float(floatX)` 类型                                                                                                                                                                                                                    |
+| `slice`                | 检查值是 `slice` 类型(`[]intX` `[]uintX` `[]byte` `[]string` 等)                                                                                                                                                               |
+| `in`                   | `in:foo,bar,…` 检查值是否在给定的枚举列表([]string, []intX, []uintX)中    |
+| `not_in`               | `not_in:foo,bar,…` 检查值不在给定的枚举列表([]string, []intX, []uintX)中 |
+| `starts_with`          | `starts_with:foo` 检查输入的 string 值是否以给定 sub-string 开始                                                                                                                                                                                        |
+| `ends_with`            | `ends_with:foo` 检查输入的 string 值是否以给定 sub-string 结束                                                                                                                                                                                          |
+| `between`              | `between:min,max` 检查值是否为数字且在给定范围内                                                                                                                                                                                                          |
+| `max`                  | `max:value` 检查输入值小于或等于给定值(`intX` `uintX` `floatX`)                                                                                                                                                                      |
+| `min`                  | `min:value` 检查输入值大于或等于给定值(`intX` `uintX` `floatX`)                                                                                                                                                                      |
+| `eq`                   | `eq:value` 检查输入值是否等于给定值                                                                                                                                                                                                                    |
+| `ne`                   | `ne:value` 检查输入值是否不等于给定值                                                                                                                                                                                                                   |
+| `lt`                   | `lt:value` 检查值小于给定大小(`intX` `uintX` `floatX`)                                                                                                                                                                           |
+| `gt`                   | `gt:value` 检查值大于给定大小(`intX` `uintX` `floatX`)                                                                                                                                                                           |
+| `len`                  | `len:value` 检查值长度等于给定大小(`string` `array` `slice` `map`)                                                                                                                                                                 |
+| `min_len`              | `min_len:value` 检查值的最小长度是给定大小(`string` `array` `slice` `map`)                                                                                                                                                           |
+| `max_len`              | `max_len:value` 检查值的最大长度是给定大小(`string` `array` `slice` `map`)                                                                                                                                                           |
+| `email`                | 检查值是 Email 地址字符串                                                                                                                                                                                                                           |
+| `array`                | 检查值是 `array` 或 `slice` 类型                                                                                                                                                                                                                  |
+| `map`                  | 检查值是 `map` 类型                                                                                                                                                                                                                              |
+| `eq_field`             | `eq_field:field` 检查字段值是否等于另一个字段的值                                                                                                                                                                                                          |
+| `ne_field`             | `ne_field:field` 检查字段值是否不等于另一个字段的值                                                                                                                                                                                                         |
+| `gt_field`             | `gte_field:field` 检查字段值是否大于另一个字段的值                                                                                                                                                                                                         |
+| `gte_field`            | `gt_field:field` 检查字段值是否大于或等于另一个字段的值                                                                                                                                                                                                       |
+| `lt_field`             | `lt_field:field` 检查字段值是否小于另一个字段的值                                                                                                                                                                                                          |
+| `lte_field`            | `lte_field:field` 检查字段值是否小于或等于另一个字段的值                                                                                                                                                                                                      |
+| `file`                 | 验证是否是上传的文件                                                                                                                                                                                                                                 |
+| `image`                | 验证是否是上传的图片文件                                                                                                                                                                                                                               |
+| `date`                 | 检查字段值是否为日期字符串                                                                                                                                                                                                                              |
+| `gt_date`              | `gt_date:value` 检查输入值是否大于给定的日期字符串                                                                                                                                                                                                          |
+| `lt_date`              | `lt_date:value` 检查输入值是否小于给定的日期字符串                                                                                                                                                                                                          |
+| `gte_date`             | `gte_date:value` 检查输入值是否大于或等于给定的日期字符串                                                                                                                                                                                                      |
+| `lte_date`             | `lte_date:value` 检查输入值是否小于或等于给定的日期字符串                                                                                                                                                                                                      |
+| `alpha`                | 验证值是否仅包含字母字符                                                                                                                                                                                                                               |
+| `alpha_num`            | 验证是否仅包含字母、数字                                                                                                                                                                                                                               |
+| `alpha_dash`           | 验证是否仅包含字母、数字、破折号（ - ）以及下划线（ \_ ）                                                                                                                                                                                     |
+| `json`                 | 检查值是 JSON 字符串                                                                                                                                                                                                                              |
+| `number`               | 检查值是数字 `>= 0`                                                                                                                                                                                                                              |
+| `full_url`             | 检查值是完整的URL字符串(必须以 http, https 开始的 URL)                                                                                                                                                                                  |
+| `ip`                   | 检查值是 IP（v4或v6）字符串                                                                                                                                                                                                                          |
+| `ipv4`                 | 检查值是 IPv4 字符串                                                                                                                                                                                                                              |
+| `ipv6`                 | 检查值是 IPv6 字符串                                                                                                                                                                                                                              |
+| `regex`                | 检查该值是否可以通过正则验证                                                                                                                                                                                                                             |
+| `uuid`                 | 检查值是UUID字符串                                                                                                                                                                                                                                |
+| `uuid3`                | 检查值是UUID3字符串                                                                                                                                                                                                                               |
+| `uuid4`                | 检查值是UUID4字符串                                                                                                                                                                                                                               |
+| `uuid5`                | 检查值是UUID5字符串                                                                                                                                                                                                                               |
 
 ### 规则使用注意事项
 
@@ -508,29 +508,29 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 
 ## 可用的过滤器
 
-| 规则名                         | 描述                                                                                       |
-| ------------------------------ | ------------------------------------------------------------------------------------------ |
-| `int/toInt`                    | 转换(string/intX/floatX) 到 `int` 类型                                                     |
-| `uint/toUint`                  | 转换(string/intX/floatX) 到 `uint` 类型                                                    |
-| `int64/toInt64`                | 转换(string/intX/floatX) 到 `int64` 类型                                                   |
-| `float/toFloat`                | 转换(string/intX/floatX) 到 `float` 类型                                                   |
+| 规则名                            | 描述                                                                                                                                         |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `int/toInt`                    | 转换(string/intX/floatX) 到 `int` 类型                                                                                       |
+| `uint/toUint`                  | 转换(string/intX/floatX) 到 `uint` 类型                                                                                      |
+| `int64/toInt64`                | 转换(string/intX/floatX) 到 `int64` 类型                                                                                     |
+| `float/toFloat`                | 转换(string/intX/floatX) 到 `float` 类型                                                                                     |
 | `bool/toBool`                  | 转换 string 到 bool (`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false") |
-| `trim/trimSpace`               | 清除字符串两端的空格                                                                       |
-| `ltrim/trimLeft`               | 清除字符串左侧的空格                                                                       |
-| `rtrim/trimRight`              | 清除字符串右侧的空格                                                                       |
-| `int/integer`                  | 转换(string/intX/floatX) 到 `int` 类型                                                     |
-| `lower/lowercase`              | 转换 string 为小写                                                                         |
-| `upper/uppercase`              | 转换 string 为大写                                                                         |
-| `lcFirst/lowerFirst`           | 转换 string 的第一个字符为小写                                                             |
-| `ucFirst/upperFirst`           | 转换 string 的第一个字符为大写                                                             |
-| `ucWord/upperWord`             | 转换每个单词的首字母为大写                                                                 |
-| `camel/camelCase`              | 转换 string 到 camelCase 命名风格                                                          |
-| `snake/snakeCase`              | 转换 string 到 snake_case 命名风格                                                         |
-| `escapeJs/escapeJS`            | 脱敏 JS string.                                                                            |
-| `escapeHtml/escapeHTML`        | 脱敏 HTML string.                                                                          |
-| `str2ints/strToInts`           | 转换 string 到 `[]int`                                                                     |
-| `str2time/strToTime`           | 转换 date string 到 `time.Time`.                                                           |
-| `str2arr/str2array/strToArray` | 转换 string 到 `[]string`                                                                  |
+| `trim/trimSpace`               | 清除字符串两端的空格                                                                                                                                 |
+| `ltrim/trimLeft`               | 清除字符串左侧的空格                                                                                                                                 |
+| `rtrim/trimRight`              | 清除字符串右侧的空格                                                                                                                                 |
+| `int/integer`                  | 转换(string/intX/floatX) 到 `int` 类型                                                                                       |
+| `lower/lowercase`              | 转换 string 为小写                                                                                                                              |
+| `upper/uppercase`              | 转换 string 为大写                                                                                                                              |
+| `lcFirst/lowerFirst`           | 转换 string 的第一个字符为小写                                                                                                                        |
+| `ucFirst/upperFirst`           | 转换 string 的第一个字符为大写                                                                                                                        |
+| `ucWord/upperWord`             | 转换每个单词的首字母为大写                                                                                                                              |
+| `camel/camelCase`              | 转换 string 到 camelCase 命名风格                                                                                                                 |
+| `snake/snakeCase`              | 转换 string 到 snake_case 命名风格                                                                                           |
+| `escapeJs/escapeJS`            | 脱敏 JS string.                                                                                                              |
+| `escapeHtml/escapeHTML`        | 脱敏 HTML string.                                                                                                            |
+| `str2ints/strToInts`           | 转换 string 到 `[]int`                                                                                                                        |
+| `str2time/strToTime`           | 转换 date string 到 `time.Time`.                                                                                              |
+| `str2arr/str2array/strToArray` | 转换 string 到 `[]string`                                                                                                                     |
 
 ## 自定义过滤规则
 

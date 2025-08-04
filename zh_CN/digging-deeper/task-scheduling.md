@@ -66,54 +66,54 @@ func (kernel *Kernel) Schedule() []schedule.Event {
 
 我们已经看到了几个如何设置任务在指定时间间隔运行的例子。 不仅如此，你还有更多的任务调度频率可选：
 
-| 方法                     | 描述                              |
-| ------------------------ | --------------------------------- |
-| `.Cron("* * * * *")`     | 自定义 Crone 计划执行任务（分钟） |
-| `.Cron("* * * * * *")`   | 自定义 Crone 计划执行任务（秒）   |
-| `.EverySecond()`         | 每秒执行一次任务                  |
-| `.EveryTwoSeconds()`     | 每两秒执行一次任务                |
-| `.EveryFiveSeconds()`    | 每五秒执行一次任务                |
-| `.EveryTenSeconds()`     | 每十秒执行一次任务                |
-| `.EveryFifteenSeconds()` | 每十五秒执行一次任务              |
-| `.EveryTwentySeconds()`  | 每二十秒执行一次任务              |
-| `.EveryThirtySeconds()`  | 每三十秒执行一次任务              |
-| `.EveryMinute()`         | 每分钟执行一次任务                |
-| `.EveryTwoMinutes()`     | 每两分钟执行一次任务              |
-| `.EveryThreeMinutes()`   | 每三分钟执行一次任务              |
-| `.EveryFourMinutes()`    | 每四分钟执行一次任务              |
-| `.EveryFiveMinutes()`    | 每五分钟执行一次任务              |
-| `.EveryTenMinutes()`     | 每十分钟执行一次任务              |
-| `.EveryFifteenMinutes()` | 每十五分钟执行一次任务            |
-| `.EveryThirtyMinutes()`  | 每三十分钟执行一次任务            |
-| `.Hourly()`              | 每小时执行一次任务                |
-| `.HourlyAt(17)`          | 每小时第十七分钟时执行一次任务    |
-| `.EveryTwoHours()`       | 每两小时执行一次任务              |
-| `.EveryThreeHours()`     | 每三小时执行一次任务              |
-| `.EveryFourHours()`      | 每四小时执行一次任务              |
-| `.EverySixHours()`       | 每六小时执行一次任务              |
-| `.Daily()`               | 每天 00:00 执行一次任务           |
-| `.DailyAt("13:00")`      | 每天 13:00 执行一次任务           |
-| `.Days(1, 3, 5)`         | 每周一、周三、周五执行一次任务    |
-| `.Weekdays()`            | 每周一至周五执行一次任务          |
-| `.Weekends()`            | 每周六、周日执行一次任务          |
-| `.Mondays()`             | 每周一执行一次任务                |
-| `.Tuesdays()`            | 每周二执行一次任务                |
-| `.Wednesdays()`          | 每周三执行一次任务                |
-| `.Thursdays()`           | 每周四执行一次任务                |
-| `.Fridays()`             | 每周五执行一次任务                |
-| `.Saturdays()`           | 每周六执行一次任务                |
-| `.Sundays()`             | 每周日执行一次任务                |
-| `.Weekly()`              | 每周执行一次任务                  |
-| `.Monthly()`             | 每月执行一次任务                  |
-| `.Quarterly()`           | 每季度执行一次任务                |
-| `.Yearly()`              | 每年执行一次任务                  |
+| 方法                       | 描述                              |
+| ------------------------ | ------------------------------- |
+| `.Cron("* * * * *")`     | 自定义 Crone 计划执行任务（分钟）            |
+| `.Cron("* * * * * *")`   | 自定义 Crone 计划执行任务（秒）             |
+| `.EverySecond()`         | 每秒执行一次任务                        |
+| `.EveryTwoSeconds()`     | 每两秒执行一次任务                       |
+| `.EveryFiveSeconds()`    | 每五秒执行一次任务                       |
+| `.EveryTenSeconds()`     | 每十秒执行一次任务                       |
+| `.EveryFifteenSeconds()` | 每十五秒执行一次任务                      |
+| `.EveryTwentySeconds()`  | 每二十秒执行一次任务                      |
+| `.EveryThirtySeconds()`  | 每三十秒执行一次任务                      |
+| `.EveryMinute()`         | 每分钟执行一次任务                       |
+| `.EveryTwoMinutes()`     | 每两分钟执行一次任务                      |
+| `.EveryThreeMinutes()`   | 每三分钟执行一次任务                      |
+| `.EveryFourMinutes()`    | 每四分钟执行一次任务                      |
+| `.EveryFiveMinutes()`    | 每五分钟执行一次任务                      |
+| `.EveryTenMinutes()`     | 每十分钟执行一次任务                      |
+| `.EveryFifteenMinutes()` | 每十五分钟执行一次任务                     |
+| `.EveryThirtyMinutes()`  | 每三十分钟执行一次任务                     |
+| `.Hourly()`              | 每小时执行一次任务                       |
+| `.HourlyAt(17)`          | 每小时第十七分钟时执行一次任务                 |
+| `.EveryTwoHours()`       | 每两小时执行一次任务                      |
+| `.EveryThreeHours()`     | 每三小时执行一次任务                      |
+| `.EveryFourHours()`      | 每四小时执行一次任务                      |
+| `.EverySixHours()`       | 每六小时执行一次任务                      |
+| `.Daily()`               | 每天 00:00 执行一次任务 |
+| `.DailyAt("13:00")`      | 每天 13:00 执行一次任务 |
+| `.Days(1, 3, 5)`         | 每周一、周三、周五执行一次任务                 |
+| `.Weekdays()`            | 每周一至周五执行一次任务                    |
+| `.Weekends()`            | 每周六、周日执行一次任务                    |
+| `.Mondays()`             | 每周一执行一次任务                       |
+| `.Tuesdays()`            | 每周二执行一次任务                       |
+| `.Wednesdays()`          | 每周三执行一次任务                       |
+| `.Thursdays()`           | 每周四执行一次任务                       |
+| `.Fridays()`             | 每周五执行一次任务                       |
+| `.Saturdays()`           | 每周六执行一次任务                       |
+| `.Sundays()`             | 每周日执行一次任务                       |
+| `.Weekly()`              | 每周执行一次任务                        |
+| `.Monthly()`             | 每月执行一次任务                        |
+| `.Quarterly()`           | 每季度执行一次任务                       |
+| `.Yearly()`              | 每年执行一次任务                        |
 
 ### 避免任务重复
 
 默认情况下，即使之前的任务实例还在执行，调度内的任务也会执行。 为避免这种情况的发生，你可以使用 `SkipIfStillRunning` 或 `DelayIfStillRunning` 方法：
 
-| 方法                     | 描述               |
-| ------------------------ | ------------------ |
+| 方法                       | 描述        |
+| ------------------------ | --------- |
 | `.SkipIfStillRunning()`  | 如果仍在运行则跳过 |
 | `.DelayIfStillRunning()` | 如果仍在运行则延迟 |
 
@@ -124,7 +124,6 @@ facades.Schedule().Command("send:emails name").EveryMinute().DelayIfStillRunning
 
 ### 任务只运行在一台服务器上
 
-> **注意**
 > 要使用此功能，你的应用程序必须使用 memcached, dynamodb, 或 redis 缓存驱动程序作为应用程序的默认缓存驱动程序。 此外，所有服务器必须和同一个中央缓存服务器通信。
 
 如果你的应用运行在多台服务器上，可能需要限制调度任务只在某台服务器上运行。 例如，假设你有一个每个星期五晚上生成新报告的调度任务。 如果任务调度器运行在三台服务器上，调度任务会在三台服务器上运行并且生成三次报告。 不够优雅！

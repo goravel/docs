@@ -75,7 +75,7 @@ go run . artisan make:controller --resource PhotoController
 facades.Route().Resource("photos", controllers.NewPhotoController())
 ```
 
-| 请求      | 请求URI           | 行为    |
+| 请求        | 请求URI             | 行为      |
 | --------- | ----------------- | ------- |
 | GET       | `/photos`         | Index   |
 | POST      | `/photos`         | Store   |

@@ -10,7 +10,7 @@ Goravel 查询构造器使用参数绑定来保护你的应用程序免受 SQL �
 
 ## 运行查询
 
-框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。 框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。注意，当你想将数据绑定至 struct 或[模型](../orm/getting-started.md#模型)，需要为字段添加 tag `db`：
+框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。 注意，当你想将数据绑定至 struct 或[模型](../orm/getting-started.md#模型)，需要为字段添加 tag `db`：
 
 ```go
 type User struct {
@@ -27,7 +27,7 @@ type User struct {
 
 ### 检索所有行
 
-你可以使用 `facades.DB()` 提供的 `table` 方法开始查询。`table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果： `table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果：
+你可以使用 `facades.DB()` 提供的 `table` 方法开始查询。 `table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果：
 
 ```go
 var users []User
@@ -233,7 +233,7 @@ facades.DB().Distinct("name").Find(&users)
 
 ### WhereRaw / OrWhereRaw
 
-`WhereRaw` 和 `OrWhereRaw` 方法可用于将原始 「where」子句注入你的查询。这些方法接受一个可选的绑定数组作为它们的第二个参数： 这些方法接受一个可选的绑定数组作为它们的第二个参数：
+`WhereRaw` 和 `OrWhereRaw` 方法可用于将原始 「where」子句注入你的查询。 这些方法接受一个可选的绑定数组作为它们的第二个参数：
 
 ```go
 var users []User
@@ -257,7 +257,7 @@ err := facades.DB().OrderByRaw("age DESC, id ASC").Get(&users)
 
 ### Inner Join 语句
 
-查询构造器也可以用于编写 join 语句。 查询构造器也可以用于编写 join 语句。要执行基本的 SQL "inner join"，你可以在查询构造器实例上使用 `Join` 方法：
+查询构造器也可以用于编写 join 语句。 要执行基本的 SQL "inner join"，你可以在查询构造器实例上使用 `Join` 方法：
 
 ```go
 var users []User
@@ -562,9 +562,9 @@ facades.DB().Table("users").Where("id", 1).Update(map[string]any{
 
 ### 更新或插入
 
-有时你可能希望更新数据库中的记录，但如果指定记录不存在的时候则创建它。 这时可以使用 `UpdateOrInsert` 方法。 这是可以使用 `UpdateOrInsert` 方法。`UpdateOrInsert` 方法接受两个参数：一个用于查找记录的条件，以及一个包含要更改记录的键值对。
+有时你可能希望更新数据库中的记录，但如果指定记录不存在的时候则创建它。 这时可以使用 `UpdateOrInsert` 方法。 `UpdateOrInsert` 方法接受两个参数：一个用于查找记录的条件，以及一个包含要更改记录的键值对。
 
-`UpdateOrInsert` 方法将尝试使用第一个参数的列名和值来定位匹配的数据库记录。如果记录存在，则使用第二个参数更新其值。如果找不到指定记录，则会合并两个参数的属性来创建一条记录并将其插入： 如果记录存在，则使用第二个参数更新其值。 如果找不到指定记录，则会合并两个参数的属性来创建一条记录并将其插入：
+`UpdateOrInsert` 方法将尝试使用第一个参数的列名和值来定位匹配的数据库记录。 如果记录存在，则使用第二个参数更新其值。 如果找不到指定记录，则会合并两个参数的属性来创建一条记录并将其插入：
 
 ```go
 // use struct

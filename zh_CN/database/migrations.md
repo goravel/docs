@@ -25,7 +25,7 @@
 go run . artisan make:migration create_users_table
 ```
 
-该命令会在 `database/migrations` 目录下生成迁移文件。 该命令会在 `database/migrations` 目录下生成迁移文件，所有迁移文件都以一个时间戳为开头，Goravel 将以此作为迁移文件的执行顺序。
+该命令会在 `database/migrations` 目录下生成迁移文件。 所有迁移文件都以一个时间戳为开头，Goravel 将以此作为迁移文件的执行顺序。
 
 ### 快捷生成
 
@@ -132,7 +132,7 @@ go run . artisan migrate:status
 go run . artisan migrate:rollback
 ```
 
-通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。例如，以下命令将回滚最后五个迁移： 例如，以下命令将回滚最后五个迁移：
+通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。 例如，以下命令将回滚最后五个迁移：
 
 ```shell
 go run . artisan migrate:rollback --step=5
@@ -146,7 +146,7 @@ go run . artisan migrate:reset
 
 ### 使用单个命令同时进行回滚和迁移操作
 
-命令 `migrate:refresh` 首先会回滚已运行过的所有迁移，随后会执行 `migrate`。这一命令可以高效地重建你的整个数据库： 这一命令可以高效地重建你的整个数据库：
+命令 `migrate:refresh` 首先会回滚已运行过的所有迁移，随后会执行 `migrate`。 这一命令可以高效地重建你的整个数据库：
 
 ```shell
 go run . artisan migrate:refresh

@@ -92,33 +92,33 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 你可以通过
 
 ## 本地环境
 
-| 软件                                                | 作用                     |
-| --------------------------------------------------- | ------------------------ |
-| Golang v1.20                                        | 最低版本                 |
+| 软件                                                  | 作用              |
+| --------------------------------------------------- | --------------- |
+| Golang v1.20                        | 最低版本            |
 | [vektra/mockery](https://github.com/vektra/mockery) | 为单元测试提供 mock 文件 |
 
 ## Goravel 仓库
 
-| 仓库                                                                  | 作用                                                                                                                                              |
-| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [goravel/goravel](https://github.com/goravel/goravel)                 | Goravel 脚手架                                                                                                                                    |
-| [goravel/framework](https://github.com/goravel/framework)             | Goravel 主仓库                                                                                                                                    |
-| [goravel/example](https://github.com/goravel/example)                 | Goravel 示例                                                                                                                                      |
-| [goravel/example-client](https://github.com/goravel/example-client)   | Grpc 客户端示例                                                                                                                                   |
-| [goravel/example-proto](https://github.com/goravel/example-proto)     | example 仓库 proto 依赖                                                                                                                           |
-| [goravel/example-package](https://github.com/goravel/example-package) | 扩展包示例                                                                                                                                        |
-| [goravel/docs](https://github.com/goravel/docs)                       | 使用文档                                                                                                                                          |
-| [goravel/docs-web](https://github.com/goravel/docs-web)               | Goravel 官网                                                                                                                                      |
-| [goravel/s3](https://github.com/goravel/s3)                           | Storage 模块 S3 驱动                                                                                                                              |
-| [goravel/oss](https://github.com/goravel/oss)                         | Storage 模块 OSS 驱动                                                                                                                             |
-| [goravel/cos](https://github.com/goravel/cos)                         | Storage 模块 COS 驱动                                                                                                                             |
-| [goravel/minio](https://github.com/goravel/minio)                     | Storage 模块 Minio 驱动                                                                                                                           |
-| [goravel/cloudinary](https://github.com/goravel/cloudinary)           | Storage 模块 Cloudinary 驱动                                                                                                                      |
-| [goravel/redis](https://github.com/goravel/redis)                     | Cache 模块 Redis 驱动                                                                                                                             |
-| [goravel/gin](https://github.com/goravel/gin)                         | Route 模块 Gin 驱动                                                                                                                               |
-| [goravel/fiber](https://github.com/goravel/fiber)                     | Route 模块 Fiber 驱动                                                                                                                             |
-| [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | 为 Log 模块提供日志分割功能                                                                                                                       |
-| [goravel/.github](https://github.com/goravel/.github)                 | [社区健康文件](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
+| 仓库                                                                    | 作用                                                                                                                                          |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| [goravel/goravel](https://github.com/goravel/goravel)                 | Goravel 脚手架                                                                                                                                 |
+| [goravel/framework](https://github.com/goravel/framework)             | Goravel 主仓库                                                                                                                                 |
+| [goravel/example](https://github.com/goravel/example)                 | Goravel 示例                                                                                                                                  |
+| [goravel/example-client](https://github.com/goravel/example-client)   | Grpc 客户端示例                                                                                                                                  |
+| [goravel/example-proto](https://github.com/goravel/example-proto)     | example 仓库 proto 依赖                                                                                                                         |
+| [goravel/example-package](https://github.com/goravel/example-package) | 扩展包示例                                                                                                                                       |
+| [goravel/docs](https://github.com/goravel/docs)                       | 使用文档                                                                                                                                        |
+| [goravel/docs-web](https://github.com/goravel/docs-web)               | Goravel 官网                                                                                                                                  |
+| [goravel/s3](https://github.com/goravel/s3)                           | Storage 模块 S3 驱动                                                                                                                            |
+| [goravel/oss](https://github.com/goravel/oss)                         | Storage 模块 OSS 驱动                                                                                                                           |
+| [goravel/cos](https://github.com/goravel/cos)                         | Storage 模块 COS 驱动                                                                                                                           |
+| [goravel/minio](https://github.com/goravel/minio)                     | Storage 模块 Minio 驱动                                                                                                                         |
+| [goravel/cloudinary](https://github.com/goravel/cloudinary)           | Storage 模块 Cloudinary 驱动                                                                                                                    |
+| [goravel/redis](https://github.com/goravel/redis)                     | Cache 模块 Redis 驱动                                                                                                                           |
+| [goravel/gin](https://github.com/goravel/gin)                         | Route 模块 Gin 驱动                                                                                                                             |
+| [goravel/fiber](https://github.com/goravel/fiber)                     | Route 模块 Fiber 驱动                                                                                                                           |
+| [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | 为 Log 模块提供日志分割功能                                                                                                                            |
+| [goravel/.github](https://github.com/goravel/.github) | [社区健康文件](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
 
 ## 行为准则
 

@@ -72,7 +72,7 @@ func (r *UserController) Show(ctx http.Context) http.Response {
 }
 ```
 
-你还可以通过 `any` 或 `none` 方法来一次性授权多个行为:
+你还可以通过 `any` 或 `none` 方法来一次性授权多个行为。
 
 ```go
 if facades.Gate().Any([]string{"update-post", "delete-post"}, map[string]any{
@@ -119,7 +119,7 @@ facades.Gate().Before(func(ctx context.Context, ability string, arguments map[st
 
 如果 `Before` 返回的是非 nil 结果，则该返回将会被视为最终的检查结果。
 
-你还可以使用 `After` 方法，来定义在所有授权拦截规则执行后，再次进行授权拦截规则判定：
+你还可以使用 `After` 方法，来定义在所有授权拦截规则执行后，再次进行授权拦截规则判定。
 
 ```go
 facades.Gate().After(func(ctx context.Context, ability string, arguments map[string]any, result contractsaccess.Response) contractsaccess.Response {
