@@ -4,13 +4,13 @@
 
 ## 简介
 
-Goravel 的数据库查询构造器提供了一个方便的接口来创建和执行数据库查询。 它可以用于执行应用程序中的大部分数据库操作，并且可以在所有支持的数据库系统上工作。 它可以用于执行应用程序中的大部分数据库操作，并且可以在所有支持的数据库系统上工作。
+Goravel 的数据库查询构造器提供了一个方便的接口来创建和执行数据库查询。 它可以用于执行应用程序中的大部分数据库操作，并且可以在所有支持的数据库系统上工作。
 
 Goravel 查询构造器使用参数绑定来保护你的应用程序免受 SQL 注入攻击。 不需要清理或转义传递给查询构造器的字符串。
 
 ## 运行查询
 
-框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。 框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。 框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。注意，当你想将数据绑定至 struct 或[模型](../orm/getting-started.md#模型)，需要为字段添加 tag `db`：
+框架提供了各种查询方法，可以用于检索、创建、更新和删除数据库中的数据。 注意，当你想将数据绑定至 struct 或[模型](../orm/getting-started.md#模型)，需要为字段添加 tag `db`：
 
 ```go
 type User struct {
@@ -27,7 +27,7 @@ type User struct {
 
 ### 检索所有行
 
-你可以使用 `facades.DB()` 提供的 `table` 方法开始查询。`table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果： `table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果： `table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果：
+你可以使用 `facades.DB()` 提供的 `table` 方法开始查询。 `table` 方法为指定的表返回一个链式查询构造器实例，允许在查询上链接更多约束，最后使用 `Get` 方法检索查询结果：
 
 ```go
 var users []User
@@ -130,7 +130,7 @@ err := facades.DB().Table("products").Chunk(2, func(rows []db.Row) error {
 
 ### 游标
 
-游标可以用于处理大量数据，它不会一次性将所有数据加载到内存中， 而是逐条处理数据。 而是逐条处理数据。
+游标可以用于处理大量数据，它不会一次性将所有数据加载到内存中， 而是逐条处理数据。
 
 ```go
 rows, err := facades.DB().Table("products").Cursor()
@@ -182,7 +182,7 @@ err := facades.DB().Table("users").Where("name", "John").Paginate(1, 10, &users,
 
 ## Select 语句
 
-可能你并不总是希望从数据库表中获取所有列。  可能你并不总是希望从数据库表中获取所有列。  使用 `Select` 方法，可以自定义一个 「select」 查询语句来查询指定的字段：
+可能你并不总是希望从数据库表中获取所有列。  使用 `Select` 方法，可以自定义一个 「select」 查询语句来查询指定的字段：
 
 ```go
 var users []User
@@ -198,7 +198,7 @@ err := facades.DB().Table("users").Distinct().Select("name").Get(&users)
 
 ## 原生表达式
 
-有时候你可能需要在查询中使用原生表达式。 有时候你可能需要在查询中使用原生表达式。 你可以使用 `db.Raw` 创建一个原生表达式：
+有时候你可能需要在查询中使用原生表达式。 你可以使用 `db.Raw` 创建一个原生表达式：
 
 ```go
 import "github.com/goravel/framework/database/db"
@@ -210,7 +210,7 @@ facades.DB().Model(&user).Update("age", db.Raw("age - ?", 1))
 
 ### 指定一个 Select 子句
 
-当然你可能并不总是希望从数据库表中获取所有列。 当然你可能并不总是希望从数据库表中获取所有列。 使用 `Select` 方法，你可以为查询指定一个自定义的 select 子句：
+当然你可能并不总是希望从数据库表中获取所有列。 使用 `Select` 方法，你可以为查询指定一个自定义的 select 子句：
 
 ```go
 // 选择特定字段
@@ -233,7 +233,7 @@ facades.DB().Distinct("name").Find(&users)
 
 ### WhereRaw / OrWhereRaw
 
-`WhereRaw` 和 `OrWhereRaw` 方法可用于将原始 「where」子句注入你的查询。这些方法接受一个可选的绑定数组作为它们的第二个参数： 这些方法接受一个可选的绑定数组作为它们的第二个参数： 这些方法接受一个可选的绑定数组作为它们的第二个参数：
+`WhereRaw` 和 `OrWhereRaw` 方法可用于将原始 「where」子句注入你的查询。 这些方法接受一个可选的绑定数组作为它们的第二个参数：
 
 ```go
 var users []User
@@ -257,7 +257,7 @@ err := facades.DB().OrderByRaw("age DESC, id ASC").Get(&users)
 
 ### Inner Join 语句
 
-查询构造器也可以用于编写 join 语句。 查询构造器也可以用于编写 join 语句。 查询构造器也可以用于编写 join 语句。要执行基本的 SQL "inner join"，你可以在查询构造器实例上使用 `Join` 方法：
+查询构造器也可以用于编写 join 语句。 要执行基本的 SQL "inner join"，你可以在查询构造器实例上使用 `Join` 方法：
 
 ```go
 var users []User
@@ -419,7 +419,7 @@ facades.DB().OrderByDesc("name")
 
 **Latest**
 
-`Latest` 方法可以使你轻松地通过日期对结果进行排序。 默认情况下，结果将根据 `created_at` 列进行排序： 默认情况下，结果将根据 `created_at` 列进行排序：
+`Latest` 方法可以使你轻松地通过日期对结果进行排序。 默认情况下，结果将根据 `created_at` 列进行排序：
 
 ```go
 facades.DB().Table("users").Latest().First(&user)
@@ -562,9 +562,9 @@ facades.DB().Table("users").Where("id", 1).Update(map[string]any{
 
 ### 更新或插入
 
-有时你可能希望更新数据库中的记录，但如果指定记录不存在的时候则创建它。 这时可以使用 `UpdateOrInsert` 方法。 有时你可能希望更新数据库中的记录，但如果指定记录不存在的时候则创建它。 这时可以使用 `UpdateOrInsert` 方法。 这是可以使用 `UpdateOrInsert` 方法。`UpdateOrInsert` 方法接受两个参数：一个用于查找记录的条件，以及一个包含要更改记录的键值对。
+有时你可能希望更新数据库中的记录，但如果指定记录不存在的时候则创建它。 这时可以使用 `UpdateOrInsert` 方法。 `UpdateOrInsert` 方法接受两个参数：一个用于查找记录的条件，以及一个包含要更改记录的键值对。
 
-`UpdateOrInsert` 方法将尝试使用第一个参数的列名和值来定位匹配的数据库记录。如果记录存在，则使用第二个参数更新其值。如果找不到指定记录，则会合并两个参数的属性来创建一条记录并将其插入： 如果记录存在，则使用第二个参数更新其值。 如果找不到指定记录，则会合并两个参数的属性来创建一条记录并将其插入： 如果记录存在，则使用第二个参数更新其值。 如果找不到指定记录，则会合并两个参数的属性来创建一条记录并将其插入：
+`UpdateOrInsert` 方法将尝试使用第一个参数的列名和值来定位匹配的数据库记录。 如果记录存在，则使用第二个参数更新其值。 如果找不到指定记录，则会合并两个参数的属性来创建一条记录并将其插入：
 
 ```go
 // use struct
@@ -614,7 +614,7 @@ result, err := facades.DB().Table("users").Where("id", 1).Delete()
 facades.DB().Table("users").Where("votes", ">", 100).SharedLock().Get(&users)
 ```
 
-此外，你也可以使用 `LockForUpdate` 方法。 此外，你也可以使用 `LockForUpdate` 方法。 使用「更新」锁可避免行被其它共享锁修改或选取：
+此外，你也可以使用 `LockForUpdate` 方法。 使用「更新」锁可避免行被其它共享锁修改或选取：
 
 ```go
 facades.DB().Table("users").Where("votes", ">", 100).LockForUpdate().Get(&users)
