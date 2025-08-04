@@ -94,14 +94,14 @@ validator, err := ctx.Request().Validate(map[string]string{
 
 ### 创建表单请求验证
 
-面对更复杂的验证场景，您可以创建一个「表单请求」。 表单请求是一个包含了验证逻辑的自定义请求类。 要创建一个表单请求类，请使用 `make:request` Artisan CLI 命令：
+面对更复杂的验证场景，你可以创建一个「表单请求」。 表单请求是一个包含了验证逻辑的自定义请求类。 要创建一个表单请求类，请使用 `make:request` Artisan CLI 命令：
 
 ```go
 go run . artisan make:request StorePostRequest
 go run . artisan make:request user/StorePostRequest
 ```
 
-该命令生成的表单请求类将被置于 `app/http/requests` 目录中。 如果这个目录不存在，在您运行 `make:request` 命令后将会创建这个目录。 Goravel 生成的每个表单请求都有两个方法：`Authorize`, `Rules`。 另外可以自定义 `Filters`, `Messages`, `Attributes` 和 `PrepareForValidation` 方法，进行更进一步的操作。
+该命令生成的表单请求类将被置于 `app/http/requests` 目录中。 如果这个目录不存在，在你运行 `make:request` 命令后将会创建这个目录。 Goravel 生成的每个表单请求都有两个方法：`Authorize`, `Rules`。 另外可以自定义 `Filters`, `Messages`, `Attributes` 和 `PrepareForValidation` 方法，进行更进一步的操作。
 
 `Authorize` 方法负责确定当前经过身份验证的用户是否可以执行请求操作，而 `Rules` 方法则返回适用于请求数据的验证规则：
 
@@ -151,7 +151,7 @@ func (r *PostController) Store(ctx http.Context) {
 
 ### 表单请求授权验证
 
-表单请求类内也包含了 `Authorize` 方法。 在这个方法中，您可以检查经过身份验证的用户确定其是否具有更新给定资源的权限。 例如，您可以判断用户是否拥有更新文章评论的权限。 最有可能的是，您将通过以下方法与您的 [授权与策略](../security/authorization.md) 进行交互：
+表单请求类内也包含了 `Authorize` 方法。 在这个方法中，你可以检查经过身份验证的用户确定其是否具有更新给定资源的权限。 例如，你可以判断用户是否拥有更新文章评论的权限。 最有可能的是，你将通过以下方法与你的 [授权与策略](../security/authorization.md) 进行交互：
 
 ```go
 func (r *StorePostRequest) Authorize(ctx http.Context) error {
@@ -187,7 +187,7 @@ func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
 
 ### 自定义错误消息
 
-您可以通过完善表单请求的 `Messages` 方法来自定义错误消息。 此方法应返回 `属性.规则/对应错误消息` 的 Map：
+你可以通过完善表单请求的 `Messages` 方法来自定义错误消息。 此方法应返回 `属性.规则/对应错误消息` 的 Map：
 
 ```go
 func (r *StorePostRequest) Messages() map[string]string {
@@ -200,7 +200,7 @@ func (r *StorePostRequest) Messages() map[string]string {
 
 ### 自定义验证属性
 
-Goravel 的许多内置验证规则错误消息都包含 `:attribute` 占位符。 如果您希望将验证消息的 `:attribute` 部分替换为自定义属性名称，则可以重写 `Attributes` 方法来指定自定义名称。 此方法应返回属性 / 名称对的数组：
+Goravel 的许多内置验证规则错误消息都包含 `:attribute` 占位符。 如果你希望将验证消息的 `:attribute` 部分替换为自定义属性名称，则可以重写 `Attributes` 方法来指定自定义名称。 此方法应返回属性 / 名称对的数组：
 
 ```go
 func (r *StorePostRequest) Attributes() map[string]string {
@@ -371,7 +371,7 @@ if validator.Errors().Has("email") {
 | `int`                  | 检查值是 `intX` `uintX` 类型，同时支持大小检查 `int` `int:2` `int:2,12`。 注意：[使用注意事项](#int)                                                                                                                                                                |
 | `uint`                 | 检查值是 `uintX` 类型(`value >= 0`)                                                                                                                                                                                           |
 | `bool`                 | 检查值是布尔字符串(`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false")                                                                                                         |
-| `string`               | 检查值是字符串类型，同时支持长度检查 `string` `string:2` `string:2,12` `string` `string:2` `string:2,12`                                                                                                                                                     |
+| `string`               | 检查值是字符串类型，同时支持长度检查 `string` `string:2` `string:2,12`                                                                                                                                                                                       |
 | `float`                | 检查值是 `float(floatX)` 类型                                                                                                                                                                                                                    |
 | `slice`                | 检查值是 `slice` 类型(`[]intX` `[]uintX` `[]byte` `[]string` 等)                                                                                                                                                               |
 | `in`                   | `in:foo,bar,…` 检查值是否在给定的枚举列表([]string, []intX, []uintX)中    |
@@ -433,7 +433,7 @@ if validator.Errors().Has("email") {
 
 ## 自定义验证规则
 
-Goravel 提供了各种有用的验证规则，但是，你可能希望定义自己的规则。 注册自定义验证规则的方法之一是使用规则对象。 要生成新的规则，您可以使用 `make:rule` Artisan 命令。
+Goravel 提供了各种有用的验证规则，但是，你可能希望定义自己的规则。 注册自定义验证规则的方法之一是使用规则对象。 要生成新的规则，你可以使用 `make:rule` Artisan 命令。
 
 让我们使用这个命令生成一个验证字符串是否为大写的规则。 Goravel 会将新规则放在 `app/rules` 目录中。 如果此目录不存在，Goravel 将在您执行 Artisan 命令创建规则时创建它。
 
@@ -534,7 +534,7 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 
 ## 自定义过滤规则
 
-Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自己的规则。 要生成新的规则，您可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个转换 string 为 int 的规则。 这个规则框架已经内置，这里只是为了示例。 Goravel 会将新规则放在 `app/filters` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建规则时创建它：
+Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自己的规则。 要生成新的规则，你可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个转换 string 为 int 的规则。 这个规则框架已经内置，这里只是为了示例。 Goravel 会将新规则放在 `app/filters` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建规则时创建它：
 
 ```go
 go run . artisan make:filter ToInt
