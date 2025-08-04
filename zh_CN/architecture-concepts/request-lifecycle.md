@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 应用的所有请求入口都是 `main.go` 文件，该文件中使用 `bootstrap.Boot()` 引导框架加载。 该文件中使用 `bootstrap.Boot()` 引导框架加载。
+Goravel 应用的所有请求入口都是 `main.go` 文件，该文件中使用 `bootstrap.Boot()` 引导框架加载。 该文件中使用 `bootstrap.Boot()` 引导框架加载。 该文件中使用 `bootstrap.Boot()` 引导框架加载。
 
 然后在 `bootstrap/app.go` 脚本中创建 Goravel 实例 `app := foundation.Application{}`。
 
