@@ -164,16 +164,16 @@ err := ctx.Request().BindQuery(&test)
 
 ### 获取 Cookie
 
-Goravel 提供了一种简单的方法来处理 `cookie`。 使用 `Request` 实例上的 `Cookie` 方法获取 `cookie` 的值，如果 `cookie` 不存在，则返回空字符串。 也可以在第二个参数上定义一个默认值。 使用 `Request` 实例上的 `Cookie` 方法获取 `cookie` 的值，如果 `cookie` 不存在，则返回空字符串。 也可以在第二个参数上定义一个默认值。
+Goravel 提供了一种简单的方法来处理 `cookie`。 使用 `Request` 实例上的 `Cookie` 方法获取 `cookie` 的值，如果 `cookie` 不存在，则返回空字符串。 也可以在第二个参数上定义一个默认值。
 
 ```go
 value := ctx.Request().Cookie("name")
 value := ctx.Request().Cookie("name", "default")
 ```
 
-## 文件
+## 获取上传的文件
 
-### 获取上传的文件
+### 文件
 
 ```go
 file, err := ctx.Request().File("file")
