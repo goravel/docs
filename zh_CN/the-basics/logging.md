@@ -85,7 +85,6 @@ facades.Log().User("John").Debug(message)
 
 如果你想定义一个完全自定义的驱动，可以在 `config/logging.go` 配置文件中指定 `custom` 驱动类型。
 然后包含 `via` 选项，实现 `framework\contracts\log\Logger` 接口：
-然后包含 `via` 选项，实现 `framework\contracts\log\Logger` 接口：
 
 ```go
 // config/logging.go 配置
