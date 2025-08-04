@@ -74,10 +74,10 @@ Goravel 默认自带 `Dockerfile` 与 `docker-compose.yml` 文件，可以直接
 docker build .
 ```
 
-If you encounter slow download dependencies and time zone issues, you can optimize the Dockerfile content like the following script:
+国内会有下载依赖较慢与时区问题，可以将 Dockerfile 内容替换为下面脚本：
 
 ```dockerfile
-# China Special
+# 国内设置
 
 FROM golang:alpine AS builder
 ENV GO111MODULE=on \
