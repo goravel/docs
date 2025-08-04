@@ -57,7 +57,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
 
 ## 设置发件人
 
-默认框架会使用 `config/mail.go` 配置文件中的 `MAIL_FROM_ADDRESS` 与 `MAIL_FROM_NAME` 作为全局发件人。 你也可以自定义发件人，但需要注意发送邮箱需要与配置的 STMP 保持一致： 你也可以自定义发件人，但需要注意发送邮箱需要与配置的 STMP 保持一致：
+默认框架会使用 `config/mail.go` 配置文件中的 `MAIL_FROM_ADDRESS` 与 `MAIL_FROM_NAME` 作为全局发件人。 你也可以自定义发件人，但需要注意发送邮箱需要与配置的 STMP 保持一致：
 
 ```go
 import "github.com/goravel/framework/mail"
@@ -75,7 +75,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
 
 ## 使用 Mailable
 
-邮件的所有参数都可以在一个 `Mailable` struct 中设置。 这些 struct 存储在 `app/mails` 目录中。 可以通过 `make:mail` Artisan 命令快速创建一个 `Mailable`： 这些 struct 存储在 `app/mails` 目录中。 可以通过 `make:mail` Artisan 命令快速创建一个 `Mailable`：
+邮件的所有参数都可以在一个 `Mailable` struct 中设置。 这些 struct 存储在 `app/mails` 目录中。 可以通过 `make:mail` Artisan 命令快速创建一个 `Mailable`：
 
 ```bash
 go run . artisan make:mail OrderShipped
