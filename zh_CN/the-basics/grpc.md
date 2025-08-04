@@ -6,6 +6,10 @@
 
 Grpc 模块可以使用 `facades.Grpc()` 进行操作。
 
+## 配置
+
+在 `config/grpc.go` 中进行 Grpc 模块的配置，其中 `grpc.host` 配置 server 的域名，`grpc.clients` 配置 client 的相关信息。
+
 ## 控制器
 
 控制器文件可以定义在 `/app/grpc/controllers` 目录中。

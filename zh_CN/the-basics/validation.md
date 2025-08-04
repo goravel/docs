@@ -136,8 +136,6 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
 }
 ```
 
-因此，如何评价审定规则？ 你需要做的只是在你的控制器方法上输入请求。 传入的表单请求在调用控制器方法前已验证，意味着你不需要用任何验证日志打勾控制你的控制器：
-
 然后你可以在控制器中使用 `ValidateRequest` 方法验证该表单：
 
 ```go

@@ -136,8 +136,6 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
 }
 ```
 
-So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
-
 Then you can use the `ValidateRequest` method to validate the request in the controller:
 
 ```go

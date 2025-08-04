@@ -6,6 +6,10 @@
 
 Grpc module can be operated by `facades.Grpc()`.
 
+## Configuration
+
+In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.clients` configures the relevant information of the client.
+
 ## Controllers
 
 Controllers can be defined in the `/app/grpc/controllers` directory.

@@ -189,8 +189,8 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | Get                         | [查询多条数据](#查询多条数据)                     |
 | Group                       | [Group 查询](#group-by-having)                    |
 | Having                      | [Having 查询](#group-by-having)                   |
-| Join                        | [Join 查询](#join-查询)                           |
-| Limit                       | [Limit 查询](#limit-查询)                         |
+| Join                        | [Join 查询](#join)                                |
+| Limit                       | [Limit 查询](#limit)                              |
 | LockForUpdate               | [悲观锁](#悲观锁)                                 |
 | Model                       | [指定模型](#指定表查询)                           |
 | Offset                      | [指定查询开始位置](#指定查询开始位置)             |
@@ -291,7 +291,7 @@ facades.Orm().Connection("mysql").Query()
 facades.Orm().WithContext(ctx).Query()
 ```
 
-### Select
+### 查询
 
 #### 查询一条数据
 
@@ -381,7 +381,7 @@ err := facades.Orm().Query().FirstOrFail(&user)
 // if errors.Is(err, errors.OrmRecordNotFound) {}
 ```
 
-### Where
+### Where 条件
 
 ```go
 facades.Orm().Query().Where("name", "tom")
@@ -429,7 +429,7 @@ facades.Orm().Query().OrWhereJsonLength('options->languages', 1).First(&user)
 facades.Orm().Query().OrWhereJsonLength('options->languages > ?', 1).First(&user)
 ```
 
-### Limit
+### 指定查询数量
 
 ```go
 var users []models.User
@@ -437,7 +437,7 @@ facades.Orm().Query().Where("name", "tom").Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3;
 ```
 
-### Offset
+### 指定查询开始位置
 
 ```go
 var users []models.User
@@ -445,7 +445,7 @@ facades.Orm().Query().Where("name", "tom").Offset(5).Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3 OFFSET 5;
 ```
 
-### Order
+### 排序
 
 ```go
 var users []models.User
@@ -462,7 +462,7 @@ facades.Orm().Query().Where("name", "tom").InRandomOrder().Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY RAND();
 ```
 
-### Paginate
+### 分页
 
 ```go
 var users []models.User
@@ -516,7 +516,7 @@ facades.Orm().Query().ToRawSql().Get(models.User{})
 
 `ToSql` 与 `ToRawSql` 后可以调用的方法：`Count`, `Create`, `Delete`, `Find`, `First`, `Get`, `Pluck`, `Save`, `Sum`, `Update`。
 
-### Count
+### 检索聚合
 
 ```go
 count, err := facades.Orm().Query().Table("users").Count()
@@ -545,7 +545,7 @@ facades.Orm().Query().Model(&models.User{}).Select("name, sum(age) as total").Gr
 // SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "tom";
 ```
 
-### Join
+### Join 查询
 
 ```go
 type Result struct {
@@ -558,7 +558,7 @@ facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").J
 // SELECT users.name, emails.email FROM `users` LEFT JOIN emails ON emails.user_id = users.id;
 ```
 
-### Create
+### 创建
 
 ```go
 user := models.User{Name: "tom", Age: 18}
@@ -595,7 +595,7 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 
 > `created_at` 和 `updated_at` 字段将会被自动填充。
 
-### Cursor
+### 游标
 
 可用于在查询数万条模型记录时减少内存的使用。 注意，`Cursor` 无法与预加载 `With` 一同使用，请在 `for` 循环中使用[延迟预加载](./relationships.md#延迟预加载)实现加载关联数据。
 
@@ -627,7 +627,7 @@ facades.Orm().Query().Save(&user)
 // UPDATE `users` SET `created_at`='2023-09-14 16:03:29.454',`updated_at`='2023-09-18 21:05:59.896',`name`='tom',`age`=100,`avatar`='' WHERE `id` = 1;
 ```
 
-#### 更新
+#### 更新单一字段
 
 ```go
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
@@ -664,7 +664,7 @@ facades.Orm().Query().UpdateOrCreate(&user, models.User{Name: "name"}, models.Us
 // UPDATE `users` SET `name`='name',avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE users`.`deleted_at` IS NULL AND `id` = 1;
 ```
 
-### Delete
+### 删除
 
 根据模型删除，该方法将返回受影响的行数：
 
@@ -772,13 +772,13 @@ res, err := facades.Orm().Query().Exec("DROP TABLE users")
 num := res.RowsAffected
 ```
 
-### Exists
+### 数据是否存在
 
 ```go
 exists, err := facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists()
 ```
 
-### Restore
+### 恢复软删除
 
 ```go
 facades.Orm().Query().WithTrashed().Restore(&models.User{ID: 1})
@@ -786,7 +786,7 @@ facades.Orm().Query().Model(&models.User{ID: 1}).WithTrashed().Restore()
 // UPDATE `users` SET `deleted_at`=NULL WHERE `id` = 1;
 ```
 
-### Transaction
+### 事务
 
 可以使用 `Transaction` 方法执行事务：
 
@@ -867,7 +867,7 @@ var users []models.User
 facades.Orm().Query().Where("votes", ">", 100).LockForUpdate().Get(&users)
 ```
 
-### Sum
+### 求和
 
 ```go
 sum, err := facades.Orm().Query().Model(models.User{}).Sum("id")
