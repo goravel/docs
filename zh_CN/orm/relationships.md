@@ -181,7 +181,7 @@ type Role struct {
 
 ### 自定义中间表
 
-通常，中间表外键是通过使用父模型的「蛇形」方式，然后再加上 `_id`，您可以使用 `joinForeignKey` 与 `joinReferences` 对它进行重写：
+通常，中间表外键是通过使用父模型的「蛇形」方式，然后再加上 `_id`，你可以使用 `joinForeignKey` 与 `joinReferences` 对它进行重写：
 
 ```go
 type User struct {
@@ -278,7 +278,7 @@ type Comment struct {
 }
 ```
 
-您可以使用标签 `polymorphicValue` 来更改多态类型的值，例如：
+你可以使用标签 `polymorphicValue` 来更改多态类型的值，例如：
 
 ```go
 type Post struct {

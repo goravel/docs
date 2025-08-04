@@ -68,7 +68,7 @@ ctx.Response().Header("Content", "Goravel").String(http.StatusOK, "Hello Goravel
 
 ### 设置 Cookie
 
-使用 `response` 实例中的 `Cookie` 方法设置 `cookie`。 `Cookie` 方法接受一个 `http.Cookie` 实例，允许您设置各种 `cookie` 选项。
+使用 `response` 实例中的 `Cookie` 方法设置 `cookie`。 `Cookie` 方法接受一个 `http.Cookie` 实例，允许你设置各种 `cookie` 选项。
 
 ```go
 import (
@@ -157,9 +157,9 @@ origin := ctx.Response().Origin()
 
 `origin` 包含以下方法：
 
-| 方法名    | 作用          |
-| ------ | ----------- |
-| Body   | 获取响应数据      |
+| 方法名 | 作用            |
+| ------ | --------------- |
+| Body   | 获取响应数据    |
 | Header | 获取响应 header |
-| Size   | 获取响应大小      |
-| Status | 获取响应状态码     |
+| Size   | 获取响应大小    |
+| Status | 获取响应状态码  |

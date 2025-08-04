@@ -30,7 +30,7 @@
 
 ### resources 目录
 
-`resources` 目录包含您的[视图](../the-basics/views.md)，以及原始的、未编译的资源文件，例如 CSS 或 JavaScript。
+`resources` 目录包含你的[视图](../the-basics/views.md)，以及原始的、未编译的资源文件，例如 CSS 或 JavaScript。
 
 ### routes 目录
 

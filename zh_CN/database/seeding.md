@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 内置了一个可为您的数据库填充测试数据的 struct。 所有的填充 struct 都放在 `database/seeds` 目录下。 Goravel 默认定义了一个 `DatabaseSeeder` struct。
+Goravel 内置了一个可为你的数据库填充测试数据的 struct。 所有的填充 struct 都放在 `database/seeds` 目录下。 Goravel 默认定义了一个 `DatabaseSeeder` struct。
 
 ## 编写 Seeders
 
@@ -14,7 +14,7 @@ Goravel 内置了一个可为您的数据库填充测试数据的 struct。 所�
 go run . artisan make:seeder UserSeeder
 ```
 
-Seeder struct 只包含两个方法：`Signature`, `Run`。 `Signature` 方法定义 Seeder 的名称，`Run` 方法会在执行 `db:seed` 这个 Artisan command 时被调用。 在 `Run` 方法里，您可以按需在数据库中插入数据。
+Seeder struct 只包含两个方法：`Signature`, `Run`。 `Signature` 方法定义 Seeder 的名称，`Run` 方法会在执行 `db:seed` 这个 Artisan command 时被调用。 在 `Run` 方法里，你可以按需在数据库中插入数据。
 
 如下所示，在默认的 `DatabaseSeeder` struct 中的 `Run` 方法中添加一条数据插入语句：
 
@@ -71,13 +71,13 @@ func (s *DatabaseSeeder) Run() error {
 
 ## 运行 Seeders
 
-您可以使用 Artisan 命令 `db:seed` 来填充数据库。 默认情况下，`db:seed` 命令将运行 `database/seeders/database_seeder.go`，这个 struct 又可以调用其他 seed。 不过，你也可以使用 `--seeder` 选项来指定一个特定的 seeder：
+你可以使用 Artisan 命令 `db:seed` 来填充数据库。 默认情况下，`db:seed` 命令将运行 `database/seeders/database_seeder.go`，这个 struct 又可以调用其他 seed。 不过，你也可以使用 `--seeder` 选项来指定一个特定的 seeder：
 
 ```shell
 go run . artisan db:seed
 ```
 
-如果您想在运行 `db:seed` 命令时执行其他 seeder，可以在 `app/providers/database_service_provider.go` 中注册该 seeder，如果是通过 `make:seeder` 命令生成的 seeder，则不需要手动注册，框架会自动注册。
+如果你想在运行 `db:seed` 命令时执行其他 seeder，可以在 `app/providers/database_service_provider.go` 中注册该 seeder，如果是通过 `make:seeder` 命令生成的 seeder，则不需要手动注册，框架会自动注册。
 
 ```go
 // app/providers/database_service_provider.go
@@ -92,7 +92,7 @@ func (receiver *DatabaseServiceProvider) Boot(app foundation.Application) {
 go run . artisan db:seed --seeder=UserSeeder PhotoSeeder // The signature of seeder
 ```
 
-您还可以使用 `migrate:fresh` 或 `migrate:refresh` 命令结合 `--seed` 选项，这将删除数据库中所有表并重新运行所有迁移。 此命令对于完全重建数据库非常有用。 也可以使用 `--seeder` 运行一个指定的 seeder：
+你还可以使用 `migrate:fresh` 或 `migrate:refresh` 命令结合 `--seed` 选项，这将删除数据库中所有表并重新运行所有迁移。 此命令对于完全重建数据库非常有用。 也可以使用 `--seeder` 运行一个指定的 seeder：
 
 ```shell
 go run . artisan migrate:fresh --seed

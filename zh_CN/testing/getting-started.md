@@ -168,7 +168,7 @@ image, err := facades.Testing().Docker().Image(contractstesting.Image{
 
 #### 构建镜像
 
-镜像初始化完毕后，您可以使用 `Build` 方法构建镜像：
+镜像初始化完毕后，你可以使用 `Build` 方法构建镜像：
 
 ```go
 err := database.Build()
@@ -184,7 +184,7 @@ config := cache.Config()
 
 #### 运行填充
 
-如果您在测试时希望使用 [数据填充](../database/seeding.md) 来填充数据库，可以调用 `Seed` 方法。 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它应该执行您的所有其他种子器。 或者，您可以传递指定的种子器类名给 `Seed` 方法：
+如果你在测试时希望使用 [数据填充](../database/seeding.md) 来填充数据库，可以调用 `Seed` 方法。 默认情况下，`Seed` 方法将会执行 `DatabaseSeeder`，它应该执行你的所有其他种子器。 或者，你可以传递指定的种子器类名给 `Seed` 方法：
 
 ```go
 err := database.Seed()
@@ -237,7 +237,7 @@ func (s *ExampleTestSuite) TestIndex() {
 
 #### 卸载镜像
 
-子包内测试用例执行完毕后，镜像将在一小时后自动卸载，您也可以使用 `Shutdown` 方法手动卸载镜像。
+子包内测试用例执行完毕后，镜像将在一小时后自动卸载，你也可以使用 `Shutdown` 方法手动卸载镜像。
 
 ```go
 err := database.Shutdown()

@@ -19,13 +19,13 @@ go run . artisan list
 go run . artisan help migrate
 ```
 
-如果您不想重复输入 `go run . artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
+如果你不想重复输入 `go run . artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 ```
 
-随后您就可以简单的运行以下命令：
+随后你就可以简单的运行以下命令：
 
 ```shell
 artisan make:controller DemoController

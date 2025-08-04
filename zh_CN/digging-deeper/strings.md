@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 提供了一个流畅的字符串操作库，允许你轻松地操作字符串。 可以使用 `String` 方法创建一个 `string` 实例，允许你调用各种方法，每个方法都会返回当前字符串实例，允许您将多个方法链接在一起。 要在应用链式操作后获得最终字符串值，您可以调用 `String` 方法，返回底部的 `string` 值。
+Goravel 提供了一个流畅的字符串操作库，允许你轻松地操作字符串。 可以使用 `String` 方法创建一个 `string` 实例，允许你调用各种方法，每个方法都会返回当前字符串实例，允许你将多个方法链接在一起。 要在应用链式操作后获得最终字符串值，你可以调用 `String` 方法，返回底部的 `string` 值。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -180,7 +180,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("framework/support/str").Dirname().String() // "framework/support"
 ```
 
-可选，您可以提供要从路径中删除的目录级别。
+可选，你可以提供要从路径中删除的目录级别。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -229,7 +229,7 @@ str.Of("This is a beautiful morning").
     }).String() // "...is a beautiful morn...
 ```
 
-可选，您可以使用 `Omission` 选项更改用于指示摘录的字符串。
+可选，你可以使用 `Omission` 选项更改用于指示摘录的字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -527,7 +527,7 @@ str.Of("Hello").PadRight(10, "_").String() // "Hello_____"
 
 ### `Pipe`
 
-`Pipe` 方法允许您使用给定的闭包转换字符串。
+`Pipe` 方法允许你使用给定的闭包转换字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -579,7 +579,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello World").Replace("World", "Krishan").String() // "Hello Krishan"
 ```
 
-`Replace` 方法默认区分大小写。 如果您希望方法不区分大小写，可以将 `false` 作为第三个参数传递。
+`Replace` 方法默认区分大小写。 如果你希望方法不区分大小写，可以将 `false` 作为第三个参数传递。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -850,7 +850,7 @@ str.Of("Bowen").When(true, func(s *str.String) *str.String {
 }).String() // "Bowen Han"
 ```
 
-如果需要，您可以提供第三个参数给 `When` 方法，该方法在条件为 `false` 时执行。
+如果需要，你可以提供第三个参数给 `When` 方法，该方法在条件为 `false` 时执行。
 
 ### `WhenContains`
 
@@ -864,7 +864,7 @@ str.Of("Hello Bowen").WhenContains("Hello", func(s *str.String) *str.String {
 }).String() // "Hello Bowen Han"
 ```
 
-如果需要，您可以提供第三个参数给 `WhenContains` 方法，该方法在字符串不包含给定值时执行。
+如果需要，你可以提供第三个参数给 `WhenContains` 方法，该方法在字符串不包含给定值时执行。
 
 ### `WhenContainsAll`
 
@@ -878,7 +878,7 @@ str.Of("Hello Bowen").WhenContainsAll([]string{"Hello", "Bowen"}, func(s *str.St
 }).String() // "Hello Bowen Han"
 ```
 
-如果需要，您可以提供第三个参数给 `WhenContainsAll` 方法，该方法在字符串不包含所有给定值时执行。
+如果需要，你可以提供第三个参数给 `WhenContainsAll` 方法，该方法在字符串不包含所有给定值时执行。
 
 ### `WhenEmpty`
 
@@ -1028,7 +1028,7 @@ str.Of("Hello, World!").WordCount() // 2
 
 ### `Words`
 
-`Words` 方法限制字符串中的单词数。 如果需要，您可以提供第二个参数来更改用于指示截断的字符串。
+`Words` 方法限制字符串中的单词数。 如果需要，你可以提供第二个参数来更改用于指示截断的字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
