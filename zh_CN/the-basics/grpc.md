@@ -41,7 +41,7 @@ func (r *UserController) Show(ctx context.Context, req *protos.UserRequest) (pro
 
 ## 定义路由
 
-所有路由文件可以定义在 `/routes` 目录中，例如 `/routes/grpc.go`。 然后注册到 `app/providers/grpc_service_provider.go` 文件中，以实现路由的绑定。 然后注册到 `app/providers/grpc_service_provider.go` 文件中，以实现路由的绑定。
+所有路由文件可以定义在 `/routes` 目录中，例如 `/routes/grpc.go`。 然后注册到 `app/providers/grpc_service_provider.go` 文件中，以实现路由的绑定。
 
 ```go
 // routes/grpc.go
@@ -101,7 +101,7 @@ go func() {
 
 **服务端拦截器**
 
-在 `app/grpc/kernel.go:UnaryServerInterceptors` 方法中设置服务端拦截器。 例如： 例如：
+在 `app/grpc/kernel.go:UnaryServerInterceptors` 方法中设置服务端拦截器。 例如：
 
 ```go
 // app/grpc/kernel.go
@@ -120,7 +120,7 @@ func (kernel *Kernel) UnaryServerInterceptors() []grpc.UnaryServerInterceptor {
 
 **客户端拦截器**
 
-在 `app/grpc/kernel.go:UnaryClientInterceptorGroups` 方法中设置客户端拦截器，该方法可以对拦截器进行分组。 例如设置 `trace` 分组下包含 `interceptors.Client`。 例如设置 `trace` 分组下包含 `interceptors.Client`。
+在 `app/grpc/kernel.go:UnaryClientInterceptorGroups` 方法中设置客户端拦截器，该方法可以对拦截器进行分组。 例如设置 `trace` 分组下包含 `interceptors.Client`。
 
 ```go
 // app/grpc/kernel.go
@@ -139,7 +139,7 @@ func (kernel *Kernel) UnaryClientInterceptorGroups() map[string][]grpc.UnaryClie
 }
 ```
 
-分组名 `trace` 可以被应用到配置项 `grpc.clients.interceptors` 上，这样该 `Client` 就会被应用该分组下的所有拦截器。 例如： 例如：
+分组名 `trace` 可以被应用到配置项 `grpc.clients.interceptors` 上，这样该 `Client` 就会被应用该分组下的所有拦截器。 例如：
 
 ```go
 package config
