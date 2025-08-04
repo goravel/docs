@@ -12,10 +12,10 @@ Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP
 以下是可用的配置选项：
 
 - `base_url`: 设置相对路径的根 URL。 自动为不以 `http://` 或 `https://` 开头的请求添加前缀。
-- `timeout`（默认值：`30s`）: 完整请求生命周期的全局超时时长（连接 + 任何重定向 + 读取响应体）。 零表示不超时。 零表示不超时。
-- `max_idle_conns`: 最大空闲（保持活动）连接数。 零表示没有限制。 零表示没有限制。
+- `timeout`（默认值：`30s`）: 完整请求生命周期的全局超时时长（连接 + 任何重定向 + 读取响应体）。 零表示不超时。
+- `max_idle_conns`: 最大空闲（保持活动）连接数。 零表示没有限制。
 - `max_idle_conns_per_host`: 最大空闲（保持活动）连接数。
-- `max_conns_per_host`: 限制总连接数，包括正在拨号、活动和空闲状态的连接。 零表示没有限制。 零表示没有限制。
+- `max_conns_per_host`: 限制总连接数，包括正在拨号、活动和空闲状态的连接。 零表示没有限制。
 - `idle_conn_timeout`: 空闲（保持活动）连接在自行关闭之前保持空闲的最大时长。
 
 ```go
@@ -135,7 +135,6 @@ response, err := facades.Http().
 
 对于像 `POST`、`PUT`、`PATCH` 和 `DELETE` 这样的 HTTP 动词，它们接受 `io.Reader` 作为第二个参数。
 为了简化构建请求负载（payload），框架提供了构建请求体的实用方法。
-为了简化构建请求负载（payload），框架提供了构建请求体的实用方法。
 
 ```go
 import "github.com/goravel/framework/support/http"
@@ -227,7 +226,6 @@ response, err := facades.Http().
 :::tip
 `WithToken` 方法还接受一个可选的第二个参数，用于指定令牌类型（例如，“Bearer”、“Token”）。
 如果未提供类型，则默认为“Bearer”。
-如果未提供类型，则默认为“Bearer”。
 
 ```go
 response, err := facades.Http().
@@ -248,7 +246,6 @@ response, err := facades.Http().
 ### 上下文
 
 你可以使用 `WithContext` 使你的 HTTP 请求具有上下文感知能力。
-这允许你控制请求的生命周期，例如，通过设置超时或启用取消。
 这允许你控制请求的生命周期，例如，通过设置超时或启用取消。
 
 ```go
