@@ -13,19 +13,19 @@ go run . artisan list
 ./artisan list
 ```
 
-每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。 只需要在命令前加上 help 即可查看命令帮助界面。 只需要在命令前加上 help 即可查看命令帮助界面。
+每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。 只需要在命令前加上 help 即可查看命令帮助界面。
 
 ```shell
 go run . artisan help migrate
 ```
 
-如果你不想重复输入 `go run . artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
+如果您不想重复输入 `go run . artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 ```
 
-随后你就可以简单的运行以下命令：
+随后您就可以简单的运行以下命令：
 
 ```shell
 artisan make:controller DemoController
@@ -48,7 +48,7 @@ go run . artisan make:command user/SendEmails
 
 ### 命令结构
 
-生成命令后，需要给该类的 signature 和 description 属性定义适当的值。 执行命令时将调用`handle`方法。 你可以将命令逻辑放在此方法中。 执行命令时将调用`handle`方法。 你可以将命令逻辑放在此方法中。
+生成命令后，需要给该类的 signature 和 description 属性定义适当的值。 执行命令时将调用`handle`方法。 你可以将命令逻辑放在此方法中。
 
 ```go
 package commands
@@ -146,7 +146,7 @@ go run . artisan emails --lang=Chinese
 go run . artisan emails -l=Chinese
 ```
 
-注意：同时使用参数与选项时，选项要在参数之前定义。 例如： 例如：
+注意：同时使用参数与选项时，选项要在参数之前定义。 例如：
 
 ```shell
 // 正确
@@ -161,7 +161,7 @@ go run . artisan emails name --lang=Chinese name
 
 #### 问题
 
-除了参数和选项，你还可以在命令执行过程中提示用户输入。 `Ask` 方法将提示用户回答问题并返回他们的响应： `Ask` 方法将提示用户回答问题并返回他们的响应：
+除了参数和选项，你还可以在命令执行过程中提示用户输入。 `Ask` 方法将提示用户回答问题并返回他们的响应：
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
@@ -203,7 +203,7 @@ type AskOption struct {
 }
 ```
 
-有时你可能需要隐藏用户输入，例如提示用户输入密码。 你可以使用 `Secret` 方法隐藏用户输入： 你可以使用 `Secret` 方法隐藏用户输入：
+有时你可能需要隐藏用户输入，例如提示用户输入密码。 你可以使用 `Secret` 方法隐藏用户输入：
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
