@@ -463,7 +463,7 @@ facades.DB().Table("users").When(1 == 1, func(query db.Query) db.Query {
 }).First(&user)
 ```
 
-你也可以将另一个闭包作为第三个参数传递给 `When` 方法。 这个闭包则旨在第一个参数结果为 false 时才会执行： 这个闭包则旨在第一个参数结果为 false 时才会执行：
+你也可以将另一个闭包作为第三个参数传递给 `When` 方法。 这个闭包则旨在第一个参数结果为 false 时才会执行：
 
 ```go
 facades.DB().Table("users").When(1 != 1, func(query db.Query) db.Query {
@@ -608,7 +608,7 @@ result, err := facades.DB().Table("users").Where("id", 1).Delete()
 
 查询构造器也包含了一些可以帮助你在 `select` 语句中实现「悲观锁定」的函数。
 
-若要在查询中使用「共享锁」，你可以使用 `SharedLock` 方法。 若要在查询中使用「共享锁」，你可以使用 `SharedLock` 方法。 共享锁可防止选中的行被篡改，直到事务被提交为止：
+若要在查询中使用「共享锁」，你可以使用 `SharedLock` 方法。 共享锁可防止选中的行被篡改，直到事务被提交为止：
 
 ```go
 facades.DB().Table("users").Where("votes", ">", 100).SharedLock().Get(&users)
