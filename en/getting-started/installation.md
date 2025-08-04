@@ -33,6 +33,8 @@ cp .env.example .env
 go run . artisan key:generate
 ```
 
+Please confirm your network if you encounter slow download dependencies.
+
 ## Start HTTP Service
 
 ### Start Service According To .env File In The Root Directory
