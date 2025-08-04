@@ -8,7 +8,7 @@
 
 ## 配置
 
-数据库迁移文件存放在 `database/migrations` 目录下。 你可以在 `config/database.go` 文件中配置数据库连接信息。
+数据库迁移文件存放在 `database/migrations` 目录下。 你可以在 `config/database.go` 文件中配置数据库连接信息。 你可以在 `config/database.go` 文件中配置数据库连接信息。
 
 ```go
 "migrations": map[string]any{
@@ -25,7 +25,7 @@
 go run . artisan make:migration create_users_table
 ```
 
-该命令会在 `database/migrations` 目录下生成迁移文件。 该命令会在 `database/migrations` 目录下生成迁移文件，所有迁移文件都以一个时间戳为开头，Goravel 将以此作为迁移文件的执行顺序。
+该命令会在 `database/migrations` 目录下生成迁移文件。 该命令会在 `database/migrations` 目录下生成迁移文件。 该命令会在 `database/migrations` 目录下生成迁移文件，所有迁移文件都以一个时间戳为开头，Goravel 将以此作为迁移文件的执行顺序。
 
 ### 快捷生成
 
@@ -126,13 +126,13 @@ go run . artisan migrate:status
 
 ## 回滚迁移
 
-如果要回滚最后一次迁移操作，可以使用 Artisan 命令 `rollback`。 该命令会回滚最后「一批」的迁移，这可能包含多个迁移文件：
+如果要回滚最后一次迁移操作，可以使用 Artisan 命令 `rollback`。 该命令会回滚最后「一批」的迁移，这可能包含多个迁移文件： 该命令会回滚最后「一批」的迁移，这可能包含多个迁移文件：
 
 ```shell
 go run . artisan migrate:rollback
 ```
 
-通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。例如，以下命令将回滚最后五个迁移： 例如，以下命令将回滚最后五个迁移：
+通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。例如，以下命令将回滚最后五个迁移： 例如，以下命令将回滚最后五个迁移： 例如，以下命令将回滚最后五个迁移：
 
 ```shell
 go run . artisan migrate:rollback --step=5
@@ -146,13 +146,13 @@ go run . artisan migrate:reset
 
 ### 使用单个命令同时进行回滚和迁移操作
 
-命令 `migrate:refresh` 首先会回滚已运行过的所有迁移，随后会执行 `migrate`。这一命令可以高效地重建你的整个数据库： 这一命令可以高效地重建你的整个数据库：
+命令 `migrate:refresh` 首先会回滚已运行过的所有迁移，随后会执行 `migrate`。这一命令可以高效地重建你的整个数据库： 这一命令可以高效地重建你的整个数据库： 这一命令可以高效地重建你的整个数据库：
 
 ```shell
 go run . artisan migrate:refresh
 ```
 
-通过在命令 `refresh` 中使用 `step` 参数，你可以回滚并重新执行指定数量的迁移操作。 例如，下列命令会回滚并重新执行最后五个迁移操作：
+通过在命令 `refresh` 中使用 `step` 参数，你可以回滚并重新执行指定数量的迁移操作。 例如，下列命令会回滚并重新执行最后五个迁移操作： 例如，下列命令会回滚并重新执行最后五个迁移操作：
 
 ```shell
 go run . artisan migrate:refresh --step=5
@@ -264,7 +264,7 @@ table.Enum("num", []any{1, 2})
 
 #### ID
 
-`ID` 方法是 `BigIncrements` 方法的别名。 默认情况下，该方法将创建一个 `id` 列；但是，如果你想要为该列分配一个不同的名称，可以传递一个列名称：
+`ID` 方法是 `BigIncrements` 方法的别名。 `ID` 方法是 `BigIncrements` 方法的别名。 默认情况下，该方法将创建一个 `id` 列；但是，如果你想要为该列分配一个不同的名称，可以传递一个列名称：
 
 ```go
 table.ID()
@@ -273,7 +273,7 @@ table.ID("user_id")
 
 #### SoftDeletes
 
-`SoftDeletes` 方法添加了一个可以为空的 `deleted_at` `TIMESTAMP` 列。 `SoftDeletes` 方法添加了一个可以为空的 `deleted_at` `TIMESTAMP` 列。此列旨在存储 Orm 「软删除」功能所需的 `deleted_at` 时间戳：
+`SoftDeletes` 方法添加了一个可以为空的 `deleted_at` `TIMESTAMP` 列。 `SoftDeletes` 方法添加了一个可以为空的 `deleted_at` `TIMESTAMP` 列。此列旨在存储 Orm 「软删除」功能所需的 `deleted_at` 时间戳： `SoftDeletes` 方法添加了一个可以为空的 `deleted_at` `TIMESTAMP` 列。此列旨在存储 Orm 「软删除」功能所需的 `deleted_at` 时间戳：
 
 ```go
 table.SoftDeletes()
