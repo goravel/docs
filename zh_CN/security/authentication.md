@@ -155,7 +155,7 @@ facades.Auth().Provider("custom-provider", func(ctx http.Context) (auth.UserProv
 })
 ```
 
-使用 `Provider` 方法注册提供器后，你可以在 `auth.go` 配置文件中使用自定义的用户提供器。 首先，定义一个使用新驱动程序的 `provider`：
+使用 `Provider` 方法注册提供器后，你可以在 `auth.go` 配置文件中使用自定义的用户提供器。 首先，定义一个使用新驱动程序的 `provider`： 首先，定义一个使用新驱动程序的 `provider`：
 
 ```go
 "providers": map[string]any{
