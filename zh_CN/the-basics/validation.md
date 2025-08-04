@@ -70,7 +70,7 @@ func (r *PostController) Store(ctx http.Context) {
 
 ### 嵌套字段
 
-如果您的 HTTP 请求包含「嵌套」参数，您可以在验证规则中使用 `.` 语法来指定这些参数：
+如果你的 HTTP 请求包含「嵌套」参数，你可以在验证规则中使用 `.` 语法来指定这些参数：
 
 ```go
 validator, err := ctx.Request().Validate(map[string]string{
@@ -82,7 +82,7 @@ validator, err := ctx.Request().Validate(map[string]string{
 
 ### Slice 验证
 
-如果您的 HTTP 请求包含「数组」参数，您可以在验证规则中使用 `*` 进行校验：
+如果你的 HTTP 请求包含「数组」参数，你可以在验证规则中使用 `*` 进行校验：
 
 ```go
 validator, err := ctx.Request().Validate(map[string]string{
@@ -136,7 +136,7 @@ func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
 }
 ```
 
-然后您可以在控制器中使用 `ValidateRequest` 方法验证该表单：
+然后你可以在控制器中使用 `ValidateRequest` 方法验证该表单：
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
@@ -175,7 +175,7 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
 
 ### 过滤输入数据
 
-您可以通过完善表单请求的 `Filters` 方法来格式化输入数据。 此方法应返回 `属性/过滤器` 的数组 Map：
+你可以通过完善表单请求的 `Filters` 方法来格式化输入数据。 此方法应返回 `属性/过滤器` 的数组 Map：
 
 ```go
 func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
@@ -212,7 +212,7 @@ func (r *StorePostRequest) Attributes() map[string]string {
 
 ### 准备验证输入
 
-如果您需要在应用验证规则之前修改或清理请求中的任何数据，您可以使用 `PrepareForValidation` 方法：
+如果你需要在应用验证规则之前修改或清理请求中的任何数据，你可以使用 `PrepareForValidation` 方法：
 
 ```go
 func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validation.Data) error {
@@ -225,7 +225,7 @@ func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validatio
 
 ## 手动创建验证器
 
-如果您不想在请求中使用 `Validate` 方法，您可以使用 `facades.Validator` 手动创建一个验证器实例。 facades 中的 `Make` 方法将会生成一个新的验证器实例：
+如果你不想在请求中使用 `Validate` 方法，你可以使用 `facades.Validator` 手动创建一个验证器实例。 facades 中的 `Make` 方法将会生成一个新的验证器实例：
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
@@ -251,7 +251,7 @@ func (r *PostController) Store(ctx http.Context) {
 
 ### 自定义错误消息
 
-如果需要，您可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。 你可以将自定义消息作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
+如果需要，你可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。 你可以将自定义消息作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
 
 ```go
 validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
@@ -281,7 +281,7 @@ validator, err := facades.Validation().Make(input, rules, validation.Attributes(
 
 ### 验证前格式化数据
 
-您可以在验证数据前先格式化数据，以便更灵活的进行数据校验，您可以将格式化数据的方法作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
+你可以在验证数据前先格式化数据，以便更灵活的进行数据校验，你可以将格式化数据的方法作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
 
 ```go
 import (
@@ -302,7 +302,7 @@ func (r *PostController) Store(ctx http.Context) http.Response {
 
 ## 处理验证字段
 
-在使用表单请求或手动创建的验证器实例验证传入请求数据后，您依然希望将请求数据绑定至 `struct`，有两种可以实现方法：
+在使用表单请求或手动创建的验证器实例验证传入请求数据后，你依然希望将请求数据绑定至 `struct`，有两种可以实现方法：
 
 1. 使用 `Bind` 方法，这将会绑定所有传入的数据，包括未通过校验的数据：
 
@@ -534,7 +534,7 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 
 ## 自定义过滤规则
 
-Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自己的规则。 要生成新的规则，您可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个转换 string 为 int 的规则。 这个规则框架已经内置，这里只是为了示例。 Goravel 会将新规则放在 `app/filters` 目录中。 如果此目录不存在，Goravel 将在您执行 Artisan 命令创建规则时创建它：
+Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自己的规则。 要生成新的规则，您可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个转换 string 为 int 的规则。 这个规则框架已经内置，这里只是为了示例。 Goravel 会将新规则放在 `app/filters` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建规则时创建它：
 
 ```go
 go run . artisan make:filter ToInt
