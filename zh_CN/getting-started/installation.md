@@ -8,8 +8,6 @@
 
 ## 安装 Goravel
 
-安装前需先设置 GOPROXY（[详见文章](https://learnku.com/go/wikis/38122)），或开启 VPN。
-
 ### 使用 Goravel 安装器
 
 根据[文档](https://github.com/goravel/installer)初始化安装器，然后使用下面命令初始化一个新的 Goravel 项目：
@@ -34,8 +32,6 @@ cp .env.example .env
 // 生成应用密钥
 go run . artisan key:generate
 ```
-
-如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
 
 ## 启动 HTTP 服务
 
