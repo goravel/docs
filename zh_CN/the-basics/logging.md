@@ -109,7 +109,7 @@ type Logger interface {
 }
 ```
 
-文件可以储存到 `app/extensions` 文件夹中（可修改）。 例如： 例如：
+文件可以储存到 `app/extensions` 文件夹中（可修改）。 例如：
 
 ```go
 package extensions
