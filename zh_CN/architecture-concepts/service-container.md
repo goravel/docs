@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel的服务容器是一个功能强大的工具，用于管理类依赖和实现依赖注入。 它包含了框架所有模块，并允许您将自己的服务绑定到容器中，在需要时进行解析。 服务容器为Goravel周边的第三方包提供了有力的支持。
+Goravel的服务容器是一个功能强大的工具，用于管理类依赖和实现依赖注入。 它包含了框架所有模块，并允许你将自己的服务绑定到容器中，在需要时进行解析。 服务容器为Goravel周边的第三方包提供了有力的支持。
 
 ## 绑定
 
@@ -75,7 +75,7 @@ app.BindWith(Binding, func(app foundation.Application, parameters map[string]any
 
 ### `Make` 方法
 
-你可以使用 `Make` 方法从容器中解析类实例。 `Make` 方法接受您希望解析的 `key`：
+你可以使用 `Make` 方法从容器中解析类实例。 `Make` 方法接受你希望解析的 `key`：
 
 ```go
 instance, err := app.Make(key)
