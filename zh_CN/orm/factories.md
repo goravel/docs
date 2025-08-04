@@ -4,7 +4,7 @@
 
 ## 介绍
 
-测试时您可能需要在执行测试之前向数据库中插入一些记录。 Goravel 允许你使用模型工厂为每个模型定义一组默认属性，而不是在创建测试数据时手动指定每一列的值。
+测试时你可能需要在执行测试之前向数据库中插入一些记录。 Goravel 允许你使用模型工厂为每个模型定义一组默认属性，而不是在创建测试数据时手动指定每一列的值。
 
 要了解如何编写工厂，请查看应用程序中的 `database/factories/user_factory.go` 文件：
 
@@ -22,7 +22,7 @@ func (f *UserFactory) Definition() map[string]any {
 }
 ```
 
-正如您所见，在最基本的形式中，factories 是定义 `Definition` 方法的 struct。 `Definition` 方法返回对应模型的属性值。 可以使用 [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit) 包来生成各种随机数据。
+正如你所见，在最基本的形式中，factories 是定义 `Definition` 方法的 struct。 `Definition` 方法返回对应模型的属性值。 可以使用 [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit) 包来生成各种随机数据。
 
 ## 创建工厂
 
