@@ -4,13 +4,13 @@
 
 ## 简介
 
-Goravel 的事件系统提供了一个简单的观察者模式的实现，允许你能够订阅和监听在你的应用中的发生的各种事件。 事件类一般来说存储在 `app/events` 目录，监听者的类存储在 `app/listeners` 目录。 不要担心在你的应用中没有看到这两个目录，因为通过 Artisan 命令行来创建事件和监听者的时候目录会同时被创建。 事件类一般来说存储在 `app/events` 目录，监听者的类存储在 `app/listeners` 目录。 不要担心在你的应用中没有看到这两个目录，因为通过 Artisan 命令行来创建事件和监听者的时候目录会同时被创建。
+Goravel 的事件系统提供了一个简单的观察者模式的实现，允许你能够订阅和监听在你的应用中的发生的各种事件。 事件类一般来说存储在 `app/events` 目录，监听者的类存储在 `app/listeners` 目录。 不要担心在你的应用中没有看到这两个目录，因为通过 Artisan 命令行来创建事件和监听者的时候目录会同时被创建。
 
-事件系统可以作为一个非常棒的方式来解耦你的系统的方方面面，因为一个事件可以有多个完全不相关的监听者。 例如，你希望每当有订单发出的时候都给你发送一个 Slack 通知。 事件系统可以作为一个非常棒的方式来解耦你的系统的方方面面，因为一个事件可以有多个完全不相关的监听者。 例如，你希望每当有订单发出的时候都给你发送一个 Slack 通知。 你大可不必将你的处理订单的代码和发送 slack 消息的代码放在一起，你只需要触发一个 `app\events\OrderShipped` 事件，然后事件监听者可以收到这个事件然后发送 slack 通知。
+事件系统可以作为一个非常棒的方式来解耦你的系统的方方面面，因为一个事件可以有多个完全不相关的监听者。 例如，你希望每当有订单发出的时候都给你发送一个 Slack 通知。 你大可不必将你的处理订单的代码和发送 slack 消息的代码放在一起，你只需要触发一个 `app\events\OrderShipped` 事件，然后事件监听者可以收到这个事件然后发送 slack 通知。
 
 ## 生成事件和监听器
 
-你可以在 Goravel 应用的 `app\providers\EventServiceProvider` 中注册所有的事件。 `listen` 方法接受传入事件与监听。 你可以根据应用程序的需要将事件添加到这个数组。 例如，让我们添加一个 `OrderShiped` 事件： `listen` 方法接受传入事件与监听。 你可以根据应用程序的需要将事件添加到这个数组。 例如，让我们添加一个 `OrderShiped` 事件：
+你可以在 Goravel 应用的 `app\providers\EventServiceProvider` 中注册所有的事件。 `listen` 方法接受传入事件与监听。 你可以根据应用程序的需要将事件添加到这个数组。 例如，让我们添加一个 `OrderShiped` 事件：
 
 ```go
 package providers
@@ -51,7 +51,7 @@ go run . artisan make:listener user/SendShipmentNotification
 
 ## 定义事件
 
-事件类本质上是一个数据容器，它保存与事件相关的信息，`event` 的 `Handle` 方法统一传入与返回 `[]event.Arg` 数据结构。 你可以在这里进行数据加工，加工后的数据将传入所有关联的 `listeners` 中。 例如，让我们假设一个 `app\events\OrderShipped` 事件： 你可以在这里进行数据加工，加工后的数据将传入所有关联的 `listeners` 中。 例如，让我们假设一个 `app\events\OrderShipped` 事件：
+事件类本质上是一个数据容器，它保存与事件相关的信息，`event` 的 `Handle` 方法统一传入与返回 `[]event.Arg` 数据结构。 你可以在这里进行数据加工，加工后的数据将传入所有关联的 `listeners` 中。 例如，让我们假设一个 `app\events\OrderShipped` 事件：
 
 ```go
 package events
@@ -68,7 +68,7 @@ func (receiver *OrderShipped) Handle(args []event.Arg) ([]event.Arg, error) {
 
 ## 定义监听器
 
-接下来，让我们看一下示例事件的侦听器。 接下来，让我们看一下示例事件的侦听器。 事件监听器在其 `Handle` 方法中接收事件 `Handle` 方法返回的 `[]event.Arg`。 在 `Handle` 方法中，你可以执行任何必要的操作来响应事件： 在 `Handle` 方法中，你可以执行任何必要的操作来响应事件：
+接下来，让我们看一下示例事件的侦听器。 事件监听器在其 `Handle` 方法中接收事件 `Handle` 方法返回的 `[]event.Arg`。 在 `Handle` 方法中，你可以执行任何必要的操作来响应事件：
 
 ```go
 package listeners
@@ -99,7 +99,7 @@ func (receiver *SendShipmentNotification) Handle(args ...any) error {
 
 ### 停止事件传播
 
-有时，你可能希望停止将事件传播到其他侦听器。 有时，你可能希望停止将事件传播到其他侦听器。 你可以通过从监听器的 `Handle` 方法返回 `error` 来做到这一点。
+有时，你可能希望停止将事件传播到其他侦听器。 你可以通过从监听器的 `Handle` 方法返回 `error` 来做到这一点。
 
 ## 事件监听器队列
 
