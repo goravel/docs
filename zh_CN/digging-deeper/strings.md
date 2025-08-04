@@ -180,7 +180,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("framework/support/str").Dirname().String() // "framework/support"
 ```
 
-可选，你可以提供要从路径中删除的目录级别。
+可选，您可以提供要从路径中删除的目录级别。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -229,7 +229,7 @@ str.Of("This is a beautiful morning").
     }).String() // "...is a beautiful morn...
 ```
 
-可选，你可以使用 `Omission` 选项更改用于指示摘录的字符串。
+可选，您可以使用 `Omission` 选项更改用于指示摘录的字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -527,7 +527,7 @@ str.Of("Hello").PadRight(10, "_").String() // "Hello_____"
 
 ### `Pipe`
 
-`Pipe` 方法允许你使用给定的闭包转换字符串。
+`Pipe` 方法允许您使用给定的闭包转换字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -850,7 +850,7 @@ str.Of("Bowen").When(true, func(s *str.String) *str.String {
 }).String() // "Bowen Han"
 ```
 
-如果需要，你可以提供第三个参数给 `When` 方法，该方法在条件为 `false` 时执行。
+如果需要，您可以提供第三个参数给 `When` 方法，该方法在条件为 `false` 时执行。
 
 ### `WhenContains`
 
@@ -864,7 +864,7 @@ str.Of("Hello Bowen").WhenContains("Hello", func(s *str.String) *str.String {
 }).String() // "Hello Bowen Han"
 ```
 
-如果需要，你可以提供第三个参数给 `WhenContains` 方法，该方法在字符串不包含给定值时执行。
+如果需要，您可以提供第三个参数给 `WhenContains` 方法，该方法在字符串不包含给定值时执行。
 
 ### `WhenContainsAll`
 
@@ -878,7 +878,7 @@ str.Of("Hello Bowen").WhenContainsAll([]string{"Hello", "Bowen"}, func(s *str.St
 }).String() // "Hello Bowen Han"
 ```
 
-如果需要，你可以提供第三个参数给 `WhenContainsAll` 方法，该方法在字符串不包含所有给定值时执行。
+如果需要，您可以提供第三个参数给 `WhenContainsAll` 方法，该方法在字符串不包含所有给定值时执行。
 
 ### `WhenEmpty`
 
