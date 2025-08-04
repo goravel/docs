@@ -1028,7 +1028,7 @@ str.Of("Hello, World!").WordCount() // 2
 
 ### `Words`
 
-`Words` 方法限制字符串中的单词数。 如果需要，您可以提供第二个参数来更改用于指示截断的字符串。
+`Words` 方法限制字符串中的单词数。 如果需要，你可以提供第二个参数来更改用于指示截断的字符串。
 
 ```go
 import "github.com/goravel/framework/support/str"
