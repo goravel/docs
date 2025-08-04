@@ -133,7 +133,7 @@ s.True(json["created"])
 
 ### 断言精确匹配的 JSON
 
-如果需要验证响应是否完全匹配您的预期 JSON（没有额外或缺少的字段），请使用 `AssertExactJson` 方法。
+如果需要验证响应是否完全匹配你的预期 JSON（没有额外或缺少的字段），请使用 `AssertExactJson` 方法。
 
 ```go
 func (s *ExampleTestSuite) TestIndex() {
