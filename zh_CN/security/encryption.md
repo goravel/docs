@@ -4,11 +4,11 @@
 
 ## 简介
 
-Goravel 的加密机制使用的是 OpenSSL 所提供的 AES-256 加密。 所有 Goravel 加密之后的结果都会使用消息认证码 (GMAC) 签名，使其底层值不能在加密后再次修改。
+Goravel 的加密机制使用的是 OpenSSL 所提供的 AES-256 加密。 Goravel 的加密机制使用的是 OpenSSL 所提供的 AES-256 加密。 所有 Goravel 加密之后的结果都会使用消息认证码 (GMAC) 签名，使其底层值不能在加密后再次修改。
 
 ## 配置
 
-在使用 Goravel 的加密工具之前，你必须先设置 `config/app.go` 配置文件中的 `key` 配置项。 该配置项由环境变量 `APP_KEY` 设定。 你应当使用 `go run . artisan key:generate` 命令来生成该变量的值，`key:generate` 命令将使用 Golang 的安全随机字节生成器为你的应用程序构建加密安全密钥。
+在使用 Goravel 的加密工具之前，你必须先设置 `config/app.go` 配置文件中的 `key` 配置项。 该配置项由环境变量 `APP_KEY` 设定。 你应当使用 `go run . 该配置项由环境变量 `APP_KEY` 设定。 你应当使用 `go run . artisan key:generate` 命令来生成该变量的值，`key:generate\` 命令将使用 Golang 的安全随机字节生成器为你的应用程序构建加密安全密钥。
 
 ## 基本用法
 
@@ -22,7 +22,7 @@ secret, err := facades.Crypt().EncryptString("goravel")
 
 ### 解密一个值
 
-你可以使用 `facades.Crypt()` 提供的 `DecryptString` 来进行解密。 如果该值不能被正确解密，例如消息认证码 (MAC) 无效，会返回错误。
+你可以使用 `facades.Crypt()` 提供的 `DecryptString` 来进行解密。 如果该值不能被正确解密，例如消息认证码 (MAC) 无效，会返回错误。 如果该值不能被正确解密，例如消息认证码 (MAC) 无效，会返回错误。
 
 ```go
 str, err := facades.Crypt().DecryptString(secret)
