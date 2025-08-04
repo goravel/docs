@@ -435,7 +435,7 @@ if validator.Errors().Has("email") {
 
 Goravel 提供了各种有用的验证规则，但是，你可能希望定义自己的规则。 注册自定义验证规则的方法之一是使用规则对象。 要生成新的规则，你可以使用 `make:rule` Artisan 命令。
 
-让我们使用这个命令生成一个验证字符串是否为大写的规则。 Goravel 会将新规则放在 `app/rules` 目录中。 如果此目录不存在，Goravel 将在您执行 Artisan 命令创建规则时创建它。
+让我们使用这个命令生成一个验证字符串是否为大写的规则。 Goravel 会将新规则放在 `app/rules` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建规则时创建它。
 
 ```go
 go run . artisan make:rule Uppercase
