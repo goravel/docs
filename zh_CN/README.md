@@ -14,7 +14,7 @@
 
 [English](../README.md) | 中文
 
-# 关于 Goravel
+## 关于 Goravel
 
 Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框架。作为一个起始脚手架帮助 Golang 开发者快速构建自己的应用。
 
@@ -50,7 +50,7 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## Contributors
 
-这个项目的存在要归功于所有做出贡献的人，参与贡献请查看[贡献指南](getting-started/contributions.md)。
+这个项目的存在要归功于所有做出贡献的人。 参与贡献请查看[贡献指南](getting-started/contributions.md)。
 
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
@@ -86,13 +86,13 @@ Goravel 是一个功能完备、具有良好扩展能力的 Web 应用程序框�
 
 ## 打赏
 
-开源项目的发展离不开您的支持，感谢微信打赏。
+开源项目的发展离不开你的支持，感谢微信打赏。
 
 <p align="left"><img src="/reward-wechat.jpg" width="200"></p>
 
 ## 群组
 
-微信入群，请备注 Goravel
+微信入群，请备注 Goravel。
 
 <p align="left"><img src="/wechat.jpg" width="200"></p>
 

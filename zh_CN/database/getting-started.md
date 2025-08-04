@@ -1,13 +1,13 @@
-# 快速入门
+# 简介
 
 [[toc]]
 
 ## 简介
 
-几乎所有的应用程序都需要和数据库进行交互，Goravel 为此提供了一套非常简单易用的数据库交互方式。开发者可以使用原生 SQL，查询构造器，以及 [Orm](../orm/getting-started) 等方式与数据库交互。目前，Goravel 为以下四种数据库提供了官方支持：
+几乎所有的应用程序都需要和数据库进行交互，Goravel 为此提供了一套非常简单易用的数据库交互方式。开发者可以使用原生 SQL，查询构造器，以及 [Orm](../orm/getting-started) 等方式与数据库交互。目前，Goravel 为以下四种数据库提供了官方支持： 开发者可以使用原生 SQL，查询构造器，以及 [Orm](../orm/getting-started) 等方式与数据库交互。 目前，Goravel 为以下四种数据库提供了官方支持：
 
-| 数据库     | 驱动                                                                 |
-| ---------- | -------------------------------------------------------------------- |
+| 数据库        | 驱动                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------ |
 | PostgreSQL | [github.com/goravel/postgres](https://github.com/goravel/postgres)   |
 | MySQL      | [github.com/goravel/mysql](https://github.com/goravel/mysql)         |
 | SQL Server | [github.com/goravel/sqlserver](https://github.com/goravel/sqlserver) |
@@ -15,22 +15,22 @@
 
 ## 配置
 
-数据库的配置文件在 `config/database.go` 文件中。你可以在这个文件中配置所有的数据库连接，并指定默认的数据库连接。该文件中的大部分配置都基于项目的环境变量。
+数据库的配置文件在 config/database.go 文件中。 你可以在这个文件中配置所有的数据库连接，并指定默认的数据库连接。 该文件中的大部分配置都基于项目的环境变量。
 
 ### 连接池
 
 可以在配置文件中配置数据库连接池，合理的配置连接池参数，可以极大的提高并发性能：
 
-| 配置键                 | 作用             |
-| ---------------------- | ---------------- |
-| pool.max_idle_conns    | 最大空闲连接     |
-| pool.max_open_conns    | 最大连接数       |
+| 配置键                                                                              | 描述       |
+| -------------------------------------------------------------------------------- | -------- |
+| pool.max_idle_conns    | 最大空闲连接   |
+| pool.max_open_conns    | 最大连接数    |
 | pool.conn_max_idletime | 连接最大空闲时间 |
 | pool.conn_max_lifetime | 连接最大生命周期 |
 
 ### 读写分离
 
-有时候你可能会希望使用一个数据库连接来执行 `SELECT` 语句，而 `INSERT`、`UPDATE` 和 `DELETE` 语句则由另一个数据库连接来执行。在 Goravel 中可以轻松实现读写分离。
+有时候你可能会希望使用一个数据库连接来执行 `SELECT` 语句，而 `INSERT`、`UPDATE` 和 `DELETE` 语句则由另一个数据库连接来执行。 在 Goravel 中可以轻松实现读写分离。
 
 ```go
 import "github.com/goravel/framework/contracts/database"
@@ -55,11 +55,11 @@ import "github.com/goravel/framework/contracts/database"
 }
 ```
 
-我们在数据库配置中加入了两个键，分别是：`read`, `write`，`192.168.1.1` 将会被用作「读」连接主机，而 `192.168.1.2` 将作为「写」连接主机。这两个连接将共享 `mysql` 数组中的各项配置，如数据库前缀、字符编码等。如果 `read` 或 `write` 数组中存在多个值，Goravel 将会为每个连接随机选取所使用的数据库主机。
+我们在数据库配置中加入了两个键，分别是：`read`, `write`。 `192.168.1.1` 将会被用作「读」连接主机，而 `192.168.1.2` 将作为「写」连接主机。 这两个连接将共享 `mysql` 数组中的各项配置，如数据库前缀、字符编码等。 如果 `read` 或 `write` 数组中存在多个值，Goravel 将会为每个连接随机选取所使用的数据库主机。
 
 ## 运行原生 SQL 查询
 
-配置好数据库连接后，你就可以使用 `facades.DB()` 来运行查询。`facades.DB` 提供了各种方法用于运行查询：`Select`、`Insert`、`Update`、`Delete` 和 `Statement`。
+配置好数据库连接后，你就可以使用 `facades.DB()` 来运行查询。 `facades.DB` 提供了各种方法用于运行查询：`Select`、`Insert`、`Update`、`Delete` 和 `Statement`。
 
 ### Select
 
@@ -75,7 +75,7 @@ var product Product
 err := facades.DB().Select(&product, "SELECT * FROM products WHERE id = ?", 1)
 ```
 
-> 注意：不同数据库驱动需要使用不同的占位符，例如：`?` 占位符适用于 MySQL，而 `@` 占位符适用于 PostgreSQL。
+> 注意：不同数据库驱动需要使用不同的占位符。 例如：`?` 占位符适用于 MySQL，而 `@` 占位符适用于 PostgreSQL。
 
 ### Insert
 
@@ -120,7 +120,7 @@ err := facades.DB().Connection("postgres").Select(&user, "select * from users wh
 
 ## 数据库事务
 
-你可以使用 `facades.DB().Transaction()` 方法在数据库事务中执行一系列操作。如果在事务闭包中抛出了异常，事务将自动回滚。如果闭包成功执行，事务将自动提交：
+你可以使用 `facades.DB().Transaction()` 方法在数据库事务中执行一系列操作。如果在事务闭包中抛出了异常，事务将自动回滚。如果闭包成功执行，事务将自动提交： 如果在事务闭包中抛出了异常，事务将自动回滚。 如果闭包成功执行，事务将自动提交：
 
 ```go
 import "github.com/goravel/framework/contracts/database/db"
@@ -176,7 +176,7 @@ go run . artisan db:table --database=postgres
 
 ### 表的摘要信息
 
-如果你想获得数据库中单张表的概览，你可以执行 `db:table` Artisan命令。这个命令提供了一个数据库表的概览，包括它的列、类型、属性、键和索引:
+如果你想获得数据库中单张表的概览，你可以执行 `db:table` Artisan命令。 这个命令提供了一个数据库表的概览，包括它的列、类型、属性、键和索引:
 
 ```bash
 go run . artisan db:table users

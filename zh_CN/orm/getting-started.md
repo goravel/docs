@@ -4,11 +4,11 @@
 
 ## 简介
 
-Goravel 提供了一套非常简单易用的数据库交互方式，开发者可以使用 `facades.Orm()` 进行操作。在开始之前请先[配置数据库](../database/getting-started)。
+Goravel 提供了一套非常简单易用的数据库交互方式，开发者可以使用 `facades.Orm()` 进行操作。 在开始之前请先[配置数据库](../database/getting-started)。
 
 ## 模型
 
-模型相当于数据表的映射，你可以根据框架自带的模型文件 `app/models/user.go` 创建自定义模型。在 `app/models/user.go` 文件中 `struct` 嵌套了 `orm.Model` 与 `orm.SoftDeletes` 两个框架自带结构体，他们分别定义了 `id, created_at, updated_at` 与 `deleted_at`，其中 `orm.SoftDeletes` 代表模型开启了软删除功能。
+模型相当于数据表的映射，你可以根据框架自带的模型文件 `app/models/user.go` 创建自定义模型。 在 `app/models/user.go` 文件中 `struct` 嵌套了 `orm.Model` 与 `orm.SoftDeletes` 两个框架自带结构体。 他们分别定义了 `id, created_at, updated_at` 与 `deleted_at`。 其中 `orm.SoftDeletes` 代表模型开启了软删除功能。
 
 ### 模型约定
 
@@ -112,7 +112,7 @@ func (r *User) TableName() string {
 
 ### 数据库连接
 
-默认情况下，所有模型使用的是应用程序配置的默认数据库连接。如果想指定在与特定模型交互时应该使用的不同连接，可以在模型上定义 `Connection` 方法：
+默认情况下，所有模型使用的是应用程序配置的默认数据库连接。 如果想指定在与特定模型交互时应该使用的不同连接，可以在模型上定义 `Connection` 方法。
 
 ```go
 package models
@@ -166,7 +166,7 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 
 ## facades.Orm().Query() 可用方法
 
-| 方法名                      | 作用                                              |
+| 方法                        | 作用                                              |
 | --------------------------- | ------------------------------------------------- |
 | BeginTransaction            | [手动开始事务](#事务)                             |
 | Commit                      | [提交事务](#事务)                                 |
@@ -189,8 +189,8 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | Get                         | [查询多条数据](#查询多条数据)                     |
 | Group                       | [Group 查询](#group-by-having)                    |
 | Having                      | [Having 查询](#group-by-having)                   |
-| Join                        | [Join 查询](#join-查询)                           |
-| Limit                       | [指定查询数量](#指定查询数量)                     |
+| Join                        | [Join 查询](#join)                                |
+| Limit                       | [Limit 查询](#limit)                              |
 | LockForUpdate               | [悲观锁](#悲观锁)                                 |
 | Model                       | [指定模型](#指定表查询)                           |
 | Offset                      | [指定查询开始位置](#指定查询开始位置)             |
@@ -248,7 +248,7 @@ facades.Orm().WithContext(ctx)
 
 ### 指定数据库链接
 
-如果你在配置文件 `config/database.go` 中定义了多个数据库连接，你可以通过 `facades.Orm()` 的 `Connection` 方法来使用它们。传递给 `Connection` 方法的连接名称应该是在 `config/database.go` 配置的连接之一：
+如果你在配置文件 `config/database.go` 中定义了多个数据库连接，你可以通过 `facades.Orm()` 的 `Connection` 方法来使用它们。 传递给 `Connection` 方法的连接名称应该是在 `config/database.go` 配置的连接之一：
 
 ```go
 facades.Orm().Connection("mysql")
@@ -301,7 +301,7 @@ facades.Orm().Query().First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1;
 ```
 
-有时你可能希望检索查询的第一个结果或在未找到结果时执行一些其他操作。`FirstOr` 方法将返回匹配查询的第一个结果，或者，如果没有找到结果，则执行给定的闭包。你可以在闭包中对模型进行赋值：
+有时你可能希望检索查询的第一个结果或在未找到结果时执行一些其他操作。 `FirstOr` 方法将返回匹配查询的第一个结果，或者，如果没有找到结果，则执行给定的闭包。 你可以在闭包中对模型进行赋值：
 
 ```go
 facades.Orm().Query().Where("name", "first_user").FirstOr(&user, func() error {
@@ -347,9 +347,9 @@ facades.Orm().Query().Where("id in ?", []int{1,2,3}).Get(&users)
 
 #### 查询或创建模型
 
-`FirstOrCreate` 方法将尝试使用给定的列 / 值对来查找数据库记录。如果在数据库中找不到该模型，则将插入一条记录，其中包含将第二个参数与可选的第三个参数合并后产生的属性：
+`FirstOrCreate` 方法将尝试使用给定的列 / 值对来查找数据库记录。 如果在数据库中找不到该模型，则将插入一条记录，其中包含将第二个参数与可选的第三个参数合并后产生的属性。
 
-`FirstOrNew` 方法，类似 `FirstOrCreate`，会尝试在数据库中找到与给定属性匹配的记录。如果没有找到，则会返回一个新的模型实例。请注意，由 `FirstOrNew` 返回的模型尚未持久化到数据库中。需要手动调用 `Save` 方法来保存它：
+`FirstOrNew` 方法，类似 `FirstOrCreate`，会尝试在数据库中找到与给定属性匹配的记录。 如果没有找到，则会返回一个新的模型实例。 请注意，由 `FirstOrNew` 返回的模型尚未持久化到数据库中。需要手动调用 `Save` 方法来保存它。
 
 ```go
 var user models.User
@@ -371,7 +371,7 @@ facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "to
 
 #### 未找到时抛出错误
 
-当找不到模型时，`First` 方法不会抛出错误，如果想抛出，可以使用 `FirstOrFail`：
+当找不到模型时，`First` 方法不会抛出错误。 如果想抛出错误，可以使用 `FirstOrFail`：
 
 ```go
 var user models.User
@@ -597,7 +597,7 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 
 ### 游标
 
-可用于在查询数万条模型记录时减少内存的使用。注意，`Cursor` 无法与预加载 `With` 一同使用，请在 `for` 循环中使用[延迟预加载](./relationships.md#延迟预加载)实现加载关联数据。
+可用于在查询数万条模型记录时减少内存的使用。 注意，`Cursor` 无法与预加载 `With` 一同使用，请在 `for` 循环中使用[延迟预加载](./relationships.md#延迟预加载)实现加载关联数据。
 
 ```go
 cursor, err := facades.Orm().Query().Model(models.User{}).Cursor()
@@ -638,7 +638,7 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 // UPDATE `users` SET `updated_at`='2023-09-18 21:07:06.489',`name`='hello',`age`=18 WHERE `name` = 'tom';
 ```
 
-> 当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
+> 当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。 你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。 注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
 
 #### 更新 JSON 字段
 
@@ -686,7 +686,7 @@ facades.Orm().Query().Where("name", "tom").Delete(&models.User{})
 // DELETE FROM `users` WHERE name = 'tom';
 ```
 
-如果模型开启了软删除功能，想要强制删除某数据
+如果模型开启了软删除功能，想要强制删除某数据。
 
 ```go
 facades.Orm().Query().Where("name", "tom").ForceDelete(&models.User{})
@@ -694,7 +694,7 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").ForceDelete()
 facades.Orm().Query().Table("users").Where("name", "tom").ForceDelete()
 ```
 
-您可以通过 `Select` 来删除具有模型关联的记录：
+你可以通过 `Select` 来删除具有模型关联的记录：
 
 ```go
 // 删除 user 时，也删除 user 的 account
@@ -723,7 +723,7 @@ facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
 
-如果在没有任何条件的情况下执行批量删除，ORM 不会执行该操作，并返回错误。对此，你必须加一些条件，或者使用原生 SQL。
+如果在没有任何条件的情况下执行批量删除，ORM 不会执行该操作，并返回错误。 对此，你必须加一些条件，或者使用原生 SQL。
 
 ### 查询软删除
 
@@ -851,16 +851,16 @@ facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
 
 ### 悲观锁
 
-查询构建器还包括一些函数，可帮助您在执行 `select` 语句时实现「悲观锁」。
+查询构建器还包括一些函数，可帮助你在执行 `select` 语句时实现「悲观锁」。
 
-您可以调用 `SharedLock` 方法使用「共享锁」执行语句，共享锁可防止选定的行被修改，直到您的事务被提交：
+你可以调用 `SharedLock` 方法使用「共享锁」执行语句。 共享锁可防止选定的行被修改，直到你的事务被提交：
 
 ```go
 var users []models.User
 facades.Orm().Query().Where("votes", ">", 100).SharedLock().Get(&users)
 ```
 
-或者，您可以使用 `LockForUpdate` 方法。该锁可防止所选记录被修改或被另一个共享锁选中：
+或者，你可以使用 `LockForUpdate` 方法。 该锁可防止所选记录被修改或被另一个共享锁选中：
 
 ```go
 var users []models.User
@@ -877,11 +877,11 @@ sum, err := facades.Orm().Query().Model(models.User{}).Sum("id")
 
 Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节点：`Retrieved`、`Creating`、`Created`、`Updating`、`Updated`、`Saving`、`Saved`、`Deleting`、`Deleted`、`ForceDeleting`、`ForceDeleted`、`Restored`、`Restoring`。
 
-当从数据库中检索到现有模型时，将调度 `Retrieved` 事件。当一个新模型第一次被保存时，`Creating` 和 `Created` 事件将被触发。 `Updating` / `Updated` 事件将在修改现有模型并调用 `Save` 方法时触发。`Saving` / `Saved` 事件将在创建或更新模型时触发 - 即使模型的属性没有更改。以「-ing」结尾的事件名称在模型的任何更改被持久化之前被调度，而以「-ed」结尾的事件在对模型的更改被持久化之后被调度。
+当从数据库中检索到现有模型时，将调度 `Retrieved` 事件。 当一个新模型第一次被保存时，`Creating` 和 `Created` 事件将被触发。 `Updating` / `Updated` 事件将在修改现有模型并调用 `Save` 方法时触发。 `Saving` / `Saved` 事件将在创建或更新模型时触发 - 即使模型的属性没有更改。 以「-ing」结尾的事件名称在模型的任何更改被持久化之前被调度，而以「-ed」结尾的事件在对模型的更改被持久化之后被调度。
 
-注意：所有事件都只会在操作一个模型时触发。例如在调用 `Update` 方法时，想要触发 `Updating` 和 `Updated` 事件，需要将现有模型传入到 `Model` 方法中：`facades.Orm().Query().Model(&user).Update("name", "Goravel")`。
+注意：所有事件都只会在操作一个模型时触发。 例如在调用 `Update` 方法时，想要触发 `Updating` 和 `Updated` 事件，需要将现有模型传入到 `Model` 方法中：`facades.Orm().Query().Model(&user).Update("name", "Goravel")`。
 
-要开始监听模型事件，请在模型上定义一个 `DispatchesEvents` 方法。此方法将模型生命周期的各个点映射到您定义的事件类中。
+要开始监听模型事件，请在模型上定义一个 `DispatchesEvents` 方法。 此方法将模型生命周期的各个点映射到你定义的事件类中。
 
 ```go
 import (
@@ -939,20 +939,20 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 }
 ```
 
-> 注意：仅注册用到的事件即可。通过 Orm 进行批量操作时，不会调度模型事件。
+> 注意：仅注册用到的事件即可。 通过 Orm 进行批量操作时，不会调度模型事件。
 
 ### 观察者
 
 #### 定义观察者
 
-如果在一个模型上监听了多个事件，可以使用观察者来将这些监听器组织到一个单独的类中。观察者类的方法名映射到你希望监听的事件。`make:observer` Artisan 命令可以快速建立新的观察者类：
+如果在一个模型上监听了多个事件，可以使用观察者来将这些监听器组织到一个单独的类中。 观察者类的方法名映射到你希望监听的事件。 受影响的模会传入到方法中。 `make:observer` Artisan 命令可以快速建立新的观察者类：
 
 ```shell
 go run . artisan make:observer UserObserver
 go run . artisan make:observer user/UserObserver
 ```
 
-此命令将在 `app/observers` 文件夹放置新的观察者类。如果这个目录不存在，Artisan 将替您创建：
+此命令将在 `app/observers` 文件夹放置新的观察者类。 如果这个目录不存在，Artisan 将替你创建。 观察者结构如下：
 
 ```go
 package observers
@@ -984,7 +984,7 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 
 模版中仅包含部分事件，可以根据需要手动添加其他事件。
 
-要注册观察者，需要将观察者与要观察的模型绑定。您可以在 `app/providers/event_service_provider.go::Boot` 方法中注册观察者：
+要注册观察者，需要将观察者与要观察的模型绑定。 你可以在 `app/providers/event_service_provider.go::Boot` 方法中注册观察者：
 
 ```go
 package providers
@@ -1030,7 +1030,7 @@ func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener 
 
 ### 静默事件
 
-也许有时候你会需要暂时将所有由模型触发的事件「静默」处理，可以使用 `WithoutEvents` 方法：
+也许有时候你会需要暂时将所有由模型触发的事件「静默」处理。 可以使用 `WithoutEvents` 方法：
 
 ```go
 var user models.User
@@ -1039,7 +1039,7 @@ facades.Orm().Query().WithoutEvents().Find(&user, 1)
 
 #### 静默的保存单个模型
 
-有时候，你也许会想要「保存」一个已有的模型，且不触发任何事件。那么你可用 `SaveQuietly` 方法：
+有时候，你也许会想要「保存」一个已有的模型，且不触发任何事件。 那么你可用 `SaveQuietly` 方法：
 
 ```go
 var user models.User
