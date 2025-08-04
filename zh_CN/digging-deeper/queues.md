@@ -34,11 +34,11 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 
 ### 数据库驱动
 
-为使用 `database` 驱动，需要先创建一个数据库表来存储任务：[20210101000002_create_jobs_table.go](https://github.com/goravel/goravel/blob/master/database/migrations/20210101000002_create_jobs_table.go)。 该迁移文件默认在 `database/migrations` 目录下。 该迁移文件默认在 `database/migrations` 目录下。
+为使用 `database` 驱动，需要先创建一个数据库表来存储任务：[20210101000002_create_jobs_table.go](https://github.com/goravel/goravel/blob/master/database/migrations/20210101000002_create_jobs_table.go)。 该迁移文件默认在 `database/migrations` 目录下。
 
 ### 自定义驱动
 
-如果当前驱动无法满足需求，你可以自定义驱动。 如果当前驱动无法满足需求，你可以自定义驱动。 需要实现 `contracts/queue/driver.go` 中的 [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) 接口。
+如果当前驱动无法满足需求，你可以自定义驱动。 需要实现 `contracts/queue/driver.go` 中的 [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) 接口。
 
 官方实现了 `Redis` 驱动，你可以参考 [Redis Driver](https://github.com/goravel/framework/blob/master/queue/drivers/redis/driver.go) 实现自己的自定义驱动。
 
@@ -103,7 +103,7 @@ func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, de
 
 ### 注册任务
 
-当任务创建好后，需要注册到 `app/provides/queue_service_provider.go`，以便能够正确调用。 如果是通过 `make:job` 命令生成的任务，则不需要手动注册，框架会自动注册。 如果是通过 `make:job` 命令生成的任务，则不需要手动注册，框架会自动注册。
+当任务创建好后，需要注册到 `app/provides/queue_service_provider.go`，以便能够正确调用。 如果是通过 `make:job` 命令生成的任务，则不需要手动注册，框架会自动注册。
 
 ```go
 func (receiver *QueueServiceProvider) Jobs() []queue.Job {
@@ -200,7 +200,7 @@ func (r *UserController) Show(ctx http.Context) {
 
 ### 同步调度
 
-如果你想立即（同步）调度任务，你可以使用 `DispatchSync` 方法。 使用此方法时，任务不会排队，会在当前进程内立即执行： 使用此方法时，任务不会排队，会在当前进程内立即执行：
+如果你想立即（同步）调度任务，你可以使用 `DispatchSync` 方法。 使用此方法时，任务不会排队，会在当前进程内立即执行：
 
 ```go
 package controllers
