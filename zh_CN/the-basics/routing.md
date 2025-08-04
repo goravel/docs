@@ -8,7 +8,7 @@ Goravel 路由模块可以使用 `facades.Route()` 进行操作。
 
 ## HTTP 驱动
 
-Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动。 如果想使用其他驱动，可以到 `config/http.go` 中进行配置。 目前官方默认支持 [gin](https://github.com/gin-gonic/gin) 与 [fiber](https://github.com/gofiber/fiber) 两种驱动。 如果想使用其他驱动，可以到 `config/http.go` 中进行配置。 目前官方默认支持 [gin](https://github.com/gin-gonic/gin) 与 [fiber](https://github.com/gofiber/fiber) 两种驱动。
+Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动。 如果想使用其他驱动，可以到 `config/http.go` 中进行配置。 目前官方默认支持 [gin](https://github.com/gin-gonic/gin) 与 [fiber](https://github.com/gofiber/fiber) 两种驱动。
 
 | 驱动    | 链接                                                                                                   |
 | ----- | ---------------------------------------------------------------------------------------------------- |
@@ -17,7 +17,7 @@ Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动�
 
 ## 默认路由文件
 
-所有路由文件都在 `/routes` 目录中进行定义。 框架默认有一个示例路由 `/routes/web.go`。 所有路由文件都在 `/routes` 目录中进行定义。 框架默认有一个示例路由 `/routes/web.go`。 其中 `func Web()` 方法被注册到 `app/providers/route_service_provider.go` 文件中，以实现路由的绑定。
+所有路由文件都在 `/routes` 目录中进行定义。 框架默认有一个示例路由 `/routes/web.go`。 其中 `func Web()` 方法被注册到 `app/providers/route_service_provider.go` 文件中，以实现路由的绑定。
 
 你可以在 `routes` 目录下新增路由文件，以进行更细颗粒的管理，然后在 `app/providers/route_service_provider.go` 文件中进行注册。
 
@@ -31,7 +31,7 @@ Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动�
 
 ## 启动 HTTP 服务器
 
-在根目录下 `main.go` 中使用`facades.Route().Run()` 启动 HTTP 服务器， 将会自动获取 `route.host` 的配置。 将会自动获取 `route.host` 的配置。
+在根目录下 `main.go` 中使用`facades.Route().Run()` 启动 HTTP 服务器， 将会自动获取 `route.host` 的配置。
 
 ```go
 package main
@@ -252,7 +252,7 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 
 ### 定义速率限制器
 
-Goravel 包含强大且可自定义的速率限制服务，你可以利用这些服务来限制给定路由或一组路由的流量。 首先，你应该定义满足应用程序需求的速率限制器配置。 通常，这应该在应用程序的 `app/providers/route_service_provider.go` 文件的 `configureRateLimiting` 方法中完成。 首先，你应该定义满足应用程序需求的速率限制器配置。 通常，这应该在应用程序的 `app/providers/route_service_provider.go` 文件的 `configureRateLimiting` 方法中完成。
+Goravel 包含强大且可自定义的速率限制服务，你可以利用这些服务来限制给定路由或一组路由的流量。 首先，你应该定义满足应用程序需求的速率限制器配置。 通常，这应该在应用程序的 `app/providers/route_service_provider.go` 文件的 `configureRateLimiting` 方法中完成。
 
 速率限制器使用 `facades.RateLimiter()` 的 `For` 方法进行定义。 `For` 方法接受一个速率限制器名称和一个闭包，该闭包返回应该应用于分配给速率限制器的路由的限制配置。 速率限制器名称可以是你希望的任何字符串：
 
@@ -270,7 +270,7 @@ func (receiver *RouteServiceProvider) configureRateLimiting() {
 }
 ```
 
-如果传入的请求超过指定的速率限制，Goravel 将自动返回一个带有 429 HTTP 状态码的响应。 如果你想定义自己的响应，应该由速率限制返回，你可以使用 `Response` 方法： 如果你想定义自己的响应，应该由速率限制返回，你可以使用 `Response` 方法：
+如果传入的请求超过指定的速率限制，Goravel 将自动返回一个带有 429 HTTP 状态码的响应。 如果你想定义自己的响应，应该由速率限制返回，你可以使用 `Response` 方法：
 
 ```go
 facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
