@@ -4,10 +4,10 @@
 
 ## 简介
 
-Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache()` 进行操作。 框架默认自带 `memory` 驱动，如需其他驱动，请查看对应的独立扩展包：
+Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache()` 进行操作。 框架默认自带 `memory` 驱动，如需其他驱动，请查看对应的独立扩展包： 框架默认自带 `memory` 驱动，如需其他驱动，请查看对应的独立扩展包：
 
-| 驱动  | 链接                                                                 |
-| ----- | -------------------------------------------------------------------- |
+| 驱动    | 链接                                                                                                   |
+| ----- | ---------------------------------------------------------------------------------------------------- |
 | Redis | [https://github.com/goravel/redis](https://github.com/goravel/redis) |
 
 ## 配置
@@ -24,7 +24,7 @@ facades.Cache().WithContext(ctx)
 
 ### 访问多个缓存存储
 
-你可以通过 `Store` 方法访问各种缓存存储。 传递给 `Store` 方法的键应该对应于 `cache` 配置文件中的 `stores` 配置数组中列出的存储之一：
+你可以通过 `Store` 方法访问各种缓存存储。 你可以通过 `Store` 方法访问各种缓存存储。 传递给 `Store` 方法的键应该对应于 `cache` 配置文件中的 `stores` 配置数组中列出的存储之一：
 
 ```go
 value := facades.Cache().Store("redis").Get("foo")
@@ -55,7 +55,7 @@ bool := facades.Cache().Has("goravel")
 
 ### 递增 / 递减值
 
-`Increment` 和 `Decrement` 方法可用于调整缓存中整数项的值。 这两种方法都接受一个可选的第二个参数，指示增加或减少项目值的数量：
+`Increment` 和 `Decrement` 方法可用于调整缓存中整数项的值。 `Increment` 和 `Decrement` 方法可用于调整缓存中整数项的值。 这两种方法都接受一个可选的第二个参数，指示增加或减少项目值的数量：
 
 ```go
 facades.Cache().Increment("key")
@@ -104,7 +104,7 @@ err := facades.Cache().Put("goravel", "value", 0)
 
 ### 只存储没有的数据
 
-`Add` 方法将只存储缓存中不存在的数据。 如果存储成功，将返回 `true` ，否则返回 `false` 。
+`Add` 方法将只存储缓存中不存在的数据。 `Add` 方法将只存储缓存中不存在的数据。 如果存储成功，将返回 `true` ，否则返回 `false` 。
 
 ```go
 bool := facades.Cache().Add("goravel", "value", 5 * time.Second)
@@ -112,7 +112,7 @@ bool := facades.Cache().Add("goravel", "value", 5 * time.Second)
 
 ### 数据永久存储
 
-因为这些数据不会过期，所以必须通过 `Forget` 方法从缓存中手动删除它们。 `Forever` 方法可用于将数据持久化存储到缓存中：
+因为这些数据不会过期，所以必须通过 `Forget` 方法从缓存中手动删除它们。 因为这些数据不会过期，所以必须通过 `Forget` 方法从缓存中手动删除它们。 `Forever` 方法可用于将数据持久化存储到缓存中：
 
 ```go
 bool := facades.Cache().Forever("goravel", "value")
@@ -134,7 +134,7 @@ bool := facades.Cache().Flush()
 
 ### 管理锁
 
-原子锁允许操作分布式锁而不用担心竞争条件。 你可以使用 `Lock` 方法创建和管理锁：
+原子锁允许操作分布式锁而不用担心竞争条件。 你可以使用 `Lock` 方法创建和管理锁： 你可以使用 `Lock` 方法创建和管理锁：
 
 ```go
 lock := facades.Cache().Lock("foo", 10*time.Second)
@@ -146,7 +146,7 @@ if (lock.Get()) {
 }
 ```
 
-`Get` 方法也接受一个闭包。 闭包执行后，Goravel 会自动释放锁：
+`Get` 方法也接受一个闭包。 `Get` 方法也接受一个闭包。 闭包执行后，Goravel 会自动释放锁：
 
 ```go
 facades.Cache().Lock("foo").Get(func () {
@@ -154,7 +154,7 @@ facades.Cache().Lock("foo").Get(func () {
 });
 ```
 
-如果在你请求时锁不可用，你可以指示 Goravel 等待指定的秒数。 如果在指定的时间限制内无法获取锁，则会返回 `false`：
+如果在你请求时锁不可用，你可以指示 Goravel 等待指定的秒数。 如果在指定的时间限制内无法获取锁，则会返回 `false`： 如果在指定的时间限制内无法获取锁，则会返回 `false`：
 
 ```go
 lock := facades.Cache().Lock("foo", 10*time.Second)
@@ -164,7 +164,7 @@ if (lock.Block(5*time.Second)) {
 }
 ```
 
-上面的例子可以通过将闭包传递给 `Block` 方法来简化。 当一个闭包被传递给这个方法时，Goravel 将尝试在指定的秒数内获取锁，并在闭包执行后自动释放锁：
+上面的例子可以通过将闭包传递给 `Block` 方法来简化。 上面的例子可以通过将闭包传递给 `Block` 方法来简化。 当一个闭包被传递给这个方法时，Goravel 将尝试在指定的秒数内获取锁，并在闭包执行后自动释放锁：
 
 ```go
 facades.Cache().Lock("foo", 10*time.Second).Block(5*time.Second, func () {
@@ -183,6 +183,7 @@ facades.Cache().Lock("processing").ForceRelease();
 ### 配置
 
 如果你想定义一个完全自定义的驱动，可以在 `config/cache.go` 配置文件中指定 `custom` 驱动类型。
+然后包含一个 `via` 选项，实现一个 `framework/contracts/cache/Driver` 接口：
 然后包含一个 `via` 选项，实现一个 `framework/contracts/cache/Driver` 接口：
 
 ```go
