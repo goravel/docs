@@ -10,7 +10,7 @@ Goravel的服务容器是一个功能强大的工具，用于管理类依赖和�
 
 ### 简单绑定
 
-几乎所有的服务容器绑定都会在 [服务提供者](./service-providers.md) 中注册。 在服务提供者中，您可以通过 `app` 参数访问容器，然后通过容器的 `Bind` 方法注册绑定，`Bind` 方法的第一个参数为要绑定 `key`，第二个参数是一个返回类实例的闭包：
+几乎所有的服务容器绑定都会在 [服务提供者](./service-providers.md) 中注册。 在服务提供者中，你可以通过 `app` 参数访问容器，然后通过容器的 `Bind` 方法注册绑定，`Bind` 方法的第一个参数为要绑定 `key`，第二个参数是一个返回类实例的闭包：
 
 ```go
 package route
@@ -35,7 +35,7 @@ func (route *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-如前所述，您通常会在服务提供者内部与容器进行交互；但是，如果您希望在服务提供者外部与容器进行交互，则可以通过 `App` facade 进行：
+如前所述，你通常会在服务提供者内部与容器进行交互；但是，如果你希望在服务提供者外部与容器进行交互，则可以通过 `App` facade 进行：
 
 ```go
 facades.App().Bind("key", func(app foundation.Application) (any, error) {
@@ -63,7 +63,7 @@ app.Instance(key, instance)
 
 ### 绑定时携带参数
 
-如果您需要一些额外的参数来构建服务实例，可以使用 `BindWith` 方法向闭包传递参数：
+如果你需要一些额外的参数来构建服务实例，可以使用 `BindWith` 方法向闭包传递参数：
 
 ```go
 app.BindWith(Binding, func(app foundation.Application, parameters map[string]any) (any, error) {
@@ -75,13 +75,13 @@ app.BindWith(Binding, func(app foundation.Application, parameters map[string]any
 
 ### `Make` 方法
 
-您可以使用 `Make` 方法从容器中解析类实例。 `Make` 方法接受您希望解析的 `key`：
+你可以使用 `Make` 方法从容器中解析类实例。 `Make` 方法接受您希望解析的 `key`：
 
 ```go
 instance, err := app.Make(key)
 ```
 
-如果您在服务提供商之外的代码位置无法访问 `app` 变量，则可以使用 `App` facade 从容器解析类实例：
+如果你在服务提供商之外的代码位置无法访问 `app` 变量，则可以使用 `App` facade 从容器解析类实例：
 
 ```go
 instance, err := facades.App().Make(key)
@@ -89,7 +89,7 @@ instance, err := facades.App().Make(key)
 
 ### `MakeWith` 方法
 
-如果您的某些类的依赖项无法通过容器解析，您可以通过将它们作为关联数组传递给 `MakeWith` 方法来注入它们，与之相对应的是 `BindWith` 绑定方法：
+如果你的某些类的依赖项无法通过容器解析，你可以通过将它们作为关联数组传递给 `MakeWith` 方法来注入它们，与之相对应的是 `BindWith` 绑定方法：
 
 ```go
 instance, err := app.MakeWith(key, map[string]any{"id": 1})
