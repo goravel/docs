@@ -4,7 +4,7 @@
 
 ## 简介
 
-包是向 Goravel 添加功能的主要方式。 这些包可能包含专门用于增强 Goravel 应用程序的路由、控制器和配置。 本指南主要涵盖了那些特定于 Goravel 的包的开发。
+包是向 Goravel 添加功能的主要方式。 这些包可能包含专门用于增强 Goravel 应用程序的路由、控制器和配置。 本指南主要涵盖了那些特定于 Goravel 的包的开发。 这些包可能包含专门用于增强 Goravel 应用程序的路由、控制器和配置。 本指南主要涵盖了那些特定于 Goravel 的包的开发。
 
 这里有一个关于包开发的官方示例：[goravel/example-package](https://github.com/goravel/example-package)
 
@@ -24,7 +24,7 @@ go run . artisan make:package --root=pkg sms
 
 ## 服务提供者
 
-[服务提供者](../architecture-concepts/service-providers.md)是你的包和 Goravel 之间的连接点。 通常位于包的根目录中：`service_provider.go`。 服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
+[服务提供者](../architecture-concepts/service-providers.md)是你的包和 Goravel 之间的连接点。 通常位于包的根目录中：`service_provider.go`。 服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。 通常位于包的根目录中：`service_provider.go`。 服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
 
 ## 使用
 
@@ -78,13 +78,13 @@ func main() {
 
 ### 手动安装
 
-将包内的 `ServiceProvider` 注册到 `config/app.go::providers`，然后将 `facades` 导出到应用中即可。 详细步骤可以参考：[goravel/example-package](https://github.com/goravel/example-package)。
+将包内的 `ServiceProvider` 注册到 `config/app.go::providers`，然后将 `facades` 导出到应用中即可。 详细步骤可以参考：[goravel/example-package](https://github.com/goravel/example-package)。 详细步骤可以参考：[goravel/example-package](https://github.com/goravel/example-package)。
 
 ## 资源
 
 ### 配置
 
-通常，你需要将包的配置文件发布到应用程序的 `config` 目录。 这将允许你的包的用户轻松覆盖你的默认配置选项。 要允许发布配置文件，请从服务提供者的 `Boot` 方法中调用 `Publishes` 方法，该方法第一个参数为包名，第二个参数为当前包文件路径与项目路径的映射：
+通常，你需要将包的配置文件发布到应用程序的 `config` 目录。 这将允许你的包的用户轻松覆盖你的默认配置选项。 要允许发布配置文件，请从服务提供者的 `Boot` 方法中调用 `Publishes` 方法，该方法第一个参数为包名，第二个参数为当前包文件路径与项目路径的映射： 这将允许您的包的用户轻松覆盖您的默认配置选项。 要允许发布配置文件，请从服务提供者的 `Boot` 方法中调用 `Publishes` 方法，该方法第一个参数为包名，第二个参数为当前包文件路径与项目路径的映射：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -131,7 +131,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ## 公共资源
 
-你的包可能包含 JavaScript、CSS 和图像等资产。 要将这些资产发布到应用程序的 `public` 目录，请使用服务提供者的 `Publishes` 方法：
+您的包可能包含 JavaScript、CSS 和图像等资产。 要将这些资产发布到应用程序的 `public` 目录，请使用服务提供者的 `Publishes` 方法：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -143,7 +143,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 
 ## 发布文件组
 
-你可能希望单独发布包资产和资源组。例如，你可能希望允许用户发布包的配置文件，而不是被迫发布包的全部资产。你可以在包的服务提供者中调用 `Publishes` 方法时定义「标签」来做到这一点。 这允许你为用户提供发布某些文件的选项，如配置文件，而不必发布所有软件包的资产。 例如，让我们使用标签在包的服务提供者的 `Boot` 方法中为 `sms` 包定义两个发布组（`sms-config` 和 `sms-migrations`）。
+您可能希望单独发布包资产和资源组。例如，您可能希望允许用户发布包的配置文件，而不是被迫发布包的全部资产。您可以在包的服务提供者中调用 `Publishes` 方法时定义「标签」来做到这一点。 这允许您为用户提供发布某些文件的选项，如配置文件，而不必发布所有软件包的资产。 你可能希望单独发布包资产和资源组。例如，你可能希望允许用户发布包的配置文件，而不是被迫发布包的全部资产。你可以在包的服务提供者中调用 `Publishes` 方法时定义「标签」来做到这一点。 这允许你为用户提供发布某些文件的选项，如配置文件，而不必发布所有软件包的资产。 例如，让我们使用标签在包的服务提供者的 `Boot` 方法中为 `sms` 包定义两个发布组（`sms-config` 和 `sms-migrations`）。
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -166,9 +166,9 @@ go run . artisan vendor:publish --package={你的包名}
 
 该命令可以使用如下参数：
 
-| 参数名     | 别名 | 作用                                                                                                                                                 |
-| ---------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| --package  | -p   | 包名，可以使远程包，例如：github.com/goravel/example-package，也可以使用本地包名：./packages/example-package，注意当使用本地包名时，需要以 `./` 开头 |
-| --tag      | -t   | 资源分组                                                                                                                                             |
-| --force    | -f   | 请覆盖任何已经存在的文件                                                                                                                             |
-| --existing | -e   | 只发布已存在的资源，并强制覆盖                                                                                                                       |
+| 参数名        | 别名 | 作用                                                                                                                                          |
+| ---------- | -- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| --package  | -p | 包名，可以使远程包，例如：github.com/goravel/example-package，也可以使用本地包名：./packages/example-package，注意当使用本地包名时，需要以 `./` 开头 |
+| --tag      | -t | 资源分组                                                                                                                                        |
+| --force    | -f | 请覆盖任何已经存在的文件                                                                                                                                |
+| --existing | -e | 只发布已存在的资源，并强制覆盖                                                                                                                             |
