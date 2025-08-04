@@ -77,6 +77,8 @@ docker build .
 国内会有下载依赖较慢与时区问题，可以将 Dockerfile 内容替换为下面脚本：
 
 ```dockerfile
+# 国内设置
+
 FROM golang:alpine AS builder
 ENV GO111MODULE=on \
     CGO_ENABLED=0  \
