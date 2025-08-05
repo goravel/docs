@@ -70,6 +70,10 @@ Goravel's GitHub issue trackers are not intended to provide Goravel help or supp
 
 You may propose new features or improvements to existing Goravel behavior in the Goravel framework repository's [GitHub discussion board](https://github.com/goravel/goravel/discussions). Informal discussion regarding bugs, new features, and implementation of existing features takes place in Discord or WeChat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
 
+## Add A New Language
+
+Welcome to add a new language to the Goravel documentation, you can submit an issue with the title `Add [Language] Language` and your [Crowdin](https://crowdin.com/) account to [goravel/goravel](https://github.com/goravel/goravel/issues/new). Will invite you to the Crowdin project.
+
 ## Contribution
 
 ### Find/Create Issue
@@ -92,13 +96,6 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 
 **New features** or features with breaking changes should always be sent to the `master` branch.
 
-## Local Environment
-
-| Software                                            | Action                             |
-| --------------------------------------------------- | ---------------------------------- |
-| Golang v1.20                                        | The minimum version                |
-| [vektra/mockery](https://github.com/vektra/mockery) | Provider mock files for unit tests |
-
 ## Goravel Repository
 
 | Repository                                                            | Action                                                                                                                                                     |
@@ -119,6 +116,10 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 | [goravel/redis](https://github.com/goravel/redis)                     | The Redis driver of Cache module                                                                                                                           |
 | [goravel/gin](https://github.com/goravel/gin)                         | The Gin driver of Route module                                                                                                                             |
 | [goravel/fiber](https://github.com/goravel/fiber)                     | The Fiber driver of Route module                                                                                                                           |
+| [goravel/postgres](https://github.com/goravel/postgres)               | The Postgres driver of Database module                                                                                                                     |
+| [goravel/mysql](https://github.com/goravel/mysql)                     | The MySQL driver of Database module                                                                                                                        |
+| [goravel/sqlserver](https://github.com/goravel/sqlserver)             | The SQLServer driver of Database module                                                                                                                    |
+| [goravel/sqlite](https://github.com/goravel/sqlite)                   | The SQLite driver of Database module                                                                                                                       |
 | [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | Providers log splitting functionality for Log module                                                                                                       |
 | [goravel/.github](https://github.com/goravel/.github)                 | [Community health file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
 
