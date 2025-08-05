@@ -2,7 +2,7 @@
 
 ## Versioning Scheme
 
-Goravel releases are released every half of year (~Q1 and ~Q3), while patch releases may be released as often as every week. patch releases should never contain breaking changes.
+Goravel releases are released every half of year (~Q1 and ~Q3), while patch releases may be released as often as every week. Patch releases should never contain breaking changes.
 
 ## Support Policy
 
