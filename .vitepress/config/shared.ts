@@ -54,7 +54,8 @@ export const shared = defineConfig({
     siteTitle: false,
     socialLinks: [
       { icon: 'github', link: 'https://github.com/goravel/goravel' },
-      { icon: 'discord', link: 'https://discord.gg/cFc5csczzS' }
+      { icon: 'discord', link: 'https://discord.gg/cFc5csczzS' },
+      { icon: 'x', link: 'https://x.com/goravelgolang' }
     ],
     search: {
       provider: 'algolia',

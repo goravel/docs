@@ -96,6 +96,10 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Video Tutorials',
       link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
+    },
+    {
+      text: 'Translate',
+      link: '/getting-started/contributions#add-a-new-language'
     }
   ]
 }
@@ -117,6 +121,10 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
     {
       text: 'Compile',
       link: 'compile'
+    },
+    {
+      text: 'Release Notes',
+      link: 'releases'
     },
     {
       text: 'Contribution Guide',
