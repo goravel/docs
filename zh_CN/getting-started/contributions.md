@@ -68,6 +68,10 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 你可以通过
 
 你可以在 Goravel 仓库的 [GitHub 讨论区](https://github.com/goravel/goravel/discussions) 中提出新功能或对现有 Goravel 行为的改进。 也可以在 Discord 或微信群中进行有关错误、新功能和现有功能实现的非正式讨论。 Goravel 的维护者 Bowen 通常在工作日的上午 9 点至下午 6 点（UTC+08:00）出现在频道中，并在其他时间偶尔出现在频道中。
 
+## 新增语言
+
+欢迎为Goravel文档添加新的语言， 你可以提交一个标题为 "Add [Language] Language" 的 Issue 并附带你的 [Crowdin](https://crowdin.com/) 账号到 [goravel/goravel](https://github.com/goravel/goravel/issues/new)。 将会邀请你到 Crowdin 项目中。
+
 ## 提交贡献
 
 ### 寻找/创建 Issue
@@ -90,13 +94,6 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 你可以通过
 
 **新功能**或有**破坏性**变化的功能应始终合并到 `master` 分支。
 
-## 本地环境
-
-| 软件                                                  | 作用              |
-| --------------------------------------------------- | --------------- |
-| Golang v1.20                        | 最低版本            |
-| [vektra/mockery](https://github.com/vektra/mockery) | 为单元测试提供 mock 文件 |
-
 ## Goravel 仓库
 
 | 仓库                                                                    | 作用                                                                                                                                          |
@@ -117,6 +114,10 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 你可以通过
 | [goravel/redis](https://github.com/goravel/redis)                     | Cache 模块 Redis 驱动                                                                                                                           |
 | [goravel/gin](https://github.com/goravel/gin)                         | Route 模块 Gin 驱动                                                                                                                             |
 | [goravel/fiber](https://github.com/goravel/fiber)                     | Route 模块 Fiber 驱动                                                                                                                           |
+| [goravel/postgres](https://github.com/goravel/postgres)               | Database 模块 Postgres 驱动                                                                                                                     |
+| [goravel/mysql](https://github.com/goravel/mysql)                     | Database 模块 MySQL 驱动                                                                                                                        |
+| [goravel/sqlserver](https://github.com/goravel/sqlserver)             | Database 模块 SQLServer 驱动                                                                                                                    |
+| [goravel/sqlite](https://github.com/goravel/sqlite)                   | Database 模块 SQLite 驱动                                                                                                                       |
 | [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | 为 Log 模块提供日志分割功能                                                                                                                            |
 | [goravel/.github](https://github.com/goravel/.github) | [社区健康文件](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
 
