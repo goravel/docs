@@ -82,7 +82,7 @@ function nav(): DefaultTheme.NavItem[] {
     link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
   }, {
     text: "翻译",
-    link: "/zh_CN/getting-started/contributions#add-a-new-language"
+    link: "/zh_CN/getting-started/contributions#新增语言"
   }];
 }
 function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
