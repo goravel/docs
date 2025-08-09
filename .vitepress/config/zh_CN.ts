@@ -80,6 +80,9 @@ function nav(): DefaultTheme.NavItem[] {
   }, {
     text: "视频教程",
     link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
+  }, {
+    text: "翻译",
+    link: "/zh_CN/getting-started/contributions#add-a-new-language"
   }];
 }
 function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
@@ -96,10 +99,13 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
     text: "编译",
     link: 'compile'
   }, {
+    text: "发行说明",
+    link: 'releases'
+  }, {
     text: "贡献指南",
     link: 'contributions'
   }, {
-    text: "优秀拓展包",
+    text: "优秀扩展包",
     link: 'packages'
   }, {
     text: "隐私政策",
