@@ -8,7 +8,7 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 
 ## 奖励
 
-- 核心贡献者将可以在未来从 Goravel 中获得收益；
+- 核心开发者将可以在未来从 Goravel 中获得收益。
 - 完成一个 `Feature`，即可获得 Goravel 官方 T-Shirt 一件，一个大版本发布周期中最多可获得 1 件；
 
 <p align="left"><img src="/t-shirt.jpg" width="500"></p>
