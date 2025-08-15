@@ -42,7 +42,7 @@ value := facades.Cache().GetString("goravel", "default")
 你可以传递一个 `func` 作为默认值。 如果指定的数据在缓存中不存在，将返回 `func` 的结果。 传递闭包的方法允许你从数据库或其他外部服务中获取默认值。 注意闭包结构 `func() any`。
 
 ```go
-value := facades.Cache().Get("goravel", any {
+value := facades.Cache().Get("goravel", func() any {
     return "default"
 })
 ```
