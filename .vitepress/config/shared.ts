@@ -79,6 +79,14 @@ export const shared = defineConfig({
                 buttonText: '搜索文档'
               }
             }
+          },
+          zh_TW: {
+            placeholder: '搜尋檔案',
+            translations: {
+              button: {
+                buttonText: '搜尋檔案'
+              }
+            }
           }
         }
       }
