@@ -1,12 +1,12 @@
 ---
-layout: 主頁
+layout: home
 title: Goravel - 全功能 Golang 開發框架
 
 head:
   - [
       'meta',
       {
-          name: 描述,
+          name: description,
           content: Goravel 是一個 Golang 開發框架，具有完整功能和卓越的可擴展性。 作為起始腳手架幫助 Gopher 快速構建自己的應用。
         }
     ]
@@ -14,7 +14,7 @@ head:
       'meta',
       { property: og:url, content: https://www.goravel.dev }
     ]
-  - [ 'meta', { property: og:type, content: 網站 } ]
+  - [ 'meta', { property: og:type, content: website } ]
   - [
       'meta',
       { property: og:title, content: Goravel - 全功能 Golang 開發框架 }
