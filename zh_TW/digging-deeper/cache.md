@@ -16,7 +16,7 @@ Goravel 提供了可擴展的快取模組，可以使用 `facades.Cache()` 進�
 
 ## 快取用法
 
-### Inject Context
+### 注入 Context
 
 ```go
 facades.Cache().WithContext(ctx)

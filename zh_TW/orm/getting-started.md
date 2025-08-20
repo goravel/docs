@@ -156,28 +156,28 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 
 ## facades.Orm() 可用函數
 
-| 名稱          | 操作                                                                   |
-| ----------- | -------------------------------------------------------------------- |
-| 連接          | [指定資料庫連接](#specify-database-connection)                              |
-| DB          | [通用資料庫介面 sql.DB](#generic-database-interface-sql-db) |
-| 查詢          | [獲取資料庫實例](#get-database-instance)                                    |
-| 事務          | [交易](#transaction)                                                   |
-| WithContext | [注入上下文](#inject-context)                                             |
+| 名稱          | 操作                                                                                                                                       |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 連接          | [指定資料庫連接](#指定資料庫連接)                                                                                                                      |
+| DB          | [通用資料庫介面 sql.DB](#通用資料庫介面 sql.DB) |
+| 查詢          | [獲取資料庫實例](#獲取資料庫實例)                                                                                                                      |
+| 事務          | [交易](#交易)                                                                                                                                |
+| WithContext | [注入 Context](#注入 Context)                                         |
 
 ## facades.Orm().Query() 可用函數
 
 | 函數                          | 操作                                                  |
 | --------------------------- | --------------------------------------------------- |
-| 開始交易                        | [開始交易](#transaction)                                |
+| 開始交易                        | [開始交易](#交易)                                         |
 | 提交                          | [提交交易](#transaction)                                |
-| 計數                          | [計數](#count)                                        |
-| 創建                          | [創建](#create)                                       |
-| 光標                          | [游標](#cursor)                                       |
-| 刪除                          | [刪除](#delete)                                       |
-| 唯一的                         | [過濾重複](#filter-repetition)                          |
-| 驅動                          | [獲取驅動程式](#get-driver)                               |
-| 執行                          | [執行原生更新 SQL](#execute-native-update-sql)            |
-| 存在                          | [存在](#exists)                                       |
+| 計數                          | [計數](#計數)                                           |
+| 創建                          | [創建](#創建)                                           |
+| 光標                          | [游標](#游標)                                           |
+| 刪除                          | [刪除](#刪除)                                           |
+| 唯一的                         | [過濾重複](#過濾重複)                                       |
+| 驅動                          | [獲取驅動程式](#獲取驅動程式)                                   |
+| 執行                          | [執行原生更新 SQL](#執行原生更新-SQL)                           |
+| 存在                          | [存在](#存在)                                           |
 | 查找                          | [通過 ID 查詢一行或多行](#query-one-or-multiple-lines-by-id) |
 | 查找或失敗                       | [未找到返回錯誤](#not-found-return-error)                  |
 | 第一個                         | [查詢一行](#query-one-line)                             |
@@ -207,11 +207,11 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | OrWhereJsonDoesntContain    | [查詢條件](#where-條件)                                   |
 | OrWhereJsonDoesntContainKey | [查詢條件](#where-條件)                                   |
 | OrWhereJsonLength           | [查詢條件](#where-條件)                                   |
-| 分頁                          | [分頁](#paginate)                                     |
-| Pluck                       | [查詢單個欄位](#query-single-column)                      |
-| 原始                          | [執行原生 SQL](#execute-native-sql)                     |
-| 恢復                          | [恢復](#restore)                                      |
-| 回滾                          | [回滾交易](#transaction)                                |
+| 分頁                          | [分頁](#分頁)                                           |
+| Pluck                       | [查詢單個欄位](#查詢單個欄位)                                   |
+| 原始                          | [執行原生 SQL](#執行原生-SQL)                               |
+| 恢復                          | [恢復](#恢復)                                           |
+| 回滾                          | [回滾交易](#交易)                                         |
 | 保存                          | [更新現有模型](#update-a-existing-model)                  |
 | SaveQuietly                 | [無事件地保存單個模型](#saving-a-single-model-without-events) |
 | 掃描                          | [掃描結構](#execute-native-sql)                         |
@@ -235,12 +235,12 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | WhereJsonDoesntContain      | [查詢條件](#where-條件)                                   |
 | WhereJsonDoesntContainKey   | [查詢條件](#where-條件)                                   |
 | WhereJsonLength             | [查詢條件](#where-條件)                                   |
-| WithoutEvents               | [靜音事件](#muting-events)                              |
-| WithTrashed                 | [查詢軟刪除的資料](#query-soft-delete-data)                 |
+| WithoutEvents               | [靜音事件](#靜音事件)                                       |
+| WithTrashed                 | [查詢軟刪除的資料](#查詢軟刪除的資料)                               |
 
 ## Query Builder
 
-### Inject Context
+### 注入 Context
 
 ```go
 facades.Orm().WithContext(ctx)

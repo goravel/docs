@@ -23,7 +23,7 @@
 | `daily`  | 每天一個日誌文件 |
 | `custom` | 自定義驅動    |
 
-### Inject Context
+### 注入 Context
 
 ```go
 facades.Log().WithContext(ctx)

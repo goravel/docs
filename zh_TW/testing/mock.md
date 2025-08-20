@@ -411,7 +411,7 @@ func Begin() error {
 }
 ```
 
-## Mock facades.Queue
+## 模擬 facades.Queue
 
 ```go
 import "github.com/goravel/framework/testing/mock"
@@ -434,7 +434,7 @@ func TestQueue(t *testing.T) {
 }
 ```
 
-## Mock facades.Storage
+## 模擬 facades.Storage
 
 ```go
 import (
@@ -469,7 +469,7 @@ func TestStorage(t *testing.T) {
 }
 ```
 
-## Mock facades.Validation
+## 模擬 facades.Validation
 
 ```go
 import (
@@ -513,7 +513,7 @@ func TestValidation(t *testing.T) {
 }
 ```
 
-## Mock facades.View
+## 模擬 facades.View
 
 ```go
 import (
