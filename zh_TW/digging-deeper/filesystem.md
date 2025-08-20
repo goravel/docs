@@ -50,7 +50,7 @@ facades.Storage().Put("avatars/1.png", "Contents")
 facades.Storage().Disk("s3").Put("avatars/1.png", "Contents")
 ```
 
-## Inject Context
+## 注入 Context
 
 ```go
 facades.Storage().WithContext(ctx).Put("avatars/1.png", "Contents")
