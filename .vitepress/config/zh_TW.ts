@@ -59,8 +59,8 @@ export const config = defineConfig({
     lastUpdated: {
       text: "最後更新於",
       formatOptions: {
-        dateStyle: "短",
-        timeStyle: "中"
+        dateStyle: 'short',
+        timeStyle: 'medium'
       }
     },
     langMenuLabel: "切換語言",
