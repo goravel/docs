@@ -137,7 +137,7 @@ facades.Gate().After(func(ctx context.Context, ability string, arguments map[str
 
 > 注意：只有當 `facades.Gate().Define` 返回 nil 時，才會應用 `After` 的返回結果。
 
-### Inject Context
+### 注入 Context
 
 `context` 將傳遞給 `Before`, `After` 和 `Define` 方法。
 
