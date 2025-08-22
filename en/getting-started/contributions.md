@@ -74,6 +74,10 @@ You may propose new features or improvements to existing Goravel behavior in the
 
 Welcome to add a new language to the Goravel documentation, you can submit an issue with the title `Add [Language] Language` and your [Crowdin](https://crowdin.com/) account to [goravel/goravel](https://github.com/goravel/goravel/issues/new). Will invite you to the Crowdin project.
 
+## Modify Existing Languages
+
+Given that the Goravel document supports i18n, only En language can be modified by PR, other languages should be modified via [Crowdin](https://crowdin.com/). You can submit an issue with the title `Modify [Language] Language` and your [Crowdin](https://crowdin.com/) account to [goravel/goravel](https://github.com/goravel/goravel/issues/new). Will invite you to the Crowdin project.
+
 ## Contribution
 
 ### Find/Create Issue
