@@ -72,7 +72,7 @@ You may propose new features or improvements to existing Goravel behavior in the
 
 ## Add A New Language
 
-Welcome to add a new language to the Goravel documentation, you can submit an issue with the title `Add [Language] Language` and your [Crowdin](https://crowdin.com/) account to [goravel/goravel](https://github.com/goravel/goravel/issues/new). Will invite you to the Crowdin project.
+Welcome to add a new language to the Goravel documentation, you can submit an issue with the title `Add [Language] Language` and your [Crowdin](https://crowdin.com/) account to [goravel/goravel](https://github.com/goravel/goravel/issues/new). We will invite you to the Crowdin project.
 
 ## Modify Existing Languages
 
