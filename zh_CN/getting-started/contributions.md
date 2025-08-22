@@ -70,7 +70,11 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 你可以通过
 
 ## 新增语言
 
-欢迎为Goravel文档添加新的语言， 你可以提交一个标题为 "Add [Language] Language" 的 Issue 并附带你的 [Crowdin](https://crowdin.com/) 账号到 [goravel/goravel](https://github.com/goravel/goravel/issues/new)。 将会邀请你到 Crowdin 项目中。
+欢迎为Goravel文档添加新的语言， 你可以提交一个标题为 "Add [Language] Language" 的 Issue 并附带你的 [Crowdin](https://crowdin.com/) 账号到 [goravel/goravel](https://github.com/goravel/goravel/issues/new)。 我们将邀请你加入 Crowdin 项目。
+
+## 修改现有语言
+
+Goravel 文档支持多语言后，只有英文文件可以被 PR 修改； 其他语言应该通过 [Crowdin](https://crowdin.com/)修改。 你可以提交一个标题为 "修改 [Language] 语言" 的 Issue 并附带你的 [Crowdin](https://crowdin.com/) 账户到 [goravel/goravel](https://github.com/goravel/goravel/issues/new)。 我们将邀请你加入 Crowdin 项目。
 
 ## 提交贡献
 
