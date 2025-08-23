@@ -13,6 +13,7 @@
 | [goravel/oss](https://github.com/goravel/oss)                                     | `facades.Storage()` 的 Oss 驅動        | 76.5% |
 | [goravel/installer](https://github.com/goravel/installer)                         | Goravel 安裝器                         | 76.2% |
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)                       | `facades.Storage()` 的 Cloudinary 驅動 | 75.4% |
+| [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli)   | A goravel scaffold commandline tool | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | 工作流包                                | 4.4%  |
 | [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud)         | goravel CRUD 包                      | 4.2%  |
 | [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                     | goravel tinker 包                    | 3.6%  |
