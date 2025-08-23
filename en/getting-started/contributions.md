@@ -89,7 +89,7 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 - You can check out [this article](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) if you are new to the process;
 - During the development process, if you encounter a problem, you can describe the problem in detail in issue at any time for future communication, but before that, please make sure that you have tried to solve the problem through Google and other methods as much as possible;
 - Before creating a PR, please improve the unit test coverage as much as possible to provide more stable functions;
-- If you modify any file under the `contracts` folder, please run the `go run github.com/vektra/mockery/v2` command in the root directory to generate the mock file;
+- If you modify any file under the `contracts` folder, please run the `go tool mockery` command in the root directory to generate the mock file;
 - When the PR is developed, please add the `Review Ready `, the maintainer will review it in a timely manner.
 - After the PR is merged, the issue will be closed automatically if the description in the PR is set correctly;
 - Goravel greatly appreciates your contribution and will add you to the home contribution list at the next release; ❤️
