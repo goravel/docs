@@ -13,6 +13,11 @@
 | [goravel/oss](https://github.com/goravel/oss)                                     | `facades.Storage()` 模块 Oss 驱动        | 76.5% |
 | [goravel/installer](https://github.com/goravel/installer)                         | Goravel 安装器                          | 76.2% |
 | [goravel/cloudinary](https://github.com/goravel/cloudinary)                       | `facades.Storage()` 模块 Cloudinary 驱动 | 75.4% |
+| [goravel/postgres](https://github.com/goravel/postgres)                           | Postgres 数据库驱动                       | 73.7% |
+| [goravel/mysql](https://github.com/goravel/mysql)                                 | MySQL 数据库驱动                          | 73.3% |
+| [goravel/sqlserver](https://github.com/goravel/sqlserver)                         | Sqlserver 数据库驱动                      | 60.6% |
+| [goravel/sqlite](https://github.com/goravel/sqlite)                               | Sqlite 数据库驱动                         | 45.2% |
+| [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli)   | Goravel Scaffold 命令行工具               | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | 工作流                                  | 4.4%  |
 | [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud)         | CRUD                                 | 4.2%  |
 | [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                     | Tinker                               | 3.6%  |
