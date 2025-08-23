@@ -146,7 +146,7 @@ builder := http.NewBody().SetField("name", "krishan")
 
 body, err := builder.Build()
 
-response, err := facades.Http().WithHeader("Content-Type", body.ContentType()).Post("https://example.com/users", body)  
+response, err := facades.Http().WithHeader("Content-Type", body.ContentType()).Post("https://example.com/users", body.Reader())
 ```
 
 ### 標頭
