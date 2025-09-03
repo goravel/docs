@@ -11,12 +11,12 @@
 Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP 请求。 如果你需要调整其内部设置，只需更新 `config/http.go` 文件中的 `client` 属性即可。
 以下是可用的配置选项：
 
- - `base_url`: 设置相对路径的根 URL。 自动为不以 `http://` 或 `https://` 开头的请求添加前缀。
- - `timeout`（默认值：`30s`）: 完整请求生命周期的全局超时时长（连接 + 任何重定向 + 读取响应体）。 零表示不超时。
- - `max_idle_conns`: 最大空闲（保持活动）连接数。 零表示没有限制。
- - `max_idle_conns_per_host`: 最大空闲（保持活动）连接数。
- - `max_conns_per_host`: 限制总连接数，包括正在拨号、活动和空闲状态的连接。 零表示没有限制。
- - `idle_conn_timeout`: 空闲（保持活动）连接在自行关闭之前保持空闲的最大时长。
+- `base_url`: 设置相对路径的根 URL。 自动为不以 `http://` 或 `https://` 开头的请求添加前缀。
+- `timeout`（默认值：`30s`）: 完整请求生命周期的全局超时时长（连接 + 任何重定向 + 读取响应体）。 零表示不超时。
+- `max_idle_conns`: 最大空闲（保持活动）连接数。 零表示没有限制。
+- `max_idle_conns_per_host`: 最大空闲（保持活动）连接数。
+- `max_conns_per_host`: 限制总连接数，包括正在拨号、活动和空闲状态的连接。 零表示没有限制。
+- `idle_conn_timeout`: 空闲（保持活动）连接在自行关闭之前保持空闲的最大时长。
 
 ```go
 "client": map[string]any{
