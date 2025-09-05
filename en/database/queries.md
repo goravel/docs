@@ -162,9 +162,9 @@ sum, err := facades.DB().Table("users").Sum("age")
 You can use the `Exists` and `DoesntExist` methods to determine if the result of a query condition exists:
 
 ```go
-exists, err := facades.DB().Table("users").Where("votes", ">", 100).Exists()
+exists, err := facades.DB().Table("users").Where("votes > ?", 100).Exists()
 
-exists, err := facades.DB().Table("users").Where("votes", ">", 100).DoesntExist()
+exists, err := facades.DB().Table("users").Where("votes > ?", 100).DoesntExist()
 ```
 
 ### Pagination
@@ -611,13 +611,13 @@ The query builder also includes some functions that can help you implement "pess
 To use a "shared lock", you may use the `SharedLock` method. A shared lock prevents the selected rows from being modified until the transaction is committed:
 
 ```go
-facades.DB().Table("users").Where("votes", ">", 100).SharedLock().Get(&users)
+facades.DB().Table("users").Where("votes > ?", 100).SharedLock().Get(&users)
 ```
 
 You can also use the `LockForUpdate` method. Using the "update" lock can prevent rows from being modified or selected by other shared locks:
 
 ```go
-facades.DB().Table("users").Where("votes", ">", 100).LockForUpdate().Get(&users)
+facades.DB().Table("users").Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
 ## Debugging
