@@ -858,14 +858,14 @@ To execute a statement with a "shared lock", you may call the `SharedLock` metho
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("votes", ">", 100).SharedLock().Get(&users)
+facades.Orm().Query().Where("votes > ?", 100).SharedLock().Get(&users)
 ```
 
 Alternatively, you may use the `LockForUpdate` method. A "for update" lock prevents the selected records from being modified or from being selected with another shared lock:
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("votes", ">", 100).LockForUpdate().Get(&users)
+facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
 ### Sum
