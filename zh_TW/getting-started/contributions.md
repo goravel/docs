@@ -51,6 +51,8 @@ Goravel 歡迎來自不同才能的豐富多樣的貢獻，如編程、翻譯、
 <a href="https://github.com/tzsk" target="_blank"><img src="https://avatars.githubusercontent.com/u/13273787?v=4" width="48" height="48"></a>
 <a href="https://github.com/ycb1986" target="_blank"><img src="https://avatars.githubusercontent.com/u/12908032?v=4" width="48" height="48"></a>
 <a href="https://github.com/BadJacky" target="_blank"><img src="https://avatars.githubusercontent.com/u/113529280?v=4" width="48" height="48"></a>
+<a href="https://github.com/NiteshSingh17" target="_blank"><img src="https://avatars.githubusercontent.com/u/79739154?v=4" width="48" height="48"></a>
+
 </div>
 
 ## Bug 反饋
@@ -67,15 +69,15 @@ Goravel 的 GitHub 問題追踪器不旨在提供 Goravel 的幫助或支持. �
 
 ## 開發討論
 
-你可以在 Goravel 框架庫的 [GitHub 討論區](https://github.com/goravel/goravel/discussions) 提出新功能或改進現有 Goravel 行為. 有關錯誤、新功能和現有功能實施的非正式討論在 Discord 或微信群進行. Goravel 的維護者 Bowen 通常在工作日的早上 9 點到晚上 6 點（UTC+08:00）出現在群組中，其他時間偶爾會出現.
+你可以在 Goravel 框架庫的 [GitHub 討論區](https://github.com/goravel/goravel/discussions) 提出新功能或改進現有 Goravel 行為. 有關錯誤、新功能和現有功能實施的非正式討論在 Discord 或微信群進行。 Goravel 的維護者 Bowen 通常在工作日的早上 9 點到晚上 6 點（UTC+08:00）出現在群組中，其他時間偶爾會出現。
 
 ## 新增語言
 
-歡迎為 Goravel 文檔添加新語言，可以提交一個標題為 "Add [Language] Language" 的 Issue 並附上你的 [Crowdin](https://crowdin.com/) 帳號到 [goravel/goravel](https://github.com/goravel/goravel/issues/new). We will invite you to the Crowdin project.
+歡迎為 Goravel 文檔添加新語言，可以提交一個標題為 "Add [Language] Language" 的 Issue 並附上你的 [Crowdin](https://crowdin.com/) 帳號到 [goravel/goravel](https://github.com/goravel/goravel/issues/new). 將邀請你進入 Crowdin 項目.
 
 ## Modify Existing Languages
 
-Given that the Goravel documentation supports i18n, only the English language can be modified by PR; other languages should be modified via [Crowdin](https://crowdin.com/). You can submit an issue with the title `Modify [Language] Language` and your [Crowdin](https://crowdin.com/) account to [goravel/goravel](https://github.com/goravel/goravel/issues/new). We will invite you to the Crowdin project.
+Given that the Goravel documentation supports i18n, only the English language can be modified by PR; other languages should be modified via [Crowdin](https://crowdin.com/). 歡迎為 Goravel 文檔添加新語言，可以提交一個標題為 "Add [Language] Language" 的 Issue 並附上你的 [Crowdin](https://crowdin.com/) 帳號到 [goravel/goravel](https://github.com/goravel/goravel/issues/new). 將邀請你進入 Crowdin 項目.
 
 ## 貢獻
 
