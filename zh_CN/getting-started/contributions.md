@@ -51,6 +51,8 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 <a href="https://github.com/tzsk" target="_blank"><img src="https://avatars.githubusercontent.com/u/13273787?v=4" width="48" height="48"></a>
 <a href="https://github.com/ycb1986" target="_blank"><img src="https://avatars.githubusercontent.com/u/12908032?v=4" width="48" height="48"></a>
 <a href="https://github.com/BadJacky" target="_blank"><img src="https://avatars.githubusercontent.com/u/113529280?v=4" width="48" height="48"></a>
+<a href="https://github.com/NiteshSingh17" target="_blank"><img src="https://avatars.githubusercontent.com/u/79739154?v=4" width="48" height="48"></a>
+
 </div>
 
 ## Bug 报告
@@ -103,7 +105,7 @@ Goravel 文档支持多语言后，只有英文文件可以被 PR 修改； 其�
 
 | 仓库                                                                    | 作用                                                                                                                                          |
 | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| [goravel/goravel](https://github.com/goravel/goravel)                 | Goravel 脚手架                                                                                                                                 |
+| [goravel/goravel](https://github.com/goravel/goravel)                 | Goravel 命令行                                                                                                                                 |
 | [goravel/framework](https://github.com/goravel/framework)             | Goravel 主仓库                                                                                                                                 |
 | [goravel/example](https://github.com/goravel/example)                 | Goravel 示例                                                                                                                                  |
 | [goravel/example-client](https://github.com/goravel/example-client)   | Grpc 客户端示例                                                                                                                                  |
