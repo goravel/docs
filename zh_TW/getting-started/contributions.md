@@ -23,8 +23,8 @@ Goravel 歡迎來自不同才能的豐富多樣的貢獻，如編程、翻譯、
 
 ## 貢獻者
 
-<div class="flex flex-wrap gap-2 mt-5" :class="$style.contributors"><a href="https://github.com/merouanekhalili" target="_blank"><img src="https://avatars.githubusercontent.com/u/1122628?v=4" width="48" height="48"></a>
-<a href="https://github.com/hongyukeji" target="_blank"><img src="https://avatars.githubusercontent.com/u/23145983?v=4" width="48" height="48"></a>
+<div class="flex flex-wrap gap-2 mt-5" :class="$style.contributors"><a href="https://github.com/merouanekhalili" target="_blank"><img src="https://avatars.githubusercontent.com/u/1122628?v=4" width="48" height="48">
+<a href="https://github.com/hongyukeji" target="_blank"><img src="https://avatars.githubusercontent.com/u/23145983?v=4" width="48" height="48">
 <a href="https://github.com/sidshrivastav" target="_blank"><img src="https://avatars.githubusercontent.com/u/28773690?v=4" width="48" height="48"></a>
 <a href="https://github.com/Juneezee" target="_blank"><img src="https://avatars.githubusercontent.com/u/20135478?v=4" width="48" height="48"></a>
 <a href="https://github.com/dragoonchang" target="_blank"><img src="https://avatars.githubusercontent.com/u/1432336?v=4" width="48" height="48"></a>
@@ -52,10 +52,12 @@ Goravel 歡迎來自不同才能的豐富多樣的貢獻，如編程、翻譯、
 <a href="https://github.com/ycb1986" target="_blank"><img src="https://avatars.githubusercontent.com/u/12908032?v=4" width="48" height="48"></a>
 <a href="https://github.com/BadJacky" target="_blank"><img src="https://avatars.githubusercontent.com/u/113529280?v=4" width="48" height="48"></a>
 <a href="https://github.com/NiteshSingh17" target="_blank"><img src="https://avatars.githubusercontent.com/u/79739154?v=4" width="48" height="48"></a>
+</a>
+</a>
 
 </div>
 
-## Bug Feedback
+## Bug 反饋
 
 你可以在 [這裡](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+) 提交一個 Bug 反饋，請在提交前搜索 [問題列表](https://github.com/goravel/goravel/issues?q=is%3Aissue) 是否存在類似問題. 報告應包含一個標題和清晰的問題描述，並提供盡可能多的相關信息以及演示該問題的代碼範例. Bug 反饋的目標是使你自己以及其他人能夠輕鬆地復現 Bug 並開發修復. Goravel 鼓勵提交者在同時創建 PR 以修復 Bug，使開源項目得到更積極的發展.
 
@@ -69,17 +71,17 @@ Goravel 的 GitHub 問題追踪器不旨在提供 Goravel 的幫助或支持. �
 
 ## 開發討論
 
-你可以在 Goravel 框架庫的 [GitHub 討論區](https://github.com/goravel/goravel/discussions) 提出新功能或改進現有 Goravel 行為. 有關錯誤、新功能和現有功能實施的非正式討論在 Discord 或微信群進行. Goravel 的維護者 Bowen 通常在工作日的早上 9 點到晚上 6 點（UTC+08:00）出現在群組中，其他時間偶爾會出現.
+你可以在 Goravel 框架庫的 [GitHub 討論區](https://github.com/goravel/goravel/discussions) 提出新功能或改進現有 Goravel 行為. 有關錯誤、新功能和現有功能實施的非正式討論在 Discord 或微信群進行。 Goravel 的維護者 Bowen 通常在工作日的早上 9 點到晚上 6 點（UTC+08:00）出現在群組中，其他時間偶爾會出現。
 
 ## 新增語言
 
-Welcome to add a new language to the Goravel documentation, you can submit an issue with the title `Add [Language] Language` and your [Crowdin](https://crowdin.com/) account to [goravel/goravel](https://github.com/goravel/goravel/issues/new). We will invite you to the Crowdin project.
+歡迎為 Goravel 文檔添加新語言，可以提交一個標題為 "Add [Language] Language" 的 Issue 並附上你的 [Crowdin](https://crowdin.com/) 帳號到 [goravel/goravel](https://github.com/goravel/goravel/issues/new). 將邀請你進入 Crowdin 項目.
 
 ## Modify Existing Languages
 
-Given that the Goravel documentation supports i18n, only the English language can be modified by PR; other languages should be modified via [Crowdin](https://crowdin.com/). You can submit an issue with the title `Modify [Language] Language` and your [Crowdin](https://crowdin.com/) account to [goravel/goravel](https://github.com/goravel/goravel/issues/new). We will invite you to the Crowdin project.
+Given that the Goravel documentation supports i18n, only the English language can be modified by PR; other languages should be modified via [Crowdin](https://crowdin.com/). 歡迎為 Goravel 文檔添加新語言，可以提交一個標題為 "Add [Language] Language" 的 Issue 並附上你的 [Crowdin](https://crowdin.com/) 帳號到 [goravel/goravel](https://github.com/goravel/goravel/issues/new). 將邀請你進入 Crowdin 項目.
 
-## Contribution
+## 貢獻
 
 ### 尋找/創建 Issue
 
