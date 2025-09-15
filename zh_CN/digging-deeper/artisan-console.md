@@ -146,15 +146,6 @@ go run . artisan emails --lang=Chinese
 go run . artisan emails -l=Chinese
 ```
 
-注意：同时使用参数与选项时，选项要在参数之前定义。 例如：
-
-```shell
-// 正确
-go run . artisan emails --lang=Chinese name
-// 错误
-go run . artisan emails name --lang=Chinese name
-```
-
 除了 `command.StringFlag`，我们还可以其他类型的 `Flag` 与 `Option*`：`StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`。
 
 ### 交互式输入
