@@ -35,6 +35,8 @@ DEPLOY_REVERSE_PROXY_TLS_ENABLED=true
 DEPLOY_DOMAIN=my-app.com
 ```
 
+> Note: Ensure your domain registrar has a DNS A record for `DEPLOY_DOMAIN` pointing to `DEPLOY_IP_ADDRESS` (and an AAAA record if using IPv6). Caddy can only issue certificates when the domain resolves to your server's IP.
+
 Then run:
 
 ```
