@@ -51,6 +51,14 @@ This will:
 5. Upload the binary, environment file, and optional assets.
 6. Restart the systemd service.
 
+#### Request flow
+
+1. User sends HTTP(S) request to `DEPLOY_DOMAIN`.
+2. Caddy receives the request and proxies to `127.0.0.1:DEPLOY_APP_PORT`.
+3. Goravel app processes the request (routing, middleware, controller).
+4. App returns a response to Caddy.
+5. Caddy sends the HTTP(S) response back to the user.
+
 ### Without reverse proxy
 
 For a simpler deployment without a reverse proxy, use:
@@ -83,6 +91,12 @@ This will:
 3. Create and enable the systemd unit.
 4. Upload the binary, environment file, and optional assets.
 5. Restart the service.
+
+#### Request flow
+
+1. User sends HTTP request to `APP_HOST:APP_PORT` (e.g., `0.0.0.0:80`).
+2. Goravel app processes the request (routing, middleware, controller).
+3. App sends the HTTP response back to the user.
 
 ### Rollback
 
