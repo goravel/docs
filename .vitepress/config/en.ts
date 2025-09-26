@@ -123,6 +123,10 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
       link: 'compile'
     },
     {
+      text: 'Deploy',
+      link: 'deploy'
+    },
+    {
       text: 'Release Notes',
       link: 'releases'
     },

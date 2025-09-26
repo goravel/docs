@@ -857,14 +857,14 @@ facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("votes", ">", 100).SharedLock().Get(&users)
+facades.Orm().Query().Where("votes > ?", 100).SharedLock().Get(&users)
 ```
 
 或者，你可以使用 `LockForUpdate` 方法。 该锁可防止所选记录被修改或被另一个共享锁选中：
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("votes", ">", 100).LockForUpdate().Get(&users)
+facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
 ### 求和
