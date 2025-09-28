@@ -109,6 +109,6 @@ go run . artisan env.encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLH
 ```shell
 GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc go run . artisan env:decrypt
 
-// 或
-go run . artisan env.decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+// or
+go run . artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
