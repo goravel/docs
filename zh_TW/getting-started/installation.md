@@ -100,8 +100,8 @@ go run . artisan jwt:secret
 ```shell
 go run . artisan env:encrypt
 
-// 指定文件名與密鑰
-go run . artisan env.encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+// Specify the file name and key
+go run . artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
 然後在生產環境中使用 `env:decrypt` 命令來解密 env 文件：
