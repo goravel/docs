@@ -98,9 +98,7 @@ go run . artisan jwt:secret
 你也许想将生产环境的 env 文件添加到版本控制中，但又不想将敏感信息暴露出来，这时你可以使用 `env:encrypt` 命令来加密 env 文件：
 
 ```shell
-go run . artisan env:encrypt
-
-// Specify the file name and key
+// 指定文件名与秘钥
 go run . artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
