@@ -100,7 +100,7 @@ go run . artisan jwt:secret
 ```shell
 go run . artisan env:encrypt
 
-// Specify the file name and key
+// 指定文件名與密鑰
 go run . artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
