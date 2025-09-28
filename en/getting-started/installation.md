@@ -101,7 +101,7 @@ You may want to add the production environment env file to version control, but 
 go run . artisan env:encrypt
 
 // Specify the file name and key
-go run . artisan env.encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+go run . artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
 Then use the `env:decrypt` command to decrypt the env file in the production environment:
