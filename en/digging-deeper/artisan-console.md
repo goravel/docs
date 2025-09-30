@@ -93,11 +93,67 @@ When you write console commands, it's typical to collect user input through `arg
 Follow the arguments after the command:
 
 ```shell
-go run . artisan send:emails NAME EMAIL
+go run . artisan send:emails SUBJECT EMAIL_1 EMAIL_2
 ```
+
+Definition：
+
+```go
+// send:emails <subject> <email...>
+func (receiver *SendEmails) Extend() command.Extend {
+	return command.Extend{
+		Arguments: []command.Argument{
+			&command.ArgumentString{
+				Name:     "subject",
+				Usage:    "subject of email",
+				Required: true,
+			},
+			&command.ArgumentStringSlice{
+				Name:  "emails",
+				Usage: "target emails",
+				Min:   1,
+				Max:   -1,
+			},
+		},
+	}
+}
+```
+
+Supported agrument types : `ArgumentFloat32`, `ArgumentFloat64`, `ArgumentInt`, `ArgumentInt8`, `ArgumentInt16`, `ArgumentInt32`, `ArgumentInt64`, `ArgumentString`, `ArgumentUint`, `ArgumentUint8`, `ArgumentUint16`, `ArgumentUint32`, `ArgumentUint64`, `ArgumentTimestamp`, `ArgumentFloat32Slice`, `ArgumentFloat64Slice`, `ArgumentIntSlice`, `ArgumentInt8Slice`, `ArgumentInt16Slice`, `ArgumentInt32Slice`, `ArgumentInt64Slice`, `ArgumentStringSlice`, `ArgumentUintSlice`, `ArgumentUint8Slice`, `ArgumentUint16Slice`, `ArgumentUint32Slice`, `ArgumentUint64Slice`, `ArgumentTimestampSlice`
+
+Argument types with single value support next fields:
+
+```go
+	Name     string // the name of this argument
+	Value    T      // the default value of this argument
+	Usage    string // the usage text to show
+	Required bool   // if this argument is required
+```
+
+Slice argument types fields:
+
+```go
+	Name  string // the name of this argument
+	Value T      // the default value of this argument
+	Usage string // the usage text to show
+	Min   int    // the min num of occurrences of this argument
+	Max   int    // the max num of occurrences of this argument, set to -1 for unlimited
+```
+
+Timestamp arguments additionally supports `Layouts []string` field, that should be filled with [supported layouts](https://pkg.go.dev/time#pkg-constants)
 
 Get arguments:
 
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+  subject := ctx.ArgumentString("subject")))
+  emails := ctx.ArgumentStringSlice("emails")))
+
+  return nil
+}
+```
+
+Alternatively, it is possible to access arguments directly:
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
   name := ctx.Argument(0)
