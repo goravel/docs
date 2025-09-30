@@ -122,13 +122,16 @@ func (receiver *SendEmails) Extend() command.Extend {
 Supported agrument types : `ArgumentFloat32`, `ArgumentFloat64`, `ArgumentInt`, `ArgumentInt8`, `ArgumentInt16`, `ArgumentInt32`, `ArgumentInt64`, `ArgumentString`, `ArgumentUint`, `ArgumentUint8`, `ArgumentUint16`, `ArgumentUint32`, `ArgumentUint64`, `ArgumentTimestamp`, `ArgumentFloat32Slice`, `ArgumentFloat64Slice`, `ArgumentIntSlice`, `ArgumentInt8Slice`, `ArgumentInt16Slice`, `ArgumentInt32Slice`, `ArgumentInt64Slice`, `ArgumentStringSlice`, `ArgumentUintSlice`, `ArgumentUint8Slice`, `ArgumentUint16Slice`, `ArgumentUint32Slice`, `ArgumentUint64Slice`, `ArgumentTimestampSlice`
 
 Argument types with single value support next fields:
+
 ```go
 	Name     string // the name of this argument
 	Value    T      // the default value of this argument
 	Usage    string // the usage text to show
 	Required bool   // if this argument is required
 ```
+
 Slice argument types fields:
+
 ```go
 	Name  string // the name of this argument
 	Value T      // the default value of this argument
@@ -136,6 +139,7 @@ Slice argument types fields:
 	Min   int    // the min num of occurrences of this argument
 	Max   int    // the max num of occurrences of this argument, set to -1 for unlimited
 ```
+
 Timestamp arguments additionally supports `Layouts []string` field, that should be filled with [supported layouts](https://pkg.go.dev/time#pkg-constants)
 
 Get arguments:
