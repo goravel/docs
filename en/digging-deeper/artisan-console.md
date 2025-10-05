@@ -369,6 +369,19 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
+There are few helpers to write to console with respective color:
+
+```go
+ctx.Green("This is a green message")
+ctx.Greenln("This is a green line message")
+ctx.Red("This is a red message")
+ctx.Redln("This is a red line message")
+ctx.Yellow("This is a yellow message")
+ctx.Yellowln("This is a yellow line message")
+ctx.Black("This is a black message")
+ctx.Blackln("This is a black line message")
+```
+
 You can use the `NewLine` method to write a new line to the console:
 
 ```go
@@ -422,6 +435,15 @@ err := ctx.Spinner("Loading...", console.SpinnerOption{
         return nil
     },
 })
+```
+
+### Divider
+
+To show terminal-width divider you may use `Divider` method.
+
+```go
+ctx.Divider()     // ----------
+ctx.Divider("=>") // =>=>=>=>=>
 ```
 
 ## Category
