@@ -146,15 +146,6 @@ go run . artisan emails --lang Chinese
 go run . artisan emails -l Chinese
 ```
 
-Notice: When using both arguments and options, define the options before the arguments. Example:
-
-```shell
-// Right
-go run . artisan emails --lang=Chinese name
-// Wrong
-go run . artisan emails name --lang=Chinese name
-```
-
 Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
 
 ### Prompting For Input
