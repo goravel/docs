@@ -89,7 +89,7 @@ func (router *GrpcServiceProvider) Boot() {
 
 ```go
 go func() {
-  if err := facades.Grpc().Run(facades.Config().GetString("grpc.host")); err != nil {
+  if err := facades.Grpc().Run(); err != nil {
     facades.Log().Errorf("Grpc run error: %v", err)
   }
 }()
@@ -181,9 +181,9 @@ bootstrap.Boot()
 quit := make(chan os.Signal)
 signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
-// Start schedule by facades.Schedule
+// Start Grpc by facades.Grpc
 go func() {
-  if err := facades.Grpc().Run(facades.Config().GetString("grpc.host")); err != nil {
+  if err := facades.Grpc().Run(); err != nil {
     facades.Log().Errorf("Grpc run error: %v", err)
   }
 }()
