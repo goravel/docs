@@ -177,18 +177,18 @@ func init() {
 // main.go
 bootstrap.Boot()
 
-// Create a channel to listen for OS signals
+// 创建一个通道来监听操作系统信号
 quit := make(chan os.Signal)
 signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
-// Start Grpc by facades.Grpc
+// 通过 facades.Grpc 启动 Grpc
 go func() {
   if err := facades.Grpc().Run(); err != nil {
     facades.Log().Errorf("Grpc run error: %v", err)
   }
 }()
 
-// Listen for the OS signal
+// 监听操作系统信号
 go func() {
   <-quit
   if err := facades.Grpc().Shutdown(); err != nil {
