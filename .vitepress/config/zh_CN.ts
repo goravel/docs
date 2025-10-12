@@ -174,7 +174,7 @@ function sidebarBasic(): DefaultTheme.SidebarItem[] {
 }
 function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Artisan Console',
+    text: "Artisan 命令行",
     link: 'artisan-console'
   }, {
     text: "缓存",
