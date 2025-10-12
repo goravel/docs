@@ -85,18 +85,18 @@ if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); 
 // main.go
 bootstrap.Boot()
 
-// Create a channel to listen for OS signals
+// 创建一个通道来监听操作系统信号
 quit := make(chan os.Signal)
 signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
-// Start http server by facades.Route().
+// 通过 facades.Route 启动 HTTP 服务器
 go func() {
   if err := facades.Route().Run(); err != nil {
     facades.Log().Errorf("Route run error: %v", err)
   }
 }()
 
-// Listen for the OS signal
+// 监听操作系统信号
 go func() {
   <-quit
   if err := facades.Route().Shutdown(); err != nil {
