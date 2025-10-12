@@ -78,9 +78,9 @@ Goravel 的 GitHub 問題追踪器不旨在提供 Goravel 的幫助或支持. �
 
 歡迎為 Goravel 文檔添加新語言，可以提交一個標題為 "Add [Language] Language" 的 Issue 並附上你的 [Crowdin](https://crowdin.com/) 帳號到 [goravel/goravel](https://github.com/goravel/goravel/issues/new). 將邀請你進入 Crowdin 項目.
 
-## Modify Existing Languages
+## 修改現有語言
 
-Given that the Goravel documentation supports i18n, only the English language can be modified by PR; other languages should be modified via [Crowdin](https://crowdin.com/). 歡迎為 Goravel 文檔添加新語言，可以提交一個標題為 "Add [Language] Language" 的 Issue 並附上你的 [Crowdin](https://crowdin.com/) 帳號到 [goravel/goravel](https://github.com/goravel/goravel/issues/new). 將邀請你進入 Crowdin 項目.
+鑑於 Goravel 文件支援 i18n，因此只有英文可以透過 PR 進行修改；其他語言應透過 [Crowdin](https://crowdin.com/) 進行修改。 歡迎為 Goravel 文檔添加新語言，可以提交一個標題為 "Add [Language] Language" 的 Issue 並附上你的 [Crowdin](https://crowdin.com/) 帳號到 [goravel/goravel](https://github.com/goravel/goravel/issues/new). 將邀請你進入 Crowdin 項目.
 
 ## 貢獻
 
