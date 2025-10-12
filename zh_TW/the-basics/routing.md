@@ -88,7 +88,7 @@ bootstrap.Boot()
 quit := make(chan os.Signal)
 signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
-// 通過 facades.Route() 啟動 http 伺服器。
+// 通過 facades.Route 啟動 HTTP 伺服器
 go func() {
   if err := facades.Route().Run(); err != nil {
     facades.Log().Errorf("路由運行錯誤: %v", err)
