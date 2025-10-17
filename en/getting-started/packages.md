@@ -2,6 +2,8 @@
 
 You can find extended packages for Goravel here, and you can also create a PR for [goravel/docs](https://github.com/goravel/docs) to commit your owner package, please improve the test coverage of your package as much as possible.
 
+
+
 | Package | Description | Test Coverage* |
 | --------------------------------------------------------------------------------- | --------------------------------------------- | ------------- |
 | [goravel/gin](https://github.com/goravel/gin) | The Gin driver for `facades.Route()` | 83.1% |
@@ -20,3 +22,11 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket) | A webSocket package | 0% |
 
 ***Note**: The packages have been ordered based on their test rate.
+
+💡 Tip: To help more developers discover your work, you can also add relevant topics to your repository.
+Recommended topic: `goravel-package`
+
+	- Go to your repository Settings.
+	- Click “Topics” under the repository name.
+	- Add goravel-package and any other relevant keywords.
+	- Save your changes — this will make your package more discoverable.
