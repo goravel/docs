@@ -26,7 +26,7 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 💡 Tip: To help more developers discover your work, you can also add relevant topics to your repository.
 Recommended topic: `goravel-package`
 
-	- Go to your repository Settings.
-	- Click “Topics” under the repository name.
-	- Add goravel-package and any other relevant keywords.
-	- Save your changes — this will make your package more discoverable.
+- Go to your repository Settings.
+- Click “Topics” under the repository name.
+- Add `goravel-package`, `goravel` and any other relevant keywords.
+- Save your changes — this will make your package more discoverable.
