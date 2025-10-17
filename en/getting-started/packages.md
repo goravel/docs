@@ -20,3 +20,12 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket) | A webSocket package | 0% |
 
 ***Note**: The packages have been ordered based on their test rate.
+
+💡 Tip: To help more developers discover your work, you can also add relevant topics to your repository.
+Recommended topic: [`goravel-package`](https://github.com/topics/goravel-package)
+
+- On GitHub, navigate to the main page of the repository.
+- In the top right corner of the page, to the right of "About", click gear icon (settings).
+- Under "Topics", start to type the topic you want to add to your repository to display a dropdown menu of any matching topics.
+- Click the topic you want to add or continue typing to create a new topic. For example: `goravel-package`, `goravel` and any other relevant keywords.
+- Click `Save changes` — this will make your package more discoverable.
