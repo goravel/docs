@@ -16,3 +16,4 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud) | A goravel crud package | 4.2% |
 | [hulutech-web/tinker](https://github.com/hulutech-web/tinker) | A goravel tinker package | 3.6% |
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket) | A webSocket package | 0% |
+| [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | A MongoDB package | 16.9% |
