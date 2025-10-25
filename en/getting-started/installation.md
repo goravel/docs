@@ -113,14 +113,8 @@ If you prefer to run Air directly without a script, you can define an alias in y
 For Zsh users:
 
 ```bash
-echo 'alias air="$(go env GOPATH)/bin/air"' >> ~/.zshrc
+echo "alias air='$(go env GOPATH)/bin/air'" >> ~/.zshrc
 source ~/.zshrc
-```
-
-For Bash users:
-
-```bash
-echo 'alias air="$(go env GOPATH)/bin/air"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
