@@ -113,9 +113,8 @@ If you prefer to run Air directly without a script, you can define an alias in y
 For Zsh users:
 
 ```bash
-echo "alias air='$(go env GOPATH)/bin/air'" >> ~/.zshrc
+echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.zshrc
 source ~/.zshrc
-source ~/.bashrc
 ```
 
 After this setup, you can start your project simply by running:
