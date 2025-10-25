@@ -81,7 +81,7 @@ touch air.sh
 chmod +x air.sh
 ```
 
-2.	Add the following content inside air.sh:
+2. Add the following content inside air.sh:
 
 ```bash
 #!/bin/bash
@@ -98,15 +98,15 @@ echo "🚀 Starting Air..."
 $GO_BIN
 ```
 
-3.	Run your project using:
+3. Run your project using:
 
-```bash 
+```bash
 ./air.sh
 ```
 
 This ensures Air runs even if your `$PATH` does not include Go binaries.
 
-💡 Option 2: Define a Shell Alias (Mac/Linux)
+#### 💡 Option 2: Define a Shell Alias (Mac/Linux)
 
 If you prefer to run Air directly without a script, you can define an alias in your shell configuration file.
 
@@ -116,18 +116,21 @@ For Zsh users:
 echo 'alias air="$(go env GOPATH)/bin/air"' >> ~/.zshrc
 source ~/.zshrc
 ```
+
 For Bash users:
 
 ```bash
 echo 'alias air="$(go env GOPATH)/bin/air"' >> ~/.bashrc
 source ~/.bashrc
 ```
+
 After this setup, you can start your project simply by running:
 
 ```bash
 air
 ```
-✅ Tip
+
+#### ✅ Tip
 
 To verify that Air is installed and accessible, run:
 
@@ -135,7 +138,7 @@ To verify that Air is installed and accessible, run:
 which air
 ```
 
-If it doesn’t return a valid path (for example `/Users/yourname/go/bin/air`), it means the alias or helper script hasn’t been configured yet.
+If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the alias or helper script hasn't been configured yet.
 
 
 If you are using Windows system, you need to modify the `.air.toml` file in the root directory, and add the `.exe` suffix to the following two lines:
