@@ -131,16 +131,7 @@ To verify that Air is installed and accessible, run:
 which air
 ```
 
-If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the alias or helper script hasn't been configured yet.
-
-
-If you are using Windows system, you need to modify the `.air.toml` file in the root directory, and add the `.exe` suffix to the following two lines:
-
-```shell
-[build]
-  bin = "./storage/temp/main.exe"
-  cmd = "go build -o ./storage/temp/main.exe ."
-```
+If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the helper script or the path hasn't been configured yet.
 
 ## Configuration
 
