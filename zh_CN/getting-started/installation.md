@@ -63,26 +63,26 @@ APP_ENV=production APP_DEBUG=true go run .
 air
 ```
 
-#### 🧰 After Installing Air
+#### 🧰 安装 Air 后
 
-Once you have successfully installed Air, you need to make sure it can be executed properly within your environment.  
-Depending on your setup, Air might not be automatically available as a command.  
-Here are two simple ways to ensure it runs correctly:
+安装了 Air 成功后，你需要确保它能够在你的环境中正确执行。  
+根据你的环境设置，Air 可能不能自动成为一个有效的命令。  
+以下是确保正确运行的两种简单方式：
 
 ---
 
-#### 🪄 Option 1: Using a Helper Script (`air.sh`)
+#### 🪄 选项 1: 使用一个 Helper 脚本 (`air.sh`)
 
-If Air is installed but not recognized as a terminal command, you can create a small helper script that locates and runs it automatically.
+如果 Air 已安装但无法被识别为一个终端命令，你可以创建一个脚本，自动定位和运行它。
 
-1. Create a new file in your project root:
+1. 在你的项目根目录创建一个文件：
 
 ```bash
 touch air.sh
 chmod +x air.sh
 ```
 
-2. Add the following content inside air.sh:
+2. 在 `air.sh` 中添加以下内容：
 
 ```bash
 #!/bin/bash
@@ -99,15 +99,15 @@ echo "🚀 Starting Air..."
 $GO_BIN
 ```
 
-3. Run your project using:
+3. 使用以下方式运行你的项目：
 
 ```bash
 ./air.sh
 ```
 
-This ensures Air runs even if your `$PATH` does not include Go binaries.
+这样会确保 Air 正常运行即使你的 `$PATH` 中没有包含 Go 软件库。
 
-#### 💡 Option 2: Define a Shell Alias (Mac/Linux)
+#### 💡 Option 2: Add Go Bin To PATH (Mac/Linux)
 
 If you prefer to run Air directly without a script, you can define an alias in your shell configuration file.
 
