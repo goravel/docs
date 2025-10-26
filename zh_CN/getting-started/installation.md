@@ -132,7 +132,7 @@ air
 which air
 ```
 
-If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the helper script or the path hasn't been configured yet.
+如果它没有返回一个有效的路径(例如`/Users/yourname/go/bin/air`)，它意味着帮助脚本或路径尚未配置。
 
 ## 配置
 
