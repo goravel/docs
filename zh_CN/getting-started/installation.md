@@ -63,13 +63,76 @@ APP_ENV=production APP_DEBUG=true go run .
 air
 ```
 
-如果是 Windows 系统，需要修改根目录下 `.air.toml` 文件，为下面两行增加 `.exe` 后缀：
+#### 🧰 安装 Air 后
 
-```shell
-[build]
-  bin = "./storage/temp/main.exe"
-  cmd = "go build -o ./storage/temp/main.exe ."
+安装了 Air 成功后，你需要确保它能够在你的环境中正确执行。  
+根据你的环境设置，Air 可能不能自动成为一个有效的命令。  
+以下是确保正确运行的两种简单方式：
+
+---
+
+#### 🪄 选项 1: 使用一个 Helper 脚本 (`air.sh`)
+
+如果 Air 已安装但无法被识别为一个终端命令，你可以创建一个脚本，自动定位和运行它。
+
+1. 在你的项目根目录创建一个文件：
+
+```bash
+touch air.sh
+chmod +x air.sh
 ```
+
+2. 在 `air.sh` 中添加以下内容：
+
+```bash
+#!/bin/bash
+GO_PATH=$(go env GOPATH)
+GO_BIN=$GO_PATH/bin/air
+
+if [ ! -f $GO_BIN ]; then
+    echo "❌ Air not found. Please install it first:"
+    echo "   go install github.com/air-verse/air@latest"
+    exit 1
+fi
+
+echo "🚀 Starting Air..."
+$GO_BIN
+```
+
+3. 使用以下方式运行你的项目：
+
+```bash
+./air.sh
+```
+
+这样会确保 Air 正常运行即使你的 `$PATH` 中没有包含 Go 软件库。
+
+#### 💡 选项2：将Go Bin 添加到PATH (Mac/Linux)
+
+如果你喜欢在没有脚本的情况下直接运行 air，你可以添加 Go bin 目录到你的 PATH。
+
+Zsh 用户：
+
+```bash
+echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.zshrc
+source ~/.zshrc
+```
+
+在此设置后，你可以通过运行下面命令来启动项目：
+
+```bash
+air
+```
+
+#### ✅ 提示
+
+要验证  air 已安装并可被执行，可以运行：
+
+```bash
+which air
+```
+
+如果它没有返回一个有效的路径(例如`/Users/yourname/go/bin/air`)，它意味着帮助脚本或路径尚未配置。
 
 ## 配置
 
