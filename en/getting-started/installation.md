@@ -108,7 +108,7 @@ This ensures Air runs even if your `$PATH` does not include Go binaries.
 
 #### 💡 Option 2: Add Go Bin To PATH (Mac/Linux)
 
-If you prefer to run Air directly without a script, you can define an alias in your shell configuration file.
+If you prefer to run Air directly without a script, you can add Go bin directory to your PATH.
 
 For Zsh users:
 
