@@ -109,38 +109,30 @@ $GO_BIN
 
 #### 💡 选项2：将Go Bin 添加到PATH (Mac/Linux)
 
-If you prefer to run Air directly without a script, you can add Go bin directory to your PATH.
+如果你喜欢在没有脚本的情况下直接运行 air，你可以添加 Go bin 目录到你的 PATH。
 
-For Zsh users:
+Zsh 用户：
 
 ```bash
 echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-After this setup, you can start your project simply by running:
+在此设置后，你可以通过运行下面命令来启动项目：
 
 ```bash
 air
 ```
 
-#### ✅ Tip
+#### ✅ 提示
 
-To verify that Air is installed and accessible, run:
+要验证  air 已安装并可被执行，可以运行：
 
 ```bash
 which air
 ```
 
-If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the alias or helper script hasn't been configured yet.
-
-如果是 Windows 系统，需要修改根目录下 `.air.toml` 文件，为下面两行增加 `.exe` 后缀：
-
-```shell
-[build]
-  bin = "./storage/temp/main.exe"
-  cmd = "go build -o ./storage/temp/main.exe ."
-```
+If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the helper script or the path hasn't been configured yet.
 
 ## 配置
 
