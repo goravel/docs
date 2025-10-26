@@ -107,9 +107,9 @@ $GO_BIN
 
 这样会确保 Air 正常运行即使你的 `$PATH` 中没有包含 Go 软件库。
 
-#### 💡 Option 2: Add Go Bin To PATH (Mac/Linux)
+#### 💡 选项2：将Go Bin 添加到PATH (Mac/Linux)
 
-If you prefer to run Air directly without a script, you can define an alias in your shell configuration file.
+If you prefer to run Air directly without a script, you can add Go bin directory to your PATH.
 
 For Zsh users:
 
