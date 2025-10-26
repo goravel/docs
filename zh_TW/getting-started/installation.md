@@ -132,15 +132,7 @@ To verify that Air is installed and accessible, run:
 which air
 ```
 
-If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the alias or helper script hasn't been configured yet.
-
-如果您使用的是 Windows 系統，則需要修改根目錄中的 `.air.toml` 文件，並為以下兩行添加 `.exe` 後綴：
-
-```shell
-[build]
-  bin = "./storage/temp/main.exe"
-  cmd = "go build -o ./storage/temp/main.exe ."
-```
+If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the helper script or the path hasn't been configured yet.
 
 ## 配置
 
