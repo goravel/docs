@@ -21,8 +21,8 @@ Prepare a production `.env` (for example `.env.production`) with at least:
 
 ```
 APP_NAME=my-app
-DEPLOY_IP_ADDRESS=127.0.0.1
-DEPLOY_APP_PORT=9000
+APP_PORT=9000
+DEPLOY_SSH_IP=127.0.0.1
 DEPLOY_SSH_PORT=22
 DEPLOY_SSH_USER=deploy
 DEPLOY_SSH_KEY_PATH=~/.ssh/id_rsa
@@ -65,8 +65,8 @@ For a simpler deployment without a reverse proxy, use:
 
 ```
 APP_NAME=my-app
-DEPLOY_IP_ADDRESS=127.0.0.1
-DEPLOY_APP_PORT=80
+APP_PORT=80
+DEPLOY_SSH_IP=127.0.0.1
 DEPLOY_SSH_PORT=22
 DEPLOY_SSH_USER=deploy
 DEPLOY_SSH_KEY_PATH=~/.ssh/id_rsa
