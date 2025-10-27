@@ -57,7 +57,7 @@ APP_ENV=production APP_DEBUG=true go run .
 
 ### Live reload
 
-Install [cosmtrek/air](https://github.com/cosmtrek/air), Goravel has a built-in configuration file that can be used directly:
+Install [air-verse/air](https://github.com/air-verse/air), Goravel has a built-in configuration file that can be used directly:
 
 ```
 air
