@@ -57,7 +57,7 @@ APP_ENV=production APP_DEBUG=true go run .
 
 ### 热更新
 
-安装 [cosmtrek/air](https://github.com/cosmtrek/air)，框架内置配置文件，可直接使用：
+Install [air-verse/air](https://github.com/air-verse/air), Goravel has a built-in configuration file that can be used directly:
 
 ```
 air
