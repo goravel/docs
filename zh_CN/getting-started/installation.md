@@ -57,7 +57,7 @@ APP_ENV=production APP_DEBUG=true go run .
 
 ### 热更新
 
-Install [air-verse/air](https://github.com/air-verse/air), Goravel has a built-in configuration file that can be used directly:
+安装 [airverse/air] (https://github.com/air-verse/air), Goravel 有一个内置的配置文件，可以直接使用：
 
 ```
 air
