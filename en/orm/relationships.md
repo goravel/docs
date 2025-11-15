@@ -432,7 +432,7 @@ type Book struct {
 Now, let's retrieve all books and their authors:
 
 ```go
-var books models.Book
+var books []models.Book
 facades.Orm().Query().Find(&books)
 
 for _, book := range books {
@@ -446,7 +446,7 @@ To retrieve all the books in the database table along with their authors, the lo
 However, we can simplify this process using eager loading. By using the `With` method, we can specify which relationships need to be eagerly loaded and reduce the number of queries to just two.
 
 ```go
-var books models.Book
+var books []models.Book
 facades.Orm().Query().With("Author").Find(&books)
 
 for _, book := range books {
@@ -502,7 +502,7 @@ In this example, Orm will only eager load posts where the post's `name` column e
 Sometimes you may need to eager load a relationship after the parent model has already been retrieved. For example, this may be useful if you need to dynamically decide whether to load related models:
 
 ```go
-var books models.Book
+var books []models.Book
 facades.Orm().Query().Find(&books)
 
 for _, book := range books {
