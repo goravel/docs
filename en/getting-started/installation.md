@@ -13,6 +13,9 @@
 Initialize the installer according to the [documentation](https://github.com/goravel/installer), and then initialize a new Goravel project using the following command:
 
 ```shell
+// Install the latest version of the goravel installer
+go install github.com/goravel/installer/goravel@latest
+
 // Enter the directory where you want to install the project
 goravel new blog
 ```
