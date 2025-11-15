@@ -432,7 +432,7 @@ type Book struct {
 我们检索所有书籍及其作者：
 
 ```go
-var books models.Book
+var books []models.Book
 facades.Orm().Query().Find(&books)
 
 for _, book := range books {
@@ -446,7 +446,7 @@ for _, book := range books {
 值得庆幸的是，我们可以使用预加载将这个操作减少到两个查询。 在构建查询时，可以使用 with 方法指定应该预加载哪些关系。
 
 ```go
-var books models.Book
+var books []models.Book
 facades.Orm().Query().With("Author").Find(&books)
 
 for _, book := range books {
@@ -503,7 +503,7 @@ facades.Orm().Query().With("Author", func(query orm.Query) orm.Query {
 有时你可能需要在已检索到父模型后立即加载关系。 例如，你需要动态决定是否加载相关模型，这可能很有用：
 
 ```go
-var books models.Book
+var books []models.Book
 facades.Orm().Query().Find(&books)
 
 for _, book := range books {
