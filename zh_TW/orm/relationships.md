@@ -431,7 +431,7 @@ type Book struct {
 現在，讓我們檢索所有書籍及其作者：
 
 ```go
-var books models.Book
+var books []models.Book
 facades.Orm().Query().Find(&books)
 
 for _, book := range books {
@@ -445,7 +445,7 @@ for _, book := range books {
 不過，我們可以使用預加載簡化這個過程。 通過使用 `With` 方法，我們可以指定需要預加載哪些關係，並將查詢數量減少到只有兩個。
 
 ```go
-var books models.Book
+var books []models.Book
 facades.Orm().Query().With("Author").Find(&books)
 
 for _, book := range books {
@@ -501,7 +501,7 @@ facades.Orm().Query().With("Author", func(query orm.Query) orm.Query {
 有時你可能需要在已檢索到父模型後立即加載關係。 例如，如果你需要動態決定是否加載相關模型，這可能很有用：
 
 ```go
-var books models.Book
+var books []models.Book
 facades.Orm().Query().Find(&books)
 
 for _, book := range books {
