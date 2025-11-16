@@ -117,6 +117,22 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
+The `migrations` directory that stores all your packages migrations must be at the root level of the package.
+
+### Models
+
+If there are any new [models](../orm/getting-started.md) defined as part of your package, they can be published using the `Publishes` method:
+
+```go
+func (receiver *ServiceProvider) Boot(app foundation.Application) {
+  app.Publishes("github.com/goravel/example-package", map[string]string{
+    "models": app.ModelPath("models"),
+  })
+}
+```
+
+The `models` directory that stores all your packages models must be at the root level of the package.
+
 ## Commands
 
 You can register `Artisan` command by the `Commands` method, you can run the commands using [Artisan CLI](../digging-deeper/artisan-console.md) after registering them.
