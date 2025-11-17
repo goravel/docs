@@ -13,7 +13,10 @@
 根據[文檔](https://github.com/goravel/installer)初始化安裝器，然後使用以下命令初始化一個新的 Goravel 項目：
 
 ```shell
-// 進入想要安裝項目的目錄
+// Install the latest version of the goravel installer
+go install github.com/goravel/installer/goravel@latest
+
+// Enter the directory where you want to install the project
 goravel new blog
 ```
 
