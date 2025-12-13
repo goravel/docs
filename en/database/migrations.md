@@ -126,10 +126,16 @@ go run . artisan migrate:status
 
 ## Rolling Back Migrations
 
-To roll back the latest migration, use the `rollback` Artisan command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
+To roll back the latest migration, use the `rollback` Artisan command:
 
 ```shell
 go run . artisan migrate:rollback
+```
+
+If you want to roll back the last "batch" of migrations, which may include multiple migration files, you can specify the `batch` option, the number indicates which batch to roll back:
+
+```shell
+go run . artisan migrate:rollback --batch=2
 ```
 
 You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:
