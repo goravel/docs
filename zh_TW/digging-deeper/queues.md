@@ -40,9 +40,9 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 
 如果當前驅動無法滿足您的需求，您可以自定義驅動。 您需要在 `contracts/queue/driver.go` 中實現 [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) 介面。
 
-The official implementation of the `Redis` driver, you can refer to [Redis Driver](https://github.com/goravel/redis) to implement your own custom driver.
+`Redis` 驅動的官方實現，您可以參考 [Redis Driver](https://github.com/goravel/redis) 來實現自己的自定義驅動。
 
-在實現自定義驅動後，您可以將配置添加到 `config/queue.go`：
+在實現自定義驅動後，你可以將配置添加到 `config/queue.go`：
 
 ```
 ...
