@@ -40,7 +40,7 @@ To use the `database` driver, you need to create a database table to store tasks
 
 If the current driver cannot meet your needs, you can customize the driver. You need to implement the [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) interface in `contracts/queue/driver.go`.
 
-The official implementation of the `Redis` driver, you can refer to [Redis Driver](https://github.com/goravel/framework/blob/master/queue/drivers/redis/driver.go) to implement your own custom driver.
+The official implementation of the `Redis` driver, you can refer to [Redis Driver](https://github.com/goravel/redis) to implement your own custom driver.
 
 After implementing the custom driver, you can add the configuration to `config/queue.go`:
 
