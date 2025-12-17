@@ -126,13 +126,13 @@ go run . artisan migrate:status
 
 ## 回滾遷移
 
-To roll back the latest migration, use the `rollback` Artisan command:
+要回滾最新的遷移，使用 `rollback` Artisan 命令：
 
 ```shell
 go run . artisan migrate:rollback
 ```
 
-If you want to roll back the last "batch" of migrations, which may include multiple migration files, you can specify the `batch` option, the number indicates which batch to roll back:
+如果要回滾最後一批遷移（可能包含多個遷移檔案），可以指定 `batch` 選項，該數字表示要回滾的批次：
 
 ```shell
 go run . artisan migrate:rollback --batch=2
