@@ -1,4 +1,4 @@
-# Color
+# Couleur
 
 [[toc]]
 
