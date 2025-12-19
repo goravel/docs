@@ -1,66 +1,66 @@
-# 安裝
+# Installation
 
 [[toc]]
 
-## 伺服器要求
+## Server Requirements
 
 - Golang >= 1.23
 
-## 安裝
+## Installation
 
-### 使用 Goravel 安裝器
+### Using Goravel Installer
 
-根據[文檔](https://github.com/goravel/installer)初始化安裝器，然後使用以下命令初始化一個新的 Goravel 項目：
+Initialize the installer according to the [documentation](https://github.com/goravel/installer), and then initialize a new Goravel project using the following command:
 
 ```shell
-// 安裝最新版本的 Goravel 安裝程序
+// Install the latest version of the goravel installer
 go install github.com/goravel/installer/goravel@latest
 
-// 輸入項目安裝目錄
+// Enter the directory where you want to install the project
 goravel new blog
 ```
 
-### 手動安裝
+### Manual Installation
 
 ```shell
-// 下載框架
+// Download framework
 git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
-// 安裝依賴
+// Install dependencies
 cd goravel && go mod tidy
 
-// 創建 .env 環境配置文件
+// Create .env environment configuration file
 cp .env.example .env
 
-// 生成應用密鑰
+// Generate application key
 go run . artisan key:generate
 ```
 
-如果您遇到下載依賴緩慢的情況，請確認您的網絡。
+Please confirm your network if you encounter slow download dependencies.
 
-## 啟動 HTTP 服務
+## Start HTTP Service
 
-### 根據根目錄中的 .env 文件啟動服務
+### Start Service According To .env File In The Root Directory
 
 ```shell
 go run .
 ```
 
-### 指定 .env 文件啟動服務
+### Specify .env File To Start Service
 
 ```shell
 go run . --env=./.env
 ```
 
-### 使用環境變量啟動服務
+### Start Service Using Environment Variables
 
 ```shell
 APP_ENV=production APP_DEBUG=true go run .
 ```
 
-### 即時重新加載
+### Live reload
 
-安裝 [air-verse/air](https://github.com/air-verse/air)，Goravel 具備可以直接使用的內建配置文件：
+Install [air-verse/air](https://github.com/air-verse/air), Goravel has a built-in configuration file that can be used directly:
 
 ```
 air
@@ -137,40 +137,40 @@ which air
 
 If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the helper script or the path hasn't been configured yet.
 
-## 配置
+## Configuration
 
-### 配置文件
+### Configuration files
 
-Goravel 框架的所有配置文件被放置在 `config` 目錄中。 所有配置項都有註解，您可以根據需要進行調整。
+All configuration files of the Goravel framework are placed in the `config` directory. All configuration items have annotations, you can adjust them according to your needs.
 
-### 生成應用密鑰
+### Generate Application key
 
-在本地安裝 Goravel 後，您需要生成應用密鑰。 運行以下命令後，會在 `.env` 文件的 `APP_KEY` 鍵上生成 32 位字符串。 此密鑰主要用於數據加解密。
+You need to generate the application key after Goravel is installed locally. Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
 
 ```shell
 go run . artisan key:generate
 ```
 
-### 生成JWT Token
+### Generate JWT Token
 
-如果您使用到 [身份驗證](../security/authentication.md) 功能，則需要生成 JWT Token。
+You need to generate JWT Token if you use [Authentication](../security/authentication.md).
 
 ```shell
 go run . artisan jwt:secret
 ```
 
-### 加解密 env 文件
+### Encrypt and decrypt env file
 
-您可能希望將生產環境的 env 文件添加到版本控制中，但不想暴露敏感信息，您可以使用 `env:encrypt` 命令加密 env 文件：
+You may want to add the production environment env file to version control, but you don't want to expose sensitive information, you can use the `env:encrypt` command to encrypt the env file:
 
 ```shell
 go run . artisan env:encrypt
 
-// 指定文件名與密鑰
+// Specify the file name and key
 go run . artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
-然後在生產環境中使用 `env:decrypt` 命令來解密 env 文件：
+Then use the `env:decrypt` command to decrypt the env file in the production environment:
 
 ```shell
 GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc go run . artisan env:decrypt

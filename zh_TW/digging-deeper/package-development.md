@@ -117,9 +117,9 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-### Models
+### 模型
 
-If there are any new [models](../orm/getting-started.md) defined as part of your package, they can be published using the `Publishes` method:
+如果您的軟體包中定義了任何新的[模型](../orm/getting-started.md)，則可以使用`Publishes`方法發布它們：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
