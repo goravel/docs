@@ -13,7 +13,10 @@
 根據[文檔](https://github.com/goravel/installer)初始化安裝器，然後使用以下命令初始化一個新的 Goravel 項目：
 
 ```shell
-// 進入想要安裝項目的目錄
+// 安裝最新版本的 Goravel 安裝程序
+go install github.com/goravel/installer/goravel@latest
+
+// 輸入項目安裝目錄
 goravel new blog
 ```
 
@@ -57,19 +60,82 @@ APP_ENV=production APP_DEBUG=true go run .
 
 ### 即時重新加載
 
-安裝 [cosmtrek/air](https://github.com/cosmtrek/air)，Goravel 具備可以直接使用的內建配置文件：
+安裝 [air-verse/air](https://github.com/air-verse/air)，Goravel 具備可以直接使用的內建配置文件：
 
 ```
 air
 ```
 
-如果您使用的是 Windows 系統，則需要修改根目錄中的 `.air.toml` 文件，並為以下兩行添加 `.exe` 後綴：
+#### 🧰 After Installing Air
 
-```shell
-[build]
-  bin = "./storage/temp/main.exe"
-  cmd = "go build -o ./storage/temp/main.exe ."
+Once you have successfully installed Air, you need to make sure it can be executed properly within your environment.  
+Depending on your setup, Air might not be automatically available as a command.  
+Here are two simple ways to ensure it runs correctly:
+
+---
+
+#### 🪄 Option 1: Using a Helper Script (`air.sh`)
+
+If Air is installed but not recognized as a terminal command, you can create a small helper script that locates and runs it automatically.
+
+1. Create a new file in your project root:
+
+```bash
+touch air.sh
+chmod +x air.sh
 ```
+
+2. Add the following content inside air.sh:
+
+```bash
+#!/bin/bash
+GO_PATH=$(go env GOPATH)
+GO_BIN=$GO_PATH/bin/air
+
+if [ ! -f $GO_BIN ]; then
+    echo "❌ Air not found. Please install it first:"
+    echo "   go install github.com/air-verse/air@latest"
+    exit 1
+fi
+
+echo "🚀 Starting Air..."
+$GO_BIN
+```
+
+3. Run your project using:
+
+```bash
+./air.sh
+```
+
+This ensures Air runs even if your `$PATH` does not include Go binaries.
+
+#### 💡 Option 2: Add Go Bin To PATH (Mac/Linux)
+
+If you prefer to run Air directly without a script, you can add Go bin directory to your PATH.
+
+For Zsh users:
+
+```bash
+echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.zshrc
+source ~/.zshrc
+```
+
+After this setup, you can start your project simply by running:
+
+```bash
+air
+```
+
+#### ✅ Tip
+
+To verify that Air is installed and accessible, run:
+
+```bash
+which air
+```
+
+If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the helper script or the path hasn't been configured yet.
 
 ## 配置
 
@@ -101,7 +167,7 @@ go run . artisan jwt:secret
 go run . artisan env:encrypt
 
 // 指定文件名與密鑰
-go run . artisan env.encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+go run . artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
 然後在生產環境中使用 `env:decrypt` 命令來解密 env 文件：
@@ -109,6 +175,6 @@ go run . artisan env.encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLH
 ```shell
 GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc go run . artisan env:decrypt
 
-// 或
-go run . artisan env.decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+// or
+go run . artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```

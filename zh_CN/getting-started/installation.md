@@ -13,7 +13,10 @@
 根据[文档](https://github.com/goravel/installer)初始化安装器，然后使用下面命令初始化一个新的 Goravel 项目：
 
 ```shell
-// 进入想要安装项目的目录
+// 安装最新版本的 goravel 安装器
+go install github.com/goravel/installer/goravel@latest
+
+// 输入您想要安装项目
 goravel new blog
 ```
 
@@ -57,19 +60,82 @@ APP_ENV=production APP_DEBUG=true go run .
 
 ### 热更新
 
-安装 [cosmtrek/air](https://github.com/cosmtrek/air)，框架内置配置文件，可直接使用：
+安装 [airverse/air] (https://github.com/air-verse/air), Goravel 有一个内置的配置文件，可以直接使用：
 
 ```
 air
 ```
 
-如果是 Windows 系统，需要修改根目录下 `.air.toml` 文件，为下面两行增加 `.exe` 后缀：
+#### 🧰 安装 Air 后
 
-```shell
-[build]
-  bin = "./storage/temp/main.exe"
-  cmd = "go build -o ./storage/temp/main.exe ."
+安装了 Air 成功后，你需要确保它能够在你的环境中正确执行。  
+根据你的环境设置，Air 可能不能自动成为一个有效的命令。  
+以下是确保正确运行的两种简单方式：
+
+---
+
+#### 🪄 选项 1: 使用一个 Helper 脚本 (`air.sh`)
+
+如果 Air 已安装但无法被识别为一个终端命令，你可以创建一个脚本，自动定位和运行它。
+
+1. 在你的项目根目录创建一个文件：
+
+```bash
+touch air.sh
+chmod +x air.sh
 ```
+
+2. 在 `air.sh` 中添加以下内容：
+
+```bash
+#!/bin/bash
+GO_PATH=$(go env GOPATH)
+GO_BIN=$GO_PATH/bin/air
+
+if [ ! -f $GO_BIN ]; then
+    echo "❌ Air not found. Please install it first:"
+    echo "   go install github.com/air-verse/air@latest"
+    exit 1
+fi
+
+echo "🚀 Starting Air..."
+$GO_BIN
+```
+
+3. 使用以下方式运行你的项目：
+
+```bash
+./air.sh
+```
+
+这样会确保 Air 正常运行即使你的 `$PATH` 中没有包含 Go 软件库。
+
+#### 💡 选项2：将Go Bin 添加到PATH (Mac/Linux)
+
+如果你喜欢在没有脚本的情况下直接运行 air，你可以添加 Go bin 目录到你的 PATH。
+
+Zsh 用户：
+
+```bash
+echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.zshrc
+source ~/.zshrc
+```
+
+在此设置后，你可以通过运行下面命令来启动项目：
+
+```bash
+air
+```
+
+#### ✅ 提示
+
+要验证  air 已安装并可被执行，可以运行：
+
+```bash
+which air
+```
+
+如果它没有返回一个有效的路径(例如`/Users/yourname/go/bin/air`)，它意味着帮助脚本或路径尚未配置。
 
 ## 配置
 
@@ -101,7 +167,7 @@ go run . artisan jwt:secret
 go run . artisan env:encrypt
 
 // 指定文件名与秘钥
-go run . artisan env.encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+go run . artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
 然后再生产环境使用 `env:decrypt` 命令来解密 env 文件：
@@ -110,5 +176,5 @@ go run . artisan env.encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLH
 GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc go run . artisan env:decrypt
 
 // or
-go run . artisan env.decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+go run . artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```

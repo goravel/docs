@@ -117,6 +117,18 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
+### 模型
+
+如果包中定义了新的 [模型](../orm/getting-started.md)，它们也可以使用 `Publishes` 方法发布：
+
+```go
+func (receiver *ServiceProvider) Boot(app foundation.Application) {
+  app.Publishes("github.com/goravel/example-package", map[string]string{
+    "models": app.ModelPath("models"),
+  })
+}
+```
+
 ## 命令
 
 可以在服务提供者中使用 `Commands` 方法注册 `Artisan` 命令，注册命令后，你可以使用[Artisan CLI](../digging-deeper/artisan-console.md)执行它们。

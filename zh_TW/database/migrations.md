@@ -126,10 +126,16 @@ go run . artisan migrate:status
 
 ## 回滾遷移
 
-要回滾最新的遷移，使用 `rollback` Artisan 命令。 該命令會回滾最後「一批」的遷移，這可能包含多個遷移文件：
+要回滾最新的遷移，使用 `rollback` Artisan 命令：
 
 ```shell
 go run . artisan migrate:rollback
+```
+
+如果要回滾最後一批遷移（可能包含多個遷移檔案），可以指定 `batch` 選項，該數字表示要回滾的批次：
+
+```shell
+go run . artisan migrate:rollback --batch=2
 ```
 
 透過向 `rollback` 命令加上 `step` 參數，可以回滾指定數量的遷移。 例如，以下命令將回滾最後五個遷移： 例如，以下命令將回滾最後五個遷移：

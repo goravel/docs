@@ -858,14 +858,14 @@ facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("votes", ">", 100).SharedLock().Get(&users)
+facades.Orm().Query().Where("votes > ?", 100).SharedLock().Get(&users)
 ```
 
 或者，您可以使用 `LockForUpdate` 方法。 "for update" 鎖防止選定的記錄被修改或在另一個共享鎖下被選擇:
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("votes", ">", 100).LockForUpdate().Get(&users)
+facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
 ### 總和

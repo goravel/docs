@@ -12,12 +12,12 @@ Goravel 的 HTTP 客戶端構建於 `net/http.Client` 之上，用於發起 HTTP
 以下是可用的配置選項： 如果您需要調整其內部設置，只需更新 `config/http.go` 文件中的 `client` 屬性。
 以下是可用的配置選項：
 
- - `base_url`: 設置相對路徑的根 URL。 自動為不以 `http://` 或 `https://` 開頭的請求添加前綴。
- - `timeout`（默認：`30s`）: 完整請求生命週期的全局超時持續時間（連接 + 任何重定向 + 讀取響應體）。 超時為零表示無超時。
- - `max_idle_conns`: 最大空閒（保持活動）連接數。 零表示沒有限制。
- - `max_idle_conns_per_host`: 每個主機的最大空閒（保持活動）連接數。
- - `max_conns_per_host`: 限制每個主機的總連接數，包括正在撥號、活動和空閒狀態的連接。 零表示沒有限制。
- - `idle_conn_timeout`: 空閒（保持活動）連接在自行關閉之前保持空閒的最大時間。
+- `base_url`: 設置相對路徑的根 URL。 自動為不以 `http://` 或 `https://` 開頭的請求添加前綴。
+- `timeout`（默認：`30s`）: 完整請求生命週期的全局超時持續時間（連接 + 任何重定向 + 讀取響應體）。 超時為零表示無超時。
+- `max_idle_conns`: 最大空閒（保持活動）連接數。 零表示沒有限制。
+- `max_idle_conns_per_host`: 每個主機的最大空閒（保持活動）連接數。
+- `max_conns_per_host`: 限制每個主機的總連接數，包括正在撥號、活動和空閒狀態的連接。 零表示沒有限制。
+- `idle_conn_timeout`: 空閒（保持活動）連接在自行關閉之前保持空閒的最大時間。
 
 ```go
 "client": map[string]any{
@@ -146,7 +146,7 @@ builder := http.NewBody().SetField("name", "krishan")
 
 body, err := builder.Build()
 
-response, err := facades.Http().WithHeader("Content-Type", body.ContentType()).Post("https://example.com/users", body)  
+response, err := facades.Http().WithHeader("Content-Type", body.ContentType()).Post("https://example.com/users", body.Reader())
 ```
 
 ### 標頭

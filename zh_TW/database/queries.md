@@ -162,9 +162,9 @@ sum, err := facades.DB().Table("users").Sum("age")
 您可以使用 `Exists` 和 `DoesntExist` 方法來確定查詢條件的結果是否存在：
 
 ```go
-exists, err := facades.DB().Table("users").Where("votes", ">", 100).Exists()
+exists, err := facades.DB().Table("users").Where("votes > ?", 100).Exists()
 
-exists, err := facades.DB().Table("users").Where("votes", ">", 100).DoesntExist()
+exists, err := facades.DB().Table("users").Where("votes > ?", 100).DoesntExist()
 ```
 
 ### 分頁
@@ -611,13 +611,13 @@ result, err := facades.DB().Table("users").Where("id", 1).Delete()
 若要使用「共享鎖」，你可以使用 `SharedLock` 方法。 共享鎖可防止選中的行被篡改，直到事務被提交為止：
 
 ```go
-facades.DB().Table("users").Where("votes", ">", 100).SharedLock().Get(&users)
+facades.DB().Table("users").Where("votes > ?", 100).SharedLock().Get(&users)
 ```
 
 你也可以使用 `LockForUpdate` 方法。 使用「更新」鎖可避免行被其它共享鎖修改或選取：
 
 ```go
-facades.DB().Table("users").Where("votes", ">", 100).LockForUpdate().Get(&users)
+facades.DB().Table("users").Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
 ## 調試
