@@ -65,6 +65,8 @@ If you want to use JSON field, you can define the field type as `datatypes.JSONM
 package models
 
 import (
+	"database/sql/driver"
+	"encoding/json"
 	"github.com/goravel/framework/database/orm"
 	"gorm.io/datatypes"
 )
