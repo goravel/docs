@@ -57,6 +57,43 @@ type User struct {
 
 更多 Tag 使用方法详见：https://gorm.io/docs/models.html。
 
+#### Json 字段
+
+如果你想要使用 JSON 字段，你可以定义字段类型为 `datatypes.JSONMap` 或者一个 struct，并添加标签： \`gorm:"type:json"：
+
+```go
+package models
+
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"github.com/goravel/framework/database/orm"
+	"gorm.io/datatypes"
+)
+
+type User struct {
+	orm.Model
+	Json1 datatypes.JSONMap `gorm:"type:json" json:"json1"`
+	Json2 *UserData `gorm:"type:json;serializer:json" json:"json2"`
+}
+
+type UserData struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+}
+
+func (r *UserData) Value() (driver.Value, error) {
+	return json.Marshal(r)
+}
+
+func (r *UserData) Scan(value any) (err error) {
+	if data, ok := value.([]byte); ok && len(data) > 0 {
+		err = json.Unmarshal(data, &r)
+	}
+	return
+}
+```
+
 #### 根据数据表创建模型
 
 ```shell

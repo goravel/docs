@@ -100,3 +100,70 @@ func (receiver *AppServiceProvider) Boot(app foundation.Application) {
     facades.View().Share("key", "value")
 }
 ```
+
+## 注册自定义分隔符和函数
+
+你可以在视图中注册自定义分隔符和函数，它们可以被注册在 `http.drivers.*.template` 配置中。
+
+对于 gin 驱动：
+
+```go
+// config/http.go
+import (
+  "html/template"
+
+  "github.com/gin-gonic/gin/render"
+  "github.com/goravel/gin"
+)
+
+"template": func() (render.HTMLRender, error) {
+  return gin.NewTemplate(gin.RenderOptions{
+    Delims: &gin.Delims{
+      Left:  "{{",
+      Right: "}}",
+    },
+    FuncMap: template.FuncMap{
+      // Add custom template functions here
+    },
+  })
+},
+```
+
+用于 fiber 驱动：
+
+```go
+// config/http.go
+import (
+  "github.com/gofiber/fiber/v2"
+  "github.com/gofiber/template"
+  "github.com/gofiber/template/html/v2"
+  "github.com/goravel/framework/support/path"
+)
+
+"template": func() (fiber.Views, error) {
+  engine := &html.Engine{
+    Engine: template.Engine{
+      Left:       "{{",
+      Right:      "}}",
+      Directory:  path.Resource("views"),
+      Extension:  ".tmpl",
+      LayoutName: "embed",
+      // Add custom template functions here
+      Funcmap:    make(map[string]interface{}),
+    },
+  }
+
+  engine.AddFunc(engine.LayoutName, func() error {
+    return fmt.Errorf("layoutName called unexpectedly")
+  })
+  return engine, nil
+},
+```
+
+## 自定义模板引擎
+
+你可以通过实现 gin 的 `render.HTMLRender` 接口或者 fiber 的 `fiber.Views` 接口来创建自己的自定义模板引擎。 在创建自定义引擎后，你可以将它注册到配置 `http.drivers.*.template` 。
+
+## 高级功能
+
+模板引擎默认由 `http/template` 驱动，你可以参考其官方文档获取更多高级功能：https://pkg.go.dev/html/template。

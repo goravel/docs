@@ -100,3 +100,70 @@ func (receiver *AppServiceProvider) Boot(app foundation.Application) {
     facades.View().Share("key", "value")
 }
 ```
+
+## Register Custom Delims And Functions
+
+You can register custom Delims and functions to be used within your views, they can be registered in the configuration `http.drivers.*.template`.
+
+For the gin driver:
+
+```go
+// config/http.go
+import (
+  "html/template"
+
+  "github.com/gin-gonic/gin/render"
+  "github.com/goravel/gin"
+)
+
+"template": func() (render.HTMLRender, error) {
+  return gin.NewTemplate(gin.RenderOptions{
+    Delims: &gin.Delims{
+      Left:  "{{",
+      Right: "}}",
+    },
+    FuncMap: template.FuncMap{
+      // Add custom template functions here
+    },
+  })
+},
+```
+
+For the fiber driver:
+
+```go
+// config/http.go
+import (
+  "github.com/gofiber/fiber/v2"
+  "github.com/gofiber/template"
+  "github.com/gofiber/template/html/v2"
+  "github.com/goravel/framework/support/path"
+)
+
+"template": func() (fiber.Views, error) {
+  engine := &html.Engine{
+    Engine: template.Engine{
+      Left:       "{{",
+      Right:      "}}",
+      Directory:  path.Resource("views"),
+      Extension:  ".tmpl",
+      LayoutName: "embed",
+      // Add custom template functions here
+      Funcmap:    make(map[string]interface{}),
+    },
+  }
+
+  engine.AddFunc(engine.LayoutName, func() error {
+    return fmt.Errorf("layoutName called unexpectedly")
+  })
+  return engine, nil
+},
+```
+
+## Custom Template Engines
+
+You can create your own custom template engines by implementing the `render.HTMLRender` interface of gin or the `fiber.Views` interface of fiber. After creating your custom engine, you can register it to the configuration `http.drivers.*.template`.
+
+## Advanced Features
+
+`http/template` is the default template engine, you can refer to the official documentation for more advanced features: https://pkg.go.dev/html/template.
