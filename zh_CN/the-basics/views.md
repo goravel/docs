@@ -101,11 +101,11 @@ func (receiver *AppServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-## Register Custom Delims And Functions
+## 注册自定义分隔符和函数
 
-You can register custom Delims and functions to be used within your views, they can be registered in the configuration `http.drivers.*.template`.
+你可以在视图中注册自定义分隔符和函数，它们可以被注册在 `http.drivers.*.template` 配置中。
 
-For the gin driver:
+对于 gin 驱动：
 
 ```go
 // config/http.go
@@ -129,7 +129,7 @@ import (
 },
 ```
 
-For the fiber driver:
+用于 fiber 驱动：
 
 ```go
 // config/http.go
@@ -160,10 +160,10 @@ import (
 },
 ```
 
-## Custom Template Engines
+## 自定义模板引擎
 
-You can create your own custom template engines by implementing the `render.HTMLRender` interface of gin or the `fiber.Views` interface of fiber. After creating your custom engine, you can register it to the configuration `http.drivers.*.template`.
+你可以通过实现 gin 的 `render.HTMLRender` 接口或者 fiber 的 `fiber.Views` 接口来创建自己的自定义模板引擎。 在创建自定义引擎后，你可以将它注册到配置 `http.drivers.*.template` 。
 
-## Advanced Features
+## 高级功能
 
-`http/template` is the default template engine, you can refer to the official documentation for more advanced features: https://pkg.go.dev/html/template.
+模板引擎默认由 `http/template` 驱动，你可以参考其官方文档获取更多高级功能：https://pkg.go.dev/html/template。
