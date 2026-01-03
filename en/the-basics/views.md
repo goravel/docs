@@ -135,8 +135,9 @@ For the fiber driver:
 // config/http.go
 import (
   "github.com/gofiber/fiber/v2"
-	"github.com/gofiber/template"
-	"github.com/gofiber/template/html/v2"
+  "github.com/gofiber/template"
+  "github.com/gofiber/template/html/v2"
+  "github.com/goravel/framework/support/path"
 )
 
 "template": func() (fiber.Views, error) {
