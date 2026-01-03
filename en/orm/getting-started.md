@@ -57,6 +57,43 @@ type User struct {
 
 More Tag usage details can be found at: https://gorm.io/docs/models.html.
 
+#### Json Field
+
+If you want to use JSON field, you can define the field type as `datatypes.JSONMap` or a custom struct, and add the Tag: `gorm:"type:json"`:
+
+```go
+package models
+
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"github.com/goravel/framework/database/orm"
+	"gorm.io/datatypes"
+)
+
+type User struct {
+	orm.Model
+	Json1 datatypes.JSONMap `gorm:"type:json" json:"json1"`
+	Json2 *UserData `gorm:"type:json;serializer:json" json:"json2"`
+}
+
+type UserData struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+}
+
+func (r *UserData) Value() (driver.Value, error) {
+	return json.Marshal(r)
+}
+
+func (r *UserData) Scan(value any) (err error) {
+	if data, ok := value.([]byte); ok && len(data) > 0 {
+		err = json.Unmarshal(data, &r)
+	}
+	return
+}
+```
+
 #### Create Model based on data table
 
 ```shell
@@ -202,11 +239,11 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | OrWhereNotIn                | [OrWhereNotIn](#where)                                                        |
 | OrWhereNull                 | [OrWhereNull](#where)                                                         |
 | OrWhereIn                   | [OrWhereIn](#where)                                                           |
-| OrWhereJsonContains         | [查询条件](#where-条件)                                                       |
-| OrWhereJsonContainsKey      | [查询条件](#where-条件)                                                       |
-| OrWhereJsonDoesntContain    | [查询条件](#where-条件)                                                       |
-| OrWhereJsonDoesntContainKey | [查询条件](#where-条件)                                                       |
-| OrWhereJsonLength           | [查询条件](#where-条件)                                                       |
+| OrWhereJsonContains         | [OrWhereJsonContains](#where)                                                 |
+| OrWhereJsonContainsKey      | [OrWhereJsonContainsKey](#where)                                              |
+| OrWhereJsonDoesntContain    | [OrWhereJsonDoesntContain](#where)                                            |
+| OrWhereJsonDoesntContainKey | [OrWhereJsonDoesntContainKey](#where)                                         |
+| OrWhereJsonLength           | [OrWhereJsonLength](#where)                                                   |
 | Paginate                    | [Paginate](#paginate)                                                         |
 | Pluck                       | [Query single column](#query-single-column)                                   |
 | Raw                         | [Execute native SQL](#execute-native-sql)                                     |
@@ -230,11 +267,11 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | WhereNotIn                  | [WhereNotIn](#where)                                                          |
 | WhereNull                   | [WhereNull](#where)                                                           |
 | WhereIn                     | [WhereIn](#where)                                                             |
-| WhereJsonContains           | [查询条件](#where-条件)                                                       |
-| WhereJsonContainsKey        | [查询条件](#where-条件)                                                       |
-| WhereJsonDoesntContain      | [查询条件](#where-条件)                                                       |
-| WhereJsonDoesntContainKey   | [查询条件](#where-条件)                                                       |
-| WhereJsonLength             | [查询条件](#where-条件)                                                       |
+| WhereJsonContains           | [WhereJsonContains](#where)                                                   |
+| WhereJsonContainsKey        | [WhereJsonContainsKey](#where)                                                |
+| WhereJsonDoesntContain      | [WhereJsonDoesntContain](#where)                                              |
+| WhereJsonDoesntContainKey   | [WhereJsonDoesntContainKey](#where)                                           |
+| WhereJsonLength             | [WhereJsonLength](#where)                                                     |
 | WithoutEvents               | [Muting events](#muting-events)                                               |
 | WithTrashed                 | [Query soft delete data](#query-soft-delete-data)                             |
 
