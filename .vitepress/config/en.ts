@@ -8,14 +8,19 @@ export const config = defineConfig({
     nav: nav(),
     sidebar: [
       {
-        text: 'Quickstart',
-        base: '/getting-started/',
-        items: sidebarQuickstart()
+        text: 'Prologue',
+        base: '/prologue/',
+        items: sidebarPrologue()
       },
       {
         text: 'Upgrade',
         base: '/upgrade/',
         items: sidebarUpgrade()
+      },
+      {
+        text: 'Getting Started',
+        base: '/getting-started/',
+        items: sidebarGettingStarted()
       },
       {
         text: 'Architecture Concepts',
@@ -104,7 +109,7 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
+function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [
     {
       text: 'Installation',
@@ -123,6 +128,15 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
       link: 'compile'
     },
     {
+      text: 'Excellent Packages',
+      link: 'packages'
+    }
+  ]
+}
+
+function sidebarPrologue(): DefaultTheme.SidebarItem[] {
+  return [
+    {
       text: 'Release Notes',
       link: 'releases'
     },
@@ -131,12 +145,12 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
       link: 'contributions'
     },
     {
-      text: 'Excellent Packages',
-      link: 'packages'
-    },
-    {
       text: 'Privacy Policy',
       link: 'privacy'
+    },
+    {
+      text: 'Compare With Laravel',
+      link: 'compare-with-laravel'
     }
   ]
 }
