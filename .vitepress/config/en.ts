@@ -104,7 +104,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: 'Translate',
-      link: '/getting-started/contributions#add-a-new-language'
+      link: '/prologue/contributions#add-a-new-language'
     }
   ]
 }
@@ -145,12 +145,12 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
       link: 'contributions'
     },
     {
-      text: 'Privacy Policy',
-      link: 'privacy'
-    },
-    {
       text: 'Compare With Laravel',
       link: 'compare-with-laravel'
+    },
+    {
+      text: 'Privacy Policy',
+      link: 'privacy'
     }
   ]
 }

@@ -4,7 +4,7 @@ This is goravel official document.
 
 ## Contributing
 
-We welcome contributions to the Goravel documentation. Please see the [contributing guide](en/getting-started/contributions.md) for more information.
+We welcome contributions to the Goravel documentation. Please see the [contributing guide](en/prologue/contributions.md) for more information.
 
 ## Install
 

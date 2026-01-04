@@ -50,7 +50,7 @@ Example [https://github.com/goravel/example](https://github.com/goravel/example)
 
 ## Contributors
 
-This project is made possible by everyone who contributes. To contribute, please consult the [Contribution Guide](getting-started/contributions.md).
+This project is made possible by everyone who contributes. To contribute, please consult the [Contribution Guide](prologue/contributions.md).
 
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
