@@ -295,6 +295,14 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     {
       text: 'HTTP Client',
       link: 'http-client'
+    },
+    {
+      text: 'Pluralization',
+      link: 'pluralization'
+    },
+    {
+      text: 'Telemetry',
+      link: 'telemetry'
     }
   ]
 }
