@@ -108,3 +108,13 @@ func init() {
     _ = pluralizer.UseLanguage("my_custom_language")
 }
 ```
+
+## Supported Languages
+
+Currently, the pluralizer supports the following languages out of the box:
+
+| Language | Code      | Source                                                                                     |
+|:---------|:----------|:-------------------------------------------------------------------------------------------|
+| English  | `english` | [View Source](https://github.com/goravel/framework/tree/master/support/pluralizer/english) |
+
+*More languages will be added in future releases. You are welcome to contribute new languages via Pull Request.*
