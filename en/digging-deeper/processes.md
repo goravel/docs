@@ -269,3 +269,135 @@ if process.Running() {
 If you need to execute code **when** the process finishes, do not poll `Running()`. Instead, use the `Done()` channel 
 or the `Wait()` method, which are much more efficient than repeatedly checking the status.
 :::
+
+## Concurrent Processes
+
+Goravel makes it easy to manage a pool of concurrent processes, allowing you to execute multiple commands simultaneously. 
+This is particularly useful for batch processing or running independent tasks in parallel.
+
+### Executing Pools
+
+To run a pool of processes, you may use the `Pool` method. This accepts a closure where you define the commands you wish to execute.
+
+By default, the `Pool` method waits for all processes to complete and returns a map of results keyed by the process name (or index).
+
+```go
+results, err := facades.Process().Pool(func(pool process.Pool) {
+    pool.Command("sleep", "1").As("first")
+    pool.Command("sleep", "2").As("second")
+}).Run()
+
+if err != nil {
+    panic(err)
+}
+
+// Access results by their assigned key
+println(results["first"].Output())
+println(results["second"].Output())
+```
+
+### Naming Processes
+
+By default, processes in a pool are keyed by their numeric index (e.g., "0", "1"). However, for clarity and easier access 
+to results, you should assign a unique name to each process using the `As` method:
+
+```go
+pool.Command("cat", "system.log").As("system")
+```
+
+### Pool Options
+
+The `Pool` builder provides several methods to control the execution behavior of the entire batch.
+
+#### Concurrency
+You can control the maximum number of processes running simultaneously using the `Concurrency` method.
+
+```go
+facades.Process().Pool(func(pool process.Pool) {
+    // Define 10 commands...
+}).Concurrency(2).Run()
+```
+
+#### Total Timeout
+You can enforce a global timeout for the entire pool execution using the `Timeout` method. If the pool takes longer 
+than this duration, all running processes will be terminated.
+
+```go
+facades.Process().Pool(...).Timeout(1 * time.Minute).Run()
+```
+
+### Asynchronous Pools
+
+If you need to run the pool in the background while your application performs other tasks, you can use the `Start` 
+method instead of `Run`. This returns a `RunningPool` handle.
+
+```go
+runningPool, err := facades.Process().Pool(func(pool process.Pool) {
+    pool.Command("sleep", "5").As("long_task")
+}).Start()
+
+// Check if the pool is still running
+if runningPool.Running() {
+    fmt.Println("Pool is active...")
+}
+
+// Wait for all processes to finish and gather results
+results := runningPool.Wait()
+```
+
+#### Interacting with Running Pools
+
+The `RunningPool` interface provides several methods to manage the active pool:
+
+* **`PIDs()`**: Returns a map of Process IDs keyed by the command name.
+* **`Signal(os.Signal)`**: Sends a signal to all running processes in the pool.
+* **`Stop(timeout, signal)`**: Gracefully stops all processes.
+* **`Done()`**: Returns a channel that closes when the pool finishes, useful for `select` statements.
+
+```go
+select {
+case <-runningPool.Done():
+    // All processes finished
+case <-time.After(10 * time.Second):
+    // Force stop all processes if they take too long
+    runningPool.Stop(1 * time.Second)
+}
+```
+
+### Pool Output
+
+You can inspect the output of the pool in real-time using the `OnOutput` method.
+
+::: warning
+The `OnOutput` callback may be invoked concurrently from multiple goroutines. Ensure your callback logic is thread-safe.
+:::
+
+```go
+facades.Process().Pool(func(pool process.Pool) {
+    pool.Command("ping", "google.com").As("ping")
+}).OnOutput(func(typ process.OutputType, line []byte, key string) {
+    // key will be "ping"
+    fmt.Printf("[%s] %s", key, string(line))
+}).Run()
+```
+
+### Per-Process Configuration
+
+Inside the pool definition, each command supports individual configuration methods similar to single processes:
+
+* **`Path(string)`**: Sets the working directory.
+* **`Env(map[string]string)`**: Sets environment variables.
+* **`Input(io.Reader)`**: Sets standard input.
+* **`Timeout(time.Duration)`**: Sets a timeout for the specific command.
+* **`Quietly()`**: Disables output capturing for this specific command.
+* **`DisableBuffering()`**: Disables memory buffering (useful for high-volume output).
+
+```go
+facades.Process().Pool(func(pool process.Pool) {
+    pool.Command("find", "/", "-name", "*.log").
+        As("search").
+        Path("/var/www").
+        Timeout(10 * time.Second).
+        DisableBuffering()
+}).Run()
+```

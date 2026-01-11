@@ -281,6 +281,10 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
       link: 'color'
     },
     {
+      text: 'Processes',
+      link: 'processes'
+    },
+    {
       text: 'Strings',
       link: 'strings'
     },
