@@ -138,3 +138,35 @@ facades.Process().DisableBuffering().OnOutput(func(typ process.OutputType, b []b
     // ...
 }).Run("...")
 ```
+
+### Pipelines
+
+Sometimes you need to pipe the output of one process into the input of another. The `Process` facade makes this easy 
+using the `Pipe` method, which allows you to chain multiple commands together synchronously.
+
+```go
+import "github.com/goravel/framework/contracts/process"
+
+result, err := facades.Process().Pipe(func(pipe process.Pipe) {
+    pipe.Command("echo", "Hello, World!")
+    pipe.Command("grep", "World")
+    pipe.Command("tr", "a-z", "A-Z")
+}).Run()
+```
+
+#### Pipeline Output & Keys
+
+You can inspect the output of the pipeline in real-time using the `OnOutput` method. When used with a pipe, 
+the callback signature changes to include a `key` (string), allowing you to identify which command produced the output.
+
+By default, the `key` is the numeric index of the command. However, you can assign a readable label to each command 
+using the `As` method, which is highly useful for debugging complex pipelines.
+
+```go
+facades.Process().Pipe(func(pipe process.Pipe) {
+    pipe.Command("cat", "access.log").As("source")
+    pipe.Command("grep", "error").As("filter")
+}).OnOutput(func(key string, typ process.OutputType, line []byte) {
+    // 'key' will be "source" or "filter"
+}).Run()
+```
