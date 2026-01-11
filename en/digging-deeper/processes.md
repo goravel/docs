@@ -179,7 +179,93 @@ using the `As` method, which is highly useful for debugging complex pipelines.
 facades.Process().Pipe(func(pipe process.Pipe) {
     pipe.Command("cat", "access.log").As("source")
     pipe.Command("grep", "error").As("filter")
-}).OnOutput(func(key string, typ process.OutputType, line []byte) {
+}).OnOutput(func(typ process.OutputType, line []byte, key string) {
     // 'key' will be "source" or "filter"
 }).Run()
 ```
+
+## Asynchronous Processes
+
+While the `Run` method waits for the process to complete, `Start` can be used to invoke a process asynchronously. 
+This allows the process to run in the background while your application continues executing other tasks. The `Start` method returns a `Running` interface.
+
+```go
+import "time"
+
+process, _ := facades.Process().Timeout(10 * time.Second).Start("sleep", "5")
+
+// Continue doing other work...
+
+result := process.Wait()
+```
+
+To check if a process has finished without blocking, you may use the `Done` method. This returns a standard Go channel 
+that closes when the process exits, making it ideal for use in `select` statements.
+
+```go
+process, _ := facades.Process().Start("sleep", "5")
+
+select {
+case <-process.Done():
+    // Process finished successfully
+case <-time.After(1 * time.Second):
+    // Custom logic if it takes too long
+}
+
+result := process.Wait()
+```
+
+::: warning
+Even if you use the `Done` channel to detect completion, you **must** call `Wait()` afterwards. 
+This ensures the process is properly "reaped" by the operating system and cleans up underlying resources.
+:::
+
+### Process IDs & Signals
+
+You can retrieve the operating system's process ID (PID) for a running process using the `PID` method.
+
+```go
+process, _ := facades.Process().Start("ls", "-la")
+
+println(process.PID())
+```
+
+#### Sending Signals
+
+Goravel provides methods to interact with the process lifecycle. You can send a specific OS signal using 
+the `Signal` method, or use the `Stop` helper to attempt a graceful shutdown.
+
+The `Stop` method is particularly useful: it will first send a termination signal (defaulting to `SIGTERM`). 
+If the process does not exit within the provided timeout, it will be forcibly killed (`SIGKILL`).
+
+```go
+import (
+    "os"
+    "time"
+)
+
+process, _ := facades.Process().Start("sleep", "60")
+
+// Manually send a signal
+process.Signal(os.Interrupt)
+
+// Attempt to stop gracefully, wait 5 seconds, then force kill
+process.Stop(5 * time.Second)
+```
+
+### Checking Process State
+
+You can inspect the current state of the process using the `Running` method. This is primarily useful for debugging 
+or health checks, as it provides a snapshot of whether the process is currently active.
+
+```go
+// Snapshot check (useful for logs or metrics)
+if process.Running() {
+    fmt.Println("Process is still active...")
+}
+```
+
+::: tip
+If you need to execute code **when** the process finishes, do not poll `Running()`. Instead, use the `Done()` channel 
+or the `Wait()` method, which are much more efficient than repeatedly checking the status.
+:::
