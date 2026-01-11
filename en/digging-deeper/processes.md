@@ -154,6 +154,19 @@ result, err := facades.Process().Pipe(func(pipe process.Pipe) {
 }).Run()
 ```
 
+::: warning
+Process options such as `Timeout`, `Env`, or `Input` must be configured **after** the `Pipe` method is called. 
+Any configuration applied before the `Pipe` call will be ignored.
+
+```go
+// Correct: Configuration applied after Pipe
+facades.Process().Pipe(...).Timeout(10 * time.Second).Run()
+
+// Incorrect: Timeout will be ignored
+facades.Process().Timeout(10 * time.Second).Pipe(...).Run()
+```
+:::
+
 #### Pipeline Output & Keys
 
 You can inspect the output of the pipeline in real-time using the `OnOutput` method. When used with a pipe, 
