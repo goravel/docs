@@ -101,6 +101,14 @@ func (receiver *AppServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
+## CSRF Token Middleware
+
+This middleware can be applied to routes to ensure that requests are coming from authenticated sources to against Cross-Site Request Forgery (CSRF) attacks.
+
+1. Register the middleware (`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`) to global or a specific route.
+2. Add `{{ .csrf_token }}` to your form in the view file.
+3. The middleware will automatically verify the token on form submission.
+
 ## Register Custom Delims And Functions 
 
 You can register custom Delims and functions to be used within your views, they can be registered in the configuration `http.drivers.*.template`.

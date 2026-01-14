@@ -38,3 +38,11 @@ func (r *ServiceProvider) Register(app foundation.Application) {}
 
 func (r *ServiceProvider) Boot(app foundation.Application) {}
 ```
+
+## Create Service Provider
+
+You can use the following command to create a new service provider:
+
+```bash
+./artisan make:provider YourServiceProviderName
+```

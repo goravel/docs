@@ -149,12 +149,22 @@ for row := range rows {
 
 ### Aggregates
 
-The query builder provides aggregate methods: `Count` `Sum`.
+The query builder provides aggregate methods: `Count`, `Sum`, `Avg`, `Min`, `Max`.
 
 ```go
 count, err := facades.DB().Table("users").Count()
 
-sum, err := facades.DB().Table("users").Sum("age")
+var sum int
+err := facades.DB().Table("users").Sum("age", &sum)
+
+var avg float64
+err := facades.DB().Table("users").Avg("age", &avg)
+
+var min int
+err := facades.DB().Table("users").Min("age", &min)
+
+var max int
+err := facades.DB().Table("users").Max("age", &max)
 ```
 
 ### Checking if a Record Exists
@@ -343,6 +353,22 @@ var users []User
 err := facades.DB().Table("users").Where("name", "John").WhereExists(func() db.Query {
   return facades.DB().Table("posts").WhereColumn("posts.user_id", "users.id")
 }).Get(&users)
+```
+
+### WhereAll / WhereAny / WhereNone
+
+```go
+var products []Product
+facades.DB().Table("products").WhereAll([]string{"weight", "height"}, "=", 200).Find(&products)
+// SQL: SELECT * FROM products WHERE weight = ? AND height = ?
+
+var users []User
+facades.DB().Table("users").WhereAny([]string{"name", "email"}, "=", "John").Find(&users)
+// SQL: SELECT * FROM users WHERE (name = ? OR email = ?)
+
+var products []Product
+facades.DB().Table("products").WhereNone([]string{"age", "score"}, ">", 18).Find(&products)
+// SQL: SELECT * FROM products WHERE NOT (age > ?) AND NOT (score > ?)
 ```
 
 ### Other Where Clauses

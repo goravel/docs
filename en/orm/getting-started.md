@@ -205,6 +205,7 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 
 | Functions                   | Action                                                                        |
 | --------------------------- | ----------------------------------------------------------------------------- |
+| Avg                         | [Avg](#Avarage)                                                               |
 | BeginTransaction            | [Begin transaction](#transaction)                                             |
 | Commit                      | [Commit transaction](#transaction)                                            |
 | Count                       | [Count](#count)                                                               |
@@ -229,6 +230,8 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | Join                        | [Join](#join)                                                                 |
 | Limit                       | [Limit](#limit)                                                               |
 | LockForUpdate               | [Pessimistic Locking](#pessimistic-locking)                                   |
+| Max                         | [Max](#Avarage)                                                               |
+| Min                         | [Min](#Avarage)                                                               |
 | Model                       | [Specify a model](#specify-table-query)                                       |
 | Offset                      | [Offset](#offset)                                                             |
 | Order                       | [Order](#order)                                                               |
@@ -255,14 +258,17 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | Scopes                      | [Scopes](#scopes)                                                             |
 | Select                      | [Specify Fields](#specify-fields)                                             |
 | SharedLock                  | [Pessimistic Locking](#pessimistic-locking)                                   |
-| Sum                         | [Sum](#sum)                                                                   |
+| Sum                         | [Sum](#Avarage)                                                               |
 | Table                       | [Specify a table](#specify-table-query)                                       |
 | ToSql                       | [Get SQL](#get-sql)                                                           |
 | ToRawSql                    | [Get SQL](#get-sql)                                                           |
 | Update                      | [Update a single column](#update-a-single-column)                             |
 | UpdateOrCreate              | [Update or create](#update-or-create)                                         |
 | Where                       | [Where](#where)                                                               |
+| WhereAll                   | [WhereAll](#where)                                                        |
+| WhereAny                   | [WhereAny](#where)                                                        |
 | WhereBetween                | [WhereBetween](#where)                                                        |
+| WhereNone             | [WhereNone](#where)                                                     |
 | WhereNotBetween             | [WhereNotBetween](#where)                                                     |
 | WhereNotIn                  | [WhereNotIn](#where)                                                          |
 | WhereNull                   | [WhereNull](#where)                                                           |
@@ -439,6 +445,18 @@ facades.Orm().Query().OrWhere("name", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
 facades.Orm().Query().OrWhereNull("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
+
+var products []Product
+facades.DB().Table("products").WhereAll([]string{"weight", "height"}, "=", 200).Find(&products)
+// SQL: SELECT * FROM products WHERE weight = ? AND height = ?
+
+var users []User
+facades.DB().Table("users").WhereAny([]string{"name", "email"}, "=", "John").Find(&users)
+// SQL: SELECT * FROM users WHERE (name = ? OR email = ?)
+
+var products []Product
+facades.DB().Table("products").WhereNone([]string{"age", "score"}, ">", 18).Find(&products)
+// SQL: SELECT * FROM products WHERE NOT (age > ?) AND NOT (score > ?)
 ```
 
 Query JSON columns
@@ -905,10 +923,20 @@ var users []models.User
 facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
-### Sum
+### Avarage
 
 ```go
-sum, err := facades.Orm().Query().Model(models.User{}).Sum("id")
+var sum int
+err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum)
+
+var avg float64
+err := facades.Orm().Query().Model(models.User{}).Average("age", &avg)
+
+var max int
+err := facades.Orm().Query().Model(models.User{}).Max("age", &max)
+
+var min int
+err := facades.Orm().Query().Model(models.User{}).Min("age", &min)
 ```
 
 ## Events

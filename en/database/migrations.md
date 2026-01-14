@@ -22,10 +22,27 @@ The database migration files are stored in the `database/migrations` directory. 
 Use the `make:migration` command to create the migration:
 
 ```shell
+go run . artisan make:migration
 go run . artisan make:migration create_users_table
 ```
 
 This command will generate migration files in the `database/migrations` directory. Each migration file will begin with a timestamp, which Goravel will use to determine the execution order of the migration files.
+
+You can also create a migration for a specific model by using the `-m` or `--model` option:
+
+```shell
+go run . artisan make:migration create_users_table -m User
+```
+
+The model should be registered in the `bootstrap/app.go` file before running the command. This command will generate a migration file based on the structure defined in the `User` model.
+
+```go
+WithCallback(func() {
+  facades.Schema().Extend(schema.Extension{
+    Models: []any{models.User{}},
+  })
+}).
+```
 
 ### Quickly Create
 
