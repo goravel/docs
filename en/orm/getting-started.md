@@ -172,7 +172,7 @@ func (r *User) Connection() string {
 
 ### Setting Global Scope
 
-Model supports setting the `GlobalScope` method, which restricts the scope of the query, update, and delete operations:
+Model supports setting the `GlobalScopes` method, which restricts the scope of the query, update, and delete operations:
 
 ```go
 import "github.com/goravel/framework/contracts/orm"
@@ -182,13 +182,23 @@ type User struct {
   Name string
 }
 
-func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
-  return []func(orm.Query) orm.Query{
-    func(query orm.Query) orm.Query {
+func (r *User) GlobalScopes() map[string]func(orm.Query) orm.Query {
+  return map[string]func(orm.Query) orm.Query{
+    "name": func(query orm.Query) orm.Query {
       return query.Where("name", "goravel")
     },
   }
 }
+```
+
+If you want to remove global scopes in a query, you can use the `WithoutGlobalScopes` function:
+
+```go
+// Remove all global scopes
+facades.Orm().Query().WithoutGlobalScopes().Get(&users)
+
+// Remove specified global scope
+facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 ```
 
 ## facades.Orm() available functions

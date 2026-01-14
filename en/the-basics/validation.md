@@ -230,6 +230,7 @@ If you do not want to use the `Validate` method on the request, you may create a
 ```go
 func (r *PostController) Store(ctx http.Context) http.Response {
   validator, _ := facades.Validation().Make(
+    ctx,
     map[string]any{
       "name": "Goravel",
     },
@@ -255,7 +256,7 @@ The first argument passed to the `Make` method is the data under validation whic
 If needed, you may provide custom error messages that a validator instance should use instead of the default error messages provided by Goravel. You may pass the custom messages as the third argument to the `Make` method (also applicable to `ctx.Request().Validate()`):
 
 ```go
-validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Messages(map[string]string{
   "required": "The :attribute field is required.",
 }))
 ```
@@ -265,7 +266,7 @@ validator, err := facades.Validation().Make(input, rules, validation.Messages(ma
 Sometimes you may wish to specify a custom error message only for a specific attribute. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule (also applicable to `ctx.Request().Validate()`):
 
 ```go
-validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Messages(map[string]string{
   "email.required": "We need to know your email address!",
 }))
 ```
@@ -275,7 +276,7 @@ validator, err := facades.Validation().Make(input, rules, validation.Messages(ma
 Many of Goravel's built-in error messages include an `:attribute` placeholder that is replaced with the name of the field or attribute under validation. To customize the values used to replace these placeholders for specific fields, you may pass an array of custom attributes as the third argument to the `Make` method (also applicable to `ctx.Request().Validate()`):
 
 ```go
-validator, err := facades.Validation().Make(input, rules, validation.Attributes(map[string]string{
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Attributes(map[string]string{
   "email": "email address",
 }))
 ```
@@ -291,7 +292,7 @@ import (
 )
 
 func (r *PostController) Store(ctx http.Context) http.Response {
-  validator, err := facades.Validation().Make(input, rules,
+  validator, err := facades.Validation().Make(ctx, input, rules,
     validation.PrepareForValidation(func(ctx http.Context, data validationcontract.Data) error {
       if name, exist := data.Get("name"); exist {
         return data.Set("name", name)
@@ -315,7 +316,7 @@ validator, err := ctx.Request().Validate(rules)
 var user models.User
 err := validator.Bind(&user)
 
-validator, err := facades.Validation().Make(input, rules)
+validator, err := facades.Validation().Make(ctx, input, rules)
 var user models.User
 err := validator.Bind(&user)
 ```
@@ -334,7 +335,7 @@ fmt.Println(storePost.Name)
 
 ```go
 validator, err := ctx.Request().Validate(rules)
-validator, err := facades.Validation().Make(input, rules)
+validator, err := facades.Validation().Make(ctx, input, rules)
 
 message := validator.Errors().One("email")
 ```
@@ -466,12 +467,12 @@ func (receiver *Uppercase) Signature() string {
 }
 
 // Passes Determine if the validation rule passes.
-func (receiver *Uppercase) Passes(data validation.Data, val any, options ...any) bool {
+func (receiver *Uppercase) Passes(ctx context.Context, data validation.Data, val any, options ...any) bool {
   return strings.ToUpper(val.(string)) == val.(string)
 }
 
 // Message Get the validation error message.
-func (receiver *Uppercase) Message() string {
+func (receiver *Uppercase) Message(ctx context.Context) string {
   return "The :attribute must be uppercase."
 }
 
@@ -566,7 +567,7 @@ func (receiver *ToInt) Signature() string {
 }
 
 // Handle defines the filter function to apply.
-func (receiver *ToInt) Handle() any {
+func (receiver *ToInt) Handle(ctx context.Context) any {
   return func (val any) int {
     return cast.ToString(val)
   }

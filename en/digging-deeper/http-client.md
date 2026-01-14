@@ -11,27 +11,7 @@ all designed to enhance the developer experience.
 
 ## Configuration
 
-Goravel's HTTP client is built on top of the `net/http.Client` for making HTTP requests. If you need to tweak its internal settings,
-just update the `client` property in the `config/http.go` file.
-Here are the available configuration options:
-
-- `base_url`: Sets the root URL for relative paths. Automatically prefixes requests that don't start with `http://` or `https://`.
-- `timeout`(`DEFAULT`: `30s`): Global timeout duration for complete request lifecycle (connection + any redirects + reading the response body). A Timeout of zero means no timeout.
-- `max_idle_conns`: Maximum number of idle (keep-alive) connections across all hosts. Zero means no limit.
-- `max_idle_conns_per_host`: Maximum idle (keep-alive) connections to keep per-host
-- `max_conns_per_host`: Limits the total number of connections per host, including connections in the dialing, active, and idle states. Zero means no limit.
-- `idle_conn_timeout`: Maximum amount of the time of an idle (keep-alive) connection will remain idle before closing itself.
-
-```go
-"client": map[string]any{
-    "base_url":                config.GetString("HTTP_CLIENT_BASE_URL"),  // "https://api.example.com"
-    "timeout":                 config.GetDuration("HTTP_CLIENT_TIMEOUT"), // 30 * time.Second
-    "max_idle_conns":          config.GetInt("HTTP_CLIENT_MAX_IDLE_CONNS"), // 100
-    "max_idle_conns_per_host": config.GetInt("HTTP_CLIENT_MAX_IDLE_CONNS_PER_HOST"), // 10
-    "max_conns_per_host":      config.GetInt("HTTP_CLIENT_MAX_CONN_PER_HOST"), // 0
-    "idle_conn_timeout":       config.GetDuration("HTTP_CLIENT_IDLE_CONN_TIMEOUT"), // 90 * time.Second
-}
-```
+Goravel's HTTP client is built on top of the `net/http.Client` for making HTTP requests. If you need to tweak its internal settings, just update the `clients` property in the `config/http.go` file.
 
 ## Making Requests
 
@@ -46,6 +26,12 @@ response, err := facades.Http().Get("https://example.com")
 ```
 
 Each HTTP verb method returns a `response` of type `framework/contracts/http/client.Response` and an `err` if the request fails.
+
+You can use the `Client` function to specify which HTTP client configuration to use:
+
+```go
+response, err := facades.Http().Client("github").Get("https://example.com")
+```
 
 ### Response Interface
 
@@ -264,7 +250,7 @@ response, err := facades.Http().WithContext(ctx).Get("https://example.com")
 
 ### Bind Response
 
-You can use the `Bind` method directly on the `Http` facade to specify the struct that the response should be bound to.
+You can use the `Bind` method to specify the struct that the response should be bound to.
 
 ```go
 type User struct {
@@ -274,12 +260,18 @@ type User struct {
 
 func main() {
     var user User
-    response, err := facades.Http().Bind(&user).AcceptJson().Get("https://jsonplaceholder.typicode.com/users/1")
+    response, err := facades.Http().AcceptJson().Get("https://jsonplaceholder.typicode.com/users/1")
     if err != nil {
         fmt.Println("Error making request:", err)
         return
     }
 
+    err = response.Bind(&user)
+    if err != nil {
+        fmt.Println("Error binding response:", err)
+        return
+    }
+    
     fmt.Printf("User ID: %d, Name: %s\n", user.ID, user.Name)
 }
 ```
