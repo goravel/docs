@@ -12,7 +12,7 @@ In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.hos
 
 ## Controllers
 
-Controllers can be defined in the `/app/grpc/controllers` directory.
+Controllers can be defined in the `app/grpc/controllers` directory.
 
 ```go
 // app/grpc/controllers
@@ -25,8 +25,7 @@ import (
   "github.com/goravel/grpc/protos"
 )
 
-type UserController struct {
-}
+type UserController struct {}
 
 func NewUserController() *UserController {
   return &UserController{}
@@ -41,7 +40,7 @@ func (r *UserController) Show(ctx context.Context, req *protos.UserRequest) (pro
 
 ## Define routing
 
-All routing files can be defined in the `/routes` directory, such as `/routes/grpc.go`. Then bind routes in the `app/providers/grpc_service_provider.go` file.
+All routing files can be defined in the `routes` directory, such as `routes/grpc.go`.
 
 ```go
 // routes/grpc.go
@@ -61,43 +60,22 @@ func Grpc() {
 
 ### Register routing
 
-Register routing in the `app/providers/grpc_service_provider.go` file after routing was defined.
+Register routing in the `bootstrap/app.go::WithRouting` function after routing was defined.
 
 ```go
-// app/providers/grpc_service_provider.go
-package providers
-
-import (
-  "goravel/routes"
-)
-
-type GrpcServiceProvider struct {
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithRouting(func() {
+      routes.Grpc()
+    }).
+		WithConfig(config.Boot).
+		Start()
 }
-
-func (router *GrpcServiceProvider) Register() {
-
-}
-
-func (router *GrpcServiceProvider) Boot() {
-  routes.Grpc()
-}
-```
-
-## Start Grpc Server
-
-Start Grpc in the `main.go` file.
-
-```go
-go func() {
-  if err := facades.Grpc().Run(); err != nil {
-    facades.Log().Errorf("Grpc run error: %v", err)
-  }
-}()
 ```
 
 ## Interceptor
 
-The interceptor can be defined in the `app/grpc/inteceptors` folder, and then registered to `app/grpc/kernel.go`.
+The interceptor can be defined in the `app/grpc/interceptors` folder.
 
 **Server Interceptor**
 
@@ -169,34 +147,26 @@ func init() {
 }
 ```
 
-## Shutdown Grpc
+### Register Interceptors
 
-You can call the `Shutdown` method to gracefully shut down Grpc, which will wait for all requests to be processed before shutting down.
+Register interceptors in the `WithGrpcServerInterceptors` and `WithGrpcClientInterceptors` functions of the `bootstrap/app.go` file after interceptors were defined.
 
 ```go
-// main.go
-bootstrap.Boot()
-
-// Create a channel to listen for OS signals
-quit := make(chan os.Signal)
-signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
-// Start Grpc by facades.Grpc
-go func() {
-  if err := facades.Grpc().Run(); err != nil {
-    facades.Log().Errorf("Grpc run error: %v", err)
-  }
-}()
-
-// Listen for the OS signal
-go func() {
-  <-quit
-  if err := facades.Grpc().Shutdown(); err != nil {
-    facades.Log().Errorf("Grpc Shutdown error: %v", err)
-  }
-
-  os.Exit(0)
-}()
-
-select {}
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithGrpcServerInterceptors(func() []grpc.UnaryServerInterceptor {
+			return []grpc.UnaryServerInterceptor{
+				interceptors.TestServer,
+			}
+		}).
+		WithGrpcClientInterceptors(func() map[string][]grpc.UnaryClientInterceptor {
+			return map[string][]grpc.UnaryClientInterceptor{
+				"default": {
+					interceptors.TestClient,
+				},
+			}
+		}).
+		WithConfig(config.Boot).
+		Start()
+}
 ```

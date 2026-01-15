@@ -180,7 +180,7 @@ session := facades.Session().BuildSession(driver, "sessionID")
 
 ### Add Custom Session Drivers
 
-#### Implementing The Driver
+#### Implementing Driver
 
 To implement a custom session driver, driver must implement the `contracts/session/driver` interface.
 
@@ -202,7 +202,7 @@ type Driver interface {
 }
 ```
 
-#### Registering The Driver
+#### Register Driver
 
 After implementing the driver, you only need to add it to the `config/session.go` configuration file:
 

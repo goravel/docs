@@ -13,13 +13,13 @@ Artisan is the CLI tool that comes with Goravel for interacting with the command
 go run . artisan list
 ```
 
-Each command also has a "help" feature that shows and explains the arguments and options associated with the command. To see the help screen, just add "help" before the command name.
+Each command also has a "help" flag that shows and explains the arguments and options associated with the command:
 
 ```shell
-./artisan help migrate
+./artisan migrate --help
 ```
 
-Instead of repeating `go run . artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
+Instead of repeating `./artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
@@ -28,14 +28,10 @@ echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 Then you can simply run your commands like this:
 
 ```shell
-./artisan make:controller DemoController
+artisan make:controller DemoController
 ```
 
 You can also use `artisan` shell script like this:
-
-```shell
-./artisan make:controller DemoController
-```
 
 ### Generating Commands
 
@@ -45,6 +41,21 @@ You can use the `make:command` command to create a new command in the `app/conso
 ./artisan make:command SendEmails
 ./artisan make:command user/SendEmails
 ```
+
+### Register Commands
+
+All commands should be registered via the `WithCommands` function in the `bootstrap/app.go` file:
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithConfig(config.Boot).
+		Start()
+}
+```
+
+A new command created by `make:command` will be register automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the command manually if you create the command file by yourself.
 
 ### Command Structure
 
@@ -506,7 +517,7 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 }
 ```
 
-## Registering Commands
+## Register Commands
 
 All of your console commands need to be registered within the `Commands` function in `app\console\kernel.go`.
 
