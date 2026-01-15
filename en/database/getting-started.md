@@ -59,7 +59,7 @@ We have added two keys, `read` and `write`, in the database configuration. `192.
 
 ## Running Native SQL Queries
 
-After configuring the database connection, you can use `facades.DB()` to run queries. `facades.DB` provides various methods for running queries: `Select`, `Insert`, `Update`, `Delete`, and `Statement`.
+After configuring the database connection, you can use `facades.DB()` to run queries. `facades.DB()` provides various methods for running queries: `Select`, `Insert`, `Update`, `Delete`, and `Statement`.
 
 ### Select
 

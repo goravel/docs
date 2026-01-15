@@ -7,16 +7,16 @@
 Artisan is the CLI tool that comes with Goravel for interacting with the command line. You can access it using `facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
 
 ```shell
-go run . artisan list
+./artisan list
 
 # or
-./artisan list
+go run . artisan list
 ```
 
 Each command also has a "help" feature that shows and explains the arguments and options associated with the command. To see the help screen, just add "help" before the command name.
 
 ```shell
-go run . artisan help migrate
+./artisan help migrate
 ```
 
 Instead of repeating `go run . artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
@@ -28,7 +28,7 @@ echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 Then you can simply run your commands like this:
 
 ```shell
-artisan make:controller DemoController
+./artisan make:controller DemoController
 ```
 
 You can also use `artisan` shell script like this:
@@ -42,8 +42,8 @@ You can also use `artisan` shell script like this:
 You can use the `make:command` command to create a new command in the `app/console/commands` directory. Don't worry if this directory does not exist in your application, it will be created the first time you run the `make:command` command:
 
 ```shell
-go run . artisan make:command SendEmails
-go run . artisan make:command user/SendEmails
+./artisan make:command SendEmails
+./artisan make:command user/SendEmails
 ```
 
 ### Command Structure
@@ -93,7 +93,7 @@ When you write console commands, it's typical to collect user input through `arg
 Follow the arguments after the command:
 
 ```shell
-go run . artisan send:emails SUBJECT EMAIL_1 EMAIL_2
+./artisan send:emails SUBJECT EMAIL_1 EMAIL_2
 ```
 
 Definition：
@@ -198,8 +198,8 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 Usage：
 
 ```shell
-go run . artisan emails --lang Chinese
-go run . artisan emails -l Chinese
+./artisan emails --lang Chinese
+./artisan emails -l Chinese
 ```
 
 Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
@@ -495,7 +495,7 @@ ctx.Divider("=>") // =>=>=>=>=>
 
 ## Category
 
-You can set a set of commands to the same category, convenient in `go run . artisan list`:
+You can set a set of commands to the same category, convenient in `./artisan list`:
 
 ```go
 // Extend The console command extend.
@@ -534,5 +534,5 @@ facades.Route().Get("/", func(c *gin.Context) {
 Some commands print colors by default, such as the `list` command. However, in some terminals or logs, the color values may be garbled. You can use the `--no-ansi` option to disable the print colors:
 
 ```shell
-go run . artisan list --no-ansi
+./artisan list --no-ansi
 ```
