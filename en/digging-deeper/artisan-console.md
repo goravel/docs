@@ -13,10 +13,10 @@ go run . artisan list
 ./artisan list
 ```
 
-Each command also has a "help" feature that shows and explains the arguments and options associated with the command. To see the help screen, just add "help" before the command name.
+Each command also has a "help" flag that shows and explains the arguments and options associated with the command:
 
 ```shell
-go run . artisan help migrate
+go run . artisan migrate --help
 ```
 
 Instead of repeating `go run . artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
