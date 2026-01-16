@@ -123,16 +123,17 @@ func (r *RouteRunner) Shutdown() error {
 }
 ```
 
-You can also register a single `Runner` in `bootstrap/app.go` to run some code when the application starts.
+You can register your own `Runner` in the `bootstrap/app.go::WithRunners` function to run some code when the application starts.
 
 ```go
 func Boot() contractsfoundation.Application {
-	app := foundation.Setup().
+	return foundation.Setup().
 		WithConfig(config.Boot).
-		Create()
-
-	app.Start(YourRunner)
-
-	return app
+		WithRunners(func() []foundation.Runner{
+			return []foundation.Runner{
+				NewYourCustomRunner(),
+			}
+		}).
+		Start()
 }
 ```
