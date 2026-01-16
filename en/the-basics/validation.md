@@ -473,7 +473,7 @@ func (receiver *Uppercase) Message(ctx context.Context) string {
 
 ### Register Custom Rules
 
-A new rule created by `make:rule` will be register automatically in the `bootstrap/rules.go::Rules()` function and the function will be called by `WithRules`. You need register the rule manually if you create the rule file by yourself.
+A new rule created by `make:rule` will be registered automatically in the `bootstrap/rules.go::Rules()` function and the function will be called by `WithRules`. You need register the rule manually if you create the rule file by yourself.
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -555,7 +555,7 @@ func (receiver *ToInt) Handle(ctx context.Context) any {
 
 ### Register Custom Filters
 
-A new rule created by `make:filter` will be register automatically in the `bootstrap/filters.go::Filters()` function and the function will be called by `WithFilters`. You need register the rule manually if you create the rule file by yourself.
+A new rule created by `make:filter` will be registered automatically in the `bootstrap/filters.go::Filters()` function and the function will be called by `WithFilters`. You need register the rule manually if you create the rule file by yourself.
 
 ```go
 func Boot() contractsfoundation.Application {

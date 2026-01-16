@@ -14,10 +14,19 @@ The `ServiceProvider` is the key to the life cycle of Goravel. They enable the f
 
 Service providers contain a `Register` and a `Boot` method. Within the `Register` method, you should only bind things into [the service container](./service-container.md). You should never attempt to register any event listeners, routes, or any other piece of functionality within the `Register` method.
 
-The Artisan CLI can generate a new provider via the `make:provider` command. Goravel will automatically register your new provider in your application's `bootstrap/providers.go` file:
-
 ```bash
 ./artisan make:provider YourServiceProviderName
+```
+
+The Artisan CLI can generate a new provider via the `make:provider` command. The new service provider will be registered automatically in the `bootstrap/providers.go::Providers()` function and the function will be called by `WithProviders`.
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithProvders(Providers).
+		WithConfig(config.Boot).
+		Start()
+}
 ```
 
 ## Dependency Relationship

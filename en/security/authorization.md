@@ -26,7 +26,8 @@ import (
 
   contractsaccess "github.com/goravel/framework/contracts/auth/access"
   "github.com/goravel/framework/auth/access"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 type AuthServiceProvider struct {
@@ -60,7 +61,7 @@ To authorize an action using gates, you should use the `Allows` or `Denies` meth
 package controllers
 
 import (
-  "github.com/goravel/framework/facades"
+  "goravel/app/facades"
 )
 
 type UserController struct {

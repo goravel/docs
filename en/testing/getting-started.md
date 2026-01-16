@@ -256,8 +256,7 @@ import (
   "os"
   "testing"
 
-  "github.com/goravel/framework/facades"
-
+  "goravel/app/facades"
   "goravel/database/seeders"
 )
 

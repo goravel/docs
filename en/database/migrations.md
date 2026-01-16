@@ -22,8 +22,8 @@ The database migration files are stored in the `database/migrations` directory. 
 Use the `make:migration` command to create the migration:
 
 ```shell
-go run . artisan make:migration
-go run . artisan make:migration create_users_table
+./artisan make:migration
+./artisan make:migration create_users_table
 ```
 
 This command will generate migration files in the `database/migrations` directory. Each migration file will begin with a timestamp, which Goravel will use to determine the execution order of the migration files.
@@ -31,7 +31,7 @@ This command will generate migration files in the `database/migrations` director
 You can also create a migration for a specific model by using the `-m` or `--model` option:
 
 ```shell
-go run . artisan make:migration create_users_table -m User
+./artisan make:migration create_users_table -m User
 ```
 
 The model should be registered in the `bootstrap/app.go` file before running the command. This command will generate a migration file based on the structure defined in the `User` model.
@@ -73,7 +73,8 @@ package migrations
 
 import (
 	"github.com/goravel/framework/contracts/database/schema"
-	"github.com/goravel/framework/facades"
+	
+  "goravel/app/facades"
 )
 
 type M20241207095921CreateUsersTable struct {
@@ -127,44 +128,55 @@ func (kernel Kernel) Migrations() []schema.Migration {
 }
 ```
 
+A new migration created by `make:migration` will be registered automatically in the `bootstrap/migrations.go::Migrations()` function and the function will be called by `WithMigrations`. You need register the rule manually if you create the rule file by yourself.
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMigrations(Migrations).
+		WithConfig(config.Boot).
+		Start()
+}
+```
+
 ## Run Migrations
 
 To run all of your outstanding migrations, execute the `migrate` Artisan command:
 
 ```shell
-go run . artisan migrate
+./artisan migrate
 ```
 
 If you would like to see which migrations have run thus far, you may use the `migrate:status` Artisan command:
 
 ```shell
-go run . artisan migrate:status
+./artisan migrate:status
 ```
 
 ## Rolling Back Migrations
 
-To roll back the latest migration, use the `rollback` Artisan command:
+To roll back the latest migration batch, use the `rollback` Artisan command:
 
 ```shell
-go run . artisan migrate:rollback
+./artisan migrate:rollback
 ```
 
-If you want to roll back the last "batch" of migrations, which may include multiple migration files, you can specify the `batch` option, the number indicates which batch to roll back:
+If you want to roll back multiple migration batches, you can specify the `batch` option, the number indicates which batch to roll back:
 
 ```shell
-go run . artisan migrate:rollback --batch=2
+./artisan migrate:rollback --batch=2
 ```
 
 You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:
 
 ```shell
-go run . artisan migrate:rollback --step=5
+./artisan migrate:rollback --step=5
 ```
 
 The `migrate:reset` command will roll back all of your application's migrations:
 
 ```shell
-go run . artisan migrate:reset
+./artisan migrate:reset
 ```
 
 ### Roll Back & Migrate Using A Single Command
@@ -172,13 +184,13 @@ go run . artisan migrate:reset
 The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
 
 ```shell
-go run . artisan migrate:refresh
+./artisan migrate:refresh
 ```
 
 You may roll back and re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will roll back and re-migrate the last five migrations:
 
 ```shell
-go run . artisan migrate:refresh --step=5
+./artisan migrate:refresh --step=5
 ```
 
 ### Drop All Tables & Migrate
@@ -186,7 +198,7 @@ go run . artisan migrate:refresh --step=5
 The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:
 
 ```shell
-go run . artisan migrate:fresh
+./artisan migrate:fresh
 ```
 
 ## Tables

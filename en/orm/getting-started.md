@@ -22,8 +22,8 @@ For example, the model name is `UserOrder`, and the table name is `user_orders`.
 Use the `make:model` command to create a model:
 
 ```shell
-go run . artisan make:model User
-go run . artisan make:model user/User
+./artisan make:model User
+./artisan make:model user/User
 ```
 
 Created model file is located in `app/models/user.go` file, the content is as follows:
@@ -859,8 +859,8 @@ You can execute a transaction by `Transaction` function.
 ```go
 import (
   "github.com/goravel/framework/contracts/database/orm"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/models"
 )
 
@@ -1024,8 +1024,8 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 If you are listening to many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names that reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
 ```shell
-go run . artisan make:observer UserObserver
-go run . artisan make:observer user/UserObserver
+./artisan make:observer UserObserver
+./artisan make:observer user/UserObserver
 ```
 
 This command will place the new observer in your `app/observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
@@ -1066,8 +1066,8 @@ To register an observer, you need to call the `Observe` method on the model you 
 package providers
 
 import (
-	"github.com/goravel/framework/facades"
-
+  
+	"goravel/app/facades"
 	"goravel/app/models"
 	"goravel/app/observers"
 )

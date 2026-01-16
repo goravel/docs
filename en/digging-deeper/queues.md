@@ -71,7 +71,7 @@ By default, all of the jobs for your application are stored in the `app/jobs` di
 
 ### Register Jobs
 
-A new job created by `make:job` will be register automatically in the `bootstrap/jobs.go::Jobs()` function and the function will be called by `WithJobs`. You need register the job manually if you create the job file by yourself.
+A new job created by `make:job` will be registered automatically in the `bootstrap/jobs.go::Jobs()` function and the function will be called by `WithJobs`. You need register the job manually if you create the job file by yourself.
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -116,62 +116,22 @@ func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, de
 
 ## Start Queue Server
 
-Start the queue server in `main.go` in the root directory.
+The default queue worker will be run by the runner of queue seriver provider, if you want to start multiple queue workers with different configuration, you can create [a runner](../architecture-concepts/service-providers.md#runners) and add it to the `WithRunners` function in the `bootstrap/app.go` file:
 
 ```go
-package main
-
-import (
-  "github.com/goravel/framework/facades"
-
-  "goravel/bootstrap"
-)
-
-func main() {
-  // This bootstraps the framework and gets it ready for use.
-  bootstrap.Boot()
-
-  // Start queue server by facades.Queue().
-  go func() {
-    if err := facades.Queue().Worker().Run(); err != nil {
-      facades.Log().Errorf("Queue run error: %v", err)
-    }
-  }()
-
-  select {}
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithRunners(func() []contractsfoundation.Runner {
+      return []contractsfoundation.Runner{
+        YourRunner,
+      }
+    }).
+    Start()
 }
 ```
 
-Different parameters can be passed in the `facades.Queue().Worker` method, you can monitor multiple queues by starting multiple `facades.Queue().Worker`.
-
-```go
-// No parameters, default listens to the configuration in the `config/queue.go`, and the number of concurrency is 1
-go func() {
-  if err := facades.Queue().Worker().Run(); err != nil {
-    facades.Log().Errorf("Queue run error: %v", err)
-  }
-}()
-
-// Monitor processing queue for redis link, and the number of concurrency is 10, and the number of retries is 3
-go func() {
-  if err := facades.Queue().Worker(queue.Args{
-    Connection: "redis",
-    Queue: "processing",
-    Concurrent: 10,
-    Tries: 3,
-  }).Run(); err != nil {
-    facades.Log().Errorf("Queue run error: %v", err)
-  }
-}()
-```
-
-## Stop Queue Server
-
-When the queue server is running, you can stop the queue server by calling the `Shutdown` method, this method will wait for the current running tasks to complete before stopping the queue.
-
-```go
-err := facades.Queue().Worker().Shutdown()
-```
+You can check [the default queue runner](https://github.com/goravel/framework/blob/master/queue/runners.go) for reference.
 
 ## Dispatching Jobs
 
@@ -183,8 +143,8 @@ package controllers
 import (
   "github.com/goravel/framework/contracts/queue"
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/jobs"
 )
 
@@ -209,8 +169,8 @@ package controllers
 import (
   "github.com/goravel/framework/contracts/queue"
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/jobs"
 )
 

@@ -20,8 +20,6 @@ The Http facade provides a convenient way to make HTTP requests using familiar v
 **Example: GET Request**
 
 ```go
-import "github.com/goravel/framework/facades"
-
 response, err := facades.Http().Get("https://example.com")
 ```
 
@@ -39,18 +37,19 @@ The `framework/contracts/http/client.Response` interface provides the following 
 
 ```go
 type Response interface {
+    Bind(value any) error            // Bind the response body to a struct
     Body() (string, error)           // Get the response body as a string
-    ClientError() bool              // Check if the status code is in the 4xx range
+    ClientError() bool               // Check if the status code is in the 4xx range
     Cookie(name string) *http.Cookie // Get a specific cookie
-    Cookies() []*http.Cookie        // Get all response cookies
-    Failed() bool                   // Check if the status code is not in the 2xx range
-    Header(name string) string      // Get the value of a specific header
-    Headers() http.Header           // Get all response headers
+    Cookies() []*http.Cookie         // Get all response cookies
+    Failed() bool                    // Check if the status code is not in the 2xx range
+    Header(name string) string       // Get the value of a specific header
+    Headers() http.Header            // Get all response headers
     Json() (map[string]any, error)   // Decode the response body as JSON into a map
-    Redirect() bool                 // Check if the response is a redirect (3xx status code)
-    ServerError() bool              // Check if the status code is in the 5xx range
-    Status() int                    // Get the HTTP status code
-    Successful() bool               // Check if the status code is in the 2xx range
+    Redirect() bool                  // Check if the response is a redirect (3xx status code)
+    ServerError() bool               // Check if the status code is in the 5xx range
+    Status() int                     // Get the HTTP status code
+    Successful() bool                // Check if the status code is in the 2xx range
 
     /* status code related methods */
 

@@ -17,9 +17,20 @@ Goravel uses [gin](https://github.com/gin-gonic/gin) as its default HTTP driver.
 
 ## Default Routing File
 
-To define routing files, simply navigate to the `/routes` directory. By default, the framework utilizes a sample route located in `/routes/web.go`. To establish routing binding, the `func Web()` method is registered in the `app/providers/route_service_provider.go` file.
+To define routing files, simply navigate to the `routes` directory. By default, the framework utilizes a sample route located in `routes/web.go` and it is registered in the `bootstrap/app.go::WithRouting` function.
 
-If you require more precise management, you can add routing files to the `/routes` directory and register them in the `app/providers/route_service_provider.go` file.
+If you require more precise management, you can add routing files to the `routes` directory and register them in the `bootstrap/app.go::WithRouting` function as well.
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithRouting(func() {
+      routes.Web()
+    }).
+		WithConfig(config.Boot).
+		Start()
+}
+```
 
 ## Get Routes List
 
@@ -27,86 +38,6 @@ Use the `route:list` command to view routes list:
 
 ```shell
 ./artisan route:list
-```
-
-## Start HTTP Server
-
-Start the HTTP server in `main.go` in the root directory by calling `facades.Route().Run()`. This will automatically fetch the `route.host` configuration.
-
-```go
-package main
-
-import (
-  "github.com/goravel/framework/facades"
-
-  "goravel/bootstrap"
-)
-
-func main() {
-  // This bootstraps the framework and gets it ready for use.
-  bootstrap.Boot()
-
-  // Start http server by facades.Route().
-  go func() {
-    if err := facades.Route().Run(); err != nil {
-      facades.Log().Errorf("Route run error: %v", err)
-    }
-  }()
-
-  select {}
-}
-```
-
-## Start HTTPS Server
-
-Please complete the configuration of `http.tls` in `config/http.go` before using HTTPS, the `facades.Route().RunTLS()` method will start the HTTPS server according to the relevant configuration:
-
-```go
-// main.go
-if err := facades.Route().RunTLS(); err != nil {
-  facades.Log().Errorf("Route run error: %v", err)
-}
-```
-
-You can also use `facades.Route().RunTLSWithCert()` method to customize the host and certificate.
-
-```go
-// main.go
-if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
-  facades.Log().Errorf("Route run error: %v", err)
-}
-```
-
-## Close HTTP/HTTPS Server
-
-You can gracefully close the HTTP/HTTPS server by calling the `Shutdown` method, which will wait for all requests to be processed before closing.
-
-```go
-// main.go
-bootstrap.Boot()
-
-// Create a channel to listen for OS signals
-quit := make(chan os.Signal)
-signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
-// Start http server by facades.Route().
-go func() {
-  if err := facades.Route().Run(); err != nil {
-    facades.Log().Errorf("Route run error: %v", err)
-  }
-}()
-
-// Listen for the OS signal
-go func() {
-  <-quit
-  if err := facades.Route().Shutdown(); err != nil {
-    facades.Log().Errorf("Route shutdown error: %v", err)
-  }
-
-  os.Exit(0)
-}()
-
-select {}
 ```
 
 ### Routing Methods
@@ -259,8 +190,9 @@ Rate limiters are defined using the `facades.RateLimiter()`'s `For` method. The 
 ```go
 import (
   contractshttp "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
   "github.com/goravel/framework/http/limit"
+
+  "goravel/app/facades"
 )
 
 func (receiver *RouteServiceProvider) configureRateLimiting() {

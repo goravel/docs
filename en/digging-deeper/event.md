@@ -48,8 +48,7 @@ package events
 
 import "github.com/goravel/framework/contracts/event"
 
-type OrderShipped struct {
-}
+type OrderShipped struct {}
 
 func (receiver *OrderShipped) Handle(args []event.Arg) ([]event.Arg, error) {
   return args, nil
@@ -67,8 +66,7 @@ import (
   "github.com/goravel/framework/contracts/event"
 )
 
-type SendShipmentNotification struct {
-}
+type SendShipmentNotification struct {}
 
 func (receiver *SendShipmentNotification) Signature() string {
   return "send_shipment_notification"
@@ -129,9 +127,9 @@ package controllers
 import (
   "github.com/goravel/framework/contracts/event"
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
 
   "goravel/app/events"
+  "goravel/app/facades"
 )
 
 type UserController struct {

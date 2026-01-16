@@ -55,7 +55,7 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-A new command created by `make:command` will be register automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the command manually if you create the command file by yourself.
+A new command created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the command manually if you create the command file by yourself.
 
 ### Command Structure
 
@@ -157,8 +157,8 @@ Get arguments:
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-  subject := ctx.ArgumentString("subject")))
-  emails := ctx.ArgumentStringSlice("emails")))
+  subject := ctx.ArgumentString("subject")
+  emails := ctx.ArgumentStringSlice("emails")
 
   return nil
 }

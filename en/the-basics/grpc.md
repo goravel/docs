@@ -48,8 +48,8 @@ package routes
 
 import (
   "github.com/goravel/grpc/protos"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/grpc/controllers"
 )
 
@@ -123,7 +123,7 @@ the `trace` group can be applied to the configuration item `grpc.clients.interce
 package config
 
 import (
-  "github.com/goravel/framework/facades"
+  "goravel/app/facades"
 )
 
 func init() {

@@ -54,7 +54,8 @@ import (
   "github.com/goravel/framework/http"
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Auth() error {
@@ -127,9 +128,10 @@ func TestConfig(t *testing.T) {
 import (
   "testing"
 
-  "github.com/goravel/framework/facades"
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
+  
+  "goravel/app/facades"
 )
 
 func Crypt(str string) (string, error) {
@@ -187,9 +189,10 @@ func TestEvent(t *testing.T) {
 import (
   "testing"
 
-  "github.com/goravel/framework/facades"
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
+  
+  "goravel/app/facades"
 )
 
 func Gate() bool {
@@ -223,7 +226,8 @@ import (
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
   "google.golang.org/grpc"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Grpc() (*grpc.ClientConn, error) {
@@ -253,7 +257,8 @@ import (
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
   "google.golang.org/grpc"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Hash() (string, error) {
@@ -443,7 +448,8 @@ import (
 
   "github.com/goravel/framework/filesystem"
   "github.com/goravel/framework/testing/mock"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Storage() (string, error) {
@@ -478,7 +484,8 @@ import (
 
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Validation() string {
@@ -522,7 +529,8 @@ import (
 
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
-  "github.com/goravel/framework/facades"
+  
+  "goravel/app/facades"
 )
 
 func View() bool {

@@ -173,8 +173,6 @@ ctx.Request().Session().Now("status", "Task was successful!")
 Use the `Session` facade to build a custom session. The `Session` facade provides the `BuildSession` method, which takes a driver instance and an optional session ID if you want to specify a custom session ID:
 
 ```go
-import "github.com/goravel/framework/facades"
-
 session := facades.Session().BuildSession(driver, "sessionID")
 ```
 

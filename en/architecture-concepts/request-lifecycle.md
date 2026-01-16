@@ -18,11 +18,11 @@ Using any tool in the real world feels more intuitive when you know how it works
 
 ```go
 func Boot() contractsfoundation.Application {
-	return foundation.Setup().
-		WithConfig(config.Boot).
-        WithCallback(func() {
-            // Your custom code here, all facades are available here.
-        }).
-		Start()
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      // Your custom code here, all facades are available here.
+    }).
+    Start()
 }
 ```
