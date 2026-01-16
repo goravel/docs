@@ -55,8 +55,8 @@ func Api() {
 ### Create Controller
 
 ```shell
-go run . artisan make:controller UserController
-go run . artisan make:controller user/UserController
+./artisan make:controller UserController
+./artisan make:controller user/UserController
 ```
 
 ## Resource Controllers
@@ -66,7 +66,7 @@ If you think of each Eloquent model in your application as a "resource", it is t
 Because of this common use case, Goravel resource routing assigns the typical create, read, update, and delete ("CRUD") routes to a controller with a single line of code. To get started, we can use the `make:controller` Artisan command's `--resource` option to quickly create a controller to handle these actions:
 
 ```shell
-go run . artisan make:controller --resource PhotoController
+./artisan make:controller --resource PhotoController
 ```
 
 This command will generate a controller at `app/http/controllers/photo_controller.go`. The controller will contain a method for each of the available resource operations. Next, you may register a resource route that points to the controller:

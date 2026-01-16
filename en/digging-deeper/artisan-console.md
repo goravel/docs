@@ -519,13 +519,14 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 
 ## Register Commands
 
-All of your console commands need to be registered within the `Commands` function in `app\console\kernel.go`.
+A new migration created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the rule manually if you create the command file by yourself.
 
 ```go
-func (kernel Kernel) Commands() []console.Command {
-  return []console.Command{
-    &commands.SendEmails{},
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithConfig(config.Boot).
+		Start()
 }
 ```
 

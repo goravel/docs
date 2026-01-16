@@ -183,22 +183,20 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 
 ### Defining Rate Limiters
 
-Goravel includes powerful and customizable rate-limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `app/providers/route_service_provider.go` class.
+Goravel includes powerful and customizable rate-limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs, then register them in the `bootstrap/app.go::WithCallback` function.
 
 Rate limiters are defined using the `facades.RateLimiter()`'s `For` method. The `For` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. The rate limiter name may be any string you wish:
 
 ```go
-import (
-  contractshttp "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/http/limit"
-
-  "goravel/app/facades"
-)
-
-func (receiver *RouteServiceProvider) configureRateLimiting() {
-  facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
-    return limit.PerMinute(1000)
-  })
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+        return limit.PerMinute(1000)
+      })
+    }).
+    Start()
 }
 ```
 

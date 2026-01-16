@@ -12,18 +12,18 @@ The `session` configuration file is located at `config/session.go`. The default 
 
 ### Register Middleware
 
-By default, Goravel does not start a session automatically. However, it provides middleware to start a session. You can register the session middleware in the `app/http/kernel.go` file to apply it to all routes, or you can add it to specific routes:
+By default, Goravel does not start a session automatically. However, it provides middleware to start a session. You can register the middleware in the `WithMiddleware` function in the `bootstrap/app.go` file, or you can add it to specific routes:
 
 ```go
-import (
-  "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/session/middleware"
-)
-
-func (kernel Kernel) Middleware() []http.Middleware {
-  return []http.Middleware{
-    middleware.StartSession(),
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMiddleware(func(handler configuration.Middleware) {
+			handler.Append(
+				middleware.StartSession(),
+			)
+		}).
+		WithConfig(config.Boot).
+		Start()
 }
 ```
 

@@ -75,49 +75,29 @@ func Boot() contractsfoundation.Application {
 
 ## Interceptor
 
-The interceptor can be defined in the `app/grpc/interceptors` folder.
-
-**Server Interceptor**
-
-You can set the server interceptors in the `app/grpc/kernel.go:UnaryServerInterceptors` method. For example:
+The interceptor can be defined in the `app/grpc/interceptors` folder, and register them in the `WithGrpcServerInterceptors` and `WithGrpcClientInterceptors` functions of the `bootstrap/app.go` file.
 
 ```go
-// app/grpc/kernel.go
-import (
-  "goravel/app/grpc/interceptors"
-
-  "google.golang.org/grpc"
-)
-
-func (kernel *Kernel) UnaryServerInterceptors() []grpc.UnaryServerInterceptor {
-  return []grpc.UnaryServerInterceptor{
-    interceptors.Server,
-  }
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+		WithGrpcServerInterceptors(func() []grpc.UnaryServerInterceptor {
+			return []grpc.UnaryServerInterceptor{
+				interceptors.TestServer,
+			}
+		}).
+		WithGrpcClientInterceptors(func() map[string][]grpc.UnaryClientInterceptor {
+			return map[string][]grpc.UnaryClientInterceptor{
+				"default": {
+					interceptors.TestClient,
+				},
+			}
+		}).
+    Start()
 }
 ```
 
-**Client Interceptor**
-
-You can set the client interceptor in the `app/grpc/kernel.go:UnaryClientInterceptorGroups` method, the method can group interceptors. For example, `interceptors.Client` is included under the `trace` group.
-
-```go
-// app/grpc/kernel.go
-import (
-  "goravel/app/grpc/interceptors"
-
-  "google.golang.org/grpc"
-)
-
-func (kernel *Kernel) UnaryClientInterceptorGroups() map[string][]grpc.UnaryClientInterceptor {
-  return map[string][]grpc.UnaryClientInterceptor{
-    "trace": {
-      interceptors.Client,
-    },
-  }
-}
-```
-
-the `trace` group can be applied to the configuration item `grpc.clients.interceptors`, in this way, the Client will be applied to all interceptors under the group. For example:
+The `default` in the example above is a group name can be applied to the configuration item `grpc.clients.interceptors`, in this way, the Client will be applied to all interceptors under the group. For example:
 
 ```go
 package config
@@ -135,7 +115,6 @@ func init() {
     "host": config.Env("GRPC_HOST", ""),
 
     // Configure your client host and interceptors.
-    // Interceptors can be the group name of UnaryClientInterceptorGroups in app/grpc/kernel.go.
     "clients": map[string]any{
       "user": map[string]any{
         "host":         config.Env("GRPC_USER_HOST", ""),
@@ -144,29 +123,5 @@ func init() {
       },
     },
   })
-}
-```
-
-### Register Interceptors
-
-Register interceptors in the `WithGrpcServerInterceptors` and `WithGrpcClientInterceptors` functions of the `bootstrap/app.go` file after interceptors were defined.
-
-```go
-func Boot() contractsfoundation.Application {
-	return foundation.Setup().
-		WithGrpcServerInterceptors(func() []grpc.UnaryServerInterceptor {
-			return []grpc.UnaryServerInterceptor{
-				interceptors.TestServer,
-			}
-		}).
-		WithGrpcClientInterceptors(func() map[string][]grpc.UnaryClientInterceptor {
-			return map[string][]grpc.UnaryClientInterceptor{
-				"default": {
-					interceptors.TestClient,
-				},
-			}
-		}).
-		WithConfig(config.Boot).
-		Start()
 }
 ```

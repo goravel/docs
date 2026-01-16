@@ -103,27 +103,34 @@ func (r *UserData) Scan(value any) (err error) {
 ./artisan make:model --table=users -f User
 ```
 
-If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend` method to extend the field type in the `Boot` method of the `app/providers/database_service_provider.go` file:
+If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend` method to extend the field type in the `bootstrap/app.go::WithCallback` function:
 
 ```go
 import "github.com/goravel/framework/contracts/schema"
 
-facades.Schema().Extend(&schema.Extension{
-  GoTypes: []schema.GoType{
-    {
-        Pattern: "uuid",
-        Type: "uuid.UUID",
-        NullType: "uuid.NullUUID",
-        Imports: []string{"github.com/google/uuid"},
-    },
-    {
-        Pattern: "point",
-        Type: "geom.Point",
-        NullType: "*geom.Point",
-        Imports: []string{"github.com/twpayne/go-geom"},
-    },
-  },
-})
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Schema().Extend(&schema.Extension{
+        GoTypes: []schema.GoType{
+          {
+              Pattern: "uuid",
+              Type: "uuid.UUID",
+              NullType: "uuid.NullUUID",
+              Imports: []string{"github.com/google/uuid"},
+          },
+          {
+              Pattern: "point",
+              Type: "geom.Point",
+              NullType: "*geom.Point",
+              Imports: []string{"github.com/twpayne/go-geom"},
+          },
+        },
+      })
+    }).
+    Start()
+}
 ```
 
 ### Specify Table Name
@@ -275,10 +282,10 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Update                      | [Update a single column](#update-a-single-column)                             |
 | UpdateOrCreate              | [Update or create](#update-or-create)                                         |
 | Where                       | [Where](#where)                                                               |
-| WhereAll                   | [WhereAll](#where)                                                        |
-| WhereAny                   | [WhereAny](#where)                                                        |
+| WhereAll                    | [WhereAll](#where)                                                        |
+| WhereAny                    | [WhereAny](#where)                                                        |
 | WhereBetween                | [WhereBetween](#where)                                                        |
-| WhereNone             | [WhereNone](#where)                                                     |
+| WhereNone                   | [WhereNone](#where)                                                     |
 | WhereNotBetween             | [WhereNotBetween](#where)                                                     |
 | WhereNotIn                  | [WhereNotIn](#where)                                                          |
 | WhereNull                   | [WhereNull](#where)                                                           |
@@ -1060,31 +1067,16 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 
 The template observer only contains some events, you can add other events according to your needs.
 
-To register an observer, you need to call the `Observe` method on the model you wish to observe. You may register observers in the `Boot` method of your application's `app/providers/event_service_provider.go::Boot` service provider:
+To register an observer, you need to call the `Observe` method on the model you wish to observe. You can register observers in the `bootstrap/app.go::WithCallback` function:
 
 ```go
-package providers
-
-import (
-  
-	"goravel/app/facades"
-	"goravel/app/models"
-	"goravel/app/observers"
-)
-
-type EventServiceProvider struct {
-}
-
-func (receiver *EventServiceProvider) Register(app foundation.Application) {
-	facades.Event().Register(receiver.listen())
-}
-
-func (receiver *EventServiceProvider) Boot(app foundation.Application) {
-	facades.Orm().Observe(models.User{}, &observers.UserObserver{})
-}
-
-func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
-	return map[event.Event][]event.Listener{}
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Orm().Observe(models.User{}, &observers.UserObserver{})
+    }).
+    Start()
 }
 ```
 

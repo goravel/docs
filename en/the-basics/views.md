@@ -80,25 +80,16 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### Sharing Data With All Views
 
-Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `Share` method in `facades.View()`. Typically, you should place calls to the `Share` method within a service provider's `Boot` method. You are free to add them to the `app/providers/app_service_provider.go` class or generate a separate service provider to house them:
+Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `Share` function in `facades.View()`. Typically, you should place calls to the `Share` function in the `bootstrap/app.go::WithCallback` function:
 
 ```go
-package providers
-
-import (
-	"github.com/goravel/framework/contracts/foundation"
-
-  "goravel/app/facades"
-)
-
-type AppServiceProvider struct {
-}
-
-func (receiver *AppServiceProvider) Register(app foundation.Application) {
-}
-
-func (receiver *AppServiceProvider) Boot(app foundation.Application) {
-    facades.View().Share("key", "value")
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.View().Share("key", "value")
+    }).
+    Start()
 }
 ```
 

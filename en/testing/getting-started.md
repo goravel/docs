@@ -39,7 +39,7 @@ There is a `TestCase` Struct in Goravel, and the Struct will provide some conven
 To create a new test case, use the `make:test` Artisan command:
 
 ```shell
-go run . artisan make:test feature/UserTest
+./artisan make:test feature/UserTest
 ```
 
 Our test cases are written using the suite function of the [stretchr/testify](https://github.com/stretchr/testify) package by default. This function enables us to configure pre-test, post-test, sub-test, and assertion, among other things, which results in more organized test cases. For further information, kindly refer to the official documentation.

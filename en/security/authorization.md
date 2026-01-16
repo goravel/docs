@@ -14,42 +14,29 @@ It's not necessary to exclusively use gates or policies when building an applica
 
 ### Writing Gates
 
-Gates serve as closures that verify whether a user is authorized to perform a specific action. They are commonly set up in the `app/providers/auth_service_provider.go` file's `Boot` method using the Gate facade.
+Gates serve as closures that verify whether a user is authorized to perform a specific action. They are commonly set up in the `bootstrap/app.go::WithCallback` function using the Gate facade.
 
 In this scenario, we will establish a gate to check if a user can modify a particular Post model by comparing its ID to the user_id of the post's creator.
 
 ```go
-package providers
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Gate().Define("update-post",
+        func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
+          user := ctx.Value("user").(models.User)
+          post := arguments["post"].(models.Post)
 
-import (
-  "context"
-
-  contractsaccess "github.com/goravel/framework/contracts/auth/access"
-  "github.com/goravel/framework/auth/access"
-
-  "goravel/app/facades"
-)
-
-type AuthServiceProvider struct {
-}
-
-func (receiver *AuthServiceProvider) Register(app foundation.Application) {
-
-}
-
-func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
-  facades.Gate().Define("update-post",
-    func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
-      user := ctx.Value("user").(models.User)
-      post := arguments["post"].(models.Post)
-
-      if user.ID == post.UserID {
-        return access.NewAllowResponse()
-      } else {
-        return access.NewDenyResponse("error")
-      }
-    },
-  )
+          if user.ID == post.UserID {
+            return access.NewAllowResponse()
+          } else {
+            return access.NewDenyResponse("error")
+          }
+        },
+      )
+    }).
+    Start()
 }
 ```
 
@@ -154,9 +141,9 @@ facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
 
 You can use the `make:policy` Artisan command to generate a policy. The generated policy will be saved in the `app/policies` directory. If the directory does not exist in your application, Goravel will create it for you.
 
-```go
-go run . artisan make:policy PostPolicy
-go run . artisan make:policy user/PostPolicy
+```shell
+./artisan make:policy PostPolicy
+./artisan make:policy user/PostPolicy
 ```
 
 ### Writing Policies
@@ -193,10 +180,17 @@ func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contr
 }
 ```
 
-Then we can register the policy to `app/providers/auth_service_provider.go`:
+Then we can register the policy to the `bootstrap/app.go::WithCallback` function:
 
 ```go
-facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
+    }).
+    Start()
+}
 ```
 
 As you work on authorizing different actions, you can add more methods to your policy. For instance, you can create `View` or `Delete` methods to authorize various model-related actions. Feel free to name your policy methods as you see fit.

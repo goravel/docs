@@ -8,7 +8,7 @@ Goravel's encryption services provide a simple, convenient interface for encrypt
 
 ## Configuration
 
-Before using Goravel's encrypter, you must set the `key` configuration option in your `config/app.go` configuration file. This option is driven by the `APP_KEY` environment variable. Use the `go run . artisan key:generate` command to generate this variable's value since the `key:generate` command will utilize Golang's secure random bytes generator to create a secure cryptographic key for your application.
+Before using Goravel's encrypter, you must set the `key` configuration option in your `config/app.go` configuration file. This option is driven by the `APP_KEY` environment variable. Use the `./artisan key:generate` command to generate this variable's value since the `key:generate` command will utilize Golang's secure random bytes generator to create a secure cryptographic key for your application.
 
 ## Using The Encrypter
 
