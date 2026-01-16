@@ -6,62 +6,50 @@
 
 The default file structure can make you better start project advancement, and you can also add new folders freely, but do not modify the default folders.
 
-## Root Directory
+## Folder Tree
 
-### `app` Directory
+```
+goravel/
+├── app/                        # Core application logic
+│   ├── console/                # Artisan console commands
+│   ├── grpc/                   # gRPC controllers and middleware
+│   ├── http/                   # HTTP controllers and middleware
+│   │   ├── controllers/        # HTTP request handlers
+│   │   ├── middleware/         # HTTP middleware (auth, cors, etc.)
+│   ├── models/                 # Database models and ORM entities
+│   └── providers/              # Service providers
+├── bootstrap/                  # Application bootstrapping
+│   └── app.go                  # Framework initialization and startup
+├── config/                     # Application configuration files
+├── database/                   # Database related files
+│   ├── migrations/             # Database migration files
+│   ├── seeders/                # Database seeders
+├── resources/                  # Raw, uncompiled assets
+│   └── views/                  # View templates
+├── routes/                     # Application route definitions
+├── storage/                    # Application storage
+├── tests/                      # Automated tests
+├── .air.toml                   # Air hot reload configuration
+├── .env.example                # Environment variables template
+├── artisan                     # Artisan console entry script
+├── go.mod                      # Go module dependencies
+├── go.sum                      # Go module checksums
+├── main.go                     # Application entry point
+```
 
-`app` contains the core code of the program. Almost all the logic in the program will be in this folder.
+## Customize Directory Structure
 
-### `bootstrap` Directory
+You can customize the directory structure by calling the `WithPath()` function in the `bootstrap/app.go` file. For example, if you want to change the default `app` directory to `src`, you can modify the `bootstrap/app.go` file as follows:
 
-The `bootstrap` directory contains the framework startup file `app.go`.
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithPaths(func(paths configuration.Paths) {
+			paths.App("src")
+		}).
+		WithConfig(config.Boot).
+		Start()
+}
+```
 
-### `config` Directory
-
-The `config` directory contains all configuration files of the application. It is best to browse through these files and familiarize yourself with all the available options.
-
-### `database` Directory
-
-The `database` directory contains database migration files.
-
-### `public` Directory
-
-The `public` directory contains some static resources, such as images, certificates, etc.
-
-### `resources` Directory
-
-The `resources` directory contains your [views](../the-basics/views.md) as well as your raw, un-compiled assets such as CSS or JavaScript.
-
-### `routes` Directory
-
-The `routes` directory contains all the route definitions of the application.
-
-### `storage` Directory
-
-The `storage` directory contains the `logs` directory, and the `logs` directory contains the application log files.
-
-### `tests` Directory
-
-The `tests` directory contains your automated tests.
-
-## `app` Directory
-
-### `console` Directory
-
-The `console` directory contains all the custom `Artisan` commands of the application, and the console boot file `kernel.go`, which can be registered in this file [Task Scheduling](../digging-deeper/task-scheduling.md)
-
-### `http` Directory
-
-The `http` directory contains controllers, middleware, etc., and almost all requests that enter the application via the Web are processed here.
-
-### `grpc` Directory
-
-The `grpc` directory contains controllers, middleware, etc., and almost all requests that enter the application via the Grpc are processed here.
-
-### `models` Directory
-
-The `models` directory contains all data models.
-
-### `providers` Directory
-
-The `providers` directory contains all [Service Providers](../architecture-concepts/service-providers.md) in the program. The service provider guides the application to respond to incoming requests by binding services, registering for events, or performing any other tasks.
+There are many other paths you can customize, such as `Config`, `Database`, `Routes`, `Storage`, and `Resources`. Just call the corresponding method on the `paths` object to set your desired directory.

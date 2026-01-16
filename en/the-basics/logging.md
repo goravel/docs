@@ -90,7 +90,7 @@ Then include a `via` option to implement a `framework\contracts\log\Logger` stru
 // config/logging.go
 "custom": map[string]interface{}{
     "driver": "custom",
-    "via":    &CustomTest{},
+    "via":    &CustomLogger{},
 },
 ```
 
@@ -104,48 +104,11 @@ package log
 
 type Logger interface {
   // Handle pass channel config path here
-  Handle(channel string) (Hook, error)
+  Handle(channel string) (Handler, error)
 }
 ```
 
-files can be stored in the `app/extensions` folder (modifiable). Example:
+You can check the daily and single log drivers for reference:
 
-```go
-package extensions
-
-import (
-  "fmt"
-
-  "github.com/goravel/framework/contracts/log"
-)
-
-type Logger struct {
-}
-
-// Handle pass channel config path here
-func (logger *Logger) Handle(channel string) (log.Hook, error) {
-  return &Hook{}, nil
-}
-
-type Hook struct {
-}
-
-// Levels monitoring level
-func (h *Hook) Levels() []log.Level {
-  return []log.Level{
-    log.DebugLevel,
-    log.InfoLevel,
-    log.WarningLevel,
-    log.ErrorLevel,
-    log.FatalLevel,
-    log.PanicLevel,
-  }
-}
-
-// Fire execute logic when trigger
-func (h *Hook) Fire(entry log.Entry) error {
-  fmt.Printf("context=%v level=%v time=%v message=%s", entry.Context(), entry.Level(), entry.Time(), entry.Message())
-
-  return nil
-}
-```
+- [Daily](https://github.com/goravel/framework/blob/master/log/logger/daily.go)
+- [Single](https://github.com/goravel/framework/blob/master/log/logger/single.go)

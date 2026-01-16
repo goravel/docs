@@ -59,7 +59,7 @@ We have added two keys, `read` and `write`, in the database configuration. `192.
 
 ## Running Native SQL Queries
 
-After configuring the database connection, you can use `facades.DB()` to run queries. `facades.DB` provides various methods for running queries: `Select`, `Insert`, `Update`, `Delete`, and `Statement`.
+After configuring the database connection, you can use `facades.DB()` to run queries. `facades.DB()` provides various methods for running queries: `Select`, `Insert`, `Update`, `Delete`, and `Statement`.
 
 ### Select
 
@@ -163,15 +163,15 @@ Goravel provides several Artisan commands to help you understand the structure o
 You can use the `db:show` command to view all tables in the database.
 
 ```bash
-go run . artisan db:show
-go run . artisan db:show --database=postgres
+./artisan db:show
+./artisan db:show --database=postgres
 ```
 
 You can also use the `db:table` command to view the structure of a specific table.
 
 ```bash
-go run . artisan db:table
-go run . artisan db:table --database=postgres
+./artisan db:table
+./artisan db:table --database=postgres
 ```
 
 ### Table Overview
@@ -179,6 +179,6 @@ go run . artisan db:table --database=postgres
 If you want to get an overview of a single table in the database, you can execute the `db:table` Artisan command. This command provides an overview of a database table, including its columns, types, attributes, keys, and indexes:
 
 ```bash
-go run . artisan db:table users
-go run . artisan db:table users --database=postgres
+./artisan db:table users
+./artisan db:table users --database=postgres
 ```

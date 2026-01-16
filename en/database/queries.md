@@ -76,7 +76,7 @@ You can use the `FindOr` or `FirstOr` method, if the record is not found, it wil
 
 ```go
 var user *User
-user, err = facades.DB().Table("users").Where("name", "John").FirstOr(&user, func() error {
+err = facades.DB().Table("users").Where("name", "John").FirstOr(&user, func() error {
   return errors.New("no rows")
 })
 ```
@@ -99,8 +99,10 @@ var products []Product
 err := facades.DB().Table("products").Each(func(rows []db.Row) error {
   for _, row := range rows {
     var product Product
-    err := row.Scan(&product)
-    s.NoError(err)
+    if err := row.Scan(&product); err != nil {
+      return err
+    }
+
     products = append(products, product)
   }
 
@@ -117,8 +119,10 @@ var products []Product
 err := facades.DB().Table("products").Chunk(2, func(rows []db.Row) error {
   for _, row := range rows {
     var product Product
-    err := row.Scan(&product)
-    s.NoError(err)
+    if err := row.Scan(&product); err != nil {
+      return err
+    }
+
     products = append(products, product)
   }
 
@@ -138,10 +142,9 @@ rows, err := facades.DB().Table("products").Cursor()
 var products []Product
 for row := range rows {
     var product Product
-    err = row.Scan(&product)
-
-    s.NoError(err)
-    s.True(product.ID > 0)
+    if err := row.Scan(&product); err != nil {
+      return err
+    }
 
     products = append(products, product)
 }
@@ -149,12 +152,22 @@ for row := range rows {
 
 ### Aggregates
 
-The query builder provides aggregate methods: `Count` `Sum`.
+The query builder provides aggregate methods: `Count`, `Sum`, `Avg`, `Min`, `Max`.
 
 ```go
 count, err := facades.DB().Table("users").Count()
 
-sum, err := facades.DB().Table("users").Sum("age")
+var sum int
+err := facades.DB().Table("users").Sum("age", &sum)
+
+var avg float64
+err := facades.DB().Table("users").Avg("age", &avg)
+
+var min int
+err := facades.DB().Table("users").Min("age", &min)
+
+var max int
+err := facades.DB().Table("users").Max("age", &max)
 ```
 
 ### Checking if a Record Exists
@@ -203,7 +216,7 @@ Sometimes you may need to use raw expressions in your queries. You can use the `
 ```go
 import "github.com/goravel/framework/database/db"
 
-facades.DB().Model(&user).Update("age", db.Raw("age - ?", 1))
+res, err := facades.DB().Model(&user).Update("age", db.Raw("age - ?", 1))
 ```
 
 ## Select
@@ -214,10 +227,10 @@ Of course, you may not always want to retrieve all columns from a database table
 
 ```go
 // Select specific fields
-facades.DB().Select("name", "age").Get(&users)
+err := facades.DB().Select("name", "age").Get(&users)
 
 // Use a subquery
-facades.DB().Select("name", db.Raw("(SELECT COUNT(*) FROM posts WHERE users.id = posts.user_id) as post_count")).Get(&users)
+err := facades.DB().Select("name", db.Raw("(SELECT COUNT(*) FROM posts WHERE users.id = posts.user_id) as post_count")).Get(&users)
 ```
 
 ### Distinct
@@ -226,7 +239,7 @@ The `Distinct` method will force the query to return unique results:
 
 ```go
 var users []models.User
-facades.DB().Distinct("name").Find(&users)
+err := facades.DB().Distinct("name").Find(&users)
 ```
 
 ## Raw Methods
@@ -345,6 +358,22 @@ err := facades.DB().Table("users").Where("name", "John").WhereExists(func() db.Q
 }).Get(&users)
 ```
 
+### WhereAll / WhereAny / WhereNone
+
+```go
+var products []Product
+facades.DB().Table("products").WhereAll([]string{"weight", "height"}, "=", 200).Find(&products)
+// SQL: SELECT * FROM products WHERE weight = ? AND height = ?
+
+var users []User
+facades.DB().Table("users").WhereAny([]string{"name", "email"}, "=", "John").Find(&users)
+// SQL: SELECT * FROM users WHERE (name = ? OR email = ?)
+
+var products []Product
+facades.DB().Table("products").WhereNone([]string{"age", "score"}, ">", 18).Find(&products)
+// SQL: SELECT * FROM products WHERE NOT (age > ?) AND NOT (score > ?)
+```
+
 ### Other Where Clauses
 
 **WhereBetween / OrWhereBetween**
@@ -422,9 +451,9 @@ facades.DB().OrderByDesc("name")
 The `Latest` method makes it easy to sort results by date. By default, results will be sorted by the `created_at` column:
 
 ```go
-facades.DB().Table("users").Latest().First(&user)
+err := facades.DB().Table("users").Latest().First(&user)
 
-facades.DB().Table("users").Latest("updated_at").First(&user)
+err := facades.DB().Table("users").Latest("updated_at").First(&user)
 ```
 
 **InRandomOrder**
@@ -432,7 +461,7 @@ facades.DB().Table("users").Latest("updated_at").First(&user)
 The `InRandomOrder` method is used to sort results randomly:
 
 ```go
-facades.DB().Table("users").InRandomOrder().First(&user)
+err := facades.DB().Table("users").InRandomOrder().First(&user)
 ```
 
 ### Grouping
@@ -458,7 +487,7 @@ Sometimes you may want a clause to only execute when a given condition is true. 
 ```go
 import "github.com/goravel/framework/contracts/database/db"
 
-facades.DB().Table("users").When(1 == 1, func(query db.Query) db.Query {
+err := facades.DB().Table("users").When(1 == 1, func(query db.Query) db.Query {
   return query.Where("age", 25)
 }).First(&user)
 ```
@@ -466,7 +495,7 @@ facades.DB().Table("users").When(1 == 1, func(query db.Query) db.Query {
 You can also pass another closure as the third parameter to the `When` method. This closure will execute if the first parameter results in false:
 
 ```go
-facades.DB().Table("users").When(1 != 1, func(query db.Query) db.Query {
+err := facades.DB().Table("users").When(1 != 1, func(query db.Query) db.Query {
   return query.OrderBy("name")
 }, func(query db.Query) db.Query {
   return query.OrderBy("id")
@@ -549,11 +578,10 @@ result, err := facades.DB().Table("products").Where("id", 1).Update(map[string]a
 ### Update JSON fields
 
 ```go
-facades.DB().Table("users").Where("id", 1).Update("options->enabled", true)
-facades.DB().Table("users").Where("id", 1).Update("options->languages[0]", "en")
-facades.DB().Table("users").Where("id", 1).Update("options->languages", []string{"en", "de"})
-
-facades.DB().Table("users").Where("id", 1).Update(map[string]any{
+result, err := facades.DB().Table("users").Where("id", 1).Update("options->enabled", true)
+result, err := facades.DB().Table("users").Where("id", 1).Update("options->languages[0]", "en")
+result, err := facades.DB().Table("users").Where("id", 1).Update("options->languages", []string{"en", "de"})
+result, err := facades.DB().Table("users").Where("id", 1).Update(map[string]any{
     "preferences->dining->meal": "salad",
     "options->languages[0]":     "en",
     "options->enabled":          true,
@@ -611,13 +639,13 @@ The query builder also includes some functions that can help you implement "pess
 To use a "shared lock", you may use the `SharedLock` method. A shared lock prevents the selected rows from being modified until the transaction is committed:
 
 ```go
-facades.DB().Table("users").Where("votes > ?", 100).SharedLock().Get(&users)
+err := facades.DB().Table("users").Where("votes > ?", 100).SharedLock().Get(&users)
 ```
 
 You can also use the `LockForUpdate` method. Using the "update" lock can prevent rows from being modified or selected by other shared locks:
 
 ```go
-facades.DB().Table("users").Where("votes > ?", 100).LockForUpdate().Get(&users)
+err := facades.DB().Table("users").Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
 ## Debugging
@@ -627,13 +655,13 @@ You can use the `ToSQL` and `ToRawSql` methods to get the current query binding 
 With placeholder SQL:
 
 ```go
-facades.DB().Table("users").Where("id", 1).ToSql().Get(models.User{})
+err := facades.DB().Table("users").Where("id", 1).ToSql().Get(models.User{})
 ```
 
 With bound values SQL:
 
 ```go
-facades.DB().Table("users").Where("id", 1).ToRawSql().Get(models.User{})
+err := facades.DB().Table("users").Where("id", 1).ToRawSql().Get(models.User{})
 ```
 
 The methods that can be called after `ToSql` and `ToRawSql`: `Count`, `Insert`, `Delete`, `First`, `Get`, `Pluck`, `Update`.

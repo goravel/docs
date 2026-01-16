@@ -4,58 +4,63 @@
 
 ## Introduction
 
-`facades` provide a "static" interface for the core functionality of the application and provide a more flexible, more elegant, and easy-to-test syntax.
-
-All `facades` of Goravel are defined under `github.com/goravel/framework/facades`. We can easily use `facades`:
+`facades` provide a "static" interface for the core functionality of the application and provide a more flexible, more elegant, and easy-to-test syntax. All `facades` of Goravel are defined under the `app/facades` folder:
 
 ```go
-import "github.com/goravel/framework/facades"
+import "app/facades"
 
-facades.Route().Run(facades.Config().GetString("app.host"))
+facades.Config().GetString("app.host")
 ```
 
 ## How Facades Work
 
-`facades` are generally instantiated in the `Register` or `Boot` stage of each module `ServerProvider`.
+Each service provider registers its corresponding bindings in the service container, then the service container providers vairous `Make*` functions to build the binding instances. The `facades` in the `app/facades` folder call these `Make*` functions to get the instances from the service container. Let's use the `Route` facade as an example:
+
+1. The `Route` service provider registers the `binding.Route` binding in the service container:
 
 ```go
-func (config *ServiceProvider) Register() {
-  app := Application{}
-  facades.Config = app.Init()
+type ServiceProvider struct {}
+
+func (r *ServiceProvider) Register(app foundation.Application) {
+	app.Singleton(binding.Route, func(app foundation.Application) (any, error) {
+		return NewRoute(app.MakeConfig())
+	})
+}
+
+func (r *ServiceProvider) Boot(app foundation.Application) {}
+```
+
+2. The `Route` facade calls the `MakeRoute()` function to get the `Route` instance from the service container:
+
+```go
+// app/facades/route.go
+package facades
+
+import (
+	"github.com/goravel/framework/contracts/route"
+)
+
+func Route() route.Route {
+	return App().MakeRoute()
 }
 ```
 
-If the `facades` use other `facades`, then instantiate them in the `Boot` phase of the `ServerProvider`:
+> Given that the `facades` is exposed to the application, you can also create your own `facades` or override the existing `facades` in the `app/facades` folder.
 
-```go
-func (database *ServiceProvider) Boot() {
-  app := Application{}
-  facades.DB = app.Init()
-}
+## Install/Uninstall Facades
+
+[goravel/goravel](https://github.com/goravel/goravel) installs all `facades` by default and [goravel/goravel-lite](https://github.com/goravel/goravel-lite) only installs essential `facades` like `Artisan`, `Config`. You can install or uninstall other `facades` as needed via the `package:install` and `package:uninstall` commands.
+
+```shell
+# Install a specific facade
+./artisan package:install Route
+
+# Install all facades
+./artisan package:install --all
+
+# Install all facades with default drivers
+./artisan package:install --all --default
+
+# Uninstall a specific facade
+./artisan package:uninstall Route
 ```
-
-## Facade Class Reference
-
-| Facade      | Document                                                   |
-| ----------- | ---------------------------------------------------------- |
-| App         | [Container](../architecture-concepts/service-container.md) |
-| Artisan     | [Command Console](../digging-deeper/artisan-console.md)    |
-| Auth        | [Authentication](../security/authentication.md)            |
-| Cache       | [Cache](../digging-deeper/cache.md)                        |
-| Config      | [Configuration](../getting-started/configuration.md)       |
-| Crypt       | [Encryption](../security/encryption.md)                    |
-| Event       | [Event](../digging-deeper/event.md)                        |
-| Gate        | [Authorization](../security/authorization.md)              |
-| Grpc        | [Grpc](../the-basics/grpc.md)                              |
-| Hash        | [Hashing](../security/hashing.md)                          |
-| Log         | [Log](../the-basics/logging.md)                            |
-| Mail        | [Mail](../digging-deeper/mail.md)                          |
-| Orm         | [ORM](../orm/getting-started.md)                           |
-| Queue       | [Queue](../digging-deeper/queues.md)                       |
-| RateLimiter | [RateLimiter](../the-basics/routing.md)                    |
-| Route       | [Route](../the-basics/routing.md)                          |
-| Seeder      | [Seeder](../database/seeding.md)                           |
-| Schedule    | [Schedule](../digging-deeper/task-scheduling.md)           |
-| Storage     | [Storage](../digging-deeper/task-scheduling.md)            |
-| Testing     | [Testing](../testing/getting-started.md)                   |
-| Validation  | [Validation](../digging-deeper/task-scheduling.md)         |
