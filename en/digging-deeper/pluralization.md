@@ -37,13 +37,13 @@ like in the `Boot` method of a Service Provider.
 If a word has a unique plural form, you can register it as an "irregular" word. This handles changes in both directions.
 
 ```go
-import "github.com/goravel/framework/support/pluralizer"
+import (
+	"github.com/goravel/framework/support/pluralizer"
+    "github.com/goravel/framework/support/pluralizer/rules"
+)
 
 // Register that "mouse" becomes "mice"
-pluralizer.RegisterIrregular("english", pluralizer.Substitution{
-    Singular: "mouse",
-    Plural:   "mice",
-})
+pluralizer.RegisterIrregular("english", rules.NewSubstitution("mouse", "mice"))
 ```
 
 ### Uninflected Words
