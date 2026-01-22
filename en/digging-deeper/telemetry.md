@@ -1,5 +1,0 @@
-# Telemetry
-
-[[toc]]
-
-## Introduction
