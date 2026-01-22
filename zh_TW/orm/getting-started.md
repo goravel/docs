@@ -57,6 +57,43 @@ type User struct {
 
 有關標籤使用的更多詳細信息，請參見：https://gorm.io/docs/models.html。
 
+#### Json Field
+
+If you want to use JSON field, you can define the field type as `datatypes.JSONMap` or a custom struct, and add the Tag: `gorm:"type:json"`:
+
+```go
+package models
+
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"github.com/goravel/framework/database/orm"
+	"gorm.io/datatypes"
+)
+
+type User struct {
+	orm.Model
+	Json1 datatypes.JSONMap `gorm:"type:json" json:"json1"`
+	Json2 *UserData `gorm:"type:json;serializer:json" json:"json2"`
+}
+
+type UserData struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+}
+
+func (r *UserData) Value() (driver.Value, error) {
+	return json.Marshal(r)
+}
+
+func (r *UserData) Scan(value any) (err error) {
+	if data, ok := value.([]byte); ok && len(data) > 0 {
+		err = json.Unmarshal(data, &r)
+	}
+	return
+}
+```
+
 #### 基於資料表創建模型
 
 ```shell
@@ -202,11 +239,11 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | OrWhereNotIn                | [或WhereNotIn](#where)                               |
 | OrWhereNull                 | [或WhereNull](#where)                                |
 | OrWhereIn                   | [或WhereIn](#where)                                  |
-| OrWhereJsonContains         | [查詢條件](#where-條件)                                   |
-| OrWhereJsonContainsKey      | [查詢條件](#where-條件)                                   |
-| OrWhereJsonDoesntContain    | [查詢條件](#where-條件)                                   |
-| OrWhereJsonDoesntContainKey | [查詢條件](#where-條件)                                   |
-| OrWhereJsonLength           | [查詢條件](#where-條件)                                   |
+| OrWhereJsonContains         | [OrWhereJsonContains](#where)                       |
+| OrWhereJsonContainsKey      | [OrWhereJsonContainsKey](#where)                    |
+| OrWhereJsonDoesntContain    | [OrWhereJsonDoesntContain](#where)                  |
+| OrWhereJsonDoesntContainKey | [OrWhereJsonDoesntContainKey](#where)               |
+| OrWhereJsonLength           | [OrWhereJsonLength](#where)                         |
 | 分頁                          | [分頁](#分頁)                                           |
 | Pluck                       | [查詢單個欄位](#查詢單個欄位)                                   |
 | 原始                          | [執行原生 SQL](#執行原生-SQL)                               |
@@ -230,11 +267,11 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | WhereNotIn                  | [WhereNotIn](#where)                                |
 | WhereNull                   | [WhereNull](#where)                                 |
 | WhereIn                     | [WhereIn](#where)                                   |
-| WhereJsonContains           | [查詢條件](#where-條件)                                   |
-| WhereJsonContainsKey        | [查詢條件](#where-條件)                                   |
-| WhereJsonDoesntContain      | [查詢條件](#where-條件)                                   |
-| WhereJsonDoesntContainKey   | [查詢條件](#where-條件)                                   |
-| WhereJsonLength             | [查詢條件](#where-條件)                                   |
+| WhereJsonContains           | [WhereJsonContains](#where)                         |
+| WhereJsonContainsKey        | [WhereJsonContainsKey](#where)                      |
+| WhereJsonDoesntContain      | [WhereJsonDoesntContain](#where)                    |
+| WhereJsonDoesntContainKey   | [WhereJsonDoesntContainKey](#where)                 |
+| WhereJsonLength             | [WhereJsonLength](#where)                           |
 | WithoutEvents               | [靜音事件](#靜音事件)                                       |
 | WithTrashed                 | [查詢軟刪除的資料](#查詢軟刪除的資料)                               |
 

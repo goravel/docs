@@ -12,7 +12,6 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [goravel/s3](https://github.com/goravel/s3) | A S3 disk driver for `facades.Storage()` | 77.8% |
 | [goravel/oss](https://github.com/goravel/oss) | A OSS disk driver for `facades.Storage()` | 76.5% |
 | [goravel/installer](https://github.com/goravel/installer) | Goravel installer | 76.2% |
-| [goravel/cloudinary](https://github.com/goravel/cloudinary) | A Cloudinary disk driver for `facades.Storage() | 75.4% |
 | [goravel/postgres](https://github.com/goravel/postgres) | A Postgres database driver | 73.7% |
 | [goravel/mysql](https://github.com/goravel/mysql) | A MySQL database driver | 73.3% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver) | A Sqlserver database driver | 60.6% |

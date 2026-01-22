@@ -80,23 +80,90 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### Sharing Data With All Views
 
-Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `Share` method in `facades.View()`. Typically, you should place calls to the `Share` method within a service provider's `Boot` method. You are free to add them to the `app/providers/app_service_provider.go` class or generate a separate service provider to house them:
+Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `Share` function in `facades.View()`. Typically, you should place calls to the `Share` function in the `bootstrap/app.go::WithCallback` function:
 
 ```go
-package providers
-
-import (
-	"github.com/goravel/framework/contracts/foundation"
-    "github.com/goravel/framework/facades"
-)
-
-type AppServiceProvider struct {
-}
-
-func (receiver *AppServiceProvider) Register(app foundation.Application) {
-}
-
-func (receiver *AppServiceProvider) Boot(app foundation.Application) {
-    facades.View().Share("key", "value")
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.View().Share("key", "value")
+    }).
+    Start()
 }
 ```
+
+## CSRF Token Middleware
+
+This middleware can be applied to routes to ensure that requests are coming from authenticated sources to against Cross-Site Request Forgery (CSRF) attacks.
+
+1. Register the middleware (`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`) to global or a specific route.
+2. Add `{{ .csrf_token }}` to your form in the view file.
+3. The middleware will automatically verify the token on form submission.
+
+## Register Custom Delims And Functions 
+
+You can register custom Delims and functions to be used within your views, they can be registered in the configuration `http.drivers.*.template`.
+
+For the gin driver:
+
+```go
+// config/http.go
+import (
+  "html/template"
+
+  "github.com/gin-gonic/gin/render"
+  "github.com/goravel/gin"
+)
+
+"template": func() (render.HTMLRender, error) {
+  return gin.NewTemplate(gin.RenderOptions{
+    Delims: &gin.Delims{
+      Left:  "{{",
+      Right: "}}",
+    },
+    FuncMap: template.FuncMap{
+      // Add custom template functions here
+    },
+  })
+},
+```
+
+For the fiber driver:
+
+```go
+// config/http.go
+import (
+  "github.com/gofiber/fiber/v2"
+  "github.com/gofiber/template"
+  "github.com/gofiber/template/html/v2"
+  "github.com/goravel/framework/support/path"
+)
+
+"template": func() (fiber.Views, error) {
+  engine := &html.Engine{
+    Engine: template.Engine{
+      Left:       "{{",
+      Right:      "}}",
+      Directory:  path.Resource("views"),
+      Extension:  ".tmpl",
+      LayoutName: "embed",
+      // Add custom template functions here
+      Funcmap:    make(map[string]interface{}),
+    },
+  }
+
+  engine.AddFunc(engine.LayoutName, func() error {
+    return fmt.Errorf("layoutName called unexpectedly")
+  })
+  return engine, nil
+},
+```
+
+## Custom Template Engines
+
+You can create your own custom template engines by implementing the `render.HTMLRender` interface of gin or the `fiber.Views` interface of fiber. After creating your custom engine, you can register it to the configuration `http.drivers.*.template`.
+
+## Advanced Features
+
+`http/template` is the default template engine, you can refer to the official documentation for more advanced features: https://pkg.go.dev/html/template.

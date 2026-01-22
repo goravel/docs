@@ -7,19 +7,19 @@
 Artisan is the CLI tool that comes with Goravel for interacting with the command line. You can access it using `facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
 
 ```shell
-go run . artisan list
+./artisan list
 
 # or
-./artisan list
+go run . artisan list
 ```
 
-Each command also has a "help" feature that shows and explains the arguments and options associated with the command. To see the help screen, just add "help" before the command name.
+Each command also has a "help" flag that shows and explains the arguments and options associated with the command:
 
 ```shell
-go run . artisan help migrate
+./artisan migrate --help
 ```
 
-Instead of repeating `go run . artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
+Instead of repeating `./artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
@@ -33,18 +33,29 @@ artisan make:controller DemoController
 
 You can also use `artisan` shell script like this:
 
-```shell
-./artisan make:controller DemoController
-```
-
 ### Generating Commands
 
 You can use the `make:command` command to create a new command in the `app/console/commands` directory. Don't worry if this directory does not exist in your application, it will be created the first time you run the `make:command` command:
 
 ```shell
-go run . artisan make:command SendEmails
-go run . artisan make:command user/SendEmails
+./artisan make:command SendEmails
+./artisan make:command user/SendEmails
 ```
+
+### Register Commands
+
+All commands should be registered via the `WithCommands` function in the `bootstrap/app.go` file:
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithConfig(config.Boot).
+		Start()
+}
+```
+
+A new command created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the command manually if you create the command file by yourself.
 
 ### Command Structure
 
@@ -93,7 +104,7 @@ When you write console commands, it's typical to collect user input through `arg
 Follow the arguments after the command:
 
 ```shell
-go run . artisan send:emails SUBJECT EMAIL_1 EMAIL_2
+./artisan send:emails SUBJECT EMAIL_1 EMAIL_2
 ```
 
 Definition：
@@ -146,8 +157,8 @@ Get arguments:
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-  subject := ctx.ArgumentString("subject")))
-  emails := ctx.ArgumentStringSlice("emails")))
+  subject := ctx.ArgumentString("subject")
+  emails := ctx.ArgumentStringSlice("emails")
 
   return nil
 }
@@ -198,8 +209,8 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 Usage：
 
 ```shell
-go run . artisan emails --lang Chinese
-go run . artisan emails -l Chinese
+./artisan emails --lang Chinese
+./artisan emails -l Chinese
 ```
 
 Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
@@ -495,7 +506,7 @@ ctx.Divider("=>") // =>=>=>=>=>
 
 ## Category
 
-You can set a set of commands to the same category, convenient in `go run . artisan list`:
+You can set a set of commands to the same category, convenient in `./artisan list`:
 
 ```go
 // Extend The console command extend.
@@ -506,15 +517,16 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 }
 ```
 
-## Registering Commands
+## Register Commands
 
-All of your console commands need to be registered within the `Commands` function in `app\console\kernel.go`.
+A new migration created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the rule manually if you create the command file by yourself.
 
 ```go
-func (kernel Kernel) Commands() []console.Command {
-  return []console.Command{
-    &commands.SendEmails{},
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithConfig(config.Boot).
+		Start()
 }
 ```
 
@@ -534,5 +546,5 @@ facades.Route().Get("/", func(c *gin.Context) {
 Some commands print colors by default, such as the `list` command. However, in some terminals or logs, the color values may be garbled. You can use the `--no-ansi` option to disable the print colors:
 
 ```shell
-go run . artisan list --no-ansi
+./artisan list --no-ansi
 ```

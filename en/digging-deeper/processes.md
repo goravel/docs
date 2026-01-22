@@ -17,7 +17,8 @@ Here is how you execute a blocking command:
 ```go
 import (
     "fmt"
-    "github.com/goravel/framework/facades"
+
+    "goravel/app/facades"
 )
 
 func main() {
