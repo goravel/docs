@@ -166,4 +166,4 @@ import (
 
 ## 高级功能
 
-模板引擎默认由 `http/template` 驱动，你可以参考其官方文档获取更多高级功能：https://pkg.go.dev/html/template。
+模板引擎默认由 `http/template` 驱动，你可以参考其官方文档获取更多高级功能：https://pkg.go.dev/html/template
