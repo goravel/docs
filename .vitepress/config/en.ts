@@ -111,7 +111,7 @@ function nav(): DefaultTheme.NavItem[] {
         },
         {
           text: 'v1.16',
-          link: 'https://v116.docs.goravel.dev/'
+          link: 'https://v116.goravel.dev/'
         },
       ]
     },
