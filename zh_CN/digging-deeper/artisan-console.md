@@ -13,7 +13,7 @@ go run . artisan list
 ./artisan list
 ```
 
-Each command also has a "help" flag that shows and explains the arguments and options associated with the command:
+每个命令都包含了一个 `help` 参数，它会显示命令的可用参数及选项。
 
 ```shell
 go run . artisan migrate --help
