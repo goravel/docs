@@ -158,12 +158,12 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Upgrading To v1.16 From v1.15',
-      link: 'v1.16'
+      text: 'Upgrading To v1.17 From v1.16',
+      link: 'v1.17'
     },
     {
-      text: 'Upgrading To v1.15 From v1.14',
-      link: 'v1.15'
+      text: 'Upgrading To v1.16 From v1.15',
+      link: 'v1.16'
     },
     {
       text: 'History',
