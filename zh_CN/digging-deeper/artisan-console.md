@@ -13,10 +13,10 @@ go run . artisan list
 ./artisan list
 ```
 
-每个命令都包含了「help」，它会显示和概述命令的可用参数及选项。 只需要在命令前加上 help 即可查看命令帮助界面。
+Each command also has a "help" flag that shows and explains the arguments and options associated with the command:
 
 ```shell
-go run . artisan help migrate
+go run . artisan migrate --help
 ```
 
 如果你不想重复输入 `go run . artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
