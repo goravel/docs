@@ -103,6 +103,19 @@ function nav(): DefaultTheme.NavItem[] {
       link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
     },
     {
+      text: 'Versions',
+      items: [
+        {
+          text: 'v1.17 (Latest)',
+          link: 'https://www.goravel.dev/'
+        },
+        {
+          text: 'v1.16',
+          link: 'https://v116.docs.goravel.dev/'
+        },
+      ]
+    },
+    {
       text: 'Translate',
       link: '/prologue/contributions#add-a-new-language'
     }
