@@ -1,15 +1,22 @@
-name: Deploy-Pre
+name: Deploy-Sub
 
 on:
   workflow_dispatch:
     inputs:
+      domain:
+        description: 'The sub domain'
+        required: true
+        type: choice
+        options:
+          - pre.goravel.dev
+          - v116.goravel.dev
       branch:
-        description: 'The branch for preview'
+        description: 'The sub branch'
         required: true
         type: string
 
 concurrency:
-  group: deploy-pre
+  group: deploy-${{ inputs.domain }}
 
 jobs:
   build:
@@ -34,12 +41,12 @@ jobs:
       - name: Build with VitePress
         run: pnpm docs:build
 
-      - name: Push gh-pages-pre
+      - name: Push build
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .vitepress/dist
-          publish_branch: gh-pages-pre
+          publish_branch: gh-pages-${{ inputs.domain }}
 
   deploy:
     needs: build
@@ -55,4 +62,4 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           allenvs: true
           script: |
-            cd /data/wwwroot/pre.goravel.dev/ && git pull origin gh-pages-pre
+            cd /data/wwwroot/${{ inputs.domain }}/ && git pull origin gh-pages-${{ inputs.domain }}
