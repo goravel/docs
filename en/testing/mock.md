@@ -9,6 +9,8 @@ All functions of Goravel are implemented using `facades`, and all `facades` are 
 ## Mock facades.App
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func CurrentLocale() string {
   return facades.App().CurrentLocale(context.Background())
 }
@@ -26,8 +28,6 @@ func TestCurrentLocale(t *testing.T) {
 ## Mock facades.Artisan
 
 ```go
-import "github.com/goravel/framework/testing/mock"
-
 func ArtisanCall() {
   facades.Artisan().Call("list")
 }
