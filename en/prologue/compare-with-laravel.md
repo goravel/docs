@@ -25,17 +25,16 @@ Goravel is heavily inspired by the Laravel framework, aiming to bring similar el
 | [Migrate](https://www.goravel.dev/database/migrations.html) | ✅ | ✅ | ./artisan migrate <br> php artisan migrate |
 | [Orm](https://www.goravel.dev/orm/getting-started.html) | ✅ | ✅ | facades.Orm().Query().Find(&user, 1) <br> User::find(1) |
 | [Package Development](https://www.goravel.dev/digging-deeper/package-development.html) | ✅ | ✅ | |
+| [Process](https://www.goravel.dev/digging-deeper/process.html) | ✅ | ✅ | facades.Process().Run("ls", "-la") <br> `Process::run('ls -la') |
 | [Queue](https://www.goravel.dev/digging-deeper/queues.html) | ✅ | ✅ | facades.Queue().Job(&jobs.Process{}).Dispatch() <br> Process::dispatch() |
+| [Rate Limiting](https://www.goravel.dev/digging-deeper/process.html) | ✅ | ✅ | facades.RateLimiter().For("global", ...) <br> RateLimiter::for('global', ...) |
 | [Seeder](https://www.goravel.dev/database/seeding.html) | ✅ | ✅ | facades.Seeder().Call([]seeder.Seeder{&User{}}) <br> $this->call([User::class]) |
 | [Session](https://www.goravel.dev/the-basics/session.html) | ✅ | ✅ | ctx.Request().Session().Put("key", "value") <br> session(['key' => 'value']) |
 | [Task Scheduling](https://www.goravel.dev/digging-deeper/task-scheduling.html) | ✅ | ✅ | facades.Schedule().Command("emails:send").Daily() <br> Schedule::command('emails:send')->daily() |
 | [Testing](https://www.goravel.dev/testing/getting-started.html) | ✅ | ✅ | |
 | [Validation](https://www.goravel.dev/the-basics/validation.html) | ✅ | ✅ | ctx.Request().ValidateRequest() <br> $request->validate() |
 | [View](https://www.goravel.dev/the-basics/views.html) | ✅ | ✅ | ctx.Response().View().Make("welcome.tmpl") <br> view('welcome') |
-| [TODO Process](https://www.goravel.dev/digging-deeper/process.html) | ✅ | ✅ | Long-running command-line process management <br> `Process::run('ls -la') |
-| [TODO Rate Limiting](https://www.goravel.dev/digging-deeper/process.html) | ✅ | ✅ | facades.RateLimiter().TooManyAttempts("key", 5) <br> RateLimiter::tooManyAttempts('key', 5) |
-| [Grpc](https://www.goravel.dev/the-basics/grpc.html) | ✅ | 🚧 |
-| [TODO Telemetry](https://www.goravel.dev/digging-deeper/process.html) | ✅ | 🚧 |
-| Broadcasting | 🚧 | ✅ |
-| Livewire / Inertia | 🚧 | ✅ |
-| Notifications | 🚧 | ✅ |
+| [Grpc](https://www.goravel.dev/the-basics/grpc.html) | ✅ | 🚧 | |
+| Notifications | 🚧 | ✅ | |
+| Broadcasting | 🚧 | ✅ | |
+| Livewire | 🚧 | ✅ | |

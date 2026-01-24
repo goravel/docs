@@ -57,6 +57,7 @@ Example [https://github.com/goravel/example](https://github.com/goravel/example)
 | [Migrate](https://www.goravel.dev/database/migrations.html) | Version control for database schema changes |
 | [Orm](https://www.goravel.dev/orm/getting-started.html) | Elegant Orm implementation for database operations |
 | [Package Development](https://www.goravel.dev/digging-deeper/package-development.html) | Build reusable packages to extend framework functionality |
+| [Process](https://www.goravel.dev/digging-deeper/process.html) | An expressive and elegant API around Go's standard `os/exec` package |
 | [Queue](https://www.goravel.dev/digging-deeper/queues.html) | Defer time-consuming tasks to background job processing |
 | [Seeder](https://www.goravel.dev/database/seeding.html) | Populate database tables with test or initial data |
 | [Session](https://www.goravel.dev/the-basics/session.html) | Manage user session data across HTTP requests |
@@ -64,8 +65,6 @@ Example [https://github.com/goravel/example](https://github.com/goravel/example)
 | [Testing](https://www.goravel.dev/testing/getting-started.html) | HTTP testing, mocking, and assertion utilities |
 | [Validation](https://www.goravel.dev/the-basics/validation.html) | Validate incoming request data using rules |
 | [View](https://www.goravel.dev/the-basics/views.html) | Template rendering engine for HTML responses |
-| [TODO Process](https://www.goravel.dev/digging-deeper/process.html) | Long-running command-line process management |
-| [TODO Telemetry](https://www.goravel.dev/digging-deeper/process.html) | Long-running command-line process management |
 
 ## Compare With Laravel
 
