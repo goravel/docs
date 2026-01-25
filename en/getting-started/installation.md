@@ -22,6 +22,10 @@ goravel new blog
 
 ### Manual Installation
 
+#### goravel/goravel
+
+The complete framework with full features.
+
 ```shell
 // Download framework
 git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
@@ -36,23 +40,44 @@ cp .env.example .env
 ./artisan key:generate
 ```
 
-Please confirm your network if you encounter slow download dependencies.
+#### goravel/goravel-lite
 
-## Start HTTP Service
+The lite framework with only essential features, suitable for building microservices or small applications. You can install additional facades as needed.
 
-### Start Service According To .env File In The Root Directory
+```shell
+// Download framework
+git clone --depth=1 https://github.com/goravel/goravel-lite.git && rm -rf goravel-lite/.git*
+s
+// Install dependencies
+cd goravel-lite && go mod tidy
+
+// Create .env environment configuration file
+cp .env.example .env
+
+// Generate application key
+./artisan key:generate
+
+// Install additional facades as needed, for example:
+./artisan package:install Cache
+```
+
+> Please confirm your network if you encounter slow download dependencies.
+
+## Start Services
+
+### Start Services According To .env File In The Root Directory
 
 ```shell
 go run .
 ```
 
-### Specify .env File To Start Service
+### Specify .env File To Start Services
 
 ```shell
 go run . --env=./.env
 ```
 
-### Start Service Using Environment Variables
+### Start Services Using Environment Variables
 
 ```shell
 APP_ENV=production APP_DEBUG=true go run .
