@@ -12,18 +12,18 @@
 
 ### 註冊中介軟體
 
-Goravel 默認情況下不會自動啟動會話。 然而，它提供了中介軟體來啟動會話。 您可以在 `app/http/kernel.go` 文件中註冊會話中介軟體，以將其應用於所有路由，或將其添加到特定路由中：
+Goravel 默認情況下不會自動啟動會話。 然而，它提供了中介軟體來啟動會話。 You can register the middleware in the `WithMiddleware` function in the `bootstrap/app.go` file, or you can add it to specific routes:
 
 ```go
-import (
-  "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/session/middleware"
-)
-
-func (kernel Kernel) Middleware() []http.Middleware {
-  return []http.Middleware{
-    middleware.StartSession(),
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMiddleware(func(handler configuration.Middleware) {
+			handler.Append(
+				middleware.StartSession(),
+			)
+		}).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
 
@@ -173,14 +173,12 @@ ctx.Request().Session().Now("status", "任務已成功！")
 使用 `Session` 門面構建自定義會話。 `Session` 門面提供了 `BuildSession` 方法，它接受一個驅動實例和一個可選的會話 ID，如果您想指定自定義會話 ID：
 
 ```go
-import "github.com/goravel/framework/facades"
-
 session := facades.Session().BuildSession(driver, "sessionID")
 ```
 
 ### 添加自定義會話驅動
 
-#### 實現驅動
+#### Implementing Driver
 
 要實現自定義會話驅動，驅動必須實現 `contracts/session/driver` 接口。
 
@@ -202,7 +200,7 @@ type Driver interface {
 }
 ```
 
-#### 註冊驅動
+#### Register Driver
 
 在實現驅動後，您只需將其添加到 `config/session.go` 配置文件中：
 
