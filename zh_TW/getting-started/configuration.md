@@ -16,6 +16,18 @@ Goravel 框架所有配置文件都保存在 `config` 目錄中。 你可以進�
 
 此外，如果有入侵者獲得了你的代碼倉庫訪問權限，將會有暴露敏感配置的風險。 如果你想新增新的配置項，可以添加到 `.env.example` 文件中，以此來同步所有開發者的配置。 如果你想添加一個新的配置項，你可以將其添加到 `.env.example` 文件中以同步所有開發者的配置。
 
+### Register Configuration
+
+All configuration files will be registered via the `WithConfig` function in the `bootstrap/app.go` file. Given that it's a `init` function in the config file, you don't need to register each configuration file one by one. Just call the `WithConfig` function as follows:
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithConfig(config.Boot).
+		Create()
+}
+```
+
 ## 獲取環境配置
 
 使用如下方法，可獲取 `.env` 文件中的配置項：
@@ -56,5 +68,5 @@ facades.Config().Add("path.with.dot", map[string]any{"case3": "value3"})
 你可以使用 `artisan about` 命令來查看框架的版本、配置等信息。
 
 ```bash
-go run . artisan about
+./artisan about
 ```
