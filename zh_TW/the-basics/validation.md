@@ -35,23 +35,13 @@ import (
   "github.com/goravel/framework/contracts/http"
 )
 
-type PostController struct {
-  // 依賴服務
-}
+type PostController struct {}
 
 func NewPostController() *PostController {
-  return &PostController{
-    // 注入服務
-  }
+  return &PostController{}
 }
 
-func (r *PostController) Create(ctx http.Context) {
-
-}
-
-func (r *PostController) Store(ctx http.Context) {
-
-}
+func (r *PostController) Store(ctx http.Context) {}
 ```
 
 ### 編寫驗證邏輯
@@ -97,8 +87,8 @@ validator, err := ctx.Request().Validate(map[string]string{
 對於更複雜的驗證場景，您可能希望創建一個 "表單請求"。 表單請求是自定義請求類，封裝其自己的驗證和授權邏輯。 要創建一個表單請求類，您可以使用 `make:request` Artisan CLI 命令：
 
 ```go
-go run . artisan make:request StorePostRequest
-go run . artisan make:request user/StorePostRequest
+./artisan make:request StorePostRequest
+./artisan make:request user/StorePostRequest
 ```
 
 生成的表單請求類將放置在 `app/http/requests` 目錄中。 如果此目錄不存在，則在您運行 `make:request` 命令時會創建。 每個 Goravel 生成的表單請求都有六個方法： `Authorize`， `Rules`。 此外，您還可以自定義 `Filters`、`Messages`、`Attributes` 和 `PrepareForValidation` 方法，以進行進一步操作。
@@ -230,6 +220,7 @@ func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validatio
 ```go
 func (r *PostController) Store(ctx http.Context) http.Response {
   validator, _ := facades.Validation().Make(
+    ctx,
     map[string]any{
       "name": "Goravel",
     },
@@ -239,7 +230,7 @@ func (r *PostController) Store(ctx http.Context) http.Response {
     })
 
   if validator.Fails() {
-    // 返回失敗
+    // Return fail
   }
 
   var user models.User
@@ -255,8 +246,8 @@ func (r *PostController) Store(ctx http.Context) http.Response {
 如果需要，您可以提供自定義錯誤消息，讓驗證器實例使用，而不是 Goravel 提供的默認錯誤消息。 您可以將自定義消息作為第三個參數傳遞給 `Make` 方法（同樣適用於`ctx.Request().Validate()`）： 您可以將自定義消息作為第三個參數傳遞給 `Make` 方法（同樣適用於`ctx.Request().Validate()`）：
 
 ```go
-validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
-  "required": "屬性字段是必需的。",
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Messages(map[string]string{
+  "required": "The :attribute field is required.",
 }))
 ```
 
@@ -265,8 +256,8 @@ validator, err := facades.Validation().Make(input, rules, validation.Messages(ma
 有時您可能希望僅為特定屬性指定自定義錯誤消息。 您可以使用 "dot" 表示法來實現。 首先指定屬性名稱，然後指定規則（同樣適用於`ctx.Request().Validate()`）：
 
 ```go
-validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
-  "email.required": "我們需要知道您的電子郵件地址！",
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Messages(map[string]string{
+  "email.required": "We need to know your email address!",
 }))
 ```
 
@@ -275,8 +266,8 @@ validator, err := facades.Validation().Make(input, rules, validation.Messages(ma
 Goravel 的許多內置錯誤消息都包含一個 `:attribute` 佔位符，該佔位符會替換為被驗證的字段或屬性的名稱。 要自定義用於替換這些佔位符的值，您可以將一個自定義屬性數組作為第三個參數傳遞給 `Make` 方法（同樣適用於 `ctx.Request().Validate()`）：
 
 ```go
-validator, err := facades.Validation().Make(input, rules, validation.Attributes(map[string]string{
-  "email": "電子郵件地址",
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Attributes(map[string]string{
+  "email": "email address",
 }))
 ```
 
@@ -291,7 +282,7 @@ import (
 )
 
 func (r *PostController) Store(ctx http.Context) http.Response {
-  validator, err := facades.Validation().Make(input, rules,
+  validator, err := facades.Validation().Make(ctx, input, rules,
     validation.PrepareForValidation(func(ctx http.Context, data validationcontract.Data) error {
       if name, exist := data.Get("name"); exist {
         return data.Set("name", name)
@@ -315,7 +306,7 @@ validator, err := ctx.Request().Validate(rules)
 var user models.User
 err := validator.Bind(&user)
 
-validator, err := facades.Validation().Make(input, rules)
+validator, err := facades.Validation().Make(ctx, input, rules)
 var user models.User
 err := validator.Bind(&user)
 ```
@@ -334,7 +325,7 @@ fmt.Println(storePost.Name)
 
 ```go
 validator, err := ctx.Request().Validate(rules)
-validator, err := facades.Validation().Make(input, rules)
+validator, err := facades.Validation().Make(ctx, input, rules)
 
 message := validator.Errors().One("email")
 ```
@@ -439,12 +430,16 @@ if validator.Errors().Has("email") {
 
 Goravel 提供了各種有用的驗證規則，但是，你可能希望定義自己的規則。 註冊自定義驗證規則的方法之一是使用規則對象。 要生成新的規則，你可以使用 `make:rule` Artisan 命令。 註冊自定義驗證規則的方法之一是使用規則對象。 要生成新的規則對象，你可以簡單使用 `make:rule` Artisan 命令。
 
+### Creating Custom Rules
+
 例如，如果你想檢查字符串是否為大寫，你可以使用這個命令創建一個規則。 Goravel 將會將這個新規則保存在 `app/rules` 目錄中。 如果該目錄不存在，Goravel 將在你運行 Artisan 命令創建規則時創建它。
 
 ```go
-go run . artisan make:rule Uppercase
-go run . artisan make:rule user/Uppercase
+./artisan make:rule Uppercase
+./artisan make:rule user/Uppercase
 ```
+
+### Defining Custom Rules
 
 創建規則後，我們需要定義它的行為。 規則對象有兩個方法： `Passes` 和 `Message`。 Passes 方法接收所有數據，包括要驗證的數據和驗證參數。 它應該根據屬性值是否有效返回 `true` 或 `false`。 `Message` 方法應該返回驗證失敗時用於顯示的錯誤信息。
 
@@ -460,52 +455,32 @@ import (
 type Uppercase struct {
 }
 
-// Signature 規則的名稱。
+// Signature The name of the rule.
 func (receiver *Uppercase) Signature() string {
   return "uppercase"
 }
 
-// Passes 確定驗證規則是否通過。
-func (receiver *Uppercase) Passes(data validation.Data, val any, options ...any) bool {
+// Passes Determine if the validation rule passes.
+func (receiver *Uppercase) Passes(ctx context.Context, data validation.Data, val any, options ...any) bool {
   return strings.ToUpper(val.(string)) == val.(string)
 }
 
-// Message 獲取驗證錯誤消息。
-func (receiver *Uppercase) Message() string {
-  return ":attribute 必須是大寫。"
+// Message Get the validation error message.
+func (receiver *Uppercase) Message(ctx context.Context) string {
+  return "The :attribute must be uppercase."
 }
-
 ```
 
-然後你需要將該規則註冊到 `app/providers/validation_service_provider.go` 文件的 `rules` 方法中，然後該規則就可以像其他規則一樣使用了，如果是通過 `make:rule` 命令生成的規則，框架將自動註冊。
+### Register Custom Rules
+
+A new rule created by `make:rule` will be registered automatically in the `bootstrap/rules.go::Rules()` function and the function will be called by `WithRules`. You need register the rule manually if you create the rule file by yourself.
 
 ```go
-package providers
-
-import (
-  "github.com/goravel/framework/contracts/validation"
-  "github.com/goravel/framework/facades"
-
-  "goravel/app/rules"
-)
-
-type ValidationServiceProvider struct {
-}
-
-func (receiver *ValidationServiceProvider) Register() {
-
-}
-
-func (receiver *ValidationServiceProvider) Boot() {
-  if err := facades.Validation().AddRules(receiver.rules()); err != nil {
-    facades.Log().Errorf("添加規則錯誤: %+v", err)
-  }
-}
-
-func (receiver *ValidationServiceProvider) rules() []validation.Rule {
-  return []validation.Rule{
-    &rules.Uppercase{},
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithRules(Rules).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
 
@@ -537,13 +512,18 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 
 ## 自定義過濾器
 
-Goravel 提供了多種有用的過濾器，但你可能希望指定一些自己的過濾器。 要生成一個新的規則物件，你可以簡單地使用 `make:filter` Artisan 命令。 讓我們使用這個命令來生成一個將字串轉換為整數的規則。 這個規則已經內建在框架中，我們只是將其作為示例。 Goravel 將把這個新過濾器保存在 `app/filters` 目錄中。 如果這個目錄不存在，Goravel 將在你執行 Artisan 命令創建規則時自動創建它：
+Goravel 提供了多種有用的過濾器，但你可能希望指定一些自己的過濾器。
+
+### Creating Custom Filters
+
+要生成一個新的規則物件，你可以簡單地使用 `make:filter` Artisan 命令。 讓我們使用這個命令來生成一個將字串轉換為整數的規則。 這個規則已經內建在框架中，我們只是將其作為示例。 Goravel 將把這個新過濾器保存在 `app/filters` 目錄中。 如果這個目錄不存在，Goravel 將在你執行 Artisan 命令創建規則時自動創建它：
 
 ```go
-go run . artisan make:filter ToInt
-// 或者
-go run . artisan make:filter user/ToInt
+./artisan make:filter ToInt
+./artisan make:filter user/ToInt
 ```
+
+### Defining Custom Filters
 
 一個過濾器包含兩個方法：`Signature` 和 `Handle`。 `Signature` 方法設置過濾器的名稱。 `Handle` 方法執行具體的過濾邏輯：
 
@@ -560,47 +540,28 @@ import (
 type ToInt struct {
 }
 
-// Signature 過濾器的簽名。
+// Signature The signature of the filter.
 func (receiver *ToInt) Signature() string {
   return "ToInt"
 }
 
-// Handle 定義要應用的過濾器函數。
-func (receiver *ToInt) Handle() any {
+// Handle defines the filter function to apply.
+func (receiver *ToInt) Handle(ctx context.Context) any {
   return func (val any) int {
     return cast.ToString(val)
   }
 }
 ```
 
-然後你需要將過濾器註冊到 `app/providers/validation_service_provider.go` 文件的 `filters` 方法中，然後可以像其他過濾器一樣使用，如果過濾器是通過 `make:filter` 命令生成的，框架將自動註冊它。
+### Register Custom Filters
+
+A new rule created by `make:filter` will be registered automatically in the `bootstrap/filters.go::Filters()` function and the function will be called by `WithFilters`. You need register the rule manually if you create the rule file by yourself.
 
 ```go
-package providers
-
-import (
-  "github.com/goravel/framework/contracts/validation"
-  "github.com/goravel/framework/facades"
-
-  "goravel/app/filters"
-)
-
-type ValidationServiceProvider struct {
-}
-
-func (receiver *ValidationServiceProvider) Register() {
-
-}
-
-func (receiver *ValidationServiceProvider) Boot() {
-  if err := facades.Validation().AddFilters(receiver.filters()); err != nil {
-    facades.Log().Errorf("add filters error: %+v", err)
-  }
-}
-
-func (receiver *ValidationServiceProvider) filters() []validation.Filter {
-  return []validation.Filter{
-    &filters.ToInt{},
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithFilters(Filters).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
