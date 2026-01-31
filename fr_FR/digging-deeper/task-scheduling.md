@@ -10,28 +10,20 @@ Goravel's command scheduler offers a fresh approach to managing scheduled tasks 
 
 ## Defining Schedules
 
-To schedule tasks for your application, you can define them in the `Schedule` method in `app\console\kernel.go`. Let's consider an example to understand this better. In this case, we want to schedule a closure that will run every day at midnight. Inside this closure, we will execute a database query to clear a table:
+To schedule tasks for your application, you can define them in the `WithSchedule` function in the `bootstrap/app.go` file. Let's consider an example to understand this better. In this case, we want to schedule a closure that will run every day at midnight. Inside this closure, we will execute a database query to clear a table:
 
 ```go
-package console
-
-import (
-  "github.com/goravel/framework/contracts/console"
-  "github.com/goravel/framework/contracts/schedule"
-  "github.com/goravel/framework/facades"
-
-  "goravel/app/models"
-)
-
-type Kernel struct {
-}
-
-func (kernel Kernel) Schedule() []schedule.Event {
-  return []schedule.Event{
-    facades.Schedule().Call(func() {
-      facades.Orm().Query().Where("1 = 1").Delete(&models.User{})
-    }).Daily(),
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithSchedule(func() []schedule.Event {
+			return []schedule.Event{
+				facades.Schedule().Call(func() {
+          facades.Orm().Query().Where("1 = 1").Delete(&models.User{})
+        }).Daily(),
+			}
+		}).
+		WithConfig(config.Boot).
+		Start()
 }
 ```
 
@@ -40,22 +32,7 @@ func (kernel Kernel) Schedule() []schedule.Event {
 In addition to scheduling closures, you can also schedule [Artisan commands](./artisan-console.md). For example, you may use the `Command` method to schedule an Artisan command using either the command's name or class.
 
 ```go
-package console
-
-import (
-  "github.com/goravel/framework/contracts/console"
-  "github.com/goravel/framework/contracts/schedule"
-  "github.com/goravel/framework/facades"
-)
-
-type Kernel struct {
-}
-
-func (kernel *Kernel) Schedule() []schedule.Event {
-  return []schedule.Event{
-    facades.Schedule().Command("send:emails name").Daily(),
-  }
-}
+facades.Schedule().Command("send:emails name").Daily(),
 ```
 
 ### Logging Level
@@ -144,62 +121,10 @@ facades.Schedule().Call(func() {
 
 ## Running The Scheduler
 
-Now that we have learned how to define scheduled tasks, let's discuss how to actually run them on our server.
-
-Add `go facades.Schedule().Run()` to the root `main.go` file.
-
-```go
-package main
-
-import (
-  "github.com/goravel/framework/facades"
-
-  "goravel/bootstrap"
-)
-
-func main() {
-  // This bootstraps the framework and gets it ready for use.
-  bootstrap.Boot()
-
-  // Start schedule by facades.Schedule
-  go facades.Schedule().Run()
-
-  select {}
-}
-```
-
-You can also use the `schedule:run` command to manually run tasks:
+The scheduler will be run automatically when calling `Start()` in the `main.go` file. You can also run tasks manually :
 
 ```shell
 ./artisan schedule:run
-```
-
-## Stopping The Scheduler
-
-You can call the `Shutdown` method to gracefully shut down the scheduler. This method will wait for all tasks to complete before shutting down.
-
-```go
-// main.go
-bootstrap.Boot()
-
-// Create a channel to listen for OS signals
-quit := make(chan os.Signal)
-signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
-// Start schedule by facades.Schedule
-go facades.Schedule().Run()
-
-// Listen for the OS signal
-go func() {
-  <-quit
-  if err := facades.Schedule().Shutdown(); err != nil {
-    facades.Log().Errorf("Schedule Shutdown error: %v", err)
-  }
-
-  os.Exit(0)
-}()
-
-select {}
 ```
 
 ## View All Tasks
