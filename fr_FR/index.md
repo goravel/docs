@@ -73,7 +73,7 @@ head:
 hero:
   name: Goravel
   text: Full-featured Golang Development Framework
-  tagline: High-performance, full-featured, easy-to-extend, PHPers' first choice.
+  tagline: Componentization, High-performance, easy-to-extend, PHPers' first choice.
   # image: /logo.svg
   actions:
     - theme: brand
@@ -84,14 +84,14 @@ hero:
       link: https://github.com/goravel/goravel
       target: _blank
 features:
+  - title: 💻 Componentization
+    details: Modular design, each module is independent and can be used separately, making development and maintenance more convenient.
   - title: 🚀 High-performance
     details: Built with Golang, integrating multiple excellent extensions to create fast and responsive applications.
   - title: 🧰 Full-featured
     details: Includes ORM, HTTP, queue, task scheduling, logging, caching, and other basic tools for all web development.
   - title: 📈 Easy-to-extend
     details: The module provides multiple drivers, and can develop extension packages according to needs, suitable for applications of any scale, from small projects to large systems.
-  - title: 💻 Easy-to-deploy
-    details: Provides multiple packaging commands, supports Docker image deployment, no additional dependencies.
   - title: 👥 Active community
     details: Supported by an active community, they contribute to its development, documentation, and continuous support.
   - title: 🔄 PHPers' first choice
