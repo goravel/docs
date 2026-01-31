@@ -80,26 +80,26 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### 与所有视图共享数据
 
-有时，你可能需要与应用程序呈现的所有视图共享数据， 可以使用 `facades.View()` 的 `Share` 方法。 你可以在服务提供器的 `Boot` 方法中调用视图 `Share` 方法。 例如，可以将它们添加到 `app/providers/app_service_provider.go` 或者为它们生成一个单独的服务提供器：
+有时，你可能需要与应用程序呈现的所有视图共享数据， You may do so using the `Share` function in `facades.View()`. Typically, you should place calls to the `Share` function in the `bootstrap/app.go::WithCallback` function:
 
 ```go
-package providers
-
-import (
-	"github.com/goravel/framework/contracts/foundation"
-    "github.com/goravel/framework/facades
-)
-
-type AppServiceProvider struct {
-}
-
-func (receiver *AppServiceProvider) Register(app foundation.Application) {
-}
-
-func (receiver *AppServiceProvider) Boot(app foundation.Application) {
-    facades.View().Share("key", "value")
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.View().Share("key", "value")
+    }).
+    Create()
 }
 ```
+
+## CSRF Token Middleware
+
+This middleware can be applied to routes to ensure that requests are coming from authenticated sources to against Cross-Site Request Forgery (CSRF) attacks.
+
+1. Register the middleware (`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`) to global or a specific route.
+2. Add <code v-pre>{{ .csrf_token }}</code> to your form in the view file.
+3. The middleware will automatically verify the token on form submission.
 
 ## 注册自定义分隔符和函数
 
