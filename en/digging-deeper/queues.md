@@ -78,7 +78,7 @@ func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithJobs(Jobs).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 
@@ -127,7 +127,7 @@ func Boot() contractsfoundation.Application {
         YourRunner,
       }
     }).
-    Start()
+    Create()
 }
 ```
 

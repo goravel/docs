@@ -129,7 +129,7 @@ func Boot() contractsfoundation.Application {
         },
       })
     }).
-    Start()
+    Create()
 }
 ```
 
@@ -1076,7 +1076,7 @@ func Boot() contractsfoundation.Application {
     WithCallback(func() {
       facades.Orm().Observe(models.User{}, &observers.UserObserver{})
     }).
-    Start()
+    Create()
 }
 ```
 

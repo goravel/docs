@@ -84,7 +84,7 @@ func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithSeeders(Seeders).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 
 ./artisan db:seed --seeder=UserSeeder PhotoSeeder // The signature of seeder

@@ -36,7 +36,7 @@ func Boot() contractsfoundation.Application {
         },
       )
     }).
-    Start()
+    Create()
 }
 ```
 
@@ -189,7 +189,7 @@ func Boot() contractsfoundation.Application {
     WithCallback(func() {
       facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
     }).
-    Start()
+    Create()
 }
 ```
 

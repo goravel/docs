@@ -51,7 +51,7 @@ func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithCommands(Commands).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 
@@ -526,7 +526,7 @@ func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithCommands(Commands).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 

@@ -45,7 +45,7 @@ func Boot() contractsfoundation.Application {
         Models: []any{models.User{}},
       })
     }).
-    Start()
+    Create()
 }
 ```
 
@@ -129,7 +129,7 @@ func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithMigrations(Migrations).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 

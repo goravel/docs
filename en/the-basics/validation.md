@@ -480,7 +480,7 @@ func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithRules(Rules).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 
@@ -562,6 +562,6 @@ func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithFilters(Filters).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```

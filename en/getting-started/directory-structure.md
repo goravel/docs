@@ -48,7 +48,7 @@ func Boot() contractsfoundation.Application {
 			paths.App("src")
 		}).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 

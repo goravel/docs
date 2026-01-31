@@ -28,7 +28,7 @@ func Boot() contractsfoundation.Application {
       routes.Web()
     }).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 
@@ -196,7 +196,7 @@ func Boot() contractsfoundation.Application {
         return limit.PerMinute(1000)
       })
     }).
-    Start()
+    Create()
 }
 ```
 

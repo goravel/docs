@@ -25,7 +25,7 @@ All configuration files will be registered via the `WithConfig` function in the 
 func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 

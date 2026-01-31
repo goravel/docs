@@ -23,7 +23,7 @@ func Boot() contractsfoundation.Application {
 			)
 		}).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 

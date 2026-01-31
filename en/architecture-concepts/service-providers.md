@@ -25,7 +25,7 @@ func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithProvders(Providers).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 
@@ -134,6 +134,6 @@ func Boot() contractsfoundation.Application {
 				NewYourCustomRunner(),
 			}
 		}).
-		Start()
+		Create()
 }
 ```

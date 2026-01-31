@@ -89,7 +89,7 @@ func Boot() contractsfoundation.Application {
     WithCallback(func() {
       facades.View().Share("key", "value")
     }).
-    Start()
+    Create()
 }
 ```
 

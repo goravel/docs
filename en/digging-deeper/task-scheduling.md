@@ -121,7 +121,7 @@ facades.Schedule().Call(func() {
 
 ## Running The Scheduler
 
-The scheduler will be run automatically when calling `Start()` in the `bootstrap/app.go` file. You can also run tasks manually :
+The scheduler will be run automatically when calling `Start()` in the `main.go` file. You can also run tasks manually :
 
 ```shell
 ./artisan schedule:run

@@ -8,7 +8,7 @@ Grpc module can be operated by `facades.Grpc()`.
 
 ## Configuration
 
-In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.clients` configures the relevant information of the client.
+In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.servers` configures the servers which the client will connect to.
 
 ## Controllers
 
@@ -69,7 +69,7 @@ func Boot() contractsfoundation.Application {
       routes.Grpc()
     }).
 		WithConfig(config.Boot).
-		Start()
+		Create()
 }
 ```
 
@@ -93,11 +93,11 @@ func Boot() contractsfoundation.Application {
 				},
 			}
 		}).
-    Start()
+    Create()
 }
 ```
 
-The `default` in the example above is a group name can be applied to the configuration item `grpc.clients.interceptors`, in this way, the Client will be applied to all interceptors under the group. For example:
+The `default` in the example above is a group name can be applied to the configuration item `grpc.servers.interceptors`, in this way, the Client will be applied to all interceptors under the group. For example:
 
 ```go
 package config
@@ -115,7 +115,7 @@ func init() {
     "host": config.Env("GRPC_HOST", ""),
 
     // Configure your client host and interceptors.
-    "clients": map[string]any{
+    "servers": map[string]any{
       "user": map[string]any{
         "host":         config.Env("GRPC_USER_HOST", ""),
         "port":         config.Env("GRPC_USER_PORT", ""),
