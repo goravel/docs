@@ -1,0 +1,154 @@
+# 贡献指南
+
+[[toc]]
+
+Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、文章、教程等。 完成两个 `Feature`（5 个 `Good First Issue` == 1 个 `Feature`）后，你将成为核心开发者。 之后每三个月至少完成一个 `Feature`，可以保持这个头衔。
+
+让我们一起将 Goravel 变得更高效！
+
+## 奖励
+
+- 核心开发者将可以在未来从 Goravel 中获得收益；
+- 完成一个 `Feature`，即可获得 Goravel 官方 T-Shirt 一件，一个大版本发布周期中最多可获得 1 件；
+
+<p align="left"><img src="/t-shirt.jpg" width="500"></p>
+
+## 核心开发者
+
+<div class="flex flex-wrap gap-2 mt-5" :class="$style.contributors"><a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
+<a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
+<a href="https://github.com/kkumar-gcc" target="_blank"><img src="https://avatars.githubusercontent.com/u/84431594?v=4" width="48" height="48"></a>
+<a href="https://github.com/almas-x" target="_blank"><img src="https://avatars.githubusercontent.com/u/9382335?v=4" width="48" height="48"></a>
+</div>
+
+## 贡献者
+
+<div class="flex flex-wrap gap-2 mt-5" :class="$style.contributors"><a href="https://github.com/merouanekhalili" target="_blank"><img src="https://avatars.githubusercontent.com/u/1122628?v=4" width="48" height="48"></a>
+<a href="https://github.com/hongyukeji" target="_blank"><img src="https://avatars.githubusercontent.com/u/23145983?v=4" width="48" height="48"></a>
+<a href="https://github.com/sidshrivastav" target="_blank"><img src="https://avatars.githubusercontent.com/u/28773690?v=4" width="48" height="48"></a>
+<a href="https://github.com/Juneezee" target="_blank"><img src="https://avatars.githubusercontent.com/u/20135478?v=4" width="48" height="48"></a>
+<a href="https://github.com/dragoonchang" target="_blank"><img src="https://avatars.githubusercontent.com/u/1432336?v=4" width="48" height="48"></a>
+<a href="https://github.com/dhanusaputra" target="_blank"><img src="https://avatars.githubusercontent.com/u/35093673?v=4" width="48" height="48"></a>
+<a href="https://github.com/mauri870" target="_blank"><img src="https://avatars.githubusercontent.com/u/10168637?v=4" width="48" height="48"></a>
+<a href="https://github.com/Marian0" target="_blank"><img src="https://avatars.githubusercontent.com/u/624592?v=4" width="48" height="48"></a>
+<a href="https://github.com/ahmed3mar" target="_blank"><img src="https://avatars.githubusercontent.com/u/12982325?v=4" width="48" height="48"></a>
+<a href="https://github.com/flc1125" target="_blank"><img src="https://avatars.githubusercontent.com/u/14297703?v=4" width="48" height="48"></a>
+<a href="https://github.com/zzpwestlife" target="_blank"><img src="https://avatars.githubusercontent.com/u/12382180?v=4" width="48" height="48"></a>
+<a href="https://github.com/juantarrel" target="_blank"><img src="https://avatars.githubusercontent.com/u/7213379?v=4" width="48" height="48"></a>
+<a href="https://github.com/Kamandlou" target="_blank"><img src="https://avatars.githubusercontent.com/u/77993374?v=4" width="48" height="48"></a>
+<a href="https://github.com/livghit" target="_blank"><img src="https://avatars.githubusercontent.com/u/108449432?v=4" width="48" height="48"></a>
+<a href="https://github.com/jeff87218" target="_blank"><img src="https://avatars.githubusercontent.com/u/29706585?v=4" width="48" height="48"></a>
+<a href="https://github.com/shayan-yousefi" target="_blank"><img src="https://avatars.githubusercontent.com/u/19957980?v=4" width="48" height="48"></a>
+<a href="https://github.com/zxdstyle" target="_blank"><img src="https://avatars.githubusercontent.com/u/38398954?v=4" width="48" height="48"></a>
+<a href="https://github.com/milwad-dev" target="_blank"><img src="https://avatars.githubusercontent.com/u/98118400?v=4" width="48" height="48"></a>
+<a href="https://github.com/mdanialr" target="_blank"><img src="https://avatars.githubusercontent.com/u/48054961?v=4" width="48" height="48"></a>
+<a href="https://github.com/KlassnayaAfrodita" target="_blank"><img src="https://avatars.githubusercontent.com/u/113383200?v=4" width="48" height="48"></a>
+<a href="https://github.com/YlanzinhoY" target="_blank"><img src="https://avatars.githubusercontent.com/u/102574758?v=4" width="48" height="48"></a>
+<a href="https://github.com/gouguoyin" target="_blank"><img src="https://avatars.githubusercontent.com/u/13517412?v=4" width="48" height="48"></a>
+<a href="https://github.com/dzham" target="_blank"><img src="https://avatars.githubusercontent.com/u/10853451?v=4" width="48" height="48"></a>
+<a href="https://github.com/praem90" target="_blank"><img src="https://avatars.githubusercontent.com/u/6235720?v=4" width="48" height="48"></a>
+<a href="https://github.com/vendion" target="_blank"><img src="https://avatars.githubusercontent.com/u/145018?v=4" width="48" height="48"></a>
+<a href="https://github.com/tzsk" target="_blank"><img src="https://avatars.githubusercontent.com/u/13273787?v=4" width="48" height="48"></a>
+<a href="https://github.com/ycb1986" target="_blank"><img src="https://avatars.githubusercontent.com/u/12908032?v=4" width="48" height="48"></a>
+<a href="https://github.com/BadJacky" target="_blank"><img src="https://avatars.githubusercontent.com/u/113529280?v=4" width="48" height="48"></a>
+<a href="https://github.com/NiteshSingh17" target="_blank"><img src="https://avatars.githubusercontent.com/u/79739154?v=4" width="48" height="48"></a>
+<a href="https://github.com/alfanzain" target="_blank"><img src="https://avatars.githubusercontent.com/u/4216529?v=4" width="48" height="48"></a>
+<a href="https://github.com/oprudkyi" target="_blank"><img src="https://avatars.githubusercontent.com/u/3018472?v=4" width="48" height="48"></a>
+<a href="https://github.com/zoryamba" target="_blank"><img src="https://avatars.githubusercontent.com/u/21248500?v=4" width="48" height="48"></a>
+<a href="https://github.com/oguzhankrcb" target="_blank"><img src="https://avatars.githubusercontent.com/u/7572058?v=4" width="48" height="48"></a>
+<a href="https://github.com/ChisThanh" target="_blank"><img src="https://avatars.githubusercontent.com/u/93512710?v=4" width="48" height="48"></a>
+<a href="https://github.com/wyicwx" target="_blank"><img src="https://avatars.githubusercontent.com/u/1241187?v=4" width="48" height="48"></a>
+
+</div>
+
+## Bug 报告
+
+你可以在[这里](https://github.com/goravel/goravel/issues/new?assignees=&labels=%E2%98%A2%EF%B8%8F+Bug%2Cbug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+%5BBug%5D+)提交一个 Bug 报告，在提交前请搜索 [Issue 列表](https://github.com/goravel/goravel/issues?q=is%3Aissue) 中是否已存在类似问题。 该报告应该包含一个标题和对问题的清晰描述，还应该包含尽可能多的相关信息以及演示该问题的代码示例。 错误报告的目标是使你自己（以及其他人）能够轻松地复现错误并开发修复程序。 Goravel 鼓励提交者同时创建 PR 进行 Bug 修复，使开源项目得到更积极的发展。
+
+## 帮助支持
+
+Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 你可以通过以下途径进行讨论：
+
+- [GitHub 讨论区](https://github.com/goravel/goravel/discussions)
+- [Discord](https://github.com/goravel/goravel/tree/master#group)
+- [微信群](https://github.com/goravel/goravel/blob/master/README_zh.md#%E7%BE%A4%E7%BB%84)
+
+## 开发讨论
+
+你可以在 Goravel 仓库的 [GitHub 讨论区](https://github.com/goravel/goravel/discussions) 中提出新功能或对现有 Goravel 行为的改进。 也可以在 Discord 或微信群中进行有关错误、新功能和现有功能实现的非正式讨论。 Goravel 的维护者 Bowen 通常在工作日的上午 9 点至下午 6 点（UTC+08:00）出现在频道中，并在其他时间偶尔出现在频道中。
+
+## 新增语言
+
+欢迎为Goravel文档添加新的语言， 你可以提交一个标题为 "Add [Language] Language" 的 Issue 并附带你的 [Crowdin](https://crowdin.com/) 账号到 [goravel/goravel](https://github.com/goravel/goravel/issues/new)。 我们将邀请你加入 Crowdin 项目。
+
+## 修改现有语言
+
+Goravel 文档支持多语言后，只有英文文件可以被 PR 修改； 其他语言应该通过 [Crowdin](https://crowdin.com/)修改。 你可以提交一个标题为 "修改 [Language] 语言" 的 Issue 并附带你的 [Crowdin](https://crowdin.com/) 账户到 [goravel/goravel](https://github.com/goravel/goravel/issues/new)。 我们将邀请你加入 Crowdin 项目。
+
+## 提交贡献
+
+### 寻找/创建 Issue
+
+你可以在 [Issue 列表](https://github.com/goravel/goravel/issues) 中寻找或创建一个 Issue，留言表达想要处理该 Issue 的意愿，得到仓库维护者的确认后，即可开始处理。
+
+### 创建 PR
+
+- 如果你对该流程不太了解，可以查看[这篇文章](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)；
+- 在开发过程中，如果遇到问题可以随时在 Issue 中详尽描述该问题，以进一步沟通，但在此之前请确保自己已通过 Google 等方式尽可能的尝试解决问题；
+- 在创建 PR 前，请尽可能的提高单元测试覆盖率，以提供更稳定的功能；
+- If you modify any file under the `contracts` folder, please run the `go tool mockery` command in the root directory to generate the mock file;
+- 当 PR 开发完毕后，请为其添加 `Review Ready` 标签，维护者将及时进行评审；
+- PR 合并后，如果描述设置正确，Issue 将被自动关闭；
+- Goravel 非常感谢你的贡献，将在下次发版时将你添加到首页贡献列表中；❤️
+
+## 哪个分支？
+
+**所有**错误修复应发送到最新的稳定分支，除非它们修复了仅存在于 `master` 分支中的功能。
+
+**新功能**或有**破坏性**变化的功能应始终合并到 `master` 分支。
+
+## Goravel 仓库
+
+| 仓库                                                                    | 作用                                                                                                                                          |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| [goravel/goravel](https://github.com/goravel/goravel)                 | Goravel 命令行                                                                                                                                 |
+| [goravel/goravel-lite](https://github.com/goravel/goravel-lite)       | Goravel artisans of lite                                                                                                                    |
+| [goravel/framework](https://github.com/goravel/framework)             | Goravel 主仓库                                                                                                                                 |
+| [goravel/example](https://github.com/goravel/example)                 | Goravel 示例                                                                                                                                  |
+| [goravel/example-client](https://github.com/goravel/example-client)   | Grpc 客户端示例                                                                                                                                  |
+| [goravel/example-proto](https://github.com/goravel/example-proto)     | example 仓库 proto 依赖                                                                                                                         |
+| [goravel/example-package](https://github.com/goravel/example-package) | 扩展包示例                                                                                                                                       |
+| [goravel/installer](https://github.com/goravel/installer)             | A command-line tool that helps you to install the Goravel framework                                                                         |
+| [goravel/release](https://github.com/goravel/release)                 | Prover a simple way to release framework and packages version                                                                               |
+| [goravel/docs](https://github.com/goravel/docs)                       | 使用文档                                                                                                                                        |
+| [goravel/s3](https://github.com/goravel/s3)                           | Storage 模块 S3 驱动                                                                                                                            |
+| [goravel/oss](https://github.com/goravel/oss)                         | Storage 模块 OSS 驱动                                                                                                                           |
+| [goravel/cos](https://github.com/goravel/cos)                         | Storage 模块 COS 驱动                                                                                                                           |
+| [goravel/minio](https://github.com/goravel/minio)                     | Storage 模块 Minio 驱动                                                                                                                         |
+| [goravel/redis](https://github.com/goravel/redis)                     | Cache 模块 Redis 驱动                                                                                                                           |
+| [goravel/gin](https://github.com/goravel/gin)                         | Route 模块 Gin 驱动                                                                                                                             |
+| [goravel/fiber](https://github.com/goravel/fiber)                     | Route 模块 Fiber 驱动                                                                                                                           |
+| [goravel/postgres](https://github.com/goravel/postgres)               | Database 模块 Postgres 驱动                                                                                                                     |
+| [goravel/mysql](https://github.com/goravel/mysql)                     | Database 模块 MySQL 驱动                                                                                                                        |
+| [goravel/sqlserver](https://github.com/goravel/sqlserver)             | Database 模块 SQLServer 驱动                                                                                                                    |
+| [goravel/sqlite](https://github.com/goravel/sqlite)                   | Database 模块 SQLite 驱动                                                                                                                       |
+| [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | 为 Log 模块提供日志分割功能                                                                                                                            |
+| [goravel/.github](https://github.com/goravel/.github) | [社区健康文件](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
+
+## 行为准则
+
+Goravel 行为准则源自 Laravel 行为准则。 任何违反行为准则的行为都可以报告给 Bowen。
+
+- 参与者将容忍反对意见。
+- 参与者必须确保他们的语言和行为没有人身攻击和贬低个人言论。
+- 在解释他人的言行时，参与者应始终保持良好的意图。
+- 不能容忍可合理视为骚扰的行为。
+
+<style module>
+.contributors {
+  img {
+    border-radius: 50%;
+  }
+}
+
+</style>
