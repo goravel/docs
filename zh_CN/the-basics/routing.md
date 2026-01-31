@@ -17,120 +17,51 @@ Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动�
 
 ## 默认路由文件
 
-所有路由文件都在 `/routes` 目录中进行定义。 框架默认有一个示例路由 `/routes/web.go`。 其中 `func Web()` 方法被注册到 `app/providers/route_service_provider.go` 文件中，以实现路由的绑定。
+To define routing files, simply navigate to the `routes` directory. By default, the framework utilizes a sample route located in `routes/web.go` and it is registered in the `bootstrap/app.go::WithRouting` function.
 
-你可以在 `routes` 目录下新增路由文件，以进行更细颗粒的管理，然后在 `app/providers/route_service_provider.go` 文件中进行注册。
+If you require more precise management, you can add routing files to the `routes` directory and register them in the `bootstrap/app.go::WithRouting` function as well.
 
-## 获取路由列表
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithRouting(func() {
+      routes.Web()
+    }).
+		WithConfig(config.Boot).
+		Create()
+}
+```
 
-使用 `route:list` 命令可以查看路由列表：
+## Get Routes List
+
+Use the `route:list` command to view routes list:
 
 ```shell
 ./artisan route:list
 ```
 
-## 启动 HTTP 服务器
-
-在根目录下 `main.go` 中使用`facades.Route().Run()` 启动 HTTP 服务器， 将会自动获取 `route.host` 的配置。
-
-```go
-package main
-
-import (
-  "github.com/goravel/framework/facades"
-
-  "goravel/bootstrap"
-)
-
-func main() {
-  // This bootstraps the framework and gets it ready for use.
-  bootstrap.Boot()
-
-  // Start http server by facades.Route().
-  go func() {
-    if err := facades.Route().Run(); err != nil {
-      facades.Log().Errorf("Route run error: %v", err)
-    }
-  }()
-
-  select {}
-}
-```
-
-## 启动 HTTPS 服务器
-
-使用前请先完善 `config/http.go` 中的 `http.tls` 配置，`facades.Route().RunTLS()` 方法将会根据相关配置启动 HTTPS 服务：
-
-```go
-// main.go
-if err := facades.Route().RunTLS(); err != nil {
-  facades.Log().Errorf("Route run error: %v", err)
-}
-```
-
-你也可以使用 `facades.Route().RunTLSWithCert()` 方法，自定义 host 与 证书：
-
-```go
-// main.go
-if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
-  facades.Log().Errorf("Route run error: %v", err)
-}
-```
-
-## 关闭 HTTP/HTTPS 服务器
-
-你可以调用 `Shutdown` 方法优雅的关闭 HTTP/HTTPS 服务器，该方法将会等待所有请求处理完毕后再执行关闭操作。
-
-```go
-// main.go
-bootstrap.Boot()
-
-// 创建一个通道来监听操作系统信号
-quit := make(chan os.Signal)
-signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
-// 通过 facades.Route 启动 HTTP 服务器
-go func() {
-  if err := facades.Route().Run(); err != nil {
-    facades.Log().Errorf("Route run error: %v", err)
-  }
-}()
-
-// 监听操作系统信号
-go func() {
-  <-quit
-  if err := facades.Route().Shutdown(); err != nil {
-    facades.Log().Errorf("Route shutdown error: %v", err)
-  }
-
-  os.Exit(0)
-}()
-
-select {}
-```
-
 ### 路由方法
 
-| 方法         | 作用                |
-| ---------- | ----------------- |
-| Group      | [路由分组](#路由分组)     |
-| Prefix     | [路由前缀](#路由前缀)     |
-| ServeHTTP  | [测试路由](#测试路由)     |
-| Get        | [基本路由](#基本路由)     |
-| Post       | [基本路由](#基本路由)     |
-| Put        | [基本路由](#基本路由)     |
-| Delete     | [基本路由](#基本路由)     |
-| Patch      | [基本路由](#基本路由)     |
-| Options    | [基本路由](#基本路由)     |
-| Any        | [基本路由](#基本路由)     |
-| Resource   | [资源路由](#资源路由)     |
-| Static     | [文件路由](#文件路由)     |
-| StaticFile | [文件路由](#文件路由)     |
-| StaticFS   | [文件路由](#文件路由)     |
-| Middleware | [中间件](#中间件)       |
-| GetRoutes  | [获取所有路由](#获取所有路由) |
-| Name       | [设置路由名称](#设置路由名称) |
-| Info       | [获取路由信息](#获取路由信息) |
+| 方法         | 作用                              |
+| ---------- | ------------------------------- |
+| Group      | [路由分组](#路由分组)                   |
+| Prefix     | [路由前缀](#路由前缀)                   |
+| ServeHTTP  | [测试路由](#测试路由)                   |
+| Get        | [基本路由](#基本路由)                   |
+| Post       | [基本路由](#基本路由)                   |
+| Put        | [基本路由](#基本路由)                   |
+| Delete     | [基本路由](#基本路由)                   |
+| Patch      | [基本路由](#基本路由)                   |
+| Options    | [基本路由](#基本路由)                   |
+| Any        | [Basic Routing](#basic-routing) |
+| Resource   | [资源路由](#资源路由)                   |
+| Static     | [文件路由](#文件路由)                   |
+| StaticFile | [文件路由](#文件路由)                   |
+| StaticFS   | [文件路由](#文件路由)                   |
+| Middleware | [中间件](#中间件)                     |
+| GetRoutes  | [获取所有路由](#获取所有路由)               |
+| Name       | [设置路由名称](#设置路由名称)               |
+| Info       | [获取路由信息](#获取路由信息)               |
 
 ## 基本路由
 
@@ -252,21 +183,20 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 
 ### 定义速率限制器
 
-Goravel 包含强大且可自定义的速率限制服务，你可以利用这些服务来限制给定路由或一组路由的流量。 首先，你应该定义满足应用程序需求的速率限制器配置。 通常，这应该在应用程序的 `app/providers/route_service_provider.go` 文件的 `configureRateLimiting` 方法中完成。
+Goravel 包含强大且可自定义的速率限制服务，你可以利用这些服务来限制给定路由或一组路由的流量。 To get started, you should define rate limiter configurations that meet your application's needs, then register them in the `bootstrap/app.go::WithCallback` function.
 
 速率限制器使用 `facades.RateLimiter()` 的 `For` 方法进行定义。 `For` 方法接受一个速率限制器名称和一个闭包，该闭包返回应该应用于分配给速率限制器的路由的限制配置。 速率限制器名称可以是你希望的任何字符串：
 
 ```go
-import (
-  contractshttp "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
-  "github.com/goravel/framework/http/limit"
-)
-
-func (receiver *RouteServiceProvider) configureRateLimiting() {
-  facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
-    return limit.PerMinute(1000)
-  })
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+        return limit.PerMinute(1000)
+      })
+    }).
+    Create()
 }
 ```
 
