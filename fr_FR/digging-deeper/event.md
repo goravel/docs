@@ -6,34 +6,24 @@
 
 Goravel's events provide a simple observer pattern implementation, allowing you to subscribe and listen to various events that occur within your application. Event classes are typically stored in the `app/events` directory, while their listeners are stored in `app/listeners`. Don't worry if you don't see these directories in your application as they will be created for you as you generate events and listeners using Artisan console commands.
 
-Events serve as a great way to decouple various aspects of your application, as a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order is shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `app\events\OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
+Events serve as a great way to decouple various aspects of your application, as a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order is shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `app/events/OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
 
-## Registering Events & Listeners
+## Register Events & Listeners
 
-The `app\providers\EventServiceProvider` included with your Goravel application provides a convenient place to register all of your application's event listeners. The `listen` method contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add an `OrderShipped` event:
+All events and listeners should be registered via the `WithEvents` function in the `bootstrap/app.go` file:
 
 ```go
-package providers
-
-import (
-  "github.com/goravel/framework/contracts/event"
-  "github.com/goravel/framework/facades"
-
-  "goravel/app/events"
-  "goravel/app/listeners"
-)
-
-type EventServiceProvider struct {
-}
-
-...
-
-func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
-  return map[event.Event][]event.Listener{
-    &events.OrderShipped{}: {
-      &listeners.SendShipmentNotification{},
-    },
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithEvents(func() map[event.Event][]event.Listener {
+			return map[event.Event][]event.Listener{
+				events.NewOrderShipped(): {
+					listeners.NewSendShipmentNotification(),
+				},
+			}
+		}).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
 
@@ -42,11 +32,11 @@ func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener 
 You can use the `make:event` and `make:listener` Artisan commands to generate individual events and listeners:
 
 ```go
-go run . artisan make:event PodcastProcessed
-go run . artisan make:event user/PodcastProcessed
+./artisan make:event PodcastProcessed
+./artisan make:event user/PodcastProcessed
 
-go run . artisan make:listener SendPodcastNotification
-go run . artisan make:listener user/SendPodcastNotification
+./artisan make:listener SendPodcastNotification
+./artisan make:listener user/SendPodcastNotification
 ```
 
 ## Defining Events
@@ -58,8 +48,7 @@ package events
 
 import "github.com/goravel/framework/contracts/event"
 
-type OrderShipped struct {
-}
+type OrderShipped struct {}
 
 func (receiver *OrderShipped) Handle(args []event.Arg) ([]event.Arg, error) {
   return args, nil
@@ -77,8 +66,7 @@ import (
   "github.com/goravel/framework/contracts/event"
 )
 
-type SendShipmentNotification struct {
-}
+type SendShipmentNotification struct {}
 
 func (receiver *SendShipmentNotification) Signature() string {
   return "send_shipment_notification"
@@ -139,9 +127,9 @@ package controllers
 import (
   "github.com/goravel/framework/contracts/event"
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
 
   "goravel/app/events"
+  "goravel/app/facades"
 )
 
 type UserController struct {
