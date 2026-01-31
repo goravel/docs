@@ -5,40 +5,44 @@ export const config = defineConfig({
   themeConfig: {
     nav: nav(),
     sidebar: [{
-      text: "快速开始",
-      base: "/zh_CN/getting-started/",
-      items: sidebarQuickstart()
+      text: 'Prologue',
+      base: '/prologue/',
+      items: sidebarPrologue()
     }, {
       text: "升级",
       base: "/zh_CN/upgrade/",
       items: sidebarUpgrade()
     }, {
-      text: "核心架构",
-      base: "/zh_CN/architecture-concepts/",
+      text: 'Getting Started',
+      base: '/getting-started/',
+      items: sidebarGettingStarted()
+    }, {
+      text: 'Architecture Concepts',
+      base: '/architecture-concepts/',
       items: sidebarFoundation()
     }, {
-      text: "基本功能",
-      base: "/zh_CN/the-basics/",
+      text: 'The Basics',
+      base: '/the-basics/',
       items: sidebarBasic()
     }, {
-      text: "高级功能",
-      base: "/zh_CN/digging-deeper/",
+      text: 'Digging Deeper',
+      base: '/digging-deeper/',
       items: sidebarAdvanced()
     }, {
-      text: "安全",
-      base: "/zh_CN/security/",
+      text: 'Security',
+      base: '/security/',
       items: sidebarSecurity()
     }, {
-      text: "数据库",
-      base: "/zh_CN/database/",
+      text: 'Database',
+      base: '/database/',
       items: sidebarDatabase()
     }, {
       text: 'ORM',
-      base: "/zh_CN/orm/",
+      base: '/orm/',
       items: sidebarOrm()
     }, {
-      text: "测试",
-      base: "/zh_CN/testing/",
+      text: 'Testing',
+      base: '/testing/',
       items: sidebarTesting()
     }],
     editLink: {
@@ -81,44 +85,59 @@ function nav(): DefaultTheme.NavItem[] {
     text: "视频教程",
     link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
   }, {
-    text: "翻译",
-    link: "/zh_CN/getting-started/contributions#新增语言"
+    text: 'Versions',
+    items: [{
+      text: 'v1.17 (Latest)',
+      link: 'https://www.goravel.dev/'
+    }, {
+      text: 'v1.16',
+      link: 'https://v116.goravel.dev/'
+    }]
+  }, {
+    text: 'Translate',
+    link: '/prologue/contributions#add-a-new-language'
   }];
 }
-function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
+function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "安装",
+    text: 'Installation',
     link: 'installation'
   }, {
-    text: "配置",
+    text: 'Configuration',
     link: 'configuration'
   }, {
-    text: "目录结构",
+    text: 'Directory Structure',
     link: 'directory-structure'
   }, {
-    text: "编译",
+    text: 'Compile',
     link: 'compile'
   }, {
-    text: "发行说明",
+    text: 'Excellent Packages',
+    link: 'packages'
+  }];
+}
+function sidebarPrologue(): DefaultTheme.SidebarItem[] {
+  return [{
+    text: 'Release Notes',
     link: 'releases'
   }, {
-    text: "贡献指南",
+    text: 'Contribution Guide',
     link: 'contributions'
   }, {
-    text: "优秀扩展包",
-    link: 'packages'
+    text: 'Compare With Laravel',
+    link: 'compare-with-laravel'
   }, {
-    text: "隐私政策",
+    text: 'Privacy Policy',
     link: 'privacy'
   }];
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "从 v1.15 升级到 v1.16",
-    link: 'v1.16'
+    text: 'Upgrading To v1.17 From v1.16',
+    link: 'v1.17'
   }, {
-    text: "从 v1.14 升级到 v1.15",
-    link: 'v1.15'
+    text: 'Upgrading To v1.16 From v1.15',
+    link: 'v1.16'
   }, {
     text: "历史",
     link: 'history'
@@ -204,14 +223,20 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     text: "彩色输出",
     link: 'color'
   }, {
-    text: "字符串",
+    text: 'Processes',
+    link: 'processes'
+  }, {
+    text: 'Strings',
     link: 'strings'
   }, {
-    text: "辅助函数",
+    text: 'Helpers',
     link: 'helpers'
   }, {
-    text: "HTTP 客户端",
+    text: 'HTTP Client',
     link: 'http-client'
+  }, {
+    text: 'Pluralization',
+    link: 'pluralization'
   }];
 }
 function sidebarSecurity(): DefaultTheme.SidebarItem[] {
