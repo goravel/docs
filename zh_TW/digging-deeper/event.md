@@ -6,34 +6,24 @@
 
 Goravel 的事件系統提供了一個簡單的觀察者模式的實現，允許你能夠訂閱和監聽在你的應用中的發生的各種事件。 事件類一般來說存儲在 `app/events` 目錄，而其監聽者則存儲在 `app/listeners`。 不要擔心在你的應用中沒有看到這兩個目錄，因為通過 Artisan 命令行來創建事件和監聽者的時候目錄會同時被創建。
 
-事件提供了一種很好的方式來解耦應用的各個方面，因為一個事件可以有多個彼此不依賴的監聽者。 例如，你可能希望每當訂單發貨時就向用戶發送 Slack 通知。 而不是將你的訂單處理代碼與 Slack 通知代碼耦合在一起，你可以引發一個 `app\events\OrderShipped` 事件，這個事件可以被監聽者接收並用來發送 Slack 通知。
+事件提供了一種很好的方式來解耦應用的各個方面，因為一個事件可以有多個彼此不依賴的監聽者。 例如，你可能希望每當訂單發貨時就向用戶發送 Slack 通知。 Instead of coupling your order processing code to your Slack notification code, you can raise an `app/events/OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
 
-## 註冊事件與監聽者
+## Register Events & Listeners
 
-在你 Goravel 應用的 `app\providers\EventServiceProvider` 中提供了一個方便的地方來註冊所有的事件監聽者。 `listen` 方法包含所有事件（鍵）和其監聽者（值）的數組。 你可以根據應用的需要向這個數組中添加任意多的事件。 例如，讓我們添加一個 `OrderShipped` 事件：
+All events and listeners should be registered via the `WithEvents` function in the `bootstrap/app.go` file:
 
 ```go
-package providers
-
-import (
-  "github.com/goravel/framework/contracts/event"
-  "github.com/goravel/framework/facades"
-
-  "goravel/app/events"
-  "goravel/app/listeners"
-)
-
-type EventServiceProvider struct {
-}
-
-...
-
-func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
-  return map[event.Event][]event.Listener{
-    &events.OrderShipped{}: {
-      &listeners.SendShipmentNotification{},
-    },
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithEvents(func() map[event.Event][]event.Listener {
+			return map[event.Event][]event.Listener{
+				events.NewOrderShipped(): {
+					listeners.NewSendShipmentNotification(),
+				},
+			}
+		}).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
 
@@ -42,11 +32,11 @@ func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener 
 你可以使用 `make:event` 以及 `make:listener` Artisan 命令來生成單個事件和監聽者：
 
 ```go
-go run . artisan make:event PodcastProcessed
-go run . artisan make:event user/PodcastProcessed
+./artisan make:event PodcastProcessed
+./artisan make:event user/PodcastProcessed
 
-go run . artisan make:listener SendPodcastNotification
-go run . artisan make:listener user/SendPodcastNotification
+./artisan make:listener SendPodcastNotification
+./artisan make:listener user/SendPodcastNotification
 ```
 
 ## 定義事件
@@ -58,8 +48,7 @@ package events
 
 import "github.com/goravel/framework/contracts/event"
 
-type OrderShipped struct {
-}
+type OrderShipped struct {}
 
 func (receiver *OrderShipped) Handle(args []event.Arg) ([]event.Arg, error) {
   return args, nil
@@ -77,8 +66,7 @@ import (
   "github.com/goravel/framework/contracts/event"
 )
 
-type SendShipmentNotification struct {
-}
+type SendShipmentNotification struct {}
 
 func (receiver *SendShipmentNotification) Signature() string {
   return "send_shipment_notification"
@@ -139,9 +127,9 @@ package controllers
 import (
   "github.com/goravel/framework/contracts/event"
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
 
   "goravel/app/events"
+  "goravel/app/facades"
 )
 
 type UserController struct {
