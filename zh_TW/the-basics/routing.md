@@ -17,95 +17,27 @@ Goravel 預設使用 [gin](https://github.com/gin-gonic/gin) 作為 HTTP 驅動�
 
 ## 預設路由檔案
 
-要定義路由檔案，只需導航至 `/routes` 目錄。 默認情況下，框架使用位於 `/routes/web.go` 的範例路由。 要建立路由綁定，`func Web()` 方法在 `app/providers/route_service_provider.go` 檔案中註冊。
+To define routing files, simply navigate to the `routes` directory. By default, the framework utilizes a sample route located in `routes/web.go` and it is registered in the `bootstrap/app.go::WithRouting` function.
 
-如果你需要更精確的管理，可以在 `/routes` 目錄下新增路由檔案，並在 `app/providers/route_service_provider.go` 檔案中註冊。
+If you require more precise management, you can add routing files to the `routes` directory and register them in the `bootstrap/app.go::WithRouting` function as well.
 
-## 獲取路由列表
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithRouting(func() {
+      routes.Web()
+    }).
+		WithConfig(config.Boot).
+		Create()
+}
+```
+
+## Get Routes List
 
 使用 `route:list` 命令來查看路由列表：
 
 ```shell
 ./artisan route:list
-```
-
-## 啟動 HTTP 伺服器
-
-在根目錄的 `main.go` 中呼叫 `facades.Route().Run()` 來啟動 HTTP 伺服器。 這將自動獲取 `route.host` 配置。
-
-```go
-package main
-
-import (
-  "github.com/goravel/framework/facades"
-  "goravel/bootstrap"
-)
-
-func main() {
-  // 這會初始化框架並準備使用。
-  bootstrap.Boot()
-
-  // 通過 facades.Route() 啟動 http 伺服器。
-  go func() {
-    if err := facades.Route().Run(); err != nil {
-      facades.Log().Errorf("路由運行錯誤: %v", err)
-    }
-  }()
-
-  select {}
-}
-```
-
-## 啟動 HTTPS 伺服器
-
-在使用 HTTPS 之前，請完成 `config/http.go` 中的 `http.tls` 配置，`facades.Route().RunTLS()` 方法將根據相關配置啟動 HTTPS 伺服器。
-
-```go
-// main.go
-if err := facades.Route().RunTLS(); err != nil {
-  facades.Log().Errorf("路由運行錯誤: %v", err)
-}
-```
-
-你也可以使用 `facades.Route().RunTLSWithCert()` 方法來自定義主機和證書。
-
-```go
-// main.go
-if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
-  facades.Log().Errorf("路由運行錯誤: %v", err)
-}
-```
-
-## 關閉 HTTP/HTTPS 伺服器
-
-你可以透過呼叫 `Shutdown` 方法優雅的關閉 HTTP/HTTPS 伺服器，該方法將等待所有請求處理完後再關閉。
-
-```go
-// main.go
-bootstrap.Boot()
-
-// 創建一個通道來監聽 OS 信號
-quit := make(chan os.Signal)
-signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
-// 通過 facades.Route 啟動 HTTP 伺服器
-go func() {
-  if err := facades.Route().Run(); err != nil {
-    facades.Log().Errorf("路由運行錯誤: %v", err)
-  }
-}()
-
-// 監聽 OS 信號
-go func() {
-  <-quit
-  if err := facades.Route().Shutdown(); err != nil {
-    facades.Log().Errorf("路由關閉錯誤: %v", err)
-  }
-
-  os.Exit(0)
-}()
-
-select {}
 ```
 
 ### 路由方法
@@ -251,21 +183,20 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 
 ### 定義速率限制器
 
-Goravel 包含強大且可自訂的速率限制服務，你可以利用這些服務來限制給定路由或一組路由的流量。 首先，你應該定義滿足應用需求的速率限制器配置。 通常，這應在應用的 `app/providers/route_service_provider.go` 檔案的 `configureRateLimiting` 方法中完成。 要開始，您應該定義滿足您應用需求的速率限制器配置。 通常，這應該在您應用的 `app/providers/route_service_provider.go` 類別的 `configureRateLimiting` 方法內完成。
+Goravel 包含強大且可自訂的速率限制服務，你可以利用這些服務來限制給定路由或一組路由的流量。 首先，你應該定義滿足應用需求的速率限制器配置。 通常，這應在應用的 `app/providers/route_service_provider.go` 檔案的 `configureRateLimiting` 方法中完成。 To get started, you should define rate limiter configurations that meet your application's needs, then register them in the `bootstrap/app.go::WithCallback` function.
 
 速率限制器是使用 `facades.RateLimiter()` 的 `For` 方法來定義的。 `For` 方法接受速率限制器名稱和返回應用於指派給速率限制器的路由的限制配置的閉包。 速率限制器名稱可以是您希望的任何字串：
 
 ```go
-import (
-  contractshttp "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
-  "github.com/goravel/framework/http/limit"
-)
-
-func (receiver *RouteServiceProvider) configureRateLimiting() {
-  facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
-    return limit.PerMinute(1000)
-  })
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+        return limit.PerMinute(1000)
+      })
+    }).
+    Create()
 }
 ```
 
