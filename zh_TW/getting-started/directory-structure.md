@@ -6,62 +6,50 @@
 
 默認的文件結構可以使你更好地開始項目推進，你也可以自由地新增文件夾，但默認文件夾不要修改。
 
-## 根目錄
+## Folder Tree
 
-### `app` 目錄
+```
+goravel/
+├── app/                        # Core application logic
+│   ├── console/                # Artisan console commands
+│   ├── grpc/                   # gRPC controllers and middleware
+│   ├── http/                   # HTTP controllers and middleware
+│   │   ├── controllers/        # HTTP request handlers
+│   │   ├── middleware/         # HTTP middleware (auth, cors, etc.)
+│   ├── models/                 # Database models and ORM entities
+│   └── providers/              # Service providers
+├── bootstrap/                  # Application bootstrapping
+│   └── app.go                  # Framework initialization and startup
+├── config/                     # Application configuration files
+├── database/                   # Database related files
+│   ├── migrations/             # Database migration files
+│   ├── seeders/                # Database seeders
+├── resources/                  # Raw, uncompiled assets
+│   └── views/                  # View templates
+├── routes/                     # Application route definitions
+├── storage/                    # Application storage
+├── tests/                      # Automated tests
+├── .air.toml                   # Air hot reload configuration
+├── .env.example                # Environment variables template
+├── artisan                     # Artisan console entry script
+├── go.mod                      # Go module dependencies
+├── go.sum                      # Go module checksums
+├── main.go                     # Application entry point
+```
 
-`app` 包含了程序的核心代碼。 幾乎所有的邏輯都會在這個文件夾中。
+## Customize Directory Structure
 
-### `bootstrap` 目錄
+You can customize the directory structure by calling the `WithPath()` function in the `bootstrap/app.go` file. For example, if you want to change the default `app` directory to `src`, you can modify the `bootstrap/app.go` file as follows:
 
-`bootstrap` 目錄包含了框架的啟動文件 `app.go`。
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithPaths(func(paths configuration.Paths) {
+			paths.App("src")
+		}).
+		WithConfig(config.Boot).
+		Create()
+}
+```
 
-### `config` 目錄
-
-`config` 目錄包含了應用程序的所有配置文件。最好把這些文件都瀏覽一遍，並熟悉所有可用的配置。 最好瀏覽這些文件，熟悉所有可用的選項。
-
-### `database` 目錄
-
-`database` 目錄包含了數據庫遷移文件。
-
-### `public` 目錄
-
-`public` 目錄包含一些靜態資源，如圖像、證書等。
-
-### `resources` 目錄
-
-`resources` 目錄包含你的[視圖](../the-basics/views.md)，以及原始的、未編譯的資源文件，例如 CSS 或 JavaScript。
-
-### `routes` 目錄
-
-`routes` 目錄包含應用程序的所有路由定義。
-
-### `storage` 目錄
-
-`storage` 目錄包含 `logs` 目錄，`logs` 目錄包含應用程序的日誌文件。
-
-### `tests` 目錄
-
-`tests` 目錄包含你的自動化測試。
-
-## `app` 目錄
-
-### `console` 目錄
-
-`console` 目錄包含應用程序所有自定義的 `Artisan` 命令，與控制台啟動文件 `kernel.go`，可以在這個文件中註冊[任務](../digging-deeper/task-scheduling.md)
-
-### `http` 目錄
-
-`http` 目錄包含控制器、中間件等，幾乎所有通過 Web 進入應用的請求處理都在這裡進行。
-
-### `grpc` 目錄
-
-`grpc` 目錄包含控制器、中間件等，幾乎所有通過 Grpc 進入應用的請求處理都在這裡進行。
-
-### `models` 目錄
-
-`models` 目錄包含所有數據模型。
-
-### `providers` 目錄
-
-`providers` 目錄包含程序中所有的 [服務提供者](../architecture-concepts/service-providers.md)。 服務提供者通過綁定服務、註冊事件或執行任何其他任務來引導應用程序以應對傳入的請求。 服務提供者引導應用程序通過綁定服務、註冊事件或執行任何其他任務來應對傳入的請求。
+There are many other paths you can customize, such as `Config`, `Database`, `Routes`, `Storage`, and `Resources`. Just call the corresponding method on the `paths` object to set your desired directory.
