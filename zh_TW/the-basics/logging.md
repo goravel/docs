@@ -90,7 +90,7 @@ facades.Log().User("John").Debug(message)
 // config/logging.go
 "custom": map[string]interface{}{
     "driver": "custom",
-    "via":    &CustomTest{},
+    "via":    &CustomLogger{},
 },
 ```
 
@@ -103,49 +103,12 @@ facades.Log().User("John").Debug(message)
 package log
 
 type Logger interface {
-  // Handle 輸入通道配置路徑
-  Handle(channel string) (Hook, error)
+  // Handle pass channel config path here
+  Handle(channel string) (Handler, error)
 }
 ```
 
-檔案可以存儲在 `app/extensions` 資料夾中（可修改）。 示例：
+You can check the daily and single log drivers for reference:
 
-```go
-package extensions
-
-import (
-  "fmt"
-
-  "github.com/goravel/framework/contracts/log"
-)
-
-type Logger struct {
-}
-
-// Handle 輸入通道配置路徑
-func (logger *Logger) Handle(channel string) (log.Hook, error) {
-  return &Hook{}, nil
-}
-
-type Hook struct {
-}
-
-// Levels 監控級別
-func (h *Hook) Levels() []log.Level {
-  return []log.Level{
-    log.DebugLevel,
-    log.InfoLevel,
-    log.WarningLevel,
-    log.ErrorLevel,
-    log.FatalLevel,
-    log.PanicLevel,
-  }
-}
-
-// Fire 當觸發時執行邏輯
-func (h *Hook) Fire(entry log.Entry) error {
-  fmt.Printf("context=%v level=%v time=%v message=%s", entry.Context(), entry.Level(), entry.Time(), entry.Message())
-
-  return nil
-}
-```
+- [Daily](https://github.com/goravel/framework/blob/master/log/logger/daily.go)
+- [Single](https://github.com/goravel/framework/blob/master/log/logger/single.go)
