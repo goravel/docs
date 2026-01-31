@@ -8,7 +8,7 @@ Goravel 的加密服務提供了簡單方便的介面，可以通過 OpenSSL 使
 
 ## 配置
 
-在使用 Goravel 的加密工具之前，你必須在 `config/app.go` 配置文件中設置 `key` 配置選項。 此選項由 `APP_KEY` 環境變數驅動。 使用 `go run . artisan key:generate` 命令來生成該變數的值，因為 `key:generate` 命令將使用 Golang 的安全隨機字節生成器為你的應用程序生成安全的加密密鑰。
+在使用 Goravel 的加密工具之前，你必須在 `config/app.go` 配置文件中設置 `key` 配置選項。 此選項由 `APP_KEY` 環境變數驅動。 Use the `./artisan key:generate` command to generate this variable's value since the `key:generate` command will utilize Golang's secure random bytes generator to create a secure cryptographic key for your application.
 
 ## 使用加密器
 
