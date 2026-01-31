@@ -67,7 +67,7 @@ head:
 hero:
   name: Goravel
   text: 全功能 Golang 開發框架
-  tagline: 高性能、全功能、易擴展，PHPers 過渡首選。
+  tagline: Componentization, High-performance, easy-to-extend, PHPers' first choice.
   # image: /logo.svg
   actions:
     - theme: brand
@@ -78,14 +78,14 @@ hero:
       link: https://github.com/goravel/goravel
       target: _blank
 features:
+  - title: 💻 Componentization
+    details: Modular design, each module is independent and can be used separately, making development and maintenance more convenient.
   - title: 🚀 高性能
     details: 使用 Golang 構建，整合多種優秀擴展來創建快速且響應靈敏的應用程序。
   - title: 🧰 全功能
     details: 包括 ORM、HTTP、隊列、任務調度、日誌、緩存等，提供所有 Web 開發所需的基本工具。
   - title: 📈 易擴展
     details: 模塊提供多種驅動，且可根據需求開發擴展包，適合任何規模的應用程序，從小型項目到大型系統。
-  - title: 💻 易部署
-    details: 提供多種打包命令，支持 Docker 鏡像部署，無額外依賴。
   - title: 👥 活躍的社區
     details: 由活躍的社區支持，他們為其開發、撰寫文檔和持續支持做出貢獻。
   - title: 🔄 PHPers 過渡首選
