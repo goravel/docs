@@ -5,15 +5,19 @@ export const config = defineConfig({
   themeConfig: {
     nav: nav(),
     sidebar: [{
-      text: "快速開始",
-      base: "/zh_TW/getting-started/",
-      items: sidebarQuickstart()
+      text: 'Prologue',
+      base: '/prologue/',
+      items: sidebarPrologue()
     }, {
       text: "升級",
       base: "/zh_TW/upgrade/",
       items: sidebarUpgrade()
     }, {
-      text: "架構概念",
+      text: 'Getting Started',
+      base: '/getting-started/',
+      items: sidebarGettingStarted()
+    }, {
+      text: 'Architecture Concepts',
       base: "/zh_TW/architecture-concepts/",
       items: sidebarFoundation()
     }, {
@@ -81,13 +85,22 @@ function nav(): DefaultTheme.NavItem[] {
     text: "視頻教程",
     link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
   }, {
-    text: "翻譯",
-    link: "/zh_TW/getting-started/contributions#新增語言"
+    text: 'Versions',
+    items: [{
+      text: 'v1.17 (Latest)',
+      link: 'https://www.goravel.dev/'
+    }, {
+      text: 'v1.16',
+      link: 'https://v116.goravel.dev/'
+    }]
+  }, {
+    text: 'Translate',
+    link: '/prologue/contributions#add-a-new-language'
   }];
 }
-function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
+function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "安裝",
+    text: 'Installation',
     link: 'installation'
   }, {
     text: "配置",
@@ -99,26 +112,32 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
     text: "編譯",
     link: 'compile'
   }, {
-    text: "發行說明",
+    text: 'Excellent Packages',
+    link: 'packages'
+  }];
+}
+function sidebarPrologue(): DefaultTheme.SidebarItem[] {
+  return [{
+    text: 'Release Notes',
     link: 'releases'
   }, {
     text: "貢獻指南",
     link: 'contributions'
   }, {
-    text: "優秀擴展包",
-    link: 'packages'
+    text: 'Compare With Laravel',
+    link: 'compare-with-laravel'
   }, {
-    text: "隱私政策",
+    text: 'Privacy Policy',
     link: 'privacy'
   }];
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "從 v1.15 升級到 v1.16",
-    link: 'v1.16'
+    text: 'Upgrading To v1.17 From v1.16',
+    link: 'v1.17'
   }, {
-    text: "從 v1.14 升級到 v1.15",
-    link: 'v1.15'
+    text: 'Upgrading To v1.16 From v1.15',
+    link: 'v1.16'
   }, {
     text: "歷史",
     link: 'history'
@@ -204,7 +223,10 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     text: "彩色輸出",
     link: 'color'
   }, {
-    text: "字符串",
+    text: 'Processes',
+    link: 'processes'
+  }, {
+    text: 'Strings',
     link: 'strings'
   }, {
     text: "輔助函數",
@@ -212,6 +234,9 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
   }, {
     text: "HTTP 客戶端",
     link: 'http-client'
+  }, {
+    text: 'Pluralization',
+    link: 'pluralization'
   }];
 }
 function sidebarSecurity(): DefaultTheme.SidebarItem[] {
