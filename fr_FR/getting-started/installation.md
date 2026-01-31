@@ -22,6 +22,10 @@ goravel new blog
 
 ### Manual Installation
 
+#### goravel/goravel
+
+The complete framework with full features.
+
 ```shell
 // Download framework
 git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
@@ -33,26 +37,47 @@ cd goravel && go mod tidy
 cp .env.example .env
 
 // Generate application key
-go run . artisan key:generate
+./artisan key:generate
 ```
 
-Please confirm your network if you encounter slow download dependencies.
+#### goravel/goravel-lite
 
-## Start HTTP Service
+The lite framework with only essential features, suitable for building microservices or small applications. You can install additional facades as needed.
 
-### Start Service According To .env File In The Root Directory
+```shell
+// Download framework
+git clone --depth=1 https://github.com/goravel/goravel-lite.git && rm -rf goravel-lite/.git*
+s
+// Install dependencies
+cd goravel-lite && go mod tidy
+
+// Create .env environment configuration file
+cp .env.example .env
+
+// Generate application key
+./artisan key:generate
+
+// Install additional facades as needed, for example:
+./artisan package:install Cache
+```
+
+> Please confirm your network if you encounter slow download dependencies.
+
+## Start Services
+
+### Start Services According To .env File In The Root Directory
 
 ```shell
 go run .
 ```
 
-### Specify .env File To Start Service
+### Specify .env File To Start Services
 
 ```shell
 go run . --env=./.env
 ```
 
-### Start Service Using Environment Variables
+### Start Services Using Environment Variables
 
 ```shell
 APP_ENV=production APP_DEBUG=true go run .
@@ -148,7 +173,7 @@ All configuration files of the Goravel framework are placed in the `config` dire
 You need to generate the application key after Goravel is installed locally. Running the command below, a 32-bit string will be generated on the `APP_KEY` key in the `.env` file. This key is mainly used for data encryption and decryption.
 
 ```shell
-go run . artisan key:generate
+./artisan key:generate
 ```
 
 ### Generate JWT Token
@@ -156,7 +181,7 @@ go run . artisan key:generate
 You need to generate JWT Token if you use [Authentication](../security/authentication.md).
 
 ```shell
-go run . artisan jwt:secret
+./artisan jwt:secret
 ```
 
 ### Encrypt and decrypt env file
@@ -164,17 +189,17 @@ go run . artisan jwt:secret
 You may want to add the production environment env file to version control, but you don't want to expose sensitive information, you can use the `env:encrypt` command to encrypt the env file:
 
 ```shell
-go run . artisan env:encrypt
+./artisan env:encrypt
 
 // Specify the file name and key
-go run . artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+./artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
 Then use the `env:decrypt` command to decrypt the env file in the production environment:
 
 ```shell
-GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc go run . artisan env:decrypt
+GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc ./artisan env:decrypt
 
 // or
-go run . artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+./artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
