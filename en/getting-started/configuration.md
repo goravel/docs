@@ -16,6 +16,19 @@ Note that the `.env` file should not be added to version control, because when m
 
 In addition, if an intruder gains access to your code repository, there will be a risk of exposing sensitive configuration. If you want to add a new configuration item, you can add it to the `.env.example` file to synchronize the configuration of all developers.
 
+
+### Register Configuration
+
+All configuration files will be registered via the `WithConfig` function in the `bootstrap/app.go` file. Given that it's a `init` function in the config file, you don't need to register each configuration file one by one. Just call the `WithConfig` function as follows:
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithConfig(config.Boot).
+		Create()
+}
+```
+
 ## Retrieve Environment Configuration
 
 Use the following method to obtain the configuration items in the `.env` file:
@@ -56,5 +69,5 @@ facades.Config().Add("path.with.dot", map[string]any{"case3": "value3"})
 You can use the `artisan about` command to view the framework version, configuration, etc.
 
 ```bash
-go run . artisan about
+./artisan about
 ```

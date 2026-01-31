@@ -22,8 +22,8 @@ For example, the model name is `UserOrder`, and the table name is `user_orders`.
 Use the `make:model` command to create a model:
 
 ```shell
-go run . artisan make:model User
-go run . artisan make:model user/User
+./artisan make:model User
+./artisan make:model user/User
 ```
 
 Created model file is located in `app/models/user.go` file, the content is as follows:
@@ -103,27 +103,34 @@ func (r *UserData) Scan(value any) (err error) {
 ./artisan make:model --table=users -f User
 ```
 
-If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend` method to extend the field type in the `Boot` method of the `app/providers/database_service_provider.go` file:
+If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend` method to extend the field type in the `bootstrap/app.go::WithCallback` function:
 
 ```go
 import "github.com/goravel/framework/contracts/schema"
 
-facades.Schema().Extend(&schema.Extension{
-  GoTypes: []schema.GoType{
-    {
-        Pattern: "uuid",
-        Type: "uuid.UUID",
-        NullType: "uuid.NullUUID",
-        Imports: []string{"github.com/google/uuid"},
-    },
-    {
-        Pattern: "point",
-        Type: "geom.Point",
-        NullType: "*geom.Point",
-        Imports: []string{"github.com/twpayne/go-geom"},
-    },
-  },
-})
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Schema().Extend(&schema.Extension{
+        GoTypes: []schema.GoType{
+          {
+              Pattern: "uuid",
+              Type: "uuid.UUID",
+              NullType: "uuid.NullUUID",
+              Imports: []string{"github.com/google/uuid"},
+          },
+          {
+              Pattern: "point",
+              Type: "geom.Point",
+              NullType: "*geom.Point",
+              Imports: []string{"github.com/twpayne/go-geom"},
+          },
+        },
+      })
+    }).
+    Create()
+}
 ```
 
 ### Specify Table Name
@@ -172,7 +179,7 @@ func (r *User) Connection() string {
 
 ### Setting Global Scope
 
-Model supports setting the `GlobalScope` method, which restricts the scope of the query, update, and delete operations:
+Model supports setting the `GlobalScopes` method, which restricts the scope of the query, update, and delete operations:
 
 ```go
 import "github.com/goravel/framework/contracts/orm"
@@ -182,13 +189,23 @@ type User struct {
   Name string
 }
 
-func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
-  return []func(orm.Query) orm.Query{
-    func(query orm.Query) orm.Query {
+func (r *User) GlobalScopes() map[string]func(orm.Query) orm.Query {
+  return map[string]func(orm.Query) orm.Query{
+    "name": func(query orm.Query) orm.Query {
       return query.Where("name", "goravel")
     },
   }
 }
+```
+
+If you want to remove global scopes in a query, you can use the `WithoutGlobalScopes` function:
+
+```go
+// Remove all global scopes
+facades.Orm().Query().WithoutGlobalScopes().Get(&users)
+
+// Remove specified global scope
+facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 ```
 
 ## facades.Orm() available functions
@@ -205,6 +222,7 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 
 | Functions                   | Action                                                                        |
 | --------------------------- | ----------------------------------------------------------------------------- |
+| Avg                         | [Avg](#Avarage)                                                               |
 | BeginTransaction            | [Begin transaction](#transaction)                                             |
 | Commit                      | [Commit transaction](#transaction)                                            |
 | Count                       | [Count](#count)                                                               |
@@ -229,6 +247,8 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | Join                        | [Join](#join)                                                                 |
 | Limit                       | [Limit](#limit)                                                               |
 | LockForUpdate               | [Pessimistic Locking](#pessimistic-locking)                                   |
+| Max                         | [Max](#Avarage)                                                               |
+| Min                         | [Min](#Avarage)                                                               |
 | Model                       | [Specify a model](#specify-table-query)                                       |
 | Offset                      | [Offset](#offset)                                                             |
 | Order                       | [Order](#order)                                                               |
@@ -255,14 +275,17 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | Scopes                      | [Scopes](#scopes)                                                             |
 | Select                      | [Specify Fields](#specify-fields)                                             |
 | SharedLock                  | [Pessimistic Locking](#pessimistic-locking)                                   |
-| Sum                         | [Sum](#sum)                                                                   |
+| Sum                         | [Sum](#Avarage)                                                               |
 | Table                       | [Specify a table](#specify-table-query)                                       |
 | ToSql                       | [Get SQL](#get-sql)                                                           |
 | ToRawSql                    | [Get SQL](#get-sql)                                                           |
 | Update                      | [Update a single column](#update-a-single-column)                             |
 | UpdateOrCreate              | [Update or create](#update-or-create)                                         |
 | Where                       | [Where](#where)                                                               |
+| WhereAll                    | [WhereAll](#where)                                                        |
+| WhereAny                    | [WhereAny](#where)                                                        |
 | WhereBetween                | [WhereBetween](#where)                                                        |
+| WhereNone                   | [WhereNone](#where)                                                     |
 | WhereNotBetween             | [WhereNotBetween](#where)                                                     |
 | WhereNotIn                  | [WhereNotIn](#where)                                                          |
 | WhereNull                   | [WhereNull](#where)                                                           |
@@ -439,6 +462,18 @@ facades.Orm().Query().OrWhere("name", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
 facades.Orm().Query().OrWhereNull("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
+
+var products []Product
+facades.DB().Table("products").WhereAll([]string{"weight", "height"}, "=", 200).Find(&products)
+// SQL: SELECT * FROM products WHERE weight = ? AND height = ?
+
+var users []User
+facades.DB().Table("users").WhereAny([]string{"name", "email"}, "=", "John").Find(&users)
+// SQL: SELECT * FROM users WHERE (name = ? OR email = ?)
+
+var products []Product
+facades.DB().Table("products").WhereNone([]string{"age", "score"}, ">", 18).Find(&products)
+// SQL: SELECT * FROM products WHERE NOT (age > ?) AND NOT (score > ?)
 ```
 
 Query JSON columns
@@ -831,8 +866,8 @@ You can execute a transaction by `Transaction` function.
 ```go
 import (
   "github.com/goravel/framework/contracts/database/orm"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/models"
 )
 
@@ -905,10 +940,20 @@ var users []models.User
 facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
-### Sum
+### Avarage
 
 ```go
-sum, err := facades.Orm().Query().Model(models.User{}).Sum("id")
+var sum int
+err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum)
+
+var avg float64
+err := facades.Orm().Query().Model(models.User{}).Average("age", &avg)
+
+var max int
+err := facades.Orm().Query().Model(models.User{}).Max("age", &max)
+
+var min int
+err := facades.Orm().Query().Model(models.User{}).Min("age", &min)
 ```
 
 ## Events
@@ -986,8 +1031,8 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 If you are listening to many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names that reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
 ```shell
-go run . artisan make:observer UserObserver
-go run . artisan make:observer user/UserObserver
+./artisan make:observer UserObserver
+./artisan make:observer user/UserObserver
 ```
 
 This command will place the new observer in your `app/observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
@@ -1022,31 +1067,16 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 
 The template observer only contains some events, you can add other events according to your needs.
 
-To register an observer, you need to call the `Observe` method on the model you wish to observe. You may register observers in the `Boot` method of your application's `app/providers/event_service_provider.go::Boot` service provider:
+To register an observer, you need to call the `Observe` method on the model you wish to observe. You can register observers in the `bootstrap/app.go::WithCallback` function:
 
 ```go
-package providers
-
-import (
-	"github.com/goravel/framework/facades"
-
-	"goravel/app/models"
-	"goravel/app/observers"
-)
-
-type EventServiceProvider struct {
-}
-
-func (receiver *EventServiceProvider) Register(app foundation.Application) {
-	facades.Event().Register(receiver.listen())
-}
-
-func (receiver *EventServiceProvider) Boot(app foundation.Application) {
-	facades.Orm().Observe(models.User{}, &observers.UserObserver{})
-}
-
-func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
-	return map[event.Event][]event.Listener{}
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Orm().Observe(models.User{}, &observers.UserObserver{})
+    }).
+    Create()
 }
 ```
 

@@ -13,9 +13,7 @@ The `http.Context` instance is automatically injected into the controller:
 ```go
 import "github.com/goravel/framework/contracts/http"
 
-facades.Route().Get("/", func(ctx http.Context) {
-
-})
+facades.Route().Get("/", func(ctx http.Context) http.Response {})
 ```
 
 ### Retrieving The Request Path
@@ -213,18 +211,21 @@ ctx := ctx.Context()
 
 ## Custom Recovery
 
-You can set a custom `recovery` by calling the `Recover` method in the `app/providers/route_service_provider.go` file.
+You can set a custom `recovery` in the `bootstrap/app.go::WithMiddleware` function.
 
 ```go
-// app/providers/route_service_provider.go
-func (receiver *RouteServiceProvider) Boot(app foundation.Application) {
-  // Add HTTP middleware
-  facades.Route().GlobalMiddleware(http.Kernel{}.Middleware()...)
-  facades.Route().Recover(func(ctx http.Context, err error) {
-    ctx.Request().Abort()
-    // or
-    // ctx.Response().String(500, "Internal Server Error").Abort()
-  })
-  ...
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMiddleware(func(handler configuration.Middleware) {
+			handler.Append(
+				httpmiddleware.Throttle("global"),
+				sessionmiddleware.StartSession(),
+			).Recover(func(ctx http.Context, err any) {
+				facades.Log().Error(err)
+				_ = ctx.Response().String(contractshttp.StatusInternalServerError, "recover").Abort()
+			})
+		}).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
