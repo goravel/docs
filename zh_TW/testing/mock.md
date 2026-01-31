@@ -9,6 +9,8 @@ Goravel 的所有功能都是通過 `facades` 實現的，所有的 `facades` �
 ## 模擬 facades.App
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func CurrentLocale() string {
   return facades.App().CurrentLocale(context.Background())
 }
@@ -26,8 +28,6 @@ func TestCurrentLocale(t *testing.T) {
 ## 模擬 facades.Artisan
 
 ```go
-import "github.com/goravel/framework/testing/mock"
-
 func ArtisanCall() {
   facades.Artisan().Call("list")
 }
@@ -54,7 +54,8 @@ import (
   "github.com/goravel/framework/http"
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Auth() error {
@@ -127,9 +128,10 @@ func TestConfig(t *testing.T) {
 import (
   "testing"
 
-  "github.com/goravel/framework/facades"
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
+  
+  "goravel/app/facades"
 )
 
 func Crypt(str string) (string, error) {
@@ -187,9 +189,10 @@ func TestEvent(t *testing.T) {
 import (
   "testing"
 
-  "github.com/goravel/framework/facades"
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
+  
+  "goravel/app/facades"
 )
 
 func Gate() bool {
@@ -223,7 +226,8 @@ import (
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
   "google.golang.org/grpc"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Grpc() (*grpc.ClientConn, error) {
@@ -253,7 +257,8 @@ import (
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
   "google.golang.org/grpc"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Hash() (string, error) {
@@ -443,7 +448,8 @@ import (
 
   "github.com/goravel/framework/filesystem"
   "github.com/goravel/framework/testing/mock"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Storage() (string, error) {
@@ -467,6 +473,7 @@ func TestStorage(t *testing.T) {
   mockStorage.AssertExpectations(t)
   mockDriver.AssertExpectations(t)
 }
+
 ```
 
 ## 模擬 facades.Validation
@@ -477,7 +484,8 @@ import (
 
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Validation() string {
@@ -521,7 +529,8 @@ import (
 
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
-  "github.com/goravel/framework/facades"
+  
+  "goravel/app/facades"
 )
 
 func View() bool {
