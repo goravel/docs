@@ -22,37 +22,62 @@ goravel new blog
 
 ### 手动安装
 
+#### goravel/goravel
+
+The complete framework with full features.
+
 ```shell
-// 下载框架
+// Download framework
 git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
-// 安装依赖
+// Install dependencies
 cd goravel && go mod tidy
 
-// 创建 .env 环境配置文件
+// Create .env environment configuration file
 cp .env.example .env
 
-// 生成应用密钥
-go run . artisan key:generate
+// Generate application key
+./artisan key:generate
 ```
 
-如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
+#### goravel/goravel-lite
 
-## 启动 HTTP 服务
+The lite framework with only essential features, suitable for building microservices or small applications. You can install additional facades as needed.
 
-### 根据根目录下的 .env 文件启动服务
+```shell
+// Download framework
+git clone --depth=1 https://github.com/goravel/goravel-lite.git && rm -rf goravel-lite/.git*
+s
+// Install dependencies
+cd goravel-lite && go mod tidy
+
+// Create .env environment configuration file
+cp .env.example .env
+
+// Generate application key
+./artisan key:generate
+
+// Install additional facades as needed, for example:
+./artisan package:install Cache
+```
+
+> 如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
+
+## Start Services
+
+### Start Services According To .env File In The Root Directory
 
 ```shell
 go run .
 ```
 
-### 指定 .env 文件启动服务
+### Specify .env File To Start Services
 
 ```shell
 go run . --env=../.env
 ```
 
-### 使用环境变量启动服务
+### Start Services Using Environment Variables
 
 ```shell
 APP_ENV=production APP_DEBUG=true go run .
@@ -148,7 +173,7 @@ Goravel 框架所有的配置文件都放在 `config` 目录中。 每个配置�
 Goravel 安装到本地后，要生成应用程序的密钥。 运行下面命令后会在 `.env` 文件的 `APP_KEY` 键上生成 32 位字符串。 该密钥主要作用于数据加解密等功能。
 
 ```shell
-go run . artisan key:generate
+./artisan key:generate
 ```
 
 ### 生成 JWT Token
@@ -156,7 +181,7 @@ go run . artisan key:generate
 如果使用到了 [用户认证](../security/authentication.md) 功能，需要初始化 JWT Token。
 
 ```shell
-go run . artisan jwt:secret
+./artisan jwt:secret
 ```
 
 ### 加解密 env 文件
@@ -164,17 +189,17 @@ go run . artisan jwt:secret
 你也许想将生产环境的 env 文件添加到版本控制中，但又不想将敏感信息暴露出来，这时你可以使用 `env:encrypt` 命令来加密 env 文件：
 
 ```shell
-go run . artisan env:encrypt
+./artisan env:encrypt
 
-// 指定文件名与秘钥
-go run . artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+// Specify the file name and key
+./artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
 然后再生产环境使用 `env:decrypt` 命令来解密 env 文件：
 
 ```shell
-GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc go run . artisan env:decrypt
+GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc ./artisan env:decrypt
 
 // or
-go run . artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+./artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
