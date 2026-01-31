@@ -39,7 +39,7 @@ Goravel 包含一个 `TestCase` Struct，在未来该 Struct 将提供一些便�
 要创建新的测试用例，可以使用 Artisan 命令：`make:test`：
 
 ```shell
-go run . artisan make:test feature/UserTest
+./artisan make:test feature/UserTest
 ```
 
 默认我们使用 [stretchr/testify](https://github.com/stretchr/testify) 包的 `suit` 功能编写我们的测试。 该功能支持配置测试前、测试后、子测试、断言等，可以使我们的测试用例更加有条理。 具体使用请详见官方文档。
@@ -257,8 +257,7 @@ import (
   "os"
   "testing"
 
-  "github.com/goravel/framework/facades"
-
+  "goravel/app/facades"
   "goravel/database/seeders"
 )
 
@@ -276,10 +275,10 @@ func TestMain(m *testing.M) {
     panic(err)
   }
 
-  // 执行测试用例
+  // Execute test cases
   exit := m.Run()
 
-  // 所有测试用例运行完毕后卸载镜像
+  // Uninstall the image after all test cases have been run
   if err := database.Shutdown(); err != nil {
     panic(err)
   }
