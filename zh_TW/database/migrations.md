@@ -22,10 +22,32 @@
 使用 `make:migration` 命令來創建遷移：
 
 ```shell
-go run . artisan make:migration create_users_table
+./artisan make:migration
+./artisan make:migration create_users_table
 ```
 
 該命令會在 `database/migrations` 目錄下生成遷移文件。 所有遷移文件都以一個時間戳為開頭，Goravel 將依據此作為遷移文件的執行順序。
+
+You can also create a migration for a specific model by using the `-m` or `--model` option:
+
+```shell
+./artisan make:migration create_users_table -m User
+```
+
+The model should be registered in the `bootstrap/app.go` file before running the command. This command will generate a migration file based on the structure defined in the `User` model.
+
+```go
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Schema().Extend(schema.Extension{
+        Models: []any{models.User{}},
+      })
+    }).
+    Create()
+}
+```
 
 ### 快速創建
 
@@ -56,18 +78,19 @@ package migrations
 
 import (
 	"github.com/goravel/framework/contracts/database/schema"
-	"github.com/goravel/framework/facades"
+	
+  "goravel/app/facades"
 )
 
 type M20241207095921CreateUsersTable struct {
 }
 
-// 簽名：遷移的唯一簽名。
+// Signature The unique signature for the migration.
 func (r *M20241207095921CreateUsersTable) Signature() string {
 	return "20241207095921_create_users_table"
 }
 
-// Up 執行遷移。
+// Up Run the migrations.
 func (r *M20241207095921CreateUsersTable) Up() error {
 	if !facades.Schema().HasTable("users") {
 		return facades.Schema().Create("users", func(table schema.Blueprint) {
@@ -81,7 +104,7 @@ func (r *M20241207095921CreateUsersTable) Up() error {
 	return nil
 }
 
-// Down 逆向執行遷移。
+// Down Reverse the migrations.
 func (r *M20241207095921CreateUsersTable) Down() error {
 	return facades.Schema().DropIfExists("users")
 }
@@ -99,14 +122,14 @@ func (r *M20241207095921CreateUsersTable) Connection() string {
 
 ## 註冊遷移
 
-在遷移文件生成後，需要在 `database/kernel.go` 文件中註冊這些遷移文件，若這些遷移文件是透過 `make:migration` 命令生成的，框架將自動註冊它們。
+A new migration created by `make:migration` will be registered automatically in the `bootstrap/migrations.go::Migrations()` function and the function will be called by `WithMigrations`. You need register the rule manually if you create the migration file by yourself.
 
 ```go
-// database/kernel.go
-func (kernel Kernel) Migrations() []schema.Migration {
-	return []schema.Migration{
-		&migrations.M20241207095921CreateUsersTable{},
-	}
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMigrations(Migrations).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
 
@@ -115,39 +138,39 @@ func (kernel Kernel) Migrations() []schema.Migration {
 要運行所有未執行過的遷移，請執行 `migrate` Artisan 命令：
 
 ```shell
-go run . artisan migrate
+./artisan migrate
 ```
 
 如果你想查看目前的遷移狀態，可以使用 `migrate:status` Artisan 命令：
 
 ```shell
-go run . artisan migrate:status
+./artisan migrate:status
 ```
 
 ## 回滾遷移
 
-要回滾最新的遷移，使用 `rollback` Artisan 命令：
+To roll back the latest migration batch, use the `rollback` Artisan command:
 
 ```shell
-go run . artisan migrate:rollback
+./artisan migrate:rollback
 ```
 
-如果要回滾最後一批遷移（可能包含多個遷移檔案），可以指定 `batch` 選項，該數字表示要回滾的批次：
+If you want to roll back multiple migration batches, you can specify the `batch` option, the number indicates which batch to roll back:
 
 ```shell
-go run . artisan migrate:rollback --batch=2
+./artisan migrate:rollback --batch=2
 ```
 
 透過向 `rollback` 命令加上 `step` 參數，可以回滾指定數量的遷移。 例如，以下命令將回滾最後五個遷移： 例如，以下命令將回滾最後五個遷移：
 
 ```shell
-go run . artisan migrate:rollback --step=5
+./artisan migrate:rollback --step=5
 ```
 
 `migrate:reset` 命令會回滾應用已運行過的所有遷移：
 
 ```shell
-go run . artisan migrate:reset
+./artisan migrate:reset
 ```
 
 ### 使用單個命令同時進行回滾和遷移操作
@@ -155,13 +178,13 @@ go run . artisan migrate:reset
 `migrate:refresh` 命令將會回滾所有已運行過的遷移，然後執行 `migrate` 命令。 這一命令可以高效地重建你的整個數據庫： 此命令實際上會重新創建您的整個數據庫：
 
 ```shell
-go run . artisan migrate:refresh
+./artisan migrate:refresh
 ```
 
 透過在命令 `refresh` 中使用 `step` 參數，你可以回滾並重新執行指定數量的遷移操作。 例如，下列命令會回滾並重新執行最後五個遷移操作： 例如，以下命令將回滾並重新遷移最後五個遷移：
 
 ```shell
-go run . artisan migrate:refresh --step=5
+./artisan migrate:refresh --step=5
 ```
 
 ### 刪除所有表然後執行遷移
@@ -169,7 +192,7 @@ go run . artisan migrate:refresh --step=5
 `migrate:fresh` 命令會刪去數據庫中的所有表，隨後執行 `migrate` 命令：
 
 ```shell
-go run . artisan migrate:fresh
+./artisan migrate:fresh
 ```
 
 ## 表
