@@ -30,11 +30,11 @@ The default language of the application is stored in the `locale` configuration 
 
 You can also use the `SetLocale` method provided by the App Facade to modify the default language for a single `HTTP` request at runtime:
 
-```
+```go
 facades.Route().Get("/", func(ctx http.Context) http.Response {
-    facades.App().SetLocale(ctx, "en")
+  facades.App().SetLocale(ctx, "en")
 
-    return ctx.Response()
+  return ctx.Response()
 })
 ```
 
@@ -57,7 +57,7 @@ if facades.App().IsLocale(ctx, "en") {}
 
 In language files, you can define single-level or multi-level structures:
 
-```
+```json
 // lang/en.json
 {
   "name": "It's your name",
@@ -101,7 +101,7 @@ facades.Lang(ctx).Get("role/user.required.user_id")
 
 You can define placeholders in translation strings. All placeholders have the prefix `:`. For example, you can use a placeholder to define a welcome message:
 
-```
+```json
 {
   "welcome": "Welcome, :name"
 }
@@ -109,7 +109,7 @@ You can define placeholders in translation strings. All placeholders have the pr
 
 To replace placeholders when retrieving a translation string, you can pass a translation option with the replacement map as the second parameter to the `facades.Lang(ctx).Get()` method:
 
-```
+```go
 facades.Lang(ctx).Get("welcome", translation.Option{
   Replace: map[string]string{
     "name": "Goravel",
@@ -121,7 +121,7 @@ facades.Lang(ctx).Get("welcome", translation.Option{
 
 Pluralization is a complex problem because different languages have various pluralization rules. However, Goravel can help you translate strings based on the pluralization rules you define. By using the `|` character, you can differentiate between the singular and plural forms of a string:
 
-```
+```json
 {
   "apples": "There is one apple|There are many apples"
 }
@@ -129,7 +129,7 @@ Pluralization is a complex problem because different languages have various plur
 
 You can even create more complex pluralization rules by specifying translation strings for multiple value ranges:
 
-```
+```json
 {
   "apples": "{0} There are none|[1,19] There are some|[20,*] There are many"
 }
@@ -137,7 +137,7 @@ You can even create more complex pluralization rules by specifying translation s
 
 After defining a translation string with pluralization options, you can use the `facades.Lang(ctx).Choice()` method to retrieve the line for a given `count`. In this example, because the count is greater than 1, the plural form of the translation string is returned:
 
-```
+```go
 facades.Lang(ctx).Choice("messages.apples", 10)
 ```
 
