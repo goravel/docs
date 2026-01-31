@@ -13,22 +13,20 @@
 你可以輕鬆使用 Artisan 命令建立套件模板：
 
 ```shell
-go run . artisan make:package sms
+./artisan make:package sms
 ```
 
 創建的文件默認保存在根目錄 `packages` 文件夾中，你可以使用 `--root` 選項自定義：
 
 ```shell
-go run . artisan make:package --root=pkg sms
+./artisan make:package --root=pkg sms
 ```
 
 ## 服務提供者
 
 [服務提供者](../architecture-concepts/service-providers.md)作為你的套件和 Goravel 之間的橋樑。 它們通常位於套件的根目錄下，作為 `service_provider.go` 文件。 它們的主要功能是將項目綁定到 Goravel 的服務容器並指導 Goravel 加載套件資源。
 
-## 使用
-
-### 自動安裝
+## Install The Package
 
 當創建一個套件時，如果它包含一個 `setup/setup.go` 文件，你可以在此文件中定義套件安裝邏輯，然後用戶可以使用 `package:install` 命令來安裝這個套件：
 
@@ -40,45 +38,45 @@ go run . artisan make:package --root=pkg sms
 
 ```go
 // setup/setup.go
+package main
+
+import (
+	"os"
+
+	"github.com/goravel/framework/packages"
+	"github.com/goravel/framework/packages/modify"
+	"github.com/goravel/framework/support/file"
+	"github.com/goravel/framework/support/path"
+)
+
 func main() {
-  // 使用這種方式安裝時，配置文件將會被發佈到項目的 config 目錄。
-  // 你也可以手動發佈這個配置文件：./artisan vendor:publish --package=github.com/goravel/example-package
-	config, err := supportfile.GetPackageContent(packages.GetModulePath(), "setup/config/hello.go")
+	setup := packages.Setup(os.Args)
+
+	// The config file will be published to the project's config directory automatically when installing by this way.
+	// You can also publish this config file manually: ./artisan vendor:publish --package=github.com/goravel/example-package
+	config, err := file.GetPackageContent(setup.Paths().Module().String(), "setup/config/hello.go")
 	if err != nil {
 		panic(err)
 	}
 
-  // 根據用戶輸入的參數，執行安裝或卸載操作
-	packages.Setup(os.Args).
-    // 定義安裝過程
-		Install(
-      // 查找 config/app.go 文件
-			modify.GoFile(path.Config("app.go")).
-        // 查找導入並添加導入: examplepackage "github.com/goravel/example-package"
-				Find(match.Imports()).Modify(modify.AddImport(packages.GetModulePath(), "examplepackage")).
-        // 查找提供者並註冊服務提供者: &examplepackage.ServiceProvider{}，注意需要先添加導入，然後才能註冊服務提供者
-				Find(match.Providers()).Modify(modify.Register("&examplepackage.ServiceProvider{}")),
-      // 找到 hello.go 文件，創建或覆蓋文件
-			modify.File(path.Config("hello.go")).Overwrite(config),
-		).
-    // 定義卸載過程
-		Uninstall(
-      // 查找 config/app.go 文件
-			modify.GoFile(path.Config("app.go")).
-        // 查找提供者並取消註冊服務提供者: &examplepackage.ServiceProvider{}
-				Find(match.Providers()).Modify(modify.Unregister("&examplepackage.ServiceProvider{}")).
-        // 查找導入並刪除導入: examplepackage "github.com/goravel/example-package"，需注意：需要先取消註冊服務提供者，再刪除導入
-				Find(match.Imports()).Modify(modify.RemoveImport(packages.GetModulePath(), "examplepackage")),
-      // 查找 hello.go 文件，刪除文件
-			modify.File(path.Config("hello.go")).Remove(),
-		).
-    // 執行安裝或卸載操作
-		Execute()
+	serviceProvider := "&hello.ServiceProvider{}"
+	moduleImport := setup.Paths().Module().Import()
+
+	setup.Install(
+		// Add the service provider to the providers slice in bootstrap/providers.go
+		modify.AddProviderApply(moduleImport, serviceProvider),
+
+		// Add the config file to the config directory
+		modify.File(path.Config("hello.go")).Overwrite(config),
+	).Uninstall(
+		// Remove the config file from the config directory
+		modify.File(path.Config("hello.go")).Remove(),
+
+		// Remove the service provider from the providers slice in bootstrap/providers.go
+		modify.RemoveProviderApply(moduleImport, serviceProvider),
+	).Execute()
+}
 ```
-
-### 手動安裝
-
-將包內的 `ServiceProvider` 註冊到 `config/app.go::providers`，然後將 `facades` 導出到應用中。 詳細步驟請參考 [goravel/example-package](https://github.com/goravel/example-package)。
 
 ## 資源
 
@@ -173,7 +171,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 在項目中，你可以使用 Artisan 命令 `vendor:publish` 發佈包中註冊的資源：
 
 ```shell
-go run . artisan vendor:publish --package={你的包名}
+./artisan vendor:publish --package={You package name}
 ```
 
 該命令可以使用如下選項：
