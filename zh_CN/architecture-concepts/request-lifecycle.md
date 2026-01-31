@@ -4,10 +4,25 @@
 
 ## 简介
 
-Goravel 应用的所有请求入口都是 `main.go` 文件。 该文件中使用 `bootstrap.Boot()` 引导框架加载。
+Using any tool in the real world feels more intuitive when you know how it works. This document aims to give you a clear, high-level look at how Goravel functions. Don’t worry if you don’t get every term right away—just aim for a basic sense of how things work, and your expertise will grow as you explore the rest of the docs.
 
-然后在 `bootstrap/app.go` 脚本中创建 Goravel 实例 `app := foundation.Application{}`。
+## Lifecycle Overview
 
-之后使用 `app.Boot()` 引导加载框架中注册的 [服务提供者](service-providers.md)，使用 `config.Boot()` 加载 config 目录下的配置文件。
+1. The `main.go` is the entry point of the application, it will call the `bootstrap.Boot()` function to initialize the framework, and use `app.Wait()` to keep the application running.
 
-最后，在 `main.go` 文件中使用 `facades.Route().Run(facades.Config().GetString("app.host"))` 启动 HTTP 服务器。
+2. The `bootstrap.Boot()` function will initialize a new Goravel application instance by calling `foundation.Setup()`, you can set service providers, routes, and other settings like migrations, schedules via `With*` functions here. Finally, call the `Create()` method to boot the application.
+
+3. In the `Create()` method, it will first load configuration, then register all service providers and other settings. Finally, boot all service providers, return the application instance.
+
+4. After the application is started, the http or grpc server will be started automatically if you have configured them. They are controled by [the runners of service providers](./service-providers.md#runners). You can normally use all facades in this stage, but remember that your customize code should be placed before `app.Wait()` in the `main.go` file. Or you can add your code into the `WithCallback` function in the `bootstrap/app.go` file to make sure your code is executed after the application is started.
+
+```go
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      // Your custom code here, all facades are available here.
+    }).
+    Create()
+}
+```
