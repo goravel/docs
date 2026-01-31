@@ -12,18 +12,18 @@ Session 使你可以在多个请求之间存储用户信息，为本质上无状
 
 ### 注册 Middleware
 
-Goravel 默认情况下未启动 `Session` 功能， 但是框架提供了用于启动会话的中间件。 你可以在 `app/http/kernel.go` 文件中注册 `Session` 中间件，以将其应用于所有路由，或者将其添加到特定路由中：
+Goravel 默认情况下未启动 `Session` 功能， 但是框架提供了用于启动会话的中间件。 You can register the middleware in the `WithMiddleware` function in the `bootstrap/app.go` file, or you can add it to specific routes:
 
 ```go
-import (
-  "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/session/middleware"
-)
-
-func (kernel Kernel) Middleware() []http.Middleware {
-  return []http.Middleware{
-    middleware.StartSession(),
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMiddleware(func(handler configuration.Middleware) {
+			handler.Append(
+				middleware.StartSession(),
+			)
+		}).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
 
@@ -173,14 +173,12 @@ ctx.Request().Session().Now("status", "Task was successful!")
 使用 `Session` 门面构建自定义会话。 `Session` 门面提供了 `BuildSession` 方法，它接受一个驱动实例和一个可选的会话 ID，如果你想指定自定义会话 ID：
 
 ```go
-import "github.com/goravel/framework/facades"
-
 session := facades.Session().BuildSession(driver, "sessionID")
 ```
 
 ### 添加自定义会话驱动
 
-#### 实现驱动
+#### Implementing Driver
 
 要实现自定义会话驱动，驱动必须实现 `contracts/session/driver` 接口。
 
@@ -202,7 +200,7 @@ type Driver interface {
 }
 ```
 
-#### 注册驱动
+#### Register Driver
 
 实现驱动后，你只需要将其添加到 `config/session.go` 配置文件中即可：
 
