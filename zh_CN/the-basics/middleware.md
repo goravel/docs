@@ -27,37 +27,39 @@ func Auth() http.Middleware {
 ### 命令创建中间件
 
 ```
-go run . artisan make:middleware Auth
+./artisan make:middleware Auth
 
-// 支持嵌套文件夹
-go run . artisan make:middleware user/Auth
+// Support nested folders
+./artisan make:middleware user/Auth
 ```
 
 ## 注册中间件
 
 ### 全局中间件
 
-如果你希望在应用程序的每一个 HTTP 请求应用中间件，那么只需要在 `app/http/kernel.go` 文件中的 `Middleware` 注册中间件。
+If you want to apply middleware for every HTTP request of your application, you only need to register the middleware in the `WithMiddleware` function in the `bootstrap/app.go` file.
 
 ```go
-// app/http/kernel.go
-package http
-
-import (
-  "github.com/goravel/framework/contracts/http"
-
-  "goravel/app/http/middleware"
-)
-
-type Kernel struct {
-}
-
-func (kernel *Kernel) Middleware() []http.Middleware {
-  return []http.Middleware{
-    middleware.Auth(),
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMiddleware(func(handler configuration.Middleware) {
+			handler.Append(
+				middleware.Custom(),
+			)
+		}).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
+
+The `handler` provides multiple functions to manage middleware:
+
+- `Append(middlewares ...http.Middleware)`: Append middleware to the end of the middleware stack.
+- `GetGlobalMiddleware() []http.Middleware`: Get all global middleware.
+- `GetRecover() func(ctx http.Context, err any)`: Get the custom recovery function.
+- `Prepend(middlewares ...http.Middleware)`: Prepend middleware to the beginning of the middleware stack.
+- `Recover(fn func(ctx http.Context, err any)) Middleware`: Set a custom recovery function to handle panics.
+- `Use(middleware ...http.Middleware) Middleware`: Replace the current middleware stack with the given middleware.
 
 ### 为路由分配中间件
 
