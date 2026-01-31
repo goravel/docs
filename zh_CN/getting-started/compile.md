@@ -6,21 +6,21 @@
 
 Goravel 项目可以通过以下命令编译：
 
-```
-// 选择系统进行编译
-go run . artisan build
+```shell
+# Select the system to compile
+./artisan build
 
-// 指定系统进行编译
-go run . artisan build --os=linux
-go run . artisan build -o=linux
+# Specify the system to compile
+./artisan build --os=linux
+./artisan build -o=linux
 
-// 静态编译
-go run . artisan build --static
-go run . artisan build -s
+# Static compilation
+./artisan build --static
+./artisan build -s
 
-// 指定输出文件名
-go run . artisan build --name=goravel
-go run . artisan build -n=goravel
+# Specify the output file name
+./artisan build --name=goravel
+./artisan build -n=goravel
 ```
 
 ## 手动编译
@@ -36,11 +36,10 @@ go build .
 部署时需要将下列文件与文件夹上传至服务器：
 
 ```
-./main // 编译生成的二进制文件
 .env
-./public
-./storage
-./resources
+./main // Compile the resulting binary file
+./public // if exists
+./resources // if exists
 ```
 
 ### 静态编译
@@ -77,7 +76,7 @@ docker build .
 国内会有下载依赖较慢与时区问题，可以将 Dockerfile 内容替换为下面脚本：
 
 ```dockerfile
-# 国内设置
+# China Special
 
 FROM golang:alpine AS builder
 ENV GO111MODULE=on \
@@ -94,12 +93,15 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
 RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone
 WORKDIR /www
+COPY --from=builder /build/.env /www/.env
 COPY --from=builder /build/main /www/
+
+# If exists
 COPY --from=builder /build/database/ /www/database/
 COPY --from=builder /build/public/ /www/public/
 COPY --from=builder /build/storage/ /www/storage/
 COPY --from=builder /build/resources/ /www/resources/
-COPY --from=builder /build/.env /www/.env
+
 ENTRYPOINT ["/www/main"]
 ```
 
@@ -137,7 +139,3 @@ import (
     _ "time/tzdata"
 )
 ```
-
-## 减小打包体积
-
-将 `config/app.go::providers` 中未用到的 `ServiceProvider` 注释掉将能有效地减少打包体积。
