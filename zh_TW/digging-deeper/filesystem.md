@@ -6,13 +6,12 @@
 
 Goravel 提供簡單的驅動程序，以便與本地檔案系統、Amazon S3、阿里雲 OSS、騰訊 COS、Minio 和 Cloudinary 進行交互。 更棒的是，在本地開發機與生產伺服器之間切換這些存儲選項非常簡單，因為每個系統的 API 保持不變。 Goravel 附帶一個 `local` 驅動程序，欲使用其他驅動程序，請查看對應的獨立擴展包：
 
-| 驅動         | 鏈接                                                                                                             |
-| ---------- | -------------------------------------------------------------------------------------------------------------- |
-| S3         | [https://github.com/goravel/s3](https://github.com/goravel/s3)                 |
-| OSS        | [https://github.com/goravel/oss](https://github.com/goravel/oss)               |
-| COS        | [https://github.com/goravel/cos](https://github.com/goravel/cos)               |
-| Minio      | [https://github.com/goravel/minio](https://github.com/goravel/minio)           |
-| Cloudinary | [https://github.com/goravel/cloudinary](https://github.com/goravel/cloudinary) |
+| 驅動    | 鏈接                                                                                                   |
+| ----- | ---------------------------------------------------------------------------------------------------- |
+| S3    | [https://github.com/goravel/s3](https://github.com/goravel/s3)       |
+| OSS   | [https://github.com/goravel/oss](https://github.com/goravel/oss)     |
+| COS   | [https://github.com/goravel/cos](https://github.com/goravel/cos)     |
+| Minio | [https://github.com/goravel/minio](https://github.com/goravel/minio) |
 
 ## 配置
 
@@ -61,7 +60,7 @@ facades.Storage().WithContext(ctx).Put("avatars/1.png", "Contents")
 `Get` 方法可用于檢索檔案的內容。 該方法將返回檔案的原始字串內容。 請記住，所有檔案路徑應相對於磁碟的 `root` 位置指定：
 
 ```go
-contents := facades.Storage().Get("file.jpg")
+content := facades.Storage().Get("file.jpg")
 ```
 
 `Exists` 方法可用於判斷磁碟上是否存在指定的檔案：
@@ -339,4 +338,4 @@ type Driver interface {
 } ■
 ```
 
-> 注意：由於註冊自定義驅動時配置尚未加載，因此請在自定義驅動中使用 `facades.Config().Env` 獲取配置。
+> Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config().Env()` to obtain the configuration in the custom driver.
