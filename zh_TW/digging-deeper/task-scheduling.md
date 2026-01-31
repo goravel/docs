@@ -10,28 +10,20 @@ Goravel 的命令排程器為在您的伺服器上管理排定的任務提供了
 
 ## 定義排程
 
-要為您的應用排程任務，您可以在 `Schedule` 方法中定義它們，位於 `app\console\kernel.go`。 讓我們考慮一個例子來更好地理解這一點。 在這種情況下，我們希望排程一個閉包，它每天在午夜運行。 在這個閉包中，我們將執行一個數據庫查詢以清除一個表：
+To schedule tasks for your application, you can define them in the `WithSchedule` function in the `bootstrap/app.go` file. 讓我們考慮一個例子來更好地理解這一點。 在這種情況下，我們希望排程一個閉包，它每天在午夜運行。 在這個閉包中，我們將執行一個數據庫查詢以清除一個表：
 
 ```go
-package console
-
-import (
-  "github.com/goravel/framework/contracts/console"
-  "github.com/goravel/framework/contracts/schedule"
-  "github.com/goravel/framework/facades"
-
-  "goravel/app/models"
-)
-
-type Kernel struct {
-}
-
-func (kernel Kernel) Schedule() []schedule.Event {
-  return []schedule.Event{
-    facades.Schedule().Call(func() {
-      facades.Orm().Query().Where("1 = 1").Delete(&models.User{})
-    }).Daily(),
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithSchedule(func() []schedule.Event {
+			return []schedule.Event{
+				facades.Schedule().Call(func() {
+          facades.Orm().Query().Where("1 = 1").Delete(&models.User{})
+        }).Daily(),
+			}
+		}).
+		WithConfig(config.Boot).
+		Start()
 }
 ```
 
@@ -40,22 +32,7 @@ func (kernel Kernel) Schedule() []schedule.Event {
 除了排程閉包之外，您還可以排程 [Artisan 命令](./artisan-console.md)。 例如，您可以使用 `Command` 方法來排程 Artisan 命令，使用命令的名稱或類。
 
 ```go
-package console
-
-import (
-  "github.com/goravel/framework/contracts/console"
-  "github.com/goravel/framework/contracts/schedule"
-  "github.com/goravel/framework/facades"
-)
-
-type Kernel struct {
-}
-
-func (kernel *Kernel) Schedule() []schedule.Event {
-  return []schedule.Event{
-    facades.Schedule().Command("send:emails name").Daily(),
-  }
-}
+facades.Schedule().Command("send:emails name").Daily(),
 ```
 
 ### 日誌級別
@@ -144,62 +121,10 @@ facades.Schedule().Call(func() {
 
 ## 執行排程器
 
-現在我們已經學會了如何定義排定任務，讓我們討論如何在伺服器上實際運行它們。
-
-將 `go facades.Schedule().Run()` 添加到根目錄的 `main.go` 文件中。
-
-```go
-package main
-
-import (
-  "github.com/goravel/framework/facades"
-
-  "goravel/bootstrap"
-)
-
-func main() {
-  // 此步驟啟動框架並準備使用。
-  bootstrap.Boot()
-
-  // 通過 facades.Schedule 開始計劃
-  go facades.Schedule().Run()
-
-  select {}
-}
-```
-
-你也可以使用 `schedule:run` 命令手動運行任務：
+The scheduler will be run automatically when calling `Start()` in the `main.go` file. You can also run tasks manually :
 
 ```shell
 ./artisan schedule:run
-```
-
-## 停止計劃程序
-
-你可以調用 `Shutdown` 方法優雅地關閉調度程序。 此方法將等待所有任務完成後再關閉。
-
-```go
-// main.go
-bootstrap.Boot()
-
-// 創建通道以監聽 OS 信號
-quit := make(chan os.Signal)
-signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
-// 通過 facades.Schedule 開始計劃
-go facades.Schedule().Run()
-
-// 監聽 OS 信號
-go func() {
-  <-quit
-  if err := facades.Schedule().Shutdown(); err != nil {
-    facades.Log().Errorf("計劃關閉錯誤: %v", err)
-  }
-
-  os.Exit(0)
-}()
-
-select {}
 ```
 
 ## 查看所有任務
