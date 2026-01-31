@@ -131,3 +131,70 @@ Then you can use the `Mailalbe` in the `Send` and `Queue` methods:
 err := facades.Mail().Send(mails.NewOrderShipped())
 err := facades.Mail().Queue(mails.NewOrderShipped())
 ```
+
+## Using Template
+
+The mail module now supports using templates directly with the `html/template` engine. This allows you to render email templates with dynamic data.
+
+### Configuration
+
+To enable template support, configure the `config/mail.go` file:
+
+```go
+"template": map[string]any{
+    "default": config.Env("MAIL_TEMPLATE_ENGINE", "html"),
+    "engines": map[string]any{
+        "html": map[string]any{
+            "driver": "html",
+            "path":   config.Env("MAIL_VIEWS_PATH", "resources/views/mail"),
+        },
+    },
+}
+```
+
+### Creating Templates
+
+Create your email templates in the specified views directory. For example:
+
+```html
+<!-- resources/views/mail/welcome.html -->
+<h1>Welcome {{.Name}}!</h1>
+<p>Thank you for joining {{.AppName}}.</p>
+```
+
+### Sending Emails with Templates
+
+You can use the `Content` method to specify the template and pass dynamic data:
+
+```go
+facades.Mail().
+    To([]string{"user@example.com"}).
+    Subject("Welcome").
+    Content(mail.Content{
+        View: "welcome.tmpl",
+        With: map[string]any{
+            "Name": "John",
+            "AppName": "Goravel",
+        },
+    }).
+    Send()
+```
+
+### Custom Template Engines
+
+You can also register custom template engines in the configuration:
+
+```go
+"template": map[string]any{
+    "default": "blade",
+    "engines": map[string]any{
+        "blade": map[string]any{
+            "driver": "custom",
+            "via": func() (mail.Template, error) {
+                return NewBladeTemplateEngine(), nil
+            },
+        },
+    },
+}
+```
+
