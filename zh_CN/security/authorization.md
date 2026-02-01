@@ -14,7 +14,7 @@ Goravel 主要提供了两种授权操作的方法: [拦截器](#拦截器（Gat
 
 ### 编写拦截器（Gates）
 
-拦截器（Gates）是用来确定用户是否有权执行给定操作的闭包函数。 They are commonly set up in the `bootstrap/app.go::WithCallback` function using the Gate facade.
+拦截器（Gates）是用来确定用户是否有权执行给定操作的闭包函数。 它们通常使用 Gate facade 在 `bootstrap/app.go::WithCallback` 函数中设置。
 
 在下面的例子中，我们将定义一个拦截器（Gates)，通过比较用户的 id 来判断是否有对 post 数据操作的权限。
 
@@ -179,7 +179,7 @@ func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contr
 }
 ```
 
-Then we can register the policy to the `bootstrap/app.go::WithCallback` function:
+然后我们可以将策略注册到 `bootstrap/app.go::WithCallback` 函数中：
 
 ```go
 func Boot() contractsfoundation.Application {
