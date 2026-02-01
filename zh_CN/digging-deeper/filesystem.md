@@ -6,13 +6,12 @@
 
 Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Minio 和 Cloudinary 提供了简单易用的驱动程序。 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。 框架自带 `local` 驱动，如需其他驱动，请查看对应的独立扩展包：
 
-| 驱动         | 链接                                                                                                             |
-| ---------- | -------------------------------------------------------------------------------------------------------------- |
-| S3         | [https://github.com/goravel/s3](https://github.com/goravel/s3)                 |
-| OSS        | [https://github.com/goravel/oss](https://github.com/goravel/oss)               |
-| COS        | [https://github.com/goravel/cos](https://github.com/goravel/cos)               |
-| Minio      | [https://github.com/goravel/minio](https://github.com/goravel/minio)           |
-| Cloudinary | [https://github.com/goravel/cloudinary](https://github.com/goravel/cloudinary) |
+| 驱动    | 链接                                                                                                   |
+| ----- | ---------------------------------------------------------------------------------------------------- |
+| S3    | [https://github.com/goravel/s3](https://github.com/goravel/s3)       |
+| OSS   | [https://github.com/goravel/oss](https://github.com/goravel/oss)     |
+| COS   | [https://github.com/goravel/cos](https://github.com/goravel/cos)     |
+| Minio | [https://github.com/goravel/minio](https://github.com/goravel/minio) |
 
 ## 配置
 
@@ -61,7 +60,7 @@ facades.Storage().WithContext(ctx).Put("avatars/1.png", "Contents")
 `Get` 方法可以用于获取文件的内容。 此方法返回该文件的原始字符串内容。 切记，所有文件路径的指定都应该相对于该磁盘所配置的 `root` 目录：
 
 ```go
-contents := facades.Storage().Get("file.jpg")
+content := facades.Storage().Get("file.jpg")
 ```
 
 `Exists` 方法可以用来判断磁盘上是否存在指定的文件：
@@ -338,4 +337,4 @@ type Driver interface {
 }
 ```
 
-> 注意：由于注册驱动时配置信息尚未加载完毕，所以在自定义驱动中，请使用 `facades.Config().Env` 获取配置信息。
+> 注意：由于注册自定义驱动时配置信息尚未加载完毕，所以在自定义驱动中，请使用 `facades.Config().Env()` 获取配置信息。

@@ -16,30 +16,27 @@ Goravel 服務容器是一個強大的工具，用於管理類依賴關係並執
 package route
 
 import (
-	"github.com/goravel/framework/contracts/foundation"
+  "github.com/goravel/framework/contracts/foundation"
 )
 
 const Binding = "goravel.route"
 
-type ServiceProvider struct {
-}
+type ServiceProvider struct {}
 
 func (route *ServiceProvider) Register(app foundation.Application) {
-	app.Bind(Binding, func(app foundation.Application) (any, error) {
-		return NewRoute(app.MakeConfig()), nil
-	})
+  app.Bind(Binding, func(app foundation.Application) (any, error) {
+    return NewRoute(app.MakeConfig()), nil
+  })
 }
 
-func (route *ServiceProvider) Boot(app foundation.Application) {
-
-} 
+func (route *ServiceProvider) Boot(app foundation.Application) {}
 ```
 
 如前所述，你通常會在服務提供者內部與容器進行交互；但是，如果你希望在服務提供者外部與容器進行交互，則可以通過 `App` facade 進行：
 
 ```go
 facades.App().Bind("key", func(app foundation.Application) (any, error) {
-    ...
+  ...
 })
 ```
 
@@ -49,7 +46,7 @@ facades.App().Bind("key", func(app foundation.Application) (any, error) {
 
 ```go
 app.Singleton(key, func(app foundation.Application) (any, error) {
-    return NewGin(app.MakeConfig()), nil
+  return NewGin(app.MakeConfig()), nil
 })
 ```
 
@@ -67,7 +64,7 @@ app.Instance(key, instance)
 
 ```go
 app.BindWith(Binding, func(app foundation.Application, parameters map[string]any) (any, error) {
-    return NewRoute(app.MakeConfig()), nil
+  return NewRoute(app.MakeConfig()), nil
 })
 ```
 
@@ -97,4 +94,4 @@ instance, err := app.MakeWith(key, map[string]any{"id": 1})
 
 ### 其他方法
 
-框架提供有一些便捷的方法可以快速解析出各種 `facades`: `MakeArtisan`, `MakeAuth`, `MakeCache`, `MakeConfig`, `MakeCrypt`, `MakeEvent`, `MakeGate`, `MakeGrpc`, `MakeHash`, `MakeLog`, `MakeMail`, `MakeOrm`, `MakeQueue`, `MakeRateLimiter`, `MakeRoute`, `MakeSchedule`, `MakeStorage`, \`MakeValidation。
+The framework provides some convenient methods to quickly resolve various facades: `MakeArtisan`, `MakeAuth`, etc.

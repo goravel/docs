@@ -22,8 +22,8 @@ Goravel 提供了一個非常簡單且易於使用的資料庫互動，開發者
 使用 `make:model` 命令創建模型：
 
 ```shell
-go run . artisan make:model User
-go run . artisan make:model user/User
+./artisan make:model User
+./artisan make:model user/User
 ```
 
 創建的模型文件位於 `app/models/user.go` 文件，內容如下：
@@ -103,27 +103,34 @@ func (r *UserData) Scan(value any) (err error) {
 ./artisan make:model --table=users -f User
 ```
 
-如果資料表具有框架無法識別的字段類型，您可以調用 `facades.Schema().Extend` 方法在 `app/providers/database_service_provider.go` 文件的 `Boot` 方法中擴展字段類型：
+If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend()` method to extend the field type in the `bootstrap/app.go::WithCallback` function:
 
 ```go
 import "github.com/goravel/framework/contracts/schema"
 
-facades.Schema().Extend(&schema.Extension{
-  GoTypes: []schema.GoType{
-    {
-        Pattern: "uuid",
-        Type: "uuid.UUID",
-        NullType: "uuid.NullUUID",
-        Imports: []string{"github.com/google/uuid"},
-    },
-    {
-        Pattern: "point",
-        Type: "geom.Point",
-        NullType: "*geom.Point",
-        Imports: []string{"github.com/twpayne/go-geom"},
-    },
-  },
-})
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Schema().Extend(&schema.Extension{
+        GoTypes: []schema.GoType{
+          {
+              Pattern: "uuid",
+              Type: "uuid.UUID",
+              NullType: "uuid.NullUUID",
+              Imports: []string{"github.com/google/uuid"},
+          },
+          {
+              Pattern: "point",
+              Type: "geom.Point",
+              NullType: "*geom.Point",
+              Imports: []string{"github.com/twpayne/go-geom"},
+          },
+        },
+      })
+    }).
+    Create()
+}
 ```
 
 ### 指定表名
@@ -172,7 +179,7 @@ func (r *User) Connection() string {
 
 ### 設置全局範圍
 
-模型支持設置 `GlobalScope` 方法，該方法限制查詢、更新和刪除操作的範圍：
+Model supports setting the `GlobalScopes` method, which restricts the scope of the query, update, and delete operations:
 
 ```go
 import "github.com/goravel/framework/contracts/orm"
@@ -182,13 +189,23 @@ type User struct {
   Name string
 }
 
-func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
-  return []func(orm.Query) orm.Query{
-    func(query orm.Query) orm.Query {
+func (r *User) GlobalScopes() map[string]func(orm.Query) orm.Query {
+  return map[string]func(orm.Query) orm.Query{
+    "name": func(query orm.Query) orm.Query {
       return query.Where("name", "goravel")
     },
   }
 }
+```
+
+If you want to remove global scopes in a query, you can use the `WithoutGlobalScopes` function:
+
+```go
+// Remove all global scopes
+facades.Orm().Query().WithoutGlobalScopes().Get(&users)
+
+// Remove specified global scope
+facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 ```
 
 ## facades.Orm() 可用函數
@@ -205,6 +222,7 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 
 | 函數                          | 操作                                                  |
 | --------------------------- | --------------------------------------------------- |
+| Avg                         | [Avg](#Avarage)                                     |
 | 開始交易                        | [開始交易](#交易)                                         |
 | 提交                          | [提交交易](#transaction)                                |
 | 計數                          | [計數](#計數)                                           |
@@ -229,6 +247,8 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | 聯接                          | [聯接](#join)                                         |
 | 限制                          | [限制](#limit)                                        |
 | LockForUpdate               | [悲觀鎖定](#pessimistic-locking)                        |
+| Max                         | [Max](#Avarage)                                     |
+| Min                         | [Min](#Avarage)                                     |
 | 模型                          | [指定模型](#specify-table-query)                        |
 | Offset                      | [偏移量](#offset)                                      |
 | 排序                          | [訂單](#order)                                        |
@@ -255,14 +275,17 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | 範疇                          | [範圍](#scopes)                                       |
 | 選擇                          | [指定欄位](#specify-fields)                             |
 | SharedLock                  | [悲觀鎖定](#pessimistic-locking)                        |
-| 總和                          | [總和](#sum)                                          |
+| 總和                          | [Sum](#Avarage)                                     |
 | 表格                          | [指定表格](#specify-table-query)                        |
 | ToSql                       | [獲取 SQL](#get-sql)                                  |
 | ToRawSql                    | [獲取 SQL](#get-sql)                                  |
 | 更新                          | [更新單個欄位](#update-a-single-column)                   |
 | UpdateOrCreate              | [更新或創建](#update-or-create)                          |
 | Where                       | [Where](#where)                                     |
+| WhereAll                    | [WhereAll](#where)                                  |
+| WhereAny                    | [WhereAny](#where)                                  |
 | WhereBetween                | [WhereBetween](#where)                              |
+| WhereNone                   | [WhereNone](#where)                                 |
 | WhereNotBetween             | [WhereNotBetween](#where)                           |
 | WhereNotIn                  | [WhereNotIn](#where)                                |
 | WhereNull                   | [WhereNull](#where)                                 |
@@ -439,6 +462,18 @@ facades.Orm().Query().OrWhere("name", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
 facades.Orm().Query().OrWhereNull("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
+
+var products []Product
+facades.DB().Table("products").WhereAll([]string{"weight", "height"}, "=", 200).Find(&products)
+// SQL: SELECT * FROM products WHERE weight = ? AND height = ?
+
+var users []User
+facades.DB().Table("users").WhereAny([]string{"name", "email"}, "=", "John").Find(&users)
+// SQL: SELECT * FROM users WHERE (name = ? OR email = ?)
+
+var products []Product
+facades.DB().Table("products").WhereNone([]string{"age", "score"}, ">", 18).Find(&products)
+// SQL: SELECT * FROM products WHERE NOT (age > ?) AND NOT (score > ?)
 ```
 
 查詢 JSON 列
@@ -831,8 +866,8 @@ facades.Orm().Query().Model(&models.User{ID: 1}).WithTrashed().Restore()
 ```go
 import (
   "github.com/goravel/framework/contracts/database/orm"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/models"
 )
 
@@ -905,10 +940,20 @@ var users []models.User
 facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
-### 總和
+### Avarage
 
 ```go
-sum, err := facades.Orm().Query().Model(models.User{}).Sum("id")
+var sum int
+err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum)
+
+var avg float64
+err := facades.Orm().Query().Model(models.User{}).Average("age", &avg)
+
+var max int
+err := facades.Orm().Query().Model(models.User{}).Max("age", &max)
+
+var min int
+err := facades.Orm().Query().Model(models.User{}).Min("age", &min)
 ```
 
 ## 事件
@@ -986,8 +1031,8 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 如果您在給定模型上監聽許多事件，您可以使用觀察者將所有的監聽者組合成一個類。 觀察者類擁有反映您想要監聽的 Eloquent 事件的方法名稱。 每個這些方法只接收受影響的模型作為唯一的參數。 `make:observer` Artisan 命令是創建新觀察者類的最簡單方法：
 
 ```shell
-go run . artisan make:observer UserObserver
-go run . artisan make:observer user/UserObserver
+./artisan make:observer UserObserver
+./artisan make:observer user/UserObserver
 ```
 
 該命令將把新的觀察者放置在您的 `app/observers` 目錄中。 如果該目錄不存在，Artisan 將為您創建它。 您的新觀察者將如下所示：
@@ -1022,31 +1067,16 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 
 模板觀察者僅包含某些事件，您可以根據需要添加其他事件。
 
-要註冊觀察者，您需要在希望監視的模型上調用 `Observe` 方法。 您可以在應用程序的 `app/providers/event_service_provider.go::Boot` 服務提供者的 `Boot` 方法中註冊觀察者:
+要註冊觀察者，您需要在希望監視的模型上調用 `Observe` 方法。 You can register observers in the `bootstrap/app.go::WithCallback` function:
 
 ```go
-package providers
-
-import (
-	"github.com/goravel/framework/facades"
-
-	"goravel/app/models"
-	"goravel/app/observers"
-)
-
-type EventServiceProvider struct {
-}
-
-func (receiver *EventServiceProvider) Register(app foundation.Application) {
-	facades.Event().Register(receiver.listen())
-}
-
-func (receiver *EventServiceProvider) Boot(app foundation.Application) {
-	facades.Orm().Observe(models.User{}, &observers.UserObserver{})
-}
-
-func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
-	return map[event.Event][]event.Listener{}
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Orm().Observe(models.User{}, &observers.UserObserver{})
+    }).
+    Create()
 }
 ```
 

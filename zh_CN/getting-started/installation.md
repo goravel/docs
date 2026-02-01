@@ -22,6 +22,10 @@ goravel new blog
 
 ### 手动安装
 
+#### goravel/goravel
+
+包含所有 facades 的全功能框架。
+
 ```shell
 // 下载框架
 git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
@@ -33,12 +37,33 @@ cd goravel && go mod tidy
 cp .env.example .env
 
 // 生成应用密钥
-go run . artisan key:generate
+./artisan key:generate
 ```
 
-如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
+#### goravel/goravel-lite
 
-## 启动 HTTP 服务
+仅包含核心功能的轻量级框架，适合构建微服务或小型应用。 你可以根据需要安装额外的 facades。
+
+```shell
+// 下载框架
+git clone --depth=1 https://github.com/goravel/goravel-lite.git && rm -rf goravel-lite/.git*
+s
+// 安装依赖
+cd goravel-lite && go mod tidy
+
+// 创建 .env 环境配置文件
+cp .env.example .env
+
+// 生成应用密钥
+./artisan key:generate
+
+// 根据需要安装额外的 facades，例如：
+./artisan package:install Cache
+```
+
+> 如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
+
+## 启动服务
 
 ### 根据根目录下的 .env 文件启动服务
 
@@ -148,7 +173,7 @@ Goravel 框架所有的配置文件都放在 `config` 目录中。 每个配置�
 Goravel 安装到本地后，要生成应用程序的密钥。 运行下面命令后会在 `.env` 文件的 `APP_KEY` 键上生成 32 位字符串。 该密钥主要作用于数据加解密等功能。
 
 ```shell
-go run . artisan key:generate
+./artisan key:generate
 ```
 
 ### 生成 JWT Token
@@ -156,7 +181,7 @@ go run . artisan key:generate
 如果使用到了 [用户认证](../security/authentication.md) 功能，需要初始化 JWT Token。
 
 ```shell
-go run . artisan jwt:secret
+./artisan jwt:secret
 ```
 
 ### 加解密 env 文件
@@ -164,17 +189,17 @@ go run . artisan jwt:secret
 你也许想将生产环境的 env 文件添加到版本控制中，但又不想将敏感信息暴露出来，这时你可以使用 `env:encrypt` 命令来加密 env 文件：
 
 ```shell
-go run . artisan env:encrypt
+./artisan env:encrypt
 
 // 指定文件名与秘钥
-go run . artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+./artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
 然后再生产环境使用 `env:decrypt` 命令来解密 env 文件：
 
 ```shell
-GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc go run . artisan env:decrypt
+GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc ./artisan env:decrypt
 
-// or
-go run . artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
+// 或者
+./artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```

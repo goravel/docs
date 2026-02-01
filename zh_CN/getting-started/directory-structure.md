@@ -6,62 +6,50 @@
 
 默认的文件结构可以使你更好的开始项目推进，你也可以自由的新增文件夹，但默认文件夹不要修改。
 
-## 根目录
+## 文件树
 
-### app 目录
+```
+goravel/
+├── app/                        # 核心应用逻辑
+│   ├── console/                # Artisan 控制台命令
+│   ├── grpc/                   # gRPC 控制器和中间件
+│   ├── http/                   # HTTP 控制器和中间件
+│   │   ├── controllers/        # HTTP 请求处理器
+│   │   ├── middleware/         # HTTP 中间件（认证、CORS 等）
+│   ├── models/                 # ORM 模型
+│   └── providers/              # 服务提供者
+├── bootstrap/                  # 应用引导
+│   └── app.go                  # 框架初始化
+├── config/                     # 应用配置文件
+├── database/                   # 数据库相关文件
+│   ├── migrations/             # 迁移文件
+│   ├── seeders/                # 数据填充
+├── resources/                  # 资源
+│   └── views/                  # 视图
+├── routes/                     # 路由
+├── storage/                    # 存储
+├── tests/                      # 测试
+├── .air.toml                   # Air 热重载配置
+├── .env.example                # 配置
+├── artisan                     # Artisan 控制台入口脚本
+├── go.mod                      # Go 模块依赖
+├── go.sum                      # Go 模块校验
+├── main.go                     # 应用入口点
+```
 
-`app` 包含了程序的核心代码。 程序中几乎所有的逻辑都将在这个文件夹中。
+## 自定义目录结构
 
-### bootstrap 目录
+你可以通过在 `bootstrap/app.go` 文件中调用 `WithPath()` 函数来自定义目录结构。 例如，如果你想将默认的 `app` 目录更改为 `src`，可以按如下方式修改 `bootstrap/app.go` 文件：
 
-`bootstrap` 目录包含了框架的启动文件 `app.go`。
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithPaths(func(paths configuration.Paths) {
+			paths.App("src")
+		}).
+		WithConfig(config.Boot).
+		Create()
+}
+```
 
-### config 目录
-
-`config` 目录包含了应用程序的所有配置文件。 最好把这些文件都浏览一遍，并熟悉所有可用的配置。
-
-### database 目录
-
-`database` 目录包含了数据库迁移文件。
-
-### public 目录
-
-`public` 目录包含一些静态资源，如图像、证书等。
-
-### resources 目录
-
-`resources` 目录包含你的[视图](../the-basics/views.md)，以及原始的、未编译的资源文件，例如 CSS 或 JavaScript。
-
-### routes 目录
-
-`routes` 目录包含应用程序的所有路由定义。
-
-### storage 目录
-
-`storage` 目录包含 `logs` 等目录，`logs` 目录包含应用程序的日志文件。
-
-### tests 目录
-
-`tests` 目录包含你的自动化测试。
-
-## app 目录
-
-### console 目录
-
-`console` 目录包含应用程序所有自定义的 `Artisan` 命令，与控制台引导文件 `kernel.go`，可以在这个文件中注册[任务](../digging-deeper/task-scheduling.md)
-
-### http 目录
-
-`http` 目录包含了控制器、中间件等，几乎所有通过 Web 进入应用的请求处理都在这里进行。
-
-### grpc 目录
-
-`grpc` 目录包含了控制器、中间件等，几乎所有通过 Grpc 进入应用的请求处理都在这里进行。
-
-### models 目录
-
-`models` 目录包含所有数据模型。
-
-### providers 目录
-
-`providers` 目录包含程序中所有的 [服务提供者](../architecture-concepts/service-providers.md)。 服务提供者通过绑定服务、注册事件或执行任何其他任务来引导应用程序以应对传入的请求。
+你还可以自定义许多其他路径，例如 `Config`、`Database`、`Routes`、`Storage` 和 `Resources`。 只需在 `paths` 对象上调用相应的方法来设置你所需的目录。

@@ -8,26 +8,7 @@
 
 ## 配置
 
-Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP 请求。 如果你需要调整其内部设置，只需更新 `config/http.go` 文件中的 `client` 属性即可。
-以下是可用的配置选项：
-
-- `base_url`: 设置相对路径的根 URL。 自动为不以 `http://` 或 `https://` 开头的请求添加前缀。
-- `timeout`（默认值：`30s`）: 完整请求生命周期的全局超时时长（连接 + 任何重定向 + 读取响应体）。 零表示不超时。
-- `max_idle_conns`: 最大空闲（保持活动）连接数。 零表示没有限制。
-- `max_idle_conns_per_host`: 最大空闲（保持活动）连接数。
-- `max_conns_per_host`: 限制总连接数，包括正在拨号、活动和空闲状态的连接。 零表示没有限制。
-- `idle_conn_timeout`: 空闲（保持活动）连接在自行关闭之前保持空闲的最大时长。
-
-```go
-"client": map[string]any{
-    "base_url":                config.GetString("HTTP_CLIENT_BASE_URL"),  // "https://api.example.com"
-    "timeout":                 config.GetDuration("HTTP_CLIENT_TIMEOUT"), // 30 * time.Second
-    "max_idle_conns":          config.GetInt("HTTP_CLIENT_MAX_IDLE_CONNS"), // 100
-    "max_idle_conns_per_host": config.GetInt("HTTP_CLIENT_MAX_IDLE_CONNS_PER_HOST"), // 10
-    "max_conns_per_host":      config.GetInt("HTTP_CLIENT_MAX_CONN_PER_HOST"), // 0
-    "idle_conn_timeout":       config.GetDuration("HTTP_CLIENT_IDLE_CONN_TIMEOUT"), // 90 * time.Second
-}
-```
+Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP 请求。 如果你需要调整其设置，只需更新 `config/http.go` 文件中的 `clients` 配置即可。
 
 ## 发起请求
 
@@ -36,12 +17,16 @@ Http facade 提供了一种便捷的方式来使用熟悉的动词（`GET`、`PO
 **示例：GET 请求**
 
 ```go
-import "github.com/goravel/framework/facades"
-
 response, err := facades.Http().Get("https://example.com")
 ```
 
 每个 HTTP 动词方法都会返回一个类型为 `framework/contracts/http/client.Response` 的 `response` 和一个在请求失败时返回的 `err`。
+
+你可以使用 `Client` 函数来指定要使用的 HTTP 客户端配置：
+
+```go
+response, err := facades.Http().Client("github").Get("https://example.com")
+```
 
 ### 响应接口
 
@@ -49,18 +34,19 @@ response, err := facades.Http().Get("https://example.com")
 
 ```go
 type Response interface {
+    Bind(value any) error            // 将响应体绑定到结构体
     Body() (string, error)           // 获取响应体为字符串
-    ClientError() bool              // 检查状态码是否在 4xx 范围内
+    ClientError() bool               // 检查状态码是否在 4xx 范围内
     Cookie(name string) *http.Cookie // 获取指定名称的 Cookie
-    Cookies() []*http.Cookie        // 获取所有响应 Cookie
-    Failed() bool                   // 检查状态码是否不在 2xx 范围内
-    Header(name string) string      // 获取指定名称的 Header 值
-    Headers() http.Header           // 获取所有响应 Header
+    Cookies() []*http.Cookie         // 获取所有响应 Cookie
+    Failed() bool                    // 检查状态码是否不在 2xx 范围内
+    Header(name string) string       // 获取指定名称的 Header 值
+    Headers() http.Header            // 获取所有响应 Header
     Json() (map[string]any, error)   // 将响应体解码为 JSON 并返回 map
-    Redirect() bool                 // 检查响应是否为重定向（3xx 状态码）
-    ServerError() bool              // 检查状态码是否在 5xx 范围内
-    Status() int                    // 获取 HTTP 状态码
-    Successful() bool               // 检查状态码是否在 2xx 范围内
+    Redirect() bool                  // 检查响应是否为重定向（3xx 状态码）
+    ServerError() bool               // 检查状态码是否在 5xx 范围内
+    Status() int                     // 获取 HTTP 状态码
+    Successful() bool                // 检查状态码是否在 2xx 范围内
 
     /* 状态码相关方法 */
 
@@ -257,7 +243,7 @@ response, err := facades.Http().WithContext(ctx).Get("https://example.com")
 
 ### 绑定响应
 
-你可以直接在 `Http` facade 上使用 `Bind` 方法来指定响应应该绑定到的结构体。
+你可以使用 `Bind` 方法来指定响应应该绑定到的结构体。
 
 ```go
 type User struct {
@@ -267,12 +253,18 @@ type User struct {
 
 func main() {
     var user User
-    response, err := facades.Http().Bind(&user).AcceptJson().Get("https://jsonplaceholder.typicode.com/users/1")
+    response, err := facades.Http().AcceptJson().Get("https://jsonplaceholder.typicode.com/users/1")
     if err != nil {
         fmt.Println("Error making request:", err)
         return
     }
 
+    err = response.Bind(&user)
+    if err != nil {
+        fmt.Println("Error binding response:", err)
+        return
+    }
+    
     fmt.Printf("User ID: %d, Name: %s\n", user.ID, user.Name)
 }
 ```
@@ -302,3 +294,173 @@ response, err := facades.Http().
 	WithoutCookie("language").
 	Get("https://example.com")
 ```
+
+## 测试
+
+在测试应用程序时，你通常希望避免向外部 API 发出真实的网络请求。 无论是为了加速测试、避免速率限制，还是模拟故障场景，Goravel 都让这一切变得简单。 `Http` facade 提供了一个强大的 `Fake` 方法，允许你指示 HTTP 客户端在发出请求时返回存根（模拟）响应。
+
+### 模拟响应
+
+要开始模拟请求，请将一个映射传递给 `Fake` 方法。 键代表你想要拦截的 URL 模式或客户端名称，值代表要返回的响应。 你可以使用 `*` 作为通配符。
+
+`Http` facade 提供了一个方便的 `Response` 构建器来构造各种类型的模拟响应。
+
+```go
+facades.Http().Fake(map[string]any{
+    // 特定 URL
+    "https://github.com/goravel/framework": facades.Http().Response().Json(200, map[string]string{"foo": "bar"}),
+
+    // 通配符模式
+    "https://google.com/*": facades.Http().Response().String(200, "Hello World"),
+
+    // 特定客户端（在 config/http.go 中定义）
+    "github": facades.Http().Response().OK(),
+})
+```
+
+**Fallback URLs**
+
+任何未在 `Fake` 中定义的模式匹配的请求都将通过网络正常执行。 为了防止这种情况，你可以使用单个 `*` 通配符定义一个 fallback 模式，它将匹配所有未匹配的 URL。
+
+```go
+facades.Http().Fake(map[string]any{
+     "https://github.com/*": facades.Http().Response().Json(200, map[string]string{"id": "1"}),
+     "*": facades.Http().Response().Status(404),
+})
+```
+
+**隐式转换**
+
+为了方便起见，你并不总是需要使用 `Response` 构建器。 你可以传递简单的 `int`、`string` 或 `map` 值，Goravel 会自动将它们转换为响应。
+
+```go
+facades.Http().Fake(map[string]any{
+    "https://goravel.dev/*": "Hello World",               // 字符串 -> 200 OK 带响应体
+    "https://github.com/*":  map[string]string{"a": "b"}, // 映射 -> 200 OK JSON
+    "https://stripe.com/*":  500,                         // 整数 -> 仅状态码
+})
+```
+
+### 模拟响应构建器
+
+`facades.Http().Response()` 方法提供了一个流畅的接口，可以轻松构建自定义响应。
+
+```go
+// 使用文件内容创建响应
+facades.Http().Response().File(200, "./tests/fixtures/user.json")
+
+// 创建 JSON 响应
+facades.Http().Response().Json(201, map[string]any{"created": true})
+
+// 创建带有自定义 Header 的响应
+headers := http.Header{}
+headers.Add("X-Custom", "Value")
+facades.Http().Response().Make(200, "Body Content", headers)
+
+// 标准状态码辅助方法
+facades.Http().Response().OK()
+facades.Http().Response().Status(403)
+```
+
+### 模拟响应序列
+
+有时你可能需要指定单个 URL 应按顺序返回一系列不同的响应，例如在测试重试或速率限制逻辑时。 你可以使用 `Sequence` 方法来构建此流程。
+
+```go
+facades.Http().Fake(map[string]any{
+    "github": facades.Http().Sequence().
+                PushStatus(500).                // 第 1 次请求：服务器错误
+                PushString(429, "Rate Limit").  // 第 2 次请求：速率限制
+                PushStatus(200),                // 第 3 次请求：成功
+})
+```
+
+**空序列**
+
+当序列中的所有响应都被消耗后，任何进一步的请求都将导致客户端返回错误。
+如果你希望指定默认响应而不是失败，请使用 `WhenEmpty` 方法：
+
+```go
+facades.Http().Fake(map[string]any{
+    "github": facades.Http().Sequence().
+                PushStatus(200).
+                WhenEmpty(facades.Http().Response().Status(404)),
+})
+```
+
+### 检查请求
+
+在模拟响应时，验证你的应用程序是否实际发送了正确的请求至关重要。
+你可以使用 `AssertSent` 方法来检查请求，并返回一个布尔值，指示它是否符合你的预期。
+
+```go
+facades.Http().AssertSent(func(req client.Request) bool {
+    return req.Url() == "https://api.example.com/users" &&
+           req.Method() == "POST" &&
+           req.Input("role") == "admin" &&
+           req.Header("Authorization") != ""
+})
+```
+
+**其他断言**
+
+你也可以断言某个特定请求_未_被发送，或者检查发送的请求总数：
+
+```go
+// 断言请求未被发送
+facades.Http().AssertNotSent(func(req client.Request) bool {
+    return req.Url() == "https://api.example.com/legacy-endpoint"
+})
+
+// 断言根本没有发送任何请求
+facades.Http().AssertNothingSent()
+
+// 断言恰好发送了 3 个请求
+facades.Http().AssertSentCount(3)
+```
+
+### 防止误请求
+
+为了确保你的测试严格隔离，并且不会意外访问真实的外部 API，你可以使用 `PreventStrayRequests` 方法。 调用此方法后，任何未匹配已定义的 Fake 规则的请求都将导致测试因异常而 panic。
+
+```go
+facades.Http().Fake(map[string]any{
+    "github": facades.Http().Response().OK(),
+}).PreventStrayRequests()
+
+// 此请求被模拟并成功
+facades.Http().Client("github").Get("/") 
+
+// 此请求未被模拟并将引发 panic
+facades.Http().Get("https://google.com") 
+```
+
+**允许特定请求**
+
+如果你需要阻止大多数请求但允许特定的内部服务（如本地测试服务器），你可以使用 `AllowStrayRequests`：
+
+```go
+facades.Http().PreventStrayRequests().AllowStrayRequests([]string{
+    "http://localhost:8080/*",
+})
+```
+
+### 重置状态
+
+`Http` facade 是一个单例，这意味着除非重置，否则模拟的响应会在整个测试套件的运行期间持续存在。 为了避免模拟从一个测试"泄漏"到另一个测试，你应该严格在测试清理或设置中使用 `Reset` 方法。
+
+```go
+func TestExternalApi(t *testing.T) {
+    defer facades.Http().Reset()
+    
+    facades.Http().Fake(nil)
+    
+    // ... 断言
+}
+```
+
+:::warning 全局状态与并行测试
+`Fake` 和 `Reset` 方法会改变 HTTP 客户端的全局状态。 因此，**你应该避免并行运行模拟 HTTP 客户端的测试**（`t.Parallel()`）。 这样做可能会导致竞态条件，即一个测试重置模拟时，另一个测试仍在运行。
+:::
+
+

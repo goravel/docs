@@ -15,16 +15,17 @@ package controllers
 
 import (
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 type UserController struct {
-  // 依賴的服務
+  // Dependent services
 }
 
 func NewUserController() *UserController {
   return &UserController{
-    // 注入服務
+    // Inject services
   }
 }
 
@@ -41,8 +42,7 @@ func (r *UserController) Show(ctx http.Context) http.Response {
 package routes
 
 import (
-  "github.com/goravel/framework/facades"
-
+  "goravel/app/facades"
   "goravel/app/http/controllers"
 )
 
@@ -55,8 +55,8 @@ func Api() {
 ### 創建控制器
 
 ```shell
-go run . artisan make:controller UserController
-go run . artisan make:controller user/UserController
+./artisan make:controller UserController
+./artisan make:controller user/UserController
 ```
 
 ## 資源型控制器
@@ -66,7 +66,7 @@ go run . artisan make:controller user/UserController
 因為這是一個常見的用例，Goravel 資源路由會通過單行代碼將典型的創建、讀取、更新和刪除（"CRUD"）路由分配給控制器。 要開始，我們可以使用 `make:controller` Artisan 命令的 `--resource` 選項來快速創建一個處理這些操作的控制器：
 
 ```shell
-go run . artisan make:controller --resource PhotoController
+./artisan make:controller --resource PhotoController
 ```
 
 這條命令將生成一個控制器位於 `app/http/controllers/photo_controller.go`。 控制器將包含每個可用資源操作的方法。 接下來，你可以註冊一個指向控制器的資源路由：

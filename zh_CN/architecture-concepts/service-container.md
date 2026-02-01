@@ -16,30 +16,27 @@ Goravel的服务容器是一个功能强大的工具，用于管理类依赖和�
 package route
 
 import (
-	"github.com/goravel/framework/contracts/foundation"
+  "github.com/goravel/framework/contracts/foundation"
 )
 
 const Binding = "goravel.route"
 
-type ServiceProvider struct {
-}
+type ServiceProvider struct {}
 
 func (route *ServiceProvider) Register(app foundation.Application) {
-	app.Bind(Binding, func(app foundation.Application) (any, error) {
-		return NewRoute(app.MakeConfig()), nil
-	})
+  app.Bind(Binding, func(app foundation.Application) (any, error) {
+    return NewRoute(app.MakeConfig()), nil
+  })
 }
 
-func (route *ServiceProvider) Boot(app foundation.Application) {
-
-}
+func (route *ServiceProvider) Boot(app foundation.Application) {}
 ```
 
 如前所述，你通常会在服务提供者内部与容器进行交互；但是，如果你希望在服务提供者外部与容器进行交互，则可以通过 `App` facade 进行：
 
 ```go
 facades.App().Bind("key", func(app foundation.Application) (any, error) {
-    ...
+  ...
 })
 ```
 
@@ -49,7 +46,7 @@ facades.App().Bind("key", func(app foundation.Application) (any, error) {
 
 ```go
 app.Singleton(key, func(app foundation.Application) (any, error) {
-    return NewGin(app.MakeConfig()), nil
+  return NewGin(app.MakeConfig()), nil
 })
 ```
 
@@ -97,4 +94,4 @@ instance, err := app.MakeWith(key, map[string]any{"id": 1})
 
 ### 其他方法
 
-框架提供有一些便捷的方法可以快速解析出各种 `facades`: `MakeArtisan`, `MakeAuth`, `MakeCache`, `MakeConfig`, `MakeCrypt`, `MakeEvent`, `MakeGate`, `MakeGrpc`, `MakeHash`, `MakeLog`, `MakeMail`, `MakeOrm`, `MakeQueue`, `MakeRateLimiter`, `MakeRoute`, `MakeSchedule`, `MakeStorage`, `MakeValidation`.
+框架提供了一些便捷的方法来快速解析各种 facades：`MakeArtisan`、`MakeAuth` 等。

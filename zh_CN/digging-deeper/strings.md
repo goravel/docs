@@ -537,6 +537,29 @@ str.Of("Goravel").Pipe(func(s string) string {
 }).String() // "Goravel Framework"
 ```
 
+### `复数`
+
+`Plural` 方法将单数字符串转换为其复数形式。 此函数支持[复数](pluralization.md)支持的任何语言。
+
+```go
+import "github.com/goravel/framework/support/str"
+
+plural := str.Of("goose").Plural().String()
+// "geese"
+```
+
+你可以向函数提供一个整数参数来获取字符串的单数或复数形式：
+
+```go
+import "github.com/goravel/framework/support/str"
+
+plural := str.Of("goose").Plural(2).String()
+// "geese"
+
+plural = str.Of("goose").Plural(1).String()
+// "goose"
+```
+
 ### `Prepend`
 
 `Prepend` 方法将给定值添加到字符串的开头。
@@ -651,6 +674,17 @@ import "github.com/goravel/framework/support/str"
 str.Of("  Goravel  ").RTrim().String() // "  Goravel"
 
 str.Of("/framework/").RTrim("/").String() // "/framework"
+```
+
+### `单数`
+
+`Singular` 方法将字符串转换为其单数形式。 此函数支持[复数](pluralization.md)支持的任何语言。
+
+```go
+import "github.com/goravel/framework/support/str"
+
+singular := str.Of("heroes").Singular().String()
+// "hero"
 ```
 
 ### `Snake`

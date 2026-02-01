@@ -5,19 +5,23 @@ export const config = defineConfig({
   themeConfig: {
     nav: nav(),
     sidebar: [{
-      text: "快速开始",
-      base: "/zh_CN/getting-started/",
-      items: sidebarQuickstart()
+      text: "序言",
+      base: "/zh_CN/prologue/",
+      items: sidebarPrologue()
     }, {
       text: "升级",
       base: "/zh_CN/upgrade/",
       items: sidebarUpgrade()
     }, {
+      text: "快速开始",
+      base: "/zh_CN/getting-started/",
+      items: sidebarGettingStarted()
+    }, {
       text: "核心架构",
       base: "/zh_CN/architecture-concepts/",
       items: sidebarFoundation()
     }, {
-      text: "基本功能",
+      text: "基础功能",
       base: "/zh_CN/the-basics/",
       items: sidebarBasic()
     }, {
@@ -81,11 +85,20 @@ function nav(): DefaultTheme.NavItem[] {
     text: "视频教程",
     link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
   }, {
+    text: "版本",
+    items: [{
+      text: "v1.17 (最新)",
+      link: 'https://www.goravel.dev/'
+    }, {
+      text: 'v1.16',
+      link: 'https://v116.goravel.dev/'
+    }]
+  }, {
     text: "翻译",
-    link: "/zh_CN/getting-started/contributions#新增语言"
+    link: "/zh_CN/prologue/contributions#新增语言"
   }];
 }
-function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
+function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{
     text: "安装",
     link: 'installation'
@@ -99,14 +112,20 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
     text: "编译",
     link: 'compile'
   }, {
+    text: "优秀扩展包",
+    link: 'packages'
+  }];
+}
+function sidebarPrologue(): DefaultTheme.SidebarItem[] {
+  return [{
     text: "发行说明",
     link: 'releases'
   }, {
     text: "贡献指南",
     link: 'contributions'
   }, {
-    text: "优秀扩展包",
-    link: 'packages'
+    text: "与 Laravel 对比",
+    link: 'compare-with-laravel'
   }, {
     text: "隐私政策",
     link: 'privacy'
@@ -114,11 +133,11 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
+    text: "从 v1.16 升级到 v1.17",
+    link: 'v1.17'
+  }, {
     text: "从 v1.15 升级到 v1.16",
     link: 'v1.16'
-  }, {
-    text: "从 v1.14 升级到 v1.15",
-    link: 'v1.15'
   }, {
     text: "历史",
     link: 'history'
@@ -135,7 +154,7 @@ function sidebarFoundation(): DefaultTheme.SidebarItem[] {
     text: "服务提供者",
     link: 'service-providers'
   }, {
-    text: "门面",
+    text: 'Facades',
     link: 'facades'
   }];
 }
@@ -204,6 +223,9 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     text: "彩色输出",
     link: 'color'
   }, {
+    text: "进程",
+    link: 'processes'
+  }, {
     text: "字符串",
     link: 'strings'
   }, {
@@ -212,6 +234,9 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
   }, {
     text: "HTTP 客户端",
     link: 'http-client'
+  }, {
+    text: "复数",
+    link: 'pluralization'
   }];
 }
 function sidebarSecurity(): DefaultTheme.SidebarItem[] {

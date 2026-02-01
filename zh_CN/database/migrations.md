@@ -22,10 +22,32 @@
 使用 `make:migration` 命令来创建迁移：
 
 ```shell
-go run . artisan make:migration create_users_table
+./artisan make:migration
+./artisan make:migration create_users_table
 ```
 
 该命令会在 `database/migrations` 目录下生成迁移文件。 所有迁移文件都以一个时间戳为开头，Goravel 将以此作为迁移文件的执行顺序。
+
+你还可以通过使用 `-m` 或 `--model` 选项为特定模型创建迁移：
+
+```shell
+./artisan make:migration create_users_table -m User
+```
+
+该模型应在运行命令之前在 `bootstrap/app.go` 文件中进行注册。 此命令将根据 `User` 模型中定义的结构生成一个迁移文件。
+
+```go
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Schema().Extend(schema.Extension{
+        Models: []any{models.User{}},
+      })
+    }).
+    Create()
+}
+```
 
 ### 快捷生成
 
@@ -56,7 +78,8 @@ package migrations
 
 import (
 	"github.com/goravel/framework/contracts/database/schema"
-	"github.com/goravel/framework/facades"
+	
+  "goravel/app/facades"
 )
 
 type M20241207095921CreateUsersTable struct {
@@ -99,14 +122,14 @@ func (r *M20241207095921CreateUsersTable) Connection() string {
 
 ## 注册迁移
 
-迁移文件生成后需要在 `database/kernel.go` 文件中注册，如果是通过 `make:migration` 命令生成的迁移文件，则不需要手动注册，框架会自动注册。
+通过 `make:migration` 创建的新迁移将自动注册到 `bootstrap/migrations.go::Migrations()` 函数中，并且该函数将由 `WithMigrations` 调用。 如果你自行创建迁移文件，则需要手动注册。
 
 ```go
-// database/kernel.go
-func (kernel Kernel) Migrations() []schema.Migration {
-	return []schema.Migration{
-		&migrations.M20241207095921CreateUsersTable{},
-	}
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMigrations(Migrations).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
 
@@ -115,39 +138,39 @@ func (kernel Kernel) Migrations() []schema.Migration {
 执行 Artisan 命令 `migrate`，来运行所有未执行过的迁移：
 
 ```shell
-go run . artisan migrate
+./artisan migrate
 ```
 
 如果你想查看目前的迁移状态，可以使用 `migrate:status` Artisan 命令：
 
 ```shell
-go run . artisan migrate:status
+./artisan migrate:status
 ```
 
 ## 回滚迁移
 
-如果要回滚最后一次迁移操作，可以使用 `rollback` 命令：
+要回滚最新的迁移批次，请使用 `rollback` Artisan 命令：
 
 ```shell
-go run . artisan migrate:rollback
+./artisan migrate:rollback
 ```
 
-如果你想要回滚最后的一批迁移，一批中可能包括多个迁移文件， 你可以指定 "batch" 选项，数字表示要回滚的批处理：
+如果要回滚多个迁移批次，可以指定 `batch` 选项，数字表示要回滚的批次：
 
 ```shell
-go run . artisan migrate:rollback --batch=2
+./artisan migrate:rollback --batch=2
 ```
 
 通过向 `rollback` 命令加上 `step` 参数，可以回滚指定数量的迁移。 例如，以下命令将回滚最后五个迁移：
 
 ```shell
-go run . artisan migrate:rollback --step=5
+./artisan migrate:rollback --step=5
 ```
 
 命令 `migrate:reset` 会回滚应用已运行过的所有迁移：
 
 ```shell
-go run . artisan migrate:reset
+./artisan migrate:reset
 ```
 
 ### 使用单个命令同时进行回滚和迁移操作
@@ -155,13 +178,13 @@ go run . artisan migrate:reset
 命令 `migrate:refresh` 首先会回滚已运行过的所有迁移，随后会执行 `migrate`。 这一命令可以高效地重建你的整个数据库：
 
 ```shell
-go run . artisan migrate:refresh
+./artisan migrate:refresh
 ```
 
 通过在命令 `refresh` 中使用 `step` 参数，你可以回滚并重新执行指定数量的迁移操作。 例如，下列命令会回滚并重新执行最后五个迁移操作：
 
 ```shell
-go run . artisan migrate:refresh --step=5
+./artisan migrate:refresh --step=5
 ```
 
 ### 删除所有表然后执行迁移
@@ -169,7 +192,7 @@ go run . artisan migrate:refresh --step=5
 命令 `migrate:fresh` 会删去数据库中的所有表，随后执行命令 `migrate`：
 
 ```shell
-go run . artisan migrate:fresh
+./artisan migrate:fresh
 ```
 
 ## Tables

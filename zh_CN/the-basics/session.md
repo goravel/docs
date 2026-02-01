@@ -12,18 +12,18 @@ Session 使你可以在多个请求之间存储用户信息，为本质上无状
 
 ### 注册 Middleware
 
-Goravel 默认情况下未启动 `Session` 功能， 但是框架提供了用于启动会话的中间件。 你可以在 `app/http/kernel.go` 文件中注册 `Session` 中间件，以将其应用于所有路由，或者将其添加到特定路由中：
+Goravel 默认情况下未启动 `Session` 功能， 但是框架提供了用于启动会话的中间件。 你可以在 `bootstrap/app.go` 文件的 `WithMiddleware` 函数中注册中间件，或者将其添加到特定路由中：
 
 ```go
-import (
-  "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/session/middleware"
-)
-
-func (kernel Kernel) Middleware() []http.Middleware {
-  return []http.Middleware{
-    middleware.StartSession(),
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMiddleware(func(handler configuration.Middleware) {
+			handler.Append(
+				middleware.StartSession(),
+			)
+		}).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
 
@@ -173,8 +173,6 @@ ctx.Request().Session().Now("status", "Task was successful!")
 使用 `Session` 门面构建自定义会话。 `Session` 门面提供了 `BuildSession` 方法，它接受一个驱动实例和一个可选的会话 ID，如果你想指定自定义会话 ID：
 
 ```go
-import "github.com/goravel/framework/facades"
-
 session := facades.Session().BuildSession(driver, "sessionID")
 ```
 

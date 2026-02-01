@@ -14,38 +14,29 @@ Goravel 主要提供了两种授权操作的方法: [拦截器](#拦截器（Gat
 
 ### 编写拦截器（Gates）
 
-拦截器（Gates）是用来确定用户是否有权执行给定操作的闭包函数。 默认条件下，拦截器（Gates）的使用，是在 `app/providers/auth_service_provider.go` 文件中的 `Boot` 方法里来规定 `Gate` 规则。
+拦截器（Gates）是用来确定用户是否有权执行给定操作的闭包函数。 它们通常使用 Gate facade 在 `bootstrap/app.go::WithCallback` 函数中设置。
 
 在下面的例子中，我们将定义一个拦截器（Gates)，通过比较用户的 id 来判断是否有对 post 数据操作的权限。
 
 ```go
-package providers
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Gate().Define("update-post",
+        func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
+          user := ctx.Value("user").(models.User)
+          post := arguments["post"].(models.Post)
 
-import (
-  "context"
-
-  contractsaccess "github.com/goravel/framework/contracts/auth/access"
-  "github.com/goravel/framework/auth/access"
-  "github.com/goravel/framework/facades"
-)
-
-type AuthServiceProvider struct {
-}
-
-func (receiver *AuthServiceProvider) Register(app foundation.Application) {
-}
-
-func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
-  facades.Gate().Define("update-post", func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
-    user := ctx.Value("user").(models.User)
-    post := arguments["post"].(models.Post)
-
-    if user.ID == post.UserID {
-      return access.NewAllowResponse()
-    } else {
-      return access.NewDenyResponse("error")
-    }
-  })
+          if user.ID == post.UserID {
+            return access.NewAllowResponse()
+          } else {
+            return access.NewDenyResponse("error")
+          }
+        },
+      )
+    }).
+    Create()
 }
 ```
 
@@ -57,7 +48,7 @@ func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
 package controllers
 
 import (
-  "github.com/goravel/framework/facades"
+  "goravel/app/facades"
 )
 
 type UserController struct {
@@ -150,9 +141,9 @@ facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
 
 你可以使用 `make:policy` Artisan 命令生成策略。 生成的策略将放置在 `app/policies` 目录中。 如果应用程序中不存在此目录，Goravel 将自动创建。
 
-```go
-go run . artisan make:policy PostPolicy
-go run . artisan make:policy user/PostPolicy
+```shell
+./artisan make:policy PostPolicy
+./artisan make:policy user/PostPolicy
 ```
 
 ### 编写策略
@@ -188,10 +179,17 @@ func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contr
 }
 ```
 
-然后我们就可以在 `app/providers/auth_service_provider.go` 中注册策略：
+然后我们可以将策略注册到 `bootstrap/app.go::WithCallback` 函数中：
 
 ```go
-facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
+    }).
+    Create()
+}
 ```
 
 你可以继续根据需要为策略授权的各种操作定义其他方法。 例如，你可以定义 `View` 或 `Delete` 方法来授权各种与 `models.Post` 相关的操作。 你可以自由地为策略方法命名任何你喜欢的名称。

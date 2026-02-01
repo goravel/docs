@@ -76,7 +76,7 @@ err := facades.DB().Table("users").FindOrFail(&user, 1)
 
 ```go
 var user *User
-user, err = facades.DB().Table("users").Where("name", "John").FirstOr(&user, func() error {
+err = facades.DB().Table("users").Where("name", "John").FirstOr(&user, func() error {
   return errors.New("no rows")
 })
 ```
@@ -99,8 +99,10 @@ var products []Product
 err := facades.DB().Table("products").Each(func(rows []db.Row) error {
   for _, row := range rows {
     var product Product
-    err := row.Scan(&product)
-    s.NoError(err)
+    if err := row.Scan(&product); err != nil {
+      return err
+    }
+
     products = append(products, product)
   }
 
@@ -117,8 +119,10 @@ var products []Product
 err := facades.DB().Table("products").Chunk(2, func(rows []db.Row) error {
   for _, row := range rows {
     var product Product
-    err := row.Scan(&product)
-    s.NoError(err)
+    if err := row.Scan(&product); err != nil {
+      return err
+    }
+
     products = append(products, product)
   }
 
@@ -138,10 +142,9 @@ rows, err := facades.DB().Table("products").Cursor()
 var products []Product
 for row := range rows {
     var product Product
-    err = row.Scan(&product)
-
-    s.NoError(err)
-    s.True(product.ID > 0)
+    if err := row.Scan(&product); err != nil {
+      return err
+    }
 
     products = append(products, product)
 }
@@ -149,12 +152,22 @@ for row := range rows {
 
 ### 聚合
 
-查询构造器提供了聚合方法： `Count` `Sum`。
+查询构造器提供了多个聚合方法：`Count`、`Sum`、`Avg`、`Min`、`Max`。
 
 ```go
 count, err := facades.DB().Table("users").Count()
 
-sum, err := facades.DB().Table("users").Sum("age")
+var sum int
+err := facades.DB().Table("users").Sum("age", &sum)
+
+var avg float64
+err := facades.DB().Table("users").Avg("age", &avg)
+
+var min int
+err := facades.DB().Table("users").Min("age", &min)
+
+var max int
+err := facades.DB().Table("users").Max("age", &max)
 ```
 
 ### 判断记录是否存在
@@ -203,7 +216,7 @@ err := facades.DB().Table("users").Distinct().Select("name").Get(&users)
 ```go
 import "github.com/goravel/framework/database/db"
 
-facades.DB().Model(&user).Update("age", db.Raw("age - ?", 1))
+res, err := facades.DB().Model(&user).Update("age", db.Raw("age - ?", 1))
 ```
 
 ## Select 语句
@@ -214,10 +227,10 @@ facades.DB().Model(&user).Update("age", db.Raw("age - ?", 1))
 
 ```go
 // 选择特定字段
-facades.DB().Select("name", "age").Get(&users)
+err := facades.DB().Select("name", "age").Get(&users)
 
 // 使用子查询
-facades.DB().Select("name", db.Raw("(SELECT COUNT(*) FROM posts WHERE users.id = posts.user_id) as post_count")).Get(&users)
+err := facades.DB().Select("name", db.Raw("(SELECT COUNT(*) FROM posts WHERE users.id = posts.user_id) as post_count")).Get(&users)
 ```
 
 ### Distinct 语句
@@ -226,7 +239,7 @@ facades.DB().Select("name", db.Raw("(SELECT COUNT(*) FROM posts WHERE users.id =
 
 ```go
 var users []models.User
-facades.DB().Distinct("name").Find(&users)
+err := facades.DB().Distinct("name").Find(&users)
 ```
 
 ## 原生方法
@@ -345,6 +358,22 @@ err := facades.DB().Table("users").Where("name", "John").WhereExists(func() db.Q
 }).Get(&users)
 ```
 
+### WhereAll / WhereAny / WhereNone
+
+```go
+var products []Product
+facades.DB().Table("products").WhereAll([]string{"weight", "height"}, "=", 200).Find(&products)
+// SQL: SELECT * FROM products WHERE weight = ? AND height = ?
+
+var users []User
+facades.DB().Table("users").WhereAny([]string{"name", "email"}, "=", "John").Find(&users)
+// SQL: SELECT * FROM users WHERE (name = ? OR email = ?)
+
+var products []Product
+facades.DB().Table("products").WhereNone([]string{"age", "score"}, ">", 18).Find(&products)
+// SQL: SELECT * FROM products WHERE NOT (age > ?) AND NOT (score > ?)
+```
+
 ### 其他 Where 语句
 
 **WhereBetween / OrWhereBetween**
@@ -422,9 +451,9 @@ facades.DB().OrderByDesc("name")
 `Latest` 方法可以使你轻松地通过日期对结果进行排序。 默认情况下，结果将根据 `created_at` 列进行排序：
 
 ```go
-facades.DB().Table("users").Latest().First(&user)
+err := facades.DB().Table("users").Latest().First(&user)
 
-facades.DB().Table("users").Latest("updated_at").First(&user)
+err := facades.DB().Table("users").Latest("updated_at").First(&user)
 ```
 
 **InRandomOrder**
@@ -432,7 +461,7 @@ facades.DB().Table("users").Latest("updated_at").First(&user)
 `InRandomOrder` 方法被用来将结果随机排序：
 
 ```go
-facades.DB().Table("users").InRandomOrder().First(&user)
+err := facades.DB().Table("users").InRandomOrder().First(&user)
 ```
 
 ### 分组
@@ -458,7 +487,7 @@ err := facades.DB().Table("users").Offset(10).Limit(5).Get(&users)
 ```go
 import "github.com/goravel/framework/contracts/database/db"
 
-facades.DB().Table("users").When(1 == 1, func(query db.Query) db.Query {
+err := facades.DB().Table("users").When(1 == 1, func(query db.Query) db.Query {
   return query.Where("age", 25)
 }).First(&user)
 ```
@@ -466,7 +495,7 @@ facades.DB().Table("users").When(1 == 1, func(query db.Query) db.Query {
 你也可以将另一个闭包作为第三个参数传递给 `When` 方法。 这个闭包则旨在第一个参数结果为 false 时才会执行：
 
 ```go
-facades.DB().Table("users").When(1 != 1, func(query db.Query) db.Query {
+err := facades.DB().Table("users").When(1 != 1, func(query db.Query) db.Query {
   return query.OrderBy("name")
 }, func(query db.Query) db.Query {
   return query.OrderBy("id")
@@ -549,11 +578,10 @@ result, err := facades.DB().Table("products").Where("id", 1).Update(map[string]a
 ### 更新 JSON 字段
 
 ```go
-facades.DB().Table("users").Where("id", 1).Update("options->enabled", true)
-facades.DB().Table("users").Where("id", 1).Update("options->languages[0]", "en")
-facades.DB().Table("users").Where("id", 1).Update("options->languages", []string{"en", "de"})
-
-facades.DB().Table("users").Where("id", 1).Update(map[string]any{
+result, err := facades.DB().Table("users").Where("id", 1).Update("options->enabled", true)
+result, err := facades.DB().Table("users").Where("id", 1).Update("options->languages[0]", "en")
+result, err := facades.DB().Table("users").Where("id", 1).Update("options->languages", []string{"en", "de"})
+result, err := facades.DB().Table("users").Where("id", 1).Update(map[string]any{
     "preferences->dining->meal": "salad",
     "options->languages[0]":     "en",
     "options->enabled":          true,
@@ -611,13 +639,13 @@ result, err := facades.DB().Table("users").Where("id", 1).Delete()
 若要在查询中使用「共享锁」，你可以使用 `SharedLock` 方法。 共享锁可防止选中的行被篡改，直到事务被提交为止：
 
 ```go
-facades.DB().Table("users").Where("votes > ?", 100).SharedLock().Get(&users)
+err := facades.DB().Table("users").Where("votes > ?", 100).SharedLock().Get(&users)
 ```
 
 此外，你也可以使用 `LockForUpdate` 方法。 使用「更新」锁可避免行被其它共享锁修改或选取：
 
 ```go
-facades.DB().Table("users").Where("votes > ?", 100).LockForUpdate().Get(&users)
+err := facades.DB().Table("users").Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
 ## 调试
@@ -627,13 +655,13 @@ facades.DB().Table("users").Where("votes > ?", 100).LockForUpdate().Get(&users)
 带占位符的 SQL：
 
 ```go
-facades.DB().Table("users").Where("id", 1).ToSql().Get(models.User{})
+err := facades.DB().Table("users").Where("id", 1).ToSql().Get(models.User{})
 ```
 
 带绑定值的 SQL：
 
 ```go
-facades.DB().Table("users").Where("id", 1).ToRawSql().Get(models.User{})
+err := facades.DB().Table("users").Where("id", 1).ToRawSql().Get(models.User{})
 ```
 
 `ToSql` 与 `ToRawSql` 后可以调用的方法：`Count`, `Insert`, `Delete`, `First`, `Get`, `Pluck` `Update`。

@@ -6,13 +6,12 @@
 
 The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS, Tencent COS, Minio and Cloudinary. Even better, switching between these storage options between your local development machine and production server is amazingly simple as the API remains the same for each system. Goravel comes with a `local` driver, for other drivers, please check the corresponding independent extension package:
 
-| Driver     | Link                                                                                                           |
-| ---------- | -------------------------------------------------------------------------------------------------------------- |
-| S3         | [https://github.com/goravel/s3](https://github.com/goravel/s3)                 |
-| OSS        | [https://github.com/goravel/oss](https://github.com/goravel/oss)               |
-| COS        | [https://github.com/goravel/cos](https://github.com/goravel/cos)               |
-| Minio      | [https://github.com/goravel/minio](https://github.com/goravel/minio)           |
-| Cloudinary | [https://github.com/goravel/cloudinary](https://github.com/goravel/cloudinary) |
+| Driver | Link                                                                                                 |
+| ------ | ---------------------------------------------------------------------------------------------------- |
+| S3     | [https://github.com/goravel/s3](https://github.com/goravel/s3)       |
+| OSS    | [https://github.com/goravel/oss](https://github.com/goravel/oss)     |
+| COS    | [https://github.com/goravel/cos](https://github.com/goravel/cos)     |
+| Minio  | [https://github.com/goravel/minio](https://github.com/goravel/minio) |
 
 ## Configuration
 
@@ -61,7 +60,7 @@ facades.Storage().WithContext(ctx).Put("avatars/1.png", "Contents")
 The `Get` method may be used to retrieve the contents of a file. The raw string contents of the file will be returned by the method. Remember, all file paths should be specified relative to the disk's `root` location:
 
 ```go
-contents := facades.Storage().Get("file.jpg")
+content := facades.Storage().Get("file.jpg")
 ```
 
 The `Exists` method may be used to determine if a file exists on the disk:
@@ -338,4 +337,4 @@ type Driver interface {
 }
 ```
 
-> Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config().Env` to obtain the configuration in the custom driver.
+> Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config().Env()` to obtain the configuration in the custom driver.

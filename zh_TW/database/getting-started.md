@@ -59,7 +59,7 @@ import "github.com/goravel/framework/contracts/database"
 
 ## 執行原生 SQL 查詢
 
-配置好資料庫連接後，您可以使用 `facades.DB()` 來執行查詢。 `facades.DB` 提供多種方法來運行查詢：`Select`、`Insert`、`Update`、`Delete` 和 `Statement`。
+配置好資料庫連接後，您可以使用 `facades.DB()` 來執行查詢。 `facades.DB()` provides various methods for running queries: `Select`, `Insert`, `Update`, `Delete`, and `Statement`.
 
 ### 選擇
 
@@ -163,15 +163,15 @@ Goravel 提供了幾個 Artisan 命令來幫助您了解資料庫的結構。
 您可以使用 `db:show` 命令查看資料庫中的所有表。
 
 ```bash
-go run . artisan db:show
-go run . artisan db:show --database=postgres
+./artisan db:show
+./artisan db:show --database=postgres
 ```
 
 您還可以使用 `db:table` 命令來查看特定表的結構。
 
 ```bash
-go run . artisan db:table
-go run . artisan db:table --database=postgres
+./artisan db:table
+./artisan db:table --database=postgres
 ```
 
 ### 表概述
@@ -179,6 +179,6 @@ go run . artisan db:table --database=postgres
 如果您想獲得資料庫中單張表的概述，您可以執行 `db:table` Artisan 命令。這個命令提供了一個資料庫表的概述，包括它的列、類型、屬性、鍵和索引: 此命令提供了資料庫表的概述，包括其列、類型、屬性、鍵和索引：
 
 ```bash
-go run . artisan db:table users
-go run . artisan db:table users --database=postgres
+./artisan db:table users
+./artisan db:table users --database=postgres
 ```

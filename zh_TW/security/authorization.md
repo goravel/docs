@@ -14,41 +14,29 @@ Goravel 提供內建的 [身份驗證](./authentication.md) 服務和易於使�
 
 ### 編寫網關
 
-網關作為閉包，用來驗證用戶是否有權執行特定操作。 它們通常在 `app/providers/auth_service_provider.go` 檔案的 `Boot` 方法中使用 Gate facade 設定。
+網關作為閉包，用來驗證用戶是否有權執行特定操作。 They are commonly set up in the `bootstrap/app.go::WithCallback` function using the Gate facade.
 
 在這個場景中，我們將建立一個網關來檢查用戶是否可以通過將其 ID 與帖子創建者的 user_id 進行比較來修改特定的 Post 模型。
 
 ```go
-package providers
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Gate().Define("update-post",
+        func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
+          user := ctx.Value("user").(models.User)
+          post := arguments["post"].(models.Post)
 
-import (
-  "context"
-
-  contractsaccess "github.com/goravel/framework/contracts/auth/access"
-  "github.com/goravel/framework/auth/access"
-  "github.com/goravel/framework/facades"
-)
-
-type AuthServiceProvider struct {
-}
-
-func (receiver *AuthServiceProvider) Register(app foundation.Application) {
-
-}
-
-func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
-  facades.Gate().Define("update-post",
-    func(ctx context.Context, arguments map[string]any) contractsaccess.Response {
-      user := ctx.Value("user").(models.User)
-      post := arguments["post"].(models.Post)
-
-      if user.ID == post.UserID {
-        return access.NewAllowResponse()
-      } else {
-        return access.NewDenyResponse("error")
-      }
-    },
-  )
+          if user.ID == post.UserID {
+            return access.NewAllowResponse()
+          } else {
+            return access.NewDenyResponse("error")
+          }
+        },
+      )
+    }).
+    Create()
 }
 ```
 
@@ -60,7 +48,7 @@ func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
 package controllers
 
 import (
-  "github.com/goravel/framework/facades"
+  "goravel/app/facades"
 )
 
 type UserController struct {
@@ -153,9 +141,9 @@ facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
 
 您可以使用 `make:policy` Artisan 命令生成一個政策。 生成的政策將保存在 `app/policies` 目錄中。 如果您的應用中不存在此目錄，Goravel 將為您自動創建。
 
-```go
-go run . artisan make:policy PostPolicy
-go run . artisan make:policy user/PostPolicy
+```shell
+./artisan make:policy PostPolicy
+./artisan make:policy user/PostPolicy
 ```
 
 ### 編寫政策
@@ -192,10 +180,17 @@ func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contr
 }
 ```
 
-然後我們可以在 `app/providers/auth_service_provider.go` 中註冊政策：
+Then we can register the policy to the `bootstrap/app.go::WithCallback` function:
 
 ```go
-facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Gate().Define("update-post", policies.NewPostPolicy().Update)
+    }).
+    Create()
+}
 ```
 
 在您授權不同操作時，您可以向您的政策添加更多方法。 例如，您可以創建 `View` 或 `Delete` 方法來授權各種模型相關的行為。 隨意命名您的政策方法。

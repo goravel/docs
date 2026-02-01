@@ -39,7 +39,7 @@ Goravel 中有一個 `TestCase` 結構，未來該結構將提供一些方便的
 要創建新的測試用例，使用 `make:test` Artisan 命令：
 
 ```shell
-go run . artisan make:test feature/UserTest
+./artisan make:test feature/UserTest
 ```
 
 我們的測試用例預設使用 [stretchr/testify](https://github.com/stretchr/testify) 包的 suite 函數編寫。 該函數允許我們配置前測、後測、副測和斷言等功能，從而形成更有組織的測試用例。 有關更多信息，請參閱官方文檔。
@@ -256,8 +256,7 @@ import (
   "os"
   "testing"
 
-  "github.com/goravel/framework/facades"
-
+  "goravel/app/facades"
   "goravel/database/seeders"
 )
 
@@ -270,15 +269,21 @@ func TestMain(m *testing.M) {
   if err := database.Build(); err != nil {
     panic(err)
   }
-
+  if err := database.Ready(); err != nil {
+    panic(err)
+  }
   if err := database.Migrate(); err != nil {
     panic(err)
   }
 
-  // 執行測試用例
+  if err := facades.App().Restart(); err != nil {
+    panic(err)
+  }
+
+  // Execute test cases
   exit := m.Run()
 
-  // 在所有測試用例運行後卸載映像
+  // Uninstall the image after all test cases have been run
   if err := database.Shutdown(); err != nil {
     panic(err)
   }

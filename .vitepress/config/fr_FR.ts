@@ -5,13 +5,17 @@ export const config = defineConfig({
   themeConfig: {
     nav: nav(),
     sidebar: [{
-      text: 'Quickstart',
-      base: '/getting-started/',
-      items: sidebarQuickstart()
+      text: 'Prologue',
+      base: '/prologue/',
+      items: sidebarPrologue()
     }, {
       text: 'Upgrade',
       base: '/upgrade/',
       items: sidebarUpgrade()
+    }, {
+      text: 'Getting Started',
+      base: '/getting-started/',
+      items: sidebarGettingStarted()
     }, {
       text: 'Architecture Concepts',
       base: '/architecture-concepts/',
@@ -81,11 +85,20 @@ function nav(): DefaultTheme.NavItem[] {
     text: 'Video Tutorials',
     link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
   }, {
+    text: 'Versions',
+    items: [{
+      text: 'v1.17 (Latest)',
+      link: 'https://www.goravel.dev/'
+    }, {
+      text: 'v1.16',
+      link: 'https://v116.goravel.dev/'
+    }]
+  }, {
     text: 'Translate',
-    link: '/getting-started/contributions#add-a-new-language'
+    link: '/prologue/contributions#add-a-new-language'
   }];
 }
-function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
+function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{
     text: 'Installation',
     link: 'installation'
@@ -99,14 +112,20 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
     text: 'Compile',
     link: 'compile'
   }, {
+    text: 'Excellent Packages',
+    link: 'packages'
+  }];
+}
+function sidebarPrologue(): DefaultTheme.SidebarItem[] {
+  return [{
     text: 'Release Notes',
     link: 'releases'
   }, {
     text: 'Contribution Guide',
     link: 'contributions'
   }, {
-    text: 'Excellent Packages',
-    link: 'packages'
+    text: 'Compare With Laravel',
+    link: 'compare-with-laravel'
   }, {
     text: 'Privacy Policy',
     link: 'privacy'
@@ -114,11 +133,11 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
+    text: 'Upgrading To v1.17 From v1.16',
+    link: 'v1.17'
+  }, {
     text: 'Upgrading To v1.16 From v1.15',
     link: 'v1.16'
-  }, {
-    text: 'Upgrading To v1.15 From v1.14',
-    link: 'v1.15'
   }, {
     text: 'History',
     link: 'history'
@@ -204,6 +223,9 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     text: 'Color Output',
     link: 'color'
   }, {
+    text: 'Processes',
+    link: 'processes'
+  }, {
     text: 'Strings',
     link: 'strings'
   }, {
@@ -212,6 +234,9 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
   }, {
     text: 'HTTP Client',
     link: 'http-client'
+  }, {
+    text: 'Pluralization',
+    link: 'pluralization'
   }];
 }
 function sidebarSecurity(): DefaultTheme.SidebarItem[] {

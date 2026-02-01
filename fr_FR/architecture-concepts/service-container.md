@@ -16,30 +16,27 @@ Almost all of your service container bindings will be registered within [service
 package route
 
 import (
-	"github.com/goravel/framework/contracts/foundation"
+  "github.com/goravel/framework/contracts/foundation"
 )
 
 const Binding = "goravel.route"
 
-type ServiceProvider struct {
-}
+type ServiceProvider struct {}
 
 func (route *ServiceProvider) Register(app foundation.Application) {
-	app.Bind(Binding, func(app foundation.Application) (any, error) {
-		return NewRoute(app.MakeConfig()), nil
-	})
+  app.Bind(Binding, func(app foundation.Application) (any, error) {
+    return NewRoute(app.MakeConfig()), nil
+  })
 }
 
-func (route *ServiceProvider) Boot(app foundation.Application) {
-
-}
+func (route *ServiceProvider) Boot(app foundation.Application) {}
 ```
 
 As mentioned, you will typically be interacting with the container within service providers; however, if you would like to interact with the container outside of a service provider, you may do so via the `App` facade:
 
 ```go
 facades.App().Bind("key", func(app foundation.Application) (any, error) {
-    ...
+  ...
 })
 ```
 
@@ -49,7 +46,7 @@ The `Singleton` method binds a class or interface into the container that should
 
 ```go
 app.Singleton(key, func(app foundation.Application) (any, error) {
-    return NewGin(app.MakeConfig()), nil
+  return NewGin(app.MakeConfig()), nil
 })
 ```
 
@@ -67,7 +64,7 @@ If you need some extra parameters to construct the service provider, you can use
 
 ```go
 app.BindWith(Binding, func(app foundation.Application, parameters map[string]any) (any, error) {
-    return NewRoute(app.MakeConfig()), nil
+  return NewRoute(app.MakeConfig()), nil
 })
 ```
 
@@ -97,4 +94,4 @@ instance, err := app.MakeWith(key, map[string]any{"id": 1})
 
 ### Other Methods
 
-The framework provides some convenient methods to quickly resolve various facades: `MakeArtisan`, `MakeAuth`, `MakeCache`, `MakeConfig`, `MakeCrypt`, `MakeEvent`, `MakeGate`, `MakeGrpc`, `MakeHash`, `MakeLog`, `MakeMail`, `MakeOrm`, `MakeQueue`, `MakeRateLimiter`, `MakeRoute`, `MakeSchedule`, `MakeStorage`, `MakeValidation`.
+The framework provides some convenient methods to quickly resolve various facades: `MakeArtisan`, `MakeAuth`, etc.

@@ -14,16 +14,16 @@ You can configure the parameters of JWT in the `config/jwt.go` file, such as `se
 
 ### Different JWT Guard supports different configurations
 
-You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/auth.go` file, if not set, the `jwt.ttl` configuration is used by default.
+You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/auth.go` file, if not set, these three configurations are used by the `config/jwt.go` file as default.
 
 ```go
 // config/auth.go
 "guards": map[string]any{
   "user": map[string]any{
     "driver": "jwt",
-++    "ttl": 60,
-++    "refresh_ttl": 0,
-++    "secret": "your-secret",
+++  "ttl": 60,
+++  "refresh_ttl": 0,
+++  "secret": "your-secret",
   },
 },
 ```
@@ -31,7 +31,7 @@ You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/
 ## Generate JWT Token
 
 ```shell
-go run . artisan jwt:secret
+./artisan jwt:secret
 ```
 
 ## Generate Token Using User

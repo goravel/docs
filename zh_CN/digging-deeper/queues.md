@@ -65,8 +65,21 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 默认情况下，应用程序的所有的任务都被存储在了 `app/jobs` 目录中。 如果 `app/jobs` 目录不存在，当你运行 `make:job` Artisan 命令时，将会自动创建该目录：
 
 ```shell
-go run . artisan make:job ProcessPodcast
-go run . artisan make:job user/ProcessPodcast
+./artisan make:job ProcessPodcast
+./artisan make:job user/ProcessPodcast
+```
+
+### 注册任务
+
+通过 `make:job` 创建的新任务将自动注册到 `bootstrap/jobs.go::Jobs()` 函数中，并且该函数将由 `WithJobs` 调用。 如果你自行创建任务文件，则需要手动注册。
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithJobs(Jobs).
+		WithConfig(config.Boot).
+		Create()
+}
 ```
 
 ### 类结构
@@ -101,76 +114,24 @@ func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, de
 }
 ```
 
-### 注册任务
-
-当任务创建好后，需要注册到 `app/provides/queue_service_provider.go`，以便能够正确调用。 如果是通过 `make:job` 命令生成的任务，则不需要手动注册，框架会自动注册。
-
-```go
-func (receiver *QueueServiceProvider) Jobs() []queue.Job {
-  return []queue.Job{
-    &jobs.Test{},
-  }
-}
-```
-
 ## 启动队列服务器
 
-在根目录下 `main.go` 中启动队列服务器。
+默认队列将由队列服务提供者的 runner 启动，如果你想启动多个具有不同配置的队列工作器，可以创建一个[runner](../architecture-concepts/service-providers.md#runners)并将其添加到 `bootstrap/app.go` 文件中的 `WithRunners` 函数：
 
 ```go
-package main
-
-import (
-  "github.com/goravel/framework/facades"
-
-  "goravel/bootstrap"
-)
-
-func main() {
-  // This bootstraps the framework and gets it ready for use.
-  bootstrap.Boot()
-
-  // Start queue server by facades.Queue().
-  go func() {
-    if err := facades.Queue().Worker().Run(); err != nil {
-      facades.Log().Errorf("Queue run error: %v", err)
-    }
-  }()
-
-  select {}
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithRunners(func() []contractsfoundation.Runner {
+      return []contractsfoundation.Runner{
+        YourRunner,
+      }
+    }).
+    Create()
 }
 ```
 
-`facades.Queue().Worker` 方法中可以传入不同的参数，通过启动多个 `facades.Queue().Worker`，可以达到监听多个队列的目的。
-
-```go
-// 不传参数，默认监听 `config/queue.go` 中的配置，并发数为 1
-go func() {
-  if err := facades.Queue().Worker().Run(); err != nil {
-    facades.Log().Errorf("Queue run error: %v", err)
-  }
-}()
-
-// 监听 redis 链接的 processing 队列，并发数 10，重试次数 3
-go func() {
-  if err := facades.Queue().Worker(queue.Args{
-    Connection: "redis",
-    Queue: "processing",
-    Concurrent: 10,
-    Tries: 3,
-  }).Run(); err != nil {
-    facades.Log().Errorf("Queue run error: %v", err)
-  }
-}()
-```
-
-## 停止队列服务器
-
-当队列服务器运行时，你可以通过调用 `Shutdown` 方法来停止队列服务器，该方法会等待当前运行中的任务完成后才会停止队列。
-
-```go
-err := facades.Queue().Worker().Shutdown()
-```
+你可以参考[默认队列 runner](https://github.com/goravel/framework/blob/master/queue/runners.go)。
 
 ## 调度任务
 
@@ -182,8 +143,8 @@ package controllers
 import (
   "github.com/goravel/framework/contracts/queue"
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/jobs"
 )
 
@@ -208,15 +169,15 @@ package controllers
 import (
   "github.com/goravel/framework/contracts/queue"
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/jobs"
 )
 
 type UserController struct {
 }
 
-func (r *serController) Show(ctx http.Context) {
+func (r *UserController) Show(ctx http.Context) {
   err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).DispatchSync()
   if err != nil {
     // do something

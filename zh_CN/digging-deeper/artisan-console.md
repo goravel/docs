@@ -7,19 +7,19 @@
 Artisan 是 Goravel 自带的命令行工具。 该模块可以使用 `facades.Artisan()` 进行操作。 它提供了许多有用的命令，这些命令可以在构建应用时为你提供帮助。 你可以通过命令查看所有可用的 Artisan 命令。
 
 ```shell
-go run . artisan list
-
-# or
 ./artisan list
+
+# 或
+go run . artisan list
 ```
 
 每个命令都包含了一个 `help` 参数，它会显示命令的可用参数及选项。
 
 ```shell
-go run . artisan migrate --help
+./artisan migrate --help
 ```
 
-如果你不想重复输入 `go run . artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
+如果不想重复输入 `./artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
@@ -33,18 +33,29 @@ artisan make:controller DemoController
 
 你也可以使用 `artisan` shell 脚本来运行：
 
-```shell
-./artisan make:controller DemoController
-```
-
 ### 生成命令
 
 使用 `make:command` 命令将在 `app/console/commands` 目录中创建一个新的命令。 如果你的应用程序中不存在此目录，请不要担心，它将在你第一次运行 make:command 命令时自动创建：
 
 ```shell
-go run . artisan make:command SendEmails
-go run . artisan make:command user/SendEmails
+./artisan make:command SendEmails
+./artisan make:command user/SendEmails
 ```
+
+### 注册命令
+
+所有命令都应通过 `bootstrap/app.go` 文件中的 `WithCommands` 函数进行注册：
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithConfig(config.Boot).
+		Create()
+}
+```
+
+通过 `make:command` 创建的新命令将自动注册到 `bootstrap/commands.go::Commands()` 函数中，并且该函数将由 `WithCommands` 调用。 如果你自行创建命令文件，则需要手动注册。
 
 ### 命令结构
 
@@ -93,10 +104,67 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 直接在命令后跟参数：
 
 ```shell
-go run . artisan send:emails NAME EMAIL
+./artisan send:emails SUBJECT EMAIL_1 EMAIL_2
 ```
 
+定义：
+
+```go
+// send:emails <subject> <email...>
+func (receiver *SendEmails) Extend() command.Extend {
+	return command.Extend{
+		Arguments: []command.Argument{
+			&command.ArgumentString{
+				Name:     "subject",
+				Usage:    "subject of email",
+				Required: true,
+			},
+			&command.ArgumentStringSlice{
+				Name:  "emails",
+				Usage: "target emails",
+				Min:   1,
+				Max:   -1,
+			},
+		},
+	}
+}
+```
+
+支持的参数类型：`ArgumentFloat32`, `ArgumentFloat64`, `ArgumentInt`, `ArgumentInt8`, `ArgumentInt16`, `ArgumentInt32`, `ArgumentInt64`, `ArgumentString`, `ArgumentUint`, `ArgumentUint8`, `ArgumentUint16`, `ArgumentUint32`, `ArgumentUint64`, `ArgumentTimestamp`, `ArgumentFloat32Slice`, `ArgumentFloat64Slice`, `ArgumentIntSlice`, `ArgumentInt8Slice`, `ArgumentInt16Slice`, `ArgumentInt32Slice`, `ArgumentInt64Slice`, `ArgumentStringSlice`, `ArgumentUintSlice`, `ArgumentUint8Slice`, `ArgumentUint16Slice`, `ArgumentUint32Slice`, `ArgumentUint64Slice`, `ArgumentTimestampSlice`
+
+基础参数类型支持以下字段：
+
+```go
+	Name     string // 名称
+	Value    T      // 默认值
+	Usage    string // 用法
+	Required bool   // 是否为必需
+```
+
+切片参数类型字段：
+
+```go
+	Name  string // 名称
+	Value T      // 默认值
+	Usage string // 用法
+	Min   int    // 最小出现次数
+	Max   int    // 最大出现次数，设置为 -1 表示无限制
+```
+
+时间戳参数额外支持 `Layouts []string` 字段，应填入[支持的布局](https://pkg.go.dev/time#pkg-constants)
+
 获取参数：
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+  subject := ctx.ArgumentString("subject")
+  emails := ctx.ArgumentStringSlice("emails")
+
+  return nil
+}
+```
+
+也可以直接访问参数：
 
 ```go
 func (receiver *ListCommand) Handle(ctx console.Context) error {
@@ -142,8 +210,8 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 使用：
 
 ```shell
-go run . artisan emails --lang=Chinese
-go run . artisan emails -l=Chinese
+./artisan emails --lang Chinese
+./artisan emails -l Chinese
 ```
 
 除了 `command.StringFlag`，我们还可以其他类型的 `Flag` 与 `Option*`：`StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`。
@@ -360,6 +428,19 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
+以下辅助函数可以向控制台打印不同颜色的文本：
+
+```go
+ctx.Green("这是一条绿色消息")
+ctx.Greenln("这是一条绿色换行消息")
+ctx.Red("这是一条红色消息")
+ctx.Redln("这是一条红色换行消息")
+ctx.Yellow("这是一条黄色消息")
+ctx.Yellowln("这是一条黄色换行消息")
+ctx.Black("这是一条黑色消息")
+ctx.Blackln("这是一条黑色换行消息")
+```
+
 你可以使用 `NewLine` 方法在控制台中写入新行：
 
 ```go
@@ -412,27 +493,24 @@ err := ctx.Spinner("Loading...", console.SpinnerOption{
 })
 ```
 
+### 分隔符
+
+要显示终端宽度的分隔符，可以使用 `Divider` 方法。
+
+```go
+ctx.Divider()     // ----------
+ctx.Divider("=>") // =>=>=>=>=>
+```
+
 ## 分类
 
-可以将一组命令设置为同一个分类，方便在 `go run . artisan list` 中查看：
+可以将一组命令设置为同一个分类，方便在 `./artisan list` 中查看：
 
 ```go
 // Extend The console command extend.
 func (receiver *ConsoleMakeCommand) Extend() command.Extend {
   return command.Extend{
     Category: "make",
-  }
-}
-```
-
-## 注册命令
-
-你的所有命令都需要在 `app\console\kernel.go` 文件的 `Commands` 方法中注册。
-
-```go
-func (kernel Kernel) Commands() []console.Command {
-  return []console.Command{
-    &commands.SendEmails{},
   }
 }
 ```
@@ -453,5 +531,5 @@ facades.Route().GET("/", func(c *gin.Context) {
 有些命令默认会打印颜色，例如 `list` 命令。 但在某些终端或日志中颜色值会是乱码。 这时你可以使用 `--no-ansi` 选项禁用打印颜色：
 
 ```shell
-go run . artisan list --no-ansi
+./artisan list --no-ansi
 ```

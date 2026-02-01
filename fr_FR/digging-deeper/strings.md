@@ -537,6 +537,30 @@ str.Of("Goravel").Pipe(func(s string) string {
 }).String() // "Goravel Framework"
 ```
 
+### `Plural`
+
+The `Plural` method converts a singular string to its plural form. This function supports any of
+the languages supported by the [pluralizer](pluralization.md).
+
+```go
+import "github.com/goravel/framework/support/str"
+
+plural := str.Of("goose").Plural().String()
+// "geese"
+```
+
+You may provide an integer argument to the function to retrieve the singular or plural form of the string:
+
+```go
+import "github.com/goravel/framework/support/str"
+
+plural := str.Of("goose").Plural(2).String()
+// "geese"
+
+plural = str.Of("goose").Plural(1).String()
+// "goose"
+```
+
 ### `Prepend`
 
 The `Prepend` method prepends the given value to the string.
@@ -651,6 +675,18 @@ import "github.com/goravel/framework/support/str"
 str.Of("  Goravel  ").RTrim().String() // "  Goravel"
 
 str.Of("/framework/").RTrim("/").String() // "/framework"
+```
+
+### `Singular`
+
+The `Singular` method converts a string to its singular form. This function supports any of
+the languages supported by the [pluralizer](pluralization.md).
+
+```go
+import "github.com/goravel/framework/support/str"
+
+singular := str.Of("heroes").Singular().String()
+// "hero"
 ```
 
 ### `Snake`

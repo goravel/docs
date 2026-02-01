@@ -8,7 +8,7 @@ Goravel 的加密机制使用的是 OpenSSL 所提供的 AES-256 加密。 所�
 
 ## 配置
 
-在使用 Goravel 的加密工具之前，你必须先设置 `config/app.go` 配置文件中的 `key` 配置项。 该配置项由环境变量 `APP_KEY` 设定。 你应当使用 `go run . artisan key:generate` 命令来生成该变量的值，`key:generate` 命令将使用 Golang 的安全随机字节生成器为你的应用程序构建加密安全密钥。
+在使用 Goravel 的加密工具之前，你必须先设置 `config/app.go` 配置文件中的 `key` 配置项。 该配置项由环境变量 `APP_KEY` 设定。 使用 `./artisan key:generate` 命令来生成此配置的值，因为 `key:generate` 命令将利用 Golang 的安全随机字节生成器为你的应用程序创建安全的加密密钥。
 
 ## 基本用法
 

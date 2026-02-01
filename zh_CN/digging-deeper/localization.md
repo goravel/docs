@@ -30,11 +30,11 @@ Goravel 的本地化功能提供了一种方便的方法来检索各种语言的
 
 你也可以使用 App Facade 提供的 `SetLocale` 方法，在运行时为单个 `HTTP` 请求修改默认语言：
 
-```
+```go
 facades.Route().Get("/", func(ctx http.Context) http.Response {
-    facades.App().SetLocale(ctx, "en")
+  facades.App().SetLocale(ctx, "en")
 
-    return ctx.Response()
+  return ctx.Response()
 })
 ```
 
@@ -57,7 +57,7 @@ if facades.App().IsLocale(ctx, "en") {}
 
 在语言文件中，可以定义一级或多级结构：
 
-```
+```json
 // lang/en.json
 {
   "name": "It's your name",
@@ -101,7 +101,7 @@ facades.Lang(ctx).Get("role/user.required.user_id")
 
 可以在翻译字符串中定义占位符。 所有占位符的前缀都是 `:`。 例如，可以使用占位符名称定义欢迎消息：
 
-```
+```json
 {
   "welcome": "Welcome, :name"
 }
@@ -109,7 +109,7 @@ facades.Lang(ctx).Get("role/user.required.user_id")
 
 在要检索翻译字符串时替换占位符，可以将替换数组作为第二个参数传递给 `facades.Lang(ctx).Get()` 方法：
 
-```
+```go
 facades.Lang(ctx).Get("welcome", translation.Option{
   Replace: map[string]string{
     "name": "Goravel",
@@ -121,7 +121,7 @@ facades.Lang(ctx).Get("welcome", translation.Option{
 
 因为不同的语言有着各种复杂的复数化规则，所以复数化是个复杂的问题。 不过 Goravel 可以根据你定义的复数化规则帮助你翻译字符串。 使用 `|` 字符，可以区分字符串的单数形式和复数形式：
 
-```
+```json
 {
   "apples": "There is one apple|There are many apples"
 }
@@ -129,7 +129,7 @@ facades.Lang(ctx).Get("welcome", translation.Option{
 
 你甚至可以创建更复杂的复数化规则，为多个值范围指定转换字符串：
 
-```
+```json
 {
   "apples": "{0} There are none|[1,19] There are some|[20,*] There are many"
 }
@@ -137,7 +137,7 @@ facades.Lang(ctx).Get("welcome", translation.Option{
 
 定义具有复数选项的翻译字符串后，可以使用 `facades.Lang(ctx).Choice()` 方法检索给定「count」的行。 在本例中，由于计数大于 1 ，因此返回翻译字符串的复数形式：
 
-```
+```go
 facades.Lang(ctx).Choice("messages.apples", 10)
 ```
 
