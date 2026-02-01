@@ -337,4 +337,4 @@ type Driver interface {
 }
 ```
 
-> Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config().Env()` to obtain the configuration in the custom driver.
+> 注意：由于注册自定义驱动时配置信息尚未加载完毕，所以在自定义驱动中，请使用 `facades.Config().Env()` 获取配置信息。
