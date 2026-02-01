@@ -24,60 +24,60 @@ goravel new blog
 
 #### goravel/goravel
 
-The complete framework with full features.
+功能完整的全特性框架。
 
 ```shell
-// Download framework
+// 下载框架
 git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
-// Install dependencies
+// 安装依赖
 cd goravel && go mod tidy
 
-// Create .env environment configuration file
+// 创建 .env 环境配置文件
 cp .env.example .env
 
-// Generate application key
+// 生成应用密钥
 ./artisan key:generate
 ```
 
 #### goravel/goravel-lite
 
-The lite framework with only essential features, suitable for building microservices or small applications. You can install additional facades as needed.
+仅包含核心功能的轻量级框架，适合构建微服务或小型应用。 您可以根据需要安装额外的门面。
 
 ```shell
-// Download framework
+// 下载框架
 git clone --depth=1 https://github.com/goravel/goravel-lite.git && rm -rf goravel-lite/.git*
 s
-// Install dependencies
+// 安装依赖
 cd goravel-lite && go mod tidy
 
-// Create .env environment configuration file
+// 创建 .env 环境配置文件
 cp .env.example .env
 
-// Generate application key
+// 生成应用密钥
 ./artisan key:generate
 
-// Install additional facades as needed, for example:
+// 根据需要安装额外的门面，例如：
 ./artisan package:install Cache
 ```
 
 > 如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
 
-## Start Services
+## 启动服务
 
-### Start Services According To .env File In The Root Directory
+### 根据根目录下的 .env 文件启动服务
 
 ```shell
 go run .
 ```
 
-### Specify .env File To Start Services
+### 指定 .env 文件启动服务
 
 ```shell
 go run . --env=../.env
 ```
 
-### Start Services Using Environment Variables
+### 使用环境变量启动服务
 
 ```shell
 APP_ENV=production APP_DEBUG=true go run .
@@ -191,7 +191,7 @@ Goravel 安装到本地后，要生成应用程序的密钥。 运行下面命�
 ```shell
 ./artisan env:encrypt
 
-// Specify the file name and key
+// 指定文件名与秘钥
 ./artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
@@ -200,6 +200,6 @@ Goravel 安装到本地后，要生成应用程序的密钥。 运行下面命�
 ```shell
 GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc ./artisan env:decrypt
 
-// or
+// 或者
 ./artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
