@@ -53,7 +53,7 @@ so the pluralizer skips them.
 
 ```go
 // "sheep" stays "sheep" in singular and plural
-pluralizer.RegisterUninflected("english", "sheep", "fish")
+pluralizer.RegisterUninflected("english", "sheep")
 
 // "media" is always treated as plural
 pluralizer.RegisterPluralUninflected("english", "media")
