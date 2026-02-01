@@ -26,7 +26,7 @@
 
 [服务提供者](../architecture-concepts/service-providers.md)是你的包和 Goravel 之间的连接点。 通常位于包的根目录中：`service_provider.go`。 服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
 
-## Install The Package
+## 安装包
 
 当创建包时包含一个 `setup/setup.go` 文件，你可以在这个文件中定义包的安装逻辑，之后用户可以使用 `package:install` 命令安装包：
 
@@ -52,8 +52,8 @@ import (
 func main() {
 	setup := packages.Setup(os.Args)
 
-	// The config file will be published to the project's config directory automatically when installing by this way.
-	// You can also publish this config file manually: ./artisan vendor:publish --package=github.com/goravel/example-package
+	// 通过这种方式安装时，配置文件将自动发布到项目的配置目录。
+	// 你也可以手动发布此配置文件：./artisan vendor:publish --package=github.com/goravel/example-package
 	config, err := file.GetPackageContent(setup.Paths().Module().String(), "setup/config/hello.go")
 	if err != nil {
 		panic(err)
@@ -63,16 +63,16 @@ func main() {
 	moduleImport := setup.Paths().Module().Import()
 
 	setup.Install(
-		// Add the service provider to the providers slice in bootstrap/providers.go
+		// 将服务提供者添加到 bootstrap/providers.go 中的 providers 切片
 		modify.AddProviderApply(moduleImport, serviceProvider),
 
-		// Add the config file to the config directory
+		// 将配置文件添加到配置目录
 		modify.File(path.Config("hello.go")).Overwrite(config),
 	).Uninstall(
-		// Remove the config file from the config directory
+		// 从配置目录中移除配置文件
 		modify.File(path.Config("hello.go")).Remove(),
 
-		// Remove the service provider from the providers slice in bootstrap/providers.go
+		// 从 bootstrap/providers.go 中的 providers 切片中移除服务提供者
 		modify.RemoveProviderApply(moduleImport, serviceProvider),
 	).Execute()
 }
@@ -171,7 +171,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 在项目中，你可以使用 Artisan 命令 `vendor:publish` 发布包中注册的资源：
 
 ```shell
-./artisan vendor:publish --package={You package name}
+./artisan vendor:publish --package={你的包名}
 ```
 
 该命令可以使用如下参数：
