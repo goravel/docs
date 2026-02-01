@@ -16,9 +16,9 @@ Goravel 框架所有配置文件都保存在 `config` 目录中。 你可以进�
 
 此外，如果有入侵者获得了你的代码仓库访问权限，将会有暴露敏感配置的风险。 如果你想新增新的配置项，可以添加到 `.env.example` 文件中，以此来同步所有开发者的配置。
 
-### Register Configuration
+### 注册配置
 
-All configuration files will be registered via the `WithConfig` function in the `bootstrap/app.go` file. Given that it's a `init` function in the config file, you don't need to register each configuration file one by one. Just call the `WithConfig` function as follows:
+所有配置文件都将通过 `bootstrap/app.go` 文件中的 `WithConfig` 函数进行注册。 由于它是配置文件中的 `init` 函数，因此您无需逐一注册每个配置文件。 只需按如下方式调用 `WithConfig` 函数：
 
 ```go
 func Boot() contractsfoundation.Application {
