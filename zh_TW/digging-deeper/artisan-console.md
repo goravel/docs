@@ -518,19 +518,6 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 }
 ```
 
-## Register Commands
-
-A new migration created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the rule manually if you create the command file by yourself.
-
-```go
-func Boot() contractsfoundation.Application {
-	return foundation.Setup().
-		WithCommands(Commands).
-		WithConfig(config.Boot).
-		Create()
-}
-```
-
 ## 以程式方式執行命令
 
 有時你可能希望在 CLI 之外執行 Artisan 命令，可以使用 `facades.Artisan()` 上的 `Call` 方法來操作這個。
