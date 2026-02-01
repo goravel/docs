@@ -78,8 +78,8 @@ hero:
       link: https://github.com/goravel/goravel
       target: _blank
 features:
-  - title: 🧰 Lite Or Full-featured
-    details: You can choose between a lightweight version with essential features or a full-featured version that includes ORM, HTTP, logging, caching, and other basic tools for all development.
+  - title: 🧰 轻量 or 全功能
+    details: 你可以在轻量与全功能版本间进行选择，轻量版本仅包含基础功能，全功能版本包括对象关系映射（ORM）、HTTP、日志记录、缓存等其他所有开发所需的功能。
   - title: 💻 模块化
     details: 模块化设计，每个模块独立且可单独使用，使开发和维护更加便捷。
   - title: 🚀 高性能
