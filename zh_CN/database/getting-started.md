@@ -59,7 +59,7 @@ import "github.com/goravel/framework/contracts/database"
 
 ## 运行原生 SQL 查询
 
-配置好数据库连接后，你就可以使用 `facades.DB()` 来运行查询。 `facades.DB()` provides various methods for running queries: `Select`, `Insert`, `Update`, `Delete`, and `Statement`.
+配置好数据库连接后，你就可以使用 `facades.DB()` 来运行查询。 `facades.DB()` 提供了多种方法用于运行查询：`Select`、`Insert`、`Update`、`Delete` 和 `Statement`。
 
 ### Select
 
