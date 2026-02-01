@@ -96,7 +96,7 @@ Goravel 文档支持多语言后，只有英文文件可以被 PR 修改； 其�
 - 如果你对该流程不太了解，可以查看[这篇文章](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)；
 - 在开发过程中，如果遇到问题可以随时在 Issue 中详尽描述该问题，以进一步沟通，但在此之前请确保自己已通过 Google 等方式尽可能的尝试解决问题；
 - 在创建 PR 前，请尽可能的提高单元测试覆盖率，以提供更稳定的功能；
-- If you modify any file under the `contracts` folder, please run the `go tool mockery` command in the root directory to generate the mock file;
+- 如果修改了 `contracts` 文件夹下的任意文件，请在根目录运行 `go tool mockery` 命令生成 mock 文件；
 - 当 PR 开发完毕后，请为其添加 `Review Ready` 标签，维护者将及时进行评审；
 - PR 合并后，如果描述设置正确，Issue 将被自动关闭；
 - Goravel 非常感谢你的贡献，将在下次发版时将你添加到首页贡献列表中；❤️
@@ -112,14 +112,14 @@ Goravel 文档支持多语言后，只有英文文件可以被 PR 修改； 其�
 | 仓库                                                                    | 作用                                                                                                                                          |
 | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | [goravel/goravel](https://github.com/goravel/goravel)                 | Goravel 命令行                                                                                                                                 |
-| [goravel/goravel-lite](https://github.com/goravel/goravel-lite)       | Goravel artisans of lite                                                                                                                    |
+| [goravel/goravel-lite](https://github.com/goravel/goravel-lite)       | Goravel 轻量版工匠                                                                                                                               |
 | [goravel/framework](https://github.com/goravel/framework)             | Goravel 主仓库                                                                                                                                 |
 | [goravel/example](https://github.com/goravel/example)                 | Goravel 示例                                                                                                                                  |
 | [goravel/example-client](https://github.com/goravel/example-client)   | Grpc 客户端示例                                                                                                                                  |
 | [goravel/example-proto](https://github.com/goravel/example-proto)     | example 仓库 proto 依赖                                                                                                                         |
 | [goravel/example-package](https://github.com/goravel/example-package) | 扩展包示例                                                                                                                                       |
-| [goravel/installer](https://github.com/goravel/installer)             | A command-line tool that helps you to install the Goravel framework                                                                         |
-| [goravel/release](https://github.com/goravel/release)                 | Prover a simple way to release framework and packages version                                                                               |
+| [goravel/installer](https://github.com/goravel/installer)             | 一个帮助您安装 Goravel 框架的命令行工具                                                                                                                    |
+| [goravel/release](https://github.com/goravel/release)                 | 提供一个简单的方式来发布框架和包的版本                                                                                                                         |
 | [goravel/docs](https://github.com/goravel/docs)                       | 使用文档                                                                                                                                        |
 | [goravel/s3](https://github.com/goravel/s3)                           | Storage 模块 S3 驱动                                                                                                                            |
 | [goravel/oss](https://github.com/goravel/oss)                         | Storage 模块 OSS 驱动                                                                                                                           |
