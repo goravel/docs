@@ -69,9 +69,9 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 ./artisan make:job user/ProcessPodcast
 ```
 
-### Register Jobs
+### 注册任务
 
-A new job created by `make:job` will be registered automatically in the `bootstrap/jobs.go::Jobs()` function and the function will be called by `WithJobs`. You need register the job manually if you create the job file by yourself.
+通过 `make:job` 创建的新任务将自动注册到 `bootstrap/jobs.go::Jobs()` 函数中，并且该函数将由 `WithJobs` 调用。 如果你自行创建任务文件，则需要手动注册。
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -116,7 +116,7 @@ func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, de
 
 ## 启动队列服务器
 
-The default queue worker will be run by the runner of queue seriver provider, if you want to start multiple queue workers with different configuration, you can create [a runner](../architecture-concepts/service-providers.md#runners) and add it to the `WithRunners` function in the `bootstrap/app.go` file:
+默认队列工作器将由队列服务提供者的运行器启动，如果你想启动多个具有不同配置的队列工作器，可以创建一个[运行器](../architecture-concepts/service-providers.md#runners)并将其添加到 `bootstrap/app.go` 文件中的 `WithRunners` 函数：
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -131,7 +131,7 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-You can check [the default queue runner](https://github.com/goravel/framework/blob/master/queue/runners.go) for reference.
+你可以参考[默认队列运行器](https://github.com/goravel/framework/blob/master/queue/runners.go)。
 
 ## 调度任务
 
