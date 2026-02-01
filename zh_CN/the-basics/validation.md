@@ -455,17 +455,17 @@ import (
 type Uppercase struct {
 }
 
-// Signature 规则的名称。
+// Signature The name of the rule.
 func (receiver *Uppercase) Signature() string {
   return "uppercase"
 }
 
-// Passes 确定验证规则是否通过。
+// Passes Determine if the validation rule passes.
 func (receiver *Uppercase) Passes(ctx context.Context, data validation.Data, val any, options ...any) bool {
   return strings.ToUpper(val.(string)) == val.(string)
 }
 
-// Message 获取验证错误消息。
+// Message Get the validation error message.
 func (receiver *Uppercase) Message(ctx context.Context) string {
   return "The :attribute must be uppercase."
 }
@@ -540,12 +540,12 @@ import (
 type ToInt struct {
 }
 
-// Signature 过滤器的签名。
+// Signature The signature of the filter.
 func (receiver *ToInt) Signature() string {
   return "ToInt"
 }
 
-// Handle 定义要应用的过滤器函数。
+// Handle defines the filter function to apply.
 func (receiver *ToInt) Handle(ctx context.Context) any {
   return func (val any) int {
     return cast.ToString(val)
