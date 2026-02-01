@@ -103,7 +103,7 @@ func (r *UserData) Scan(value any) (err error) {
 ./artisan make:model --table=users -f User
 ```
 
-如果数据表中有字段类型框架无法识别，可以在 `bootstrap/app.go::WithCallback` 函数中调用 `facades.Schema().Extend` 方法扩展字段类型：
+如果数据表中有字段类型框架无法识别，可以在 `bootstrap/app.go::WithCallback` 函数中调用 `facades.Schema().Extend()` 方法扩展字段类型：
 
 ```go
 import "github.com/goravel/framework/contracts/schema"
@@ -222,10 +222,10 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 
 | 方法                          | 作用                            |
 | --------------------------- | ----------------------------- |
-| Avg                         | [Avg](#Avarage)               |
+| Avg                         | [聚合](#聚合)                     |
 | BeginTransaction            | [手动开始事务](#事务)                 |
 | Commit                      | [提交事务](#事务)                   |
-| Count                       | [检索聚合](#检索聚合)                 |
+| Count                       | [计数](#计数)                     |
 | Create                      | [创建数据](#创建)                   |
 | Cursor                      | [游标](#游标)                     |
 | Delete                      | [删除数据](#删除)                   |
@@ -247,8 +247,8 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Join                        | [Join 查询](#join-查询)           |
 | Limit                       | [Limit 查询](#limit-查询)         |
 | LockForUpdate               | [悲观锁](#悲观锁)                   |
-| Max                         | [Max](#Avarage)               |
-| Min                         | [Min](#Avarage)               |
+| Max                         | [最大值](#聚合)                    |
+| Min                         | [最小值](#聚合)                    |
 | Model                       | [指定模型](#指定表查询)                |
 | Offset                      | [指定查询开始位置](#指定查询开始位置)         |
 | Order                       | [排序](#排序)                     |
@@ -275,17 +275,17 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Scopes                      | [Scopes](#scopes)             |
 | Select                      | [指定查询列](#指定查询列)               |
 | SharedLock                  | [悲观锁](#悲观锁)                   |
-| Sum                         | [Sum](#Avarage)               |
+| Sum                         | [求和](#聚合)                     |
 | Table                       | [指定表](#指定表查询)                 |
 | ToSql                       | [获取 SQL](#获取-sql)             |
 | ToRawSql                    | [获取 SQL](#获取-sql)             |
 | Update                      | [更新单个字段](#更新)                 |
 | UpdateOrCreate              | [更新或创建一条数据](#更新或创建一条数据)       |
 | Where                       | [查询条件](#where-条件)             |
-| WhereAll                    | [WhereAll](#where)            |
-| WhereAny                    | [WhereAny](#where)            |
+| WhereAll                    | [查询条件](#where-条件)             |
+| WhereAny                    | [查询条件](#where-条件)             |
 | WhereBetween                | [查询条件](#where-条件)             |
-| WhereNone                   | [WhereNone](#where)           |
+| WhereNone                   | [查询条件](#where-条件)             |
 | WhereNotBetween             | [查询条件](#where-条件)             |
 | WhereNotIn                  | [查询条件](#where-条件)             |
 | WhereNull                   | [查询条件](#where-条件)             |
@@ -588,7 +588,7 @@ facades.Orm().Query().ToRawSql().Get(models.User{})
 
 `ToSql` 与 `ToRawSql` 后可以调用的方法：`Count`, `Create`, `Delete`, `Find`, `First`, `Get`, `Pluck`, `Save`, `Sum`, `Update`。
 
-### 检索聚合
+### 计数
 
 ```go
 count, err := facades.Orm().Query().Table("users").Count()
@@ -939,7 +939,7 @@ var users []models.User
 facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
-### Avarage
+### 聚合
 
 ```go
 var sum int
