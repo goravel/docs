@@ -103,12 +103,12 @@ facades.Log().User("John").Debug(message)
 package log
 
 type Logger interface {
-  // Handle pass channel config path here
+  // 在此处传递通道配置路径
   Handle(channel string) (Handler, error)
 }
 ```
 
-You can check the daily and single log drivers for reference:
+你可以参考 daily 和 single 日志驱动程序的实现：
 
 - [Daily](https://github.com/goravel/framework/blob/master/log/logger/daily.go)
 - [Single](https://github.com/goravel/framework/blob/master/log/logger/single.go)
