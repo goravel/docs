@@ -84,12 +84,12 @@ hero:
       link: https://github.com/goravel/goravel
       target: _blank
 features:
+  - title: 🧰 Lite Or Full-featured
+    details: You can choose between a lightweight version with essential features or a full-featured version that includes ORM, HTTP, logging, caching, and other basic tools for all development.
   - title: 💻 Componentization
     details: Modular design, each module is independent and can be used separately, making development and maintenance more convenient.
   - title: 🚀 High-performance
     details: Built with Golang, integrating multiple excellent extensions to create fast and responsive applications.
-  - title: 🧰 Full-featured
-    details: Includes ORM, HTTP, queue, task scheduling, logging, caching, and other basic tools for all web development.
   - title: 📈 Easy-to-extend
     details: The module provides multiple drivers, and can develop extension packages according to needs, suitable for applications of any scale, from small projects to large systems.
   - title: 👥 Active community
