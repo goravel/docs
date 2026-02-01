@@ -78,12 +78,12 @@ hero:
       link: https://github.com/goravel/goravel
       target: _blank
 features:
+  - title: 🧰 Lite Or Full-featured
+    details: You can choose between a lightweight version with essential features or a full-featured version that includes ORM, HTTP, logging, caching, and other basic tools for all development.
   - title: 💻 模块化
     details: 模块化设计，每个模块独立且可单独使用，使开发和维护更加便捷。
   - title: 🚀 高性能
     details: 使用 Golang 构建，整合多种优秀扩展来创建快速且响应灵敏的应用程序。
-  - title: 🧰 全功能
-    details: 包括 ORM、HTTP、队列、任务调度、日志、缓存等，提供所有 Web 开发所需的基本工具。
   - title: 📈 易扩展
     details: 模块提供多种驱动，且可根据需求开发扩展包，适合任何规模的应用程序，从小型项目到大型系统。
   - title: 👥 活跃的社区
