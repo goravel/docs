@@ -5,7 +5,7 @@ export const config = defineConfig({
   themeConfig: {
     nav: nav(),
     sidebar: [{
-      text: 'Prologue',
+      text: "序言",
       base: '/prologue/',
       items: sidebarPrologue()
     }, {
