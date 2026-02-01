@@ -6,11 +6,11 @@
 
 Goravel 的事件系统提供了一个简单的观察者模式的实现，允许你能够订阅和监听在你的应用中的发生的各种事件。 事件类一般来说存储在 `app/events` 目录，监听者的类存储在 `app/listeners` 目录。 不要担心在你的应用中没有看到这两个目录，因为通过 Artisan 命令行来创建事件和监听者的时候目录会同时被创建。
 
-事件系统可以作为一个非常棒的方式来解耦你的系统的方方面面，因为一个事件可以有多个完全不相关的监听者。 例如，你希望每当有订单发出的时候都给你发送一个 Slack 通知。 Instead of coupling your order processing code to your Slack notification code, you can raise an `app/events/OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
+事件系统可以作为一个非常棒的方式来解耦你的系统的方方面面，因为一个事件可以有多个完全不相关的监听者。 例如，你希望每当有订单发出的时候都给你发送一个 Slack 通知。 你不必将处理订单的代码和发送 Slack 消息的代码放在一起，你只需要触发一个 `app/events/OrderShipped` 事件，然后事件监听者可以收到这个事件然后发送 Slack 通知。
 
-## Register Events & Listeners
+## 注册事件和监听器
 
-All events and listeners should be registered via the `WithEvents` function in the `bootstrap/app.go` file:
+所有事件和监听器都应通过 `bootstrap/app.go` 文件中的 `WithEvents` 函数进行注册：
 
 ```go
 func Boot() contractsfoundation.Application {
