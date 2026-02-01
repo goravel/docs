@@ -8,7 +8,7 @@
 
 ## 配置
 
-Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP 请求。 If you need to tweak its internal settings, just update the `clients` property in the `config/http.go` file.
+Goravel 的 HTTP 客户端构建于 `net/http.Client` 之上，用于发起 HTTP 请求。 如果你需要调整其设置，只需更新 `config/http.go` 文件中的 `clients` 配置即可。
 
 ## 发起请求
 
@@ -22,7 +22,7 @@ response, err := facades.Http().Get("https://example.com")
 
 每个 HTTP 动词方法都会返回一个类型为 `framework/contracts/http/client.Response` 的 `response` 和一个在请求失败时返回的 `err`。
 
-You can use the `Client` function to specify which HTTP client configuration to use:
+你可以使用 `Client` 函数来指定要使用的 HTTP 客户端配置：
 
 ```go
 response, err := facades.Http().Client("github").Get("https://example.com")
@@ -34,21 +34,21 @@ response, err := facades.Http().Client("github").Get("https://example.com")
 
 ```go
 type Response interface {
-    Bind(value any) error            // Bind the response body to a struct
-    Body() (string, error)           // Get the response body as a string
-    ClientError() bool               // Check if the status code is in the 4xx range
-    Cookie(name string) *http.Cookie // Get a specific cookie
-    Cookies() []*http.Cookie         // Get all response cookies
-    Failed() bool                    // Check if the status code is not in the 2xx range
-    Header(name string) string       // Get the value of a specific header
-    Headers() http.Header            // Get all response headers
-    Json() (map[string]any, error)   // Decode the response body as JSON into a map
-    Redirect() bool                  // Check if the response is a redirect (3xx status code)
-    ServerError() bool               // Check if the status code is in the 5xx range
-    Status() int                     // Get the HTTP status code
-    Successful() bool                // Check if the status code is in the 2xx range
+    Bind(value any) error            // 将响应体绑定到结构体
+    Body() (string, error)           // 获取响应体为字符串
+    ClientError() bool               // 检查状态码是否在 4xx 范围内
+    Cookie(name string) *http.Cookie // 获取指定名称的 Cookie
+    Cookies() []*http.Cookie         // 获取所有响应 Cookie
+    Failed() bool                    // 检查状态码是否不在 2xx 范围内
+    Header(name string) string       // 获取指定名称的 Header 值
+    Headers() http.Header            // 获取所有响应 Header
+    Json() (map[string]any, error)   // 将响应体解码为 JSON 并返回 map
+    Redirect() bool                  // 检查响应是否为重定向（3xx 状态码）
+    ServerError() bool               // 检查状态码是否在 5xx 范围内
+    Status() int                     // 获取 HTTP 状态码
+    Successful() bool                // 检查状态码是否在 2xx 范围内
 
-    /* status code related methods */
+    /* 状态码相关方法 */
 
     OK() bool                  // 200 OK
     Created() bool             // 201 Created
@@ -243,7 +243,7 @@ response, err := facades.Http().WithContext(ctx).Get("https://example.com")
 
 ### 绑定响应
 
-You can use the `Bind` method to specify the struct that the response should be bound to.
+你可以使用 `Bind` 方法来指定响应应该绑定到的结构体。
 
 ```go
 type User struct {
@@ -295,36 +295,32 @@ response, err := facades.Http().
 	Get("https://example.com")
 ```
 
-## Testing
+## 测试
 
-When testing your application, you often want to avoid making real network requests to external APIs. Whether it's to
-speed up tests, avoid rate limits, or simulate failure scenarios, Goravel makes this easy. The `Http` facade provides a
-powerful `Fake` method that allows you to instruct the HTTP client to return stubbed (dummy) responses when requests are made.
+在测试应用程序时，你通常希望避免向外部 API 发出真实的网络请求。 无论是为了加速测试、避免速率限制，还是模拟故障场景，Goravel 都让这一切变得简单。 `Http` facade 提供了一个强大的 `Fake` 方法，允许你指示 HTTP 客户端在发出请求时返回存根（模拟）响应。
 
-### Faking Responses
+### 模拟响应
 
-To start faking requests, pass a map to the `Fake` method. The keys represent the URL patterns or client names
-you want to intercept, and the values represent the responses to return. You can use `*` as a wildcard character.
+要开始模拟请求，请将一个映射传递给 `Fake` 方法。 键代表你想要拦截的 URL 模式或客户端名称，值代表要返回的响应。 你可以使用 `*` 作为通配符。
 
-The `Http` facade provides a convenient `Response` builder to construct various types of fake responses.
+`Http` facade 提供了一个方便的 `Response` 构建器来构造各种类型的模拟响应。
 
 ```go
 facades.Http().Fake(map[string]any{
-    // Stub a specific URL
+    // 特定 URL
     "https://github.com/goravel/framework": facades.Http().Response().Json(200, map[string]string{"foo": "bar"}),
 
-    // Stub a wildcard pattern
+    // 通配符模式
     "https://google.com/*": facades.Http().Response().String(200, "Hello World"),
 
-    // Stub a specific Client (defined in config/http.go)
+    // 特定客户端（在 config/http.go 中定义）
     "github": facades.Http().Response().OK(),
 })
 ```
 
 **Fallback URLs**
 
-Any request that does not match a pattern defined in `Fake` will be executed normally over the network. To prevent this,
-you can define a fallback pattern using the single `*` wildcard, which will match all unmatched URLs.
+任何未在 `Fake` 中定义的模式匹配的请求都将通过网络正常执行。 为了防止这种情况，你可以使用单个 `*` 通配符定义一个 fallback 模式，它将匹配所有未匹配的 URL。
 
 ```go
 facades.Http().Fake(map[string]any{
@@ -333,58 +329,56 @@ facades.Http().Fake(map[string]any{
 })
 ```
 
-**Implicit Conversions**
+**隐式转换**
 
-For convenience, you do not always need to use the `Response` builder. You can pass simple `int`, `string`, or `map`
-values, and Goravel will automatically convert them into responses.
+为了方便起见，你并不总是需要使用 `Response` 构建器。 你可以传递简单的 `int`、`string` 或 `map` 值，Goravel 会自动将它们转换为响应。
 
 ```go
 facades.Http().Fake(map[string]any{
-    "https://goravel.dev/*": "Hello World",               // String -> 200 OK with body
-    "https://github.com/*":  map[string]string{"a": "b"}, // Map -> 200 OK JSON
-    "https://stripe.com/*":  500,                         // Int -> Status code only
+    "https://goravel.dev/*": "Hello World",               // 字符串 -> 200 OK 带响应体
+    "https://github.com/*":  map[string]string{"a": "b"}, // 映射 -> 200 OK JSON
+    "https://stripe.com/*":  500,                         // 整数 -> 仅状态码
 })
 ```
 
-### Fake Response Builder
+### 模拟响应构建器
 
-The `facades.Http().Response()` method provides a fluent interface to build custom responses easily.
+`facades.Http().Response()` 方法提供了一个流畅的接口，可以轻松构建自定义响应。
 
 ```go
-// Create a response using a file content
+// 使用文件内容创建响应
 facades.Http().Response().File(200, "./tests/fixtures/user.json")
 
-// Create a JSON response
+// 创建 JSON 响应
 facades.Http().Response().Json(201, map[string]any{"created": true})
 
-// Create a response with custom headers
+// 创建带有自定义 Header 的响应
 headers := http.Header{}
 headers.Add("X-Custom", "Value")
 facades.Http().Response().Make(200, "Body Content", headers)
 
-// Standard status helpers
+// 标准状态码辅助方法
 facades.Http().Response().OK()
 facades.Http().Response().Status(403)
 ```
 
-### Faking Response Sequences
+### 模拟响应序列
 
-Sometimes you may need to specify that a single URL should return a series of different responses in order,
-such as when testing retries or rate-limiting logic. You can use the `Sequence` method to build this flow.
+有时你可能需要指定单个 URL 应按顺序返回一系列不同的响应，例如在测试重试或速率限制逻辑时。 你可以使用 `Sequence` 方法来构建此流程。
 
 ```go
 facades.Http().Fake(map[string]any{
     "github": facades.Http().Sequence().
-                PushStatus(500).                // 1st Request: Server Error
-                PushString(429, "Rate Limit").  // 2nd Request: Rate Limit
-                PushStatus(200),                // 3rd Request: Success
+                PushStatus(500).                // 第 1 次请求：服务器错误
+                PushString(429, "Rate Limit").  // 第 2 次请求：速率限制
+                PushStatus(200),                // 第 3 次请求：成功
 })
 ```
 
-**Empty Sequences**
+**空序列**
 
-When all responses in a sequence have been consumed, any further requests will cause the client to return an error.
-If you wish to specify a default response instead of failing, use the `WhenEmpty` method:
+当序列中的所有响应都被消耗后，任何进一步的请求都将导致客户端返回错误。
+如果你希望指定默认响应而不是失败，请使用 `WhenEmpty` 方法：
 
 ```go
 facades.Http().Fake(map[string]any{
@@ -394,10 +388,10 @@ facades.Http().Fake(map[string]any{
 })
 ```
 
-### Inspecting Requests
+### 检查请求
 
-When faking responses, it is crucial to verify that the correct requests were actually sent by your application.
-You can use the `AssertSent` method to inspect the request and return a boolean indicating if it matches your expectations.
+在模拟响应时，验证你的应用程序是否实际发送了正确的请求至关重要。
+你可以使用 `AssertSent` 方法来检查请求，并返回一个布尔值，指示它是否符合你的预期。
 
 ```go
 facades.Http().AssertSent(func(req client.Request) bool {
@@ -408,45 +402,42 @@ facades.Http().AssertSent(func(req client.Request) bool {
 })
 ```
 
-**Other Assertions**
+**其他断言**
 
-You can also assert that a specific request was _not_ sent, or check the total number of requests sent:
+你也可以断言某个特定请求_未_被发送，或者检查发送的请求总数：
 
 ```go
-// Assert a request was NOT sent
+// 断言请求未被发送
 facades.Http().AssertNotSent(func(req client.Request) bool {
     return req.Url() == "https://api.example.com/legacy-endpoint"
 })
 
-// Assert that no requests were sent at all
+// 断言根本没有发送任何请求
 facades.Http().AssertNothingSent()
 
-// Assert that exactly 3 requests were sent
+// 断言恰好发送了 3 个请求
 facades.Http().AssertSentCount(3)
 ```
 
-### Preventing Stray Requests
+### 防止误请求
 
-To ensure your tests are strictly isolated and do not accidentally hit real external APIs, you can use the
-`PreventStrayRequests` method. After calling this, any request that does not match a defined Fake rule will cause the
-test to panic with an exception.
+为了确保你的测试严格隔离，并且不会意外访问真实的外部 API，你可以使用 `PreventStrayRequests` 方法。 调用此方法后，任何未匹配已定义的 Fake 规则的请求都将导致测试因异常而 panic。
 
 ```go
 facades.Http().Fake(map[string]any{
     "github": facades.Http().Response().OK(),
 }).PreventStrayRequests()
 
-// This request is mocked and succeeds
+// 此请求被模拟并成功
 facades.Http().Client("github").Get("/") 
 
-// This request is NOT mocked and will panic
+// 此请求未被模拟并将引发 panic
 facades.Http().Get("https://google.com") 
 ```
 
-**Allowing Specific Strays**
+**允许特定请求**
 
-If you need to block most requests but allow specific internal services (like a local test server),
-you can use `AllowStrayRequests`:
+如果你需要阻止大多数请求但允许特定的内部服务（如本地测试服务器），你可以使用 `AllowStrayRequests`：
 
 ```go
 facades.Http().PreventStrayRequests().AllowStrayRequests([]string{
@@ -454,11 +445,9 @@ facades.Http().PreventStrayRequests().AllowStrayRequests([]string{
 })
 ```
 
-### Resetting State
+### 重置状态
 
-The `Http` facade is a singleton, meaning mocked responses persist across the entire runtime of your test suite unless
-cleared. To avoid "leaking" mocks from one test to another, you should strictly use the `Reset` method in
-your test cleanup or setup.
+`Http` facade 是一个单例，这意味着除非清除，否则模拟的响应会在整个测试套件的运行期间持续存在。 为了避免模拟从一个测试"泄漏"到另一个测试，你应该严格在测试清理或设置中使用 `Reset` 方法。
 
 ```go
 func TestExternalApi(t *testing.T) {
@@ -466,14 +455,12 @@ func TestExternalApi(t *testing.T) {
     
     facades.Http().Fake(nil)
     
-    // ... assertions
+    // ... 断言
 }
 ```
 
-:::warning Global State & Parallel Testing
-The `Fake` and `Reset` methods mutate the global state of the HTTP client factory. Because of this, **you should avoid
-running tests that mock the HTTP client in parallel** (using `t.Parallel()`). Doing so may result in race conditions
-where one test resets the mocks while another is still running.
+:::warning 全局状态与并行测试
+`Fake` 和 `Reset` 方法会改变 HTTP 客户端工厂的全局状态。 因此，**你应该避免并行运行模拟 HTTP 客户端的测试**（使用 `t.Parallel()`）。 这样做可能会导致竞态条件，即一个测试重置模拟时，另一个测试仍在运行。
 :::
 
 
