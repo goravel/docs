@@ -17,9 +17,9 @@ Goravel 默认使用 [gin](https://github.com/gin-gonic/gin) 作为 HTTP 驱动�
 
 ## 默认路由文件
 
-To define routing files, simply navigate to the `routes` directory. By default, the framework utilizes a sample route located in `routes/web.go` and it is registered in the `bootstrap/app.go::WithRouting` function.
+要定义路由文件，可以进入 `routes` 目录。 默认情况下，框架使用位于 `routes/web.go` 的示例路由，并在 `bootstrap/app.go::WithRouting` 函数中注册。
 
-If you require more precise management, you can add routing files to the `routes` directory and register them in the `bootstrap/app.go::WithRouting` function as well.
+如果需要更精确的管理，你可以将路由文件添加到 `routes` 目录，并在 `bootstrap/app.go::WithRouting` 函数中注册它们。
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -32,9 +32,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-## Get Routes List
+## 获取路由列表
 
-Use the `route:list` command to view routes list:
+使用 `route:list` 命令可以查看路由列表：
 
 ```shell
 ./artisan route:list
@@ -42,26 +42,26 @@ Use the `route:list` command to view routes list:
 
 ### 路由方法
 
-| 方法         | 作用                              |
-| ---------- | ------------------------------- |
-| Group      | [路由分组](#路由分组)                   |
-| Prefix     | [路由前缀](#路由前缀)                   |
-| ServeHTTP  | [测试路由](#测试路由)                   |
-| Get        | [基本路由](#基本路由)                   |
-| Post       | [基本路由](#基本路由)                   |
-| Put        | [基本路由](#基本路由)                   |
-| Delete     | [基本路由](#基本路由)                   |
-| Patch      | [基本路由](#基本路由)                   |
-| Options    | [基本路由](#基本路由)                   |
-| Any        | [Basic Routing](#basic-routing) |
-| Resource   | [资源路由](#资源路由)                   |
-| Static     | [文件路由](#文件路由)                   |
-| StaticFile | [文件路由](#文件路由)                   |
-| StaticFS   | [文件路由](#文件路由)                   |
-| Middleware | [中间件](#中间件)                     |
-| GetRoutes  | [获取所有路由](#获取所有路由)               |
-| Name       | [设置路由名称](#设置路由名称)               |
-| Info       | [获取路由信息](#获取路由信息)               |
+| 方法         | 作用                |
+| ---------- | ----------------- |
+| Group      | [路由分组](#路由分组)     |
+| Prefix     | [路由前缀](#路由前缀)     |
+| ServeHTTP  | [测试路由](#测试路由)     |
+| Get        | [基本路由](#基本路由)     |
+| Post       | [基本路由](#基本路由)     |
+| Put        | [基本路由](#基本路由)     |
+| Delete     | [基本路由](#基本路由)     |
+| Patch      | [基本路由](#基本路由)     |
+| Options    | [基本路由](#基本路由)     |
+| Any        | [基本路由](#基本路由)     |
+| Resource   | [资源路由](#资源路由)     |
+| Static     | [文件路由](#文件路由)     |
+| StaticFile | [文件路由](#文件路由)     |
+| StaticFS   | [文件路由](#文件路由)     |
+| Middleware | [中间件](#中间件)       |
+| GetRoutes  | [获取所有路由](#获取所有路由) |
+| Name       | [设置路由名称](#设置路由名称) |
+| Info       | [获取路由信息](#获取路由信息) |
 
 ## 基本路由
 
@@ -183,7 +183,7 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 
 ### 定义速率限制器
 
-Goravel 包含强大且可自定义的速率限制服务，你可以利用这些服务来限制给定路由或一组路由的流量。 To get started, you should define rate limiter configurations that meet your application's needs, then register them in the `bootstrap/app.go::WithCallback` function.
+Goravel 包含强大且可自定义的速率限制服务，你可以利用这些服务来限制给定路由或一组路由的流量。 首先，你应定义符合应用程序需求的速率限制器配置，然后在 `bootstrap/app.go::WithCallback` 函数中注册它们。
 
 速率限制器使用 `facades.RateLimiter()` 的 `For` 方法进行定义。 `For` 方法接受一个速率限制器名称和一个闭包，该闭包返回应该应用于分配给速率限制器的路由的限制配置。 速率限制器名称可以是你希望的任何字符串：
 
