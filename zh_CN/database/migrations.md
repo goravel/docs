@@ -149,13 +149,13 @@ func Boot() contractsfoundation.Application {
 
 ## 回滚迁移
 
-To roll back the latest migration batch, use the `rollback` Artisan command:
+要回滚最新的迁移批次，请使用 `rollback` Artisan 命令：
 
 ```shell
 ./artisan migrate:rollback
 ```
 
-If you want to roll back multiple migration batches, you can specify the `batch` option, the number indicates which batch to roll back:
+如果要回滚多个迁移批次，可以指定 `batch` 选项，数字表示要回滚的批次：
 
 ```shell
 ./artisan migrate:rollback --batch=2
