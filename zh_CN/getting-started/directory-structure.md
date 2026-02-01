@@ -10,31 +10,31 @@
 
 ```
 goravel/
-├── app/                        # Core application logic
-│   ├── console/                # Artisan console commands
-│   ├── grpc/                   # gRPC controllers and middleware
-│   ├── http/                   # HTTP controllers and middleware
-│   │   ├── controllers/        # HTTP request handlers
-│   │   ├── middleware/         # HTTP middleware (auth, cors, etc.)
-│   ├── models/                 # ORM models
-│   └── providers/              # Service providers
-├── bootstrap/                  # Application bootstrapping
-│   └── app.go                  # Framework initialization
-├── config/                     # Application configuration files
-├── database/                   # Database related files
-│   ├── migrations/             # Database migration files
-│   ├── seeders/                # Database seeders
-├── resources/                  # Raw, uncompiled assets
-│   └── views/                  # View templates
-├── routes/                     # Application route definitions
-├── storage/                    # Application storage
-├── tests/                      # Automated tests
-├── .air.toml                   # Air hot reload configuration
-├── .env.example                # Environment variables template
-├── artisan                     # Artisan console entry script
-├── go.mod                      # Go module dependencies
-├── go.sum                      # Go module checksums
-├── main.go                     # Application entry point
+├── app/                        # 核心应用逻辑
+│   ├── console/                # Artisan 控制台命令
+│   ├── grpc/                   # gRPC 控制器和中间件
+│   ├── http/                   # HTTP 控制器和中间件
+│   │   ├── controllers/        # HTTP 请求处理器
+│   │   ├── middleware/         # HTTP 中间件（认证、CORS 等）
+│   ├── models/                 # ORM 模型
+│   └── providers/              # 服务提供者
+├── bootstrap/                  # 应用引导
+│   └── app.go                  # 框架初始化
+├── config/                     # 应用配置文件
+├── database/                   # 数据库相关文件
+│   ├── migrations/             # 数据库迁移文件
+│   ├── seeders/                # 数据库种子
+├── resources/                  # 原始、未编译的资源
+│   └── views/                  # 视图模板
+├── routes/                     # 应用路由定义
+├── storage/                    # 应用存储
+├── tests/                      # 自动化测试
+├── .air.toml                   # Air 热重载配置
+├── .env.example                # 环境变量模板
+├── artisan                     # Artisan 控制台入口脚本
+├── go.mod                      # Go 模块依赖
+├── go.sum                      # Go 模块校验和
+├── main.go                     # 应用入口点
 ```
 
 ## 自定义目录结构
