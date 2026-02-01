@@ -4,7 +4,7 @@
 
 ## 简介
 
-`facades` provide a "static" interface for the core functionality of the application and provide a more flexible, more elegant, and easy-to-test syntax. All `facades` of Goravel are defined under the `app/facades` folder:
+`facades` 为应用的核心功能提供一个「静态」接口，能够提供更加灵活、更加优雅、易于测试的语法。 Goravel 的所有 `facades` 都定义在 `app/facades` 文件夹下：
 
 ```go
 import "app/facades"
@@ -14,9 +14,9 @@ facades.Config().GetString("app.host")
 
 ## facades 工作原理
 
-Each service provider registers its corresponding bindings in the service container, then the service container providers vairous `Make*` functions to build the binding instances. The `facades` in the `app/facades` folder call these `Make*` functions to get the instances from the service container. Let's use the `Route` facade as an example:
+每个服务提供者在服务容器中注册绑定，然后是服务容器提供很多 `Make*` 方法来构建服务提供者绑定的实例。 `app/facades` 文件夹中的 `facades` 通过调用 `Make*` 方法从服务容器中获取实例。 以 `Route` facade 为例：
 
-1. The `Route` service provider registers the `binding.Route` binding in the service container:
+1. `Route` 服务提供者注册在服务容器中注册 `binding.Route` 绑定：
 
 ```go
 type ServiceProvider struct {}
@@ -30,7 +30,7 @@ func (r *ServiceProvider) Register(app foundation.Application) {
 func (r *ServiceProvider) Boot(app foundation.Application) {}
 ```
 
-2. The `Route` facade calls the `MakeRoute()` function to get the `Route` instance from the service container:
+2. `Route` facade 调用 `MakeRoute()` 函数从服务容器中获取 `Route` 实例：
 
 ```go
 // app/facades/route.go
@@ -45,22 +45,22 @@ func Route() route.Route {
 }
 ```
 
-> Given that the `facades` is exposed to the application, you can also create your own `facades` or override the existing `facades` in the `app/facades` folder.
+> `facades` 被暴露于应用程序中，你也可以在 `app/facades` 文件夹中创建自己的 `facades` 或覆盖现有的 `facades`。
 
-## Install/Uninstall Facades
+## 安装/卸载 Facades
 
-[goravel/goravel](https://github.com/goravel/goravel) installs all `facades` by default and [goravel/goravel-lite](https://github.com/goravel/goravel-lite) only installs essential `facades` like `Artisan`, `Config`. You can install or uninstall other `facades` as needed via the `package:install` and `package:uninstall` commands.
+[goravel/goravel](https://github.com/goravel/goravel) 默认安装所有 `facades`，[goravel/goravel-lite](https://github.com/goravel/goravel-lite) 只安装`Artisan`、`Config` 这样的基本 `facades`。 你可以通过 `package:install` 和 `package:uninstall` 命令安装或卸载 `facades` 。
 
 ```shell
-# Install a specific facade
+# 安装指定的 facade
 ./artisan package:install Route
 
-# Install all facades
+# 安装所有 facades
 ./artisan package:install --all
 
-# Install all facades with default drivers
+# 使用默认驱动安装所有 facades 
 ./artisan package:install --all --default
 
-# Uninstall a specific facade
+# 卸载指定的 facade
 ./artisan package:uninstall Route
 ```
