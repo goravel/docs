@@ -12,7 +12,7 @@
 
 ## Create Service Provider
 
-Service providers contain a `Register` and a `Boot` method. Within the `Register` method, you should only bind things into [the service container](./service-container.md). You should never attempt to register any event listeners, routes, or any other piece of functionality within the `Register` method.
+Service providers contain a `Register` and a `Boot` method. Within the `Register` method, you should only bind things into [the service container](./service-container.md). You should never attempt to register any event listeners, routes, or any other piece of functionality within the `Register` method, use the `Boot` method for that.
 
 ```bash
 ./artisan make:provider YourServiceProviderName
