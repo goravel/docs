@@ -28,13 +28,13 @@
 
 该命令会在 `database/migrations` 目录下生成迁移文件。 所有迁移文件都以一个时间戳为开头，Goravel 将以此作为迁移文件的执行顺序。
 
-You can also create a migration for a specific model by using the `-m` or `--model` option:
+你还可以通过使用 `-m` 或 `--model` 选项为特定模型创建迁移：
 
 ```shell
 ./artisan make:migration create_users_table -m User
 ```
 
-The model should be registered in the `bootstrap/app.go` file before running the command. This command will generate a migration file based on the structure defined in the `User` model.
+该模型应在运行命令之前在 `bootstrap/app.go` 文件中进行注册。 此命令将根据 `User` 模型中定义的结构生成一个迁移文件。
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -122,7 +122,7 @@ func (r *M20241207095921CreateUsersTable) Connection() string {
 
 ## 注册迁移
 
-A new migration created by `make:migration` will be registered automatically in the `bootstrap/migrations.go::Migrations()` function and the function will be called by `WithMigrations`. You need register the rule manually if you create the migration file by yourself.
+通过 `make:migration` 创建的新迁移将自动注册到 `bootstrap/migrations.go::Migrations()` 函数中，并且该函数将由 `WithMigrations` 调用。 如果你自行创建迁移文件，则需要手动注册。
 
 ```go
 func Boot() contractsfoundation.Application {
