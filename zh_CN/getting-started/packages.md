@@ -2,7 +2,7 @@
 
 你可以在这里寻找 Goravel 扩展包，你也可以为 [goravel/docs](https://github.com/goravel/docs) 创建一个 PR 将自己的扩展包添加到这里，请尽可能提高包的测试覆盖率。
 
-| 包                                                                                       | 介绍                              | Test Coverage\*       |
+| 包                                                                                       | 介绍                              | 测试覆盖率\*               |
 | --------------------------------------------------------------------------------------- | ------------------------------- | --------------------- |
 | [goravel/gin](https://github.com/goravel/gin)                                           | `facades.Route()` 模块 Gin 驱动     | 83.1% |
 | [goravel/fiber](https://github.com/goravel/fiber)                                       | `facades.Route()` 模块 Fiber 驱动   | 81.0% |
@@ -16,20 +16,20 @@
 | [goravel/mysql](https://github.com/goravel/mysql)                                       | MySQL 数据库驱动                     | 73.3% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver)                               | Sqlserver 数据库驱动                 | 60.6% |
 | [goravel/sqlite](https://github.com/goravel/sqlite)                                     | Sqlite 数据库驱动                    | 45.2% |
-| [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | A MongoDB package               | 16.9% |
+| [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | MongoDB 包                       | 16.9% |
 | [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli)         | Goravel Scaffold 命令行工具          | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow)       | 工作流                             | 4.4%  |
 | [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud)               | CRUD                            | 4.2%  |
 | [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                           | Tinker                          | 3.6%  |
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)           | WebSocket                       | 0%                    |
 
-\***Note**: The packages have been ordered based on their test rate.
+\***注意**：软件包已根据其测试率排序。
 
-💡 Tip: To help more developers discover your work, you can also add relevant topics to your repository.
-Recommended topic: [`goravel-package`](https://github.com/topics/goravel-package)
+💡 提示：为帮助更多开发者发现您的工作，您还可以向仓库添加相关主题。
+推荐主题：[`goravel-package`](https://github.com/topics/goravel-package)
 
-- On GitHub, navigate to the main page of the repository.
-- In the top right corner of the page, to the right of "About", click gear icon (settings).
-- Under "Topics", start to type the topic you want to add to your repository to display a dropdown menu of any matching topics.
-- Click the topic you want to add or continue typing to create a new topic. For example: `goravel-package`, `goravel` and any other relevant keywords.
-- Click `Save changes` — this will make your package more discoverable.
+- 在 GitHub 上，导航至仓库的主页。
+- 在页面右上角，“关于”右侧，点击齿轮图标（设置）。
+- 在“主题”下，开始输入您想添加到仓库的主题，以显示匹配主题的下拉菜单。
+- 点击您想添加的主题，或继续输入以创建新主题。 例如：`goravel-package`、`goravel` 及其他相关关键词。
+- 点击 `保存更改` — 这将使您的软件包更易被发现。
