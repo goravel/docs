@@ -22,19 +22,27 @@ import (
 )
 
 func main() {
-    result, err := facades.Process().Run("echo", "Hello, World!")
-    if err != nil {
-        panic(err)
+    result := facades.Process().Run("echo", "Hello, World!")
+    if result.Failed() {
+        panic(result.Error())
     }
 
     fmt.Println(result.Output())
 }
 ```
 
-The `Run` method returns a `Result` interface and an `error`. The error will be non-nil if the process failed to start or encountered a system error. The `Result` interface gives you convenient access to the output and status of the command:
+If you want to run a string command directly (without splitting it into arguments), you can pass the command to `Run` as a single string, `/bin/sh -c` (Linux/macOS) or `cmd /C` (Windows) will be used under the hood. Notice, the string command much contains spaces or `&`, `|`, `-`.
 
 ```go
-result, _ := facades.Process().Run("ls", "-la")
+result := facades.Process().Run("echo Hello, World!")
+// /bin/sh -c ""echo Hello, World!"" on Linux/macOS
+// cmd /c "echo Hello, World!" on Windows
+```
+
+The `Run` method returns a `Result` interface. The `Result` interface gives you convenient access to the output and status of the command:
+
+```go
+result := facades.Process().Run("ls", "-la")
 
 result.Command()     // string: The original command
 result.Error()       // error: The error returned by the command execution
@@ -53,7 +61,7 @@ You often need to customize how a command runs, such as where it runs or what en
 You can use the `Path` method to specify the working directory for the command. If you don't set this, the process will execute in the current working directory of your application.
 
 ```go
-result, _ := facades.Process().Path("/var/www/html").Run("ls", "-la")
+result := facades.Process().Path("/var/www/html").Run("ls", "-la")
 ```
 
 #### Timeout
@@ -63,7 +71,7 @@ To prevent a process from hanging indefinitely, you can enforce a timeout. If th
 ```go
 import "time"
 
-result, _ := facades.Process().Timeout(10 * time.Mintue).Run("sleep", "20")
+result := facades.Process().Timeout(10 * time.Minute).Run("sleep", "20")
 ```
 
 #### Environment Variables
@@ -72,7 +80,7 @@ You can pass custom environment variables to the process using the `Env` method.
 
 ```go
 // Passes FOO=BAR along with existing system envs
-result, _ := facades.Process().Env(map[string]string{
+result := facades.Process().Env(map[string]string{
     "FOO": "BAR",
     "API_KEY": "secret",
 }).Run("printenv")
@@ -86,7 +94,7 @@ If your command expects input from standard input (stdin), you can provide it us
 import "strings"
 
 // Pipes "Hello Goravel" into the cat command
-result, _ := facades.Process().
+result := facades.Process().
     Input(strings.NewReader("Hello Goravel")).
     Run("cat")
 ```
@@ -96,7 +104,7 @@ result, _ := facades.Process().
 You can access the process output after execution using the `Output` (standard output) and `ErrorOutput` (standard error) methods on the result object.
 
 ```go
-result, _ := facades.Process().Run("ls", "-la");
+result := facades.Process().Run("ls", "-la")
 
 fmt.Println(result.Output())
 fmt.Println(result.ErrorOutput())
@@ -110,7 +118,7 @@ import (
     "github.com/goravel/framework/contracts/process"
 )
 
-result, _ := facades.Process().OnOutput(func(typ process.OutputType, b []byte) {
+result := facades.Process().OnOutput(func(typ process.OutputType, b []byte) {
     // Handle real-time streaming here
     fmt.Print(string(b))
 }).Run("ls", "-la")
@@ -119,7 +127,7 @@ result, _ := facades.Process().OnOutput(func(typ process.OutputType, b []byte) {
 If you only need to verify that the output contains a specific string after execution, you can use the `SeeInOutput` or `SeeInErrorOutput` helper methods.
 
 ```go
-result, _ := facades.Process().Run("ls", "-la")
+result := facades.Process().Run("ls", "-la")
 
 if result.SeeInOutput("go.mod") {
     // The file exists
@@ -152,10 +160,10 @@ using the `Pipe` method, which allows you to chain multiple commands together sy
 ```go
 import "github.com/goravel/framework/contracts/process"
 
-result, err := facades.Process().Pipe(func(pipe process.Pipe) {
+result := facades.Process().Pipe(func(pipe process.Pipe) {
     pipe.Command("echo", "Hello, World!")
-    pipe.Command("grep", "World")
-    pipe.Command("tr", "a-z", "A-Z")
+    pipe.Command("grep World") // string command: /bin/sh -c "grep World"
+    pipe.Command("tr", "a-z", "A-Z") 
 }).Run()
 ```
 
@@ -198,27 +206,27 @@ This allows the process to run in the background while your application continue
 ```go
 import "time"
 
-process, _ := facades.Process().Timeout(10 * time.Second).Start("sleep", "5")
+running, err := facades.Process().Timeout(10 * time.Second).Start("sleep", "5")
 
 // Continue doing other work...
 
-result := process.Wait()
+result := running.Wait()
 ```
 
 To check if a process has finished without blocking, you may use the `Done` method. This returns a standard Go channel
 that closes when the process exits, making it ideal for use in `select` statements.
 
 ```go
-process, _ := facades.Process().Start("sleep", "5")
+running, err := facades.Process().Start("sleep", "5")
 
 select {
-case <-process.Done():
+case <-running.Done():
     // Process finished successfully
 case <-time.After(1 * time.Second):
     // Custom logic if it takes too long
 }
 
-result := process.Wait()
+result := running.Wait()
 ```
 
 :::warning
@@ -231,9 +239,9 @@ This ensures the process is properly "reaped" by the operating system and cleans
 You can retrieve the operating system's process ID (PID) for a running process using the `PID` method.
 
 ```go
-process, _ := facades.Process().Start("ls", "-la")
+running, err := facades.Process().Start("ls", "-la")
 
-println(process.PID())
+println(running.PID())
 ```
 
 #### Sending Signals
@@ -250,13 +258,13 @@ import (
     "time"
 )
 
-process, _ := facades.Process().Start("sleep", "60")
+running, err := facades.Process().Start("sleep", "60")
 
 // Manually send a signal
-process.Signal(os.Interrupt)
+running.Signal(os.Interrupt)
 
 // Attempt to stop gracefully, wait 5 seconds, then force kill
-process.Stop(5 * time.Second)
+running.Stop(5 * time.Second)
 ```
 
 ### Checking Process State
@@ -266,7 +274,7 @@ or health checks, as it provides a snapshot of whether the process is currently 
 
 ```go
 // Snapshot check (useful for logs or metrics)
-if process.Running() {
+if running.Running() {
     fmt.Println("Process is still active...")
 }
 ```
@@ -290,7 +298,7 @@ By default, the `Pool` method waits for all processes to complete and returns a 
 ```go
 results, err := facades.Process().Pool(func(pool process.Pool) {
     pool.Command("sleep", "1").As("first")
-    pool.Command("sleep", "2").As("second")
+    pool.Command("sleep 2").As("second") // string command: /bin/sh -c "sleep 2"
 }).Run()
 
 if err != nil {
