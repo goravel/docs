@@ -4,21 +4,21 @@
 
 ## 简介
 
-内核启动过程中最重要的是加载 服务提供者。 All `ServiceProvider` under the application are configured in the `bootstrap/providers.go` file.
+内核启动过程中最重要的是加载 服务提供者。 应用程序下的所有 `ServiceProvider` 都在 `bootstrap/providers.go` 文件中进行配置。
 
 首先，内核会先调用所有服务提供者的 `Register` 方法。 所有服务提供者均被注册后，再次调用所有服务提供者的 `Boot` 方法。
 
 服务提供者是 Goravel 生命周期中的关键。 服务提供者使框架可以包含各种组件，例如路由、数据库、队列、缓存等。
 
-## Create Service Provider
+## 创建服务提供者
 
-Service providers contain a `Register` and a `Boot` method. Within the `Register` method, you should only bind things into [the service container](./service-container.md). You should never attempt to register any event listeners, routes, or any other piece of functionality within the `Register` method.
+服务提供者包含`Register`和`Boot`方法。 在 `Register` 方法中，你只应该将实例绑定到[服务容器](./service-container.md)中。 不要尝试在 `Register` 方法中注册任何事件监听器、路由或其他任何功能组件。
 
 ```bash
 ./artisan make:provider YourServiceProviderName
 ```
 
-The Artisan CLI can generate a new provider via the `make:provider` command. The new service provider will be registered automatically in the `bootstrap/providers.go::Providers()` function and the function will be called by `WithProviders`.
+artisan CLI可以通过`make:provider`命令生成一个新的提供者。 新的服务提供商将自动注册在 `bootstrap/providers.go::Providers()` 函数中，并且该函数将由 `WithProviders` 调用。
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -29,9 +29,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-## Dependency Relationship
+## 依赖关系
 
-`ServiceProvider` provides an optional method `Relationship() binding.Relationship`, used to declare the dependency relationship, the `ServiceProvider` that sets this method will not depend on the registration order, and the `ServiceProvider` that does not set it will be registered last, for example:
+`ServiceProvider` 提供了一个可选方法 `Relationship() binding.Relationship`，用于声明依赖关系。设置了该方法的 `ServiceProvider` 不依赖于注册顺序，而未设置该方法的 `ServiceProvider` 将最后注册，例如：
 
 ```go
 type ServiceProvider struct {}
@@ -61,9 +61,9 @@ func (r *ServiceProvider) Boot(app foundation.Application) {}
 
 ## Runners
 
-The `ServiceProvider` can also implement the `Runners` interface to run some code when the application starts. It's usually used to start/shutdown the service which is defined in the `ServiceProvider`. For example: `Route`, `Schedule`, `Queue`, etc. You don't need to start/shutdown these services with `Runners` in the `main.go` anymore, Goravel will take care of it.
+`ServiceProvider` 也可以实现 `Runners` 接口，在应用程序启动时运行一些代码。 它通常用于启动/关闭在 `ServiceProvider` 中定义的服务。 例如：`Route`、`Schedule`、`Queue` 等。 你无需在 `main.go` 中使用 `Runners` 启动或关闭这些服务，Goravel 会你自动处理。
 
-A `Runner` contains three methods: `ShouldRun()`, `Run()`, and `Shutdown()`.
+`Runner` 包含三个方法：`ShouldRun()`、`Run()` 和 `Shutdown()`。
 
 ```go
 type Runner interface {
@@ -76,7 +76,7 @@ type Runner interface {
 }
 ```
 
-There is an example of a `RouteRunner` defined in the `ServiceProvider` to start and shutdown the `Route` service.
+下面是一个在 `ServiceProvider` 中定义 `RouteRunner` 的示例，用于启动和关闭 `Route` 服务。
 
 ```go
 type ServiceProvider struct {}
@@ -123,7 +123,7 @@ func (r *RouteRunner) Shutdown() error {
 }
 ```
 
-You can register your own `Runner` in the `bootstrap/app.go::WithRunners` function to run some code when the application starts.
+你可以在 `bootstrap/app.go::WithRunners` 函数中注册自己的 `Runner`，以便在应用程序启动时运行一些代码。
 
 ```go
 func Boot() contractsfoundation.Application {
