@@ -14,7 +14,7 @@
 
 3. 在`Create()`方法中，它会首先加载配置，然后注册所有服务提供程序和其他设置。 最后，启动所有服务提供者，返回应用实例。
 
-4. After the application is created, you can normally use all facades in this stage, but remember that your customize code should be placed before `app.Start()` in the `main.go` file. Or you can add your code into the `WithCallback` function in the `bootstrap/app.go` file to make sure your code is executed after the application is created. When running `app.Start()`, the http or grpc server will be started automatically if you have configured them.
+4. 应用创建后，在此阶段通常可以使用所有 facades，但请注意，你的自定义代码应放置在 `main.go` 文件中的 `app.Start()` 之前。 或者，你可以将代码添加到 `bootstrap/app.go` 文件中的 `WithCallback` 函数中，以确保代码在应用创建后执行。 运行 `app.Start()` 时，如果配置了 HTTP 或 gRPC 服务器，它们将自动启动。
 
 ```go
 func Boot() contractsfoundation.Application {
