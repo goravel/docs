@@ -152,7 +152,7 @@ for row := range rows {
 
 ### 聚合
 
-The query builder provides aggregate methods: `Count`, `Sum`, `Avg`, `Min`, `Max`.
+查询构造器提供了多个聚合方法：`Count`、`Sum`、`Avg`、`Min`、`Max`。
 
 ```go
 count, err := facades.DB().Table("users").Count()
@@ -226,10 +226,10 @@ res, err := facades.DB().Model(&user).Update("age", db.Raw("age - ?", 1))
 当然你可能并不总是希望从数据库表中获取所有列。 使用 `Select` 方法，你可以为查询指定一个自定义的 select 子句：
 
 ```go
-// Select specific fields
+// 选择特定字段
 err := facades.DB().Select("name", "age").Get(&users)
 
-// Use a subquery
+// 使用子查询
 err := facades.DB().Select("name", db.Raw("(SELECT COUNT(*) FROM posts WHERE users.id = posts.user_id) as post_count")).Get(&users)
 ```
 
