@@ -50,11 +50,11 @@ import (
 )
 
 func main() {
-	// Initialize setup to get paths, this should be called at the beginning.
+	// 初始化 setup 以获取路径
 	setup := packages.Setup(os.Args)
 
-	// The config file will be published to the project's config directory automatically when installing by this way.
-	// You can also publish this config file manually: ./artisan vendor:publish --package=github.com/goravel/example-package
+	// 通过这种方式安装时，配置文件将自动发布到项目的配置目录。
+	// 你也可以手动发布此配置文件：./artisan vendor:publish --package=github.com/goravel/example-package
 	config, err := file.GetPackageContent(setup.Paths().Module().String(), "setup/config/hello.go")
 	if err != nil {
 		panic(err)
@@ -64,16 +64,16 @@ func main() {
 	moduleImport := setup.Paths().Module().Import()
 
 	setup.Install(
-		// Register the service provider to the providers slice in bootstrap/providers.go
+		// 将服务提供者注册到 bootstrap/providers.go 中的 providers 切片
 		modify.RegisterProvider(moduleImport, serviceProvider),
 
-		// Add the config file to the config directory
+		// 将配置文件添加到配置目录
 		modify.File(path.Config("hello.go")).Overwrite(config),
 	).Uninstall(
-		// Remove the config file from the config directory
+		// 从配置目录中移除配置文件
 		modify.File(path.Config("hello.go")).Remove(),
 
-		// Unregister the service provider from the providers slice in bootstrap/providers.go
+		// 从 bootstrap/providers.go 中的 providers 切片中注销服务提供者
 		modify.UnregisterProvider(moduleImport, serviceProvider),
 	).Execute()
 }
