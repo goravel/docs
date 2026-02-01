@@ -50,6 +50,7 @@ import (
 )
 
 func main() {
+	// Initialize setup to get paths, this should be called at the beginning.
 	setup := packages.Setup(os.Args)
 
 	// The config file will be published to the project's config directory automatically when installing by this way.
@@ -63,8 +64,8 @@ func main() {
 	moduleImport := setup.Paths().Module().Import()
 
 	setup.Install(
-		// Add the service provider to the providers slice in bootstrap/providers.go
-		modify.AddProviderApply(moduleImport, serviceProvider),
+		// Register the service provider to the providers slice in bootstrap/providers.go
+		modify.RegisterProvider(moduleImport, serviceProvider),
 
 		// Add the config file to the config directory
 		modify.File(path.Config("hello.go")).Overwrite(config),
@@ -72,8 +73,8 @@ func main() {
 		// Remove the config file from the config directory
 		modify.File(path.Config("hello.go")).Remove(),
 
-		// Remove the service provider from the providers slice in bootstrap/providers.go
-		modify.RemoveProviderApply(moduleImport, serviceProvider),
+		// Unregister the service provider from the providers slice in bootstrap/providers.go
+		modify.UnregisterProvider(moduleImport, serviceProvider),
 	).Execute()
 }
 ```

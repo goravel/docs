@@ -269,10 +269,16 @@ func TestMain(m *testing.M) {
   if err := database.Build(); err != nil {
     panic(err)
   }
-
+	if err := database.Ready(); err != nil {
+		panic(err)
+	}
   if err := database.Migrate(); err != nil {
     panic(err)
   }
+
+  if err := facades.App().Restart(); err != nil {
+		panic(err)
+	}
 
   // Execute test cases
   exit := m.Run()
