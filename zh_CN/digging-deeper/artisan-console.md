@@ -9,7 +9,7 @@ Artisan 是 Goravel 自带的命令行工具。 该模块可以使用 `facades.A
 ```shell
 ./artisan list
 
-# or
+# 或
 go run . artisan list
 ```
 
@@ -19,7 +19,7 @@ go run . artisan list
 ./artisan migrate --help
 ```
 
-Instead of repeating `./artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
+如果不想重复输入 `./artisan ...` 命令，你可以在终端中为这个命令添加一个别名：
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
@@ -42,9 +42,9 @@ artisan make:controller DemoController
 ./artisan make:command user/SendEmails
 ```
 
-### Register Commands
+### 注册命令
 
-All commands should be registered via the `WithCommands` function in the `bootstrap/app.go` file:
+所有命令都应通过 `bootstrap/app.go` 文件中的 `WithCommands` 函数进行注册：
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -55,7 +55,7 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-A new command created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the command manually if you create the command file by yourself.
+通过 `make:command` 创建的新命令将自动注册到 `bootstrap/commands.go::Commands()` 函数中，并且该函数将由 `WithCommands` 调用。 如果你自行创建命令文件，则需要手动注册。
 
 ### 命令结构
 
@@ -130,28 +130,28 @@ func (receiver *SendEmails) Extend() command.Extend {
 }
 ```
 
-Supported agrument types : `ArgumentFloat32`, `ArgumentFloat64`, `ArgumentInt`, `ArgumentInt8`, `ArgumentInt16`, `ArgumentInt32`, `ArgumentInt64`, `ArgumentString`, `ArgumentUint`, `ArgumentUint8`, `ArgumentUint16`, `ArgumentUint32`, `ArgumentUint64`, `ArgumentTimestamp`, `ArgumentFloat32Slice`, `ArgumentFloat64Slice`, `ArgumentIntSlice`, `ArgumentInt8Slice`, `ArgumentInt16Slice`, `ArgumentInt32Slice`, `ArgumentInt64Slice`, `ArgumentStringSlice`, `ArgumentUintSlice`, `ArgumentUint8Slice`, `ArgumentUint16Slice`, `ArgumentUint32Slice`, `ArgumentUint64Slice`, `ArgumentTimestampSlice`
+支持的参数类型：`ArgumentFloat32`, `ArgumentFloat64`, `ArgumentInt`, `ArgumentInt8`, `ArgumentInt16`, `ArgumentInt32`, `ArgumentInt64`, `ArgumentString`, `ArgumentUint`, `ArgumentUint8`, `ArgumentUint16`, `ArgumentUint32`, `ArgumentUint64`, `ArgumentTimestamp`, `ArgumentFloat32Slice`, `ArgumentFloat64Slice`, `ArgumentIntSlice`, `ArgumentInt8Slice`, `ArgumentInt16Slice`, `ArgumentInt32Slice`, `ArgumentInt64Slice`, `ArgumentStringSlice`, `ArgumentUintSlice`, `ArgumentUint8Slice`, `ArgumentUint16Slice`, `ArgumentUint32Slice`, `ArgumentUint64Slice`, `ArgumentTimestampSlice`
 
-Argument types with single value support next fields:
-
-```go
-	Name     string // the name of this argument
-	Value    T      // the default value of this argument
-	Usage    string // the usage text to show
-	Required bool   // if this argument is required
-```
-
-Slice argument types fields:
+基础参数类型支持以下字段：
 
 ```go
-	Name  string // the name of this argument
-	Value T      // the default value of this argument
-	Usage string // the usage text to show
-	Min   int    // the min num of occurrences of this argument
-	Max   int    // the max num of occurrences of this argument, set to -1 for unlimited
+	Name     string // 名称
+	Value    T      // 默认值
+	Usage    string // 用法
+	Required bool   // 是否为必需
 ```
 
-Timestamp arguments additionally supports `Layouts []string` field, that should be filled with [supported layouts](https://pkg.go.dev/time#pkg-constants)
+切片参数类型字段：
+
+```go
+	Name  string // 名称
+	Value T      // 默认值
+	Usage string // 用法
+	Min   int    // 最小出现次数
+	Max   int    // 最大出现次数，设置为 -1 表示无限制
+```
+
+时间戳参数额外支持 `Layouts []string` 字段，应填入[支持的布局](https://pkg.go.dev/time#pkg-constants)
 
 获取参数：
 
@@ -164,7 +164,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
-Alternatively, it is possible to access arguments directly:
+也可以直接访问参数：
 
 ```go
 func (receiver *ListCommand) Handle(ctx console.Context) error {
@@ -180,7 +180,7 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 
 选项类似于参数，是用户输入的另一种形式。 在命令行中指定选项的时候，它们以两个短横线 (–) 作为前缀。
 
-Definition：
+定义：
 
 ```go
 func (receiver *ListCommand) Extend() command.Extend {
@@ -428,17 +428,17 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
-There are few helpers to write to console with respective color:
+以下辅助函数可以向控制台打印不同颜色的文本：
 
 ```go
-ctx.Green("This is a green message")
-ctx.Greenln("This is a green line message")
-ctx.Red("This is a red message")
-ctx.Redln("This is a red line message")
-ctx.Yellow("This is a yellow message")
-ctx.Yellowln("This is a yellow line message")
-ctx.Black("This is a black message")
-ctx.Blackln("This is a black line message")
+ctx.Green("这是一条绿色消息")
+ctx.Greenln("这是一条绿色换行消息")
+ctx.Red("这是一条红色消息")
+ctx.Redln("这是一条红色换行消息")
+ctx.Yellow("这是一条黄色消息")
+ctx.Yellowln("这是一条黄色换行消息")
+ctx.Black("这是一条黑色消息")
+ctx.Blackln("这是一条黑色换行消息")
 ```
 
 你可以使用 `NewLine` 方法在控制台中写入新行：
@@ -493,9 +493,9 @@ err := ctx.Spinner("Loading...", console.SpinnerOption{
 })
 ```
 
-### Divider
+### 分隔符
 
-To show terminal-width divider you may use `Divider` method.
+要显示终端宽度的分隔符，可以使用 `Divider` 方法。
 
 ```go
 ctx.Divider()     // ----------
@@ -504,7 +504,7 @@ ctx.Divider("=>") // =>=>=>=>=>
 
 ## 分类
 
-You can set a set of commands to the same category, convenient in `./artisan list`:
+可以将一组命令设置为同一个分类，方便在 `./artisan list` 中查看：
 
 ```go
 // Extend The console command extend.
@@ -515,9 +515,9 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 }
 ```
 
-## Register Commands
+## 注册命令
 
-A new migration created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the rule manually if you create the command file by yourself.
+通过 `make:command` 创建的新命令将自动注册到 `bootstrap/commands.go::Commands()` 函数中，并且该函数将由 `WithCommands` 调用。 如果你自行创建命令文件，则需要手动注册。
 
 ```go
 func Boot() contractsfoundation.Application {
