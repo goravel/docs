@@ -447,7 +447,7 @@ facades.Http().PreventStrayRequests().AllowStrayRequests([]string{
 
 ### 重置状态
 
-`Http` facade 是一个单例，这意味着除非清除，否则模拟的响应会在整个测试套件的运行期间持续存在。 为了避免模拟从一个测试"泄漏"到另一个测试，你应该严格在测试清理或设置中使用 `Reset` 方法。
+`Http` facade 是一个单例，这意味着除非重置，否则模拟的响应会在整个测试套件的运行期间持续存在。 为了避免模拟从一个测试"泄漏"到另一个测试，你应该严格在测试清理或设置中使用 `Reset` 方法。
 
 ```go
 func TestExternalApi(t *testing.T) {
@@ -460,7 +460,7 @@ func TestExternalApi(t *testing.T) {
 ```
 
 :::warning 全局状态与并行测试
-`Fake` 和 `Reset` 方法会改变 HTTP 客户端工厂的全局状态。 因此，**你应该避免并行运行模拟 HTTP 客户端的测试**（使用 `t.Parallel()`）。 这样做可能会导致竞态条件，即一个测试重置模拟时，另一个测试仍在运行。
+`Fake` 和 `Reset` 方法会改变 HTTP 客户端的全局状态。 因此，**你应该避免并行运行模拟 HTTP 客户端的测试**（`t.Parallel()`）。 这样做可能会导致竞态条件，即一个测试重置模拟时，另一个测试仍在运行。
 :::
 
 
