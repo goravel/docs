@@ -14,7 +14,7 @@
 
 ### 不同 JWT Guard 支持不同配置
 
-You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/auth.go` file, if not set, these three configurations are used by the `config/jwt.go` file as default.
+你可以在 `config/auth.go` 文件中为每个 Guard 单独设置 TTL、Secret 和 RefreshTTL，如果不设置，则默认使用 `config/jwt.go` 文件中的这三个配置。
 
 ```go
 // config/auth.go
