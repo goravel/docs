@@ -132,13 +132,13 @@ err := facades.Mail().Send(mails.NewOrderShipped())
 err := facades.Mail().Queue(mails.NewOrderShipped())
 ```
 
-## Using Template
+## 使用模板
 
-The mail module now supports using templates directly with the `html/template` engine. This allows you to render email templates with dynamic data.
+邮件模块现在支持直接使用 `html/template` 引擎的模板。 这允许你使用动态数据渲染电子邮件模板。
 
-### Configuration
+### 配置
 
-To enable template support, configure the `config/mail.go` file:
+要启用模板支持，请配置 `config/mail.go` 文件：
 
 ```go
 "template": map[string]any{
@@ -152,19 +152,19 @@ To enable template support, configure the `config/mail.go` file:
 }
 ```
 
-### Creating Templates
+### 创建模板
 
-Create your email templates in the specified views directory. For example:
+在指定的视图目录中创建你的电子邮件模板。 例如：
 
 ```html
 <!-- resources/views/mail/welcome.html -->
-<h1>Welcome {{.Name}}!</h1>
-<p>Thank you for joining {{.AppName}}.</p>
+<h1>欢迎 {{.Name}}！</h1>
+<p>感谢您加入 {{.AppName}}。</p>
 ```
 
-### Sending Emails with Templates
+### 使用模板发送电子邮件
 
-You can use the `Content` method to specify the template and pass dynamic data:
+你可以使用 `Content` 方法来指定模板并传递动态数据：
 
 ```go
 facades.Mail().
@@ -180,9 +180,9 @@ facades.Mail().
     Send()
 ```
 
-### Custom Template Engines
+### 自定义模板引擎
 
-You can also register custom template engines in the configuration:
+你也可以在配置中注册自定义模板引擎：
 
 ```go
 "template": map[string]any{
