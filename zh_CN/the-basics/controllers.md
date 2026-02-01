@@ -20,12 +20,12 @@ import (
 )
 
 type UserController struct {
-  // Dependent services
+  // 依赖服务
 }
 
 func NewUserController() *UserController {
   return &UserController{
-    // Inject services
+    // 注入服务
   }
 }
 
