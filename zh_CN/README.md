@@ -18,7 +18,7 @@
 
 Goravel 是一个功能齐全、可扩展的 Web 应用程序框架，提供了一个起始脚手架，帮助 Gophers 快速构建他们的应用程序。
 
-该框架的风格与 [Laravel](https://laravel.com/) 保持一致，因此 PHP 开发者无需学习新的框架，仍可享受使用 Golang 的乐趣，以此致敬 Laravel！
+该框架的风格与 [Laravel](https://laravel.com/) 保持一致，PHP 开发者无需学习新的框架，就可享受使用 Golang 的乐趣，致敬 Laravel！
 
 欢迎 Star、PR 和 Issues！
 
@@ -32,42 +32,42 @@ Goravel 是一个功能齐全、可扩展的 Web 应用程序框架，提供了�
 
 ## 主要特性
 
-| 模块名称                                                                           | 描述                             |
-| ------------------------------------------------------------------------------ | ------------------------------ |
-| [Artisan 命令行](https://www.goravel.dev/digging-deeper/artisan-console.html)     | 用于应用程序管理和自动化的 CLI 命令行界面        |
-| [用户认证](https://www.goravel.dev/security/authentication.html)                   | 使用 JWT 和 Session 驱动进行用户身份验证    |
-| [用户授权](https://www.goravel.dev/security/authorization.html)                    | 基于权限的访问控制，使用策略和门               |
-| [缓存](https://www.goravel.dev/digging-deeper/cache.html)                        | 使用内存、Redis 或自定义驱动存储和检索数据       |
-| [Carbon](https://www.goravel.dev/digging-deeper/helpers.html)                  | 用于日期和时间操作的辅助函数                 |
-| [自定义配置](https://www.goravel.dev/getting-started/configuration.html)            | 从文件和环境中管理应用程序配置                |
-| [Crypt](https://www.goravel.dev/security/encryption.html)                      | 安全的数据加密和解密工具                   |
-| [DB](https://www.goravel.dev/database/getting-started.html)                    | 数据库查询构建器                       |
-| [事件系统](https://www.goravel.dev/digging-deeper/event.html)                      | 应用程序事件分发和监听系统                  |
-| [Factory](https://www.goravel.dev/orm/factories.html)                          | 为测试目的生成虚假模型数据                  |
-| [文件存储](https://www.goravel.dev/digging-deeper/filesystem.html)                 | 跨多个驱动的文件上传、下载和存储               |
-| [Grpc](https://www.goravel.dev/the-basics/grpc.html)                           | 高性能 gRPC 服务器和客户端实现             |
-| [Hash](https://www.goravel.dev/security/hashing.html)                          | 安全的密码哈希                        |
-| [HTTP 服务](https://www.goravel.dev/the-basics/routing.html)                     | HTTP 路由、控制器和中间件管理              |
-| [Http Client](https://www.goravel.dev/digging-deeper/http-client.html)         | 向外部 API 和服务发送 HTTP 请求          |
-| [本地化](https://www.goravel.dev/digging-deeper/localization.html)                | 多语言翻译和区域设置管理                   |
-| [日志](https://www.goravel.dev/the-basics/logging.html)                          | 应用程序日志记录到文件、控制台或外部服务           |
-| [邮件](https://www.goravel.dev/digging-deeper/mail.html)                         | 通过 SMTP 或基于队列的投递发送电子邮件         |
-| [Mock](https://www.goravel.dev/testing/mock.html)                              | 为门面和依赖项创建测试模拟                  |
-| [数据库迁移](/zh_CNhttps://www.goravel.dev/database/migrations.html)                | 数据库模式变更的版本控制                   |
-| [数据库 ORM](/zh_CNhttps://www.goravel.dev/orm/getting-started.html)              | 优雅的 ORM 实现，用于数据库操作             |
-| [扩展包开发](/zh_CNhttps://www.goravel.dev/digging-deeper/package-development.html) | 构建可复用的扩展包以增强框架功能               |
-| [进程](https://www.goravel.dev/digging-deeper/process.html)                      | 围绕 Go 标准 `os/exec` 包的表达性优雅 API |
-| [队列](/zh_CNhttps://www.goravel.dev/digging-deeper/queues.html)                 | 将耗时任务推迟到后台作业处理                 |
-| [数据填充](https://www.goravel.dev/database/seeding.html)                          | 用测试或初始数据填充数据库表                 |
-| [Session](/zh_CNhttps://www.goravel.dev/the-basics/session.html)               | 跨 HTTP 请求管理用户会话数据              |
-| [任务调度](/zh_CNhttps://www.goravel.dev/digging-deeper/task-scheduling.html)      | 使用类 cron 表达式调度重复任务             |
-| [测试](/zh_CNhttps://www.goravel.dev/testing/getting-started.html)               | HTTP 测试、模拟和断言工具                |
-| [表单验证](/zh_CNhttps://www.goravel.dev/the-basics/validation.html)               | 使用规则验证传入的请求数据                  |
-| [视图](https://www.goravel.dev/the-basics/views.html)                            | 用于 HTML 响应的模板渲染引擎              |
+| 模块名称                                                                             | 描述                             |
+| -------------------------------------------------------------------------------- | ------------------------------ |
+| [Artisan 命令行](https://www.goravel.dev/zh_CN/digging-deeper/artisan-console.html) | 用于应用程序管理和自动化的 CLI 命令行界面        |
+| [用户认证](https://www.goravel.dev/zh_CN/security/authentication.html)               | 使用 JWT 和 Session 驱动进行用户身份验证    |
+| [用户授权](https://www.goravel.dev/zh_CN/security/authorization.html)                | 基于权限的访问控制，使用策略和守卫              |
+| [缓存](https://www.goravel.dev/zh_CN/digging-deeper/cache.html)                    | 使用内存、Redis 或自定义驱动存储和检索数据       |
+| [Carbon](https://www.goravel.dev/zh_CN/digging-deeper/helpers.html)              | 用于日期和时间操作的辅助函数                 |
+| [配置](https://www.goravel.dev/zh_CN/getting-started/configuration.html)           | 从文件和环境中管理应用程序配置                |
+| [Crypt](https://www.goravel.dev/zh_CN/security/encryption.html)                  | 安全的数据加密和解密工具                   |
+| [DB](https://www.goravel.dev/zh_CN/database/getting-started.html)                | 数据库查询构建器                       |
+| [事件系统](https://www.goravel.dev/zh_CN/digging-deeper/event.html)                  | 应用程序事件分发和监听系统                  |
+| [数据仓库](https://www.goravel.dev/zh_CN/orm/factories.html)                         | 为测试生成模拟数据                      |
+| [文件存储](https://www.goravel.dev/zh_CN/digging-deeper/filesystem.html)             | 支持多个驱动的文件上传、下载和存储              |
+| [Grpc](https://www.goravel.dev/zh_CN/the-basics/grpc.html)                       | 高性能 gRPC 服务器和客户端               |
+| [Hash](https://www.goravel.dev/zh_CN/security/hashing.html)                      | 安全的密码哈希                        |
+| [HTTP](https://www.goravel.dev/zh_CN/the-basics/routing.html)                    | HTTP 路由、控制器和中间件管理              |
+| [Http 客户端](https://www.goravel.dev/zh_CN/digging-deeper/http-client.html)        | 向外部 API 和服务发送 HTTP 请求          |
+| [本地化](https://www.goravel.dev/zh_CN/digging-deeper/localization.html)            | 多语言翻译和区域设置管理                   |
+| [日志](https://www.goravel.dev/zh_CN/the-basics/logging.html)                      | 应用程序日志记录到文件、控制台或外部服务           |
+| [邮件](https://www.goravel.dev/zh_CN/digging-deeper/mail.html)                     | 通过 SMTP 或基于队列的投递发送电子邮件         |
+| [Mock](https://www.goravel.dev/zh_CN/testing/mock.html)                          | 为 facades 和依赖创建模拟接口            |
+| [数据库迁移](https://www.goravel.dev/zh_CN/database/migrations.html)                  | 数据库模式变更的版本控制                   |
+| [ORM](https://www.goravel.dev/zh_CN/orm/getting-started.html)                    | 优雅的 ORM 实现，用于数据库操作             |
+| [扩展包开发](https://www.goravel.dev/zh_CN/digging-deeper/package-development.html)   | 构建可复用的扩展包以增强框架功能               |
+| [进程](https://www.goravel.dev/zh_CN/digging-deeper/process.html)                  | 围绕 Go 标准 `os/exec` 包的表达性优雅 API |
+| [队列](https://www.goravel.dev/zh_CN/digging-deeper/queues.html)                   | 将耗时任务发送到后台作业处理                 |
+| [数据填充](https://www.goravel.dev/zh_CN/database/seeding.html)                      | 用测试或初始数据填充数据库表                 |
+| [Session](https://www.goravel.dev/zh_CN/the-basics/session.html)                 | 跨 HTTP 请求管理用户会话数据              |
+| [任务调度](https://www.goravel.dev/zh_CN/digging-deeper/task-scheduling.html)        | 使用类 cron 表达式调度重复任务             |
+| [测试](https://www.goravel.dev/zh_CN/testing/getting-started.html)                 | HTTP 测试、模拟和断言工具                |
+| [表单验证](https://www.goravel.dev/zh_CN/the-basics/validation.html)                 | 使用规则验证传入的请求数据                  |
+| [视图](https://www.goravel.dev/zh_CN/the-basics/views.html)                        | 用于 HTML 响应的模板渲染引擎              |
 
 ## 与 Laravel 对比
 
-[详见文件](https://www.goravel.dev/prologue/compare-with-laravel.html)
+[详见](https://www.goravel.dev/zh_CN/prologue/compare-with-laravel.html)
 
 ## 路线图
 
@@ -75,7 +75,7 @@ Goravel 是一个功能齐全、可扩展的 Web 应用程序框架，提供了�
 
 ## 优秀扩展包
 
-[详见文件](https://www.goravel.dev/getting-started/packages.html)
+[详见](https://www.goravel.dev/zh_CN/getting-started/packages.html)
 
 ## Contributors
 
