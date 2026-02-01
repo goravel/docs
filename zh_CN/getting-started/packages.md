@@ -23,13 +23,13 @@
 | [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                           | Tinker                          | 3.6%  |
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)           | WebSocket                       | 0%                    |
 
-\***注意**：软件包已根据其测试率排序。
+\***注意**：软件包根据其测试率排序。
 
-💡 提示：为帮助更多开发者发现您的工作，您还可以向仓库添加相关主题。
+💡 提示：为帮助更多开发者发现你的包，你还可以向仓库添加相关主题。
 推荐主题：[`goravel-package`](https://github.com/topics/goravel-package)
 
 - 在 GitHub 上，导航至仓库的主页。
 - 在页面右上角，“关于”右侧，点击齿轮图标（设置）。
-- 在“主题”下，开始输入您想添加到仓库的主题，以显示匹配主题的下拉菜单。
-- 点击您想添加的主题，或继续输入以创建新主题。 例如：`goravel-package`、`goravel` 及其他相关关键词。
-- 点击 `保存更改` — 这将使您的软件包更易被发现。
+- 在“主题”下，开始输入你想添加到仓库的主题，以显示匹配主题的下拉菜单。
+- 点击你想添加的主题，或输入以创建新主题。 例如：`goravel-package`、`goravel` 及其他相关关键词。
+- 点击 `保存更改` — 这将使你的软件包更易被发现。
