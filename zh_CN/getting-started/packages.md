@@ -23,7 +23,7 @@
 | [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                           | Tinker                          | 3.6%  |
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)           | WebSocket                       | 0%                    |
 
-\***Note**: The packages are ordered based on their test rate.
+\***注意**：软件包根据其测试覆盖率排序。
 
 💡 提示：为帮助更多开发者发现你的包，你还可以向仓库添加相关主题。
 推荐主题：[`goravel-package`](https://github.com/topics/goravel-package)
