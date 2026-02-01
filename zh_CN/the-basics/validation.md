@@ -230,7 +230,7 @@ func (r *PostController) Store(ctx http.Context) http.Response {
     })
 
   if validator.Fails() {
-    // Return fail
+    // 返回失败
   }
 
   var user models.User
@@ -430,7 +430,7 @@ if validator.Errors().Has("email") {
 
 Goravel 提供了各种有用的验证规则，但是，你可能希望定义自己的规则。 注册自定义验证规则的方法之一是使用规则对象。 要生成新的规则，你可以使用 `make:rule` Artisan 命令。
 
-### Creating Custom Rules
+### 创建自定义规则
 
 让我们使用这个命令生成一个验证字符串是否为大写的规则。 Goravel 会将新规则放在 `app/rules` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建规则时创建它。
 
@@ -439,7 +439,7 @@ Goravel 提供了各种有用的验证规则，但是，你可能希望定义自
 ./artisan make:rule user/Uppercase
 ```
 
-### Defining Custom Rules
+### 定义自定义规则
 
 创建规则后，我们需要定义它的行为。 一个规则包含两个方法：`Passes` 和 `Message`。 `Passes` 方法接收所有数据、待验证的数据与验证参数。 应该根据属性值是否有效返回 `true` 或 `false`。 `Message` 方法应该返回验证失败时应该使用的验证错误消息。
 
@@ -455,25 +455,25 @@ import (
 type Uppercase struct {
 }
 
-// Signature The name of the rule.
+// Signature 规则的名称。
 func (receiver *Uppercase) Signature() string {
   return "uppercase"
 }
 
-// Passes Determine if the validation rule passes.
+// Passes 确定验证规则是否通过。
 func (receiver *Uppercase) Passes(ctx context.Context, data validation.Data, val any, options ...any) bool {
   return strings.ToUpper(val.(string)) == val.(string)
 }
 
-// Message Get the validation error message.
+// Message 获取验证错误消息。
 func (receiver *Uppercase) Message(ctx context.Context) string {
   return "The :attribute must be uppercase."
 }
 ```
 
-### Register Custom Rules
+### 注册自定义规则
 
-A new rule created by `make:rule` will be registered automatically in the `bootstrap/rules.go::Rules()` function and the function will be called by `WithRules`. You need register the rule manually if you create the rule file by yourself.
+通过 `make:rule` 创建的新规则将自动注册到 `bootstrap/rules.go::Rules()` 函数中，并且该函数将由 `WithRules` 调用。 如果你自行创建规则文件，则需要手动注册。
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -514,7 +514,7 @@ func Boot() contractsfoundation.Application {
 
 Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自己的规则。
 
-### Creating Custom Filters
+### 创建自定义过滤器
 
 要生成新的规则，你可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个转换 string 为 int 的规则。 这个规则框架已经内置，这里只是为了示例。 Goravel 会将新规则放在 `app/filters` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建规则时创建它：
 
@@ -523,7 +523,7 @@ Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自
 ./artisan make:filter user/ToInt
 ```
 
-### Defining Custom Filters
+### 定义自定义过滤器
 
 一个过滤器包含两个方法：`Signature` 和 `Handle`。 `Signature` 方法设置该过滤器的名称。 `Handle` 方法执行具体的过滤逻辑：
 
@@ -540,12 +540,12 @@ import (
 type ToInt struct {
 }
 
-// Signature The signature of the filter.
+// Signature 过滤器的签名。
 func (receiver *ToInt) Signature() string {
   return "ToInt"
 }
 
-// Handle defines the filter function to apply.
+// Handle 定义要应用的过滤器函数。
 func (receiver *ToInt) Handle(ctx context.Context) any {
   return func (val any) int {
     return cast.ToString(val)
@@ -553,9 +553,9 @@ func (receiver *ToInt) Handle(ctx context.Context) any {
 }
 ```
 
-### Register Custom Filters
+### 注册自定义过滤器
 
-A new rule created by `make:filter` will be registered automatically in the `bootstrap/filters.go::Filters()` function and the function will be called by `WithFilters`. You need register the rule manually if you create the rule file by yourself.
+通过 `make:filter` 创建的新规则将自动注册到 `bootstrap/filters.go::Filters()` 函数中，并且该函数将由 `WithFilters` 调用。 如果你自行创建规则文件，则需要手动注册。
 
 ```go
 func Boot() contractsfoundation.Application {
