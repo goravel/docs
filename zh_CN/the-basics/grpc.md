@@ -8,11 +8,11 @@ Grpc 模块可以使用 `facades.Grpc()` 进行操作。
 
 ## 配置
 
-In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.servers` configures the servers which the client will connect to.
+在 `config/grpc.go` 文件中，你可以配置 Grpc 模块，其中 `grpc.host` 配置服务器的域名，`grpc.servers` 配置客户端将连接到的服务器。
 
 ## 控制器
 
-Controllers can be defined in the `app/grpc/controllers` directory.
+控制器可以定义在 `app/grpc/controllers` 目录中。
 
 ```go
 // app/grpc/controllers
@@ -40,7 +40,7 @@ func (r *UserController) Show(ctx context.Context, req *protos.UserRequest) (pro
 
 ## 定义路由
 
-All routing files can be defined in the `routes` directory, such as `routes/grpc.go`.
+所有路由文件可以定义在 `routes` 目录中，例如 `routes/grpc.go`。
 
 ```go
 // routes/grpc.go
@@ -60,7 +60,7 @@ func Grpc() {
 
 ### 注册路由
 
-Register routing in the `bootstrap/app.go::WithRouting` function after routing was defined.
+路由定义好后，在 `bootstrap/app.go::WithRouting` 函数中注册路由。
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -75,7 +75,7 @@ func Boot() contractsfoundation.Application {
 
 ## 拦截器
 
-The interceptor can be defined in the `app/grpc/interceptors` folder, and register them in the `WithGrpcServerInterceptors` and `WithGrpcClientInterceptors` functions of the `bootstrap/app.go` file.
+拦截器可以定义在 `app/grpc/interceptors` 文件夹中，并在 `bootstrap/app.go` 文件的 `WithGrpcServerInterceptors` 和 `WithGrpcClientInterceptors` 函数中注册它们。
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -97,7 +97,7 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-The `default` in the example above is a group name can be applied to the configuration item `grpc.servers.interceptors`, in this way, the Client will be applied to all interceptors under the group. 例如：
+上面示例中的 `default` 是一个分组名称，可以应用到配置项 `grpc.servers.interceptors` 上，这样该 Client 就会被应用该分组下的所有拦截器。 例如：
 
 ```go
 package config
