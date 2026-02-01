@@ -103,7 +103,7 @@ func (r *UserData) Scan(value any) (err error) {
 ./artisan make:model --table=users -f User
 ```
 
-If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend` method to extend the field type in the `bootstrap/app.go::WithCallback` function:
+如果数据表中有字段类型框架无法识别，可以在 `bootstrap/app.go::WithCallback` 函数中调用 `facades.Schema().Extend` 方法扩展字段类型：
 
 ```go
 import "github.com/goravel/framework/contracts/schema"
@@ -179,7 +179,7 @@ func (r *User) Connection() string {
 
 ### 设置 Global Scope
 
-Model supports setting the `GlobalScopes` method, which restricts the scope of the query, update, and delete operations:
+Model 中支持设置 `GlobalScopes` 方法，在查询、更新和删除操作时限制作用域：
 
 ```go
 import "github.com/goravel/framework/contracts/orm"
@@ -198,13 +198,13 @@ func (r *User) GlobalScopes() map[string]func(orm.Query) orm.Query {
 }
 ```
 
-If you want to remove global scopes in a query, you can use the `WithoutGlobalScopes` function:
+如果要在查询中移除全局作用域，可以使用 `WithoutGlobalScopes` 函数：
 
 ```go
-// Remove all global scopes
+// 移除所有全局作用域
 facades.Orm().Query().WithoutGlobalScopes().Get(&users)
 
-// Remove specified global scope
+// 移除指定的全局作用域
 facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 ```
 
@@ -1066,7 +1066,7 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 
 模版中仅包含部分事件，可以根据需要手动添加其他事件。
 
-要注册观察者，需要将观察者与要观察的模型绑定。 You can register observers in the `bootstrap/app.go::WithCallback` function:
+要注册观察者，需要将观察者与要观察的模型绑定。 可以在 `bootstrap/app.go::WithCallback` 函数中注册观察者：
 
 ```go
 func Boot() contractsfoundation.Application {
