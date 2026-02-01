@@ -31,7 +31,7 @@ func main() {
 }
 ```
 
-如果你想直接运行字符串命令（而不将其拆分为参数），可以将命令作为字符串传递给 `Run` 方法，`/bin/sh -c`（Linux/macOS）或 `cmd /C`（Windows）将会被添加到命令之前。 Notice, the mechanism can only be triggered when the string command contains spaces or `&`, `|`, `-`.
+如果你想直接运行字符串命令（而不将其拆分为参数），可以将命令作为字符串传递给 `Run` 方法，`/bin/sh -c`（Linux/macOS）或 `cmd /C`（Windows）将会被添加到命令之前。 注意，只有当字符串命令包含空格或 `&`、`|`、`-` 时，该机制才会被触发。
 
 ```go
 result := facades.Process().Run("echo Hello, World!")
