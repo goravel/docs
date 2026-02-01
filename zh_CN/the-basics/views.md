@@ -80,7 +80,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### 与所有视图共享数据
 
-有时，你可能需要与应用程序呈现的所有视图共享数据， 可以使用 `facades.View()` 中的 `Share` 函数。 通常，您应该将对 `Share` 函数的调用放在 `bootstrap/app.go::WithCallback` 函数中：
+有时，你可能需要与应用程序呈现的所有视图共享数据， 可以使用 `facades.View()` 中的 `Share` 函数。 通常，你应该将 `Share` 函数的调用放在 `bootstrap/app.go::WithCallback` 函数中：
 
 ```go
 func Boot() contractsfoundation.Application {
