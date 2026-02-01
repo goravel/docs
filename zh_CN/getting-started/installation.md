@@ -24,7 +24,7 @@ goravel new blog
 
 #### goravel/goravel
 
-功能完整的全特性框架。
+包含所有 facades 的全功能框架。
 
 ```shell
 // 下载框架
@@ -42,7 +42,7 @@ cp .env.example .env
 
 #### goravel/goravel-lite
 
-仅包含核心功能的轻量级框架，适合构建微服务或小型应用。 您可以根据需要安装额外的门面。
+仅包含核心功能的轻量级框架，适合构建微服务或小型应用。 你可以根据需要安装额外的门面。
 
 ```shell
 // 下载框架
@@ -57,7 +57,7 @@ cp .env.example .env
 // 生成应用密钥
 ./artisan key:generate
 
-// 根据需要安装额外的门面，例如：
+// 根据需要安装额外的 facades，例如：
 ./artisan package:install Cache
 ```
 
