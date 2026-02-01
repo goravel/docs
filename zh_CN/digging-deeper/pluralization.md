@@ -49,13 +49,13 @@ pluralizer.RegisterIrregular("english", rules.NewSubstitution("mouse", "mice"))
 有些单词如 “fish” 或 “media” 不会改变形式或始终是复数。 你可以将这些标记为“无变化”，以便复数化器跳过它们。
 
 ```go
-// “sheep”在单数和复数中都保持“sheep”
-pluralizer.RegisterUninflected("english", "sheep", "fish")
+// "sheep" stays "sheep" in singular and plural
+pluralizer.RegisterUninflected("english", "sheep")
 
-// “media”始终被视为复数
+// "media" is always treated as plural
 pluralizer.RegisterPluralUninflected("english", "media")
 
-// “data”始终被视为单数
+// "data" is always treated as singular
 pluralizer.RegisterSingularUninflected("english", "data")
 ```
 
