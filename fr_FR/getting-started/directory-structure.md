@@ -16,10 +16,10 @@ goravel/
 │   ├── http/                   # HTTP controllers and middleware
 │   │   ├── controllers/        # HTTP request handlers
 │   │   ├── middleware/         # HTTP middleware (auth, cors, etc.)
-│   ├── models/                 # Database models and ORM entities
+│   ├── models/                 # ORM models
 │   └── providers/              # Service providers
 ├── bootstrap/                  # Application bootstrapping
-│   └── app.go                  # Framework initialization and startup
+│   └── app.go                  # Framework initialization
 ├── config/                     # Application configuration files
 ├── database/                   # Database related files
 │   ├── migrations/             # Database migration files
