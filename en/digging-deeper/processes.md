@@ -31,7 +31,7 @@ func main() {
 }
 ```
 
-If you want to run a string command directly (without splitting it into arguments), you can pass the command to `Run` as a single string, `/bin/sh -c` (Linux/macOS) or `cmd /C` (Windows) will be used under the hood. Notice, the string command much contains spaces or `&`, `|`, `-`.
+If you want to run a string command directly (without splitting it into arguments), you can pass the command to `Run` as a single string, `/bin/sh -c` (Linux/macOS) or `cmd /C` (Windows) will be used under the hood. Notice, the mechanism can only be triggered when the string command contains spaces or `&`, `|`, `-`.
 
 ```go
 result := facades.Process().Run("echo Hello, World!")
