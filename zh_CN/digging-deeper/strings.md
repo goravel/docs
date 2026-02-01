@@ -539,7 +539,7 @@ str.Of("Goravel").Pipe(func(s string) string {
 
 ### `复数`
 
-`Plural` 方法将单数字符串转换为其复数形式。 此函数支持[复数化器](pluralization.md)支持的任何语言。
+`Plural` 方法将单数字符串转换为其复数形式。 此函数支持[复数](pluralization.md)支持的任何语言。
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -548,7 +548,7 @@ plural := str.Of("goose").Plural().String()
 // "geese"
 ```
 
-您可以向函数提供一个整数参数来获取字符串的单数或复数形式：
+你可以向函数提供一个整数参数来获取字符串的单数或复数形式：
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -678,7 +678,7 @@ str.Of("/framework/").RTrim("/").String() // "/framework"
 
 ### `单数`
 
-`Singular` 方法将字符串转换为其单数形式。 此函数支持[复数化器](pluralization.md)支持的任何语言。
+`Singular` 方法将字符串转换为其单数形式。 此函数支持[复数](pluralization.md)支持的任何语言。
 
 ```go
 import "github.com/goravel/framework/support/str"
