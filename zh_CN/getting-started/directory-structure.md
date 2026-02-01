@@ -6,40 +6,40 @@
 
 默认的文件结构可以使你更好的开始项目推进，你也可以自由的新增文件夹，但默认文件夹不要修改。
 
-## Folder Tree
+## 文件夹树
 
 ```
 goravel/
-├── app/                        # Core application logic
-│   ├── console/                # Artisan console commands
-│   ├── grpc/                   # gRPC controllers and middleware
-│   ├── http/                   # HTTP controllers and middleware
-│   │   ├── controllers/        # HTTP request handlers
-│   │   ├── middleware/         # HTTP middleware (auth, cors, etc.)
-│   ├── models/                 # Database models and ORM entities
-│   └── providers/              # Service providers
-├── bootstrap/                  # Application bootstrapping
-│   └── app.go                  # Framework initialization and startup
-├── config/                     # Application configuration files
-├── database/                   # Database related files
-│   ├── migrations/             # Database migration files
-│   ├── seeders/                # Database seeders
-├── resources/                  # Raw, uncompiled assets
-│   └── views/                  # View templates
-├── routes/                     # Application route definitions
-├── storage/                    # Application storage
-├── tests/                      # Automated tests
-├── .air.toml                   # Air hot reload configuration
-├── .env.example                # Environment variables template
-├── artisan                     # Artisan console entry script
-├── go.mod                      # Go module dependencies
-├── go.sum                      # Go module checksums
-├── main.go                     # Application entry point
+├── app/                        # 核心应用逻辑
+│   ├── console/                # Artisan 控制台命令
+│   ├── grpc/                   # gRPC 控制器和中间件
+│   ├── http/                   # HTTP 控制器和中间件
+│   │   ├── controllers/        # HTTP 请求处理器
+│   │   ├── middleware/         # HTTP 中间件（认证、CORS 等）
+│   ├── models/                 # 数据库模型和 ORM 实体
+│   └── providers/              # 服务提供者
+├── bootstrap/                  # 应用引导
+│   └── app.go                  # 框架初始化和启动
+├── config/                     # 应用配置文件
+├── database/                   # 数据库相关文件
+│   ├── migrations/             # 数据库迁移文件
+│   ├── seeders/                # 数据库种子
+├── resources/                  # 原始、未编译的资源
+│   └── views/                  # 视图模板
+├── routes/                     # 应用路由定义
+├── storage/                    # 应用存储
+├── tests/                      # 自动化测试
+├── .air.toml                   # Air 热重载配置
+├── .env.example                # 环境变量模板
+├── artisan                     # Artisan 控制台入口脚本
+├── go.mod                      # Go 模块依赖
+├── go.sum                      # Go 模块校验和
+├── main.go                     # 应用入口点
 ```
 
-## Customize Directory Structure
+## 自定义目录结构
 
-You can customize the directory structure by calling the `WithPath()` function in the `bootstrap/app.go` file. For example, if you want to change the default `app` directory to `src`, you can modify the `bootstrap/app.go` file as follows:
+您可以通过在 `bootstrap/app.go` 文件中调用 `WithPath()` 函数来自定义目录结构。 例如，如果您想将默认的 `app` 目录更改为 `src`，可以按如下方式修改 `bootstrap/app.go` 文件：
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -52,4 +52,4 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-There are many other paths you can customize, such as `Config`, `Database`, `Routes`, `Storage`, and `Resources`. Just call the corresponding method on the `paths` object to set your desired directory.
+您还可以自定义许多其他路径，例如 `Config`、`Database`、`Routes`、`Storage` 和 `Resources`。 只需在 `paths` 对象上调用相应的方法来设置您所需的目录。
