@@ -103,7 +103,7 @@ func (r *UserData) Scan(value any) (err error) {
 ./artisan make:model --table=users -f User
 ```
 
-如果数据表中有字段类型框架无法识别，可以在 `bootstrap/app.go::WithCallback` 函数中调用 `facades.Schema().Extend()` 方法扩展字段类型：
+If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend()` method to extend the field type in the `bootstrap/app.go::WithCallback` function:
 
 ```go
 import "github.com/goravel/framework/contracts/schema"
