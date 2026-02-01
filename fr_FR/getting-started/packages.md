@@ -23,7 +23,7 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                           | A goravel tinker package                    | 3.6%  |
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)           | A webSocket package                         | 0%                    |
 
-\***Note**: The packages have been ordered based on their test rate.
+\***Note**: The packages are ordered based on their test rate.
 
 💡 Tip: To help more developers discover your work, you can also add relevant topics to your repository.
 Recommended topic: [`goravel-package`](https://github.com/topics/goravel-package)
