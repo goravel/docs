@@ -80,7 +80,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### 与所有视图共享数据
 
-有时，你可能需要与应用程序呈现的所有视图共享数据， You may do so using the `Share` function in `facades.View()`. Typically, you should place calls to the `Share` function in the `bootstrap/app.go::WithCallback` function:
+有时，你可能需要与应用程序呈现的所有视图共享数据， 可以使用 `facades.View()` 中的 `Share` 函数。 通常，您应该将对 `Share` 函数的调用放在 `bootstrap/app.go::WithCallback` 函数中：
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -93,13 +93,13 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-## CSRF Token Middleware
+## CSRF 令牌中间件
 
-This middleware can be applied to routes to ensure that requests are coming from authenticated sources to against Cross-Site Request Forgery (CSRF) attacks.
+此中间件可应用于路由，以确保请求来自经过身份验证的来源，以防范跨站请求伪造（CSRF）攻击。
 
-1. Register the middleware (`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`) to global or a specific route.
-2. Add <code v-pre>{{ .csrf_token }}</code> to your form in the view file.
-3. The middleware will automatically verify the token on form submission.
+1. 将中间件（`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`）注册到全局或特定路由。
+2. 在视图文件的表单中添加 <code v-pre>{{ .csrf_token }}</code>。
+3. 中间件将在表单提交时自动验证令牌。
 
 ## 注册自定义分隔符和函数
 
