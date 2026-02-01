@@ -22,26 +22,34 @@ import (
 )
 
 func main() {
-    result, err := facades.Process().Run("echo", "Hello, World!")
-    if err != nil {
-        panic(err)
+    result := facades.Process().Run("echo", "Hello, World!")
+    if result.Failed() {
+        panic(result.Error())
     }
 
     fmt.Println(result.Output())
 }
 ```
 
-`Run` 方法返回一个 `Result` 接口和一个 `error`。 如果进程启动失败或遇到系统错误，错误将非空。 `Result` 接口为您提供了方便地访问命令输出和状态的方式：
+If you want to run a string command directly (without splitting it into arguments), you can pass the command to `Run` as a single string, `/bin/sh -c` (Linux/macOS) or `cmd /C` (Windows) will be used under the hood. Notice, the string command much contains spaces or `&`, `|`, `-`.
 
 ```go
-result, _ := facades.Process().Run("ls", "-la")
+result := facades.Process().Run("echo Hello, World!")
+// /bin/sh -c ""echo Hello, World!"" on Linux/macOS
+// cmd /c "echo Hello, World!" on Windows
+```
 
-result.Command()     // string: 原始命令
-result.Error()       // error: 命令执行返回的错误
-result.ErrorOutput() // string: 来自 Stderr 的输出
-result.ExitCode()    // int: 退出代码（例如 0, 1）
-result.Failed()      // bool: 如果退出代码不为 0，则为 True
-result.Output()      // string: 来自 Stdout 的输出
+The `Run` method returns a `Result` interface. `Result` 接口为您提供了方便地访问命令输出和状态的方式：
+
+```go
+result := facades.Process().Run("ls", "-la")
+
+result.Command()     // string: The original command
+result.Error()       // error: The error returned by the command execution
+result.ErrorOutput() // string: Output from Stderr
+result.ExitCode()    // int: The exit code (e.g., 0, 1)
+result.Failed()      // bool: True if the exit code was not 0
+result.Output()      // string: Output from Stdout
 ```
 
 ### 进程选项
@@ -53,7 +61,7 @@ result.Output()      // string: 来自 Stdout 的输出
 您可以使用 `Path` 方法为命令指定工作目录。 如果不设置此项，进程将在应用程序的当前工作目录中执行。
 
 ```go
-result, _ := facades.Process().Path("/var/www/html").Run("ls", "-la")
+result := facades.Process().Path("/var/www/html").Run("ls", "-la")
 ```
 
 #### 超时
@@ -63,7 +71,7 @@ result, _ := facades.Process().Path("/var/www/html").Run("ls", "-la")
 ```go
 import "time"
 
-result, _ := facades.Process().Timeout(10 * time.Minute).Run("sleep", "20")
+result := facades.Process().Timeout(10 * time.Minute).Run("sleep", "20")
 ```
 
 #### 环境变量
@@ -71,8 +79,8 @@ result, _ := facades.Process().Timeout(10 * time.Minute).Run("sleep", "20")
 您可以使用 `Env` 方法将自定义环境变量传递给进程。 该进程也将继承系统的环境变量。
 
 ```go
-// 传递 FOO=BAR 以及现有的系统环境变量
-result, _ := facades.Process().Env(map[string]string{
+// Passes FOO=BAR along with existing system envs
+result := facades.Process().Env(map[string]string{
     "FOO": "BAR",
     "API_KEY": "secret",
 }).Run("printenv")
@@ -85,8 +93,8 @@ result, _ := facades.Process().Env(map[string]string{
 ```go
 import "strings"
 
-// 将 "Hello Goravel" 管道传输到 cat 命令
-result, _ := facades.Process().
+// Pipes "Hello Goravel" into the cat command
+result := facades.Process().
     Input(strings.NewReader("Hello Goravel")).
     Run("cat")
 ```
@@ -96,7 +104,7 @@ result, _ := facades.Process().
 您可以在执行后使用结果对象上的 `Output`（标准输出）和 `ErrorOutput`（标准错误）方法访问进程输出。
 
 ```go
-result, _ := facades.Process().Run("ls", "-la");
+result := facades.Process().Run("ls", "-la")
 
 fmt.Println(result.Output())
 fmt.Println(result.ErrorOutput())
@@ -110,8 +118,8 @@ import (
     "github.com/goravel/framework/contracts/process"
 )
 
-result, _ := facades.Process().OnOutput(func(typ process.OutputType, b []byte) {
-    // 在此处处理实时流
+result := facades.Process().OnOutput(func(typ process.OutputType, b []byte) {
+    // Handle real-time streaming here
     fmt.Print(string(b))
 }).Run("ls", "-la")
 ```
@@ -119,10 +127,10 @@ result, _ := facades.Process().OnOutput(func(typ process.OutputType, b []byte) {
 如果您只需要在执行后验证输出是否包含特定字符串，可以使用 `SeeInOutput` 或 `SeeInErrorOutput` 辅助方法。
 
 ```go
-result, _ := facades.Process().Run("ls", "-la")
+result := facades.Process().Run("ls", "-la")
 
 if result.SeeInOutput("go.mod") {
-    // 文件存在
+    // The file exists
 }
 ```
 
@@ -151,10 +159,10 @@ facades.Process().DisableBuffering().OnOutput(func(typ process.OutputType, b []b
 ```go
 import "github.com/goravel/framework/contracts/process"
 
-result, err := facades.Process().Pipe(func(pipe process.Pipe) {
+result := facades.Process().Pipe(func(pipe process.Pipe) {
     pipe.Command("echo", "Hello, World!")
-    pipe.Command("grep", "World")
-    pipe.Command("tr", "a-z", "A-Z")
+    pipe.Command("grep World") // string command: /bin/sh -c "grep World"
+    pipe.Command("tr", "a-z", "A-Z") 
 }).Run()
 ```
 
@@ -195,26 +203,26 @@ facades.Process().Pipe(func(pipe process.Pipe) {
 ```go
 import "time"
 
-process, _ := facades.Process().Timeout(10 * time.Second).Start("sleep", "5")
+running, err := facades.Process().Timeout(10 * time.Second).Start("sleep", "5")
 
-// 继续做其他工作...
+// Continue doing other work...
 
-result := process.Wait()
+result := running.Wait()
 ```
 
 要检查进程是否已完成而不阻塞，您可以使用 `Done` 方法。 这会返回一个标准的 Go 通道，当进程退出时关闭，使其非常适合在 `select` 语句中使用。
 
 ```go
-process, _ := facades.Process().Start("sleep", "5")
+running, err := facades.Process().Start("sleep", "5")
 
 select {
-case <-process.Done():
-    // 进程成功完成
+case <-running.Done():
+    // Process finished successfully
 case <-time.After(1 * time.Second):
-    // 如果耗时过长，执行自定义逻辑
+    // Custom logic if it takes too long
 }
 
-result := process.Wait()
+result := running.Wait()
 ```
 
 :::warning
@@ -227,9 +235,9 @@ result := process.Wait()
 您可以使用 `PID` 方法检索正在运行的进程的操作系统进程 ID（PID）。
 
 ```go
-process, _ := facades.Process().Start("ls", "-la")
+running, err := facades.Process().Start("ls", "-la")
 
-println(process.PID())
+println(running.PID())
 ```
 
 #### 发送信号
@@ -245,13 +253,13 @@ import (
     "time"
 )
 
-process, _ := facades.Process().Start("sleep", "60")
+running, err := facades.Process().Start("sleep", "60")
 
-// 手动发送信号
-process.Signal(os.Interrupt)
+// Manually send a signal
+running.Signal(os.Interrupt)
 
-// 尝试优雅停止，等待 5 秒，然后强制终止
-process.Stop(5 * time.Second)
+// Attempt to stop gracefully, wait 5 seconds, then force kill
+running.Stop(5 * time.Second)
 ```
 
 ### 检查进程状态
@@ -259,9 +267,9 @@ process.Stop(5 * time.Second)
 您可以使用 `Running` 方法检查进程的当前状态。 这对于调试或健康检查特别有用，因为它提供了进程当前是否处于活动状态的快照。
 
 ```go
-// 快照检查（对日志或指标有用）
-if process.Running() {
-    fmt.Println("进程仍在运行...")
+// Snapshot check (useful for logs or metrics)
+if running.Running() {
+    fmt.Println("Process is still active...")
 }
 ```
 
@@ -283,14 +291,14 @@ Goravel 使得管理并发进程池变得容易，允许您同时执行多个命
 ```go
 results, err := facades.Process().Pool(func(pool process.Pool) {
     pool.Command("sleep", "1").As("first")
-    pool.Command("sleep", "2").As("second")
+    pool.Command("sleep 2").As("second") // string command: /bin/sh -c "sleep 2"
 }).Run()
 
 if err != nil {
     panic(err)
 }
 
-// 通过分配的键访问结果
+// Access results by their assigned key
 println(results["first"].Output())
 println(results["second"].Output())
 ```
