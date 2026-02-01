@@ -7,18 +7,18 @@
 Goravel 项目可以通过以下命令编译：
 
 ```shell
-# Select the system to compile
+# 选择系统进行编译
 ./artisan build
 
-# Specify the system to compile
+# 指定系统进行编译
 ./artisan build --os=linux
 ./artisan build -o=linux
 
-# Static compilation
+# 静态编译
 ./artisan build --static
 ./artisan build -s
 
-# Specify the output file name
+# 指定输出文件名
 ./artisan build --name=goravel
 ./artisan build -n=goravel
 ```
@@ -37,9 +37,9 @@ go build .
 
 ```
 .env
-./main // Compile the resulting binary file
-./public // if exists
-./resources // if exists
+./main // 编译生成的二进制文件
+./public // 如果存在
+./resources // 如果存在
 ```
 
 ### 静态编译
@@ -76,7 +76,7 @@ docker build .
 国内会有下载依赖较慢与时区问题，可以将 Dockerfile 内容替换为下面脚本：
 
 ```dockerfile
-# China Special
+# 国内设置
 
 FROM golang:alpine AS builder
 ENV GO111MODULE=on \
@@ -96,7 +96,7 @@ WORKDIR /www
 COPY --from=builder /build/.env /www/.env
 COPY --from=builder /build/main /www/
 
-# If exists
+# 如果存在
 COPY --from=builder /build/database/ /www/database/
 COPY --from=builder /build/public/ /www/public/
 COPY --from=builder /build/storage/ /www/storage/
