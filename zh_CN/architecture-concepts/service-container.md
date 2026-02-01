@@ -64,7 +64,7 @@ app.Instance(key, instance)
 
 ```go
 app.BindWith(Binding, func(app foundation.Application, parameters map[string]any) (any, error) {
-  return NewRoute(app.MakeConfig()), nil
+    return NewRoute(app.MakeConfig()), nil
 })
 ```
 
@@ -94,4 +94,4 @@ instance, err := app.MakeWith(key, map[string]any{"id": 1})
 
 ### 其他方法
 
-The framework provides some convenient methods to quickly resolve various facades: `MakeArtisan`, `MakeAuth`, etc.
+框架提供了一些便捷的方法来快速解析各种 facades：`MakeArtisan`、`MakeAuth` 等。
