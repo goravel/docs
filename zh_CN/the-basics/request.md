@@ -211,7 +211,7 @@ ctx := ctx.Context()
 
 ## 自定义 Recovery
 
-You can set a custom `recovery` in the `bootstrap/app.go::WithMiddleware` function.
+你可以在 `bootstrap/app.go::WithMiddleware` 函数中设置自定义的 `recovery`。
 
 ```go
 func Boot() contractsfoundation.Application {
