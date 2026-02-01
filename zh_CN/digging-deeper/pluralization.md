@@ -1,40 +1,38 @@
-# Pluralization
+# 复数
 
 [[toc]]
 
-## Introduction
+## 介绍
 
-Strings are important for any web application. Goravel provides simple utilities to convert words between singular
-and plural forms. It supports **English** by default, but you can add other languages or custom rules easily.
+字符串对于任何 Web 应用程序都很重要。 Goravel 提供了简单的工具在单数和复数形式之间转换单词。 它默认支持**英语**，但你可以轻松添加其他语言或自定义规则。
 
-## Basic Usage
+## 基本用法
 
-You can use the `Plural` and `Singular` methods from the `pluralizer` package. These handle most English words automatically.
+你可以使用 `pluralizer` 包中的 `Plural` 和 `Singular` 方法。 这些方法会自动处理大多数英语单词。
 
 ```go
 import "github.com/goravel/framework/support/pluralizer"
 
-// Pluralize words
+// 复数化单词
 pluralizer.Plural("goose") // "geese"
 pluralizer.Plural("car")   // "cars"
 
-// Singularize words
+// 单数化单词
 pluralizer.Singular("geese") // "goose"
 pluralizer.Singular("cars")  // "car"
 ```
 
-## Custom Rules
+## 自定义规则
 
-Sometimes the default rules are not enough for specific words. Goravel lets you add your own rules to handle these cases.
+有时默认规则不足以处理特定单词。 Goravel 允许你添加自己的规则来处理这些情况。
 
 :::warning
-Adding rules changes how pluralization works globally. You should do this when your application starts,
-like in the `Boot` method of a Service Provider.
+添加规则会全局改变复数化的工作方式。 你应该在应用程序启动时执行此操作，例如在服务提供者的 `Boot` 方法中。
 :::
 
-### Irregular Words
+### 不规则单词
 
-If a word has a unique plural form, you can register it as an "irregular" word. This handles changes in both directions.
+如果一个单词有独特的复数形式，你可以将其注册为“不规则”单词。 这会处理单数复数两个方向的变化。
 
 ```go
 import (
@@ -42,46 +40,45 @@ import (
     "github.com/goravel/framework/support/pluralizer/rules"
 )
 
-// Register that "mouse" becomes "mice"
+// 注册“mouse”变为“mice”
 pluralizer.RegisterIrregular("english", rules.NewSubstitution("mouse", "mice"))
 ```
 
-### Uninflected Words
+### 无变化单词
 
-Some words like "fish" or "media" do not change form or are always plural. You can mark these as "uninflected"
-so the pluralizer skips them.
+有些单词如 “fish” 或 “media” 不会改变形式或始终是复数。 你可以将这些标记为“无变化”，以便复数化器跳过它们。
 
 ```go
-// "sheep" stays "sheep" in singular and plural
+// “sheep”在单数和复数中都保持“sheep”
 pluralizer.RegisterUninflected("english", "sheep", "fish")
 
-// "media" is always treated as plural
+// “media”始终被视为复数
 pluralizer.RegisterPluralUninflected("english", "media")
 
-// "data" is always treated as singular
+// “data”始终被视为单数
 pluralizer.RegisterSingularUninflected("english", "data")
 ```
 
-## Language Support
+## 语言支持
 
-Goravel uses "english" by default, but you can switch languages or add new ones if you need to.
+Goravel 默认使用 “english”，但你可以根据需要切换语言或添加新语言。
 
-### Switching Languages
+### 切换语言
 
-If you have other languages registered, you can switch the active one using `UseLanguage`.
+如果你注册了其他语言，可以使用 `UseLanguage` 切换语言。
 
 ```go
 if err := pluralizer.UseLanguage("spanish"); err != nil {
     panic(err)
 }
 
-// Get the current language name
+// 获取当前语言名称
 name := pluralizer.GetLanguage().Name()
 ```
 
-### Adding New Languages
+### 添加新语言
 
-To add a language, you need to implement the `Language` interface. This defines how words change in that language.
+要添加一种语言，您需要实现 `Language` 接口。 这定义了该语言中单词的变化方式。
 
 ```go
 import "github.com/goravel/framework/contracts/support/pluralizer"
@@ -93,28 +90,28 @@ type Language interface {
 }
 ```
 
-After implementing your language struct, register it and set it as active.
+实现你的语言结构体后，注册它并将其设置为默认语言。
 
 ```go
 import "github.com/goravel/framework/support/pluralizer"
 
 func init() {
-    // Register the new language
+    // 注册新语言
     if err := pluralizer.RegisterLanguage(&MyCustomLanguage{}); err != nil {
        panic(err)
     }
     
-    // Set it as active
+    // 将其设置为默认语言
     _ = pluralizer.UseLanguage("my_custom_language")
 }
 ```
 
-## Supported Languages
+## 支持的语言
 
-Currently, the pluralizer supports the following languages out of the box:
+目前，复数化器开箱即用支持以下语言：
 
-| Language | Code      | Source                                                                                     |
-| :------- | :-------- | :----------------------------------------------------------------------------------------- |
-| English  | `english` | [View Source](https://github.com/goravel/framework/tree/master/support/pluralizer/english) |
+| 语言 | 代码        | 来源                                                                                   |
+| :- | :-------- | :----------------------------------------------------------------------------------- |
+| 英语 | `english` | [查看源代码](https://github.com/goravel/framework/tree/master/support/pluralizer/english) |
 
-_More languages will be added in future releases. You are welcome to contribute new languages via Pull Request._
+_未来版本将添加更多语言。 欢迎你通过 Pull Request 贡献新语言。_
