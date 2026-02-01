@@ -103,7 +103,7 @@ func (r *UserData) Scan(value any) (err error) {
 ./artisan make:model --table=users -f User
 ```
 
-If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend` method to extend the field type in the `bootstrap/app.go::WithCallback` function:
+If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend()` method to extend the field type in the `bootstrap/app.go::WithCallback` function:
 
 ```go
 import "github.com/goravel/framework/contracts/schema"
