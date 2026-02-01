@@ -14,7 +14,7 @@
 
 3. 在`Create()`方法中，它会首先加载配置，然后注册所有服务提供程序和其他设置。 最后，启动所有服务提供者，返回应用实例。
 
-4. After the application is started, the http or grpc server will be started automatically if you have configured them. They are controled by [the runners of service providers](./service-providers.md#runners). You can normally use all facades in this stage, but remember that your customize code should be placed before `app.Wait()` in the `main.go` file. Or you can add your code into the `WithCallback` function in the `bootstrap/app.go` file to make sure your code is executed after the application is started.
+4. After the application is created, you can normally use all facades in this stage, but remember that your customize code should be placed before `app.Start()` in the `main.go` file. Or you can add your code into the `WithCallback` function in the `bootstrap/app.go` file to make sure your code is executed after the application is created. When running `app.Start()`, the http or grpc server will be started automatically if you have configured them.
 
 ```go
 func Boot() contractsfoundation.Application {
