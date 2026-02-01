@@ -281,10 +281,10 @@ func TestMain(m *testing.M) {
     panic(err)
   }
 
-  // Execute test cases
+  // 执行测试用例
   exit := m.Run()
 
-  // Uninstall the image after all test cases have been run
+  // 所有测试用例运行完毕后卸载镜像
   if err := database.Shutdown(); err != nil {
     panic(err)
   }
