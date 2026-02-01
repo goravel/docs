@@ -116,7 +116,7 @@ func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, de
 
 ## 启动队列服务器
 
-默认队列工作器将由队列服务提供者的运行器启动，如果你想启动多个具有不同配置的队列工作器，可以创建一个[运行器](../architecture-concepts/service-providers.md#runners)并将其添加到 `bootstrap/app.go` 文件中的 `WithRunners` 函数：
+默认队列将由队列服务提供者的 runner 启动，如果你想启动多个具有不同配置的队列工作器，可以创建一个[runner](../architecture-concepts/service-providers.md#runners)并将其添加到 `bootstrap/app.go` 文件中的 `WithRunners` 函数：
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -131,7 +131,7 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-你可以参考[默认队列运行器](https://github.com/goravel/framework/blob/master/queue/runners.go)。
+你可以参考[默认队列 runner](https://github.com/goravel/framework/blob/master/queue/runners.go)。
 
 ## 调度任务
 
