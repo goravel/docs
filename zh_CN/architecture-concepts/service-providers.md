@@ -12,7 +12,7 @@
 
 ## 创建服务提供者
 
-服务提供者包含`Register`和`Boot`方法。 在 `Register` 方法中，你只应该将实例绑定到[服务容器](./service-container.md)中。 永远不要尝试在 `Register` 方法中注册任何事件监听器、路由或其他任何功能组件，请使用 `Boot` 方法来实现这些功能。
+服务提供者包含`Register`和`Boot`方法。 在 `Register` 方法中，你只应该将实例绑定到[服务容器](./service-container.md)中。 不要在 `Register` 方法中注册任何事件监听器、路由或其他任何功能组件，请在 `Boot` 方法中实现。
 
 ```bash
 ./artisan make:provider YourServiceProviderName
