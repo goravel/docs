@@ -515,19 +515,6 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 }
 ```
 
-## 注册命令
-
-通过 `make:command` 创建的新命令将自动注册到 `bootstrap/commands.go::Commands()` 函数中，并且该函数将由 `WithCommands` 调用。 如果你自行创建命令文件，则需要手动注册。
-
-```go
-func Boot() contractsfoundation.Application {
-	return foundation.Setup().
-		WithCommands(Commands).
-		WithConfig(config.Boot).
-		Create()
-}
-```
-
 ## 以编程方式执行命令
 
 有时你可能希望在 CLI 之外执行 Artisan 命令，可以使用 `facades.Artisan()` 上的 `Call` 方法来完成此操作。
