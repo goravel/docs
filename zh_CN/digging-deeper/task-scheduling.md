@@ -10,7 +10,7 @@ Goravel的命令调度程序为管理你服务器上的预定任务提供了新�
 
 ## 定义调度
 
-To schedule tasks for your application, you can define them in the `WithSchedule` function in the `bootstrap/app.go` file. 在开始之前，我们来看一个例子。 我们计划每天午夜执行一个 `闭包`。 这个 `闭包` 会执行一次数据库语句去清空一张表：
+要为你的应用程序调度任务，你可以在 `bootstrap/app.go` 文件的 `WithSchedule` 函数中定义它们。 在开始之前，我们来看一个例子。 我们计划每天午夜执行一个 `闭包`。 这个 `闭包` 会执行一次数据库语句去清空一张表：
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -121,7 +121,7 @@ facades.Schedule().Call(func() {
 
 ## 运行调度程序
 
-The scheduler will be run automatically when calling `Start()` in the `main.go` file. You can also run tasks manually :
+调度器将在 `main.go` 文件中调用 `Start()` 时自动运行。 你也可以手动运行任务：
 
 ```shell
 ./artisan schedule:run
