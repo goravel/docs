@@ -29,7 +29,7 @@ func Auth() http.Middleware {
 ```
 ./artisan make:middleware Auth
 
-// Support nested folders
+// 支持嵌套文件夹
 ./artisan make:middleware user/Auth
 ```
 
@@ -37,7 +37,7 @@ func Auth() http.Middleware {
 
 ### 全局中间件
 
-If you want to apply middleware for every HTTP request of your application, you only need to register the middleware in the `WithMiddleware` function in the `bootstrap/app.go` file.
+如果你希望为应用程序的每个 HTTP 请求应用中间件，需在 `bootstrap/app.go` 文件中的 `WithMiddleware` 函数中注册全局中间件。
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -52,14 +52,14 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-The `handler` provides multiple functions to manage middleware:
+`handler` 提供了多个函数来管理中间件：
 
-- `Append(middlewares ...http.Middleware)`: Append middleware to the end of the middleware stack.
-- `GetGlobalMiddleware() []http.Middleware`: Get all global middleware.
-- `GetRecover() func(ctx http.Context, err any)`: Get the custom recovery function.
-- `Prepend(middlewares ...http.Middleware)`: Prepend middleware to the beginning of the middleware stack.
-- `Recover(fn func(ctx http.Context, err any)) Middleware`: Set a custom recovery function to handle panics.
-- `Use(middleware ...http.Middleware) Middleware`: Replace the current middleware stack with the given middleware.
+- `Append(middlewares ...http.Middleware)`：将中间件追加到中间件栈的末尾。
+- `GetGlobalMiddleware() []http.Middleware`：获取所有全局中间件。
+- `GetRecover() func(ctx http.Context, err any)`：获取自定义恢复函数。
+- `Prepend(middlewares ...http.Middleware)`：将中间件前置到中间件栈的开头。
+- `Recover(fn func(ctx http.Context, err any)) Middleware`：设置自定义恢复函数以处理 panic。
+- `Use(middleware ...http.Middleware) Middleware`：用给定的中间件替换当前的中间件栈。
 
 ### 为路由分配中间件
 
