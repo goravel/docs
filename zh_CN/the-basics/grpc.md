@@ -4,7 +4,7 @@
 
 ## 简介
 
-Grpc module can be operated by `facades.Grpc()`. Goravel provides an elegant way to build and consume gRPC services, supporting both server and client sides.
+Grpc 模块可以使用 `facades.Grpc()` 进行操作。 Goravel 提供了一种优雅的方式来构建和使用 gRPC 服务，同时支持服务端和客户端。
 
 ## 配置
 
@@ -80,13 +80,13 @@ func Boot() contractsfoundation.Application {
 
 ## 拦截器
 
-Interceptors provide a way to intercept and modify gRPC requests and responses. They can be used for logging, authentication, metrics, and more.
+拦截器提供了一种拦截和修改 gRPC 请求和响应的方法。 它们可用于日志记录、身份验证、指标收集等。
 
-### Define Interceptors
+### 定义拦截器
 
-Interceptors can be defined in the `app/grpc/interceptors` folder.
+拦截器可以定义在 `app/grpc/interceptors` 文件夹中。
 
-**Server Interceptor Example:**
+**服务端拦截器示例:**
 
 ```go
 // app/grpc/interceptors/test_server.go
@@ -99,14 +99,14 @@ import (
 )
 
 func TestServer(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) {
-  // Add your logic before the request is handled
-  // For example: logging, authentication, etc.
+  // 在请求被处理之前添加你的逻辑
+  // 例如：日志记录、身份验证等
   
   return handler(ctx, req)
 }
 ```
 
-**Client Interceptor Example:**
+**客户端拦截器示例:**
 
 ```go
 // app/grpc/interceptors/test_client.go
@@ -119,16 +119,16 @@ import (
 )
 
 func TestClient(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-  // Add your logic before the request is sent
-  // For example: logging, adding metadata, etc.
+  // 在请求发送之前添加你的逻辑
+  // 例如：日志记录、添加元数据等
   
   return invoker(ctx, method, req, reply, cc, opts...)
 }
 ```
 
-### Register Interceptors
+### 注册拦截器
 
-Register interceptors in the `bootstrap/app.go` file using the `WithGrpcServerInterceptors`, `WithGrpcClientInterceptors`, `WithGrpcServerStatsHandlers`, and `WithGrpcClientStatsHandlers` functions.
+在 `bootstrap/app.go` 文件中使用 `WithGrpcServerInterceptors`、`WithGrpcClientInterceptors` 函数注册拦截器。
 
 ```go
 import (
@@ -163,9 +163,9 @@ func Boot() foundation.Application {
 }
 ```
 
-### Apply Interceptors to Servers
+### 将拦截器应用于服务
 
-The `default` in the example above is a group name that can be applied to the configuration item `grpc.servers.interceptors`. In this way, the client will be applied to all interceptors under the group.
+上面示例中的 `default` 是一个组名，可以应用于配置项 `grpc.servers.interceptors`。 这样，客户端将应用该组下的所有拦截器。
 
 ```go
 package config
@@ -194,18 +194,18 @@ func init() {
 
 ## Stats Handlers
 
-Stats handlers are gRPC's mechanism for collecting metrics and monitoring RPC calls. They provide hooks into the lifecycle of both client and server RPCs, making them ideal for:
+Stats Handlers 是 gRPC 用于收集指标和监控 RPC 调用的机制。 它们提供了对客户端和服务器端 RPC 生命周期的钩子，使其非常适合用于：
 
-- Request/response monitoring
-- Performance metrics collection
-- Custom observability integrations
-- Logging and debugging
+- 请求/响应监控
+- 性能指标收集
+- 自定义可观测性集成
+- 日志记录和调试
 
-### Register Stats Handlers
+### 注册 Stats Handlers
 
-Stats handlers can be registered in the `bootstrap/app.go` file using the `WithGrpcServerStatsHandlers` and `WithGrpcClientStatsHandlers` functions.
+Stats Handlers 可以在 `bootstrap/app.go` 文件中使用 `WithGrpcServerStatsHandlers` 和 `WithGrpcClientStatsHandlers` 函数进行注册。
 
-**Server Stats Handler Example:**
+**服务端 Stats Handlers 示例:**
 
 ```go
 // app/grpc/stats/server_handler.go
@@ -224,25 +224,25 @@ func NewServerStatsHandler() stats.Handler {
 }
 
 func (h *ServerStatsHandler) TagRPC(ctx context.Context, info *stats.RPCTagInfo) context.Context {
-  // Called at the beginning of each RPC
+  // 在每个 RPC 开始时调用
   return ctx
 }
 
 func (h *ServerStatsHandler) HandleRPC(ctx context.Context, s stats.RPCStats) {
-  // Called for each RPC event
+  // 为每个 RPC 事件调用
 }
 
 func (h *ServerStatsHandler) TagConn(ctx context.Context, info *stats.ConnTagInfo) context.Context {
-  // Called when a connection is established
+  // 当连接建立时调用
   return ctx
 }
 
 func (h *ServerStatsHandler) HandleConn(ctx context.Context, s stats.ConnStats) {
-  // Called for connection events
+  // 为连接事件调用
 }
 ```
 
-**Client Stats Handler Example:**
+**客户端 Stats Handlers 示例:**
 
 ```go
 // app/grpc/stats/client_handler.go
@@ -265,7 +265,7 @@ func (h *ClientStatsHandler) TagRPC(ctx context.Context, info *stats.RPCTagInfo)
 }
 
 func (h *ClientStatsHandler) HandleRPC(ctx context.Context, s stats.RPCStats) {
-  // Handle RPC events like Begin, End, InPayload, OutPayload
+  // 处理 RPC 事件，如 Begin、End、InPayload、OutPayload
 }
 
 func (h *ClientStatsHandler) TagConn(ctx context.Context, info *stats.ConnTagInfo) context.Context {
@@ -273,13 +273,13 @@ func (h *ClientStatsHandler) TagConn(ctx context.Context, info *stats.ConnTagInf
 }
 
 func (h *ClientStatsHandler) HandleConn(ctx context.Context, s stats.ConnStats) {
-  // Handle connection events
+  // 处理连接事件
 }
 ```
 
-### Register in Bootstrap
+### 在引导程序中注册
 
-Register your stats handlers in `bootstrap/app.go`:
+在 `bootstrap/app.go` 中注册 Stats Handlers：
 
 ```go
 import (
@@ -306,9 +306,9 @@ func Boot() foundation.Application {
 }
 ```
 
-### Apply Stats Handlers to Clients
+### 将 Stats Handlers 应用于客户端
 
-The group name (e.g., `"user"`) must be referenced in your `config/grpc.go` file under the client's `stats_handlers` array:
+组名（例如 `"user"`）必须在你的 `config/grpc.go` 文件中的客户端 `stats_handlers` 数组中被引用：
 
 ```go
 package config
@@ -328,20 +328,20 @@ func init() {
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),
         "interceptors":   []string{"default"},
-        "stats_handlers": []string{"user"}, // Apply "user" stats handler group
+        "stats_handlers": []string{"user"}, // 应用 "user" Stats Handlers
       },
     },
   })
 }
 ```
 
-## gRPC Client
+## gRPC 客户端
 
-Goravel provides an easy way to create gRPC clients to consume gRPC services.
+Goravel 提供了一种简单的方法来创建 gRPC 客户端以使用 gRPC 服务。
 
-### Connect to gRPC Server
+### 连接到 gRPC 服务器
 
-You can connect to a gRPC server using the `facades.Grpc().Connect()` method. The connection name should match the key defined in `config/grpc.go`.
+你可以使用 `facades.Grpc().Connect()` 方法连接到 gRPC 服务器。 连接名称应与 `config/grpc.go` 中定义的键匹配。
 
 ```go
 // app/http/controllers/grpc_controller.go
@@ -361,10 +361,10 @@ type GrpcController struct {
 }
 
 func NewGrpcController() *GrpcController {
-  // The initialization process can be moved to app/services/*.go
+  // 初始化过程可以移到 app/services/*.go
   client, err := facades.Grpc().Connect("user")
   if err != nil {
-    facades.Log().Error(fmt.Sprintf("failed to connect to user server: %+v", err))
+    facades.Log().Error(fmt.Sprintf("连接到用户服务器失败: %+v", err))
   }
 
   return &GrpcController{
@@ -377,10 +377,10 @@ func (r *GrpcController) User(ctx http.Context) http.Response {
     Token: ctx.Request().Input("token"),
   })
   if err != nil {
-    return ctx.Response().String(http.StatusInternalServerError, fmt.Sprintf("call UserService.GetUser err: %+v", err))
+    return ctx.Response().String(http.StatusInternalServerError, fmt.Sprintf("调用 UserService.GetUser 错误: %+v", err))
   }
   if resp.Code != http.StatusOK {
-    return ctx.Response().String(http.StatusInternalServerError, fmt.Sprintf("user service returns error, code: %d, message: %s", resp.Code, resp.Message))
+    return ctx.Response().String(http.StatusInternalServerError, fmt.Sprintf("用户服务返回错误, 代码: %d, 消息: %s", resp.Code, resp.Message))
   }
 
   return ctx.Response().Success().Json(resp.GetData())
