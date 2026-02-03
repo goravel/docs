@@ -65,4 +65,4 @@ func Route() route.Route {
 ./artisan package:uninstall Route
 ```
 
-> Notice: if you are using the `./artisan package:install` command to choose the `facades` manually, you need to press `x` to select the facades you want to install, then press `Enter` to confirm. `facades` are not selected if you directly press `Enter`.
+> 注意：如果你使用 `./artisan package:install` 命令手动选择 `facades`，需要按下 `x` 选择要安装的 facades，然后按下 `Enter` 确认安装。 如果你直接按下 `Enter`，默认没有 `facades` 被选中。
