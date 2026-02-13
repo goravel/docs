@@ -99,12 +99,12 @@ func Boot() contractsfoundation.Application {
 
 ::: v-pre
 
-1. Register the middleware (`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`) to global or a specific route.
+1. 将中间件（`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`）注册到全局或特定路由。
 2. 在视图文件中向表单添加 `<input type="hidden" name="_token" value="{{ .csrf_token }}" />`，或在请求头中添加 `X-CSRF-TOKEN={{ .csrf_token }}` 以包含 CSRF 令牌。
-3. The middleware will automatically verify the token on form submission.
+3. 中间件将在表单提交时自动验证令牌。
    :::
 
-## Register Custom Delims And Functions
+## 注册自定义分隔符和函数
 
 你可以在视图中注册自定义分隔符和函数，它们可以被注册在 `http.drivers.*.template` 配置中。
 
