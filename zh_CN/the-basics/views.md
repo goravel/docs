@@ -98,7 +98,7 @@ func Boot() contractsfoundation.Application {
 此中间件可应用于路由，以确保请求来自经过身份验证的来源，以防范跨站请求伪造（CSRF）攻击。
 
 1. 将中间件（`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`）注册到全局或特定路由。
-2. 在视图文件的表单中添加 <code v-pre>{{ .csrf_token }}</code>。
+2. 在视图文件中向表单添加 `<input type="hidden" name="_token" value="{{ .csrf_token }}" />`，或在请求头中添加 `X-CSRF-TOKEN={{ .csrf_token }}` 以包含 CSRF 令牌。
 3. 中间件将在表单提交时自动验证令牌。
 
 ## 注册自定义分隔符和函数
