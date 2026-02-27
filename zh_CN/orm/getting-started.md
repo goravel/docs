@@ -613,7 +613,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm().Query().Model(&models.User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
+facades.Orm().Query().Model(&models.User{}).Select("name", "sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
 // SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "tom";
 ```
 
@@ -626,7 +626,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").Join("left join emails on emails.user_id = users.id").Scan(&result)
+facades.Orm().Query().Model(&models.User{}).Select("users.name", "emails.email").Join("left join emails on emails.user_id = users.id").Scan(&result)
 // SELECT users.name, emails.email FROM `users` LEFT JOIN emails ON emails.user_id = users.id;
 ```
 
