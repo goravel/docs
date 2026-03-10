@@ -183,7 +183,7 @@ Model supports setting the `GlobalScopes` method, which restricts the scope of t
 
 ```go
 import (
-	constractorm "github.com/goravel/framework/contracts/database/orm"
+	contractsorm "github.com/goravel/framework/contracts/database/orm"
 	"github.com/goravel/framework/database/orm"
 )
 
@@ -192,9 +192,9 @@ type User struct {
   Name string
 }
 
-func (r *User) GlobalScopes() map[string]func(constractorm.Query) constractorm.Query {
-  return map[string]func(constractorm.Query) constractorm.Query{
-    "name": func(query constractorm.Query) constractorm.Query {
+func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query {
+  return map[string]func(contractsorm.Query) contractsorm.Query{
+    "name": func(query contractsorm.Query) contractsorm.Query {
       return query.Where("name", "goravel")
     },
   }
