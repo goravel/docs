@@ -182,16 +182,19 @@ func (r *User) Connection() string {
 Model 中支持设置 `GlobalScopes` 方法，在查询、更新和删除操作时限制作用域：
 
 ```go
-import "github.com/goravel/framework/contracts/orm"
+import (
+	contractsorm "github.com/goravel/framework/contracts/database/orm"
+	"github.com/goravel/framework/database/orm"
+)
 
 type User struct {
   orm.Model
   Name string
 }
 
-func (r *User) GlobalScopes() map[string]func(orm.Query) orm.Query {
-  return map[string]func(orm.Query) orm.Query{
-    "name": func(query orm.Query) orm.Query {
+func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query {
+  return map[string]func(contractsorm.Query) contractsorm.Query{
+    "name": func(query contractsorm.Query) contractsorm.Query {
       return query.Where("name", "goravel")
     },
   }
