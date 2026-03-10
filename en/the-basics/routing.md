@@ -25,8 +25,8 @@ If you require more precise management, you can add routing files to the `routes
 func Boot() contractsfoundation.Application {
 	return foundation.Setup().
 		WithRouting(func() {
-      routes.Web()
-    }).
+	      routes.Web()
+	    }).
 		WithConfig(config.Boot).
 		Create()
 }
