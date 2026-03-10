@@ -182,16 +182,19 @@ func (r *User) Connection() string {
 Model supports setting the `GlobalScopes` method, which restricts the scope of the query, update, and delete operations:
 
 ```go
-import "github.com/goravel/framework/contracts/orm"
+import (
+	constractorm "github.com/goravel/framework/contracts/database/orm"
+	"github.com/goravel/framework/database/orm"
+)
 
 type User struct {
   orm.Model
   Name string
 }
 
-func (r *User) GlobalScopes() map[string]func(orm.Query) orm.Query {
-  return map[string]func(orm.Query) orm.Query{
-    "name": func(query orm.Query) orm.Query {
+func (r *User) GlobalScopes() map[string]func(constractorm.Query) constractorm.Query {
+  return map[string]func(constractorm.Query) constractorm.Query{
+    "name": func(query constractorm.Query) constractorm.Query {
       return query.Where("name", "goravel")
     },
   }
