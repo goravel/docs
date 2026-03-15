@@ -1,0 +1,266 @@
+name: Generate Agent Skill Files
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "en/**"
+  workflow_dispatch:
+    inputs:
+      force_files:
+        description: "Space-separated list of en/ files to treat as changed (leave empty to scan HEAD~1)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  # ─────────────────────────────────────────────────────────────
+  # Job 1: Detect which .ai/ prompt files would be affected.
+  # Runs on every push. Zero API calls. Posts a summary comment
+  # on the commit so the team can decide whether to approve.
+  # ─────────────────────────────────────────────────────────────
+  detect:
+    name: Detect affected prompt files
+    runs-on: ubuntu-latest
+
+    outputs:
+      changed_sources: ${{ steps.changed.outputs.files }}
+      affected_outputs: ${{ steps.affected.outputs.files }}
+      has_changes: ${{ steps.affected.outputs.has_changes }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect changed en/ files
+        id: changed
+        run: |
+          if [ -n "${{ github.event.inputs.force_files }}" ]; then
+            CHANGED="${{ github.event.inputs.force_files }}"
+          else
+            CHANGED=$(git diff --name-only HEAD~1 HEAD -- 'en/**' | tr '\n' ' ')
+          fi
+          echo "files=$CHANGED" >> "$GITHUB_OUTPUT"
+          echo "Changed en/ files: $CHANGED"
+
+      - name: Determine affected prompt files
+        id: affected
+        run: |
+          python3 - <<'EOF'
+          import json, os
+
+          changed_raw = os.environ.get("CHANGED_FILES", "")
+          changed = set(changed_raw.split())
+
+          with open("scripts/generate-agents/config.json") as f:
+              config = json.load(f)
+
+          outputs = set()
+          for topic in config["topics"]:
+              for src in topic["sources"]:
+                  if src in changed:
+                      outputs.add(topic["output"])
+                      break
+
+          # AGENTS.md always regenerates when any source changes
+          if changed:
+              for topic in config["topics"]:
+                  if topic["output"] == ".ai/AGENTS.md":
+                      outputs.add(".ai/AGENTS.md")
+                      break
+
+          result = " ".join(sorted(outputs))
+          has_changes = "true" if outputs else "false"
+          print(f"Affected outputs: {result}")
+          print(f"Has changes: {has_changes}")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"files={result}\n")
+              f.write(f"has_changes={has_changes}\n")
+          EOF
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+
+      - name: Post detection summary
+        if: steps.affected.outputs.has_changes == 'true'
+        uses: peter-evans/commit-comment@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            ## Agent skill file regeneration needed
+
+            The following `en/` documentation files changed in this push:
+
+            ```
+            ${{ steps.changed.outputs.files }}
+            ```
+
+            The following `.ai/` prompt files would be regenerated:
+
+            ```
+            ${{ steps.affected.outputs.files }}
+            ```
+
+            **To trigger regeneration**, go to:
+            [Actions → Generate Agent Skill Files → Run workflow](../../actions/workflows/generate-agents.yml)
+            and click **Run workflow** on this branch.
+
+            > No API tokens are spent until you manually approve the regeneration run.
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 2: Actually regenerate. Only runs on manual dispatch
+  # (workflow_dispatch). Requires the "ai-regeneration" GitHub
+  # environment to be configured with a required reviewer so a
+  # human must click Approve before DeepSeek is called.
+  #
+  # Setup: Repo Settings → Environments → New environment
+  #        Name: ai-regeneration
+  #        Required reviewers: add yourself (or the team)
+  # ─────────────────────────────────────────────────────────────
+  regenerate:
+    name: Regenerate prompt files (requires approval)
+    runs-on: ubuntu-latest
+    needs: detect
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      needs.detect.outputs.has_changes == 'true'
+    environment: ai-regeneration   # ← approval gate lives here
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Regenerate affected files
+        run: |
+          python3 - <<'EOF'
+          import json, os, sys, requests
+
+          api_key = os.environ["DEEPSEEK_API_KEY"]
+          affected = os.environ.get("AFFECTED_FILES", "").split()
+
+          if not affected:
+              print("No files to regenerate.")
+              sys.exit(0)
+
+          with open("scripts/generate-agents/config.json") as f:
+              config = json.load(f)
+
+          topics_by_output = {t["output"]: t for t in config["topics"]}
+
+          def read_sources(sources):
+              parts = []
+              for src in sources:
+                  if os.path.exists(src):
+                      with open(src) as f:
+                          parts.append(f"### {src}\n\n{f.read()}")
+                  else:
+                      print(f"Warning: source file not found: {src}")
+              return "\n\n---\n\n".join(parts)
+
+          system_prompt = (
+              "You are generating AI agent skill files for the goravel/docs repository. "
+              "The output is used by AI coding agents (Cursor, Claude, Copilot) to write correct Goravel v1.17 code. "
+              "Rules:\n"
+              "- Output only what an AI needs to write code. No prose, no tutorial explanations.\n"
+              "- Show complete working code examples from the documentation.\n"
+              "- Include ALL configuration options, not just the defaults.\n"
+              "- List gotchas and wrong/correct patterns explicitly.\n"
+              "- Use exact import paths as shown in the docs.\n"
+              "- Mark v1.17 breaking changes with // BREAKING v1.17:\n"
+              "- Do not invent any behaviour not present in the source docs.\n"
+              "- Do not use em dashes. Write clearly and directly.\n"
+              "- If something is ambiguous, note it as a comment in code rather than inventing behaviour.\n"
+          )
+
+          for output_path in affected:
+              topic = topics_by_output.get(output_path)
+              if not topic:
+                  print(f"No topic config found for: {output_path}")
+                  continue
+
+              sources_content = read_sources(topic["sources"])
+
+              user_prompt = (
+                  f"Regenerate the file `{output_path}` based on the following source documentation.\n\n"
+                  f"{sources_content}\n\n"
+                  f"Output only the raw Markdown content for `{output_path}`. "
+                  f"No preamble, no commentary outside the file content."
+              )
+
+              print(f"Regenerating: {output_path}")
+
+              response = requests.post(
+                  "https://api.deepseek.com/chat/completions",
+                  headers={
+                      "Authorization": f"Bearer {api_key}",
+                      "Content-Type": "application/json",
+                  },
+                  json={
+                      "model": "deepseek-chat",
+                      "messages": [
+                          {"role": "system", "content": system_prompt},
+                          {"role": "user", "content": user_prompt},
+                      ],
+                      "temperature": 0.1,
+                      "max_tokens": 8192,
+                  },
+                  timeout=120,
+              )
+
+              response.raise_for_status()
+              content = response.json()["choices"][0]["message"]["content"]
+
+              # Strip markdown code fences if the model wrapped the output
+              if content.startswith("```"):
+                  lines = content.splitlines()
+                  content = "\n".join(lines[1:-1]) if lines[-1].strip() == "```" else "\n".join(lines[1:])
+
+              os.makedirs(os.path.dirname(output_path), exist_ok=True)
+              with open(output_path, "w") as f:
+                  f.write(content)
+
+              print(f"  Written: {output_path}")
+
+          print("Done.")
+          EOF
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          AFFECTED_FILES: ${{ needs.detect.outputs.affected_outputs }}
+
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: auto/regenerate-agent-files
+          commit-message: "chore: regenerate agent skill files"
+          title: "chore: regenerate .ai/ prompt files from updated docs"
+          body: |
+            This PR was opened automatically after a manually approved regeneration run.
+
+            **Changed source files:**
+            ${{ needs.detect.outputs.changed_sources }}
+
+            **Regenerated output files:**
+            ${{ needs.detect.outputs.affected_outputs }}
+
+            Please review the generated content before merging. Do not auto-merge.
+          delete-branch: true
+          draft: false
+          labels: "ai-generated,documentation"
