@@ -1,0 +1,412 @@
+{
+  "version": 1,
+  "base_url": "https://raw.githubusercontent.com/goravel/docs/master/.ai/knowledge",
+  "agents_md": "https://raw.githubusercontent.com/goravel/docs/master/.ai/AGENTS.md",
+  "local_dir": ".ai/knowledge",
+  "facades": {
+    "App": {
+      "file": "bootstrap.md",
+      "triggers": [
+        "foundation.Application",
+        "ServiceProvider",
+        "Bind",
+        "Singleton",
+        "Runner"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/foundation/application_builder.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/foundation/application.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/foundation/service_provider.go"
+      ]
+    },
+    "Artisan": {
+      "file": "artisan.md",
+      "triggers": [
+        "console.Command",
+        "Artisan",
+        "make:command"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/console/command.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/console/command/flags.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/console/command/arguments.go"
+      ]
+    },
+    "Auth": {
+      "file": "auth.md",
+      "triggers": [
+        "auth.Auth",
+        "GuardDriver",
+        "Parse",
+        "Login",
+        "Gate"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/auth/auth.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/auth/access/gate.go"
+      ]
+    },
+    "Cache": {
+      "file": "cache.md",
+      "triggers": [
+        "cache.Cache",
+        "cache.Driver",
+        "Lock"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/cache/cache.go"
+      ]
+    },
+    "Config": {
+      "file": "bootstrap.md",
+      "triggers": [
+        "config.Config"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/foundation/application_builder.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/foundation/application.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/foundation/service_provider.go"
+      ]
+    },
+    "Crypt": {
+      "file": "hash-crypt.md",
+      "triggers": [
+        "crypt.Crypt",
+        "EncryptString",
+        "DecryptString"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/hash/hash.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/crypt/crypt.go"
+      ]
+    },
+    "DB": {
+      "file": "orm.md",
+      "triggers": [
+        "database/db",
+        "DB.Table",
+        "DB.Raw"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/orm.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/events.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/observer.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/factory.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/factory/factory.go"
+      ]
+    },
+    "Event": {
+      "file": "event.md",
+      "triggers": [
+        "event.Event",
+        "event.Listener",
+        "Dispatch"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/event/events.go"
+      ]
+    },
+    "Gate": {
+      "file": "auth.md",
+      "triggers": [
+        "access.Gate",
+        "Define",
+        "Allows",
+        "Denies"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/auth/auth.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/auth/access/gate.go"
+      ]
+    },
+    "Grpc": {
+      "file": "grpc.md",
+      "triggers": [
+        "grpc.Grpc",
+        "Connect",
+        "grpc.Server"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/grpc/grpc.go"
+      ]
+    },
+    "Hash": {
+      "file": "hash-crypt.md",
+      "triggers": [
+        "hash.Hash",
+        "Make",
+        "Check",
+        "NeedsRehash"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/hash/hash.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/crypt/crypt.go"
+      ]
+    },
+    "Http": {
+      "file": "http-client.md",
+      "triggers": [
+        "http/client",
+        "client.Request",
+        "client.Response"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/client/request.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/client/response.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/client/factory.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/client/fake_response.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/client/fake_sequence.go"
+      ]
+    },
+    "Lang": {
+      "file": "localization.md",
+      "triggers": [
+        "translation.Translator",
+        "Choice",
+        "SetLocale"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/translation/translator.go"
+      ]
+    },
+    "Log": {
+      "file": "log.md",
+      "triggers": [
+        "log.Log",
+        "log.Writer",
+        "log.Logger",
+        "log.Handler"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/log/log.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/log/level.go"
+      ]
+    },
+    "Mail": {
+      "file": "mail.md",
+      "triggers": [
+        "mail.Mail",
+        "mail.Mailable",
+        "mail.Content",
+        "mail.Envelope"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/mail/mail.go"
+      ]
+    },
+    "Orm": {
+      "file": "orm.md",
+      "triggers": [
+        "orm.Orm",
+        "orm.Query",
+        "orm.Model",
+        "database/orm"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/orm.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/events.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/observer.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/factory.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/factory/factory.go"
+      ]
+    },
+    "Process": {
+      "file": "process.md",
+      "triggers": [
+        "process.Process",
+        "process.Result",
+        "process.Running"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/process/process.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/process/pipeline.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/process/pool.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/process/result.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/process/running.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/process/running_pipe.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/process/running_pool.go"
+      ]
+    },
+    "Queue": {
+      "file": "queue.md",
+      "triggers": [
+        "queue.Queue",
+        "queue.Job",
+        "queue.PendingJob",
+        "ChainJob"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/queue/job.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/queue/queue.go"
+      ]
+    },
+    "RateLimiter": {
+      "file": "route.md",
+      "triggers": [
+        "http.RateLimiter",
+        "Limit",
+        "PerMinute",
+        "PerHour"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/route/route.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/rate_limiter.go"
+      ]
+    },
+    "Route": {
+      "file": "route.md",
+      "triggers": [
+        "route.Route",
+        "route.Router",
+        "HandlerFunc"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/route/route.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/rate_limiter.go"
+      ]
+    },
+    "Schedule": {
+      "file": "schedule.md",
+      "triggers": [
+        "schedule.Schedule",
+        "schedule.Event",
+        "Cron"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/schedule/event.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/schedule/schedule.go"
+      ]
+    },
+    "Schema": {
+      "file": "migration.md",
+      "triggers": [
+        "schema.Schema",
+        "schema.Blueprint",
+        "Migration"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/schema/schema.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/schema/blueprint.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/schema/index.go"
+      ]
+    },
+    "Seeder": {
+      "file": "orm.md",
+      "triggers": [
+        "seeder.Seeder",
+        "database/seeder"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/orm.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/events.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/observer.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/factory.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/factory/factory.go"
+      ]
+    },
+    "Session": {
+      "file": "session.md",
+      "triggers": [
+        "session.Session",
+        "session.Driver",
+        "session.Manager"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/session/session.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/session/manager.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/session/driver.go"
+      ]
+    },
+    "Storage": {
+      "file": "storage.md",
+      "triggers": [
+        "filesystem.Storage",
+        "filesystem.Driver",
+        "filesystem.File"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/filesystem/storage.go"
+      ]
+    },
+    "Validation": {
+      "file": "validation.md",
+      "triggers": [
+        "validation.Validation",
+        "validation.Validator",
+        "validation.Rule"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/validation/validation.go"
+      ]
+    },
+    "View": {
+      "file": "view.md",
+      "triggers": [
+        "view.View",
+        "ResponseView",
+        "Make"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/view/view.go"
+      ]
+    }
+  },
+  "extras": {
+    "str": {
+      "file": "str.md",
+      "triggers": [
+        "support/str",
+        "str.Of"
+      ],
+      "contract_urls": []
+    },
+    "carbon": {
+      "file": "carbon.md",
+      "triggers": [
+        "support/carbon",
+        "carbon.Now",
+        "carbon.DateTime"
+      ],
+      "contract_urls": []
+    },
+    "helpers": {
+      "file": "helpers.md",
+      "triggers": [
+        "support/path",
+        "support/maps",
+        "support/collect",
+        "support/convert"
+      ],
+      "contract_urls": []
+    },
+    "testing": {
+      "file": "testing.md",
+      "triggers": [
+        "testing.TestCase",
+        "testing/http",
+        "mock.Factory"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/testing/testing.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/testing/http/request.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/testing/http/response.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/testing/http/assertable_json.go"
+      ]
+    },
+    "request-response": {
+      "file": "request-response.md",
+      "triggers": [
+        "http.Context",
+        "ContextRequest",
+        "ContextResponse",
+        "HandlerFunc"
+      ],
+      "contract_urls": [
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/request.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/response.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/context.go",
+        "https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/http/cookie.go"
+      ]
+    }
+  }
+}
