@@ -3,7 +3,6 @@
     {
       "output": ".ai/AGENTS.md",
       "sources": [
-        "en/upgrade/v1.17.md",
         "en/getting-started/installation.md",
         "en/getting-started/configuration.md",
         "en/getting-started/directory-structure.md",
@@ -16,7 +15,7 @@
       ]
     },
     {
-      "output": ".ai/prompt/bootstrap.md",
+      "output": ".ai/knowledge/bootstrap.md",
       "sources": [
         "en/architecture-concepts/request-lifecycle.md",
         "en/architecture-concepts/service-container.md",
@@ -27,21 +26,11 @@
       ]
     },
     {
-      "output": ".ai/prompt/route.md",
-      "sources": [
-        "en/the-basics/routing.md",
-        "en/the-basics/middleware.md"
-      ]
+      "output": ".ai/knowledge/route.md",
+      "sources": ["en/the-basics/routing.md", "en/the-basics/middleware.md"]
     },
     {
-      "output": ".ai/prompt/middleware.md",
-      "sources": [
-        "en/the-basics/middleware.md",
-        "en/the-basics/views.md"
-      ]
-    },
-    {
-      "output": ".ai/prompt/controller.md",
+      "output": ".ai/knowledge/request-response.md",
       "sources": [
         "en/the-basics/controllers.md",
         "en/the-basics/request.md",
@@ -49,49 +38,42 @@
       ]
     },
     {
-      "output": ".ai/prompt/view.md",
-      "sources": [
-        "en/the-basics/views.md"
-      ]
+      "output": ".ai/knowledge/view.md",
+      "sources": ["en/the-basics/views.md"]
     },
     {
-      "output": ".ai/prompt/session.md",
-      "sources": [
-        "en/the-basics/session.md"
-      ]
+      "output": ".ai/knowledge/session.md",
+      "sources": ["en/the-basics/session.md"]
     },
     {
-      "output": ".ai/prompt/validation.md",
-      "sources": [
-        "en/the-basics/validation.md"
-      ]
+      "output": ".ai/knowledge/validation.md",
+      "sources": ["en/the-basics/validation.md"]
     },
     {
-      "output": ".ai/prompt/log.md",
-      "sources": [
-        "en/the-basics/logging.md"
-      ]
+      "output": ".ai/knowledge/log.md",
+      "sources": ["en/the-basics/logging.md"]
     },
     {
-      "output": ".ai/prompt/grpc.md",
-      "sources": [
-        "en/the-basics/grpc.md"
-      ]
+      "output": ".ai/knowledge/grpc.md",
+      "sources": ["en/the-basics/grpc.md"]
     },
     {
-      "output": ".ai/prompt/orm.md",
+      "output": ".ai/knowledge/orm.md",
       "sources": [
         "en/orm/getting-started.md",
         "en/orm/relationships.md",
         "en/orm/factories.md",
         "en/database/getting-started.md",
         "en/database/queries.md",
-        "en/database/migrations.md",
         "en/database/seeding.md"
       ]
     },
     {
-      "output": ".ai/prompt/auth.md",
+      "output": ".ai/knowledge/migration.md",
+      "sources": ["en/database/migrations.md"]
+    },
+    {
+      "output": ".ai/knowledge/auth.md",
       "sources": [
         "en/security/authentication.md",
         "en/security/authorization.md",
@@ -100,68 +82,51 @@
       ]
     },
     {
-      "output": ".ai/prompt/artisan.md",
-      "sources": [
-        "en/digging-deeper/artisan-console.md",
-        "en/digging-deeper/task-scheduling.md"
-      ]
+      "output": ".ai/knowledge/artisan.md",
+      "sources": ["en/digging-deeper/artisan-console.md"]
     },
     {
-      "output": ".ai/prompt/cache.md",
-      "sources": [
-        "en/digging-deeper/cache.md"
-      ]
+      "output": ".ai/knowledge/schedule.md",
+      "sources": ["en/digging-deeper/task-scheduling.md"]
     },
     {
-      "output": ".ai/prompt/event.md",
-      "sources": [
-        "en/digging-deeper/event.md"
-      ]
+      "output": ".ai/knowledge/cache.md",
+      "sources": ["en/digging-deeper/cache.md"]
     },
     {
-      "output": ".ai/prompt/queue.md",
-      "sources": [
-        "en/digging-deeper/queues.md"
-      ]
+      "output": ".ai/knowledge/event.md",
+      "sources": ["en/digging-deeper/event.md"]
     },
     {
-      "output": ".ai/prompt/storage.md",
-      "sources": [
-        "en/digging-deeper/filesystem.md"
-      ]
+      "output": ".ai/knowledge/queue.md",
+      "sources": ["en/digging-deeper/queues.md"]
     },
     {
-      "output": ".ai/prompt/mail.md",
-      "sources": [
-        "en/digging-deeper/mail.md"
-      ]
+      "output": ".ai/knowledge/storage.md",
+      "sources": ["en/digging-deeper/filesystem.md"]
     },
     {
-      "output": ".ai/prompt/http.md",
-      "sources": [
-        "en/digging-deeper/http-client.md"
-      ]
+      "output": ".ai/knowledge/mail.md",
+      "sources": ["en/digging-deeper/mail.md"]
     },
     {
-      "output": ".ai/prompt/process.md",
-      "sources": [
-        "en/digging-deeper/processes.md"
-      ]
+      "output": ".ai/knowledge/http-client.md",
+      "sources": ["en/digging-deeper/http-client.md"]
     },
     {
-      "output": ".ai/prompt/localization.md",
-      "sources": [
-        "en/digging-deeper/localization.md"
-      ]
+      "output": ".ai/knowledge/process.md",
+      "sources": ["en/digging-deeper/processes.md"]
     },
     {
-      "output": ".ai/prompt/migration.md",
-      "sources": [
-        "en/database/migrations.md"
-      ]
+      "output": ".ai/knowledge/localization.md",
+      "sources": ["en/digging-deeper/localization.md"]
     },
     {
-      "output": ".ai/prompt/testing.md",
+      "output": ".ai/knowledge/hash-crypt.md",
+      "sources": ["en/security/hashing.md", "en/security/encryption.md"]
+    },
+    {
+      "output": ".ai/knowledge/testing.md",
       "sources": [
         "en/testing/getting-started.md",
         "en/testing/http-tests.md",
@@ -169,39 +134,19 @@
       ]
     },
     {
-      "output": ".ai/prompt/helpers.md",
+      "output": ".ai/knowledge/helpers.md",
+      "sources": ["en/digging-deeper/helpers.md", "en/digging-deeper/color.md"]
+    },
+    {
+      "output": ".ai/knowledge/str.md",
       "sources": [
-        "en/digging-deeper/helpers.md",
         "en/digging-deeper/strings.md",
-        "en/digging-deeper/color.md",
         "en/digging-deeper/pluralization.md"
       ]
     },
     {
-      "output": ".ai/prompt/best-practices.md",
-      "sources": [
-        "en/upgrade/v1.17.md",
-        "en/orm/getting-started.md",
-        "en/orm/relationships.md",
-        "en/the-basics/routing.md",
-        "en/the-basics/middleware.md",
-        "en/the-basics/controllers.md",
-        "en/the-basics/request.md",
-        "en/the-basics/response.md",
-        "en/the-basics/session.md",
-        "en/the-basics/validation.md",
-        "en/security/authentication.md",
-        "en/security/authorization.md",
-        "en/security/hashing.md",
-        "en/digging-deeper/queues.md",
-        "en/digging-deeper/cache.md",
-        "en/digging-deeper/event.md",
-        "en/testing/getting-started.md",
-        "en/testing/http-tests.md",
-        "en/testing/mock.md",
-        "en/architecture-concepts/service-container.md",
-        "en/architecture-concepts/service-providers.md"
-      ]
+      "output": ".ai/knowledge/carbon.md",
+      "sources": ["en/digging-deeper/helpers.md"]
     }
   ]
 }
