@@ -1,27 +1,27 @@
-# Request Lifecycle
+# So‘rovning ishlash jarayoni
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Using any tool in the real world feels more intuitive when you know how it works. This document aims to give you a clear, high-level look at how Goravel functions. Don’t worry if you don’t get every term right away—just aim for a basic sense of how things work, and your expertise will grow as you explore the rest of the docs.
+Har qanday vositadan real hayotda foydalanish, uning qanday ishlashini bilganingizda yanada intuitiv va tushunarli bo‘ladi. Ushbu hujjat sizga Goravel qanday ishlashini aniq va umumiy darajada tushuntirib berishni maqsad qiladi. Agar har bir atamani darhol to'g'ri tushunmasangiz, tashvishlanmang - faqat narsalar qanday ishlashini asosiy ma'noda tushunishga harakat qiling, va siz qo'llanmaning qolgan qismini o'rganayotganda bilimingiz o'sib boradi.
 
-## Lifecycle Overview
+## Ishlash jarayonining umumiy tavsifi
 
-1. The `main.go` is the entry point of the application, it will call the `bootstrap.Boot()` function to initialize the framework, and use `app.Wait()` to keep the application running.
+1. `main.go` ilova kirish nuqtasi hisoblanadi, u `bootstrap.Boot()` funksiyasini chaqirib freymvorkni ishga tushiradi va `app.Wait()` yordamida ilovani ishlashda saqlaydi.
 
-2. The `bootstrap.Boot()` function will initialize a new Goravel application instance by calling `foundation.Setup()`, you can set service providers, routes, and other settings like migrations, schedules via `With*` functions here. Finally, call the `Create()` method to boot the application.
+2. `bootstrap.Boot()` funksiyasi `foundation.Setup()`ni chaqirib, yangi Goravel ilova namunasini ishga tushiradi, siz bu yerda `With*` funksiyalari orqali xizmat provayderlari, marshrutlar va migratsiyalar, jadvallar kabi boshqa sozlamalarni o‘rnatishingiz mumkin. Oxirida, ilovani ishga tushirish uchun Create() metodini chaqiring.
 
-3. In the `Create()` method, it will first load configuration, then register all service providers and other settings. Finally, boot all service providers, return the application instance.
+3. `Create()` usulida, avval konfiguratsiya yuklanadi, so'ngra barcha xizmat provayderlari va boshqa sozlamalar ro'yxatdan o'tkaziladi. Oxirida, barcha service providerlarni ishga tushirib, ilova vorisini qaytaring.
 
-4. After the application is created, you can normally use all facades in this stage, but remember that your customize code should be placed before `app.Start()` in the `main.go` file. Or you can add your code into the `WithCallback` function in the `bootstrap/app.go` file to make sure your code is executed after the application is created. When running `app.Start()`, the http or grpc server will be started automatically if you have configured them.
+4. Ilova yaratilgandan so'ng, siz ushbu bosqichda barcha fasadlarni odatdagidek ishlatishingiz mumkin, lekin esda tutingki, sizning moslashtirilgan kodingiz `main.go` faylida `app.Start()` dan oldin joylashtirilishi kerak. Yoki ilova yaratilgandan keyin kodingiz bajarilishini ta'minlash uchun `bootstrap/app.go` faylidagi `WithCallback` funksiyasiga kodingizni qo'shishingiz mumkin. app.Start() ishga tushirilganda, agar siz ularni sozlagan bo‘lsangiz, HTTP yoki gRPC server avtomatik tarzda ishga tushadi.
 
 ```go
 func Boot() contractsfoundation.Application {
   return foundation.Setup().
     WithConfig(config.Boot).
     WithCallback(func() {
-      // Your custom code here, all facades are available here.
+      // Bu yerda sizning maxsus kodingiz, barcha fasadlar bu yerda mavjud.
     }).
     Create()
 }
