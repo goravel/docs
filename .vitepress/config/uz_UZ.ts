@@ -1,39 +1,39 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
 export const config = defineConfig({
   lang: 'en-US',
-  description: 'Goravel is a web application framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications.',
+  description: "Goravel — bu to‘liq funksiyalarga ega va yuqori darajada kengaytiriladigan web-ilovalar frameworki hisoblanadi. U Go dasturchilari (gopherlar) uchun boshlang‘ich platforma (scaffolding) sifatida xizmat qiladi va ularga o‘z ilovalarini tez, tartibli va professional tarzda yaratishga yordam beradi.",
   themeConfig: {
     nav: nav(),
     sidebar: [{
-      text: 'Prologue',
+      text: "Kirish",
       base: '/prologue/',
       items: sidebarPrologue()
     }, {
-      text: 'Upgrade',
+      text: "Yangilash",
       base: '/upgrade/',
       items: sidebarUpgrade()
     }, {
-      text: 'Getting Started',
+      text: "Boshlash",
       base: '/getting-started/',
       items: sidebarGettingStarted()
     }, {
-      text: 'Architecture Concepts',
+      text: "Arxitektura tushunchalari",
       base: '/architecture-concepts/',
       items: sidebarFoundation()
     }, {
-      text: 'The Basics',
+      text: "Asosiy tushunchalar",
       base: '/the-basics/',
       items: sidebarBasic()
     }, {
-      text: 'Digging Deeper',
+      text: "Chuqurroq o'rganish",
       base: '/digging-deeper/',
       items: sidebarAdvanced()
     }, {
-      text: 'Security',
+      text: "Xavfsizlik",
       base: '/security/',
       items: sidebarSecurity()
     }, {
-      text: 'Database',
+      text: "Ma'lumotlar bazasi",
       base: '/database/',
       items: sidebarDatabase()
     }, {
@@ -41,51 +41,51 @@ export const config = defineConfig({
       base: '/orm/',
       items: sidebarOrm()
     }, {
-      text: 'Testing',
+      text: "Testlash",
       base: '/testing/',
       items: sidebarTesting()
     }],
     editLink: {
       pattern: 'https://github.com/goravel/docs/edit/master/:path',
-      text: 'Edit this page on GitHub'
+      text: "Ushbu sahifani GitHub-da tahrirlash"
     },
     footer: {
-      message: 'Released under the MIT License',
-      copyright: `Copyright © 2021-${new Date().getFullYear()} Goravel`
+      message: "MIT litsenziyasi ostida chiqarilgan",
+      copyright: `Mualliflik huquqi © 2021-${new Date().getFullYear()} Goravel`
     },
     docFooter: {
-      prev: 'Previous page',
-      next: 'Next page'
+      prev: "Oldingi sahifa",
+      next: "Keyingi sahifa"
     },
     outline: {
-      label: 'On this page'
+      label: "Ushbu sahifada"
     },
     lastUpdated: {
-      text: 'Last updated',
+      text: "Oxirgi yangilanish",
       formatOptions: {
-        dateStyle: 'short',
-        timeStyle: 'medium'
+        dateStyle: "qisqa",
+        timeStyle: "o'rta"
       }
     },
-    langMenuLabel: 'Change language',
-    returnToTopLabel: 'Return to top',
-    sidebarMenuLabel: 'Menu',
-    darkModeSwitchLabel: 'Appearance',
-    lightModeSwitchTitle: 'Switch to light theme',
-    darkModeSwitchTitle: 'Switch to dark theme',
-    skipToContentLabel: 'Skip to content'
+    langMenuLabel: "Tilni o'zgartirish",
+    returnToTopLabel: "Yuqoriga qaytish",
+    sidebarMenuLabel: "Menyu",
+    darkModeSwitchLabel: "Ko'rinish",
+    lightModeSwitchTitle: "Yorug‘lik mavzusiga o‘tish",
+    darkModeSwitchTitle: "Qorongʻu mavzuga oʻtish",
+    skipToContentLabel: "Kontentga o‘tish"
   }
 });
 function nav(): DefaultTheme.NavItem[] {
   return [{
-    text: 'Quickstart',
+    text: "Tez boshlash",
     link: '/getting-started/installation',
     activeMatch: '/getting-started/'
   }, {
-    text: 'Video Tutorials',
+    text: "Video darsliklar",
     link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
   }, {
-    text: 'Versions',
+    text: "Versiyalar",
     items: [{
       text: "v1.17 (Eng so'nggi)",
       link: ""
@@ -94,7 +94,7 @@ function nav(): DefaultTheme.NavItem[] {
       link: 'https://v116.goravel.dev/'
     }]
   }, {
-    text: 'Translate',
+    text: "Tarjima qilish",
     link: '/prologue/contributions#add-a-new-language'
   }];
 }
