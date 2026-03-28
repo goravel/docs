@@ -1,10 +1,10 @@
-# Facades
+# Fasadlar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-`facades` provide a "static" interface for the core functionality of the application and provide a more flexible, more elegant, and easy-to-test syntax. All `facades` of Goravel are defined under the `app/facades` folder:
+`facades` ilova yadrosining asosiy funksiyalari uchun "static" interfeysni ta'minlaydi va ko'proq moslashuvchan, chiroyli va sinov o'tkazish oson bo'lgan sintaksisni taqdim etadi. Goravel’ning barcha facadelari app/facades papkasi ichida joylashgan:
 
 ```go
 import "app/facades"
@@ -12,11 +12,11 @@ import "app/facades"
 facades.Config().GetString("app.host")
 ```
 
-## How Facades Work
+## Fasadlar qanday ishlaydi
 
-Each service provider registers its corresponding bindings in the service container, then the service container providers vairous `Make*` functions to build the binding instances. The `facades` in the `app/facades` folder call these `Make*` functions to get the instances from the service container. Let's use the `Route` facade as an example:
+Har bir xizmat ko'rsatuvchi o'zining mos bog'lanishlarini xizmat konteynerida ro'yxatdan o'tkazadi, so'ngra xizmat konteyneri bog'lanish namunalarini yaratish uchun turli `Make*` funksiyalarini taqdim etadi. `app/facades` papkasidagi `facades`lar xizmat konteyneridan namunalarni olish uchun ushbu `Make*` funksiyalarini chaqiradi. Keling, `Route` fasadini misol sifatida ishlatamiz:
 
-1. The `Route` service provider registers the `binding.Route` binding in the service container:
+1. `Route` xizmat provayderi xizmat konteynerida `binding.Route` bog'lanishini ro'yxatdan o'tkazadi:
 
 ```go
 type ServiceProvider struct {}
@@ -30,7 +30,7 @@ func (r *ServiceProvider) Register(app foundation.Application) {
 func (r *ServiceProvider) Boot(app foundation.Application) {}
 ```
 
-2. The `Route` facade calls the `MakeRoute()` function to get the `Route` instance from the service container:
+2. `Route` fasadı `MakeRoute()` funksiyasini chaqirib, xizmat konteyneridan `Route` vorislarini olish uchun:
 
 ```go
 // app/facades/route.go
@@ -45,24 +45,24 @@ func Route() route.Route {
 }
 ```
 
-> Given that the `facades` is exposed to the application, you can also create your own `facades` or override the existing `facades` in the `app/facades` folder.
+> `facades` ilovaga ochiq bo'lganligi sababli, siz o'zingizning `facades`laringizni yaratishingiz yoki mavjud `facades`larni `app/facades` papkasida almashtirishingiz mumkin.
 
-## Install/Uninstall Facades
+## Fasadlarni o'rnatish/o'chirish
 
-[goravel/goravel](https://github.com/goravel/goravel) installs all `facades` by default and [goravel/goravel-lite](https://github.com/goravel/goravel-lite) only installs essential `facades` like `Artisan`, `Config`. You can install or uninstall other `facades` as needed via the `package:install` and `package:uninstall` commands.
+[goravel/goravel](https://github.com/goravel/goravel) standart boʻyicha barcha `facade`larni oʻrnatadi va [goravel/goravel-lite](https://github.com/goravel/goravel-lite) faqat `Artisan`, `Config` kabi muhim `facade`larni oʻrnatadi. Siz "package:install" va "package:uninstall" buyruqlari orqali boshqa `facades`larni kerak bo‘lganda o‘rnatishingiz yoki o‘chirishingiz mumkin.
 
 ```shell
-# Install a specific facade
+# Muayyan fasadni o'rnatish
 ./artisan package:install Route
 
-# Install all facades
+# Barcha fasadlarni o'rnatish
 ./artisan package:install --all
 
-# Install all facades with default drivers
+# Standart drayverlar bilan barcha fasadlarni o'rnatish
 ./artisan package:install --all --default
 
-# Uninstall a specific facade
+# Muayyan fasadni o'chirish
 ./artisan package:uninstall Route
 ```
 
-> Notice: if you are using the `./artisan package:install` command to choose the `facades` manually, you need to press `x` to select the facades you want to install, then press `Enter` to confirm. `facades` to'g'ridan-to'g'ri `Enter` tugmasini bosganingizda tanlanmaydi.
+> Eslatma: agar siz `./artisan package:install` buyrug'i orqali `facades`ni qo'lda tanlashni istasangiz, o'rnatmoqchi bo'lgan fasadlarni tanlash uchun `x` tugmasini bosing, so'ngra tasdiqlash uchun `Enter` tugmasini bosing. `facades` to'g'ridan-to'g'ri `Enter` tugmasini bosganingizda tanlanmaydi.
