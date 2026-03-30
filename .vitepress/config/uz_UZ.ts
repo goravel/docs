@@ -1,6 +1,6 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
 export const config = defineConfig({
-  lang: 'en-US',
+  lang: "uz-UZ",
   description: "Goravel — bu to‘liq funksiyalarga ega va yuqori darajada kengaytiriladigan web-ilovalar frameworki hisoblanadi. U Go dasturchilari (gopherlar) uchun boshlang‘ich platforma (scaffolding) sifatida xizmat qiladi va ularga o‘z ilovalarini tez, tartibli va professional tarzda yaratishga yordam beradi.",
   themeConfig: {
     nav: nav(),
@@ -100,61 +100,61 @@ function nav(): DefaultTheme.NavItem[] {
 }
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Installation',
+    text: "O'rnatish",
     link: 'installation'
   }, {
-    text: 'Configuration',
+    text: "Konfiguratsiya",
     link: 'configuration'
   }, {
-    text: 'Directory Structure',
+    text: "Papka tuzilishi",
     link: 'directory-structure'
   }, {
-    text: 'Compile',
+    text: "Tuzish",
     link: 'compile'
   }, {
-    text: 'Excellent Packages',
+    text: "Ajoyib Paketlar",
     link: 'packages'
   }];
 }
 function sidebarPrologue(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Release Notes',
+    text: "Chiqarish eslatmalari",
     link: 'releases'
   }, {
-    text: 'Contribution Guide',
+    text: "Hissa qo‘shish bo‘yicha qo‘llanma",
     link: 'contributions'
   }, {
-    text: 'Compare With Laravel',
+    text: "Laravel bilan solishtiring",
     link: 'compare-with-laravel'
   }, {
-    text: 'Privacy Policy',
+    text: "Maxfiylik siyosati",
     link: 'privacy'
   }];
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Upgrading To v1.17 From v1.16',
+    text: "v1.16-dan v1.17-ga yangilash",
     link: 'v1.17'
   }, {
-    text: 'Upgrading To v1.16 From v1.15',
+    text: "v1.15 dan v1.16 ga yangilash",
     link: 'v1.16'
   }, {
-    text: 'History',
+    text: "Tarix",
     link: 'history'
   }];
 }
 function sidebarFoundation(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Lifecycle',
+    text: "Hayot sikli",
     link: 'request-lifecycle'
   }, {
-    text: 'Service Container',
+    text: "Xizmat konteyneri",
     link: 'service-container'
   }, {
-    text: 'Service Providers',
+    text: "Xizmat ko'rsatuvchilar",
     link: 'service-providers'
   }, {
-    text: 'Facades',
+    text: "Fasadlar",
     link: 'facades'
   }];
 }
@@ -166,127 +166,127 @@ function sidebarBasic(): DefaultTheme.SidebarItem[] {
     text: 'Middleware',
     link: 'middleware'
   }, {
-    text: 'Controllers',
+    text: "Kontrollerlar",
     link: 'controllers'
   }, {
-    text: 'Requests',
+    text: "So'rovlar",
     link: 'request'
   }, {
-    text: 'Responses',
+    text: "Javoblar",
     link: 'response'
   }, {
-    text: 'Views',
+    text: "Ko‘rishlar",
     link: 'views'
   }, {
     text: 'Grpc',
     link: 'grpc'
   }, {
-    text: 'Session',
+    text: "Seans",
     link: 'session'
   }, {
-    text: 'Validation',
+    text: "Tekshirish",
     link: 'validation'
   }, {
-    text: 'Logging',
+    text: "Loglash",
     link: 'logging'
   }];
 }
 function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Artisan Console',
+    text: "Artisan Konsoli",
     link: 'artisan-console'
   }, {
-    text: 'Cache',
+    text: "Kesh",
     link: 'cache'
   }, {
-    text: 'Event',
+    text: "Harakat",
     link: 'event'
   }, {
-    text: 'File Storage',
+    text: "Fayl saqlash",
     link: 'filesystem'
   }, {
-    text: 'Mail',
+    text: "Pochta",
     link: 'mail'
   }, {
-    text: 'Queues',
+    text: "Navbatlar",
     link: 'queues'
   }, {
-    text: 'Task Scheduling',
+    text: "Vazifa rejalashtirish",
     link: 'task-scheduling'
   }, {
-    text: 'Localization',
+    text: "Lokallashtirish",
     link: 'localization'
   }, {
-    text: 'Package Development',
+    text: "Paketni ishlab chiqish",
     link: 'package-development'
   }, {
-    text: 'Color Output',
+    text: "Rang chiqishi",
     link: 'color'
   }, {
-    text: 'Processes',
+    text: "Jarayonlar",
     link: 'processes'
   }, {
-    text: 'Strings',
+    text: "Satrlar",
     link: 'strings'
   }, {
-    text: 'Helpers',
+    text: "Yordamchilar",
     link: 'helpers'
   }, {
-    text: 'HTTP Client',
+    text: "HTTP Klienti",
     link: 'http-client'
   }, {
-    text: 'Pluralization',
+    text: "Ko‘plik shakllari",
     link: 'pluralization'
   }];
 }
 function sidebarSecurity(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Authentication',
+    text: "Autentifikatsiya",
     link: 'authentication'
   }, {
-    text: 'Authorization',
+    text: "Avtorizatsiya",
     link: 'authorization'
   }, {
-    text: 'Encryption',
+    text: "Shifrlash",
     link: 'encryption'
   }, {
-    text: 'Hashing',
+    text: "Xeshlash",
     link: 'hashing'
   }];
 }
 function sidebarDatabase(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Getting Started',
+    text: "Boshlash",
     link: 'getting-started'
   }, {
-    text: 'Query Builder',
+    text: "So'rov quruvchi",
     link: 'queries'
   }, {
-    text: 'Migrations',
+    text: "Migratsiyalar",
     link: 'migrations'
   }, {
-    text: 'Seeding',
+    text: "Urg'ochish",
     link: 'seeding'
   }];
 }
 function sidebarOrm(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Getting Started',
+    text: "Boshlash",
     link: 'getting-started'
   }, {
-    text: 'Relationships',
+    text: "Bog'lanishlar",
     link: 'relationships'
   }, {
-    text: 'Factories',
+    text: "Zavodlar",
     link: 'factories'
   }];
 }
 function sidebarTesting(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Getting Started',
+    text: "Boshlash",
     link: 'getting-started'
   }, {
-    text: 'HTTP Tests',
+    text: "HTTP Testlari",
     link: 'http-tests'
   }, {
     text: 'Mock',
