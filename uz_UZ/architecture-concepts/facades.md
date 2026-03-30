@@ -10,6 +10,7 @@
 import "app/facades"
 
 facades.Config().GetString("app.host")
+
 ```
 
 ## Fasadlar qanday ishlaydi
