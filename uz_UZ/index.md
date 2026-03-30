@@ -1,13 +1,13 @@
 ---
 layout: home
-title: Goravel - Full-featured Golang Development Framework
+title: Goravel — Golang uchun to‘liq imkoniyatlarga ega zamonaviy freymvork
 
 head:
   - [
       'meta',
       {
           name: description,
-          content: Goravel is a Golang development framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications.
+          content: Goravel - bu to'liq funksiyalarga ega va ajoyib kengaytirish imkoniyatiga ega bo'lgan Golang dasturlash freymvorkidir. Gopherlarning o'z ilovalarini tezda qurishiga yordam berish uchun boshlang'ich ishqalam sifatida.
         }
     ]
   - [
@@ -19,20 +19,20 @@ head:
       'meta',
       {
           property: og:title,
-          content: Goravel - Full-featured Golang Development Framework
+          content: Goravel - To'liq imkoniyatli Golang Dasturlash Frameworki
         }
     ]
   - [
       'meta',
       {
           property: og:description,
-          content: Goravel is a Golang development framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications.
+          content: Goravel - bu to'liq funksiyalar va ajoyib kengaytiriluvchanlikka ega Golang dasturlash ramkasi. Gopherlarning o'z ilovalarini tezda qurishiga yordam berish uchun boshlang'ich qolip sifatida.
         }
     ]
   - [
       'meta',
       {
-          property: og:image,
+          property: meta,
           content: https://www.goravel.dev/meta.png
         }
     ]
@@ -52,14 +52,14 @@ head:
       'meta',
       {
           name: twitter:title,
-          content: Goravel - The Golang Framework For Web Artisans
+          content: Goravel - Veb San'atkorlar Uchun Golang Frameworki
         }
     ]
   - [
       'meta',
       {
           name: twitter:description,
-          content: Goravel is a Golang development framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications.
+          content: Goravel - bu to'liq funksiyalarga ega va ajoyib kengaytiriladigan Golang dasturlash tizimidir. Gopherlarning o'z ilovalarini tezda qurishlariga yordam berish uchun boshlang'ich iskala sifatida.
         }
     ]
   - [
@@ -72,33 +72,33 @@ head:
 
 hero:
   name: Goravel
-  text: Full-featured Golang Development Framework
-  tagline: Componentization, High-performance, easy-to-extend, PHPers' first choice.
+  text: To'liq xususiyatli Golang dasturlash freymvorki
+  tagline: Komponentlashtirish, yuqori samaradorlik, kengaytirish oson, PHP dasturchilarining birinchi tanlovi.
   # image: /logo.svg
   actions:
     - theme: brand
-      text: Quick Start
+      text: Tezda boshlash
       link: /getting-started/installation
     - theme: alt
       text: 🌟 Github Star
       link: https://github.com/goravel/goravel
       target: _blank
 features:
-  - title: 🧰 Lite Or Full-featured
-    details: You can choose between a lightweight version with essential features or a full-featured version that includes ORM, HTTP, logging, caching, and other basic tools for all development.
-  - title: 💻 Componentization
-    details: Modular design, each module is independent and can be used separately, making development and maintenance more convenient.
-  - title: 🚀 High-performance
-    details: Built with Golang, integrating multiple excellent extensions to create fast and responsive applications.
-  - title: 📈 Easy-to-extend
-    details: The module provides multiple drivers, and can develop extension packages according to needs, suitable for applications of any scale, from small projects to large systems.
-  - title: 👥 Active community
-    details: Supported by an active community, they contribute to its development, documentation, and continuous support.
-  - title: 🔄 PHPers' first choice
-    details: The framework style is consistent with Laravel, allowing PHPer to create powerful Golang applications without learning a new framework. Tribute to Laravel!
+  - title: 🧰 Yengil yoki to'liq imkoniyatli
+    details: Siz zaruriy xususiyatlarga ega bo'lgan yengil versiya yoki ORM, HTTP, jurnal, keshlash va boshqa barcha ishlanmalar uchun asosiy vositalarni o'z ichiga olgan to'liq xususiyatli versiya o'rtasida tanlashingiz mumkin.
+  - title: 💻 Komponentlashtirish
+    details: Modul dizayni, har bir modul mustaqil va alohida ishlatilishi mumkin, bu esa ishlab chiqish va texnik xizmat ko'rsatishni qulayroq qiladi.
+  - title: 🚀 Yuqori samaradorlik
+    details: Golang bilan qurilgan, tez va sezgir ilovalar yaratish uchun bir nechta ajoyib kengaytmalarni birlashtiradi.
+  - title: 📈 Kengaytirish oson
+    details: Modul bir nechta haydovchilarni taqdim etadi va ehtiyojlarga qarab kengaytirish paketlarini ishlab chiqishi mumkin, kichik loyihalardan tortib katta tizimlargacha bo'lgan har qanday o'lchamdagi ilovalar uchun mos keladi.
+  - title: 👥 Faol hamjamiyat
+    details: Faol hamjamiyat tomonidan qo'llab-quvvatlanadi, ular uning rivojlanishi, hujjatlashtirilishi va doimiy qo'llab-quvvatlashiga hissa qo'shadi.
+  - title: 🔄 PHP dasturchilarning birinchi tanlovi
+    details: Freymvork uslubi Laravel bilan muvofiq, PHP dasturchilariga yangi framework o'rganmasdan kuchli Golang ilovalarini yaratish imkonini beradi. Laravelga hurmat!
 ---
 
-<div class="text-center mt-10 text-3xl font-bold">Contributors</div>
+<div class="text-center mt-10 text-3xl font-bold">Hissa qo'shganlar</div>
 
 <div class="flex flex-wrap justify-center gap-2 mt-10" :class="$style.contributors"><a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
@@ -143,38 +143,36 @@ features:
 </div>
 
 <div class="flex flex-col items-center">
-<div class="text-center mt-10 text-3xl font-bold">Group</div>
+<div class="text-center mt-10 text-3xl font-bold">Guruh</div>
 <div class="mt-10 flex">
 
 <div class="text-center mr-10">
 <img src="/wechat.jpg" width="200">
-<div class="text-sm" :class="$style.group_text">Scan QR code to join the Wechat group</div>
+<div class="text-sm" :class="$style.group_text">Wechat guruhiga qo'shilish uchun QR kodni skanerlang</div>
 </div>
 
 <div class="text-center"><a href="https://discord.gg/cFc5csczzS" target="_blank">
 <svg style="fill: #5865F2;" xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
   <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/>
 </svg>
-</a>
-<div class="text-sm" :class="$style.group_text">Click me to join the Discord group</div>
+</a><div class="text-sm" :class="$style.group_text">Discord guruhiga qo'shilish uchun menga bosing</div>
 </div>
 
 </div>
 </div>
 
 <div class="flex flex-col items-center">
-<div class="text-center mt-10 text-3xl font-bold">Reward</div>
+<div class="text-center mt-10 text-3xl font-bold">Mukofot</div>
 <div class="mt-10 flex">
 
 <div class="text-center mr-10">
 <img src="/reward-wechat.jpg" width="200">
-<div class="text-sm" :class="$style.group_text">Scan QR code by Wechat</div>
+<div class="text-sm" :class="$style.group_text">Wechat orqali QR kodni skanerlash</div>
 </div>
 
 <div class="text-center">
 <img src="/reward.png" width="200" >
-<div class="text-sm" :class="$style.group_text"><a href="https://opencollective.com/goravel" target="_blank">Open Collective</a>
-</div>
+<div class="text-sm" :class="$style.group_text"><a href="https://opencollective.com/goravel" target="_blank">Open Collective</a></div>
 </div>
 </div>
 </div>
