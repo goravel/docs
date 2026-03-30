@@ -1,16 +1,16 @@
-# Service Container
+# Xizmat Konteyneri
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-The Goravel service container is a powerful tool for managing class dependencies and performing dependency injection. It contains all the modules of Goravel, and allows you to bind your own services to container and resolve them when needed. The service container provides powerful support for third-party packages around Goravel.
+Goravel xizmat konteyneri sinf bog'liqliklarini boshqarish va bog'liqlik in'ektsiyasini amalga oshirish uchun kuchli vosita hisoblanadi. U Goravelning barcha modullarini o'z ichiga oladi va sizga o'z xizmatlaringizni konteynerga bog'lash va kerak bo'lganda ularni hal qilish imkonini beradi. Xizmat konteyneri Goravel atrofidagi uchinchi tomon paketlari uchun kuchli qo'llab-quvvatlashni ta'minlaydi.
 
-## Binding
+## Bog'lash
 
-### Simple Bindings
+### Oddiy bog‘lamalar
 
-Almost all of your service container bindings will be registered within [service providers](./service-providers.md). Within a service provider, you always have access to the container via the `app` parameter, then register a binding using the `Bind` method, passing the `key` that we wish to register along with a closure that returns an instance of the class:
+Sizning xizmat konteyneringiz bog‘lanishlarining deyarli barchasi [xizmat provayderlari](./service-providers.md) ichida ro‘yxatdan o‘tkaziladi. Xizmat ko'rsatuvchi provayder ichida siz har doim konteynerga `app` parametri orqali kirishingiz mumkin, so'ngra `Bind` metodidan foydalanib bog'lashni ro'yxatdan o'tkazing, ro'yxatdan o'tkazmoqchi bo'lgan `key`ni va sinf namunasini qaytaruvchi yopilishni (closure) o'tkazing:
 
 ```go
 package route
@@ -32,7 +32,7 @@ func (route *ServiceProvider) Register(app foundation.Application) {
 func (route *ServiceProvider) Boot(app foundation.Application) {}
 ```
 
-As mentioned, you will typically be interacting with the container within service providers; however, if you would like to interact with the container outside of a service provider, you may do so via the `App` facade:
+Aytilganidek, odatda siz xizmat ko'rsatuvchi provayderlar ichida konteyner bilan ishlaysiz; biroq, agar siz xizmat ko'rsatuvchi provayderdan tashqarida konteyner bilan ishlashni istasangiz, `App` fasad orqali buni amalga oshirishingiz mumkin:
 
 ```go
 facades.App().Bind("key", func(app foundation.Application) (any, error) {
@@ -40,27 +40,27 @@ facades.App().Bind("key", func(app foundation.Application) (any, error) {
 })
 ```
 
-### Binding A Singleton
+### Singleton bog'lash
 
-The `Singleton` method binds a class or interface into the container that should only be resolved one time. Once a singleton binding is resolved, the same object instance will be returned on subsequent calls into the container:
+`Singleton` usuli sinf yoki interfeysni konteynerga bir marta hal qilinishi kerak bo'lgan holda bog'laydi. Bir marta singleton bog'lash hal qilingandan so'ng, konteynerga keyingi chaqiruvlarda bir xil ob'ekt namunasi qaytariladi:
 
 ```go
-app.Singleton(key, func(app foundation.Application) (any, error) {
+app.Singleton(kalit, func(app foundation.Application) (any, error) {
   return NewGin(app.MakeConfig()), nil
 })
 ```
 
-### Binding Instances
+### Instanslarni bog'lash
 
-You may also bind an existing object instance into the container using the `Instance` method. The given instance will always be returned on subsequent calls into the container:
+Shuningdek, siz `Instance` usuli yordamida mavjud obyekt namunasini konteynerga bog‘lashingiz mumkin. Berilgan instansiya har doim konteynerga keyingi chaqiruvlarda qaytariladi:
 
 ```go
 app.Instance(key, instance)
 ```
 
-### Binding With Parameter
+### Parametr bilan bog'lash
 
-If you need some extra parameters to construct the service provider, you can use the `BindWith` method to pass parameters to the closure:
+Agar xizmat provayderini yaratish uchun qo'shimcha parametrlar kerak bo'lsa, `BindWith` metodidan foydalanib, parametrlarni yopishga o'tkazishingiz mumkin:
 
 ```go
 app.BindWith(Binding, func(app foundation.Application, parameters map[string]any) (any, error) {
@@ -68,30 +68,30 @@ app.BindWith(Binding, func(app foundation.Application, parameters map[string]any
 })
 ```
 
-## Resolving
+## Hal qilish
 
-### The `Make` Method
+### `Make` usuli
 
-You may use the `Make` method to resolve a class instance from the container. The `Make` method accepts the `key` you wish to resolve:
+Siz konteynerdan sinf namunasini hal qilish uchun `Make` metodidan foydalanishingiz mumkin. `Make` usuli siz hal qilmoqchi bo'lgan `key` ni qabul qiladi:
 
 ```go
 instance, err := app.Make(key)
 ```
 
-If you are outside of a service provider in a location of your code that does not have access to the `app` variable, you may use the `App` facade to resolve a class instance from the container:
+Agar siz xizmat ko'rsatuvchi provayderdan tashqarida bo'lsangiz va kod joylashgan joyda `app` o'zgaruvchisiga kirish imkoni bo'lmasa, konteynerdan klass misolini olish uchun `App` fasadidan foydalanishingiz mumkin:
 
 ```go
 instance, err := facades.App().Make(key)
 ```
 
-### The `MakeWith` Method
+### `MakeWith` metodi
 
-If some of your class's dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `MakeWith` method, corresponding to the `BindWith` binding method:
+Agar sinfingizning ba'zi bog'liqliklari konteyner orqali hal qilinmasa, ularni `BindWith` bog'lash usuliga mos ravishda `MakeWith` usuliga assotsiativ massiv sifatida o'tkazib, ularni kiritishingiz mumkin:
 
 ```go
 instance, err := app.MakeWith(key, map[string]any{"id": 1})
 ```
 
-### Other Methods
+### Boshqa uslublar
 
-The framework provides some convenient methods to quickly resolve various facades: `MakeArtisan`, `MakeAuth`, etc.
+Framework turli fasadlarni tez hal qilish uchun qulay usullarni taqdim etadi: `MakeArtisan`, `MakeAuth` va boshqalar.
