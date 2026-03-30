@@ -32,42 +32,42 @@ Namuna [https://github.com/goravel/example](https://github.com/goravel/example)
 
 ## Asosiy belgilari
 
-| Modul nomi                                                                             | Tavsifi                                                                         |
-| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| [Artisan Console](https://www.goravel.dev/digging-deeper/artisan-console.html)         | Ilova boshqaruvi va avtomatlashtirish uchun CLI buyruq qatori interfeysi        |
-| [Authentication](https://www.goravel.dev/security/authentication.html)                 | Foydalanuvchi identifikatsiyasini JWT va Session haydovchilari bilan tekshirish |
-| [Authorization](https://www.goravel.dev/security/authorization.html)                   | Siyosat va darvozalar yordamida ruxsat asosidagi kirish nazorati                |
-| [Cache](https://www.goravel.dev/digging-deeper/cache.html)                             | Ma'lumotlarni xotira, Redis yoki maxsus drayverlar yordamida saqlang va oling   |
-| [Carbon](https://www.goravel.dev/digging-deeper/helpers.html)                          | Sana va vaqt manipulyatsiyasi uchun yordamchi funksiyalar                       |
-| [Konfiguratsiya](https://www.goravel.dev/getting-started/configuration.html)           | Fayllar va muhitdan ilova konfiguratsiyasini boshqarish                         |
-| [Kriptlash](https://www.goravel.dev/security/encryption.html)                          | Xavfsiz ma'lumotlarni shifrlash va shifrdan ochish vositalari                   |
-| [MB](https://www.goravel.dev/database/getting-started.html)                            | Ma'lumotlar bazasi so'rov quruvchisi                                            |
-| [Hodisa](https://www.goravel.dev/digging-deeper/event.html)                            | Ilova hodisalarini tarqatish va tinglash tizimi                                 |
-| [Factory](https://www.goravel.dev/orm/factories.html)                                  | Generate fake model data for testing purposes                                   |
-| [FileStorage](https://www.goravel.dev/digging-deeper/filesystem.html)                  | File upload, download, and storage across multiple drivers                      |
-| [Grpc](https://www.goravel.dev/the-basics/grpc.html)                                   | High-performance gRPC server and client implementation                          |
-| [Hash](https://www.goravel.dev/security/hashing.html)                                  | Secure password hashing                                                         |
-| [Http](https://www.goravel.dev/the-basics/routing.html)                                | HTTP routing, controllers, and middleware management                            |
-| [Http Client](https://www.goravel.dev/digging-deeper/http-client.html)                 | Make HTTP requests to external APIs and services                                |
-| [Localization](https://www.goravel.dev/digging-deeper/localization.html)               | Multi-language translation and locale management                                |
-| [Logger](https://www.goravel.dev/the-basics/logging.html)                              | Application logging to files, console, or external services                     |
-| [Mail](https://www.goravel.dev/digging-deeper/mail.html)                               | Send emails via SMTP or queue-based delivery                                    |
-| [Mock](https://www.goravel.dev/testing/mock.html)                                      | Create test mocks for facades and dependencies                                  |
-| [Migrate](https://www.goravel.dev/database/migrations.html)                            | Version control for database schema changes                                     |
-| [Orm](https://www.goravel.dev/orm/getting-started.html)                                | Elegant Orm implementation for database operations                              |
-| [Package Development](https://www.goravel.dev/digging-deeper/package-development.html) | Build reusable packages to extend framework functionality                       |
-| [Process](https://www.goravel.dev/digging-deeper/process.html)                         | An expressive and elegant API around Go's standard `os/exec` package            |
-| [Queue](https://www.goravel.dev/digging-deeper/queues.html)                            | Defer time-consuming tasks to background job processing                         |
-| [Seeder](https://www.goravel.dev/database/seeding.html)                                | Populate database tables with test or initial data                              |
-| [Session](https://www.goravel.dev/the-basics/session.html)                             | Manage user session data across HTTP requests                                   |
-| [Task Scheduling](https://www.goravel.dev/digging-deeper/task-scheduling.html)         | Schedule recurring tasks using cron-like expressions                            |
-| [Testing](https://www.goravel.dev/testing/getting-started.html)                        | HTTP testing, mocking, and assertion utilities                                  |
-| [Validation](https://www.goravel.dev/the-basics/validation.html)                       | Validate incoming request data using rules                                      |
-| [View](https://www.goravel.dev/the-basics/views.html)                                  | Template rendering engine for HTML responses                                    |
+| Modul nomi                                                                                | Tavsifi                                                                                 |
+| ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| [Artisan Console](https://www.goravel.dev/digging-deeper/artisan-console.html)            | Ilova boshqaruvi va avtomatlashtirish uchun CLI buyruq qatori interfeysi                |
+| [Authentication](https://www.goravel.dev/security/authentication.html)                    | Foydalanuvchi identifikatsiyasini JWT va Session haydovchilari bilan tekshirish         |
+| [Authorization](https://www.goravel.dev/security/authorization.html)                      | Siyosat va darvozalar yordamida ruxsat asosidagi kirish nazorati                        |
+| [Cache](https://www.goravel.dev/digging-deeper/cache.html)                                | Ma'lumotlarni xotira, Redis yoki maxsus drayverlar yordamida saqlang va oling           |
+| [Carbon](https://www.goravel.dev/digging-deeper/helpers.html)                             | Sana va vaqt manipulyatsiyasi uchun yordamchi funksiyalar                               |
+| [Konfiguratsiya](https://www.goravel.dev/getting-started/configuration.html)              | Fayllar va muhitdan ilova konfiguratsiyasini boshqarish                                 |
+| [Kriptlash](https://www.goravel.dev/security/encryption.html)                             | Xavfsiz ma'lumotlarni shifrlash va shifrdan ochish vositalari                           |
+| [MB](https://www.goravel.dev/database/getting-started.html)                               | Ma'lumotlar bazasi so'rov quruvchisi                                                    |
+| [Hodisa](https://www.goravel.dev/digging-deeper/event.html)                               | Ilova hodisalarini tarqatish va tinglash tizimi                                         |
+| [Fabrika](https://www.goravel.dev/orm/factories.html)                                     | Test maqsadlari uchun soxta model ma'lumotlarini yaratish                               |
+| [FileStorage](https://www.goravel.dev/digging-deeper/filesystem.html)                     | Fayl yuklash, yuklab olish va bir nechta haydovchilar orqali saqlash                    |
+| [Grpc](https://www.goravel.dev/the-basics/grpc.html)                                      | Yuqori samaradorlikdagi gRPC server va mijoz amalga oshirilishi                         |
+| [Hash](https://www.goravel.dev/security/hashing.html)                                     | Xavfsiz parol xeshlash                                                                  |
+| [Http](https://www.goravel.dev/the-basics/routing.html)                                   | HTTP marshrutlash, kontrollerlar va middleware boshqaruv                                |
+| [Http Client](https://www.goravel.dev/digging-deeper/http-client.html)                    | Tashqi API va xizmatlarga HTTP so‘rovlarni amalga oshiring                              |
+| [Lokalizatsiya](https://www.goravel.dev/digging-deeper/localization.html)                 | Ko'p tilli tarjima va til sozlamalarini boshqarish                                      |
+| [Logger](https://www.goravel.dev/the-basics/logging.html)                                 | Ilovalarni fayllarga, konsolga yoki tashqi xizmatlarga yozish                           |
+| [Pochta](https://www.goravel.dev/digging-deeper/mail.html)                                | SMTP or navbatga asoslangan yetkazib berish orqali elektron pochta xabarlarini yuboring |
+| [Mock](https://www.goravel.dev/testing/mock.html)                                         | Create test mocks for facades and dependencies                                          |
+| [Migrate](https://www.goravel.dev/database/migrations.html)                               | Ma'lumotlar bazasi sxemasi o'zgarishlari uchun versiyalarni boshqarish                  |
+| [Orm](https://www.goravel.dev/orm/getting-started.html)                                   | Ma'lumotlar bazasi operatsiyalari uchun nafis Orm amalga oshirilishi                    |
+| [Paketni Ishlab Chiqish](https://www.goravel.dev/digging-deeper/package-development.html) | Freymvork funksiyalarini kengaytirish uchun qayta ishlatiladigan paketlar yarating      |
+| [Jarayon](https://www.goravel.dev/digging-deeper/process.html)                            | Go standart `os/exec` paketi atrofida ifodali va nafis API                              |
+| [Navbat](https://www.goravel.dev/digging-deeper/queues.html)                              | Vaqt talab qiladigan vazifalarni orqa fondagi ish jarayoniga topshirish                 |
+| [Seeder](https://www.goravel.dev/database/seeding.html)                                   | Ma'lumotlar bazasi jadvallarini sinov yoki boshlang'ich ma'lumotlar bilan to'ldiring    |
+| [Sessiya](https://www.goravel.dev/the-basics/session.html)                                | HTTP so'rovlari bo'ylab foydalanuvchi sessiyasi ma'lumotlarini boshqarish               |
+| [Vazifa rejalashtirish](https://www.goravel.dev/digging-deeper/task-scheduling.html)      | Cron-ga o'xshash ifodalar yordamida takrorlanuvchi vazifalarni rejalashtiring           |
+| [Testlash](https://www.goravel.dev/testing/getting-started.html)                          | HTTP testlash, mocklash va tasdiqlash vositalari                                        |
+| [Tekshirish](https://www.goravel.dev/the-basics/validation.html)                          | Qoidalardan foydalanib kiruvchi so'rov ma'lumotlarini tekshirish                        |
+| [Koʻrish](https://www.goravel.dev/the-basics/views.html)                                  | HTML javoblar uchun shablonlarni ko'rsatish dvigateli                                   |
 
-## Compare With Laravel
+## Laravel bilan solishtiring
 
-[For Detail](https://www.goravel.dev/prologue/compare-with-laravel.html)
+[Batafsil ma'lumot uchun](https://www.goravel.dev/prologue/compare-with-laravel.html)
 
 ## Yo'l xaritasi
 
@@ -75,11 +75,11 @@ Namuna [https://github.com/goravel/example](https://github.com/goravel/example)
 
 ## Ajoyib Kengaytiruvchi Paketlar
 
-[For Detail](https://www.goravel.dev/getting-started/packages.html)
+[Tafsilotlar uchun](https://www.goravel.dev/getting-started/packages.html)
 
 ## Hissa qo'shuvchilar
 
-Bu loyiha har bir hissa qo'shgan insonlar tufayli amalga oshirildi. To contribute, please consult the [Contribution Guide](prologue/contributions.md).
+Bu loyiha har bir hissa qo'shgan insonlar tufayli amalga oshirildi. Hisob qilish uchun, iltimos, [Hisob qilish Qo‘llanmasi](prologue/contributions.md) bilan maslahatlashing.
 
 <0><1></0>
 <2><3></2>
