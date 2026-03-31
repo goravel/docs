@@ -1,24 +1,24 @@
-# Service Providers
+# Xizmat ko'rsatuvchilar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-The most important thing in the kernel boot operation is to load the `ServiceProvider`. All `ServiceProvider` under the application are configured in the `bootstrap/providers.go` file.
+Yadro ishga tushirish operatsiyasida eng muhim narsa `ServiceProvider`ni yuklashdir. Ilovaning barcha `ServiceProvider`lari `bootstrap/providers.go` faylida sozlanadi.
 
-First, the kernel will call the `Register` method of all service providers. After all service providers have been registered, the kernel will call the `Boot` method of all `ServiceProvider` again.
+Avvalo, yadro barcha xizmat ko'rsatuvchilarning `Register` metodini chaqiradi. Barcha xizmat ko'rsatuvchilar ro'yxatdan o'tkazilgandan so'ng, yadro barcha `ServiceProvider`larning `Boot` metodini yana chaqiradi.
 
-The `ServiceProvider` is the key to the life cycle of Goravel. They enable the framework to contain various components, such as routing, database, queue, cache, etc.
+`ServiceProvider` Goravel hayot tsiklining kalitidir. Ular freymvorkga turli komponentlarni, masalan, marshrutlash, ma'lumotlar bazasi, navbat, keshlash va hokazolarni o'z ichiga olish imkonini beradi.
 
-## Create Service Provider
+## Xizmat ko'rsatuvchini yaratish
 
-Service providers contain a `Register` and a `Boot` method. Within the `Register` method, you should only bind things into [the service container](./service-container.md). You should never attempt to register any event listeners, routes, or any other piece of functionality within the `Register` method, use the `Boot` method for that.
+Xizmat ko'rsatuvchilar `Register` va `Boot` usullarini o'z ichiga oladi. `Register` usulida siz faqat [xizmat konteyneriga](./service-container.md) narsalarni bog'lashingiz kerak. Siz hech qachon `Register` usulida hech qanday hodisa tinglovchilarini, marshrutlarni yoki boshqa funksionallikni ro'yxatdan o'tkazishga urinmang, buning uchun `Boot` usulidan foydalaning.
 
 ```bash
-./artisan make:provider YourServiceProviderName
+./artisan make:provider SizningXizmatKo‘rsatuvchiProvayderingizNomi
 ```
 
-The Artisan CLI can generate a new provider via the `make:provider` command. The new service provider will be registered automatically in the `bootstrap/providers.go::Providers()` function and the function will be called by `WithProviders`.
+Artisan CLI `make:provider` buyrug'i orqali yangi provayder yaratish mumkin. Yangi xizmat ko'rsatuvchi provayder `bootstrap/providers.go::Providers()` funksiyasida avtomatik ravishda ro'yxatdan o'tkaziladi va funksiya `WithProviders` tomonidan chaqiriladi.
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -31,7 +31,7 @@ func Boot() contractsfoundation.Application {
 
 ## Dependency Relationship
 
-`ServiceProvider` provides an optional method `Relationship() binding.Relationship`, used to declare the dependency relationship, the `ServiceProvider` that sets this method will not depend on the registration order, and the `ServiceProvider` that does not set it will be registered last, for example:
+`ServiceProvider` `Relationship()` ixtiyoriy usulini taqdim etadi `binding.Relationship`, bog'liqlik munosabatini e'lon qilish uchun ishlatiladi, ushbu usulni o'rnatgan `ServiceProvider` ro'yxatga olish tartibiga bog'liq bo'lmaydi, va uni o'rnatmagan `ServiceProvider` oxirgi ro'yxatga olinadi, masalan:
 
 ```go
 type ServiceProvider struct {}
@@ -59,11 +59,11 @@ func (r *ServiceProvider) Register(app foundation.Application) {
 func (r *ServiceProvider) Boot(app foundation.Application) {}
 ```
 
-## Runners
+## Ishlovchilar
 
-The `ServiceProvider` can also implement the `Runners` interface to run some code when the application starts. It's usually used to start/shutdown the service which is defined in the `ServiceProvider`. For example: `Route`, `Schedule`, `Queue`, etc. You don't need to start/shutdown these services with `Runners` in the `main.go` anymore, Goravel will take care of it.
+`ServiceProvider` ilovani ishga tushirishda ba'zi kodlarni ishga tushirish uchun `Runners` interfeysini ham amalga oshirishi mumkin. Bu odatda `ServiceProvider` da aniqlangan xizmatni ishga tushirish yoki o'chirish uchun ishlatiladi. Masalan: `Route`, `Schedule`, `Queue`, va boshqalar. Endi siz bu xizmatlarni `main.go` faylidagi `Runners` bilan ishga tushirish/to‘xtatish shart emas, Goravel buning o‘zini qiladi.
 
-A `Runner` contains three methods: `ShouldRun()`, `Run()`, and `Shutdown()`.
+`Runner` uchta usulni o'z ichiga oladi: `ShouldRun()`, `Run()`, va `Shutdown()`.
 
 ```go
 type Runner interface {
@@ -76,7 +76,7 @@ type Runner interface {
 }
 ```
 
-There is an example of a `RouteRunner` defined in the `ServiceProvider` to start and shutdown the `Route` service.
+`ServiceProvider` ichida `Route` xizmatini ishga tushirish va o‘chirish uchun aniqlangan `RouteRunner` misoli mavjud.
 
 ```go
 type ServiceProvider struct {}
@@ -123,7 +123,7 @@ func (r *RouteRunner) Shutdown() error {
 }
 ```
 
-You can register your own `Runner` in the `bootstrap/app.go::WithRunners` function to run some code when the application starts.
+Ilovani ishga tushirishda ba'zi kodni ishga tushirish uchun `bootstrap/app.go::WithRunners` funksiyasida o'zingizning `Runner`ingizni ro'yxatdan o'tkazishingiz mumkin.
 
 ```go
 func Boot() contractsfoundation.Application {
