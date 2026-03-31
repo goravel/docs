@@ -1,36 +1,36 @@
-# Getting Started
+# Boshlash
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Almost all applications need to interact with databases, so Goravel provides a very simple and easy-to-use database interaction. Developers can use native SQL, query builder, and [Orm](../orm/getting-started) to interact with databases. Currently, Goravel provides official support for the following four databases:
+Deyarli barcha ilovalar ma'lumotlar bazalari bilan o'zaro aloqada bo'lishi kerak, shuning uchun Goravel juda oddiy va qulay ma'lumotlar bazasi o'zaro aloqasini taqdim etadi. Dasturchilar ma'lumotlar bazalari bilan ishlash uchun native SQL, so'rov quruvchi va [Orm](../orm/getting-started) dan foydalanishlari mumkin. Hozirda Goravel quyidagi to'rtta ma'lumotlar bazasini rasmiy qo'llab-quvvatlaydi:
 
-| Database   | Driver                                                                               |
-| ---------- | ------------------------------------------------------------------------------------ |
-| PostgreSQL | [github.com/goravel/postgres](https://github.com/goravel/postgres)   |
-| MySQL      | [github.com/goravel/mysql](https://github.com/goravel/mysql)         |
-| SQL Server | [github.com/goravel/sqlserver](https://github.com/goravel/sqlserver) |
-| SQLite     | [github.com/goravel/sqlite](https://github.com/goravel/sqlite)       |
+| Ma'lumotlar bazasi | Haydovchi                                                                            |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| PostgreSQL         | [github.com/goravel/postgres](https://github.com/goravel/postgres)   |
+| MySQL              | [github.com/goravel/mysql](https://github.com/goravel/mysql)         |
+| SQL Server         | [github.com/goravel/sqlserver](https://github.com/goravel/sqlserver) |
+| SQLite             | [github.com/goravel/sqlite](https://github.com/goravel/sqlite)       |
 
-## Configuration
+## Konfiguratsiya
 
-The database configuration file is `config/database.go`. You can configure all database connections in this file and specify the default database connection. Most of the configuration in this file is based on the project's environment variables.
+Ma'lumotlar bazasi konfiguratsiya fayli `config/database.go` faylidir. Siz ushbu faylda barcha ma'lumotlar bazasi ulanishlarini sozlashingiz va standart ma'lumotlar bazasi ulanishini belgilashingiz mumkin. Ushbu fayldagi konfiguratsiyaning aksariyati loyihaning muhit o'zgaruvchilari asosida qurilgan.
 
-### Connection Pool
+### Ulanish havzasi
 
-You can configure the database connection pool in the configuration file to improve the concurrency performance by properly configuring the connection pool parameters:
+Siz konfiguratsiya faylida ma'lumotlar bazasi ulanish havzasini sozlashingiz mumkin, bu esa ulanish havzasi parametrlarini to'g'ri sozlash orqali bir vaqtning o'zida ishlash samaradorligini oshirishga yordam beradi:
 
-| Configuration Key                                                                | Description                  |
-| -------------------------------------------------------------------------------- | ---------------------------- |
-| pool.max_idle_conns    | Maximum idle connections     |
-| pool.max_open_conns    | Maximum connections          |
-| pool.conn_max_idletime | Connection maximum idle time |
-| pool.conn_max_lifetime | Connection maximum lifetime  |
+| Konfiguratsiya kaliti                                                            | Tavsif                            |
+| -------------------------------------------------------------------------------- | --------------------------------- |
+| pool.max_idle_conns    | Maksimal bo‘sh ulanishlar         |
+| pool.max_open_conns    | Maksimal ulanishlar               |
+| pool.conn_max_idletime | Ulanishning maksimal ishsiz vaqti |
+| pool.conn_max_lifetime | Ulanishning maksimal umri         |
 
-### Read-Write Splitting
+### O‘qish-yozishni ajratish
 
-Sometimes you may want to use a database connection to execute `SELECT` statements, while `INSERT`, `UPDATE`, and `DELETE` statements are executed by another database connection. In Goravel, it is easy to implement read-write splitting.
+Ba'zan siz `SELECT` so'rovlarini bajarish uchun ma'lumotlar bazasi ulanishidan foydalanishingiz mumkin, shu bilan birga `INSERT`, `UPDATE` va `DELETE` so'rovlari boshqa ma'lumotlar bazasi ulanishi tomonidan bajarilishi mumkin. Goravelda o'qish-yozishni ajratishni amalga oshirish oson.
 
 ```go
 import "github.com/goravel/framework/contracts/database"
@@ -55,15 +55,15 @@ import "github.com/goravel/framework/contracts/database"
 }
 ```
 
-We have added two keys, `read` and `write`, in the database configuration. `192.168.1.1` will be used as the "read" connection host, and `192.168.1.2` will be used as the "write" connection host. These two connections will share the configurations in the `mysql` array, such as the database prefix and character encoding. If there are multiple values in the `read` or `write` arrays, Goravel will randomly select the database host for each connection.
+Biz ma'lumotlar bazasi konfiguratsiyasida `read` va `write` nomli ikkita kalit qo'shdik. `192.168.1.1` "o'qish" ulanishi uchun xost sifatida ishlatiladi, `192.168.1.2` esa "yozish" ulanishi uchun xost sifatida ishlatiladi. Bu ikki ulanish "mysql" massividagi ma'lumotlar bazasi prefiksi va belgilar kodlash kabi konfiguratsiyalarni baham ko'radi. Agar `read` yoki `write` massivlarida bir nechta qiymatlar bo'lsa, Goravel har bir ulanish uchun ma'lumotlar bazasi xostini tasodifiy tanlaydi.
 
-## Running Native SQL Queries
+## Asl SQL so'rovlarini ishga tushirish
 
-After configuring the database connection, you can use `facades.DB()` to run queries. `facades.DB()` provides various methods for running queries: `Select`, `Insert`, `Update`, `Delete`, and `Statement`.
+Ma'lumotlar bazasi ulanishini sozlashdan so'ng, so'rovlarni bajarish uchun `facades.DB()` dan foydalanishingiz mumkin. `facades.DB()` turli xil so'rovlarni bajarish uchun bir qancha usullarni taqdim etadi: `Select`, `Insert`, `Update`, `Delete` va `Statement`.
 
-### Select
+### Tanlash
 
-Use the `facades.DB().Select()` method to execute basic queries:
+Oddiy so'rovlarni bajarish uchun `facades.DB().Select()` usulidan foydalaning:
 
 ```go
 // Get multiple records
@@ -75,55 +75,55 @@ var product Product
 err := facades.DB().Select(&product, "SELECT * FROM products WHERE id = ?", 1)
 ```
 
-> Note: Different database drivers require different placeholders. For example, the `?` placeholder is used for MySQL, while the `@` placeholder is used for PostgreSQL.
+> Eslatma: Turli ma'lumotlar bazasi drayverlari turli joy egallovchilarni talab qiladi. Masalan, `?` belgisi MySQL uchun, `@` belgisi esa PostgreSQL uchun ishlatiladi.
 
-### Insert
+### Kiritish
 
-Use the `facades.DB().Insert()` method to execute insertion statements:
+"facades.DB().Insert()" usulidan foydalanib, kiritish bayonotlarini bajarish uchun:
 
 ```go
 result, err := facades.DB().Insert("insert into users (name, email) values (?, ?)", "Goravel", "goravel@example.com")
 ```
 
-### Update
+### Yangilash
 
-Use the `facades.DB().Update()` method to execute update statements:
+Yangilash bayonotlarini bajarish uchun `facades.DB().Update()` usulidan foydalaning:
 
 ```go
 result, err := facades.DB().Update("update users set name = ? where id = ?", "Goravel", 1)
 ```
 
-### Delete
+### O‘chirish
 
-Use the `facades.DB().Delete()` method to execute delete statements:
+O'chirish bayonotlarini bajarish uchun `facades.DB().Delete()` usulidan foydalaning:
 
 ```go
 result, err := facades.DB().Delete("delete from users where id = ?", 1)
 ```
 
-### Statement
+### Bayonot
 
-Use the `facades.DB().Statement()` method to execute general statements:
+Umumiy bayonotlarni bajarish uchun `facades.DB().Statement()` usulidan foydalaning:
 
 ```go
 err := facades.DB().Statement("drop table users")
 ```
 
-### Using Multiple Database Connections
+### Bir nechta ma'lumotlar bazasi ulanishlaridan foydalanish
 
-If you define multiple database connections in the configuration file, you can specify the connection to use by calling the `facades.DB().Connection()` method:
+Agar konfiguratsiya faylida bir nechta ma'lumotlar bazasi ulanishlarini belgilasangiz, `facades.DB().Connection()` usulini chaqirish orqali foydalaniladigan ulanishni ko'rsatishingiz mumkin:
 
 ```go
 var user User
 err := facades.DB().Connection("postgres").Select(&user, "select * from users where id = ?", 1)
 ```
 
-## Database Transactions
+## Ma'lumotlar bazasi tranzaksiyalari
 
-You can use the `facades.DB().Transaction()` method to execute a series of operations in a database transaction. If an exception is thrown in the transaction closure, the transaction will be automatically rolled back. If the closure executes successfully, the transaction will be automatically committed:
+Siz ma'lumotlar bazasi transaksiyasida bir qator operatsiyalarni bajarish uchun `facades.DB().Transaction()` usulidan foydalanishingiz mumkin. Agar tranzaksiya yopilishida istisno yuzaga kelsa, tranzaksiya avtomatik ravishda orqaga qaytariladi. Agar yopilish muvaffaqiyatli bajarilsa, tranzaksiya avtomatik ravishda tasdiqlanadi:
 
 ```go
-import "github.com/goravel/framework/contracts/database/db"
+mport "github.com/goravel/framework/contracts/database/db"
 
 err := facades.DB().Transaction(func(tx db.Tx) error {
   _, err := tx.Table("products").Insert(Product{Name: "transaction product1"})
@@ -132,9 +132,9 @@ err := facades.DB().Transaction(func(tx db.Tx) error {
 })
 ```
 
-### Manually Using Transactions
+### Qo‘lda Tranzaksiyalardan Foydalanish
 
-If you want to manually control the start, commit, and rollback of a transaction, you can use the `Begin`、`Commit` and `Rollback` methods:
+Agar siz tranzaksiyaning boshlanishi, tasdiqlanishi va bekor qilinishini qo'lda boshqarishni istasangiz, `Begin`, `Commit` va `Rollback` metodlaridan foydalanishingiz mumkin:
 
 ```go
 tx, err := facades.DB().BeginTransaction()
@@ -154,29 +154,29 @@ if err != nil {
 }
 ```
 
-## Checking Databases
+## Ma'lumotlar bazalarini tekshirish
 
-### Database Overview
+### Ma'lumotlar bazasi haqida umumiy ma'lumot
 
-Goravel provides several Artisan commands to help you understand the structure of the database.
+Goravel ma'lumotlar bazasining tuzilishini tushunishga yordam beradigan bir nechta Artisan buyruqlarini taqdim etadi.
 
-You can use the `db:show` command to view all tables in the database.
+Siz ma'lumotlar bazasidagi barcha jadvallarni ko'rish uchun `db:show` buyrug'idan foydalanishingiz mumkin.
 
 ```bash
 ./artisan db:show
 ./artisan db:show --database=postgres
 ```
 
-You can also use the `db:table` command to view the structure of a specific table.
+Shuningdek, siz ma'lum bir jadvalning tuzilishini ko'rish uchun `db:table` buyrug'idan foydalanishingiz mumkin.
 
 ```bash
 ./artisan db:table
 ./artisan db:table --database=postgres
 ```
 
-### Table Overview
+### Jadvalga umumiy nazar
 
-If you want to get an overview of a single table in the database, you can execute the `db:table` Artisan command. This command provides an overview of a database table, including its columns, types, attributes, keys, and indexes:
+Agar ma'lumotlar bazasidagi bitta jadvalni umumiy ko'rinishini olishni istasangiz, `db:table` Artisan buyrug'ini bajarishingiz mumkin. Bu buyruq ma'lumotlar bazasi jadvalining umumiy ko'rinishini taqdim etadi, jumladan uning ustunlari, turlari, atributlari, kalitlari va indekslari:
 
 ```bash
 ./artisan db:table users
