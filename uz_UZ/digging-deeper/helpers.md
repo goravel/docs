@@ -1,10 +1,10 @@
-# Helpers
+# Yordamchilar
 
 [[toc]]
 
-## Available Methods
+## Mavjud usullar
 
-### Paths
+### Yo'llar
 
 |                                                                      |                                                                    |                                                                  |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------- |
@@ -12,7 +12,7 @@
 | [path.Database()](#path-database) | [path.Storage()](#path-storage) | [path.Public()](#path-public) |
 | [path.Resource()](#path-resource) |                                                                    |                                                                  |
 
-### Carbon
+### Karbon
 
 |                                                                                            |                                                                                              |                                                                                              |
 | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -32,7 +32,7 @@
 | -------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
 | [debug.Dump()](#debug-dump) | [debug.SDump()](#debug-sdump) | [debug.FDump()](#debug-fdump) |
 
-### Maps
+### Xaritalar
 
 |                                                                |                                                                  |                                                                  |
 | -------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
@@ -41,14 +41,14 @@
 | [maps.Only()](#maps-only)   | [maps.Pull()](#maps-pull)     | [maps.Set()](#maps-set)       |
 | [maps.Where()](#maps-where) |                                                                  |                                                                  |
 
-### Convert
+### Konvertatsiya qilish
 
 |                                                                          |                                                                          |                                                                              |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
 | [convert.Tap()](#convert-tap)         | [convert.With()](#convert-with)       | [convert.Transform()](#convert-transform) |
 | [convert.Default()](#convert-default) | [convert.Pointer()](#convert-pointer) |                                                                              |
 
-### Collect
+### Olish
 
 |                                                                        |                                                                          |                                                                          |
 | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
@@ -59,7 +59,7 @@
 | [collect.Split()](#collect-split)   | [collect.Sum()](#collect-sum)         | [collect.Unique()](#collect-unique)   |
 | [collect.Values()](#collect-values) |                                                                          |                                                                          |
 
-## Paths
+## Yo'llar
 
 ```go
 import "github.com/goravel/framework/support/path"
@@ -67,7 +67,7 @@ import "github.com/goravel/framework/support/path"
 
 ### `path.App()`
 
-The `path.App()` function returns the absolute path to your application's app directory. You may also use the `path.App()` function to generate a path to a file relative to the application directory:
+. You may also use the `path.App()` function to generate a path to a file relative to the application directory:
 
 ```go
 path := path.App()
@@ -195,7 +195,7 @@ carbon.IsTestNow()
 
 ### `carbon.Parse()`
 
-The `carbon.Parse()` function gets `Carbon` object by String:
+
 
 ```go
 carbon.Parse("2020-08-05 13:14:15")
