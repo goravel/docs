@@ -1,16 +1,16 @@
-# Query Builder
+# So'rov Quruvchi
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-The database query builder provides a convenient interface to create and execute database queries. It can be used to perform most database operations in your application and works with all supported database systems.
+Ma'lumotlar bazasi so'rovlari quruvchisi ma'lumotlar bazasi so'rovlarini yaratish va bajarish uchun qulay interfeysni taqdim etadi. U ilovangizda ko'p ma'lumotlar bazasi operatsiyalarini bajarish uchun ishlatilishi mumkin va barcha qo'llab-quvvatlanadigan ma'lumotlar bazasi tizimlari bilan ishlaydi.
 
-Query builder uses parameter binding to protect your application from SQL injection. You don't need to clean or escape strings passed to the query builder.
+So'rov quruvchisi SQL in'ektsiyasidan himoya qilish uchun parametr bog'lashdan foydalanadi. So'rov quruvchisiga uzatilgan satrlarni tozalash yoki qochishga hojat yo'q.
 
-## Running Queries
+## So'rovlarni bajarish
 
-Framework provides various query methods, you can query, create, update and delete data in the database. Note that when you want to bind data to `struct` or [model](../orm/getting-started.md#model-definition), you need to add the `db` tag to the field:
+Framework turli xil so'rov usullarini taqdim etadi, siz ma'lumotlar bazasidan ma'lumotlarni so'rashingiz, yaratishingiz, yangilashingiz va o'chirishingiz mumkin. E'tibor bering, ma'lumotlarni `struct` yoki [model](../orm/getting-started.md#model-definition) ga bog'lamoqchi bo'lganingizda, maydonga `db` tegnini qo'shishingiz kerak:
 
 ```go
 type User struct {
@@ -25,54 +25,54 @@ type User struct {
 }
 ```
 
-### Retrieving All Rows
+### Barcha qatorlarni olish
 
-You can use the `facades.DB()` provided `table` method to start a query. The `table` method returns a chainable query builder instance for the specified table, allowing you to chain more constraints, and finally use the `Get` method to retrieve the query results:
+Siz so'rovni boshlash uchun `facades.DB()` tomonidan taqdim etilgan `table` usulidan foydalanishingiz mumkin. `table` usuli belgilangan jadval uchun zanjirli so'rov quruvchi namunasini qaytaradi, bu sizga qo'shimcha cheklovlarni zanjirlash va natijalarni olish uchun `Get` usulidan foydalanish imkonini beradi:
 
 ```go
 var users []User
 err := facades.DB().Table("users").Get(&users)
 ```
 
-### Retrieving a Single Row or Column
+### Bitta qator yoki ustunni olish
 
-If you only need to retrieve a single row of data from the database table, you can use the `First` method.
+Agar sizga ma'lumotlar bazasi jadvalidan faqat bitta qator ma'lumotlarni olish kerak bo'lsa, siz "First" usulidan foydalanishingiz mumkin.
 
 ```go
 var user User
 err := facades.DB().Table("users").Where("id", 1).First(&user)
 ```
 
-You can use the `Value` method to retrieve the value of a single column:
+Bitta ustunning qiymatini olish uchun `Value` usulidan foydalanishingiz mumkin:
 
 ```go
 var name string
 err := facades.DB().Table("users").Where("id", 1).Value("name", &name)
 ```
 
-You can use the `Find` method to retrieve a single row of data by passing the `id`:
+Siz `id` ni o'tkazish orqali ma'lumotlarning bitta qatorini olish uchun `Find` usulidan foydalanishingiz mumkin:
 
 ```go
 var user User
 err := facades.DB().Table("users").Find(&user, 1)
 
-// You can also pass a collection of `id` to retrieve multiple rows of data
+// Shuningdek, bir nechta ma'lumot qatorlarini olish uchun id to'plamini o'tkazishingiz mumkin
 var users []User
 err := facades.DB().Table("users").Find(&users, []int{1, 2, 3})
 
-// Find defaults the table primary key to `id`, if the table primary key is not `id`, you can pass the `id` field name
+// Find jadvalning asosiy kalitini sukut bo'yicha id deb belgilaydi, agar jadvalning asosiy kaliti id bo'lmasa, id maydon nomini o'tkazishingiz mumkin
 var user User
 err := facades.DB().Table("users").Find(&users, "uuid", "1")
 ```
 
-You can use the `FindOrFail` or `FirstOrFail` method, if the record is not found, it will throw a `sql.ErrNoRows` error:
+Agar yozuv topilmasa, `FindOrFail` yoki `FirstOrFail` usulidan foydalanishingiz mumkin, u `sql.ErrNoRows` xatosini chiqaradi:
 
 ```go
 var user User
 err := facades.DB().Table("users").FindOrFail(&user, 1)
 ```
 
-You can use the `FindOr` or `FirstOr` method, if the record is not found, it will execute the closure function:
+Agar yozuv topilmasa, `FindOr` yoki `FirstOr` usulidan foydalanishingiz mumkin, u holda yopish funksiyasi bajariladi:
 
 ```go
 var user *User
@@ -81,18 +81,18 @@ err = facades.DB().Table("users").Where("name", "John").FirstOr(&user, func() er
 })
 ```
 
-### Retrieving a Single Column Value
+### Bitta ustun qiymatini olish
 
-If you want to retrieve a list of records containing a single column value, you can use the `Pluck` method:
+Agar siz bitta ustun qiymatini o'z ichiga olgan yozuvlar ro'yxatini olishni istasangiz, `Pluck` usulidan foydalanishingiz mumkin:
 
 ```go
 var emails []string
 err := facades.DB().Table("users").Pluck("email", &emails)
 ```
 
-### Traversing Results
+### Natijalarni o'tish
 
-You can use the `Each` method to traverse all results:
+Siz `Each` metodidan barcha natijalarni aylanib o'tish uchun foydalanishingiz mumkin:
 
 ```go
 var products []Product
@@ -110,9 +110,9 @@ err := facades.DB().Table("products").Each(func(rows []db.Row) error {
 })
 ```
 
-### Chunking Results
+### Chunking natijalari
 
-If you need to process thousands of database records, consider using the `Chunk` method. This method retrieves a small chunk of results at a time and passes each chunk to a closure function for processing:
+Agar siz minglab ma'lumotlar bazasi yozuvlarini qayta ishlashingiz kerak bo'lsa, `Chunk` usulidan foydalanishni ko'rib chiqing. Bu usul natijalarni bir vaqtning o'zida kichik qismlarga ajratadi va har bir qismni qayta ishlash uchun yopilish funksiyasiga uzatadi:
 
 ```go
 var products []Product
@@ -130,11 +130,11 @@ err := facades.DB().Table("products").Chunk(2, func(rows []db.Row) error {
 })
 ```
 
-> Note: When modifying records in the Chunk callback, it may result in records not being included in the chunked results.
+> Eslatma: Chunk chaqiruvida yozuvlarni o'zgartirish, yozuvlarning chunk natijalariga kiritilmasligiga olib kelishi mumkin.
 
-### Cursor
+### Kursor
 
-A cursor can be used to process large amounts of data without loading all data into memory at once. It processes data one by one instead of loading all data at once.
+Kursor barcha ma'lumotlarni bir vaqtning o'zida xotiraga yuklamasdan, katta hajmdagi ma'lumotlarni qayta ishlash uchun ishlatilishi mumkin. U barcha ma'lumotlarni bir vaqtning o'zida yuklash o'rniga, ma'lumotlarni birma-bir qayta ishlaydi.
 
 ```go
 rows, err := facades.DB().Table("products").Cursor()
@@ -150,9 +150,9 @@ for row := range rows {
 }
 ```
 
-### Aggregates
+### Agregatlar
 
-The query builder provides aggregate methods: `Count`, `Sum`, `Avg`, `Min`, `Max`.
+So'rov quruvchisi quyidagi yig'ish usullarini taqdim etadi: `Count`, `Sum`, `Avg`, `Min`, `Max`.
 
 ```go
 count, err := facades.DB().Table("users").Count()
@@ -170,9 +170,9 @@ var max int
 err := facades.DB().Table("users").Max("age", &max)
 ```
 
-### Checking if a Record Exists
+### Yozuv mavjudligini tekshirish
 
-You can use the `Exists` and `DoesntExist` methods to determine if the result of a query condition exists:
+Siz so'rov shartining natijasi mavjudligini aniqlash uchun `Exists` va `DoesntExist` metodlaridan foydalanishingiz mumkin:
 
 ```go
 exists, err := facades.DB().Table("users").Where("votes > ?", 100).Exists()
@@ -180,9 +180,9 @@ exists, err := facades.DB().Table("users").Where("votes > ?", 100).Exists()
 exists, err := facades.DB().Table("users").Where("votes > ?", 100).DoesntExist()
 ```
 
-### Pagination
+### Sahifalash
 
-You can use the `Paginate` method to paginate the query results:
+So'rov natijalarini sahifalash uchun `Paginate` metodidan foydalanishingiz mumkin:
 
 ```go
 var (
@@ -193,60 +193,60 @@ var (
 err := facades.DB().Table("users").Where("name", "John").Paginate(1, 10, &users, &total)
 ```
 
-## Select
+## Tanlash
 
-You may not always want to retrieve all columns from a database table. Use the `Select` method to customize a "select" query statement to query the specified fields:
+Siz har doim ma'lumotlar bazasi jadvalidan barcha ustunlarni olishni xohlamasligingiz mumkin. "Select" so'rov bayonini sozlash uchun `Select` usulidan foydalaning va belgilangan maydonlarni so'rang:
 
 ```go
 var users []User
 err := facades.DB().Table("users").Select("name", "email as user_email").Get(&users)
 ```
 
-The `Distinct` method will force the query to return unique results:
+`Distinct` usuli so'rovning noyob natijalarni qaytarishini majbur qiladi:
 
 ```go
 var users []User
 err := facades.DB().Table("users").Distinct().Select("name").Get(&users)
 ```
 
-## Raw Expressions
+## Xom ifodalar
 
-Sometimes you may need to use raw expressions in your queries. You can use the `db.Raw` method to create a raw expression:
+Ba'zan so'rovlaringizda to'g'ridan-to'g'ri ifodalardan foydalanish kerak bo'lishi mumkin. Siz `db.Raw` usulidan foydalanib, xom ifoda yaratishingiz mumkin:
 
 ```go
-import "github.com/goravel/framework/database/db"
+mport "github.com/goravel/framework/database/db"
 
 res, err := facades.DB().Model(&user).Update("age", db.Raw("age - ?", 1))
 ```
 
-## Select
+## Tanlash
 
-### Specifying a Select Clause
+### Select bandini belgilash
 
-Of course, you may not always want to retrieve all columns from a database table. Use the `Select` method to specify a custom select clause for your query:
+Albatta, siz har doim ma'lumotlar bazasi jadvalidan barcha ustunlarni olishni xohlamasligingiz mumkin. So'rovingiz uchun maxsus tanlash bandini belgilash uchun `Select` usulidan foydalaning:
 
 ```go
-// Select specific fields
+// Belgilangan maydonlarni tanlash
 err := facades.DB().Select("name", "age").Get(&users)
 
-// Use a subquery
+// Subquery-dan foydalanish
 err := facades.DB().Select("name", db.Raw("(SELECT COUNT(*) FROM posts WHERE users.id = posts.user_id) as post_count")).Get(&users)
 ```
 
-### Distinct
+### Farqli
 
-The `Distinct` method will force the query to return unique results:
+`Distinct` usuli so'rovga noyob natijalarni qaytarishni majbur qiladi:
 
 ```go
 var users []models.User
 err := facades.DB().Distinct("name").Find(&users)
 ```
 
-## Raw Methods
+## Xom usullar
 
 ### WhereRaw / OrWhereRaw
 
-The `WhereRaw` and `OrWhereRaw` methods can be used to inject raw "where" clauses into your query. These methods accept an optional binding array as their second parameter:
+`WhereRaw` va `OrWhereRaw` metodlari so'rovga "where" bandlarini bevosita kiritish uchun ishlatilishi mumkin. Ushbu usullar ikkinchi parametr sifatida ixtiyoriy bog'lash massivini qabul qiladi:
 
 ```go
 var users []User
@@ -258,7 +258,7 @@ err := facades.DB().OrWhereRaw("age = ? or age = ?", []any{25, 30}).Get(&users)
 
 ### OrderByRaw
 
-The `OrderByRaw` method can be used to set a raw string as the value of the "order by" clause:
+`OrderByRaw` usuli "order by" bandining qiymati sifatida xom satrni o'rnatish uchun ishlatilishi mumkin:
 
 ```go
 var users []User
@@ -266,11 +266,11 @@ var users []User
 err := facades.DB().OrderByRaw("age DESC, id ASC").Get(&users)
 ```
 
-## Joins
+## Qo'shiladi
 
-### Inner Join
+### Ichki qo'shilish
 
-The query builder can be used to write join statements. To execute a basic SQL "inner join", you can use the `Join` method on the query builder instance:
+So'rov qurilgichini birlashtirish bayonotlarini yozish uchun ishlatish mumkin. "Ichki join" SQL so‘rovini bajarish uchun so‘rov quruvchi namunasidagi `Join` metodidan foydalanishingiz mumkin:
 
 ```go
 var users []User
@@ -278,9 +278,9 @@ var users []User
 err := facades.DB().Table("users").Join("posts as p ON users.id = p.user_id AND p.id = ?", 1).Where("age", 25).Get(&users)
 ```
 
-### Left Join / Right Join
+### Chap Join / O'ng Join
 
-If you want to execute a "left join" or "right join", you can use the `LeftJoin` or `RightJoin` methods:
+Agar siz "chap qo'shilish" yoki "o'ng qo'shilish"ni bajarishni istasangiz, `LeftJoin` yoki `RightJoin` usullaridan foydalanishingiz mumkin:
 
 ```go
 var users []User
@@ -292,7 +292,7 @@ err = facades.DB().Table("users").RightJoin("posts as p ON users.id = p.user_id 
 
 ### Cross Join
 
-The `CrossJoin` method can be used to execute a "cross join":
+`CrossJoin` usuli "cross join"ni bajarish uchun ishlatilishi mumkin:
 
 ```go
 var users []User
@@ -300,11 +300,11 @@ var users []User
 err := facades.DB().Table("users").CrossJoin("posts as p ON users.id = p.user_id AND p.id = ?", 1).Where("age", 25).Get(&users)
 ```
 
-## Basic Where Clauses
+## Asosiy Where Shartlari
 
-### Where / OrWhere
+### Qayerda / Yoki Qayerda
 
-You can use the `Where` method on the query builder instance to add where clauses to the query.
+Siz so'rov quruvchi namunasi ustida `Where` usulidan foydalanib, so'rovga where bandlarini qo'shishingiz mumkin.
 
 ```go
 import "github.com/goravel/framework/contracts/database/db"
@@ -326,7 +326,7 @@ err := facades.DB().Where(func(query db.Query) db.Query {
 
 ### WhereNot / OrWhereNot
 
-The `WhereNot` and `OrWhereNot` methods can be used to negate a given set of query conditions.
+`WhereNot` va `OrWhereNot` metodlari berilgan so'rov shartlar to'plamini inkor qilish uchun ishlatilishi mumkin.
 
 ```go
 import "github.com/goravel/framework/contracts/database/db"
@@ -346,9 +346,9 @@ err := facades.DB().WhereNot(func(query db.Query) db.Query {
 }).OrWhereNot("name", "John").Get(&users)
 ```
 
-### WhereExists / WhereNotExists
+### Mavjud bo‘lgan joy / Mavjud bo‘lmagan joy
 
-The `WhereExists` method allows you to write exists SQL clauses:
+`WhereExists` usuli sizga mavjud SQL bandlarini yozish imkonini beradi:
 
 ```go
 var users []User
@@ -374,11 +374,11 @@ facades.DB().Table("products").WhereNone([]string{"age", "score"}, ">", 18).Find
 // SQL: SELECT * FROM products WHERE NOT (age > ?) AND NOT (score > ?)
 ```
 
-### Other Where Clauses
+### Boshqa Where bandlari
 
 **WhereBetween / OrWhereBetween**
 
-The `WhereBetween` method verifies that a field value is between two given values:
+`WhereBetween` usuli maydon qiymati berilgan ikki qiymat orasida ekanligini tekshiradi:
 
 ```go
 facades.DB().Table("users").WhereBetween("votes", 1, 100)
@@ -386,7 +386,7 @@ facades.DB().Table("users").WhereBetween("votes", 1, 100)
 
 **WhereNotBetween / OrWhereNotBetween**
 
-The `WhereNotBetween` method verifies that a field value is not between two given values:
+`WhereNotBetween` usuli maydon qiymati berilgan ikki qiymat oralig'ida emasligini tekshiradi:
 
 ```go
 facades.DB().Table("users").WhereNotBetween("votes", 1, 100)
@@ -394,7 +394,7 @@ facades.DB().Table("users").WhereNotBetween("votes", 1, 100)
 
 **WhereIn / WhereNotIn / OrWhereIn / OrWhereNotIn**
 
-The `WhereIn` method verifies that a field value must exist in the specified array:
+`WhereIn` usuli maydon qiymati belgilangan massivda mavjud bo'lishi kerakligini tekshiradi:
 
 ```go
 facades.DB().Table("users").WhereIn("id", []any{1, 2, 3})
@@ -402,7 +402,7 @@ facades.DB().Table("users").WhereIn("id", []any{1, 2, 3})
 
 **WhereNull / WhereNotNull / OrWhereNull / OrWhereNotNull**
 
-The `WhereNull` method verifies that a specified field must be `NULL`:
+`WhereNull` usuli belgilangan maydon `NULL` bo'lishi kerakligini tekshiradi:
 
 ```go
 facades.DB().Table("users").WhereNull("updated_at")
@@ -410,7 +410,7 @@ facades.DB().Table("users").WhereNull("updated_at")
 
 **WhereLike / WhereNotLike / OrWhereLike / OrWhereNotLike**
 
-The `WhereLike` method verifies that a field value contains a given value:
+`WhereLike` usuli maydon qiymati berilgan qiymatni o'z ichiga olishini tekshiradi:
 
 ```go
 facades.DB().Table("users").WhereLike("name", "%goravel%")
@@ -418,15 +418,15 @@ facades.DB().Table("users").WhereLike("name", "%goravel%")
 
 **WhereColumn / OrWhereColumn**
 
-The `WhereColumn` method verifies that two fields are equal:
+`WhereColumn` usuli ikki maydonning tengligini tekshiradi:
 
 ```go
 facades.DB().Table("users").WhereColumn("first_name", "last_name")
 ```
 
-### Logical Grouping
+### Mantiqiy guruhlash
 
-Sometimes you may need to group several "where" clauses within parentheses to achieve the logical grouping required by your query.
+Ba'zan so'rovingiz uchun zarur bo'lgan mantiqiy guruhlashni amalga oshirish uchun bir nechta "where" bandlarini qavs ichida guruhlashingiz kerak bo'lishi mumkin.
 
 ```go
 facades.DB().Table("users").Where("age", 25).Where(func(query db.Query) db.Query {
@@ -434,9 +434,9 @@ facades.DB().Table("users").Where("age", 25).Where(func(query db.Query) db.Query
 })
 ```
 
-## Ordering, Grouping, Limit & Offset
+## Buyurtma berish, Guruhlash, Cheklash va O‘tkazib yuborish
 
-### Ordering
+### Tartiblash
 
 **OrderBy / OrderByDesc**
 
@@ -446,9 +446,9 @@ facades.DB().OrderBy("name")
 facades.DB().OrderByDesc("name")
 ```
 
-**Latest**
+**Oxirgi**
 
-The `Latest` method makes it easy to sort results by date. By default, results will be sorted by the `created_at` column:
+`Latest` usuli natijalarni sana bo'yicha tartiblashni osonlashtiradi. Standart bo‘yicha, natijalar `created_at` ustuni bo‘yicha tartiblanadi:
 
 ```go
 err := facades.DB().Table("users").Latest().First(&user)
@@ -458,31 +458,31 @@ err := facades.DB().Table("users").Latest("updated_at").First(&user)
 
 **InRandomOrder**
 
-The `InRandomOrder` method is used to sort results randomly:
+`InRandomOrder` usuli natijalarni tasodifiy tartiblash uchun ishlatiladi:
 
 ```go
 err := facades.DB().Table("users").InRandomOrder().First(&user)
 ```
 
-### Grouping
+### Guruhlash
 
-The `GroupBy` and `Having` methods can be used to group results:
+`GroupBy` va `Having` usullari natijalarni guruhlash uchun ishlatilishi mumkin:
 
 ```go
 err := facades.DB().Table("users").Where("age", 25).GroupBy("name").Having("name = ?", "John").OrderBy("name").Get(&users)
 ```
 
-### Limiting and Offset
+### Cheklash va O‘tkazib yuborish
 
-You can use the `Limit` and `Offset` methods to limit the number of results, or skip a specified number of results in the query:
+Natijalar sonini cheklash yoki so'rovda belgilangan natijalar sonini o'tkazib yuborish uchun `Limit` va `Offset` metodlaridan foydalanishingiz mumkin:
 
 ```go
 err := facades.DB().Table("users").Offset(10).Limit(5).Get(&users)
 ```
 
-## Conditional Clauses
+## Shartli bandlar
 
-Sometimes you may want a clause to only execute when a given condition is true. For example, you may only want to apply a where clause when a given value exists in the request. You can accomplish this by using the `When` method:
+Ba'zan siz berilgan shart to'g'ri bo'lganda faqat bir band bajarilishini xohlashingiz mumkin. Masalan, siz faqat so'rovda berilgan qiymat mavjud bo'lganda "where" bandini qo'llashni xohlashingiz mumkin. Buni `When` usuli yordamida amalga oshirishingiz mumkin:
 
 ```go
 import "github.com/goravel/framework/contracts/database/db"
@@ -492,7 +492,7 @@ err := facades.DB().Table("users").When(1 == 1, func(query db.Query) db.Query {
 }).First(&user)
 ```
 
-You can also pass another closure as the third parameter to the `When` method. This closure will execute if the first parameter results in false:
+Shuningdek, siz `When` metodining uchinchi parametri sifatida boshqa yopilishni ham o'tkazishingiz mumkin. Agar birinchi parametr yolg‘on bo‘lsa, bu yopilish bajariladi:
 
 ```go
 err := facades.DB().Table("users").When(1 != 1, func(query db.Query) db.Query {
@@ -502,17 +502,17 @@ err := facades.DB().Table("users").When(1 != 1, func(query db.Query) db.Query {
 }).First(&user)
 ```
 
-## Insert
+## Kiritish
 
-The query builder provides the `Insert` method for inserting records into the database:
+So'rov quruvchisi ma'lumotlar bazasiga yozuvlarni kiritish uchun `Insert` usulini taqdim etadi:
 
 ```go
-// Insert by struct
+// Struktura orqali kiritish
 result, err := facades.DB().Table("products").Insert(Product{
   Name: "goravel",
 })
 
-// Insert by slice struct
+// Strukturalar qatori orqali kiritish
 result, err := facades.DB().Table("products").Insert([]Product{
   {
     Name: "goravel",
@@ -522,14 +522,14 @@ result, err := facades.DB().Table("products").Insert([]Product{
   },
 })
 
-// Insert by map
+// Xarita orqali kiritish
 result, err := facades.DB().Table("products").Insert(map[string]any{
   "name": "goravel",
   "created_at": time.Now(),
   "updated_at": time.Now(),
 })
 
-// Insert by slice map
+// Xaritalar qatori orqali kiritish
 result, err := facades.DB().Table("products").Insert([]map[string]any{
   {
     "name": "goravel",
@@ -544,9 +544,9 @@ result, err := facades.DB().Table("products").Insert([]map[string]any{
 })
 ```
 
-### Auto Increment ID
+### Avtomatik oshiruvchi ID
 
-If the table's primary key is auto increment, you can use the `LastInsertID` method to get the auto increment ID, only supported for `mysql` and `sqlite` databases:
+Agar jadvalning asosiy kaliti avtomatik oshiriladigan bo'lsa, avtomatik oshirilgan IDni olish uchun `LastInsertID` usulidan foydalanishingiz mumkin, bu faqat `mysql` va `sqlite` ma'lumotlar bazalari uchun qo'llab-quvvatlanadi:
 
 ```go
 id, err := facades.DB().Table("products").InsertGetID(Product{
@@ -554,20 +554,20 @@ id, err := facades.DB().Table("products").InsertGetID(Product{
 })
 ```
 
-## Update
+## Yangilash
 
-The query builder provides the `Update` method for updating existing records in the database:
+So'rov quruvchisi ma'lumotlar bazasidagi mavjud yozuvlarni yangilash uchun `Update` usulini taqdim etadi:
 
 ```go
-// Update by field name
+// Maydon nomi bo'yicha yangilash
 result, err := facades.DB().Table("products").Where("id", 1).Update("phone", "1234567890")
 
-// Update by struct
+// Struktura bo'yicha yangilash
 result, err := facades.DB().Table("products").Where("id", 1).Update(Product{
   Name: "goravel",
 })
 
-// Update by map
+// Xarita bo'yicha yangilash
 result, err := facades.DB().Table("products").Where("id", 1).Update(map[string]any{
   "name": "goravel",
   "created_at": time.Now(),
@@ -588,21 +588,21 @@ result, err := facades.DB().Table("users").Where("id", 1).Update(map[string]any{
 })
 ```
 
-### Update or Insert
+### Yangilash yoki qo'shish
 
-Sometimes you may want to update a record in the database, but if the specified record does not exist, create it. This can be done using the `UpdateOrInsert` method. The `UpdateOrInsert` method accepts two parameters: a condition for finding the record, and a key-value pair containing the values to update the record with.
+Ba'zan siz ma'lumotlar bazasidagi yozuvni yangilamoqchi bo'lishingiz mumkin, lekin agar ko'rsatilgan yozuv mavjud bo'lmasa, uni yarating. Bu `UpdateOrInsert` usuli yordamida amalga oshirilishi mumkin. `UpdateOrInsert` usuli ikki parametrni qabul qiladi: yozuvni topish uchun shart va yozuvni yangilash uchun qiymatlarni o'z ichiga olgan kalit-qiymat juftligi.
 
-The `UpdateOrInsert` method will attempt to locate a matching database record using the column names and values from the first parameter. If a record exists, its values will be updated using the second parameter. If no matching record is found, a record will be created and its values will be merged from the two parameters:
+`UpdateOrInsert` usuli birinchi parametrdagi ustun nomlari va qiymatlari yordamida mos keladigan ma'lumotlar bazasi yozuvini topishga harakat qiladi. Agar yozuv mavjud bo'lsa, uning qiymatlari ikkinchi parametr yordamida yangilanadi. Agar mos yozuv topilmasa, yozuv yaratiladi va uning qiymatlari ikki parametrdan birlashtiriladi:
 
 ```go
-// use struct
+// struct-dan foydalanish
 result, err := facades.DB().Table("users").Where("id", 1).UpdateOrInsert(TestUser{
   Email: "john@example.com",
 }, TestUser{
   Phone: "1234567890",
 })
 
-// use map
+// map-dan foydalanish
 result, err := facades.DB().Table("users").Where("id", 1).UpdateOrInsert(map[string]any{
   "email": "john@example.com",
 }, map[string]any{
@@ -610,9 +610,9 @@ result, err := facades.DB().Table("users").Where("id", 1).UpdateOrInsert(map[str
 })
 ```
 
-### Increment and Decrement
+### Oshirish va Kamaytirish
 
-The `Increment` and `Decrement` methods can be used to increment or decrement the value of a specified field:
+`Increment` va `Decrement` metodlari belgilangan maydon qiymatini oshirish yoki kamaytirish uchun ishlatilishi mumkin:
 
 ```go
 err := facades.DB().Table("users").Where("id", 1).Increment("votes")
@@ -624,44 +624,44 @@ err := facades.DB().Table("users").Where("id", 1).Decrement("votes")
 err := facades.DB().Table("users").Where("id", 1).Decrement("votes", 2)
 ```
 
-## Delete
+## O‘chirish
 
-The query builder also includes some functions that can help you implement "pessimistic locking" in your `select` statements:
-
-```go
-result, err := facades.DB().Table("users").Where("id", 1).Delete()
-```
-
-## Pessimistic Locking
-
-The query builder also includes some functions that can help you implement "pessimistic locking" in your `select` statements:
-
-To use a "shared lock", you may use the `SharedLock` method. A shared lock prevents the selected rows from being modified until the transaction is committed:
+So'rov quruvchisi shuningdek, sizning `select` gaplaringizda "pessimistik qulflash"ni amalga oshirishingizga yordam beradigan ba'zi funksiyalarni o'z ichiga oladi:
 
 ```go
-err := facades.DB().Table("users").Where("votes > ?", 100).SharedLock().Get(&users)
+natija, xato := facades.DB().Table("users").Where("id", 1).Delete()
 ```
 
-You can also use the `LockForUpdate` method. Using the "update" lock can prevent rows from being modified or selected by other shared locks:
+## Pessimistik blokirovka
+
+So'rov quruvchisi, shuningdek, sizning `select` bayonotlaringizda "pessimistik qulflash"ni amalga oshirishga yordam beradigan ba'zi funksiyalarni o'z ichiga oladi:
+
+"Umumiy qulflash"dan foydalanish uchun siz `SharedLock` usulidan foydalanishingiz mumkin. "Umumiy qulf" tanlangan qatorlar transaksiya tasdiqlanmaguncha o'zgartirilishiga yo'l qo'ymaydi:
+
+```go
+err := facades.DB().Table("users").Where("ovozlar > ?", 100).SharedLock().Get(&users)
+```
+
+Shuningdek, siz `LockForUpdate` usulidan foydalanishingiz mumkin. "Yangilash" qulfidan foydalanish qatorlarni boshqa umumiy qulf tomonidan o'zgartirilishiga yoki tanlanishiga to'sqinlik qilishi mumkin:
 
 ```go
 err := facades.DB().Table("users").Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
-## Debugging
+## Debuglash
 
-You can use the `ToSQL` and `ToRawSql` methods to get the current query binding and SQL.
+Joriy so'rovni bog'lash va SQLni olish uchun `ToSQL` va `ToRawSql` usullaridan foydalanishingiz mumkin.
 
-With placeholder SQL:
+SQL joylashtirgich bilan:
 
 ```go
 err := facades.DB().Table("users").Where("id", 1).ToSql().Get(models.User{})
 ```
 
-With bound values SQL:
+SQL bilan bog'langan qiymatlar:
 
 ```go
 err := facades.DB().Table("users").Where("id", 1).ToRawSql().Get(models.User{})
 ```
 
-The methods that can be called after `ToSql` and `ToRawSql`: `Count`, `Insert`, `Delete`, `First`, `Get`, `Pluck`, `Update`.
+`ToSql` va `ToRawSql` dan keyin chaqirilishi mumkin bo'lgan metodlar: `Count`, `Insert`, `Delete`, `First`, `Get`, `Pluck`, `Update`.
