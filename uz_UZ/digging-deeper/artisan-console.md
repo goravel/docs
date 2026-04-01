@@ -1,50 +1,50 @@
-# Artisan Console
+# Artisan Konsoli
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Artisan is the CLI tool that comes with Goravel for interacting with the command line. You can access it using `facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
-
-```shell
-./artisan list
-
-# or
-go run . artisan list
-```
-
-Each command also has a "help" flag that shows and explains the arguments and options associated with the command:
+Artisan - Goravel bilan birga keladigan, buyruq qatori bilan ishlash uchun CLI vositasidir. Siz uni `facades.Artisan()` yordamida ochishingiz mumkin. Ushbu vosita sizning ilovangizni rivojlantirishda yordam beradigan bir nechta foydali buyruqlarga ega. Barcha mavjud buyruqlarni ko'rish uchun quyidagi buyruqdan foydalaning.
 
 ```shell
-./artisan migrate --help
+./artisan ro'yxat
+
+# yoki
+go run . artisan ro'yxat
 ```
 
-Instead of repeating `./artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
+Har bir buyruq shuningdek, buyruq bilan bog'liq argumentlar va opsiyalarni ko'rsatadigan va tushuntiradigan "yordam" bayrog'iga ega:
+
+```shell
+./artisan migrate --yordam
+```
+
+`./artisan ...` buyrug'ini takrorlash o'rniga, quyidagi terminal buyrug'i bilan o'z shell konfiguratsiyangizga taxallus qo'shishingiz mumkin:
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 ```
 
-Then you can simply run your commands like this:
+Keyin siz buyruqlaringizni shunchaki shunday ishga tushirishingiz mumkin:
 
 ```shell
 artisan make:controller DemoController
 ```
 
-You can also use `artisan` shell script like this:
+Shuningdek, siz `artisan` shell skriptidan shunday foydalanishingiz mumkin:
 
-### Generating Commands
+### Buyruqlarni yaratish
 
-You can use the `make:command` command to create a new command in the `app/console/commands` directory. Don't worry if this directory does not exist in your application, it will be created the first time you run the `make:command` command:
+Siz `make:command` buyrug'idan `app/console/commands` katalogida yangi buyruq yaratish uchun foydalanishingiz mumkin. Agar bu katalog sizning ilovangizda mavjud bo'lmasa, tashvishlanmang, u siz `make:command` buyrug'ini birinchi marta ishga tushirganingizda yaratiladi:
 
 ```shell
 ./artisan make:command SendEmails
 ./artisan make:command user/SendEmails
 ```
 
-### Register Commands
+### Buyruqlarni ro'yxatdan o'tkazish
 
-All commands should be registered via the `WithCommands` function in the `bootstrap/app.go` file:
+Barcha buyruqlar `bootstrap/app.go` faylidagi `WithCommands` funksiyasi orqali ro'yxatdan o'tkazilishi kerak:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -55,14 +55,14 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-A new command created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the command manually if you create the command file by yourself.
+`make:command` tomonidan yaratilgan yangi buyruq `bootstrap/commands.go::Commands()` funksiyasida avtomatik ro'yxatdan o'tkaziladi va funksiya `WithCommands` tomonidan chaqiriladi. Agar buyruq faylini o'zingiz yaratgan bo'lsangiz, buyruqni qo'lda ro'yxatdan o'tkazishingiz kerak.
 
-### Command Structure
+### Buyruq tuzilmasi
 
-After generating your command, assign suitable values to the signature and description properties of the struct. The `Handle` method will be called when your command is executed. You need to implement your logic in this method.
+Buyruqni yaratgandan so'ng, structning signature va description xususiyatlariga mos qiymatlarni belgilang. Buyruq bajarilganda `Handle` usuli chaqiriladi. Siz ushbu metodda o'z mantiqingizni amalga oshirishingiz kerak.
 
 ```go
-package commands
+paket buyruqlari
 
 import (
   "github.com/goravel/framework/contracts/console"
@@ -72,88 +72,87 @@ import (
 type SendEmails struct {
 }
 
-// Signature The name and signature of the console command.
+// Imzo Konsol buyrug'ining nomi va imzosi.
 func (receiver *SendEmails) Signature() string {
   return "send:emails"
 }
 
-// Description The console command description.
+// Tavsif Konsol buyrug'ining tavsifi.
 func (receiver *SendEmails) Description() string {
-  return "Send emails"
+  return "Elektron pochta xabarlarini yuborish"
 }
 
-// Extend The console command extend.
+// Kengaytma Konsol buyrug'ining kengaytmasi.
 func (receiver *SendEmails) Extend() command.Extend {
   return command.Extend{}
 }
 
-// Handle Execute the console command.
+// Boshqarish Konsol buyrug'ini bajarish.
 func (receiver *SendEmails) Handle(ctx console.Context) error {
   return nil
 }
 ```
 
-## Command I/O
+## Buyruq kirish/chiqish
 
-### Retrieving Input
+### Kirishni olish
 
-When you write console commands, it's typical to collect user input through `arguments` or `options`. With Goravel, it's extremely easy to retrieve the arguments and options that the user provides.
+Konsol buyruqlarini yozishda, odatda foydalanuvchi kiritimini `argumentlar` yoki `opsiyalar` orqali yigʻish mumkin. Goravel bilan foydalanuvchi taqdim etgan argumentlar va opsiyalarni olish juda oson.
 
-#### Arguments
+#### Argumentlar
 
-Follow the arguments after the command:
+Buyruqdan keyingi argumentlarni kuzating:
 
 ```shell
 ./artisan send:emails SUBJECT EMAIL_1 EMAIL_2
 ```
 
-Definition：
+Ta'rif：
 
 ```go
-// send:emails <subject> <email...>
+// send:emails <0> <1>
 func (receiver *SendEmails) Extend() command.Extend {
 	return command.Extend{
 		Arguments: []command.Argument{
 			&command.ArgumentString{
 				Name:     "subject",
-				Usage:    "subject of email",
+				Usage:    "elektron pochta mavzusi",
 				Required: true,
 			},
 			&command.ArgumentStringSlice{
 				Name:  "emails",
-				Usage: "target emails",
+				Usage: "maqsadli elektron pochta manzillari",
 				Min:   1,
 				Max:   -1,
 			},
 		},
 	}
-}
 ```
 
-Supported agrument types : `ArgumentFloat32`, `ArgumentFloat64`, `ArgumentInt`, `ArgumentInt8`, `ArgumentInt16`, `ArgumentInt32`, `ArgumentInt64`, `ArgumentString`, `ArgumentUint`, `ArgumentUint8`, `ArgumentUint16`, `ArgumentUint32`, `ArgumentUint64`, `ArgumentTimestamp`, `ArgumentFloat32Slice`, `ArgumentFloat64Slice`, `ArgumentIntSlice`, `ArgumentInt8Slice`, `ArgumentInt16Slice`, `ArgumentInt32Slice`, `ArgumentInt64Slice`, `ArgumentStringSlice`, `ArgumentUintSlice`, `ArgumentUint8Slice`, `ArgumentUint16Slice`, `ArgumentUint32Slice`, `ArgumentUint64Slice`, `ArgumentTimestampSlice`
+Qo'llab-quvvatlanadigan argument turlari: `ArgumentFloat32`, `ArgumentFloat64`, `ArgumentInt`, `ArgumentInt8`, `ArgumentInt16`, `ArgumentInt32`, `ArgumentInt64`, `ArgumentString`, `ArgumentUint`, `ArgumentUint8`, `ArgumentUint16`, `ArgumentUint32`, `ArgumentUint64`, `ArgumentTimestamp`, `ArgumentFloat32Slice`, `ArgumentFloat64Slice`, `ArgumentIntSlice`, `ArgumentInt8Slice`, `ArgumentInt16Slice`, `ArgumentInt32Slice`, `ArgumentInt64Slice`, `ArgumentStringSlice`, `ArgumentUintSlice`, `ArgumentUint8Slice`, `ArgumentUint16Slice`, `ArgumentUint32Slice`, `ArgumentUint64Slice`, `ArgumentTimestampSlice`
 
-Argument types with single value support next fields:
+Bitta qiymatni qo‘llab-quvvatlovchi argument turlari quyidagi maydonlarni qo‘llab-quvvatlaydi:
 
 ```go
-	Name     string // the name of this argument
-	Value    T      // the default value of this argument
-	Usage    string // the usage text to show
-	Required bool   // if this argument is required
+	Ism     string // bu argumentning nomi
+	Qiymat    T      // bu argumentning standart qiymati
+	Foydalanish    string // ko'rsatish uchun foydalanish matni
+	Majburiy bool   // agar bu argument majburiy bo'lsa
 ```
 
-Slice argument types fields:
+"Slice" argument turlari maydonlari:
 
 ```go
-	Name  string // the name of this argument
-	Value T      // the default value of this argument
-	Usage string // the usage text to show
-	Min   int    // the min num of occurrences of this argument
-	Max   int    // the max num of occurrences of this argument, set to -1 for unlimited
+	Ism  string // bu argumentning nomi
+	Qiymat T      // bu argumentning standart qiymati
+	Foydalanish string // ko'rsatiladigan foydalanish matni
+	Min   int    // bu argumentning minimal takrorlanish soni
+	Max   int    // bu argumentning maksimal takrorlanish soni, cheksiz uchun -1 ga o'rnating
 ```
 
-Timestamp arguments additionally supports `Layouts []string` field, that should be filled with [supported layouts](https://pkg.go.dev/time#pkg-constants)
+Timestamp argumentlari qo'shimcha ravishda `Layouts []string` maydonini qo'llab-quvvatlaydi, bu [qo'llab-quvvatlanadigan layoutlar](https://pkg.go.dev/time#pkg-constants) bilan to'ldirilishi kerak
 
-Get arguments:
+Argumentlarni oling:
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
@@ -164,23 +163,23 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
-Alternatively, it is possible to access arguments directly:
+Boshqa yo'l sifatida, argumentlarga to'g'ridan-to'g'ri kirish mumkin:
 
 ```go
-func (receiver *SendEmails) Handle(ctx console.Context) error {
-  name := ctx.Argument(0)
+func (qabul qiluvchi *EmailYuborish) Boshqarish(ctx console.Context) xato {
+  ism := ctx.Argument(0)
   email := ctx.Argument(1)
-  all := ctx.Arguments()
+  hammasi := ctx.Arguments()
 
   return nil
 }
 ```
 
-#### Options
+#### Parametrlar
 
-Options, like arguments, are another form of user input. Options are prefixed by two hyphens (--) when they are provided via the command line.
+Opsiyalar, argumentlar singari, foydalanuvchi kiritishining yana bir shaklidir. Parametrlar buyruq qatori orqali taqdim etilganda, ikkita tire (--) bilan boshlanadi.
 
-Definition：
+Ta'rif：
 
 ```go
 func (receiver *ListCommand) Extend() command.Extend {
@@ -190,86 +189,86 @@ func (receiver *ListCommand) Extend() command.Extend {
         Name:    "lang",
         Value:   "default",
         Aliases: []string{"l"},
-        Usage:   "language for the greeting",
+        Usage:   "salomlashish uchun til",
       },
     },
   }
 }
 ```
 
-Get：
+Oling：
 
 ```go
-func (receiver *ListCommand) Handle(ctx console.Context) error {
-  lang := ctx.Option("lang")
+func (qabul qiluvchi *ListCommand) Handle(ctx console.Context) xato {
+  til := ctx.Option("til")
 
   return nil
 }
 ```
 
-Usage：
+Foydalanish：
 
 ```shell
-./artisan emails --lang Chinese
-./artisan emails -l Chinese
+./artisan emails --lang Xitoy
+./artisan emails -l Xitoy
 ```
 
-Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
+`command.StringFlag` dan tashqari, biz boshqa turdagi `Flag` va `Option*` lardan ham foydalanishimiz mumkin: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
 
-### Prompting For Input
+### Kirishni So'rash
 
-#### Asking Questions
+#### Savollar berish
 
-In addition to arguments and options, you may also prompt the user for input during the execution of a command. The `Ask` method will prompt the user with the given question and return their response:
+Argumentlar va opsiyalardan tashqari, siz buyruq bajarilayotganda foydalanuvchidan kirish so'rashingiz mumkin. `Ask` usuli foydalanuvchiga berilgan savolni ko'rsatadi va ularning javobini qaytaradi:
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-  email, err := ctx.Ask("What is your email address?")
+  email, err := ctx.Ask("Elektron pochta manzilingiz nima?")
 
   return err
 }
 ```
 
-Additionally, you can pass options to the `Ask` method as optional second argument:
+Bundan tashqari, `Ask` metodiga opsiyalarni ixtiyoriy ikkinchi argument sifatida o‘tkazishingiz mumkin:
 
 ```go
-func (receiver *SendEmails) Handle(ctx console.Context) error {
-    name, err := ctx.Ask("What is your name?", console.AskOption{
+func (qabul qiluvchi *SendEmails) Handle(ctx console.Context) xato {
+    ism, xato := ctx.Ask("Ismingiz nima?", console.AskOption{
         Default: "Krishan",
     })
 
-    return err
+    return xato
 }
 
-// Available options
+// Mavjud opsiyalar
 type AskOption struct {
-    // Default the default value for the input.
+    // Default - kiritish uchun standart qiymat.
     Default string
-    // Description the input description.
+    // Description - kiritish tavsifi.
     Description string
-    // Lines the number of lines for the input.(use for multiple lines text)
+    // Lines - kiritish uchun qatorlar soni.(ko'p qatorli matn uchun ishlatiladi)
     Lines int
-    // Limit the character limit for the input.
+    // Limit - kiritish uchun belgilar chegarasi.
     Limit int
-    // Multiple determines if input is single line or multiple lines text
+    // Multiple - kiritish bitta qator yoki ko'p qatorli matn ekanligini aniqlaydi
     Multiple bool
-    // Placeholder the input placeholder.
+    // Placeholder - kiritish uchun joy egallovchi.
     Placeholder string
-    // Prompt the prompt message.(use for single line input)
+    // Prompt - so'rov xabari.(bitta qatorli kiritish uchun ishlatiladi)
     Prompt string
-    // Validate the input validation function.
-    Validate func(string) error
+    // Validate - kiritishni tekshirish funksiyasi.
+    Validate func(string) xato
 }
 ```
 
-Sometimes you may need to hide the user input, such as when prompting for a password. You can use the `Secret` method to hide the user input:
+Ba'zan foydalanuvchi kiritishini yashirish kerak bo'lishi mumkin, masalan, parol so'rashda. Siz foydalanuvchi kiritishini yashirish uchun `Secret` usulidan foydalanishingiz mumkin:
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-    password, err := ctx.Secret("What is the password?", console.SecretOption{
+    password, err := ctx.Secret("Parol nima?", console.SecretOption{
         Validate: func (s string) error {
             if len(s) < 8 {
-                return errors.New("password length should be at least 8")
+                return errors.New("parol uzunligi kamida 8 bo'lishi kerak")
             }
             return nil
         },
@@ -278,32 +277,32 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
     return err
 }
 
-// Available options
+// Mavjud variantlar
 type SecretOption struct {
-    // Default the default value for the input.
+    // Default - kiritish uchun standart qiymat.
     Default string
-    // Description the input description.
+    // Description - kiritish tavsifi.
     Description string
-    // Limit the character limit for the input.
+    // Limit - kiritish uchun belgilar chegarasi.
     Limit int
-    // Placeholder the input placeholder.
+    // Placeholder - kiritish uchun belgilovchi.
     Placeholder string
-    // Validate the input validation function.
+    // Validate - kiritishni tekshirish funksiyasi.
     Validate func(string) error
 }
 ```
 
-#### Confirming Actions
+#### Amallarni tasdiqlash
 
-If you need to ask the user to confirm an action before proceeding, you may use the `Confirm` method. By default, this method will return `false` unless the user select affirmative option.
+Agar foydalanuvchidan harakatni davom ettirishdan oldin tasdiqlashni so'rashingiz kerak bo'lsa, `Confirm` usulidan foydalanishingiz mumkin. Standart holatda, ushbu metod foydalanuvchi ijobiy variantni tanlamaguncha `false` qiymatini qaytaradi.
 
 ```go
-if ctx.Confirm("Do you wish to continue?") {
+agar ctx.Confirm("Davom etishni xohlaysizmi?") {
     // ...
 }
 ```
 
-You can also pass a second argument to the `Confirm` method to customize the default value, label of the affirmative and negative buttons:
+Shuningdek, siz `Confirm` usuliga ikkinchi argument berib, standart qiymatni, ijobiy va salbiy tugmalarning yorlig'ini sozlashingiz mumkin:
 
 ```go
 if ctx.Confirm("Do you wish to continue?", console.ConfirmOption{
@@ -327,9 +326,9 @@ type ConfirmOption struct {
 }
 ```
 
-#### Single Select Questions
+#### Bitta tanlovli savollar
 
-If you need to ask the user to select an option from a list of options, you may use the `Choice` method. The `Choice` method will return the value of the selected option:
+Agar foydalanuvchidan ro'yxatdan variant tanlashni so'rashingiz kerak bo'lsa, `Choice` usulidan foydalanishingiz mumkin. `Choice` usuli tanlangan variantning qiymatini qaytaradi:
 
 ```go
 question := "What is your favorite programming language?"
@@ -342,7 +341,7 @@ options := []console.Choice{
 color, err := ctx.Choice(question, options)
 ```
 
-Additionally, you can pass options to the `Choice` method as optional second argument:
+Shuningdek, siz `Choice` usuliga ixtiyoriy ikkinchi argument sifatida opsiyalarni o‘tkazishingiz mumkin:
 
 ```go
 question := "What is your favorite programming language?"
@@ -368,9 +367,9 @@ type ChoiceOption struct {
 }
 ```
 
-#### Multiple Select Questions
+#### Ko'p tanlovli savollar
 
-If you need to ask the user to select multiple options from a list of options, you may use the `MultiSelect` method. The `MultiSelect` method will return the values of the selected options:
+Agar foydalanuvchidan ro'yxatdan bir nechta variantlarni tanlashni so'rashingiz kerak bo'lsa, `MultiSelect` usulidan foydalanishingiz mumkin. `MultiSelect` usuli tanlangan variantlarning qiymatlarini qaytaradi:
 
 ```go
 question := "What are your favorite programming languages?"
@@ -383,7 +382,7 @@ options := []console.Choice{
 colors, err := ctx.MultiSelect(question, options)
 ```
 
-Additionally, you can pass options to the `MultiSelect` method as optional second argument:
+Bundan tashqari, siz `MultiSelect` usuliga ixtiyoriy ikkinchi argument sifatida variantlarni o‘tkazishingiz mumkin:
 
 ```go
 question := "What are your favorite programming languages?"
@@ -413,47 +412,47 @@ type MultiSelectOption struct {
 }
 ```
 
-### Writing Output
+### Chiqish yozish
 
-Sometimes you may need to write output to the console. Goravel provides several methods to assist you in writing output to the console. Each of the method have their appropriate colorized output. For example, `Error` will display the text in red.
+Ba'zan siz konsolga chiqish yozishingiz kerak bo'lishi mumkin. Goravel sizga konsolga chiqish yozishda yordam beradigan bir nechta usullarni taqdim etadi. Har bir metod o'ziga xos rangli chiqishga ega. Masalan, `Error` matnni qizil rangda ko'rsatadi.
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
-  ctx.Comment("This is a comment message")
-  ctx.Info("This is an info message")
-  ctx.Error("This is an error message")
-  ctx.Line("This is a line message")
-  ctx.Warning("This is a warning message")
+  ctx.Comment("Bu izoh xabari")
+  ctx.Info("Bu ma'lumot xabari")
+  ctx.Error("Bu xato xabari")
+  ctx.Line("Bu qator xabari")
+  ctx.Warning("Bu ogohlantirish xabari")
   return nil
 }
 ```
 
-There are few helpers to write to console with respective color:
+Mos rangga mos yozish uchun bir nechta yordamchilar mavjud:
 
 ```go
-ctx.Green("This is a green message")
-ctx.Greenln("This is a green line message")
-ctx.Red("This is a red message")
-ctx.Redln("This is a red line message")
-ctx.Yellow("This is a yellow message")
-ctx.Yellowln("This is a yellow line message")
-ctx.Black("This is a black message")
-ctx.Blackln("This is a black line message")
+ctx.Green("Bu yashil xabar")
+ctx.Greenln("Bu yashil chiziqli xabar")
+ctx.Red("Bu qizil xabar")
+ctx.Redln("Bu qizil chiziqli xabar")
+ctx.Yellow("Bu sariq xabar")
+ctx.Yellowln("Bu sariq chiziqli xabar")
+ctx.Black("Bu qora xabar")
+ctx.Blackln("Bu qora chiziqli xabar")
 ```
 
-You can use the `NewLine` method to write a new line to the console:
+Siz `NewLine` usulidan foydalanib konsolga yangi qator yozishingiz mumkin:
 
 ```go
-// write single blank line
+// bitta bo'sh qator yozish
 ctx.NewLine()
 
-// write multiple blank lines
+// bir nechta bo'sh qatorlar yozish
 ctx.NewLine(2)
 ```
 
 #### Progress Bars
 
-For long-running tasks, it is often helpful to provide the user with some indication of how much time the task will take. You may use the `WithProgressBar` method to display a progress bar.
+Uzoq davom etadigan vazifalar uchun, foydalanuvchiga vazifa qancha vaqt oladi haqida ma'lumot berish foydali bo'ladi. Siz taraqqiyot panelini ko'rsatish uchun `WithProgressBar` usulidan foydalanishingiz mumkin.
 
 ```go
 items := []any{"item1", "item2", "item3"}
@@ -463,7 +462,7 @@ _, err := ctx.WithProgressBar(items, func(item any) error {
 })
 ```
 
-Sometimes you may need to update the progress bar manually. You can use the `CreateProgressBar` method to update the progress bar:
+Ba'zan siz progress bar-ni qo'lda yangilashingiz kerak bo'lishi mumkin. Siz progress bar-ni yangilash uchun `CreateProgressBar` usulidan foydalanishingiz mumkin:
 
 ```go
 users := []string{"user1", "user2", "user3"}
@@ -482,35 +481,35 @@ for _, user := range users {
 err = bar.Finish()
 ```
 
-#### Spinner
+#### Aylana
 
-If you need to display a spinner while a task is running, you may use the `Spinner` method.
+Agar vazifa bajarilayotganda spinner ko'rsatish kerak bo'lsa, `Spinner` metodidan foydalanishingiz mumkin.
 
 ```go
-err := ctx.Spinner("Loading...", console.SpinnerOption{
+err := ctx.Spinner("Yuklanmoqda...", console.SpinnerOption{
     Action: func() error {
-        // when to stop the spinner
+        // spinner qachon to'xtatilishi kerak
         time.Sleep(2 * time.Second)
         return nil
     },
 })
 ```
 
-### Divider
+### Ajratgich
 
-To show terminal-width divider you may use `Divider` method.
+Terminal kengligidagi ajratuvchini ko'rsatish uchun `Divider` metodidan foydalanishingiz mumkin.
 
 ```go
 ctx.Divider()     // ----------
 ctx.Divider("=>") // =>=>=>=>=>
 ```
 
-## Category
+## Kategoriya
 
-You can set a set of commands to the same category, convenient in `./artisan list`:
+Siz bir qator buyruqlarni bir xil kategoriyaga o'rnatishingiz mumkin, bu `./artisan list` da qulay:
 
 ```go
-// Extend The console command extend.
+// Konsol buyrug'ini kengaytirish.
 func (receiver *ConsoleMakeCommand) Extend() command.Extend {
   return command.Extend{
     Category: "make",
@@ -518,9 +517,9 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 }
 ```
 
-## Programmatically Executing Commands
+## Dasturiy tarzda buyruqlarni bajarish
 
-Sometimes you may wish to execute an Artisan command outside of the CLI, you can use the `Call` method on the `facades.Artisan()` to operate this.
+Ba'zan siz Artisan buyrug'ini CLI tashqarisida bajarishingiz mumkin, buning uchun `facades.Artisan()` da `Call` metodidan foydalanishingiz mumkin.
 
 ```go
 facades.Route().Get("/", func(c *gin.Context) {
@@ -529,10 +528,10 @@ facades.Route().Get("/", func(c *gin.Context) {
 })
 ```
 
-## Disabling Print Colors
+## Chop etish ranglarini o‘chirish
 
-Some commands print colors by default, such as the `list` command. However, in some terminals or logs, the color values may be garbled. You can use the `--no-ansi` option to disable the print colors:
+Ba'zi buyruqlar standart ravishda ranglarni chiqaradi, masalan, `list` buyrug'i. Biroq, ba'zi terminal yoki jurnallarda rang qiymatlari noto'g'ri ko'rsatilishi mumkin. Siz chop ranglarini o'chirish uchun `--no-ansi` opsiyasidan foydalanishingiz mumkin:
 
 ```shell
-./artisan list --no-ansi
+./artisan ro'yxat --no-ansi
 ```
