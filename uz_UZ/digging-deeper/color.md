@@ -1,14 +1,14 @@
-# Color
+# Rang
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-The `color` package provides a set of functions to colorize the output of the terminal using [PTerm](https://github.com/pterm/pterm) library.
+`color` paketi [PTerm](https://github.com/pterm/pterm) kutubxonasi yordamida terminal chiqishini ranglash uchun funksiyalar to'plamini taqdim etadi.
 
-## Specific Color
+## Maxsus Rang
 
-The package provides methods to create printers for specific colors. These methods allow you to easily colorize terminal output.
+Paket ma'lum ranglar uchun printerlar yaratish usullarini taqdim etadi. Ushbu usullar terminal chiqishini oson rang berish imkonini beradi.
 
 - `color.Red()`
 - `color.Green()`
@@ -21,29 +21,29 @@ The package provides methods to create printers for specific colors. These metho
 - `color.Gray()`
 - `color.Default()`
 
-### Printer Methods
+### Printer Usullari
 
-A `contracts/support.Printer` provides the following methods to print or format text with color:
+`contracts/support.Printer` rangli matnni chop etish yoki formatlash uchun quyidagi usullarni taqdim etadi:
 
-- `Print` - Print text
-- `Println` - Print text with a new line
-- `Printf` - Print formatted text
-- `Sprint` - Return colored text
-- `Sprintln` - Return colored text with a new line
-- `Sprintf` - Return formatted colored text
+- `Print` - Matnni chop etish
+- `Println` - Matnni yangi qator bilan chop etish
+- `Printf` - Formatlangan matnni chop qilish
+- `Sprint` - Rangli matnni qaytarish
+- `Sprintln` - Yangi qator bilan rangli matn qaytaradi
+- `Sprintf` - Formatlangan rangli matnni qaytarish
 
 ```go
 import "github.com/goravel/framework/support/color"
 
-color.Blue().Println("Hello, Goravel!")
-color.Green().Printf("Hello, %s!", "Goravel")
+color.Blue().Println("Salom, Goravel!")
+color.Green().Printf("Salom, %s!", "Goravel")
 ```
 
-## Custom Color
+## Maxsus Rang
 
 ### `color.New`
 
-The `color.New` function creates a new color printer. You can use this object to colorize the output of the terminal.
+`color.New` funksiyasi yangi rang printerini yaratadi. Siz terminal chiqishini ranglash uchun ushbu ob'ektdan foydalanishingiz mumkin.
 
 ```go
 import "github.com/goravel/framework/support/color"
