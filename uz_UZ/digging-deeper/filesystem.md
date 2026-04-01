@@ -1,69 +1,69 @@
-# File Storage
+# Fayl saqlash
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS, Tencent COS, Minio and Cloudinary. Even better, switching between these storage options between your local development machine and production server is amazingly simple as the API remains the same for each system. Goravel comes with a `local` driver, for other drivers, please check the corresponding independent extension package:
+Goravel mahalliy fayl tizimlari, Amazon S3, Aliyun OSS, Tencent COS, Minio va Cloudinary bilan ishlash uchun oddiy drayverlarni taqdim etadi. Yanada yaxshisi, ushbu saqlash variantlari o'rtasida mahalliy ishlab chiqish mashinangiz va ishlab chiqarish serveringiz o'rtasida o'tish juda oddiy, chunki har bir tizim uchun API bir xil bo'lib qoladi. Goravel `local` haydovchi bilan birga keladi, boshqa haydovchilar uchun iltimos, tegishli mustaqil kengaytma paketini tekshiring:
 
-| Driver | Link                                                                                                 |
-| ------ | ---------------------------------------------------------------------------------------------------- |
-| S3     | [https://github.com/goravel/s3](https://github.com/goravel/s3)       |
-| OSS    | [https://github.com/goravel/oss](https://github.com/goravel/oss)     |
-| COS    | [https://github.com/goravel/cos](https://github.com/goravel/cos)     |
-| Minio  | [https://github.com/goravel/minio](https://github.com/goravel/minio) |
+| Haydovchi   | Havola                                                                                               |
+| ----------- | ---------------------------------------------------------------------------------------------------- |
+| S3          | [https://github.com/goravel/s3](https://github.com/goravel/s3)       |
+| OSS         | [https://github.com/goravel/oss](https://github.com/goravel/oss)     |
+| Tencent COS | [https://github.com/goravel/cos](https://github.com/goravel/cos)     |
+| Minio       | [https://github.com/goravel/minio](https://github.com/goravel/minio) |
 
-## Configuration
+## Konfiguratsiya
 
-Goravel's filesystem configuration file is located at `config/filesystems.go`. Within this file, you may configure all of your filesystem "disks", each disk represents a particular storage driver and storage location.
+Goravelning fayl tizimi konfiguratsiya fayli `config/filesystems.go` manzilida joylashgan. Ushbu fayl ichida siz barcha fayl tizimi "disk"laringizni sozlashingiz mumkin, har bir disk ma'lum bir saqlash haydovchisi va saqlash joyini ifodalaydi.
 
-> You may configure as many disks as you like and may even have multiple disks that use the same driver.
+> Siz istagancha diskni sozlashingiz mumkin va hatto bir xil haydovchidan foydalanadigan bir nechta disklarga ham ega bo'lishingiz mumkin.
 
-### The Local Driver
+### Mahalliy haydovchi
 
-When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would write to `storage/app/example.txt`:
-
-```go
-facades.Storage().Put("example.txt", "Contents")
-```
-
-### The Public Disk
-
-The `public`` disk included in your application's `filesystems`configuration file is intended for files that are going to be publicly accessible. By default, the`public`disk uses the`local`driver and stores its files in`storage/app/public\`. If you want to visit these file from web, you can create a file routing:
+`local` haydovchidan foydalanganda, barcha fayl operatsiyalari `filesystems` konfiguratsiya faylingizda belgilangan `root` katalogiga nisbatan amalga oshiriladi. Standart bo'yicha, bu qiymat `storage/app` katalogiga o'rnatilgan. Shuning uchun, quyidagi usul `storage/app/example.txt` fayliga yozadi:
 
 ```go
-facades.Route().Static("storage", "./storage/app/public")
+facades.Storage().Put("example.txt", "Tarkib")
 ```
 
-## Obtaining Disk Instances
+### Ommaviy disk
 
-The `Storage` facade may be used to interact with any of your configured disks. For example, you may use the `Put` method on the facade to store an avatar on the default disk. If you call methods on the `Storage` facade without first calling the `Disk` method, the method will automatically be passed to the default disk:
+Ilovangizning `filesystems` konfiguratsiya faylida kiritilgan `public` disk umumiy kirish uchun mo'ljallangan fayllar uchun mo'ljallangan. Standart sozlamalar bo'yicha, `public` disk `local` haydovchidan foydalanadi va fayllarini `storage/app/public` papkasida saqlaydi. Agar siz ushbu fayllarga veb orqali tashrif buyurmoqchi bo'lsangiz, fayl marshrutlash yaratishingiz mumkin:
 
 ```go
-facades.Storage().Put("avatars/1.png", "Contents")
+fasadlar.Route().Static("storage", "./storage/app/public")
 ```
 
-If your application interacts with multiple disks, you may use the `Disk` method on the `Storage` facade to work with files on a particular disk:
+## Disk namunalarini olish
+
+`Storage` fasadasi konfiguratsiya qilingan har qanday disklar bilan o'zaro aloqada foydalanish uchun ishlatilishi mumkin. Masalan, siz fasad ustida `Put` usulidan foydalanib, avatar standart diskda saqlashingiz mumkin. Agar siz `Disk` metodini chaqirmasdan `Storage` fasadida metodlarni chaqirsangiz, metod avtomatik ravishda standart diskka o'tkaziladi:
+
+```go
+facades.Storage().Put("avatars/1.png", "Kontent")
+```
+
+Agar ilovangiz bir nechta disk bilan ishlasa, ma'lum bir diskdagi fayllar bilan ishlash uchun `Storage` fasadidagi `Disk` metodidan foydalanishingiz mumkin:
 
 ```go
 facades.Storage().Disk("s3").Put("avatars/1.png", "Contents")
 ```
 
-## Inject Context
+## Kontekstni kiritish
 
 ```go
 facades.Storage().WithContext(ctx).Put("avatars/1.png", "Contents")
 ```
 
-## Retrieving Files
+## Fayllarni olish
 
-The `Get` method may be used to retrieve the contents of a file. The raw string contents of the file will be returned by the method. Remember, all file paths should be specified relative to the disk's `root` location:
+`Get` usuli fayl mazmunini olish uchun ishlatilishi mumkin. Faylning xom satr tarkibi usul tomonidan qaytariladi. Eslab qoling, barcha fayl yo'llari diskning `root` joylashuviga nisbatan ko'rsatilishi kerak:
 
 ```go
 content := facades.Storage().Get("file.jpg")
 ```
 
-The `Exists` method may be used to determine if a file exists on the disk:
+`Exists` usuli diskda fayl mavjudligini aniqlash uchun ishlatilishi mumkin:
 
 ```go
 if (facades.Storage().Disk("s3").Exists("file.jpg")) {
@@ -71,7 +71,7 @@ if (facades.Storage().Disk("s3").Exists("file.jpg")) {
 }
 ```
 
-The `Missing` method may be used to determine if a file is missing from the disk:
+`Missing` usuli diskda fayl yo'qligini aniqlash uchun ishlatilishi mumkin:
 
 ```go
 if (facades.Storage().Disk("s3").Missing("file.jpg")) {
@@ -79,19 +79,19 @@ if (facades.Storage().Disk("s3").Missing("file.jpg")) {
 }
 ```
 
-### File URLs
+### Fayl URL manzillari
 
-You may use the `Url` method to get the URL for a given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` driver, the fully qualified remote URL will be returned:
+Siz berilgan fayl uchun URL olish uchun `Url` metodidan foydalanishingiz mumkin. Agar siz `local` haydovchisidan foydalanayotgan bo'lsangiz, bu odatda berilgan yo'lni `/storage` bilan boshlab, faylga nisbiy URLni qaytaradi. Agar siz `s3` haydovchisidan foydalanayotgan bo'lsangiz, to'liq masofaviy URL qaytariladi:
 
 ```go
 url := facades.Storage().Url("file.jpg")
 ```
 
-> When using the `local` driver, the return value of `Url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
+> `local` haydovchidan foydalanganda, `Url`ning qaytarilgan qiymati URL kodlanmagan. Shu sababdan, fayllaringizni haqiqiy URL'lar yaratadigan nomlar bilan saqlashni har doim tavsiya qilamiz.
 
-#### Temporary URLs
+#### Vaqtinchalik URL manzillar
 
-Using the `TemporaryUrl` method, you may create temporary URLs to files stored using the Non-local driver. This method accepts a path and a `Time` instance specifying when the URL should expire:
+`TemporaryUrl` usuli yordamida, Non-local haydovchi yordamida saqlangan fayllarga vaqtinchalik URL-lar yaratishingiz mumkin. Bu usul yo'l va URL qachon muddati tugashi kerakligini belgilaydigan `Time` misolini qabul qiladi:
 
 ```go
 url, err := facades.Storage().TemporaryUrl(
@@ -99,30 +99,30 @@ url, err := facades.Storage().TemporaryUrl(
 )
 ```
 
-### File Metadata
+### Fayl Metadata
 
-In addition to reading and writing files, Goravel can also provide information about the files themselves:
+Fayllarni o'qish va yozishdan tashqari, Goravel fayllarning o'zlari haqida ma'lumot ham taqdim etishi mumkin:
 
 ```go
 size := facades.Storage().Size("file.jpg")
 ```
 
-The `LastModified` method returns the last modified time of the file:
+`LastModified` usuli faylning oxirgi o'zgartirilgan vaqtini qaytaradi:
 
 ```go
 time, err := facades.Storage().LastModified("file.jpg")
 ```
 
-The MIME type of a given file may be obtained via the `MimeType` method:
+Berilgan faylning MIME turi `MimeType` usuli orqali olinishi mumkin:
 
 ```go
 mime, err := facades.Storage().MimeType("file.jpg")
 ```
 
-Also can use the `NewFile` method:
+Shuningdek, `NewFile` usulidan foydalanish mumkin:
 
 ```go
-import "github.com/goravel/framework/filesystem"
+"github.com/goravel/framework/filesystem" paketini import qiling
 
 file, err := filesystem.NewFile("./logo.png")
 size, err := file.Size()
@@ -130,41 +130,41 @@ lastModified, err := file.LastModified()
 mime, err := file.MimeType()
 ```
 
-### File Paths
+### Fayl yo'llari
 
-To obtain the path for a specific file, you can utilize the `Path` method. When using the `local` driver, this will provide you with the relative path to the file. However, if you are using a driver like `s3`, the method will give you the file's relative path within the bucket:
+Muayyan fayl uchun yo'lni olish uchun siz `Path` usulidan foydalanishingiz mumkin. `local` haydovchidan foydalanganda, bu sizga faylning nisbiy yoʻlini taqdim etadi. Biroq, agar siz `s3` kabi haydovchidan foydalanayotgan bo'lsangiz, usul sizga faylning bak ichidagi nisbiy yo'lini beradi:
 
 ```go
 path := facades.Storage().Path("file.jpg")
 ```
 
-## Storing Files
+## Fayllarni saqlash
 
-The `Put` method may be used to store file contents on a disk. Remember, all file paths should be specified relative to the "root" location configured for the disk:
+`Put` usuli diskda fayl tarkibini saqlash uchun ishlatilishi mumkin. Esda tuting, barcha fayl yo'llari disk uchun sozlangan "root" joyiga nisbatan ko'rsatilishi kerak:
 
 ```go
 err := facades.Storage().Put("file.jpg", contents)
 ```
 
-You can also use `PutFile` and `PutFileAs` to save files directly on disk:
+Shuningdek, fayllarni to'g'ridan-to'g'ri diskda saqlash uchun `PutFile` va `PutFileAs` dan foydalanishingiz mumkin:
 
 ```go
 import "github.com/goravel/framework/filesystem"
 
-// Automatically generate a unique ID for filename...
+// Fayl nomi uchun avtomatik ravishda noyob ID yaratish...
 file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFile("photos", file)
 
-// Manually specify a filename...
+// Fayl nomini qo'lda belgilash...
 file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFileAs("photos", file, "photo.jpg")
 ```
 
-There are a few important things to note about the `PutFile` method. Note that we only specified a directory name and not a filename. By default, the `PutFile` method will generate a unique ID to serve as the filename. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `PutFile` method so you can store the path, including the generated filename, in your database.
+`PutFile` usuli haqida bir nechta muhim narsalarni esda tutish kerak. E'tibor bering, biz faqat katalog nomini ko'rsatdik, fayl nomini emas. Standart holatda, `PutFile` metodi fayl nomi sifatida xizmat qilish uchun noyob ID yaratadi. Fayl kengaytmasi faylning MIME turini tekshirish orqali aniqlanadi. Fayl yo'li `PutFile` usuli tomonidan qaytariladi, shuning uchun siz yo'lni, shu jumladan yaratilgan fayl nomini, ma'lumotlar bazangizda saqlashingiz mumkin.
 
-### Copying & Moving Files
+### Fayllarni nusxalash va ko'chirish
 
-The `Copy` method may be used to copy an existing file to a new location on the disk, while the `Move` method may be used to rename or move an existing file to a new location:
+`Copy` usuli mavjud faylni diskdagi yangi joyga nusxalash uchun ishlatilishi mumkin, `Move` usuli esa mavjud faylni qayta nomlash yoki yangi joyga ko'chirish uchun ishlatilishi mumkin:
 
 ```go
 err := facades.Storage().Copy("old/file.jpg", "new/file.jpg")
@@ -172,20 +172,20 @@ err := facades.Storage().Copy("old/file.jpg", "new/file.jpg")
 err := facades.Storage().Move("old/file.jpg", "new/file.jpg")
 ```
 
-### File Uploads
+### Fayl yuklashlar
 
-In web applications, one of the most common use cases for storing files is storing user-uploaded files such as photos and documents. Goravel makes it very easy to store uploaded files using the `Store` method on an uploaded file instance. Call the `Store` method with the path at which you wish to store the uploaded file:
+Veb-ilovalarda fayllarni saqlashning eng keng tarqalgan qo'llanilishlaridan biri foydalanuvchi tomonidan yuklangan fotosuratlar va hujjatlar kabi fayllarni saqlashdir. Goravel yuklangan fayl namunasida `Store` usulidan foydalanib, yuklangan fayllarni saqlashni juda oson qiladi. Yuklangan faylni saqlamoqchi bo'lgan yo'lingiz bilan `Store` metodini chaqiring:
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
-  file, err := ctx.Request().File("avatar")
-  path, err := file.Store("avatars")
+  fayl, xato := ctx.Request().File("avatar")
+  yo'l, xato := fayl.Store("avatars")
 }
 ```
 
-There are a few important things to note about this example. Note that we only specified a directory name, not a filename. By default, the `Store` method will generate a unique ID to serve as the filename. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `Store` method so you can store the path, including the generated filename, in your database.
+Ushbu misol haqida bir nechta muhim narsalarni esda tutish kerak. E'tibor bering, biz faqat katalog nomini ko'rsatdik, fayl nomini emas. Standart holatda, `Store` usuli fayl nomi sifatida xizmat qilish uchun noyob ID yaratadi. Fayl kengaytmasi faylning MIME turini tekshirish orqali aniqlanadi. Fayl yo'li `Store` usuli tomonidan qaytariladi, shuning uchun siz yo'lni, jumladan, yaratilgan fayl nomini, ma'lumotlar bazangizda saqlashingiz mumkin.
 
-You may also call the `PutFile` method on the `Storage` facade to perform the same file storage operation as the example above:
+Shuningdek, yuqoridagi misolda ko'rsatilgan fayl saqlash operatsiyasini bajarish uchun `Storage` fasadida `PutFile` metodini ham chaqirishingiz mumkin:
 
 ```go
 import "github.com/goravel/framework/filesystem"
@@ -196,14 +196,14 @@ path := facades.Storage().PutFile("photos", file)
 
 ### Specifying A File Name
 
-If you do not want a filename to be automatically assigned to your stored file, you may use the `StoreAs` method, which receives the path, the filename, and the (optional) disk as its arguments:
+Agar saqlangan faylingizga avtomatik ravishda fayl nomi berilmasligini istasangiz, `StoreAs` metodidan foydalanishingiz mumkin, bu metod argument sifatida yo‘l, fayl nomi va (ixtiyoriy) diskni qabul qiladi:
 
 ```go
 file, err := ctx.Request().File("avatar")
 path, err := file.StoreAs("avatars", "name")
 ```
 
-You may also use the `PutFileAs` method on the Storage facade, which will perform the same file storage operation as the example above:
+Shuningdek, siz Storage fasadidagi `PutFileAs` metodidan ham foydalanishingiz mumkin, bu yuqoridagi misoldagi kabi fayl saqlash operatsiyasini bajaradi:
 
 ```go
 import "github.com/goravel/framework/filesystem"
@@ -212,11 +212,11 @@ file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFileAs("photos", file, "name")
 ```
 
-> If the file name specified by `StoreAs` and `PutFileAs` doesn't have a suffix, the suffix is automatically added based on the MIME of the file; otherwise, the specified file name is used directly.
+> Agar `StoreAs` va `PutFileAs` tomonidan belgilangan fayl nomida kengaytma bo'lmasa, faylning MIME turiga asoslanib kengaytma avtomatik ravishda qo'shiladi; aks holda, belgilangan fayl nomi to'g'ridan-to'g'ri ishlatiladi.
 
-### Specifying A Disk
+### Diskni belgilash
 
-By default, this uploaded file's `Store` method will use your default disk. If you would like to specify another disk, please use the `Disk` method:
+Standart holda, yuklangan ushbu faylning `Store` usuli sizning standart diskingizdan foydalanadi. Agar boshqa diskni belgilamoqchi bo'lsangiz, `Disk` metodidan foydalaning:
 
 ```go
 func (r *UserController) Show(ctx http.Context) {
@@ -225,9 +225,9 @@ func (r *UserController) Show(ctx http.Context) {
 }
 ```
 
-### Other Uploaded File Information
+### Boshqa yuklangan fayl ma'lumotlari
 
-If you would like to get the original name and extension of the uploaded file, you may do so using the `GetClientOriginalName` and `GetClientOriginalExtension` methods:
+Agar yuklangan faylning asl nomi va kengaytmasini olishni istasangiz, `GetClientOriginalName` va `GetClientOriginalExtension` usullaridan foydalanishingiz mumkin:
 
 ```go
 file, err := ctx.Request().File("avatar")
@@ -236,69 +236,69 @@ name := file.GetClientOriginalName()
 extension := file.GetClientOriginalExtension()
 ```
 
-However, keep in mind that the `GetClientOriginalName` and `GetClientOriginalExtension` methods are considered unsafe, as the file name and extension may be tampered with by a malicious user. For this reason, you should typically prefer the `HashName` and `Extension` methods to get a name and an extension for the given file upload:
+Biroq, `GetClientOriginalName` va `GetClientOriginalExtension` usullari xavfli hisoblanadi, chunki fayl nomi va kengaytmasi yomon niyatli foydalanuvchi tomonidan o'zgartirilishi mumkinligini yodda tuting. Shu sababli, berilgan fayl yuklash uchun nom va kengaytmani olish uchun odatda `HashName` va `Extension` usullarini afzal ko'rishingiz kerak:
 
 ```go
 file, err := ctx.Request().File("avatar")
 
-name := file.HashName() // Generate a unique, random name...
-extension, err := file.Extension() // Determine the file's extension based on the file's MIME type...
+name := file.HashName() // Yagona, tasodifiy nom hosil qilish...
+extension, err := file.Extension() // Faylning MIME turiga asoslanib, fayl kengaytmasini aniqlash...
 ```
 
-## Deleting Files
+## Fayllarni o'chirish
 
-The `Delete` method accepts a single filename or an array of files to delete:
+`Delete` usuli bitta fayl nomini yoki o'chirish uchun fayllar massivini qabul qiladi:
 
 ```go
 err := facades.Storage().Delete("file.jpg")
 err := facades.Storage().Delete("file.jpg", "file2.jpg")
 ```
 
-If necessary, you may specify the disk that the file should be deleted from:
+Agar kerak bo'lsa, fayl o'chirilishi kerak bo'lgan diskni belgilashingiz mumkin:
 
 ```go
 err := facades.Storage().Disk("s3").Delete("file.jpg")
 ```
 
-## Directories
+## Kataloglar
 
-### Get All Files Within A Directory
+### Barcha Fayllarni Katalog Ichida Olish
 
-The `Files` method returns a slice of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `AllFiles` method:
+`Files` usuli berilgan katalogdagi barcha fayllarning kesmasini qaytaradi. Agar berilgan katalogdagi barcha fayllar ro'yxatini, shu jumladan barcha pastki kataloglarni olishni istasangiz, `AllFiles` metodidan foydalanishingiz mumkin:
 
 ```go
 files, err := facades.Storage().Disk("s3").Files("directory")
 files, err := facades.Storage().Disk("s3").AllFiles("directory")
 ```
 
-### Get All Directories Within A Directory
+### Katalog Ichidagi Barcha Kataloglarni Oling
 
-The `Directories` method returns a slice of all the directories within a given directory. Additionally, you may use the `AllDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
+`Directories` usuli berilgan katalog ichidagi barcha kataloglarning kesmasini qaytaradi. Bundan tashqari, siz berilgan katalogdagi barcha kataloglar va uning barcha pastki kataloglari ro'yxatini olish uchun `AllDirectories` usulidan foydalanishingiz mumkin:
 
 ```go
 directories, err := facades.Storage().Disk("s3").Directories("directory")
 directories, err := facades.Storage().Disk("s3").AllDirectories("directory")
 ```
 
-### Create A Directory
+### Papka yaratish
 
-The `MakeDirectory` method will create the given directory, including any needed subdirectories:
+`MakeDirectory` usuli berilgan katalogni, shu jumladan zarur bo'lgan barcha ichki kataloglarni yaratadi:
 
 ```go
 err := facades.Storage().MakeDirectory(directory)
 ```
 
-### Delete A Directory
+### Katalogni o'chirish
 
-Finally, the `DeleteDirectory` method may be used to remove a directory and all of its files:
+Nihoyat, `DeleteDirectory` usuli katalog va uning barcha fayllarini olib tashlash uchun ishlatilishi mumkin:
 
 ```go
 err := facades.Storage().DeleteDirectory(directory)
 ```
 
-## Custom Filesystems
+## Maxsus Fayl Tizimlari
 
-You can set the `custom` driver in the `config/filesystems.go` file.
+Siz `custom` haydovchini `config/filesystems.go` faylida o'rnatishingiz mumkin.
 
 ```go
 "custom": map[string]any{
@@ -307,7 +307,7 @@ You can set the `custom` driver in the `config/filesystems.go` file.
 },
 ```
 
-You need to implement the `github.com/goravel/framework/contracts/filesystem/Driver` interface in the `via` configuration item.
+Siz `via` konfiguratsiya elementida `github.com/goravel/framework/contracts/filesystem/Driver` interfeysini amalga oshirishingiz kerak.
 
 ```go
 type Driver interface {
@@ -337,4 +337,4 @@ type Driver interface {
 }
 ```
 
-> Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config().Env()` to obtain the configuration in the custom driver.
+> Eslatma: Maxsus drayver ro'yxatdan o'tkazilganda konfiguratsiya yuklanmaganligi sababli, iltimos, maxsus drayverda konfiguratsiyani olish uchun `facades.Config().Env()` dan foydalaning.
