@@ -1,16 +1,16 @@
-# Events
+# Tadbirlar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Goravel's events provide a simple observer pattern implementation, allowing you to subscribe and listen to various events that occur within your application. Event classes are typically stored in the `app/events` directory, while their listeners are stored in `app/listeners`. Don't worry if you don't see these directories in your application as they will be created for you as you generate events and listeners using Artisan console commands.
+Goravel hodisalari oddiy kuzatuvchi naqshini amalga oshiradi, ilovangiz ichida sodir bo'ladigan turli xil hodisalarga obuna bo'lish va tinglash imkonini beradi. Tadbir sinflari odatda `app/events` katalogida saqlanadi, ularning tinglovchilari esa `app/listeners` katalogida saqlanadi. Agar ilovangizda bu kataloglarni ko'rmasangiz, xavotirlanmang, chunki ular siz Artisan konsol buyruqlari yordamida hodisalar va tinglovchilarni yaratayotganda siz uchun yaratiladi.
 
-Events serve as a great way to decouple various aspects of your application, as a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order is shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `app/events/OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
+Tadbirlar ilovangizning turli jihatlarini ajratish uchun ajoyib usul bo'lib xizmat qiladi, chunki bitta tadbir bir-biriga bog'liq bo'lmagan bir nechta tinglovchilarga ega bo'lishi mumkin. Masalan, har safar buyurtma jo'natilganda foydalanuvchingizga Slack bildirishnomasini yuborishni xohlashingiz mumkin. Buyurtmani qayta ishlash kodini Slack bildirishnomalari kodingiz bilan bog'lamasdan, siz `app/events/OrderShipped` hodisasini yaratishingiz mumkin, bu esa tinglovchi tomonidan qabul qilinib, Slack bildirishnomasini yuborish uchun ishlatilishi mumkin.
 
-## Register Events & Listeners
+## Tadbirlar va tinglovchilarni ro'yxatdan o'tkazish
 
-All events and listeners should be registered via the `WithEvents` function in the `bootstrap/app.go` file:
+Barcha hodisalar va tinglovchilar `bootstrap/app.go` faylidagi `WithEvents` funksiyasi orqali ro'yxatdan o'tkazilishi kerak:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -27,9 +27,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-### Generating Events & Listeners
+### Voqealarni va Tinglovchilarni Yaratish
 
-You can use the `make:event` and `make:listener` Artisan commands to generate individual events and listeners:
+Siz `make:event` va `make:listener` Artisan buyruqlaridan foydalanib, alohida hodisalar va tinglovchilarni yaratishingiz mumkin:
 
 ```go
 ./artisan make:event PodcastProcessed
@@ -39,9 +39,9 @@ You can use the `make:event` and `make:listener` Artisan commands to generate in
 ./artisan make:listener user/SendPodcastNotification
 ```
 
-## Defining Events
+## Tadbirlarni aniqlash
 
-An event class is essentially a data container that holds the information related to the event, the `Handle` method of `event` passes in and returns the `[]event.Arg` structure, which can be used to process data. The processed data will then be passed on to all associated `listeners`. For example, let's assume an `app\events\OrderShipped` event:
+Tadbir sinfi asosan tadbir bilan bog'liq ma'lumotlarni o'z ichiga olgan ma'lumotlar konteyneridir, `event` ning `Handle` usuli `[]event.Arg` tuzilmasini kiritadi va qaytaradi, bu ma'lumotlarni qayta ishlash uchun ishlatilishi mumkin. Qayta ishlangan ma'lumotlar keyin barcha bog'langan `listener`larga o'tkaziladi. Masalan, `app\events\OrderShipped` hodisasini faraz qilaylik:
 
 ```go
 package events
@@ -55,9 +55,9 @@ func (receiver *OrderShipped) Handle(args []event.Arg) ([]event.Arg, error) {
 }
 ```
 
-## Defining Listeners
+## Tinglovchilarni belgilash
 
-Next, let's take a look at the listener for our example event. Event listeners receive `[]event.Arg` of the event `Handle` method returns. Within the `Handle` method, you may perform any actions necessary to respond to the event:
+Keyingi, keling, bizning misol hodisasi uchun tinglovchini ko'rib chiqaylik. Tadbir tinglovchilari `Handle` usulining qaytaradigan `[]event.Arg` tadbirini oladi. `Handle` usulida siz hodisaga javob berish uchun zarur bo'lgan har qanday harakatlarni bajara olasiz:
 
 ```go
 package listeners
@@ -85,13 +85,13 @@ func (receiver *SendShipmentNotification) Handle(args ...any) error {
 }
 ```
 
-### Stopping The Propagation Of An Event
+### Tadbirning tarqalishini to'xtatish
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning an error from your listener's `Handle` method.
+Ba'zan, siz hodisaning boshqa tinglovchilarga tarqalishini to'xtatmoqchi bo'lishingiz mumkin. Buning uchun siz tinglovchingizning `Handle` usulidan xatoni qaytarishingiz mumkin.
 
-## Queued Event Listeners
+## Navbatga qo‘yilgan hodisa tinglovchilari
 
-Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making an HTTP request. Before using queued listeners, make sure to [configure your queue](queues.md) and start a queue worker on your server or local development environment.
+Eshitingiz sekin vazifani bajaradigan bo'lsa, masalan, elektron pochta yuborish yoki HTTP so'rovini amalga oshirish kabi, navbatdagi tinglovchilar foydali bo'lishi mumkin. Navbatga qo‘yilgan tinglovchilardan foydalanishdan oldin, serveringizda yoki mahalliy ishlab chiqish muhitingizda [navbatni sozlang](queues.md) va navbat ishchisini ishga tushiring.
 
 ```go
 package listeners
@@ -113,13 +113,13 @@ func (receiver *SendShipmentNotification) Handle(args ...any) error {
 }
 ```
 
-### Queued Event Listeners & Database Transactions
+### Navbatga qo‘yilgan hodisa tinglovchilari va maʼlumotlar bazasi tranzaksiyalari
 
-When queued listeners are dispatched within database transactions, the queue may process them before the database transaction has been committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can occur when the job that dispatches the queued listener is processed. At this time, the event needs to be placed outside the database transactions.
+Navbatga qo‘yilgan tinglovchilar ma’lumotlar bazasi tranzaksiyalari ichida jo‘natilganda, navbat ularni ma’lumotlar bazasi tranzaksiyasi tasdiqlanmaganidan oldin qayta ishlashi mumkin. Bunday bo'lganda, ma'lumotlar bazasi tranzaksiyasi davomida modellar yoki ma'lumotlar bazasi yozuvlariga kiritgan yangilanishlaringiz ma'lumotlar bazasida hali aks ettirilmagan bo'lishi mumkin. Bundan tashqari, tranzaksiya ichida yaratilgan har qanday modellar yoki ma'lumotlar bazasi yozuvlari ma'lumotlar bazasida mavjud bo'lmasligi mumkin. Agar tinglovchingiz ushbu modellarga bog'liq bo'lsa, navbatdagi tinglovchini jo'natadigan ish qayta ishlanganda kutilmagan xatolar yuzaga kelishi mumkin. Bu vaqtda, tadbir ma'lumotlar bazasi tranzaksiyalaridan tashqarida joylashtirilishi kerak.
 
-## Dispatching Events
+## Vaqtinchalik hodisalar
 
-We can dispatch Events by `facades.Event().Job().Dispatch()` method.
+Biz hodisalarni `facades.Event().Job().Dispatch()` usuli orqali jo‘nata olamiz.
 
 ```go
 package controllers
@@ -143,7 +143,7 @@ func (r UserController) Show(ctx http.Context) {
 }
 ```
 
-## `event.Arg.Type` Supported Types
+## `event.Arg.Type` qo‘llab-quvvatlanadigan turlar
 
 ```go
 bool
