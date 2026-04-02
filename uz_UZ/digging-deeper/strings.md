@@ -1,10 +1,10 @@
-# Strings
+# Matnllar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Goravel provides a fluent string manipulation library that allows you to easily manipulate strings. Fluent Strings allows you to combine multiple string operations through method chaining, where most of the methods returns an instance of `support/str.String`, letting you chain additional methods. To get the final string value after applying the chained operations, you can call the `String` method, which returns the underlying `string` value.
+Goravel sizga satrlarni osongina boshqarish imkonini beruvchi ravon satrlarni boshqarish kutubxonasini taqdim etadi. Ravon Strings sizga bir nechta satr operatsiyalarini usul zanjiri orqali birlashtirish imkonini beradi, bu yerda usullarning aksariyati qo'shimcha usullarni zanjirlash imkonini beruvchi `support/str.String` misolini qaytaradi. Zanjirli operatsiyalarni qo'llagandan so'ng, oxirgi satr qiymatini olish uchun siz asosiy "satr" qiymatini qaytaradigan "String" usulini chaqirishingiz mumkin.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -12,11 +12,11 @@ import "github.com/goravel/framework/support/str"
 str.Of("  Goravel  ").Trim().Lower().UpperFirst().String() // "Goravel"
 ```
 
-## Available Methods
+## Mavjud usullar
 
 ### `Of`
 
-The `Of` method creates a new fluent string instance from a given string.
+`Of` usuli berilgan satrdan yangi ravon satr namunasini yaratadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
