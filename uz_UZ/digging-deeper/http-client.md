@@ -1,21 +1,19 @@
-# HTTP Client
+# HTTP mijozi
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-In software development, there are many instances when you need to call an API to fetch data—
-whether it's connecting to a microservice or accessing a third-party API. In such cases,
-Goravel offers an easy-to-use, expressive, and minimalist API built on the standard `net/http` library,
-all designed to enhance the developer experience.
+Dasturiy ta'minotni ishlab chiqishda, ma'lumotlarni olish uchun API ni chaqirish kerak bo'lgan ko'p holatlar mavjud — xoh u mikroservisga ulanish bo'lsin, xoh uchinchi tomon API siga kirish bo'lsin. Bunday hollarda,
+Goravel standart "net/http" kutubxonasida yaratilgan, foydalanish oson, ifodali va minimalist API-ni taklif qiladi, bularning barchasi ishlab chiquvchilar tajribasini yaxshilash uchun mo'ljallangan.
 
-## Configuration
+## Konfiguratsiya
 
-Goravel's HTTP client is built on top of the `net/http.Client` for making HTTP requests. If you need to tweak its internal settings, just update the `clients` property in the `config/http.go` file.
+Goravelning HTTP mijozi HTTP so'rovlarini amalga oshirish uchun `net/http.Client` ustiga qurilgan. Agar uning ichki sozlamalarini o'zgartirishingiz kerak bo'lsa, shunchaki `config/http.go` faylidagi `clients` xususiyatini yangilang.
 
-## Making Requests
+## So'rovlar berish
 
-The Http facade provides a convenient way to make HTTP requests using familiar verbs: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, and `OPTIONS`.
+Http jabhasi tanish fe'llar yordamida HTTP so'rovlarini amalga oshirishning qulay usulini taqdim etadi: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD` va \`OPTIONS.
 
 **Example: GET Request**
 
@@ -23,59 +21,55 @@ The Http facade provides a convenient way to make HTTP requests using familiar v
 response, err := facades.Http().Get("https://example.com")
 ```
 
-Each HTTP verb method returns a `response` of type `framework/contracts/http/client.Response` and an `err` if the request fails.
+Har bir HTTP fe'l usuli `framework/contracts/http/client.Response` turidagi `javob` va agar so'rov bajarilmasa, `err` qaytaradi.
 
-You can use the `Client` function to specify which HTTP client configuration to use:
+Qaysi HTTP mijoz konfiguratsiyasidan foydalanishni belgilash uchun `Client` funksiyasidan foydalanishingiz mumkin:
 
 ```go
 response, err := facades.Http().Client("github").Get("https://example.com")
 ```
 
-### Response Interface
+### Javob interfeysi
 
-The `framework/contracts/http/client.Response` interface provides the following methods to interact with the HTTP response:
+`framework/contracts/http/client.Response` interfeysi HTTP javobi bilan o'zaro ishlashning quyidagi usullarini taqdim etadi:
 
 ```go
 type Response interface {
-    Bind(value any) error            // Bind the response body to a struct
-    Body() (string, error)           // Get the response body as a string
-    ClientError() bool               // Check if the status code is in the 4xx range
-    Cookie(name string) *http.Cookie // Get a specific cookie
-    Cookies() []*http.Cookie         // Get all response cookies
-    Failed() bool                    // Check if the status code is not in the 2xx range
-    Header(name string) string       // Get the value of a specific header
-    Headers() http.Header            // Get all response headers
-    Json() (map[string]any, error)   // Decode the response body as JSON into a map
-    Redirect() bool                  // Check if the response is a redirect (3xx status code)
-    ServerError() bool               // Check if the status code is in the 5xx range
-    Status() int                     // Get the HTTP status code
-    Successful() bool                // Check if the status code is in the 2xx range
+Bind(value any) xatosi // Javob tanasini strukturaga bog'lash
+Body() (string, error) // Javob tanasini satr sifatida olish
+ClientError() bool // Holat kodi 4xx oralig'ida ekanligini tekshirish
+Cookie(name string) *http.Cookie // Muayyan cookie-faylni olish
+Cookie() []*http.Cookie // Barcha javob cookie-fayllarini olish
+Failed() bool // Holat kodi 2xx oralig'ida emasligini tekshirish
+Header(name string) string // Muayyan sarlavhaning qiymatini olish
+Header() http.Header // Barcha javob sarlavhalarini olish
+Json() (map[string]any, error) // Javob tanasini JSON sifatida xaritaga dekodlash
+Redirect() bool // Javob yo'naltirish ekanligini tekshirish (3xx holat kodi)
+ServerError() bool // Holat kodi 5xx oralig'ida ekanligini tekshirish
+Status() int // HTTP holat kodini olish
+Successful() bool // Holat kodi 2xx oralig'ida ekanligini tekshirish
 
-    /* status code related methods */
+/* holat kodi bilan bog'liq usullar */
 
-    OK() bool                  // 200 OK
-    Created() bool             // 201 Created
-    Accepted() bool            // 202 Accepted
-    NoContent() bool           // 204 No Content
-    MovedPermanently() bool    // 301 Moved Permanently
-    Found() bool               // 302 Found
-    BadRequest() bool          // 400 Bad Request
-    Unauthorized() bool        // 401 Unauthorized
-    PaymentRequired() bool     // 402 Payment Required
-    Forbidden() bool           // 403 Forbidden
-    NotFound() bool            // 404 Not Found
-    RequestTimeout() bool      // 408 Request Timeout
-    Conflict() bool            // 409 Conflict
-    UnprocessableEntity() bool // 422 Unprocessable Entity
-    TooManyRequests() bool     // 429 Too Many Requests
+OK() bool // 200 OK
+Yaratilgan() bool // 201 Yaratilgan
+Qabul qilingan() bool // 202 Qabul qilingan
+Kontent yo'q() bool // 204 Kontent yo'q Ko'chirildi Doimiy() bool // 301 Doimiy ko'chirildi
+Topildi() bool // 302 Topildi
+NodRequest() bool // 400 Noto'g'ri so'rov Ruxsatsiz() bool // 401 Ruxsatsiz
+To'lov talab qilinadi() bool // 402 To'lov talab qilinadi Taqiqlangan() bool // 403 Taqiqlangan
+Topilmadi() bool // 404 Topilmadi
+RequestTimeout() bool // 408 So'rov vaqti tugadi
+Conflict() bool // 409 Conflict
+UnprocessableEntity() bool // 422 Ishlov berilmaydigan obyekt TooManyRequests() bool // 429 Juda ko'p so'rovlar
 }
 ```
 
-### URI Templates
+### URI shablonlari
 
-URI Templates let you build dynamic request URLs using placeholders.
-You can define these placeholders in your URL and then provide the values to replace them before making the request.
-To achieve this, you can use `WithUrlParameter` for single parameters or `WithUrlParameters` for multiple parameters.
+URI shablonlari sizga joy egallovchilaridan foydalanib, dinamik so'rov URL manzillarini yaratish imkonini beradi.
+Siz ushbu joy egallovchilarni URL manzilingizda belgilashingiz va keyin so'rov yuborishdan oldin ularni almashtirish uchun qiymatlarni taqdim etishingiz mumkin.
+Bunga erishish uchun siz bitta parametrlar uchun `WithUrlParameter` yoki bir nechta parametrlar uchun `WithUrlParameters` dan foydalanishingiz mumkin.
 
 ```go
 response, err := facades.Http().
@@ -92,10 +86,9 @@ response, err := facades.Http().
     Get("https://api.example.com/books/{bookId}/chapters/{chapterNumber}")
 ```
 
-### Request Query Parameters
+### So'rov parametrlarini so'rash
 
-Add query parameters to your requests using `WithQueryParameter` for single parameters or
-`WithQueryParameters` for multiple parameters via a map.
+Bitta parametrlar uchun `WithQueryParameter` yoki xarita orqali bir nechta parametrlar uchun`WithQueryParameters` dan foydalanib, so'rovlaringizga so'rov parametrlarini qo'shing.
 
 ```go
 response1, err1 := facades.Http().
@@ -113,7 +106,7 @@ response2, err2 := facades.Http().
 // Resulting URL: https://api.example.com/products?page=2&pageSize=10
 ```
 
-You can also add query parameters directly as a formatted string using `WithQueryString`:
+Shuningdek, so'rov parametrlarini to'g'ridan-to'g'ri formatlangan satr sifatida `WithQueryString` yordamida qo'shishingiz mumkin:
 
 ```go
 response, err := facades.Http().
@@ -121,10 +114,10 @@ response, err := facades.Http().
     Get("https://api.example.com/items")
 ```
 
-### Sending a Request Body
+### So'rov matnini yuborish
 
-For HTTP verbs like `POST`, `PUT`, `PATCH` and `DELETE` accept `io.Reader` as the second argument.
-To simplify building payloads, the framework provides utility methods for constructing request bodies.
+`POST`, `PUT`, `PATCH` va `DELETE` kabi HTTP fe'llari uchun ikkinchi argument sifatida `io.Reader` ni qabul qiling.
+Bino yuklamalarini soddalashtirish uchun tizim so'rov tanalarini qurish uchun foydali usullarni taqdim etadi.
 
 ```go
 import "github.com/goravel/framework/support/http"
@@ -136,10 +129,9 @@ body, err := builder.Build()
 response, err := facades.Http().WithHeader("Content-Type", body.ContentType()).Post("https://example.com/users", body.Reader())
 ```
 
-### Headers
+### Sarlavhalar
 
-You can add headers to your requests using `WithHeader` for a single header
-or `WithHeaders` for multiple headers provided as a map.
+Siz so'rovlaringizga bitta sarlavha uchun `WithHeader` yoki xarita sifatida taqdim etilgan bir nechta sarlavhalar uchun `WithHeaders` dan foydalanib sarlavhalar qo'shishingiz mumkin.
 
 ```go
 response, err := facades.Http().
@@ -155,7 +147,7 @@ response, err = facades.Http().
         Get("https://api.example.com")
 ```
 
-You may use the `Accept` method to specify the content type that your application is expecting in response to your request:
+So'rovingizga javoban ilovangiz kutayotgan kontent turini ko'rsatish uchun "Qabul qilish" usulidan foydalanishingiz mumkin:
 
 ```go
 response, err := facades.Http().
@@ -163,7 +155,7 @@ response, err := facades.Http().
     Get("https://api.example.com")
 ```
 
-For convenience, you can use `AcceptJson` to quickly specify that you expect the API response to be in `application/json` format:
+Qulaylik uchun, API javobi `application/json` formatida bo'lishini kutishingizni tezda belgilash uchun `AcceptJson` dan foydalanishingiz mumkin:
 
 ```go
 response, err := facades.Http().
@@ -171,7 +163,7 @@ response, err := facades.Http().
     Get("https://api.example.com/data")
 ```
 
-To replace all existing headers with a new set, use `ReplaceHeaders`:
+Mavjud sarlavhalarni yangi to'plam bilan almashtirish uchun "ReplaceHeaders" dan foydalaning:
 
 ```go
 response, err := facades.Http().
@@ -181,22 +173,22 @@ response, err := facades.Http().
         Get("https://api.example.com")
 ```
 
-You can remove a specific header using `WithoutHeader` or clear all headers with `FlushHeaders`.
+Siz "WithoutHeader" yordamida ma'lum bir sarlavhani olib tashlashingiz yoki "FlushHeaders" yordamida barcha sarlavhalarni tozalashingiz mumkin.
 
 ```go
-response, err := facades.Http().
-    WithoutHeader("X-Previous-Header").
-    Get("https://api.example.com")
+javob, xato := facades.Http().
+WithoutHeader("X-Previous-Header").
+Get("https://api.example.com")
 
-// flush all headers
-response, err := facades.Http().
-    FlushHeaders().
-    Get("https://api.example.com")
+// barcha sarlavhalarni tozalash
+javob, xato := facades.Http().
+FlushHeaders().
+Get("https://api.example.com")
 ```
 
-### Authentication
+### Autentifikatsiya
 
-You can specify basic authentication using the `WithBasicAuth` method:
+Siz asosiy autentifikatsiyani `WithBasicAuth` usuli yordamida belgilashingiz mumkin:
 
 ```go
 response, err := facades.Http().
@@ -204,10 +196,9 @@ response, err := facades.Http().
     Get("https://api.example.com/protected")
 ```
 
-#### Bearer Tokens
+#### Bearer  tokenlar
 
-To quickly add a bearer token to the request's `Authorization` header,
-you can use the `WithToken` method:
+So'rovning "Avtorizatsiya" sarlavhasiga tashuvchi tokenni tezda qo'shish uchun siz "WithToken" usulidan foydalanishingiz mumkin:
 
 ```go
 response, err := facades.Http().
@@ -216,7 +207,7 @@ response, err := facades.Http().
 ```
 
 :::tip
-The `WithToken` method also accepts an optional second argument to specify the token type (e.g., "Bearer", "Token").
+`WithToken` usuli shuningdek, token turini (masalan, "Bearer", "Token") belgilash uchun ixtiyoriy ikkinchi argumentni ham qabul qiladi.
 If no type is provided, it defaults to "Bearer".
 
 ```go
@@ -227,7 +218,7 @@ response, err := facades.Http().
 
 :::
 
-To remove the bearer token from the request, use the `WithoutToken` method:
+So'rovdan tashuvchi tokenni olib tashlash uchun `WithoutToken` usulidan foydalaning:
 
 ```go
 response, err := facades.Http().
@@ -235,10 +226,10 @@ response, err := facades.Http().
     Get("https://api.example.com/api/resource")
 ```
 
-### Context
+### Kontekst
 
-You can use `WithContext` to make your HTTP requests context-aware.
-This allows you to control the lifecycle of a request, for instance, by setting timeouts or enabling cancellation.
+HTTP so'rovlaringizni kontekstga moslashtirish uchun "WithContext" dan foydalanishingiz mumkin.
+Bu sizga so'rovning hayot aylanishini boshqarish imkonini beradi, masalan, vaqtni belgilash yoki bekor qilishni yoqish orqali.
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
@@ -247,9 +238,9 @@ defer cancel()
 response, err := facades.Http().WithContext(ctx).Get("https://example.com")
 ```
 
-### Bind Response
+### Bog'lanish javobi
 
-You can use the `Bind` method to specify the struct that the response should be bound to.
+Javob bog'lanishi kerak bo'lgan tuzilmani belgilash uchun siz "Bind" usulidan foydalanishingiz mumkin.
 
 ```go
 type User struct {
@@ -277,7 +268,7 @@ func main() {
 
 ### Cookie
 
-To send cookies with your HTTP requests, you can use `WithCookie` for a single cookie or `WithCookies` for multiple cookies.
+HTTP so'rovlaringiz bilan cookie-fayllarni yuborish uchun bitta cookie-fayl uchun `WithCookie` yoki bir nechta cookie-fayllar uchun `WithCookies` dan foydalanishingiz mumkin.
 
 ```go
 response, err := facades.Http().
@@ -293,7 +284,7 @@ response, err := facades.Http().
 	Get("https://example.com/dashboard")
 ```
 
-To prevent specific cookies from being sent with your request, you can use `WithoutCookie`.
+So'rovingiz bilan birga ma'lum cookie-fayllar yuborilishining oldini olish uchun siz "WithoutCookie" dan foydalanishingiz mumkin.
 
 ```go
 response, err := facades.Http().
@@ -301,36 +292,32 @@ response, err := facades.Http().
 	Get("https://example.com")
 ```
 
-## Testing
+## Sinov
 
-When testing your application, you often want to avoid making real network requests to external APIs. Whether it's to
-speed up tests, avoid rate limits, or simulate failure scenarios, Goravel makes this easy. The `Http` facade provides a
-powerful `Fake` method that allows you to instruct the HTTP client to return stubbed (dummy) responses when requests are made.
+Ilovangizni sinab ko'rishda ko'pincha tashqi API-larga haqiqiy tarmoq so'rovlarini yuborishdan qochishingiz kerak. Goravel testlarni tezlashtirish, tezlik chegaralaridan qochish yoki muvaffaqiyatsizlik stsenariylarini simulyatsiya qilish uchun bo'ladimi, buni osonlashtiradi. “Http” fasadi HTTP mijoziga soʻrovlar yuborilganda notoʻgʻri (soxta) javoblarni qaytarish boʻyicha koʻrsatma berish imkonini beruvchi kuchli “Soxta” usulini taqdim etadi.
 
-### Faking Responses
+### Soxta javoblar
 
-To start faking requests, pass a map to the `Fake` method. The keys represent the URL patterns or client names
-you want to intercept, and the values represent the responses to return. You can use `*` as a wildcard character.
+Soxta so'rovlarni boshlash uchun xaritani "Soxta" usuliga o'tkazing. Kalitlar siz ushlamoqchi bo'lgan URL naqshlarini yoki mijoz nomlarini, qiymatlar esa qaytariladigan javoblarni ifodalaydi. Siz `*` belgisini joker belgi sifatida ishlatishingiz mumkin.
 
-The `Http` facade provides a convenient `Response` builder to construct various types of fake responses.
+"Http" jabhasi turli xil soxta javoblarni yaratish uchun qulay "Javob" quruvchisini taqdim etadi.
 
 ```go
 facades.Http().Fake(map[string]any{
-    // Stub a specific URL
-    "https://github.com/goravel/framework": facades.Http().Response().Json(200, map[string]string{"foo": "bar"}),
+// Muayyan URL manzilini stubga qo'yish
+"https://github.com/goravel/framework": facades.Http().Response().Json(200, map[string]string{"foo": "bar"}),
 
-    // Stub a wildcard pattern
-    "https://google.com/*": facades.Http().Response().String(200, "Hello World"),
+// Joker belgili naqshni stubga qo'yish
+"https://google.com/*": facades.Http().Response().String(200, "Salom Dunyo"),
 
-    // Stub a specific Client (defined in config/http.go)
-    "github": facades.Http().Response().OK(),
+// Muayyan mijozni stubga qo'yish (config/http.go da belgilangan)
+"github": facades.Http().Response().OK(),
 })
 ```
 
-**Fallback URLs**
+**Zaxira URL manzillari**
 
-Any request that does not match a pattern defined in `Fake` will be executed normally over the network. To prevent this,
-you can define a fallback pattern using the single `*` wildcard, which will match all unmatched URLs.
+"Soxta" da belgilangan naqshga mos kelmaydigan har qanday so'rov odatda tarmoq orqali bajariladi. Buning oldini olish uchun, siz barcha mos kelmaydigan URL manzillariga mos keladigan bitta `*` joker belgisidan foydalanib, zaxira nusxasini belgilashingiz mumkin.
 
 ```go
 facades.Http().Fake(map[string]any{
@@ -339,10 +326,9 @@ facades.Http().Fake(map[string]any{
 })
 ```
 
-**Implicit Conversions**
+**Yashirin konversiyalar**
 
-For convenience, you do not always need to use the `Response` builder. You can pass simple `int`, `string`, or `map`
-values, and Goravel will automatically convert them into responses.
+Qulaylik uchun, siz har doim ham "Javob" konstruktoridan foydalanishingiz shart emas. Siz oddiy `int`, `string` yoki `map` qiymatlarini uzatishingiz mumkin va Goravel ularni avtomatik ravishda javoblarga aylantiradi.
 
 ```go
 facades.Http().Fake(map[string]any{
@@ -352,45 +338,44 @@ facades.Http().Fake(map[string]any{
 })
 ```
 
-### Fake Response Builder
+### Soxta javob quruvchisi
 
-The `facades.Http().Response()` method provides a fluent interface to build custom responses easily.
+`facades.Http().Response()` usuli maxsus javoblarni osongina yaratish uchun ravon interfeysni ta'minlaydi.
 
 ```go
-// Create a response using a file content
+// Fayl tarkibidan foydalanib javob yarating
 facades.Http().Response().File(200, "./tests/fixtures/user.json")
 
-// Create a JSON response
+// JSON javobini yarating
 facades.Http().Response().Json(201, map[string]any{"created": true})
 
-// Create a response with custom headers
-headers := http.Header{}
+// Maxsus sarlavhalar bilan javob yarating
+sarlavhalar := http.Header{}
 headers.Add("X-Custom", "Value")
-facades.Http().Response().Make(200, "Body Content", headers)
+facades.Http().Response().Make(200, "Body Content", sarlavhalar)
 
-// Standard status helpers
+// Standart holat yordamchilari
 facades.Http().Response().OK()
-facades.Http().Response().Status(403)
+facades.Http().Response().Holat(403)
 ```
 
-### Faking Response Sequences
+### Soxta javob ketma-ketliklari
 
-Sometimes you may need to specify that a single URL should return a series of different responses in order,
-such as when testing retries or rate-limiting logic. You can use the `Sequence` method to build this flow.
+Ba'zan bitta URL bir qator turli xil javoblarni ketma-ket qaytarishi kerakligini belgilashingiz kerak bo'lishi mumkin, masalan, qayta urinishlarni sinab ko'rish yoki tezlikni cheklovchi mantiqni sinab ko'rish paytida. Ushbu oqimni yaratish uchun siz "Ketma-ketlik" usulidan foydalanishingiz mumkin.
 
 ```go
 facades.Http().Fake(map[string]any{
-    "github": facades.Http().Sequence().
-                PushStatus(500).                // 1st Request: Server Error
-                PushString(429, "Rate Limit").  // 2nd Request: Rate Limit
-                PushStatus(200),                // 3rd Request: Success
+"github": facades.Http().Sequence().
+PushStatus(500). // Birinchi so'rov: Server xatosi
+PushString(429, "Tezlik chegarasi"). // Ikkinchi so'rov: Tezlik chegarasi
+PushStatus(200), // Uchinchi so'rov: Muvaffaqiyatli
 })
 ```
 
-**Empty Sequences**
+**Bo'sh ketma-ketliklar**
 
-When all responses in a sequence have been consumed, any further requests will cause the client to return an error.
-If you wish to specify a default response instead of failing, use the `WhenEmpty` method:
+Ketma-ketlikdagi barcha javoblar tugagach, keyingi so'rovlar mijozning xato qaytarishiga olib keladi.
+Agar xato qilish o'rniga standart javobni ko'rsatmoqchi bo'lsangiz, `WhenEmpty` usulidan foydalaning:
 
 ```go
 facades.Http().Fake(map[string]any{
@@ -400,10 +385,10 @@ facades.Http().Fake(map[string]any{
 })
 ```
 
-### Inspecting Requests
+### Tekshirish so'rovlari
 
-When faking responses, it is crucial to verify that the correct requests were actually sent by your application.
-You can use the `AssertSent` method to inspect the request and return a boolean indicating if it matches your expectations.
+Soxta javoblar berishda, to'g'ri so'rovlar aslida sizning arizangiz tomonidan yuborilganligini tekshirish juda muhimdir.
+Siz so'rovni tekshirish va uning sizning kutganlaringizga mos kelishini ko'rsatuvchi mantiqiy qiymatni qaytarish uchun "AssertSent" usulidan foydalanishingiz mumkin.
 
 ```go
 facades.Http().AssertSent(func(req client.Request) bool {
@@ -414,9 +399,9 @@ facades.Http().AssertSent(func(req client.Request) bool {
 })
 ```
 
-**Other Assertions**
+**Boshqa tasdiqlar**
 
-You can also assert that a specific request was _not_ sent, or check the total number of requests sent:
+Shuningdek, ma'lum bir so'rov _yuborilmagan_ligini tasdiqlashingiz yoki yuborilgan so'rovlarning umumiy sonini tekshirishingiz mumkin:
 
 ```go
 // Assert a request was NOT sent
@@ -431,28 +416,25 @@ facades.Http().AssertNothingSent()
 facades.Http().AssertSentCount(3)
 ```
 
-### Preventing Stray Requests
+### Noto'g'ri so'rovlarning oldini olish
 
-To ensure your tests are strictly isolated and do not accidentally hit real external APIs, you can use the
-`PreventStrayRequests` method. After calling this, any request that does not match a defined Fake rule will cause the
-test to panic with an exception.
+Sinovlaringiz qat'iy izolyatsiya qilinganligiga va tasodifan haqiqiy tashqi API-larga tegmasligiga ishonch hosil qilish uchun siz "PreventStrayRequests" usulidan foydalanishingiz mumkin. Buni chaqirgandan so'ng, belgilangan Fake qoidasiga mos kelmaydigan har qanday so'rov testni istisno bilan vahimaga soladi.
 
 ```go
 facades.Http().Fake(map[string]any{
-    "github": facades.Http().Response().OK(),
+"github": facades.Http().Response().OK(),
 }).PreventStrayRequests()
 
-// This request is mocked and succeeds
-facades.Http().Client("github").Get("/") 
+// Bu so'rov masxara qilindi va muvaffaqiyatli bajarildi
+facades.Http().Client("github").Get("/")
 
-// This request is NOT mocked and will panic
-facades.Http().Get("https://google.com") 
+// Bu so'rov masxara qilinmadi va vahimaga tushadi
+facades.Http().Get("https://google.com")
 ```
 
-**Allowing Specific Strays**
+**Maxsus adashganlarga ruxsat berish**
 
-If you need to block most requests but allow specific internal services (like a local test server),
-you can use `AllowStrayRequests`:
+Agar siz ko'pgina so'rovlarni bloklashingiz kerak bo'lsa, lekin ma'lum ichki xizmatlarga (masalan, mahalliy sinov serveriga) ruxsat berishingiz kerak bo'lsa, siz "AllowStrayRequests" dan foydalanishingiz mumkin:
 
 ```go
 facades.Http().PreventStrayRequests().AllowStrayRequests([]string{
@@ -460,26 +442,22 @@ facades.Http().PreventStrayRequests().AllowStrayRequests([]string{
 })
 ```
 
-### Resetting State
+### Holatni tiklash
 
-The `Http` facade is a singleton, meaning mocked responses persist across the entire runtime of your test suite unless
-cleared. To avoid "leaking" mocks from one test to another, you should strictly use the `Reset` method in
-your test cleanup or setup.
+"Http" fasadi singleton bo'lib, ya'ni masxara qilingan javoblar tozalanmaguncha sinov to'plamingizning butun ish vaqtida saqlanib qoladi. Bir testdan ikkinchisiga "oqish" holatlarining oldini olish uchun testni tozalash yoki sozlashda qat'iy ravishda "Qayta tiklash" usulidan foydalanishingiz kerak.
 
 ```go
 func TestExternalApi(t *testing.T) {
-    defer facades.Http().Reset()
-    
-    facades.Http().Fake(nil)
-    
-    // ... assertions
+fasadlarni kechiktirish.Http().Qayta tiklash()
+
+fasadlar.Http().Soxta(nil)
+
+// ... tasdiqlar
 }
 ```
 
-:::warning Global State & Parallel Testing
-The `Fake` and `Reset` methods mutate the global state of the HTTP client factory. Because of this, **you should avoid
-running tests that mock the HTTP client in parallel** (using `t.Parallel()`). Doing so may result in race conditions
-where one test resets the mocks while another is still running.
+:::warning Global holat va parallel sinovlar
+"Soxta" va "Qayta tiklash" usullari HTTP mijoz fabrikasining global holatini o'zgartiradi. Shu sababli, **siz HTTP mijozini parallel ravishda** (`t.Parallel()` yordamida) soxtalashtiradigan testlarni ishga tushirishdan qochishingiz kerak. Buni qilish poyga sharoitlariga olib kelishi mumkin, bunda bitta sinov modellarni qayta o'rnatadi, boshqasi esa hali ham ishlayapti.
 :::
 
 
