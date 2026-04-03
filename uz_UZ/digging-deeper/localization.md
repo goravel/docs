@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## Introduction
+## Kirish
 
 Goravel's localization features provide a convenient way to retrieve strings in various languages, making it easy to support multiple languages in your application. Language strings are stored in files in the `lang` directory, and Goravel supports two ways to organize language files:
 
