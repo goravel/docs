@@ -48,7 +48,7 @@
 | [convert.Tap()](#convert-tap)         | [convert.With()](#convert-with)       | [convert.Transform()](#convert-transform) |
 | [convert.Default()](#convert-default) | [convert.Pointer()](#convert-pointer) |                                                                              |
 
-### Olish
+### Yig'ish
 
 |                                                                        |                                                                          |                                                                          |
 | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
@@ -67,7 +67,7 @@ import "github.com/goravel/framework/support/path"
 
 ### `path.App()`
 
-. You may also use the `path.App()` function to generate a path to a file relative to the application directory:
+`path.App()` funksiyasi ilovangizning ilova katalogiga mutlaq yo'lni qaytaradi. Ilova katalogiga nisbatan faylga yo'l yaratish uchun `path.App()` funksiyasidan ham foydalanishingiz mumkin:
 
 ```go
 path := path.App()
@@ -76,7 +76,7 @@ path := path.App("http/controllers/controller.go")
 
 ### `path.Base()`
 
-The `path.Base()` function returns the absolute path to your application's root directory. You may also use the `path.Base()` function to generate a path to a given file relative to the project root directory:
+`path.Base()` funksiyasi ilovangizning asosiy katalogiga mutlaq yo'lni qaytaradi. Loyihaning asosiy katalogiga nisbatan berilgan faylga yo'l yaratish uchun `path.Base()` funksiyasidan ham foydalanishingiz mumkin:
 
 ```go
 path := path.Base()
@@ -85,7 +85,7 @@ path := path.Base("vendor/bin")
 
 ### `path.Config()`
 
-The `path.Config()` function returns the absolute path to your application's config directory. You may also use the `path.Config()` function to generate a path to a given file within the application's configuration directory:
+`path.Config()` funksiyasi ilovangizning konfiguratsiya katalogiga mutlaq yo'lni qaytaradi. Ilova konfiguratsiya katalogida berilgan faylga yo'l yaratish uchun siz shuningdek, `path.Config()` funksiyasidan foydalanishingiz mumkin:
 
 ```go
 path := path.Config()
@@ -94,7 +94,7 @@ path := path.Config("app.go")
 
 ### `path.Database()`
 
-The `path.Database()` function returns the absolute path to your application's database directory. You may also use the `path.Database()` function to generate a path to a given file within the `database` directory:
+`path.Database()` funksiyasi ilovangizning ma'lumotlar bazasi katalogiga mutlaq yo'lni qaytaradi. Shuningdek, `ma'lumotlar bazasi` katalogidagi berilgan faylga yo'l yaratish uchun `path.Database()` funksiyasidan foydalanishingiz mumkin:
 
 ```go
 path := path.Database()
@@ -103,7 +103,7 @@ path := path.Database("factories/user_factory.go")
 
 ### `path.Storage()`
 
-The `path.Storage()` function returns the absolute path to your application's storage directory. You may also use the `path.Storage()` function to generate a path to a given file within the `storage` directory:
+`path.Storage()` funksiyasi ilovangizning saqlash katalogiga mutlaq yo'lni qaytaradi. Shuningdek, `storage` katalogidagi berilgan faylga yo'l yaratish uchun `path.Storage()` funksiyasidan foydalanishingiz mumkin:
 
 ```go
 path := path.Storage()
@@ -112,7 +112,7 @@ path := path.Storage("app/file.txt")
 
 ### `path.Public()`
 
-The `path.Public()` function returns the absolute path to your application's public directory. You may also use the `path.Public()` function to generate a path to a given file within the `public` directory:
+`path.Public()` funksiyasi ilovangizning umumiy katalogiga mutlaq yo'lni qaytaradi. Shuningdek, siz `public` katalogidagi berilgan faylga yo'l yaratish uchun `path.Public()` funksiyasidan foydalanishingiz mumkin:
 
 ```go
 path := path.Public()
@@ -121,7 +121,7 @@ path := path.Public("css/app.css")
 
 ### `path.Lang()`
 
-The `path.Lang()` function returns the absolute path to the `lang` directory. You may also use the `path.Lang()` function to generate a path to a given file within the `lang` directory:
+`path.Lang()` funksiyasi `lang` katalogiga mutlaq yo'lni qaytaradi. Shuningdek, `lang` katalogidagi berilgan faylga yo'l yaratish uchun `path.Lang()` funksiyasidan foydalanishingiz mumkin:
 
 ```go
 path := path.Lang()
@@ -130,7 +130,7 @@ path := path.Lang("en.json")
 
 ### `path.Resource()`
 
-The `path.Resource()` function returns the absolute path to the `resource` directory. You may also use the `path.Resource()` function to generate a path to a given file within the `resource` directory:
+`path.Resource()` funksiyasi `resource` katalogiga mutlaq yo'lni qaytaradi. Shuningdek, `resource` katalogidagi berilgan faylga yo'l yaratish uchun `path.Resource()` funksiyasidan foydalanishingiz mumkin:
 
 ```go
 path := path.Resource()
@@ -139,7 +139,7 @@ path := path.Resource("css/app.css")
 
 ## Carbon
 
-The `carbon` module of Goravel is an expansion by [dromara/carbon](https://github.com/dromara/carbon), please refer to the official documentation for details.
+Goravelning "uglerod" moduli [dromara/carbon] (https://github.com/dromara/carbon) tomonidan kengaytirilgan versiya bo'lib, batafsil ma'lumot uchun rasmiy hujjatlarga qarang.
 
 ```go
 import "github.com/goravel/framework/support/carbon"
@@ -155,7 +155,7 @@ carbon.Now()
 
 ### `carbon.SetTimezone()`
 
-The `carbon.SetTimezone()` function sets timezone：
+`carbon.SetTimezone()` funksiyasi vaqt mintaqasini o'rnatadi:
 
 ```go
 carbon.SetTimezone(carbon.UTC)
@@ -163,7 +163,7 @@ carbon.SetTimezone(carbon.UTC)
 
 ### `carbon.SetLocale()`
 
-The `carbon.SetLocale()` function sets language locale, refer to [locales list](https://github.com/dromara/carbon/tree/master/lang) for all supported locales：
+`carbon.SetLocale()` funksiyasi til tilini o'rnatadi, barcha qo'llab-quvvatlanadigan tillar uchun [locales list](https://github.com/dromara/carbon/tree/master/lang) ga qarang:
 
 ```go
 carbon.SetLocale("en")
@@ -171,7 +171,7 @@ carbon.SetLocale("en")
 
 ### `carbon.SetTestNow()`
 
-The `carbon.SetTestNow()` function sets the time to a test value:
+`carbon.SetTestNow()` funksiyasi vaqtni sinov qiymatiga o'rnatadi:
 
 ```go
 carbon.SetTestNow(carbon.Now())
@@ -179,7 +179,7 @@ carbon.SetTestNow(carbon.Now())
 
 ### `carbon.CleanTestNow()`
 
-The `carbon.CleanTestNow()` function clears the test now Carbon object:
+`carbon.CleanTestNow()` funksiyasi testni hozir tozalaydi. Carbon obyekti:
 
 ```go
 carbon.CleanTestNow()
@@ -187,7 +187,7 @@ carbon.CleanTestNow()
 
 ### `carbon.IsTestNow()`
 
-The `carbon.IsTestNow()` function determines whether the time is a test value:
+`carbon.IsTestNow()` funksiyasi vaqtning sinov qiymati ekanligini aniqlaydi:
 
 ```go
 carbon.IsTestNow()
@@ -195,7 +195,7 @@ carbon.IsTestNow()
 
 ### `carbon.Parse()`
 
-
+`carbon.Parse()` funksiyasi String orqali `Carbon` obyektini oladi:
 
 ```go
 carbon.Parse("2020-08-05 13:14:15")
@@ -203,7 +203,7 @@ carbon.Parse("2020-08-05 13:14:15")
 
 ### `carbon.ParseByLayout()`
 
-The `carbon.ParseByLayout()` function gets `Carbon` object by given value and layout:
+`carbon.ParseByLayout()` funksiyasi berilgan qiymat va joylashuv bo'yicha `Carbon` obyektini oladi:
 
 ```go
 carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
@@ -212,7 +212,7 @@ carbon.ParseByLayout("2020|08|05 13|14|15", []string{"2006|01|02 15|04|05", "200
 
 ### `carbon.ParseByFormat()`
 
-The `carbon.ParseByFormat()` function gets `Carbon` object by given value and format:
+`carbon.ParseByFormat()` funksiyasi berilgan qiymat va format bo'yicha `Carbon` obyektini oladi:
 
 ```go
 carbon.ParseByFormat("2020-08-05 13:14:15", carbon.DateTimeFormat)
@@ -221,7 +221,7 @@ carbon.ParseByFormat("2020|08|05 13|14|15", []string{"Y|m|d H|i|s", "y|m|d h|i|s
 
 ### `carbon.FromTimestamp()`
 
-The `carbon.FromTimestamp()` function gets `Carbon` object by timestamp with second precision:
+`carbon.FromTimestamp()` funksiyasi vaqt tamg'asi bo'yicha ikkinchi aniqlik bilan `Carbon` obyektini oladi:
 
 ```go
 carbon.FromTimestamp(1577836800)
@@ -229,7 +229,7 @@ carbon.FromTimestamp(1577836800)
 
 ### `carbon.FromTimestampMilli()`
 
-The `carbon.FromTimestampMilli()` function gets `Carbon` object by timestamp with millisecond precision:
+`carbon.FromTimestampMilli()` funksiyasi `Carbon` obyektini vaqt tamg'asi orqali millisekund aniqligida oladi:
 
 ```go
 carbon.FromTimestampMilli(1649735755999)
@@ -237,7 +237,7 @@ carbon.FromTimestampMilli(1649735755999)
 
 ### `carbon.FromTimestampMicro()`
 
-The `carbon.FromTimestampMicro()` function gets `Carbon` object by timestamp with microsecond precision:
+`carbon.FromTimestampMicro()` funksiyasi mikrosekund aniqlik bilan vaqt tamg'asi orqali `Carbon` obyektini oladi:
 
 ```go
 carbon.FromTimestampMicro(1649735755999999)
@@ -245,7 +245,7 @@ carbon.FromTimestampMicro(1649735755999999)
 
 ### `carbon.FromTimestampNano()`
 
-The `carbon.FromTimestampNano()` function gets `Carbon` object by timestamp with nanosecond precision:
+`carbon.FromTimestampNano()` funksiyasi `Carbon` obyektini vaqt tamg'asi orqali nanosekund aniqlik bilan oladi:
 
 ```go
 carbon.FromTimestampNano(1649735755999999999)
@@ -253,7 +253,7 @@ carbon.FromTimestampNano(1649735755999999999)
 
 ### `carbon.FromDateTime()`
 
-The `carbon.FromDateTime()` function gets `Carbon` object by year, month, day, hour, minute, second:
+`carbon.FromDateTime()` funksiyasi `Carbon` obyektini yil, oy, kun, soat, daqiqa, soniya bo'yicha oladi:
 
 ```go
 carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
@@ -261,7 +261,7 @@ carbon.FromDateTime(2020, 1, 1, 0, 0, 0)
 
 ### `carbon.FromDateTimeMilli()`
 
-The `carbon.FromDateTimeMilli()` function gets `Carbon` object by year, month, day, hour, minute, second, millisecond:
+`carbon.FromDateTimeMilli()` funksiyasi `Carbon` obyektini yil, oy, kun, soat, daqiqa, soniya, millisekund bo'yicha oladi:
 
 ```go
 carbon.FromDateTimeMilli(2020, 1, 1, 0, 0, 0, 999)
@@ -269,7 +269,7 @@ carbon.FromDateTimeMilli(2020, 1, 1, 0, 0, 0, 999)
 
 ### `carbon.FromDateTimeMicro()`
 
-The `carbon.FromDateTimeMicro()` function gets `Carbon` object by year, month, day, hour, minute, second, microsecond:
+`carbon.FromDateTimeMicro()` funksiyasi `Carbon` obyektini yil, oy, kun, soat, daqiqa, soniya, mikrosekund bo'yicha oladi:
 
 ```go
 carbon.FromDateTimeMicro(2020, 1, 1, 0, 0, 0, 999999)
@@ -277,7 +277,7 @@ carbon.FromDateTimeMicro(2020, 1, 1, 0, 0, 0, 999999)
 
 ### `carbon.FromDateTimeNano()`
 
-The `carbon.FromDateTimeNano()` function gets `Carbon` object by year, month, day, hour, minute, second, nanosecond:
+`carbon.FromDateTimeNano()` funksiyasi `Carbon` obyektini yil, oy, kun, soat, daqiqa, soniya, nanosekund bo'yicha oladi:
 
 ```go
 carbon.FromDateTimeNano(2020, 1, 1, 0, 0, 0, 999999999)
@@ -285,7 +285,7 @@ carbon.FromDateTimeNano(2020, 1, 1, 0, 0, 0, 999999999)
 
 ### `carbon.FromDate()`
 
-The `carbon.FromDate()` function gets `Carbon` object by year, month, day:
+`carbon.FromDate()` funksiyasi `Carbon` obyektini yil, oy, kun bo'yicha oladi:
 
 ```go
 carbon.FromDate(2020, 1, 1)
@@ -293,7 +293,7 @@ carbon.FromDate(2020, 1, 1)
 
 ### `carbon.FromDateMilli()`
 
-The `carbon.FromDateMilli()` function gets `Carbon` object by year, month, day, millisecond:
+`carbon.FromDateMilli()` funksiyasi `Carbon` obyektini yil, oy, kun, millisekund bo'yicha oladi:
 
 ```go
 carbon.FromDateMilli(2020, 1, 1, 999)
@@ -301,7 +301,7 @@ carbon.FromDateMilli(2020, 1, 1, 999)
 
 ### `carbon.FromDateMicro()`
 
-The `carbon.FromDateMicro()` function gets `Carbon` object by year, month, day, microsecond:
+`carbon.FromDateMicro()` funksiyasi `Carbon` obyektini yil, oy, kun, mikrosekund bo'yicha oladi:
 
 ```go
 carbon.FromDateMicro(2020, 1, 1, 999999)
@@ -309,7 +309,7 @@ carbon.FromDateMicro(2020, 1, 1, 999999)
 
 ### `carbon.FromDateNano()`
 
-The `carbon.FromDateNano()` function gets `Carbon` object by year, month, day, nanosecond:
+`carbon.FromDateNano()` funksiyasi `Carbon` obyektini yil, oy, kun, nanosekund bo'yicha oladi:
 
 ```go
 carbon.FromDateNano(2020, 1, 1, 999999999)
@@ -317,7 +317,7 @@ carbon.FromDateNano(2020, 1, 1, 999999999)
 
 ### `carbon.FromTime()`
 
-The `carbon.FromTime()` function gets `Carbon` object by hour, minute, second:
+`carbon.FromTime()` funksiyasi `Carbon` obyektini soat, daqiqa, soniya bo'yicha oladi:
 
 ```go
 carbon.FromTime(13, 14, 15)
@@ -325,7 +325,7 @@ carbon.FromTime(13, 14, 15)
 
 ### `carbon.FromTimeMilli()`
 
-The `carbon.FromTimeMilli()` function gets `Carbon` object by hour, minute, second, millisecond:
+`carbon.FromTimeMilli()` funksiyasi `Carbon` obyektini soat, daqiqa, soniya, millisekund bo'yicha oladi:
 
 ```go
 carbon.FromTimeMilli(13, 14, 15, 999)
@@ -333,7 +333,7 @@ carbon.FromTimeMilli(13, 14, 15, 999)
 
 ### `carbon.FromTimeMicro()`
 
-The `carbon.FromTimeMicro()` function gets `Carbon` object by hour, minute, second, microsecond:
+`carbon.FromTimeMicro()` funksiyasi `Carbon` obyektini soat, daqiqa, soniya, mikrosekund bo'yicha oladi:
 
 ```go
 carbon.FromTimeMicro(13, 14, 15, 999999)
@@ -341,7 +341,7 @@ carbon.FromTimeMicro(13, 14, 15, 999999)
 
 ### `carbon.FromTimeNano()`
 
-The `carbon.FromTimeNano()` function gets `Carbon` object by hour, minute, second, nanosecond:
+`carbon.FromTimeNano()` funksiyasi `Carbon` obyektini soat, daqiqa, soniya, nanosekund bo'yicha oladi:
 
 ```go
 carbon.FromTimeNano(13, 14, 15, 999999999)
@@ -349,13 +349,13 @@ carbon.FromTimeNano(13, 14, 15, 999999999)
 
 ### `carbon.FromStdTime()`
 
-The `carbon.FromStdTime()` function gets `Carbon` object by `time.Time`:
+`carbon.FromStdTime()` funksiyasi `time.Time` orqali `Carbon` obyektini oladi:
 
 ```go
 carbon.FromStdTime(time.Now())
 ```
 
-## Debug
+## Nosozliklarni tuzatish
 
 ```go
 import "github.com/goravel/framework/support/debug"
@@ -363,7 +363,7 @@ import "github.com/goravel/framework/support/debug"
 
 ### `debug.Dump()`
 
-The `debug.Dump()` function prints any variable:
+`debug.Dump()` funksiyasi istalgan o'zgaruvchini chop etadi:
 
 ```go
 debug.Dump(myVar1, myVar2, ...)
@@ -371,7 +371,7 @@ debug.Dump(myVar1, myVar2, ...)
 
 ### `debug.FDump()`
 
-The `debug.FDump()` function prints any variable to `io.Writer`:
+`debug.FDump()` funksiyasi istalgan o'zgaruvchini `io.Writer` ga chop etadi:
 
 ```go
 debug.FDump(someWriter, myVar1, myVar2, ...)
@@ -379,13 +379,13 @@ debug.FDump(someWriter, myVar1, myVar2, ...)
 
 ### `debug.SDump()`
 
-The `debug.SDump()` function prints any variable to `string`:
+`debug.SDump()` funksiyasi istalgan o'zgaruvchini `string` ga yozib chiqaradi:
 
 ```go
 debug.SDump(myVar1, myVar2, ...)
 ```
 
-## Maps
+## Xaritalar
 
 ```go
 import "github.com/goravel/framework/support/maps"
@@ -393,7 +393,7 @@ import "github.com/goravel/framework/support/maps"
 
 ### `maps.Add()`
 
-The `maps.Add()` function adds a new key-value pair to the given map if the key does not already exist in the map:
+Agar kalit xaritada mavjud bo'lmasa, `maps.Add()` funksiyasi berilgan xaritaga yangi kalit-qiymat juftligini qo'shadi:
 
 ```go
 mp := map[string]any{"name": "Krishan"}
@@ -408,7 +408,7 @@ maps.Add(mp2, "name", "Krishan")
 
 ### `maps.Exists()`
 
-The `maps.Exists()` function determines if the given key exists in the provided map:
+`maps.Exists()` funksiyasi berilgan kalit berilgan xaritada mavjudligini aniqlaydi:
 
 ```go
 mp := map[string]any{"name": "Krishan", "age": 22}
@@ -420,7 +420,7 @@ maps.Exists(mp, "email") // false
 
 ### `maps.Forget()`
 
-The `maps.Forget()` function removes the given key(s) from the provided map:
+`maps.Forget()` funksiyasi berilgan xaritadan berilgan kalit(lar)ni olib tashlaydi:
 
 ```go
 mp := map[string]string{"name": "Krishan", "age": "22"}
@@ -431,7 +431,7 @@ maps.Forget(mp, "name", "age")
 
 ### `maps.Get()`
 
-The `maps.Get()` function retrieves the value of the given key from the provided map. If the key does not exist, the default value will be returned:
+`maps.Get()` funksiyasi berilgan xaritadan berilgan kalitning qiymatini oladi. Agar kalit mavjud bo'lmasa, standart qiymat qaytariladi:
 
 ```go
 mp := map[string]any{"name": "Bowen"}
@@ -443,7 +443,7 @@ maps.Get(mp, "age", 22) // 22
 
 ### `maps.Has()`
 
-The `maps.Has()` function determines if the given key(s) exists in the provided map:
+`maps.Has()` funksiyasi berilgan kalit(lar)ning berilgan xaritada mavjudligini aniqlaydi:
 
 ```go
 mp := map[string]any{"name": "Goravel", "language": "Go"}
@@ -455,7 +455,7 @@ maps.Has(mp, "name", "age") // false
 
 ### `maps.HasAny()`
 
-The `maps.HasAny()` function determines if any of the given key(s) exists in the provided map:
+`maps.HasAny()` funksiyasi berilgan xaritada berilgan kalit(lar)ning birortasi mavjudligini aniqlaydi:
 
 ```go
 mp := map[string]any{"name": "Goravel", "language": "Go"}
@@ -467,7 +467,7 @@ maps.HasAny(mp, "age", "email") // false
 
 ### `maps.Only()`
 
-The `maps.Only()` function retrieves only the given key(s) from the provided map:
+`maps.Only()` funksiyasi berilgan xaritadan faqat berilgan kalit(lar)ni oladi:
 
 ```go
 mp := map[string]any{"name": "Goravel", "language": "Go"}
@@ -481,7 +481,7 @@ maps.Only(mp, "name", "age")
 
 ### `maps.Pull()`
 
-The `maps.Pull()` function retrieves and removes the given key from the provided map:
+`maps.Pull()` funksiyasi berilgan xaritadan berilgan kalitni oladi va olib tashlaydi:
 
 ```go
 mp := map[string]any{"name": "Goravel", "language": "Go"}
@@ -490,7 +490,7 @@ maps.Pull(mp, "name")
 // map[string]any{"language": "Go"}
 ```
 
-A default value can be provided as the third argument to the `maps.Pull()` function. This value will be returned if the key does not exist in the map:
+`maps.Pull()` funksiyasiga uchinchi argument sifatida standart qiymat berilishi mumkin. Agar kalit xaritada mavjud bo'lmasa, bu qiymat qaytariladi:
 
 ```go
 mp := map[string]any{"name": "Goravel", "language": "Go"}
@@ -501,7 +501,7 @@ maps.Pull(mp, "age", "default")
 
 ### `maps.Set()`
 
-The `maps.Set()` function sets the given key and value in the provided map:
+`maps.Set()` funksiyasi berilgan xaritada berilgan kalit va qiymatni o'rnatadi:
 
 ```go
 mp := map[string]any{"name": "Goravel"}
@@ -512,7 +512,7 @@ maps.Set(mp, "language", "Go")
 
 ### `maps.Where()`
 
-The `maps.Where()` function filters the provided map using the given callback:
+`maps.Where()` funksiyasi berilgan xaritani berilgan qayta chaqiruv yordamida filtrlaydi:
 
 ```go
 mp := map[string]string{"name": "Goravel", "language": "Go"}
@@ -523,7 +523,7 @@ maps.Where(mp, func(key string, value string) bool {
 // map[string]string{"name": "Goravel"}
 ```
 
-## Convert
+## Konvertatsiya qilish
 
 ```go
 import "github.com/goravel/framework/support/convert"
@@ -531,7 +531,7 @@ import "github.com/goravel/framework/support/convert"
 
 ### `convert.Tap()`
 
-The `convert.Tap()` function passes the given value to the provided callback and returns the value:
+`convert.Tap()` funksiyasi berilgan qiymatni berilgan qayta chaqiruvga uzatadi va qiymatni qaytaradi:
 
 ```go
 convert.Tap("Goravel", func(value string) {
@@ -548,7 +548,7 @@ convert.Tap(mp, func(value map[string]string) {
 
 ### `convert.Transform()`
 
-The `convert.Transform()` transforms the given value using the provided callback and returns the result:
+`convert.Transform()` berilgan qiymatni berilgan qayta chaqiruv yordamida o'zgartiradi va natijani qaytaradi:
 
 ```go
 convert.Transform(1, strconv.Itoa)
@@ -562,7 +562,7 @@ convert.Transform("foo", func(s string) *foo {
 
 ### `convert.With()`
 
-The `convert.With()` executes the given callback with the provided value and returns the result of the callback:
+`convert.With()` berilgan qiymat bilan qaytariladigan chaqiruvni bajaradi va qaytariladigan chaqiruv natijasini qaytaradi:
 
 ```go
 convert.With("Goravel", func(value string) string {
@@ -573,7 +573,7 @@ convert.With("Goravel", func(value string) string {
 
 ### `convert.Default()`
 
-The `convert.Default()` method returns first non-zero value. If all values are zero, it returns zero value.
+`convert.Default()` usuli birinchi nolga teng bo'lmagan qiymatni qaytaradi. Agar barcha qiymatlar nolga teng bo'lsa, u nol qiymatni qaytaradi.
 
 ```go
 convert.Default("", "foo") // foo
@@ -585,7 +585,7 @@ convert.Default(0, 1) // 1
 
 ### `convert.Pointer()`
 
-The `convert.Pointer()` method returns the pointer of the given value.
+`convert.Pointer()` usuli berilgan qiymatning ko'rsatkichini qaytaradi.
 
 ```go
 convert.Pointer("foo") // *string("foo")
@@ -593,7 +593,7 @@ convert.Pointer("foo") // *string("foo")
 convert.Pointer(1) // *int(1)
 ```
 
-## Collect
+## Yig'ish
 
 ```go
 import "github.com/goravel/framework/support/collect"
@@ -601,7 +601,7 @@ import "github.com/goravel/framework/support/collect"
 
 ### `collect.Count()`
 
-The `collect.Count()` function returns the number of items in the given collection:
+`collect.Count()` funksiyasi berilgan to'plamdagi elementlar sonini qaytaradi:
 
 ```go
 collect.Count([]string{"Goravel", "Framework"}) // 2
@@ -609,7 +609,7 @@ collect.Count([]string{"Goravel", "Framework"}) // 2
 
 ### `collect.CountBy()`
 
-The `collect.CountBy()` function counts the occurrences for which the predicate is true:
+`collect.CountBy()` funksiyasi predikat rost bo'lgan holatlarni hisoblaydi:
 
 ```go
 collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
@@ -620,7 +620,7 @@ collect.CountBy([]string{"Goravel", "Framework"}, func(value string) bool {
 
 ### `collect.Each()`
 
-The `collect.Each()` function iterates over the items in the given collection and passes each item to the given callback:
+`collect.Each()` funksiyasi berilgan to'plamdagi elementlar ustida iteratsiya qiladi va har bir elementni berilgan qayta chaqiruvga o'tkazadi:
 
 ```go
 collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
@@ -632,7 +632,7 @@ collect.Each([]string{"Goravel", "Framework"}, func(value string, index int) {
 
 ### `collect.Filter()`
 
-The `collect.Filter()` function filters the items in the collection using the given callback:
+`collect.Filter()` funksiyasi berilgan qayta chaqiruv yordamida to'plamdagi elementlarni filtrlaydi:
 
 ```go
 collect.Filter([]string{"Goravel", "Framework"}, func(value string) bool {
@@ -643,7 +643,7 @@ collect.Filter([]string{"Goravel", "Framework"}, func(value string) bool {
 
 ### `collect.GroupBy()`
 
-The `collect.GroupBy()` function groups the items in the collection by the result of the given callback:
+`collect.GroupBy()` funksiyasi berilgan qayta chaqiruv natijasi bo'yicha to'plamdagi elementlarni guruhlaydi:
 
 ```go
 // use example of complex map slice (use different example)
@@ -662,7 +662,7 @@ collect.GroupBy([]map[string]string{
 
 ### `collect.Keys()`
 
-The `collect.Keys()` function returns all the keys for the items in the collection:
+`collect.Keys()` funksiyasi to'plamdagi elementlar uchun barcha kalitlarni qaytaradi:
 
 ```go
 collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
@@ -671,7 +671,7 @@ collect.Keys(map[string]string{"name": "Goravel", "language": "Go"})
 
 ### `collect.Map()`
 
-The `collect.Map()` function converts one type of collection into another using the given iteratee:
+`collect.Map()` funksiyasi berilgan iterate yordamida bir turdagi to'plamni boshqasiga o'zgartiradi:
 
 ```go
 collect.Map([]string{"Goravel", "Framework"}, func(value string,  _ int) string {
@@ -682,7 +682,7 @@ collect.Map([]string{"Goravel", "Framework"}, func(value string,  _ int) string 
 
 ### `collect.Max()`
 
-The `collect.Max()` function returns the maximum value of the given collection:
+`collect.Max()` funksiyasi berilgan to'plamning maksimal qiymatini qaytaradi:
 
 ```go
 collect.Max([]int{1, 2, 3, 4, 5}) // 5
@@ -690,7 +690,7 @@ collect.Max([]int{1, 2, 3, 4, 5}) // 5
 
 ### `collect.Merge()`
 
-The `collect.Merge()` function merges the given maps into a single map:
+`collect.Merge()` funksiyasi berilgan xaritalarni bitta xaritaga birlashtiradi:
 
 ```go
 collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"language": "Go"})
@@ -702,7 +702,7 @@ collect.Merge(map[string]string{"name": "Goravel"}, map[string]string{"name": "F
 
 ### `collect.Min()`
 
-The `collect.Min()` function returns the minimum value of the given collection:
+`collect.Min()` funksiyasi berilgan to'plamning minimal qiymatini qaytaradi:
 
 ```go
 collect.Min([]int{1, 2, 3, 4, 5}) // 1
@@ -710,7 +710,7 @@ collect.Min([]int{1, 2, 3, 4, 5}) // 1
 
 ### `collect.Reverse()`
 
-The `collect.Reverse()` function reverses the items in the collection:
+`collect.Reverse()` funksiyasi to'plamdagi elementlarni teskari yo'naltiradi:
 
 ```go
 collect.Reverse([]string{"Goravel", "Framework"})
@@ -719,7 +719,7 @@ collect.Reverse([]string{"Goravel", "Framework"})
 
 ### `collect.Shuffle()`
 
-The `collect.Shuffle()` function shuffles the items in the collection:
+`collect.Shuffle()` funksiyasi to'plamdagi elementlarni aralashtiradi:
 
 ```go
 collect.Shuffle([]int{1, 2, 3, 4, 5})
@@ -728,7 +728,7 @@ collect.Shuffle([]int{1, 2, 3, 4, 5})
 
 ### `collect.Split()`
 
-The `collect.Split()` function splits a collection into the groups of the given length. If the collection can't be split evenly, the final chunk will contain the remaining items:
+`collect.Split()` funksiyasi to'plamni berilgan uzunlikdagi guruhlarga ajratadi. Agar to'plamni teng ravishda taqsimlab bo'lmasa, oxirgi qism qolgan elementlarni o'z ichiga oladi:
 
 ```go
 collect.Split([]int{1, 2, 3, 4, 5}, 2)
@@ -745,7 +745,7 @@ collect.Sum([]int{1, 2, 3, 4, 5}) // 15
 
 ### `collect.Unique()`
 
-The `collect.Unique()` method returns the duplicate-free collection where in case of duplicate values, only the first occurrence will be kept:
+`collect.Unique()` usuli takroriy qiymatlar bo'lsa, faqat birinchi holat saqlanib qoladigan takroriy to'plamni qaytaradi:
 
 ```go
 collect.Unique([]string{"Goravel", "Framework", "Goravel"})
@@ -754,7 +754,7 @@ collect.Unique([]string{"Goravel", "Framework", "Goravel"})
 
 ### `collect.Values()`
 
-The `collect.Values()` function returns all the values of the given collection:
+`collect.Values()` funksiyasi berilgan to'plamning barcha qiymatlarini qaytaradi:
 
 ```go
 collect.Values(map[string]string{"name": "Goravel", "language": "Go"})
