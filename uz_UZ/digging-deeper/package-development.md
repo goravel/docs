@@ -1,40 +1,40 @@
-# Package Development
+# Paketlarni ishlab chiqish
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Packages are the primary way of adding functionality to Goravel. These packages may contain routes, controllers, and configurations that are specifically designed to enhance a Goravel application. This guide focuses on developing Goravel-specific packages.
+Paketlar Goravelga funksiyalarni qo'shishning asosiy usuli hisoblanadi. Ushbu paketlar Goravel dasturini takomillashtirish uchun maxsus ishlab chiqilgan marshrutlar, kontrollerlar va konfiguratsiyalarni o'z ichiga olishi mumkin. Ushbu qo'llanma Goravelga xos paketlarni ishlab chiqishga qaratilgan.
 
-Here is an example for building a third-party package: [goravel/example-package](https://github.com/goravel/example-package)
+Uchinchi tomon paketini yaratishga misol: [goravel/example-package](https://github.com/goravel/example-package)
 
-## Creating A Package
+## Paket yaratish
 
-You can use easily create a package template using the Artisan command:
+Artisan buyrug'i yordamida osongina paket shablonini yaratishingiz mumkin:
 
 ```shell
 ./artisan make:package sms
 ```
 
-The created files are saved by default in the root `packages` folder, you can use `--root` option to customize:
+Yaratilgan fayllar sukut bo'yicha `packages` asosiy papkasida saqlanadi, siz sozlash uchun `--root` parametridan foydalanishingiz mumkin:
 
 ```shell
 ./artisan make:package --root=pkg sms
 ```
 
-## Service Providers
+## Xizmat ko'rsatuvchilar
 
-[Service providers](../architecture-concepts/service-providers.md) act as the bridge between your package and Goravel. They are typically located in the root of the package as a `service_provider.go` file. Their main function is to bind items into Goravel's service container and guide Goravel in loading package resources.
+[Xizmat ko'rsatuvchi provayderlar](../architecture-concepts/service-providers.md) sizning paketingiz va Goravel o'rtasida ko'prik vazifasini bajaradi. Ular odatda paketning ildiz qismida `service_provider.go` fayli sifatida joylashgan. Ularning asosiy vazifasi Goravel xizmat konteyneriga narsalarni bog'lash va Goravelga paket resurslarini yuklashda yo'l-yo'riq ko'rsatishdir.
 
-## Install The Package
+## Paketni o'rnating
 
-When creating a package, if it contains a `setup/setup.go` file, you can define the package installation logic in this file, and then users can use the `package:install` command to install the package:
+Paket yaratishda, agar unda `setup/setup.go` fayli bo'lsa, siz ushbu faylda paketni o'rnatish mantig'ini belgilashingiz mumkin va keyin foydalanuvchilar paketni o'rnatish uchun `package:install` buyrug'idan foydalanishlari mumkin:
 
 ```shell
-./artisan package:install github.com/goravel/example-package
+./artisan to'plami: github.com/goravel/example-package ni o'rnating
 ```
 
-The following is an explanation of the installation process defined in the `setup/setup.go` file, which helps you write your own package installation logic:
+Quyida `setup/setup.go` faylida belgilangan o'rnatish jarayonining tushuntirishi keltirilgan, bu sizga o'zingizning paket o'rnatish mantig'ingizni yozishga yordam beradi:
 
 ```go
 // setup/setup.go
@@ -50,11 +50,11 @@ import (
 )
 
 func main() {
-	// Initialize setup to get paths, this should be called at the beginning.
+	// Yo'llarni olish uchun sozlashni ishga tushiring, bu boshida chaqirilishi kerak.
 	setup := packages.Setup(os.Args)
 
-	// The config file will be published to the project's config directory automatically when installing by this way.
-	// You can also publish this config file manually: ./artisan vendor:publish --package=github.com/goravel/example-package
+	// Shu tarzda o'rnatishda konfiguratsiya fayli avtomatik ravishda loyihaning konfiguratsiya katalogiga nashr etiladi.
+	// Ushbu konfiguratsiya faylini qo'lda ham nashr qilishingiz mumkin: ./artisan vendor:publish --package=github.com/goravel/example-package
 	config, err := file.GetPackageContent(setup.Paths().Module().String(), "setup/config/hello.go")
 	if err != nil {
 		panic(err)
@@ -64,26 +64,26 @@ func main() {
 	moduleImport := setup.Paths().Module().Import()
 
 	setup.Install(
-		// Register the service provider to the providers slice in bootstrap/providers.go
+		// Xizmat ko'rsatuvchi provayderni bootstrap/providers.go saytidagi provayderlar bo'limida ro'yxatdan o'tkazing
 		modify.RegisterProvider(moduleImport, serviceProvider),
 
-		// Add the config file to the config directory
+		// Konfiguratsiya faylini konfiguratsiya katalogiga qo'shing
 		modify.File(path.Config("hello.go")).Overwrite(config),
 	).Uninstall(
-		// Remove the config file from the config directory
+		// Konfiguratsiya faylini konfiguratsiya katalogidan olib tashlang
 		modify.File(path.Config("hello.go")).Remove(),
 
-		// Unregister the service provider from the providers slice in bootstrap/providers.go
+		// bootstrap/providers.go saytidagi provayderlar bo'limidan xizmat ko'rsatuvchi provayderni ro'yxatdan o'chirish
 		modify.UnregisterProvider(moduleImport, serviceProvider),
 	).Execute()
 }
 ```
 
-## Resources
+## Resurslar
 
-### Configuration
+### Konfiguratsiya
 
-Typically, you will need to publish your package's configuration file to the application's `config` directory. This will allow users of your package to easily override your default configuration options. To allow your configuration files to be published, call the `Publishes` method from the `Boot` method of your service provider, the first parameter is the package name, and the second parameter is the mapping between the current package file path and the project path:
+Odatda, siz paketingizning konfiguratsiya faylini ilovaning "config" katalogiga nashr qilishingiz kerak bo'ladi. Bu sizning paketingiz foydalanuvchilariga standart konfiguratsiya parametrlarini osongina bekor qilish imkonini beradi. Konfiguratsiya fayllaringizni nashr etishga ruxsat berish uchun xizmat ko'rsatuvchi provayderingizning `Boot` usulidan `Publishes` usulini chaqiring, birinchi parametr paket nomi, ikkinchi parametr esa joriy paket fayl yo'li va loyiha yo'li o'rtasidagi xaritalashdir:
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -93,9 +93,9 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-### Routes
+### Yo'nalishlar
 
-If there are [routes](../the-basics/routing.md) in your package, you can use `app.MakeRoute()` to resolve `facades.Route()`, then add the routes to the project:
+Agar paketingizda [routes](../the-basics/routing.md) mavjud bo'lsa, `facades.Route()` ni hal qilish uchun `app.MakeRoute()` dan foydalanishingiz mumkin, keyin esa loyihaga marshrutlarni qo'shishingiz mumkin:
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -104,9 +104,9 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-### Migrations
+### Migratsiyalar
 
-If there are [migrations](../database/migrations.md) in your package, you can publish them by the `Publishes` method:
+Agar paketingizda [migrations](../database/migrations.md) mavjud bo'lsa, ularni `Publishes` usuli bilan nashr qilishingiz mumkin:
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -116,9 +116,9 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-### Models
+### Modellar
 
-If there are any new [models](../orm/getting-started.md) defined as part of your package, they can be published using the `Publishes` method:
+Agar paketingizning bir qismi sifatida belgilangan yangi [modellar](../orm/getting-started.md) bo'lsa, ularni `Nashr qilish` usuli yordamida nashr etish mumkin:
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -128,9 +128,9 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-## Commands
+## Buyruqlar
 
-You can register `Artisan` command by the `Commands` method, you can run the commands using [Artisan CLI](../digging-deeper/artisan-console.md) after registering them.
+Siz `Artisan` buyrug'ini `Commands` usuli bilan ro'yxatdan o'tkazishingiz mumkin, buyruqlarni ro'yxatdan o'tkazgandan so'ng ularni [Artisan CLI](../digging-deeper/artisan-console.md) yordamida ishga tushirishingiz mumkin.
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -140,9 +140,9 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-## Public Assets
+## Davlat aktivlari
 
-Your package may have assets such as JavaScript, CSS, and images. To publish these assets to the application's `public` directory, use the service provider's `Publishes` method:
+Paketingizda JavaScript, CSS va rasmlar kabi aktivlar bo'lishi mumkin. Ushbu aktivlarni ilovaning "ommaviy" katalogiga nashr qilish uchun xizmat ko'rsatuvchi provayderning "Public" usulidan foydalaning:
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -152,9 +152,9 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-## Publishing File Groups
+## Fayl guruhlarini nashr qilish
 
-If you want to publish specific groups of package assets and resources separately, you can use tags when calling the `Publishes` method from the package's service provider. This allows you to give users the option to publish certain files, like configuration files, without having to publish all the package's assets. To illustrate, you can define two publish groups for the `sms` package (`sms-config` and `sms-migrations`) using tags in the `Boot` method of the package's service provider.
+Agar siz paket aktivlari va resurslarining ma'lum guruhlarini alohida nashr qilmoqchi bo'lsangiz, paket xizmat ko'rsatuvchi provayderidan "Nashr qilish" usulini chaqirishda teglardan foydalanishingiz mumkin. Bu sizga foydalanuvchilarga konfiguratsiya fayllari kabi ma'lum fayllarni paketning barcha aktivlarini nashr qilmasdan nashr qilish imkoniyatini berish imkonini beradi. Misol tariqasida, paket xizmat ko'rsatuvchi provayderining "Boot" usulidagi teglar yordamida "sms" paketi uchun ikkita nashr guruhini ("sms-config" va "sms-migrations") belgilashingiz mumkin.
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -167,19 +167,19 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-## Publish Resources
+## Resurslarni nashr qilish
 
-In the project, You can publish the resources registered in a package using `vendor:publish` Artisan command:
+Loyihada siz "vendor:publish" Artisan buyrug'i yordamida paketda ro'yxatdan o'tgan resurslarni nashr qilishingiz mumkin:
 
 ```shell
 ./artisan vendor:publish --package={You package name}
 ```
 
-The command can use the following options:
+Buyruq quyidagi variantlardan foydalanishi mumkin:
 
-| Option Name | Alias | Action                                                                                                                                                                                                                                                              |
-| ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| --package   | -p    | Package name, can be a remote package: `github.com/goravel/example-package`, and also can be a local package: `./packages/example-package`, note that when using a local package name, it needs to start with `./`. |
-| --tag       | -t    | Resource Group                                                                                                                                                                                                                                                      |
-| --force     | -f    | Overwrite any existing files                                                                                                                                                                                                                                        |
-| --existing  | -e    | Publish and overwrite only the files that have already been published                                                                                                                                                                                               |
+| Variant nomi | Taxallus | Harakat                                                                                                                                                                                                                                                                                         |
+| ------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --package    | -p       | Paket nomi masofaviy paket bo'lishi mumkin: `github.com/goravel/example-package`, shuningdek, mahalliy paket bo'lishi mumkin: `./packages/example-package`, mahalliy paket nomidan foydalanganda u `./` bilan boshlanishi kerakligini unutmang. |
+| --tag        | -t       | Resurslar guruhi                                                                                                                                                                                                                                                                                |
+| --force      | -f       | Mavjud fayllarni qayta yozing                                                                                                                                                                                                                                                                   |
+| --existing   | -e       | Faqat allaqachon nashr etilgan fayllarni nashr eting va qayta yozing                                                                                                                                                                                                                            |
