@@ -1,18 +1,18 @@
-# Processes
+# Jarayonlar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Goravel provides an expressive and elegant API around Go's standard `os/exec` package, allowing you to invoke external commands from your application seamlessly. By default, Go's process handling can be verbose; Goravel's `Process` facade simplifies this common task, offering a fluent interface for executing commands, handling output, and managing asynchronous processes.
+Goravel Go'ning standart `os/exec` paketi atrofida ifodali va oqlangan API taqdim etadi, bu sizga ilovangizdan tashqi buyruqlarni muammosiz chaqirish imkonini beradi. Odatiy bo'lib, Go'ning jarayonlarni boshqarishi batafsil bo'lishi mumkin; Goravel'ning "Jarayon" jabhasi bu umumiy vazifani soddalashtiradi, buyruqlarni bajarish, chiqishlarni boshqarish va asinxron jarayonlarni boshqarish uchun ravon interfeysni taklif qiladi.
 
-## Invoking Processes
+## Jarayonlarni chaqirish
 
-### Running Processes
+### Ishlayotgan jarayonlar
 
-To run a process, you can use the `Run` or `Start` methods. The `Run` method will execute the command and wait for it to finish, while the `Start` method triggers the process asynchronously and returns control immediately.
+Jarayonni ishga tushirish uchun siz "Run" yoki "Start" usullaridan foydalanishingiz mumkin. `Run` metodi buyruqni bajaradi va uning tugashini kutadi, `Start` metodi esa jarayonni asinxron ravishda ishga tushiradi va boshqaruvni darhol qaytaradi.
 
-Here is how you execute a blocking command:
+Bloklash buyrug'ini quyidagicha bajarishingiz mumkin:
 
 ```go
 import (
@@ -31,7 +31,7 @@ func main() {
 }
 ```
 
-If you want to run a string command directly (without splitting it into arguments), you can pass the command to `Run` as a single string, `/bin/sh -c` (Linux/macOS) or `cmd /C` (Windows) will be used under the hood. Notice, the mechanism can only be triggered when the string command contains spaces or `&`, `|`, `-`.
+Agar siz satr buyrug'ini to'g'ridan-to'g'ri (argumentlarga ajratmasdan) ishga tushirmoqchi bo'lsangiz, uni `Run` ga bitta satr sifatida uzatishingiz mumkin, buning uchun `/bin/sh -c` (Linux/macOS) yoki `cmd/C` (Windows) ishlatiladi. E'tibor bering, mexanizm faqat satr buyrug'i bo'shliqlar yoki `&`, `|`, `-` belgilarini o'z ichiga olganda ishga tushirilishi mumkin.
 
 ```go
 result := facades.Process().Run("echo Hello, World!")
@@ -39,26 +39,26 @@ result := facades.Process().Run("echo Hello, World!")
 // cmd /c "echo Hello, World!" on Windows
 ```
 
-The `Run` method returns a `Result` interface. The `Result` interface gives you convenient access to the output and status of the command:
+`Run` usuli `Result` interfeysini qaytaradi. "Result" interfeysi sizga buyruqning chiqishi va holatiga qulay kirish imkonini beradi:
 
 ```go
 result := facades.Process().Run("ls", "-la")
 
-result.Command()     // string: The original command
-result.Error()       // error: The error returned by the command execution
-result.ErrorOutput() // string: Output from Stderr
-result.ExitCode()    // int: The exit code (e.g., 0, 1)
-result.Failed()      // bool: True if the exit code was not 0
-result.Output()      // string: Output from Stdout
+result.Command()     // string: Asl buyruq
+result.Error()       // error: Buyruq bajarilishi natijasida qaytarilgan xato
+result.ErrorOutput() // string:Stderr dan chiqish
+result.ExitCode()    // int: Chiqish kodi (masalan, 0, 1)
+result.Failed()      // bool: Agar chiqish kodi 0 bo'lmasa, rost
+result.Output()      // string: Stdout dan chiqish
 ```
 
-### Process Options
+### Jarayon parametrlari
 
-You often need to customize how a command runs, such as where it runs or what environment variables it sees. The `Process` facade provides a fluent API for this.
+Ko'pincha buyruq qanday ishlashini, masalan, qayerda ishlashini yoki qanday muhit o'zgaruvchilarini ko'rishini sozlashingiz kerak bo'ladi. "Process" jabhasi buning uchun ravon API taqdim etadi.
 
 #### Path
 
-You can use the `Path` method to specify the working directory for the command. If you don't set this, the process will execute in the current working directory of your application.
+Buyruq uchun ishchi katalogni ko'rsatish uchun `Path` usulidan foydalanishingiz mumkin. Agar buni o'rnatmasangiz, jarayon ilovangizning joriy ishchi katalogida bajariladi.
 
 ```go
 result := facades.Process().Path("/var/www/html").Run("ls", "-la")
@@ -66,7 +66,7 @@ result := facades.Process().Path("/var/www/html").Run("ls", "-la")
 
 #### Timeout
 
-To prevent a process from hanging indefinitely, you can enforce a timeout. If the process runs longer than the specified duration, it will be killed.
+Jarayonning cheksiz vaqt davomida to'xtab qolishining oldini olish uchun siz tanaffusni amalga oshirishingiz mumkin. Agar jarayon belgilangan vaqtdan uzoqroq davom etsa, u o'chiriladi.
 
 ```go
 import "time"
@@ -74,34 +74,34 @@ import "time"
 result := facades.Process().Timeout(10 * time.Minute).Run("sleep", "20")
 ```
 
-#### Environment Variables
+#### Atrof-muhit o'zgaruvchilari
 
-You can pass custom environment variables to the process using the `Env` method. The process will also inherit the system's environment variables.
+Siz maxsus muhit o'zgaruvchilarini jarayonga `Env` usuli yordamida o'tkazishingiz mumkin. Jarayon shuningdek, tizimning muhit o'zgaruvchilarini meros qilib oladi.
 
 ```go
-// Passes FOO=BAR along with existing system envs
+// FOO=BAR ni mavjud tizim envslari bilan birga o'tkazadi.
 result := facades.Process().Env(map[string]string{
     "FOO": "BAR",
     "API_KEY": "secret",
 }).Run("printenv")
 ```
 
-#### Input (Stdin)
+#### Kirish (Stdin)
 
-If your command expects input from standard input (stdin), you can provide it using the `Input` method. This accepts an `io.Reader`.
+Agar sizning buyrug'ingiz standart inputdan (stdin) kirishni kutsa, uni "Input" usuli yordamida taqdim etishingiz mumkin. Bu "io.Reader" ni qabul qiladi.
 
 ```go
 import "strings"
 
-// Pipes "Hello Goravel" into the cat command
+// Cat buyrug'iga "Salom Goravel" deb javob beradi
 result := facades.Process().
     Input(strings.NewReader("Hello Goravel")).
     Run("cat")
 ```
 
-### Process Output
+### Jarayon chiqishi
 
-You can access the process output after execution using the `Output` (standard output) and `ErrorOutput` (standard error) methods on the result object.
+Jarayon natijasiga natija obyektidagi `Output` (standart chiqish) va `ErrorOutput` (standart xato) usullari yordamida bajarilgandan so'ng kirishingiz mumkin.
 
 ```go
 result := facades.Process().Run("ls", "-la")
@@ -110,7 +110,7 @@ fmt.Println(result.Output())
 fmt.Println(result.ErrorOutput())
 ```
 
-If you need to process the output in real-time (streaming), you may register a callback using the `OnOutput` method. The callback receives two arguments: the output type (stdout or stderr) and the byte slice containing the output data.
+Agar siz chiqishni real vaqt rejimida (oqimli) qayta ishlashingiz kerak bo'lsa, "OnOutput" usuli yordamida qayta qo'ng'iroqni ro'yxatdan o'tkazishingiz mumkin. Qayta qo'ng'iroq ikkita argumentni oladi: chiqish turi (stdout yoki stderr) va chiqish ma'lumotlarini o'z ichiga olgan bayt bo'lagi.
 
 ```go
 import (
@@ -119,12 +119,12 @@ import (
 )
 
 result := facades.Process().OnOutput(func(typ process.OutputType, b []byte) {
-    // Handle real-time streaming here
+    // Bu yerda real vaqt rejimida translyatsiyani boshqaring
     fmt.Print(string(b))
 }).Run("ls", "-la")
 ```
 
-If you only need to verify that the output contains a specific string after execution, you can use the `SeeInOutput` or `SeeInErrorOutput` helper methods.
+Agar siz faqat bajarilgandan keyin chiqishda ma'lum bir satr borligini tekshirishingiz kerak bo'lsa, siz `SeeInOutput` yoki `SeeInErrorOutput` yordamchi usullaridan foydalanishingiz mumkin.
 
 ```go
 result := facades.Process().Run("ls", "-la")
@@ -134,28 +134,27 @@ if result.SeeInOutput("go.mod") {
 }
 ```
 
-#### Disabling Process Output
+#### Jarayon chiqishini o'chirib qo'yish
 
-If your process writes a large amount of data, you may want to control how it is stored.
+Agar jarayoningiz katta hajmdagi ma'lumotlarni yozsa, uni qanday saqlashni boshqarishingiz mumkin.
 
-Using `Quietly` will prevent the output from bubbling up to the console or logs during execution, but the data will still be collected and available via `result.Output()`.
+`Quietly` dan foydalanish chiqish ma'lumotlarining konsolga yoki bajarilish vaqtida jurnallarga pufakchalar bilan chiqishining oldini oladi, ammo ma'lumotlar hali ham to'planadi va `result.Output()` orqali mavjud bo'ladi.
 
-If you do not need to access the final output at all and want to save memory, you can use `DisableBuffering`. This prevents the output from being stored in the result object, though you can still inspect the stream in real-time using `OnOutput`.
+Agar siz yakuniy natijaga umuman kirishingiz shart bo'lmasa va xotirani tejashni istasangiz, "DisableBuffering" dan foydalanishingiz mumkin. Bu natija natija obyektida saqlanishiga to'sqinlik qiladi, garchi siz hali ham oqimni real vaqt rejimida "OnOutput" yordamida tekshirishingiz mumkin.
 
 ```go
-// Captures output but doesn't print it during execution
+// Chiqishni yozib oladi, lekin bajarish paytida chop etmaydi
 facades.Process().Quietly().Run("...")
 
-// Does not capture output (saves memory), but allows streaming
+// Chiqishni yozib olmaydi (xotirani tejaydi), lekin oqimli uzatishga imkon beradi
 facades.Process().DisableBuffering().OnOutput(func(typ process.OutputType, b []byte) {
     // ...
 }).Run("...")
 ```
 
-### Pipelines
+### Quvurlar
 
-Sometimes you need to pipe the output of one process into the input of another. The `Process` facade makes this easy
-using the `Pipe` method, which allows you to chain multiple commands together synchronously.
+Ba'zan siz bir jarayonning chiqishini boshqa jarayonning kirishiga o'tkazishingiz kerak bo'ladi. `Process` fasadi buni `Pipe` usuli yordamida osonlashtiradi, bu sizga bir nechta buyruqlarni sinxron ravishda birlashtirish imkonini beradi.
 
 ```go
 import "github.com/goravel/framework/contracts/process"
@@ -168,26 +167,24 @@ result := facades.Process().Pipe(func(pipe process.Pipe) {
 ```
 
 :::warning
-Process options such as `Timeout`, `Env`, or `Input` must be configured **after** the `Pipe` method is called.
-Any configuration applied before the `Pipe` call will be ignored.
+`Timeout`, `Env` yoki `Input` kabi jarayon parametrlari `Pipe` usuli chaqirilgandan **keyin** sozlanishi kerak.
+`Pipe` chaqiruvidan oldin qo'llanilgan har qanday konfiguratsiya e'tiborga olinmaydi.
 
 ```go
-// Correct: Configuration applied after Pipe
+// To'g'ri: Quvurdan keyin konfiguratsiya qo'llanildi
 facades.Process().Pipe(...).Timeout(10 * time.Second).Run()
 
-// Incorrect: Timeout will be ignored
+// Noto'g'ri: Vaqt tugashi e'tiborga olinmaydi
 facades.Process().Timeout(10 * time.Second).Pipe(...).Run()
 ```
 
 :::
 
-#### Pipeline Output & Keys
+#### Quvur liniyasi chiqishi va kalitlari
 
-You can inspect the output of the pipeline in real-time using the `OnOutput` method. When used with a pipe,
-the callback signature changes to include a `key` (string), allowing you to identify which command produced the output.
+Siz quvur liniyasining chiqishini real vaqt rejimida "OnOutput" usuli yordamida tekshirishingiz mumkin. Quvur bilan ishlatilganda, qayta chaqiruv imzosi `kalit` (satr) ni o'z ichiga oladi, bu sizga qaysi buyruq natijani berganini aniqlash imkonini beradi.
 
-By default, the `key` is the numeric index of the command. However, you can assign a readable label to each command
-using the `As` method, which is highly useful for debugging complex pipelines.
+Odatiy bo'lib, `key` buyruqning raqamli indeksidir. Biroq, murakkab quvurlarni nosozliklarni tuzatish uchun juda foydali bo'lgan `As` usuli yordamida har bir buyruqqa o'qiladigan yorliq tayinlashingiz mumkin.
 
 ```go
 facades.Process().Pipe(func(pipe process.Pipe) {
@@ -198,45 +195,44 @@ facades.Process().Pipe(func(pipe process.Pipe) {
 }).Run()
 ```
 
-## Asynchronous Processes
+## Asinxron jarayonlar
 
-While the `Run` method waits for the process to complete, `Start` can be used to invoke a process asynchronously.
-This allows the process to run in the background while your application continues executing other tasks. The `Start` method returns a `Running` interface.
+`Run` usuli jarayon tugashini kutayotgan bir paytda, `Start` usuli jarayonni asinxron ravishda ishga tushirish uchun ishlatilishi mumkin.
+Bu sizning ilovangiz boshqa vazifalarni bajarishda davom etayotgan paytda jarayonning fonda ishlashiga imkon beradi. `Start` usuli `Running` interfeysini qaytaradi.
 
 ```go
 import "time"
 
 running, err := facades.Process().Timeout(10 * time.Second).Start("sleep", "5")
 
-// Continue doing other work...
+// Boshqa ishlarni davom ettiring...
 
 result := running.Wait()
 ```
 
-To check if a process has finished without blocking, you may use the `Done` method. This returns a standard Go channel
-that closes when the process exits, making it ideal for use in `select` statements.
+Jarayon bloklanmasdan tugaganligini tekshirish uchun siz `Done` usulidan foydalanishingiz mumkin. Bu jarayon tugaganda yopiladigan standart Go kanalini qaytaradi, bu esa uni `select` operatorlarida foydalanish uchun ideal qiladi.
 
 ```go
 running, err := facades.Process().Start("sleep", "5")
 
 select {
 case <-running.Done():
-    // Process finished successfully
+    // Jarayon muvaffaqiyatli yakunlandi
 case <-time.After(1 * time.Second):
-    // Custom logic if it takes too long
+    // Agar juda ko'p vaqt talab etilsa, maxsus mantiq
 }
 
 result := running.Wait()
 ```
 
 :::warning
-Even if you use the `Done` channel to detect completion, you **must** call `Wait()` afterwards.
-This ensures the process is properly "reaped" by the operating system and cleans up underlying resources.
+Bajarilganlikni aniqlash uchun `Done` kanalidan foydalansangiz ham, keyinroq `Wait()` funksiyasini chaqirishingiz **kerak**.
+Bu jarayonning operatsion tizim tomonidan to'g'ri "reaped" va asosiy resurslarni tozalashini ta'minlaydi.
 :::
 
-### Process IDs & Signals
+### Jarayon identifikatorlari va signallari
 
-You can retrieve the operating system's process ID (PID) for a running process using the `PID` method.
+Siz `PID` usuli yordamida ishlayotgan jarayon uchun operatsion tizimning jarayon identifikatorini (PID) olishingiz mumkin.
 
 ```go
 running, err := facades.Process().Start("ls", "-la")
@@ -244,13 +240,12 @@ running, err := facades.Process().Start("ls", "-la")
 println(running.PID())
 ```
 
-#### Sending Signals
+#### Signallarni yuborish
 
-Goravel provides methods to interact with the process lifecycle. You can send a specific OS signal using
-the `Signal` method, or use the `Stop` helper to attempt a graceful shutdown.
+Goravel jarayonning hayot aylanishi bilan o'zaro ta'sir qilish usullarini taqdim etadi. Siz `Signal` usuli yordamida ma'lum bir OS signalini yuborishingiz yoki `Stop` yordamchisidan foydalanib, nafis o'chirishga harakat qilishingiz mumkin.
 
-The `Stop` method is particularly useful: it will first send a termination signal (defaulting to `SIGTERM`).
-If the process does not exit within the provided timeout, it will be forcibly killed (`SIGKILL`).
+`Stop` usuli ayniqsa foydalidir: u avval tugatish signalini yuboradi (standart holatda `SIGTERM` ga o‘rnatiladi).
+Agar jarayon belgilangan vaqt ichida tugamasa, u majburan o'chiriladi (`SIGKILL`).
 
 ```go
 import (
@@ -260,40 +255,38 @@ import (
 
 running, err := facades.Process().Start("sleep", "60")
 
-// Manually send a signal
+// Signalni qo'lda yuborish
 running.Signal(os.Interrupt)
 
-// Attempt to stop gracefully, wait 5 seconds, then force kill
+// Nafislik bilan to'xtashga harakat qiling, 5 soniya kuting, keyin majburan o'ldiring
 running.Stop(5 * time.Second)
 ```
 
-### Checking Process State
+### Jarayon holatini tekshirish
 
-You can inspect the current state of the process using the `Running` method. This is primarily useful for debugging
-or health checks, as it provides a snapshot of whether the process is currently active.
+Jarayonning joriy holatini `Running` usuli yordamida tekshirishingiz mumkin. Bu, birinchi navbatda, nosozliklarni tuzatish yoki sog'liqni tekshirish uchun foydalidir, chunki u jarayon hozirda faol yoki yo'qligini ko'rsatadi.
 
 ```go
-// Snapshot check (useful for logs or metrics)
-if running.Running() {
-    fmt.Println("Process is still active...")
+// Snapshot tekshiruvi (jurnallar yoki ko'rsatkichlar uchun foydali)
+agar running.Running() {
+fmt.Println("Jarayon hali ham faol...")
 }
 ```
 
 :::tip
-If you need to execute code **when** the process finishes, do not poll `Running()`. Instead, use the `Done()` channel
-or the `Wait()` method, which are much more efficient than repeatedly checking the status.
+Agar jarayon tugashi bilan kodni **ijro etish** kerak bo'lsa, `Running()` funksiyasini so'ramang. Buning o'rniga, holatni qayta-qayta tekshirishdan ko'ra ancha samaraliroq bo'lgan `Done()` kanali yoki `Wait()` usulidan foydalaning.
 :::
 
-## Concurrent Processes
+## Bir vaqtning o'zida sodir bo'ladigan jarayonlar
 
-Goravel makes it easy to manage a pool of concurrent processes, allowing you to execute multiple commands simultaneously.
-This is particularly useful for batch processing or running independent tasks in parallel.
+Goravel bir vaqtning o'zida bir nechta buyruqlarni bajarish imkonini beruvchi bir vaqtning o'zida bir nechta jarayonlarni boshqarishni osonlashtiradi.
+Bu, ayniqsa, ommaviy ishlov berish yoki mustaqil vazifalarni parallel ravishda bajarish uchun foydalidir.
 
-### Executing Pools
+### Hovuzlarni bajarish
 
-To run a pool of processes, you may use the `Pool` method. This accepts a closure where you define the commands you wish to execute.
+Jarayonlar pulini ishga tushirish uchun siz `Pool` usulidan foydalanishingiz mumkin. Bu siz bajarmoqchi bo'lgan buyruqlarni belgilaydigan yopilishni qabul qiladi.
 
-By default, the `Pool` method waits for all processes to complete and returns a map of results keyed by the process name (or index).
+Odatiy bo'lib, `Pool` usuli barcha jarayonlarning tugashini kutadi va jarayon nomi (yoki indeksi) bilan belgilangan natijalar xaritasini qaytaradi.
 
 ```go
 results, err := facades.Process().Pool(func(pool process.Pool) {
@@ -305,108 +298,105 @@ if err != nil {
     panic(err)
 }
 
-// Access results by their assigned key
+// Natijalarga tayinlangan kalit orqali kirish
 println(results["first"].Output())
 println(results["second"].Output())
 ```
 
-### Naming Processes
+### Nomlash jarayonlari
 
-By default, processes in a pool are keyed by their numeric index (e.g., "0", "1"). However, for clarity and easier access
-to results, you should assign a unique name to each process using the `As` method:
+Odatiy bo'lib, hovuzdagi jarayonlar ularning raqamli indekslari (masalan, "0", "1") bilan belgilanadi. Biroq, natijalarga aniqlik kiritish va osonroq kirish uchun har bir jarayonga `As` usuli yordamida noyob nom berishingiz kerak:
 
 ```go
 pool.Command("cat", "system.log").As("system")
 ```
 
-### Pool Options
+### Pool imkoniyatlari
 
-The `Pool` builder provides several methods to control the execution behavior of the entire batch.
+`Pool` quruvchisi butun partiyaning bajarilish xatti-harakatlarini boshqarish uchun bir nechta usullarni taqdim etadi.
 
 #### Concurrency
 
-You can control the maximum number of processes running simultaneously using the `Concurrency` method.
+Siz `Concurrency` usuli yordamida bir vaqtning o'zida ishlaydigan jarayonlarning maksimal sonini boshqarishingiz mumkin.
 
 ```go
 facades.Process().Pool(func(pool process.Pool) {
-    // Define 10 commands...
+    // 10 ta buyruqni aniqlang...
 }).Concurrency(2).Run()
 ```
 
-#### Total Timeout
+#### Umumiy vaqt tugashi (Total Timeout)
 
-You can enforce a global timeout for the entire pool execution using the `Timeout` method. If the pool takes longer
-than this duration, all running processes will be terminated.
+Siz `Timeout` usuli yordamida butun hovuz bajarilishi uchun global vaqtni belgilashingiz mumkin. Agar hovuz bu vaqtdan ko'proq vaqt talab qilsa, barcha ishlayotgan jarayonlar to'xtatiladi.
 
 ```go
 facades.Process().Pool(...).Timeout(1 * time.Minute).Run()
 ```
 
-### Asynchronous Pools
+### Asinxron hovuzlar
 
-If you need to run the pool in the background while your application performs other tasks, you can use the `Start`
-method instead of `Run`. This returns a `RunningPool` handle.
+Agar ilovangiz boshqa vazifalarni bajarayotgan paytda hovuzni fonda ishga tushirishingiz kerak bo'lsa, `Run` o'rniga "Ishga `Start` usulidan foydalanishingiz mumkin. Bu `RunningPool` deskriptorini qaytaradi.
 
 ```go
 runningPool, err := facades.Process().Pool(func(pool process.Pool) {
     pool.Command("sleep", "5").As("long_task")
 }).Start()
 
-// Check if the pool is still running
+// Hovuz hali ham ishlayotganini tekshiring
 if runningPool.Running() {
     fmt.Println("Pool is active...")
 }
 
-// Wait for all processes to finish and gather results
+// Barcha jarayonlar tugashini kuting va natijalarni to'plang
 results := runningPool.Wait()
 ```
 
-#### Interacting with Running Pools
+#### Running Pools bilan o'zaro aloqa
 
-The `RunningPool` interface provides several methods to manage the active pool:
+`RunningPool` interfeysi faol hovuzni boshqarishning bir nechta usullarini taqdim etadi:
 
-- **`PIDs()`**: Returns a map of Process IDs keyed by the command name.
-- **`Signal(os.Signal)`**: Sends a signal to all running processes in the pool.
-- **`Stop(timeout, signal)`**: Gracefully stops all processes.
-- **`Done()`**: Returns a channel that closes when the pool finishes, useful for `select` statements.
+- **`PIDs()`**: Buyruq nomi bilan belgilangan jarayon identifikatorlari xaritasini qaytaradi.
+- **`Signal(os.Signal)`**: Hovuzdagi barcha ishlayotgan jarayonlarga signal yuboradi.
+- **`Stop(timeout, signal)`**: Barcha jarayonlarni nafislik bilan to'xtatadi.
+- **`Done()`**: Hovuz tugagach yopiladigan kanalni qaytaradi, bu `select` operatorlari uchun foydali.
 
 ```go
 select {
 case <-runningPool.Done():
-    // All processes finished
+    // Barcha jarayonlar tugadi
 case <-time.After(10 * time.Second):
-    // Force stop all processes if they take too long
+    // Agar barcha jarayonlar juda uzoq davom etsa, ularni majburan to'xtatish
     runningPool.Stop(1 * time.Second)
 }
 ```
 
 ### Pool Output
 
-You can inspect the output of the pool in real-time using the `OnOutput` method.
+Siz `OnOutput` usuli yordamida real vaqt rejimida hovuzning chiqishini tekshirishingiz mumkin.
 
 :::warning
-The `OnOutput` callback may be invoked concurrently from multiple goroutines. Ensure your callback logic is thread-safe.
+`OnOutput` qayta chaqiruvi bir vaqtning o'zida bir nechta goroutinlardan chaqirilishi mumkin. Qayta qo'ng'iroq qilish mantig'ingiz ish zarrachalaridan himoyalanganligiga ishonch hosil qiling.
 :::
 
 ```go
 facades.Process().Pool(func(pool process.Pool) {
     pool.Command("ping", "google.com").As("ping")
 }).OnOutput(func(typ process.OutputType, line []byte, key string) {
-    // key will be "ping"
+    // kalit "ping" bo'ladi
     fmt.Printf("[%s] %s", key, string(line))
 }).Run()
 ```
 
-### Per-Process Configuration
+### Jarayon bo'yicha konfiguratsiya
 
-Inside the pool definition, each command supports individual configuration methods similar to single processes:
+Hovuz ta'rifi ichida har bir buyruq yakka jarayonlarga o'xshash individual konfiguratsiya usullarini qo'llab-quvvatlaydi:
 
-- **`Path(string)`**: Sets the working directory.
-- **`Env(map[string]string)`**: Sets environment variables.
-- **`Input(io.Reader)`**: Sets standard input.
-- **`Timeout(time.Duration)`**: Sets a timeout for the specific command.
-- **`Quietly()`**: Disables output capturing for this specific command.
-- **`DisableBuffering()`**: Disables memory buffering (useful for high-volume output).
+- **`Path(string)`**: Ishchi katalogni o'rnatadi.
+- **`Env(map[string]string)`**: Muhit o'zgaruvchilarini o'rnatadi.
+- **`Input(io.Reader)`**: Standart kiritishni o'rnatadi.
+- **`Timeout(time.Duration)`**: Muayyan buyruq uchun vaqtni belgilaydi.
+- **`Quietly()`**: Ushbu maxsus buyruq uchun chiqish yozib olishni o'chiradi.
+- **`DisableBuffering()`**: Xotira buferlashni o'chiradi (yuqori hajmli chiqish uchun foydali).
 
 ```go
 facades.Process().Pool(func(pool process.Pool) {
