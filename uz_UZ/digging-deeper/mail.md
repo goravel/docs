@@ -1,16 +1,16 @@
-# Mail
+# Pochta
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Goravel can use `facades.Mail()` to easily send mail locally.
+Goravel pochtani mahalliy ravishda osongina yuborish uchun `facades.Mail()` dan foydalanishi mumkin.
 
-## Configuration
+## Konfiguratsiya
 
-Before sending an email, you need to configure the `config/mail.go` configuration file.
+Elektron pochta xabarini yuborishdan oldin, siz `config/mail.go` konfiguratsiya faylini sozlashingiz kerak.
 
-## Send Mail
+## Pochta yuborish
 
 ```go
 import "github.com/goravel/framework/mail"
@@ -19,13 +19,13 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
-  Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Content(mail.Html("<0>Hello Goravel</0>")).
   Headers(map[string]string{"X-Mailer": "Goravel"}).
   Subject("Subject").
   Send()
 ```
 
-## Send Mail By Queue
+## Navbat bo'yicha xat yuborish
 
 ```go
 import "github.com/goravel/framework/mail"
@@ -40,7 +40,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Queue()
 ```
 
-You can also customize the queue:
+Siz shuningdek, navbatni sozlashingiz mumkin:
 
 ```go
 import "github.com/goravel/framework/mail"
@@ -49,15 +49,15 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
-  Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Content(mail.Html("<0>Hello Goravel</0>")).
   Subject("Subject").
   Headers(map[string]string{"X-Mailer": "Goravel"}).
   Queue(mail.Queue().Connection("redis").Queue("mail"))
 ```
 
-## Setting Sender
+## Yuboruvchini sozlash
 
-Framework uses `MAIL_FROM_ ADDRESS` and `MAIL_FROM_ NAME` in the `config/mail.go` configuration file as global senders. You can also customize the sender, but you need to note that the mail address needs to be consistent with the configured STMP:
+Framework global jo'natuvchilar sifatida `config/mail.go` konfiguratsiya faylida `MAIL_FROM_ ADDRESS` va `MAIL_FROM_ NAME` dan foydalanadi. Siz shuningdek, jo'natuvchini sozlashingiz mumkin, ammo pochta manzili sozlangan STMP bilan mos kelishi kerakligini yodda tutishingiz kerak:
 
 ```go
 import "github.com/goravel/framework/mail"
@@ -67,21 +67,21 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Cc([]string{"example@example.com"}).
   Bcc([]string{"example@example.com"}).
   Attach([]string{"file.png"}).
-  Content(mail.Html("<h1>Hello Goravel</h1>")).
+  Content(mail.Html("<0>Hello Goravel</0>")).
   Headers(map[string]string{"X-Mailer": "Goravel"}).
   Subject("Subject").
   Queue(mail.Queue().Connection("redis").Queue("mail"))
 ```
 
-## Using Mailable
+## Mailable’dan foydalanish
 
-The parameters of the email can be set in a `Mailable` struct. These structs are stored in the `app/mails` directory. You can quickly create a `Mailable` using the `make:mail` Artisan command:
+Elektron pochta parametrlarini "Mailable" tuzilmasida o'rnatish mumkin. Ushbu tuzilmalar `app/mails` katalogida saqlanadi. Siz "make:mail" Artisan buyrug'i yordamida tezda "Mailable" yaratishingiz mumkin:
 
 ```bash
-go run . artisan make:mail OrderShipped
+yugurishga boring. hunarmand yasash: pochta orqali buyurtma yuborildi
 ```
 
-The generated `OrderShipped` struct is as follows:
+Yaratilgan `OrderShipped` tuzilmasi quyidagicha:
 
 ```go
 import "github.com/goravel/framework/contracts/mail"
@@ -104,7 +104,7 @@ func (m *OrderShipped) Attachments() []string {
 }
 
 func (m *OrderShipped) Content() *mail.Content {
-	return &mail.Content{Html: "<h1>Hello Goravel</h1>"}
+	return &mail.Content{Html: "<0>Hello Goravel</0>"}
 }
 
 func (m *OrderShipped) Envelope() *mail.Envelope {
@@ -125,20 +125,20 @@ func (m *OrderShipped) Queue() *mail.Queue {
 }
 ```
 
-Then you can use the `Mailalbe` in the `Send` and `Queue` methods:
+Keyin siz "Send" va "Queue" usullarida "Mailalbe" dan foydalanishingiz mumkin:
 
 ```go
 err := facades.Mail().Send(mails.NewOrderShipped())
 err := facades.Mail().Queue(mails.NewOrderShipped())
 ```
 
-## Using Template
+## Shablondan foydalanish
 
-The mail module now supports using templates directly with the `html/template` engine. This allows you to render email templates with dynamic data.
+Pochta moduli endi shablonlardan to'g'ridan-to'g'ri `html/template` dvigateli yordamida foydalanishni qo'llab-quvvatlaydi. Bu sizga elektron pochta shablonlarini dinamik ma'lumotlar bilan ko'rsatish imkonini beradi.
 
-### Configuration
+### Konfiguratsiya
 
-To enable template support, configure the `config/mail.go` file:
+Andoza qo'llab-quvvatlashini yoqish uchun `config/mail.go` faylini sozlang:
 
 ```go
 "template": map[string]any{
@@ -152,9 +152,9 @@ To enable template support, configure the `config/mail.go` file:
 }
 ```
 
-### Creating Templates
+### Shablonlar yaratish
 
-Create your email templates in the specified views directory. For example:
+Belgilangan ko'rinishlar katalogida elektron pochta shablonlaringizni yarating. Masalan:
 
 ```html
 <!-- resources/views/mail/welcome.html -->
@@ -162,9 +162,9 @@ Create your email templates in the specified views directory. For example:
 <p>Thank you for joining {{.AppName}}.</p>
 ```
 
-### Sending Emails with Templates
+### Shablonlar yordamida elektron pochta xabarlarini yuborish
 
-You can use the `Content` method to specify the template and pass dynamic data:
+Shablonni belgilash va dinamik ma'lumotlarni uzatish uchun siz "Content" usulidan foydalanishingiz mumkin:
 
 ```go
 facades.Mail().
@@ -180,9 +180,9 @@ facades.Mail().
     Send()
 ```
 
-### Custom Template Engines
+### Maxsus shablon dvigatellari
 
-You can also register custom template engines in the configuration:
+Siz shuningdek, konfiguratsiyada maxsus shablon dvigatellarini ro'yxatdan o'tkazishingiz mumkin:
 
 ```go
 "template": map[string]any{
