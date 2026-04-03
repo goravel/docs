@@ -1,40 +1,38 @@
-# Pluralization
+# Ko'pliklashtirish
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Strings are important for any web application. Goravel provides simple utilities to convert words between singular
-and plural forms. It supports **English** by default, but you can add other languages or custom rules easily.
+Satrlar har qanday veb-ilova uchun muhimdir. Goravel so'zlarni birlik va ko'plik shakllariga aylantirish uchun oddiy yordamchi dasturlarni taqdim etadi. Sukut bo'yicha **inglizcha** ni qo'llab-quvvatlaydi, lekin siz boshqa tillarni yoki maxsus qoidalarni osongina qo'shishingiz mumkin.
 
-## Basic Usage
+## Asosiy foydalanish
 
-You can use the `Plural` and `Singular` methods from the `pluralizer` package. These handle most English words automatically.
+Siz `pluralizer` paketidagi `Ko'plik` va `Yakkalik` usullaridan foydalanishingiz mumkin. Bular ko'pgina inglizcha so'zlarni avtomatik ravishda qayta ishlaydi.
 
 ```go
 import "github.com/goravel/framework/support/pluralizer"
 
-// Pluralize words
+// So'zlarni ko'p sonli qilish
 pluralizer.Plural("goose") // "geese"
 pluralizer.Plural("car")   // "cars"
 
-// Singularize words
+// So'zlarni birlashtirish
 pluralizer.Singular("geese") // "goose"
 pluralizer.Singular("cars")  // "car"
 ```
 
-## Custom Rules
+## Maxsus qoidalar
 
-Sometimes the default rules are not enough for specific words. Goravel lets you add your own rules to handle these cases.
+Ba'zan standart qoidalar ma'lum so'zlar uchun yetarli emas. Goravel lets you add your own rules to handle these cases.
 
 :::warning
-Adding rules changes how pluralization works globally. You should do this when your application starts,
-like in the `Boot` method of a Service Provider.
+Qoidalarni qo'shish plyuralizatsiyaning global miqyosda qanday ishlashini o'zgartiradi. Buni ilova ishga tushganda qilishingiz kerak, masalan, xizmat ko'rsatuvchi provayderning "Yuklash" usulida.
 :::
 
-### Irregular Words
+### Ingliz tilidagi noto'g'ri fellar
 
-If a word has a unique plural form, you can register it as an "irregular" word. This handles changes in both directions.
+Agar so'z noyob ko'plik shakliga ega bo'lsa, uni "tartibsiz" so'z sifatida ro'yxatdan o'tkazishingiz mumkin. Bu ikkala yo'nalishdagi o'zgarishlarni ham boshqaradi.
 
 ```go
 import (
@@ -46,42 +44,41 @@ import (
 pluralizer.RegisterIrregular("english", rules.NewSubstitution("mouse", "mice"))
 ```
 
-### Uninflected Words
+### O'zgartirilmagan so'zlar
 
-Some words like "fish" or "media" do not change form or are always plural. You can mark these as "uninflected"
-so the pluralizer skips them.
+"Baliq" yoki "media" kabi ba'zi so'zlar shaklini o'zgartirmaydi yoki har doim ko'plikda bo'ladi. Siz ularni "o'zgartirilmagan" deb belgilashingiz mumkin, shuning uchun pluralizer ularni o'tkazib yuboradi.
 
 ```go
-// "sheep" stays "sheep" in singular and plural
+// "sheep" birlik va ko'plikda "sheep" bo'lib qoladi
 pluralizer.RegisterUninflected("english", "sheep")
 
-// "media" is always treated as plural
+// "media" har doim ko'plik sifatida qabul qilinadi
 pluralizer.RegisterPluralUninflected("english", "media")
 
-// "data" is always treated as singular
+// "data" har doim birlik sifatida qabul qilinadi
 pluralizer.RegisterSingularUninflected("english", "data")
 ```
 
-## Language Support
+## Til Yordami
 
-Goravel uses "english" by default, but you can switch languages or add new ones if you need to.
+Goravel sukut bo'yicha "inglizcha" dan foydalanadi, lekin agar kerak bo'lsa, tillarni almashtirishingiz yoki yangilarini qo'shishingiz mumkin.
 
-### Switching Languages
+### Tillarni almashtirish
 
-If you have other languages registered, you can switch the active one using `UseLanguage`.
+Agar sizda boshqa tillar ro'yxatdan o'tgan bo'lsa, faol tilni "UseLanguage" yordamida almashtirishingiz mumkin.
 
 ```go
 if err := pluralizer.UseLanguage("spanish"); err != nil {
     panic(err)
 }
 
-// Get the current language name
+// Joriy til nomini oling
 name := pluralizer.GetLanguage().Name()
 ```
 
-### Adding New Languages
+### Yangi tillar qo'shish
 
-To add a language, you need to implement the `Language` interface. This defines how words change in that language.
+Til qo'shish uchun siz "Til" interfeysini amalga oshirishingiz kerak. Bu so'zlarning o'sha tilda qanday o'zgarishini belgilaydi.
 
 ```go
 import "github.com/goravel/framework/contracts/support/pluralizer"
@@ -93,28 +90,28 @@ type Language interface {
 }
 ```
 
-After implementing your language struct, register it and set it as active.
+Til tuzilmangizni amalga oshirgandan so'ng, uni ro'yxatdan o'tkazing va faol deb o'rnating.
 
 ```go
 import "github.com/goravel/framework/support/pluralizer"
 
 func init() {
-    // Register the new language
+    // Yangi tilni ro'yxatdan o'tkazing
     if err := pluralizer.RegisterLanguage(&MyCustomLanguage{}); err != nil {
        panic(err)
     }
     
-    // Set it as active
+    // Uni faol sifatida o'rnating
     _ = pluralizer.UseLanguage("my_custom_language")
 }
 ```
 
-## Supported Languages
+## Qo'llab-quvvatlanadigan tillar
 
-Currently, the pluralizer supports the following languages out of the box:
+Hozirda pluralizer quyidagi tillarni darhol qo'llab-quvvatlaydi:
 
-| Language | Code      | Source                                                                                     |
-| :------- | :-------- | :----------------------------------------------------------------------------------------- |
-| English  | `english` | [View Source](https://github.com/goravel/framework/tree/master/support/pluralizer/english) |
+| Til       | Kod         | Manba                                                                                          |
+| :-------- | :---------- | :--------------------------------------------------------------------------------------------- |
+| Inglizcha | `inglizcha` | [Manbani ko'rish](https://github.com/goravel/framework/tree/master/support/pluralizer/english) |
 
-_More languages will be added in future releases. You are welcome to contribute new languages via Pull Request._
+_Kelajakdagi nashrlarda ko'proq tillar qo'shiladi. Pull Request orqali yangi tillarga hissa qo'shishingiz mumkin._
