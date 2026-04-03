@@ -88,7 +88,7 @@ function nav(): DefaultTheme.NavItem[] {
     text: "Versiyalar",
     items: [{
       text: "v1.17 (Eng so'nggi)",
-      link: ""
+      link: 'https://www.goravel.dev/'
     }, {
       text: 'v1.16',
       link: 'https://v116.goravel.dev/'
@@ -160,7 +160,7 @@ function sidebarFoundation(): DefaultTheme.SidebarItem[] {
 }
 function sidebarBasic(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Routing',
+    text: "Marshrutlash",
     link: 'routing'
   }, {
     text: 'Middleware',
