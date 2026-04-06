@@ -1,32 +1,32 @@
-# Getting Started
+# Boshlash
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Goravel provides a very simple and easy-to-use database interaction, developers can use `facades.Orm()` to operate. Please refer to [Configure Database](../database/getting-started) before starting.
+Goravel juda oddiy va oson ishlatiladigan ma'lumotlar bazasi o'zaro ta'sirini taqdim etadi, dasturchilar `facades.Orm()` yordamida amallarni bajarishlari mumkin. Boshlashdan oldin [Ma'lumotlar bazasini sozlash](../database/getting-started) bo'limiga murojaat qiling.
 
-## Model Definition
+## Model ta'rifi
 
-To create a custom model, refer to the model file `app/models/user.go` that is included in the framework. The `struct` in `app/models/user.go` contains two embedded frameworks: `orm.Model` and `orm.SoftDeletes`. These frameworks define `id`, `created_at`, `updated_at`, and `deleted_at` properties respectively. With `orm.SoftDeletes`, you can enable soft deletion for the model.
+Maxsus model yaratish uchun, freymvorkda keltirilgan `app/models/user.go` model fayliga murojaat qiling. `app/models/user.go` faylidagi `struct` ikkita o'rnatilgan freymvorkni o'z ichiga oladi: `orm.Model` va `orm.SoftDeletes`. Ushbu freymvorklar mos ravishda `id`, `created_at`, `updated_at` va `deleted_at` xususiyatlarini aniqlaydi. `orm.SoftDeletes` yordamida model uchun yumshoq o'chirishni yoqishingiz mumkin.
 
-### Model Convention
+### Model konventsiyasi
 
-1. The model is named with a big hump;
-2. Use the plural form of the model "snake naming" as the table name;
+1. Model katta orqa qopqoq (PascalCase) bilan nomlanadi;
+2. Modelning ko'plik shakli "iloncha nomlash" (snake_case) jadval nomi sifatida ishlatiladi;
 
-For example, the model name is `UserOrder`, and the table name is `user_orders`.
+Misol uchun, model nomi `UserOrder` bo'lsa, jadval nomi `user_orders` bo'ladi.
 
-### Create Model
+### Model yaratish
 
-Use the `make:model` command to create a model:
+Model yaratish uchun `make:model` buyrug'idan foydalaning:
 
 ```shell
 ./artisan make:model User
 ./artisan make:model user/User
 ```
 
-Created model file is located in `app/models/user.go` file, the content is as follows:
+Yaratilgan model fayli `app/models/user.go` faylida joylashgan bo'lib, uning tarkibi quyidagicha:
 
 ```go
 package models
@@ -43,7 +43,7 @@ type User struct {
 }
 ```
 
-If you want to set the model field to `any`, you need to add an additional Tag: `gorm:"type:text"`:
+Agar model maydonini `any` turiga o'rnatmoqchi bo'lsangiz, qo'shimcha Tag qo'shishingiz kerak: `gorm:"type:text"`:
 
 ```go
 type User struct {
@@ -55,11 +55,11 @@ type User struct {
 }
 ```
 
-More Tag usage details can be found at: https://gorm.io/docs/models.html.
+Tag'lardan foydalanishning batafsil ma'lumotlari quyidagi manzilda topiladi: https://gorm.io/docs/models.html.
 
-#### Json Field
+#### Json maydoni
 
-If you want to use JSON field, you can define the field type as `datatypes.JSONMap` or a custom struct, and add the Tag: `gorm:"type:json"`:
+Agar JSON maydonidan foydalanmoqchi bo'lsangiz, maydon turini `datatypes.JSONMap` yoki maxsus struktura sifatida belgilashingiz va `gorm:"type:json"` tegni qo'shishingiz mumkin:
 
 ```go
 package models
@@ -94,16 +94,16 @@ func (r *UserData) Scan(value any) (err error) {
 }
 ```
 
-#### Create Model based on data table
+#### Ma'lumotlar bazasi jadvali asosida model yaratish
 
 ```shell
 ./artisan make:model --table=users User
 
-// If the Model already exists, you can use the -f option to force overwrite
+// Agar Model allaqachon mavjud bo'lsa, -f opsiyasidan foydalanib majburiy ustidan yozishingiz mumkin
 ./artisan make:model --table=users -f User
 ```
 
-If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend()` method to extend the field type in the `bootstrap/app.go::WithCallback` function:
+Agar ma'lumotlar jadvalidada freymvork tanimaydigan maydon turi bo'lsa, `bootstrap/app.go::WithCallback` funksiyasida `facades.Schema().Extend()` metodini chaqirib, maydon turini kengaytirishingiz mumkin:
 
 ```go
 import "github.com/goravel/framework/contracts/schema"
@@ -133,7 +133,7 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-### Specify Table Name
+### Jadval nomini ko'rsatish
 
 ```go
 package models
@@ -154,9 +154,9 @@ func (r *User) TableName() string {
 }
 ```
 
-### Database Connections
+### Ma'lumotlar bazasi ulanishlari
 
-By default, all models utilize the default database connection configured for your application. If you wish to specify a distinct connection to be used when interacting with a particular model, you need to define a `Connection` method on the model.
+Sukut bo'yicha, barcha modellar ilovangiz uchun sozlangan sukut bo'yicha ma'lumotlar bazasi ulanishidan foydalanadi. Agar ma'lum bir model bilan ishlashda farqli ulanishni ko'rsatmoqchi bo'lsangiz, modelda `Connection` metodini aniqlashingiz kerak.
 
 ```go
 package models
@@ -177,9 +177,9 @@ func (r *User) Connection() string {
 }
 ```
 
-### Setting Global Scope
+### Global doirami sozlash
 
-Model supports setting the `GlobalScopes` method, which restricts the scope of the query, update, and delete operations:
+Model so'rov, yangilash va o'chirish amallari doirasini cheklaydigan `GlobalScopes` metodini sozlashni qo'llab-quvvatlaydi:
 
 ```go
 import (
@@ -201,125 +201,125 @@ func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Q
 }
 ```
 
-If you want to remove global scopes in a query, you can use the `WithoutGlobalScopes` function:
+Agar so'rovda global skoplarni olib tashlamoqchi bo'lsangiz, `WithoutGlobalScopes` funksiyasidan foydalanishingiz mumkin:
 
 ```go
-// Remove all global scopes
+// Barcha global skoplarni olib tashlash
 facades.Orm().Query().WithoutGlobalScopes().Get(&users)
 
-// Remove specified global scope
+// Belgilangan global skopni olib tashlash
 facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 ```
 
-## facades.Orm() available functions
+## facades.Orm() mavjud funksiyalari
 
-| Name        | Action                                                                                  |
-| ----------- | --------------------------------------------------------------------------------------- |
-| Connection  | [Specify Database Connection](#specify-database-connection)                             |
-| DB          | [Generic Database Interface sql.DB](#generic-database-interface-sql-db) |
-| Query       | [Get Database Instance](#get-database-instance)                                         |
-| Transaction | [Transaction](#transaction)                                                             |
-| WithContext | [Inject Context](#inject-context)                                                       |
+| Nomi        | Harakat                                                                                           |
+| ----------- | ------------------------------------------------------------------------------------------------- |
+| Ulanish     | [Ma'lumotlar bazasi ulanishini ko'rsatish](#specify-database-connection)                          |
+| DB          | [Umumiy ma'lumotlar bazasi interfeysi sql.DB](#generic-database-interface-sql-db) |
+| So'rov      | [Ma'lumotlar bazasi instansiyasini olish](#get-database-instance)                                 |
+| Tranzaksiya | [Tranzaksiya](#transaction)                                                                       |
+| WithContext | [Kontekstni kiritish](#inject-context)                                                            |
 
-## facades.Orm().Query() available functions
+## facades.Orm().Query() mavjud funksiyalari
 
-| Functions                   | Action                                                                        |
-| --------------------------- | ----------------------------------------------------------------------------- |
-| Avg                         | [Avg](#Avarage)                                                               |
-| BeginTransaction            | [Begin transaction](#transaction)                                             |
-| Commit                      | [Commit transaction](#transaction)                                            |
-| Count                       | [Count](#count)                                                               |
-| Create                      | [Create](#create)                                                             |
-| Cursor                      | [Cursor](#cursor)                                                             |
-| Delete                      | [Delete](#delete)                                                             |
-| Distinct                    | [Filter Repetition](#filter-repetition)                                       |
-| Driver                      | [Get Driver](#get-driver)                                                     |
-| Exec                        | [Execute native update SQL](#execute-native-update-sql)                       |
-| Exists                      | [Exists](#exists)                                                             |
-| Find                        | [Query one or multiple lines by ID](#query-one-or-multiple-lines-by-id)       |
-| FindOrFail                  | [Not found return error](#not-found-return-error)                             |
-| First                       | [Query one line](#query-one-line)                                             |
-| FirstOr                     | [Query or return data through callback](#query-one-line)                      |
-| FirstOrCreate               | [Retrieving Or Creating Models](#retrieving-or-creating-models)               |
-| FirstOrNew                  | [Retrieving Or New Models](#retrieving-or-creating-models)                    |
-| FirstOrFail                 | [Not Found Error](#not-found-error)                                           |
-| ForceDelete                 | [Force delete](#delete)                                                       |
-| Get                         | [Query multiple lines](#query-multiple-lines)                                 |
-| Group                       | [Group](#group-by--having)                                                    |
-| Having                      | [Having](#group-by-having)                                                    |
-| Join                        | [Join](#join)                                                                 |
-| Limit                       | [Limit](#limit)                                                               |
-| LockForUpdate               | [Pessimistic Locking](#pessimistic-locking)                                   |
-| Max                         | [Max](#Avarage)                                                               |
-| Min                         | [Min](#Avarage)                                                               |
-| Model                       | [Specify a model](#specify-table-query)                                       |
-| Offset                      | [Offset](#offset)                                                             |
-| Order                       | [Order](#order)                                                               |
-| OrderBy                     | [Order](#order)                                                               |
-| OrderByDesc                 | [Order](#order)                                                               |
-| InRandomOrder               | [Order](#order)                                                               |
-| OrWhere                     | [OrWhere](#where)                                                             |
-| OrWhereNotIn                | [OrWhereNotIn](#where)                                                        |
-| OrWhereNull                 | [OrWhereNull](#where)                                                         |
-| OrWhereIn                   | [OrWhereIn](#where)                                                           |
-| OrWhereJsonContains         | [OrWhereJsonContains](#where)                                                 |
-| OrWhereJsonContainsKey      | [OrWhereJsonContainsKey](#where)                                              |
-| OrWhereJsonDoesntContain    | [OrWhereJsonDoesntContain](#where)                                            |
-| OrWhereJsonDoesntContainKey | [OrWhereJsonDoesntContainKey](#where)                                         |
-| OrWhereJsonLength           | [OrWhereJsonLength](#where)                                                   |
-| Paginate                    | [Paginate](#paginate)                                                         |
-| Pluck                       | [Query single column](#query-single-column)                                   |
-| Raw                         | [Execute native SQL](#execute-native-sql)                                     |
-| Restore                     | [Restore](#restore)                                                           |
-| Rollback                    | [Rollback transaction](#transaction)                                          |
-| Save                        | [Update a existing model](#update-a-existing-model)                           |
-| SaveQuietly                 | [Saving a single model without events](#saving-a-single-model-without-events) |
-| Scan                        | [Scan struct](#execute-native-sql)                                            |
-| Scopes                      | [Scopes](#scopes)                                                             |
-| Select                      | [Specify Fields](#specify-fields)                                             |
-| SharedLock                  | [Pessimistic Locking](#pessimistic-locking)                                   |
-| Sum                         | [Sum](#Avarage)                                                               |
-| Table                       | [Specify a table](#specify-table-query)                                       |
-| ToSql                       | [Get SQL](#get-sql)                                                           |
-| ToRawSql                    | [Get SQL](#get-sql)                                                           |
-| Update                      | [Update a single column](#update-a-single-column)                             |
-| UpdateOrCreate              | [Update or create](#update-or-create)                                         |
-| Where                       | [Where](#where)                                                               |
-| WhereAll                    | [WhereAll](#where)                                                            |
-| WhereAny                    | [WhereAny](#where)                                                            |
-| WhereBetween                | [WhereBetween](#where)                                                        |
-| WhereNone                   | [WhereNone](#where)                                                           |
-| WhereNotBetween             | [WhereNotBetween](#where)                                                     |
-| WhereNotIn                  | [WhereNotIn](#where)                                                          |
-| WhereNull                   | [WhereNull](#where)                                                           |
-| WhereIn                     | [WhereIn](#where)                                                             |
-| WhereJsonContains           | [WhereJsonContains](#where)                                                   |
-| WhereJsonContainsKey        | [WhereJsonContainsKey](#where)                                                |
-| WhereJsonDoesntContain      | [WhereJsonDoesntContain](#where)                                              |
-| WhereJsonDoesntContainKey   | [WhereJsonDoesntContainKey](#where)                                           |
-| WhereJsonLength             | [WhereJsonLength](#where)                                                     |
-| WithoutEvents               | [Muting events](#muting-events)                                               |
-| WithTrashed                 | [Query soft delete data](#query-soft-delete-data)                             |
+| Funksiyalar                 | Harakat                                                                               |
+| --------------------------- | ------------------------------------------------------------------------------------- |
+| Avg                         | [Avg](#Avarage)                                                                       |
+| BeginTransaction            | [Tranzaksiyani boshlash](#transaction)                                                |
+| Commit                      | [Tranzaksiyani tasdiqlash](#transaction)                                              |
+| Count                       | [Hisoblash](#count)                                                                   |
+| Create                      | [Yaratish](#create)                                                                   |
+| Cursor                      | [Kursor](#cursor)                                                                     |
+| Delete                      | [O‘chirish](#delete)                                                                  |
+| Distinct                    | [Takrorlanishni filtrlash](#filter-repetition)                                        |
+| Driver                      | [Haydovchini olish](#get-driver)                                                      |
+| Exec                        | [Mahalliy yangilash SQL-ni bajarish](#execute-native-update-sql)                      |
+| Exists                      | [Mavjudligi](#exists)                                                                 |
+| Find                        | [ID bo'yicha bir yoki bir nechta qatorni so'rash](#query-one-or-multiple-lines-by-id) |
+| FindOrFail                  | [Topilmasa xatoni qaytarish](#not-found-return-error)                                 |
+| First                       | [Bir qatorni so'rash](#query-one-line)                                                |
+| FirstOr                     | [So'rash yoki callback orqali ma'lumot qaytarish](#query-one-line)                    |
+| FirstOrCreate               | [Modellarni olish yoki yaratish](#retrieving-or-creating-models)                      |
+| FirstOrNew                  | [Modellarni olish yoki yangisini yaratish](#retrieving-or-creating-models)            |
+| FirstOrFail                 | [Topilmagan xatosi](#not-found-error)                                                 |
+| ForceDelete                 | [Majburiy o'chirish](#delete)                                                         |
+| Get                         | [Bir nechta qatorni so'rash](#query-multiple-lines)                                   |
+| Group                       | [Guruhlash](#group-by--having)                                                        |
+| Having                      | [Having](#group-by-having)                                                            |
+| Qo'shiladi                  | [Join](#join)                                                                         |
+| Limit                       | [Limit](#limit)                                                                       |
+| LockForUpdate               | [Pessimistic Locking](#pessimistic-locking)                                           |
+| Max                         | [Max](#Avarage)                                                                       |
+| Min                         | [Min](#Avarage)                                                                       |
+| Model                       | [Jadvalni aniqlash](#specify-table-query)                                             |
+| Offset                      | [Offset](#offset)                                                                     |
+| Tartiblash                  | [Order](#order)                                                                       |
+| OrderBy                     | [Order](#order)                                                                       |
+| OrderByDesc                 | [Order](#order)                                                                       |
+| InRandomOrder               | [Order](#order)                                                                       |
+| OrWhere                     | [OrWhere](#where)                                                                     |
+| OrWhereNotIn                | [OrWhereNotIn](#where)                                                                |
+| OrWhereNull                 | [OrWhereNull](#where)                                                                 |
+| OrWhereIn                   | [OrWhereIn](#where)                                                                   |
+| OrWhereJsonContains         | [OrWhereJsonContains](#where)                                                         |
+| OrWhereJsonContainsKey      | [OrWhereJsonContainsKey](#where)                                                      |
+| OrWhereJsonDoesntContain    | [OrWhereJsonDoesntContain](#where)                                                    |
+| OrWhereJsonDoesntContainKey | [OrWhereJsonDoesntContainKey](#where)                                                 |
+| OrWhereJsonLength           | [OrWhereJsonLength](#where)                                                           |
+| Sahifalash                  | [Paginate](#paginate)                                                                 |
+| Pluck                       | [Yagona ustunni so'rov qilish](#query-single-column)                                  |
+| Raw                         | [Asl SQL-ni bajarish](#execute-native-sql)                                            |
+| Restore                     | [Restore](#restore)                                                                   |
+| Rollback                    | [Tranzaksiyani bekor qilish](#transaction)                                            |
+| Save                        | [Mavjud modelni yangilash](#update-a-existing-model)                                  |
+| SaveQuietly                 | [Yagona modelni hodisasiz saqlash](#saving-a-single-model-without-events)             |
+| Scan                        | [Scan struct](#execute-native-sql)                                                    |
+| Scopes                      | [Scopes](#scopes)                                                                     |
+| Tanlash                     | [Maydonlarni aniqlash](#specify-fields)                                               |
+| SharedLock                  | [Pessimistic Locking](#pessimistic-locking)                                           |
+| Sum                         | [Sum](#Avarage)                                                                       |
+| Jadval                      | [Jadvalni aniqlash](#specify-table-query)                                             |
+| ToSql                       | [SQL olish](#get-sql)                                                                 |
+| ToRawSql                    | [SQL olish](#get-sql)                                                                 |
+| Yangilash                   | [Yagona ustunni yangilash](#update-a-single-column)                                   |
+| UpdateOrCreate              | [Yangilash yoki yaratish](#update-or-create)                                          |
+| Where                       | [Where](#where)                                                                       |
+| WhereAll                    | [WhereAll](#where)                                                                    |
+| WhereAny                    | [WhereAny](#where)                                                                    |
+| WhereBetween                | [WhereBetween](#where)                                                                |
+| WhereNone                   | [WhereNone](#where)                                                                   |
+| WhereNotBetween             | [WhereNotBetween](#where)                                                             |
+| WhereNotIn                  | [WhereNotIn](#where)                                                                  |
+| WhereNull                   | [WhereNull](#where)                                                                   |
+| WhereIn                     | [WhereIn](#where)                                                                     |
+| WhereJsonContains           | [WhereJsonContains](#where)                                                           |
+| WhereJsonContainsKey        | [WhereJsonContainsKey](#where)                                                        |
+| WhereJsonDoesntContain      | [WhereJsonDoesntContain](#where)                                                      |
+| WhereJsonDoesntContainKey   | [WhereJsonDoesntContainKey](#where)                                                   |
+| WhereJsonLength             | [WhereJsonLength](#where)                                                             |
+| WithoutEvents               | [Hodisalarni o'chirish](#muting-events)                                               |
+| WithTrashed                 | [Yumshoq o'chirilgan ma'lumotlarni so'rov qilish](#query-soft-delete-data)            |
 
-## Query Builder
+## So'rov Quruvchi
 
-### Inject Context
+### Kontekstni kiritish
 
 ```go
 facades.Orm().WithContext(ctx)
 ```
 
-### Specify Database Connection
+### Ma'lumotlar bazasi ulanishini aniqlash
 
-If multiple database connections are defined in `config/database.go`, you can use them through the `Connection` function of `facades.Orm()`. The connection name passed to `Connection` should be one of the connections configured in `config/database.go`:
+Agar `config/database.go` faylida bir nechta ma'lumotlar bazasi ulanishlari aniqlangan bo'lsa, ularni `facades.Orm()` ning `Connection` funksiyasi orqali ishlatishingiz mumkin. `Connection` ga uzatilgan ulanish nomi `config/database.go` faylida sozlangan ulanishlardan biri boʻlishi kerak:
 
 ```go
 facades.Orm().Connection("mysql")
 ```
 
-### Generic Database Interface sql.DB
+### Umumiy Maʼlumotlar Bazasi Interfeysi sql.DB
 
-Generic database interface sql.DB, then use the functionality it provides:
+Umumiy maʼlumotlar bazasi interfeysi sql.DB, soʻngra u taqdim etgan funksionallikdan foydalaning:
 
 ```go
 db, err := facades.Orm().DB()
@@ -331,22 +331,22 @@ db.Ping()
 // Close
 db.Close()
 
-// Returns database statistics
+// Maʼlumotlar bazasi statistikasini qaytaradi
 db.Stats()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool
+// SetMaxIdleConns boʻsh ulanishlar hovuzidagi maksimal ulanishlar sonini belgilaydi
 db.SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database
+// SetMaxOpenConns maʼlumotlar bazasiga ochiq ulanishlarning maksimal sonini belgilaydi
 db.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused
+// SetConnMaxLifetime ulanish qayta ishlatilishi mumkin boʻlgan maksimal vaqtni belgilaydi
 db.SetConnMaxLifetime(time.Hour)
 ```
 
-### Get Database Instance
+### Maʼlumotlar Bazasi Instansini Olish
 
-Before each specific database operation, it's necessary to obtain an instance of the database.
+Har bir aniq maʼlumotlar bazasi operatsiyasidan oldin, maʼlumotlar bazasi instansini olish kerak.
 
 ```go
 facades.Orm().Query()
@@ -354,9 +354,9 @@ facades.Orm().Connection("mysql").Query()
 facades.Orm().WithContext(ctx).Query()
 ```
 
-### Select
+### Tanlash
 
-#### Query one line
+#### Bitta qatorni soʻrov qilish
 
 ```go
 var user models.User
@@ -364,7 +364,7 @@ facades.Orm().Query().First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1;
 ```
 
-Sometimes you may wish to perform some other action if no results are found. The `FirstOr` method will return a single model instance or, if no results are found, execute the given closure. You can set values to model in closure:
+Baʼzida natijalar topilmasa, boshqa harakatni amalga oshirishni xohlashingiz mumkin. `FirstOr` metodi bitta model instansini qaytaradi yoki natijalar topilmasa, berilgan yopilishni (closure) bajaradi. Yopilishda modelga qiymatlarni belgilashingiz mumkin:
 
 ```go
 facades.Orm().Query().Where("name", "first_user").FirstOr(&user, func() error {
@@ -374,7 +374,7 @@ facades.Orm().Query().Where("name", "first_user").FirstOr(&user, func() error {
 })
 ```
 
-#### Query one or multiple lines by ID
+#### ID boʻyicha bitta yoki bir nechta qatorni soʻrov qilish
 
 ```go
 var user models.User
@@ -386,14 +386,14 @@ facades.Orm().Query().Find(&users, []int{1,2,3})
 // SELECT * FROM `users` WHERE `users`.`id` IN (1,2,3);
 ```
 
-#### Not found return error
+#### Topilmasa xatoni qaytaradi
 
 ```go
 var user models.User
 err := facades.Orm().Query().FindOrFail(&user, 1)
 ```
 
-#### When the primary key of the user table is `string` type, you need to specify the primary key when calling `Find` method
+#### Foydalanuvchi jadvalining asosiy kaliti `string` turida boʻlsa, `Find` metodini chaqirishda asosiy kalitni koʻrsatishingiz kerak
 
 ```go
 var user models.User
@@ -401,7 +401,7 @@ facades.Orm().Query().Find(&user, "uuid=?" ,"a")
 // SELECT * FROM `users` WHERE `users`.`uuid` = "a";
 ```
 
-#### Query multiple lines
+#### Bir nechta qatorni soʻrov qilish
 
 ```go
 var users []models.User
@@ -409,11 +409,11 @@ facades.Orm().Query().Where("id in ?", []int{1,2,3}).Get(&users)
 // SELECT * FROM `users` WHERE id in (1,2,3);
 ```
 
-#### Retrieving Or Creating Models
+#### Modellarni Topish yoki Yaratish
 
-The `FirstOrCreate` method searches for a database record using the specified column/value pairs. If the model cannot be found in the database, it creates a new record with the attributes from merging the first argument with the optional second argument.
+`FirstOrCreate` metodi belgilangan ustun/qiymat juftliklari yordamida maʼlumotlar bazasi yozuvini qidiradi. Agar model maʼlumotlar bazasida topilmasa, u birinchi argumentni ixtiyoriy ikkinchi argument bilan birlashtirish orqali olingan atributlar bilan yangi yozuv yaratadi.
 
-Similarly, the `FirstOrNew` method also tries to locate a record in the database based on the attributes given. However, if it is not found, a new instance of the model is returned. It's important to note that this new model has not been saved to the database yet and you need to manually call the `Save` method to do so.
+Shunga oʻxshash, `FirstOrNew` metodi ham berilgan atributlarga asoslanib maʼlumotlar bazasida yozuvni topishga harakat qiladi. Biroq, agar topilmasa, modelning yangi instansi qaytariladi. Diqqat qilish kerakki, bu yangi model maʼlumotlar bazasiga saqlanmagan va buni amalga oshirish uchun `Save` metodini qoʻlda chaqirishingiz kerak.
 
 ```go
 var user models.User
@@ -433,9 +433,9 @@ facades.Orm().Query().Where("gender", 1).FirstOrNew(&user, models.User{Name: "to
 // SELECT * FROM `users` WHERE `gender` = 1 AND `users`.`name` = 'tom' ORDER BY `users`.`id` LIMIT 1;
 ```
 
-#### Not Found Error
+#### Topilmagan Xatosi
 
-When the requested item is not found, the `First` method does not generate an error. To generate an error, use the `FirstOrFail` method:
+Soʻralgan element topilmasa, `First` metodi xatolik keltirib chiqarmaydi. Xatolik keltirib chiqarish uchun `FirstOrFail` metodidan foydalaning:
 
 ```go
 var user models.User
@@ -445,7 +445,7 @@ err := facades.Orm().Query().FirstOrFail(&user)
 // if errors.Is(err, errors.OrmRecordNotFound) {}
 ```
 
-### Where
+### Qayerda
 
 ```go
 facades.Orm().Query().Where("name", "tom")
@@ -479,7 +479,7 @@ facades.DB().Table("products").WhereNone([]string{"age", "score"}, ">", 18).Find
 // SQL: SELECT * FROM products WHERE NOT (age > ?) AND NOT (score > ?)
 ```
 
-Query JSON columns
+JSON ustunlarini soʻrov qilish
 
 ```go
 facades.Orm().Query().Where("preferences->dining->meal", "salad").First(&user)
@@ -513,7 +513,7 @@ facades.Orm().Query().Where("name", "tom").Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3;
 ```
 
-### Offset
+### Ofset
 
 ```go
 var users []models.User
@@ -521,7 +521,7 @@ facades.Orm().Query().Where("name", "tom").Offset(5).Limit(3).Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' LIMIT 3 OFFSET 5;
 ```
 
-### Order
+### Tartiblash
 
 ```go
 var users []models.User
@@ -538,7 +538,7 @@ facades.Orm().Query().Where("name", "tom").InRandomOrder().Get(&users)
 // SELECT * FROM `users` WHERE name = 'tom' ORDER BY RAND();
 ```
 
-### Paginate
+### Sahifalash
 
 ```go
 var users []models.User
@@ -548,7 +548,7 @@ facades.Orm().Query().Paginate(1, 10, &users, &total)
 // SELECT * FROM `users` LIMIT 10;
 ```
 
-### Query Single Column
+### Bitta Ustunni Soʻrov Qilish
 
 ```go
 var ages []int64
@@ -556,41 +556,41 @@ facades.Orm().Query().Model(&models.User{}).Pluck("age", &ages)
 // SELECT `age` FROM `users`;
 ```
 
-### Specify Table Query
+### Jadvalni Belgilash Orqali Soʻrov Qilish
 
-If you want to query some aggregate data, you need to specify a specific table.
+Agar baʼzi agregat maʼlumotlarni soʻrov qilmoqchi boʻlsangiz, aniq bir jadvalni belgilashingiz kerak.
 
-Specify a model
+Modelni belgilash
 
 ```go
 count, err := facades.Orm().Query().Model(&models.User{}).Count()
 // SELECT count(*) FROM `users` WHERE deleted_at IS NULL;
 ```
 
-Specify a table
+Jadvalni belgilash
 
 ```go
 count, err := facades.Orm().Query().Table("users").Count()
-// SELECT count(*) FROM `users`; // get all records, whether deleted or not
+// SELECT count(*) FROM `users`; // oʻchirilgan yoki oʻchirilmagan barcha yozuvlarni olish
 ```
 
-### Get SQL
+### SQL ni Olish
 
-Get SQL with placeholder:
+Belgilovchi bilan SQL ni olish:
 
 ```go
 facades.Orm().Query().ToSql().Get(models.User{})
 // SELECT * FROM "users" WHERE "id" = $1 AND "users"."deleted_at" IS NULL
 ```
 
-Get SQL with value:
+Qiymat bilan SQL ni olish:
 
 ```go
 facades.Orm().Query().ToRawSql().Get(models.User{})
 // SELECT * FROM "users" WHERE "id" = 1 AND "users"."deleted_at" IS NULL
 ```
 
-The methods can be called after `ToSql` and `ToRawSql`: `Count`, `Create`, `Delete`, `Find`, `First`, `Get`, `Pluck`, `Save`, `Sum`, `Update`.
+`ToSql` va `ToRawSql` dan keyin chaqirilishi mumkin bo'lgan metodlar: `Count`, `Create`, `Delete`, `Find`, `First`, `Get`, `Pluck`, `Save`, `Sum`, `Update`.
 
 ### Count
 
@@ -599,16 +599,16 @@ count, err := facades.Orm().Query().Table("users").Count()
 // SELECT count(*) FROM `users` WHERE name = 'tom';
 ```
 
-### Specify Fields
+### Maydonlarni belgilash
 
-`Select` allows you to specify which fields to retrieve from the database, by default the ORM retrieves all fields.
+`Select` ma'lumotlar bazasidan qaysi maydonlarni olishni belgilash imkonini beradi, sukut bo'yicha ORM barcha maydonlarni oladi.
 
 ```go
 facades.Orm().Query().Select("name", "age").Get(&users)
 // SELECT `name`,`age` FROM `users`;
 ```
 
-### Group By & Having
+### Guruhlash & Having
 
 ```go
 type Result struct {
@@ -621,7 +621,7 @@ facades.Orm().Query().Model(&models.User{}).Select("name", "sum(age) as total").
 // SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "tom";
 ```
 
-### Join
+### Qo'shiladi
 
 ```go
 type Result struct {
@@ -641,18 +641,18 @@ user := models.User{Name: "tom", Age: 18}
 err := facades.Orm().Query().Create(&user)
 // INSERT INTO users (name, age, created_at, updated_at) VALUES ("tom", 18, "2022-09-27 22:00:00", "2022-09-27 22:00:00");
 
-// Not trigger model events
+// Model hodisalarini ishga tushirmaydi
 err := facades.Orm().Query().Table("users").Create(map[string]any{
   "name": "Goravel",
 })
 
-// Trigger model events
+// Model hodisalarini ishga tushiradi
 err := facades.Orm().Query().Model(&models.User{}).Create(map[string]any{
   "name": "Goravel",
 })
 ```
 
-### Multiple create
+### Ko'p yaratish
 
 ```go
 users := []models.User{{Name: "tom", Age: 18}, {Name: "tim", Age: 19}}
@@ -669,11 +669,11 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 })
 ```
 
-> `created_at` and `updated_at` will be filled automatically.
+> `created_at` va `updated_at` avtomatik ravishda to'ldiriladi.
 
-### Cursor
+### Kursor
 
-Can be used to significantly reduce your application's memory consumption when iterating through tens of thousands of Eloquent model records. Note, the `Cursor` method can be used with `With` at the same time, please use [Lazy Eager Loading](./relationships.md#lazy-eager-loading) to load relationship in the `for` logic.
+O'n minglab Eloquent model yozuvlari orqali takrorlashda ilovangizning xotira sarfini sezilarli darajada kamaytirish uchun ishlatilishi mumkin. E'tibor bering, `Cursor` metodi `With` bilan bir vaqtda ishlatilishi mumkin, iltimos, `for` mantiqida bog'lanishni yuklash uchun [Lazy Eager Loading](./relationships.md#lazy-eager-loading) dan foydalaning.
 
 ```go
 cursor, err := facades.Orm().Query().Model(models.User{}).Cursor()
@@ -689,9 +689,9 @@ for row := range cursor {
 }
 ```
 
-### Save Model
+### Modelni saqlash
 
-#### Update an existing model
+#### Mavjud modelni yangilash
 
 ```go
 var user models.User
@@ -703,7 +703,7 @@ facades.Orm().Query().Save(&user)
 // UPDATE `users` SET `created_at`='2023-09-14 16:03:29.454',`updated_at`='2023-09-18 21:05:59.896',`name`='tom',`age`=100,`avatar`='' WHERE `id` = 1;
 ```
 
-#### Update columns
+#### Ustunlarni yangilash
 
 ```go
 facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update("name", "hello")
@@ -714,9 +714,9 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 // UPDATE `users` SET `updated_at`='2023-09-18 21:07:06.489',`name`='hello',`age`=18 WHERE `name` = 'tom';
 ```
 
-> When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
+> `struct` bilan yangilashda, Orm faqat nolga teng bo'lmagan maydonlarni yangilaydi. Siz atributlarni yangilash uchun `map` dan foydalanishingiz yoki yangilash uchun maydonlarni belgilash uchun `Select` dan foydalanishingiz mumkin. E'tibor bering, `struct` faqat `Model` bo'lishi mumkin, agar siz `Model` bo'lmagan narsa bilan yangilamoqchi bo'lsangiz, `.Table("users")` dan foydalanishingiz kerak, ammo bu vaqtda `updated_at` maydoni avtomatik ravishda yangilanmaydi.
 
-#### Update JSON fields
+#### JSON maydonlarini yangilang
 
 ```go
 facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update("options->enabled", true)
@@ -729,9 +729,9 @@ facades.Orm().Query().Model(&models.User{}).Where("id", 1).Update(map[string]any
 })
 ```
 
-#### Update or create
+#### Yangilash yoki yaratish
 
-Query by `name`, if not exist, create by `name`, `avatar`, if exists, update `avatar` based on `name`:
+`name` bo'yicha so'rov bering, agar mavjud bo'lmasa, `name`, `avatar` bo'yicha yarating, agar mavjud bo'lsa, `name` asosida `avatar` ni yangilang:
 
 ```go
 facades.Orm().Query().UpdateOrCreate(&user, models.User{Name: "name"}, models.User{Avatar: "avatar"})
@@ -740,9 +740,9 @@ facades.Orm().Query().UpdateOrCreate(&user, models.User{Name: "name"}, models.Us
 // UPDATE `users` SET `name`='name',avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE users`.`deleted_at` IS NULL AND `id` = 1;
 ```
 
-### Delete
+### O‘chirish
 
-Delete by model, the number of rows affected by the statement is returned by the method:
+Model bo'yicha o'chirish, bayonot ta'sir qilgan qatorlar soni usul tomonidan qaytariladi:
 
 ```go
 var user models.User
@@ -755,14 +755,14 @@ res, err := facades.Orm().Query().Table("users").Where("id", 1).Delete()
 num := res.RowsAffected
 ```
 
-Multiple delete
+Ko'p o'chirish
 
 ```go
 facades.Orm().Query().Where("name", "tom").Delete(&models.User{})
 // DELETE FROM `users` WHERE name = 'tom';
 ```
 
-Want to force delete a soft-delete data.
+Yumshoq o'chirilgan ma'lumotni majburan o'chirishni xohlaysiz.
 
 ```go
 facades.Orm().Query().Where("name", "tom").ForceDelete(&models.User{})
@@ -770,61 +770,61 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").ForceDelete()
 facades.Orm().Query().Table("users").Where("name", "tom").ForceDelete()
 ```
 
-You can delete records with model associations via `Select`:
+Model bog'lanishlari bilan yozuvlarni `Select` orqali o'chirishingiz mumkin:
 
 ```go
-// Delete Account of user when deleting user
+// Foydalanuvchini o'chirishda uning Account'ini o'chirish
 facades.Orm().Query().Select("Account").Delete(&user)
 
-// Delete Orders and CreditCards of user when deleting user
+// Foydalanuvchini o'chirishda uning Orders va CreditCards'larini o'chirish
 facades.Orm().Query().Select("Orders", "CreditCards").Delete(&user)
 
-// Delete all child associations of user when deleting user
+// Foydalanuvchini o'chirishda uning barcha farzand bog'lanishlarini o'chirish
 facades.Orm().Query().Select(orm.Associations).Delete(&user)
 
-// Delete all Account of users when deleting users
+// Foydalanuvchilarni o'chirishda ularning barcha Account'larini o'chirish
 facades.Orm().Query().Select("Account").Delete(&users)
 ```
 
-Note: The associations will be deleted only if the primary key of the record is not empty, and Orm uses these primary keys as conditions to delete associated records:
+Eslatma: Bog'lanishlar faqat yozuvning birlamchi kaliti bo'sh bo'lmaganda o'chiriladi va Orm bog'langan yozuvlarni o'chirish shartlari sifatida ushbu birlamchi kalitlardan foydalanadi:
 
 ```go
-// Delete user that name='goravel', but don't delete account of user
+// name='goravel' bo'lgan foydalanuvchini o'chirish, lekin foydalanuvchining hisobini o'chirmaslik
 facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.User{})
 
-// Delete user that name='goravel' and id = 1, and delete account of user
+// name='goravel' va id = 1 bo'lgan foydalanuvchini o'chirish va foydalanuvchining hisobini o'chirish
 facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.User{ID: 1})
 
-// Delete user that id = 1 and delete account of that user
+// id = 1 bo'lgan foydalanuvchini o'chirish va uning hisobini o'chirish
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
 
-If execute batch delete without any conditions, ORM doesn't do that and returns an error. So you have to add some conditions, or use native SQL.
+Agar hech qanday shartlarsiz to'plam o'chirish amalga oshirilsa, ORM buni qilmaydi va xatoni qaytaradi. Shuning uchun siz ba'zi shartlarni qo'shishingiz yoki mahalliy SQL dan foydalanishingiz kerak.
 
-### Query Soft Delete Data
+### Yumshoq o'chirilgan ma'lumotlarni so'rov bering
 
 ```go
 var user models.User
 facades.Orm().Query().WithTrashed().First(&user)
 ```
 
-### Filter Repetition
+### Takrorlanishni filtrlash
 
 ```go
 var users []models.User
 facades.Orm().Query().Distinct("name").Find(&users)
 ```
 
-### Get Driver
+### Haydovchini olish
 
 ```go
 driver := facades.Orm().Query().Driver()
 
-// Judge driver
+// Haydovchini aniqlash
 if driver == orm.DriverMysql {}
 ```
 
-### Execute Native SQL
+### Mahalliy SQL ni bajarish
 
 ```go
 type Result struct {
@@ -837,9 +837,9 @@ var result Result
 facades.Orm().Query().Raw("SELECT id, name, age FROM users WHERE name = ?", "tom").Scan(&result)
 ```
 
-### Execute Native Update SQL
+### Mahalliy Update SQL ni bajarish
 
-The number of rows affected by the statement is returned by the method:
+Bayanot ta'sir qilgan qatorlar soni usul tomonidan qaytariladi:
 
 ```go
 res, err := facades.Orm().Query().Exec("DROP TABLE users")
@@ -848,13 +848,13 @@ res, err := facades.Orm().Query().Exec("DROP TABLE users")
 num := res.RowsAffected
 ```
 
-### Exists
+### Mavjud
 
 ```go
 exists, err := facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists()
 ```
 
-### Restore
+### Tiklash
 
 ```go
 facades.Orm().Query().WithTrashed().Restore(&models.User{ID: 1})
@@ -862,9 +862,9 @@ facades.Orm().Query().Model(&models.User{ID: 1}).WithTrashed().Restore()
 // UPDATE `users` SET `deleted_at`=NULL WHERE `id` = 1;
 ```
 
-### Transaction
+### Tranzaksiya
 
-You can execute a transaction by `Transaction` function.
+Siz `Transaction` funksiyasi orqali tranzaksiyani bajarishingiz mumkin.
 
 ```go
 import (
@@ -883,7 +883,7 @@ return facades.Orm().Transaction(func(tx orm.Query) error {
 })
 ```
 
-You can also manually control the flow of the transaction yourself:
+Shuningdek, siz transaksiya oqimini o'zingiz qo'lda boshqarishingiz mumkin:
 
 ```go
 tx, err := facades.Orm().Query().BeginTransaction()
@@ -895,9 +895,9 @@ if err := tx.Create(&user); err != nil {
 }
 ```
 
-### Scopes
+### Skoplar
 
-Allows you to specify commonly used queries that can be referenced when method are called.
+Metodlar chaqirilganda murojaat qilish mumkin bo'lgan tez-tez ishlatiladigan so'rovlarni belgilash imkonini beradi.
 
 ```go
 func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
@@ -910,13 +910,13 @@ func Paginator(page string, limit string) func(methods orm.Query) orm.Query {
   }
 }
 
-// scopes.Paginator is a custom function: func(ormcontract.Query) ormcontract.Query
+// scopes.Paginator - maxsus funksiya: func(ormcontract.Query) ormcontract.Query
 facades.Orm().Query().Scopes(scopes.Paginator(page, limit)).Find(&entries)
 ```
 
-### Raw Expressions
+### Xom ifodalar
 
-You can use the `db.Raw` method to update fields:
+Maydonlarni yangilash uchun `db.Raw` usulidan foydalanishingiz mumkin:
 
 ```go
 import "github.com/goravel/framework/database/db"
@@ -925,25 +925,25 @@ facades.Orm().Query().Model(&user).Update("age", db.Raw("age - ?", 1))
 // UPDATE `users` SET `age`=age - 1,`updated_at`='2023-09-14 14:03:20.899' WHERE `users`.`deleted_at` IS NULL AND `id` = 1;
 ```
 
-### Pessimistic Locking
+### Pessimistik blokirovka
 
-The query builder also includes a few functions to help you achieve "pessimistic locking" when executing your `select` statements.
+So'rov quruvchisi, shuningdek, sizning `select` bayonotlaringizni bajarishda "pessimistik blokirovka"ga erishishga yordam beradigan bir nechta funksiyalarni o'z ichiga oladi.
 
-To execute a statement with a "shared lock", you may call the `SharedLock` method. A shared lock prevents the selected rows from being modified until your transaction is committed:
-
-```go
-var users []models.User
-facades.Orm().Query().Where("votes > ?", 100).SharedLock().Get(&users)
-```
-
-Alternatively, you may use the `LockForUpdate` method. A "for update" lock prevents the selected records from being modified or from being selected with another shared lock:
+"Umumiy qulf" bilan bayonotni bajarish uchun siz `SharedLock` usulini chaqirishingiz mumkin. "Umumiy qulf" tanlangan qatorlar transaksiya tasdiqlanmaguncha o'zgartirilishiga yo'l qo'ymaydi:
 
 ```go
 var users []models.User
-facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
+facades.Orm().Query().Where("ovozlar > ?", 100).SharedLock().Get(&users)
 ```
 
-### Avarage
+Shuningdek, siz `LockForUpdate` usulidan foydalanishingiz mumkin. "Yangilash uchun qulf" tanlangan yozuvlarni o'zgartirish yoki boshqa umumiy qulf bilan tanlashdan himoya qiladi:
+
+```go
+var users []models.User
+facades.Orm().Query().Where("ovozlar > ?", 100).LockForUpdate().Get(&users)
+```
+
+### Oʻrtacha
 
 ```go
 var sum int
@@ -959,15 +959,15 @@ var min int
 err := facades.Orm().Query().Model(models.User{}).Min("age", &min)
 ```
 
-## Events
+## Tadbirlar
 
-Orm models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `Retrieved`, `Creating`, `Created`, `Updating`, `Updated`, `Saving`, `Saved`, `Deleting`, `Deleted`, `ForceDeleting`, `ForceDeleted`, `Restored`, `Restoring`.
+Orm modellari bir nechta tadbirlarni ishga tushiradi, bu sizga model hayot tsiklining quyidagi momentlariga ulanish imkonini beradi: `Retrieved`, `Creating`, `Created`, `Updating`, `Updated`, `Saving`, `Saved`, `Deleting`, `Deleted`, `ForceDeleting`, `ForceDeleted`, `Restored`, `Restoring`.
 
-The `Retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `Creating` and `Created` events will dispatch. The `Updating` / `Updated` events will dispatch when an existing model is modified and the `Save` method is called. The `Saving` / `Saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
+`Retrieved` tadbiri mavjud model ma'lumotlar bazasidan olinganda ishga tushadi. Yangi model birinchi marta saqlanganda, `Creating` va `Created` tadbirlari ishga tushadi. Mavjud model o'zgartirilganda va `Save` usuli chaqirilganda `Updating` / `Updated` tadbirlari ishga tushadi. Model yaratilganda yoki yangilanganda - hatto model atributlari o'zgartirilmagan bo'lsa ham, `Saving` / `Saved` tadbirlari ishga tushadi. `-ing` bilan tugaydigan tadbir nomlari modelga o'zgartirishlar kiritilishidan oldin, `-ed` bilan tugaydigan tadbirlar esa modelga o'zgartirishlar kiritilgandan keyin ishga tushadi.
 
-Note: All events will only be triggered when operating a model. For example, if you want to trigger the `Updating` and `Updated` events when calling the `Update` method, you need to pass the existing model to the `Model` method: `facades.Orm().Query().Model(&user).Update("name", "Goravel")`.
+Eslatma: Barcha tadbirlar faqat model ustida amal bajarilganda ishga tushadi. Masalan, `Update` usulini chaqirganda `Updating` va `Updated` tadbirlarini ishga tushirishni xohlasangiz, mavjud modelni `Model` usuliga uzatishingiz kerak: `facades.Orm().Query().Model(&user).Update("name", "Goravel")`.
 
-To start listening to model events, define a `DispatchesEvents` method on your model. This property maps various points of the model's lifecycle to your own event classes.
+Model tadbirlarini tinglashni boshlash uchun o'z modelingizda `DispatchesEvents` usulini aniqlang. Bu xususiyat model hayot tsiklining turli nuqtalarini o'z tadbir klasslaringizga bog'laydi.
 
 ```go
 import (
@@ -1025,20 +1025,20 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 }
 ```
 
-> Note: Just register the events you need. Model events are not dispatched when doing batch operations through Orm.
+> Eslatma: Faqat sizga kerak bo'lgan tadbirlarni ro'yxatdan o'tkazing. Orm orqali partiyali operatsiyalar bajarilayotganda model tadbirlari ishga tushirilmaydi.
 
-### Observers
+### Kuzatuvchilar
 
-#### Defining Observers
+#### Kuzatuvchilarni aniqlash
 
-If you are listening to many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names that reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
+Agar siz berilgan modelda ko'plab tadbirlarni tinglamoqchi bo'lsangiz, barcha tinglovchilaringizni bitta klassga guruhlash uchun kuzatuvchilardan foydalanishingiz mumkin. Kuzatuvchi klasslarida tinglamoqchi bo'lgan Eloquent tadbirlarini aks ettiruvchi usul nomlari mavjud. Bu usullarning har biri ta'sirlangan modelni yagona argument sifatida qabul qiladi. Yangi kuzatuvchi klassini yaratishning eng oson yo'li `make:observer` Artisan buyrug'idir:
 
 ```shell
 ./artisan make:observer UserObserver
 ./artisan make:observer user/UserObserver
 ```
 
-This command will place the new observer in your `app/observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
+Bu buyruq yangi kuzatuvchini sizning `app/observers` katalogingizga joylashtiradi. Agar bu katalog mavjud bo'lmasa, Artisan uni siz uchun yaratadi. Yangi kuzatuvchingiz quyidagicha ko'rinadi:
 
 ```go
 package observers
@@ -1068,9 +1068,9 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 }
 ```
 
-The template observer only contains some events, you can add other events according to your needs.
+Namuna kuzatuvchi faqat ba'zi tadbirlarni o'z ichiga oladi, siz ehtiyojlaringizga qarab boshqa tadbirlarni qo'shishingiz mumkin.
 
-To register an observer, you need to call the `Observe` method on the model you wish to observe. You can register observers in the `bootstrap/app.go::WithCallback` function:
+Kuzatuvchini ro'yxatdan o'tkazish uchun kuzatmoqchi bo'lgan modelingizda `Observe` usulini chaqirishingiz kerak. Siz kuzatuvchilarni `bootstrap/app.go::WithCallback` funksiyasida ro'yxatdan o'tkazishingiz mumkin:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -1083,34 +1083,34 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-> Note: If you set `DispatchesEvents` and `Observer` at the same time, only `DispatchesEvents` will be applied.
+> Eslatma: Agar siz `DispatchesEvents` va `Observer` ni bir vaqtning o'zida o'rnatsangiz, faqat `DispatchesEvents` qo'llaniladi.
 
-#### Parameter in Observer
+#### Kuzatuvchidagi parametr
 
-The `event` parameter will be passed to all observers:
+`event` parametri barcha kuzatuvchilarga uzatiladi:
 
-| Method       | Action                                                                                                     |
-| ------------ | ---------------------------------------------------------------------------------------------------------- |
-| Context      | Get context that passed by `facades.Orm().WithContext()`                                                   |
-| GetAttribute | Get the modified value, if not modified, get the original value, if there is no original value, return nil |
-| GetOriginal  | Get the original value, if there is no original value, return nil                                          |
-| IsDirty      | Determine whether the field is modified                                                                    |
-| IsClean      | IsDirty reverse                                                                                            |
-| Query        | Get a new Query, which can be used with transaction                                                        |
-| SetAttribute | Set a new value for a field                                                                                |
+| Usul         | Harakat                                                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| Kontekst     | `facades.Orm().WithContext()` orqali uzatilgan kontekstni olish                                                          |
+| GetAttribute | O'zgartirilgan qiymatni olish, agar o'zgartirilmagan bo'lsa, asl qiymatni olish, agar asl qiymat bo'lmasa, nil qaytarish |
+| GetOriginal  | Asl qiymatni olish, agar asl qiymat bo'lmasa, nil qaytarish                                                              |
+| IsDirty      | Maydon o'zgartirilganligini aniqlash                                                                                     |
+| IsClean      | IsDirty ning teskarisi                                                                                                   |
+| Query        | Transaksiya bilan ishlatish mumkin bo'lgan yangi Query olish                                                             |
+| SetAttribute | Maydon uchun yangi qiymat o'rnatish                                                                                      |
 
-### Muting Events
+### Tadbirlarni o'chirish
 
-You may occasionally need to temporarily "mute" all events fired by a model. You may achieve this using the `WithoutEvents` method:
+Ba'zan siz model tomonidan ishga tushirilgan barcha tadbirlarni vaqtincha "o'chirish" kerak bo'lishi mumkin. Buni `WithoutEvents` usuli yordamida amalga oshirishingiz mumkin:
 
 ```go
 var user models.User
 facades.Orm().Query().WithoutEvents().Find(&user, 1)
 ```
 
-#### Saving A Single Model Without Events
+#### Tadbirlarsiz bitta modelni saqlash
 
-Sometimes you may wish to "save" a given model without dispatching any events. You may accomplish this with the `SaveQuietly` method:
+Ba'zan siz berilgan modelni hech qanday tadbirlarni ishga tushirmasdan "saqlash"ni xohlashingiz mumkin. Buni `SaveQuietly` usuli bilan amalga oshirishingiz mumkin:
 
 ```go
 var user models.User
