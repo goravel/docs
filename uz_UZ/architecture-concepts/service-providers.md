@@ -4,7 +4,7 @@
 
 ## Kirish
 
-Yadro ishga tushirish operatsiyasida eng muhim narsa `ServiceProvider`ni yuklashdir. Ilovaning barcha `ServiceProvider`lari `bootstrap/providers.go` faylida sozlanadi.
+The most important thing in the kernel boot operation is to load the `ServiceProvider`. Ilovaning barcha `ServiceProvider`lari `bootstrap/providers.go` faylida sozlanadi.
 
 Avvalo, yadro barcha xizmat ko'rsatuvchilarning `Register` metodini chaqiradi. Barcha xizmat ko'rsatuvchilar ro'yxatdan o'tkazilgandan so'ng, yadro barcha `ServiceProvider`larning `Boot` metodini yana chaqiradi.
 
