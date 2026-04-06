@@ -1,16 +1,16 @@
-# Task Scheduling
+# Vazifa rejalashtirish
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-In the past, you might need to create a cron configuration entry for each task that needed scheduling on your server. However, this approach can quickly become a pain as your task schedule is not in source control, and you have to SSH into your server to view or add/edit cron entries.
+Avvalroq, serveringizda rejalashtirilishi kerak bo‘lgan har bir vazifa uchun cron konfiguratsiyasi yozuvini yaratishingiz kerak edi. Biroq, bu yondashuv tezda muammoga aylanadi, chunki vazifa jadvalingiz manba nazoratida emas va cron yozuvlarini ko‘rish yoki qo‘shish/o‘zgartirish uchun serveringizga SSH orqali ulanishingiz kerak.
 
-Goravel's command scheduler offers a fresh approach to managing scheduled tasks on your server. With the scheduler, you can easily and clearly define your command schedule within your Goravel application. Using the scheduler, you only need to create a single cron entry on your server.
+Goravelning buyruq rejalashtiruvchisi serveringizda rejalashtirilgan vazifalarni boshqarishning yangi yondashuvini taklif etadi. Rejalashtiruvchi yordamida Goravel ilovangiz ichida o‘z buyruq jadvalingizni osongina va aniq belgilashingiz mumkin. Rejalashtiruvchidan foydalangan holda, serveringizda faqat bitta cron yozuvini yaratishingiz kifoya.
 
-## Defining Schedules
+## Jadvallarni belgilash
 
-To schedule tasks for your application, you can define them in the `WithSchedule` function in the `bootstrap/app.go` file. Let's consider an example to understand this better. In this case, we want to schedule a closure that will run every day at midnight. Inside this closure, we will execute a database query to clear a table:
+Ilovingiz uchun vazifalarni rejalashtirish uchun ularni `bootstrap/app.go` faylidagi `WithSchedule` funksiyasida aniqlashingiz mumkin. Buni yaxshiroq tushunish uchun bir misolni ko‘rib chiqaylik. Bu holda, har kuni yarim tunda ishlaydigan yopilishni rejalashtirmoqchimiz. Ushbu yopilish ichida jadvalni tozalash uchun maʼlumotlar bazasi so‘rovini bajaramiz:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -27,91 +27,91 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-### Scheduling Artisan Commands
+### Artisan buyruqlarini rejalashtirish
 
-In addition to scheduling closures, you can also schedule [Artisan commands](./artisan-console.md). For example, you may use the `Command` method to schedule an Artisan command using either the command's name or class.
+Yopilishlarni rejalashtirishdan tashqari, siz [Artisan buyruqlarini](./artisan-console.md) ham rejalashtirishingiz mumkin. Misol uchun, Artisan buyrug‘ini uning nomi yoki sinfi yordamida rejalashtirish uchun `Command` usulidan foydalanishingiz mumkin.
 
 ```go
 facades.Schedule().Command("send:emails name").Daily(),
 ```
 
-### Logging Level
+### Jurnal darajasi
 
-When `app.debug` is `true`, the console will print all logs. Otherwise, only `error` level logs will be printed.
+`app.debug` `true` bo‘lganda, konsol barcha jurnallarni chop etadi. Aks holda, faqat `error` darajasidagi jurnallar chop etiladi.
 
-### Schedule Frequency Options
+### Jadval chastotasi variantlari
 
-We've already seen a few examples of how you may configure a task to run at specified intervals. However, there are many more task schedule frequencies avaibable to assign to tasks:
+Biz vazifani belgilangan oraliqlarda qanday sozlashingiz mumkinligining bir nechta misollarini ko‘rdik. Biroq, vazifalarga tayinlash uchun mavjud bo‘lgan yana ko‘plab vazifa jadvali chastotalari mavjud:
 
-| 方法                       | 描述                                                  |
-| ------------------------ | --------------------------------------------------- |
-| `.Cron("* * * * *")`     | Custom Crone schedule (minutes)  |
-| `.Cron("* * * * * *")`   | Custom Crone schedule (seconds)  |
-| `.EverySecond()`         | Run the task every second                           |
-| `.EveryTwoSeconds()`     | Run the task every two seconds                      |
-| `.EveryFiveSeconds()`    | Run the task every five seconds                     |
-| `.EveryTenSeconds()`     | Run the task every ten seconds                      |
-| `.EveryFifteenSeconds()` | Run the task every fifteen seconds                  |
-| `.EveryTwentySeconds()`  | Run the task every twenty seconds                   |
-| `.EveryThirtySeconds()`  | Run the task every thirty seconds                   |
-| `.EveryMinute()`         | Run the task every minute                           |
-| `.EveryTwoMinutes()`     | Run the task every two minutes                      |
-| `.EveryThreeMinutes()`   | Run the task every three minutes                    |
-| `.EveryFourMinutes()`    | Run the task every four minutes                     |
-| `.EveryFiveMinutes()`    | Run the task every five minutes                     |
-| `.EveryTenMinutes()`     | Run the task every ten minutes                      |
-| `.EveryFifteenMinutes()` | Run the task every fifteen minutes                  |
-| `.EveryThirtyMinutes()`  | Run the task every thirty minutes                   |
-| `.Hourly()`              | Run the task every hour                             |
-| `.HourlyAt(17)`          | Run the task every hour at 17 minutes past the hour |
-| `.EveryTwoHours()`       | Run the task every two hours                        |
-| `.EveryThreeHours()`     | Run the task every three hours                      |
-| `.EveryFourHours()`      | Run the task every four hours                       |
-| `.EverySixHours()`       | Run the task every six hours                        |
-| `.Daily()`               | Run the task every day at midnight                  |
-| `.DailyAt("13:00")`      | Run the task every day at 13:00     |
-| `.Days(1, 3, 5)`         | Run the task every Monday, Wednesday, and Friday    |
-| `.Weekdays()`            | Run the task every Monday to Friday                 |
-| `.Weekends()`            | Run the task every Saturday and Sunday              |
-| `.Mondays()`             | Run the task every Monday                           |
-| `.Tuesdays()`            | Run the task every Tuesday                          |
-| `.Wednesdays()`          | Run the task every Wednesday                        |
-| `.Thursdays()`           | Run the task every Thursday                         |
-| `.Fridays()`             | Run the task every Friday                           |
-| `.Saturdays()`           | Run the task every Saturday                         |
-| `.Sundays()`             | Run the task every Sunday                           |
-| `.Weekly()`              | Run the task every week                             |
-| `.Monthly()`             | Run the task every month                            |
-| `.Quarterly()`           | Run the task every quarter                          |
-| `.Yearly()`              | Run the task every year                             |
+| Usul                     | Tavsif                                                            |
+| ------------------------ | ----------------------------------------------------------------- |
+| `.Cron("* * * * *")`     | Maxsus Cron jadvali (daqiqalar)                |
+| `.Cron("* * * * * *")`   | Maxsus Cron jadvali (soniyalar)                |
+| `.EverySecond()`         | Vazifani har soniyada ishga tushirish                             |
+| `.EveryTwoSeconds()`     | Vazifani har ikki soniyada ishga tushirish                        |
+| `.EveryFiveSeconds()`    | Vazifani har besh soniyada ishga tushirish                        |
+| `.EveryTenSeconds()`     | Vazifani har o‘n soniyada ishga tushirish                         |
+| `.EveryFifteenSeconds()` | Vazifani har o‘n besh soniyada ishga tushirish                    |
+| `.EveryTwentySeconds()`  | Vazifani har yigirma soniyada ishga tushirish                     |
+| `.EveryThirtySeconds()`  | Vazifani har o‘ttiz soniyada ishga tushirish                      |
+| `.EveryMinute()`         | Vazifani har daqiqada ishga tushirish                             |
+| `.EveryTwoMinutes()`     | Vazifani har ikki daqiqada ishga tushirish                        |
+| `.EveryThreeMinutes()`   | Vazifani har uch daqiqada ishga tushirish                         |
+| `.EveryFourMinutes()`    | Vazifani har to‘rt daqiqada ishga tushirish                       |
+| `.EveryFiveMinutes()`    | Vazifani har besh daqiqada ishga tushirish                        |
+| `.EveryTenMinutes()`     | Vazifani har o‘n daqiqada ishga tushirish                         |
+| `.EveryFifteenMinutes()` | Vazifani har o‘n besh daqiqada ishga tushirish                    |
+| `.EveryThirtyMinutes()`  | Vazifani har o‘ttiz daqiqada ishga tushirish                      |
+| `.Hourly()`              | Vazifani har soatda ishga tushirish                               |
+| `.HourlyAt(17)`          | Vazifani har soatda, soatdan 17 daqiqa o‘tgach ishga tushirish    |
+| `.EveryTwoHours()`       | Vazifani har ikki soatda ishga tushirish                          |
+| `.EveryThreeHours()`     | Vazifani har uch soatda ishga tushirish                           |
+| `.EveryFourHours()`      | Vazifani har to‘rt soatda ishga tushirish                         |
+| `.EverySixHours()`       | Vazifani har olti soatda ishga tushirish                          |
+| `.Daily()`               | Vazifani har kuni yarim tunda ishga tushirish                     |
+| `.DailyAt("13:00")`      | Vazifani har kuni soat 13:00 da ishga tushirish   |
+| `.Days(1, 3, 5)`         | Vazifani har Dushanba, Chorshanba va Juma kunlari ishga tushirish |
+| `.Weekdays()`            | Vazifani har Dushanbadan Jumagacha ishga tushirish                |
+| `.Weekends()`            | Vazifani har Shanba va Yakshanba kunlari ishga tushirish          |
+| `.Mondays()`             | Vazifani har Dushanba kuni ishga tushirish                        |
+| `.Tuesdays()`            | Vazifani har Seshanba kuni ishga tushirish                        |
+| `.Wednesdays()`          | Vazifani har Chorshanba kuni ishga tushirish                      |
+| `.Thursdays()`           | Vazifani har Payshanba kuni ishga tushirish                       |
+| `.Fridays()`             | Vazifani har Juma kuni ishga tushirish                            |
+| `.Saturdays()`           | Vazifani har shanba kuni bajarish                                 |
+| `.Sundays()`             | Vazifani har yakshanba kuni bajarish                              |
+| `.Weekly()`              | Vazifani har hafta bajarish                                       |
+| `.Monthly()`             | Vazifani har oy bajarish                                          |
+| `.Quarterly()`           | Vazifani har chorakda bajarish                                    |
+| `.Yearly()`              | Vazifani har yil bajarish                                         |
 
-### Preventing Task Overlaps
+### Vazifalarning Ustma-ust Kelishining Oldini Olish
 
-By default, scheduled tasks will continue to run even if a previous instance is still running. To prevent this, use the following methods:
+Sukut bo‘yicha, rejalashtirilgan vazifalar oldingi nusxasi hali ishlayotgan bo‘lsa ham bajarilishda davom etadi. Buning oldini olish uchun quyidagi usullardan foydalaning:
 
-| 方法                       | 描述                     |
-| ------------------------ | ---------------------- |
-| `.SkipIfStillRunning()`  | Skip if still running  |
-| `.DelayIfStillRunning()` | Delay if still running |
+| Usul                     | Tavsif                                          |
+| ------------------------ | ----------------------------------------------- |
+| `.SkipIfStillRunning()`  | Agar hali ishlayotgan bo‘lsa, o‘tkazib yuborish |
+| `.DelayIfStillRunning()` | Agar hali ishlayotgan bo‘lsa, kechiktirish      |
 
 ```go
 facades.Schedule().Command("send:emails name").EveryMinute().SkipIfStillRunning()
 facades.Schedule().Command("send:emails name").EveryMinute().DelayIfStillRunning()
 ```
 
-### Running Tasks On One Server
+### Vazifalarni Bitta Serverda Bajarish
 
-> To utilize this feature, your application must be using the memcached, dynamodb, or redis cache driver as the default cache driver. In addition, all servers must be communicating with the same central cache server.
+> Ushbu xususiyatdan foydalanish uchun ilovangiz sukut bo‘yicha kesha haydovchisi sifatida memcached, dynamodb yoki redis kesha haydovchisidan foydalanishi kerak. Bundan tashqari, barcha serverlar bir markaziy kesha serveri bilan aloqa qilishi kerak.
 
-If your application's scheduler runs on multiple servers, you can ensure that a scheduled job is executed on only one of them. For example, let's say you have a scheduled task that generates a new report every Friday night. If the task scheduler runs on three worker servers, the scheduled task will run on all three servers and create the report three times. This is not ideal!
+Agar ilovangizning rejalashtiruvchisi bir nechta serverlarda ishlayotgan bo‘lsa, rejalashtirilgan ish faqat bitta serverda bajarilishini taʼminlashingiz mumkin. Misol uchun, har juma kechasi yangi hisobot yaratadigan rejalashtirilgan vazifangiz bor deb faraz qilaylik. Agar vazifa rejalashtiruvchisi uchta ishchi serverda ishlayotgan bo‘lsa, rejalashtirilgan vazifa barcha uchta serverda ishlaydi va hisobotni uch marta yaratadi. Bu maqbul emas!
 
-To prevent this, use the `OnOneServer` method when defining the scheduled task, which will make sure that the task runs on only one server. The first server to receive the task will secure an atomic lock on the job, preventing other servers from executing the same task at the same time:
+Buning oldini olish uchun rejalashtirilgan vazifani aniqlashda `OnOneServer` usulidan foydalaning, bu vazifaning faqat bitta serverda ishlashini taʼminlaydi. Vazifani qabul qilgan birinchi server ish bo‘yicha atomik qulfni oladi, bu boshqa serverlarning bir vaqtning o‘zida bir xil vazifani bajarishiga to‘sqinlik qiladi:
 
 ```go
 facades.Schedule().Command("report:generate").Daily().OnOneServer()
 ```
 
-Scheduled closures must be assigned a name if they are intended to be run on one server:
+Agar yopilishlar bitta serverda bajarilishi kerak bo‘lsa, ularga nom berilishi kerak:
 
 ```go
 facades.Schedule().Call(func() {
@@ -119,17 +119,17 @@ facades.Schedule().Call(func() {
 }).Daily().OnOneServer().Name("goravel")
 ```
 
-## Running The Scheduler
+## Rejalashtiruvchini Ishga Tushirish
 
-The scheduler will be run automatically when calling `Start()` in the `main.go` file. You can also run tasks manually :
+Rejalashtiruvchi `main.go` faylida `Start()` chaqirilganda avtomatik ravishda ishga tushiriladi. Shuningdek, vazifalarni qo‘lda ishga tushirishingiz mumkin:
 
 ```shell
 ./artisan schedule:run
 ```
 
-## View All Tasks
+## Barcha Vazifalarni Ko‘rish
 
-You can use the `schedule:list` command to view all tasks:
+Barcha vazifalarni ko‘rish uchun `schedule:list` buyrug‘idan foydalanishingiz mumkin:
 
 ```shell
 ./artisan schedule:list
