@@ -1,24 +1,24 @@
-# Configuration
+# Konfiguratsiya
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-All configuration files of the Goravel framework are stored in the `config` directory. You can view specific instructions and configure them flexibly according to project needs.
+Goravel freymvorkining barcha konfiguratsiya fayllari `config` papkasida saqlanadi. Siz aniq ko'rsatmalarni ko'rib chiqishingiz va loyiha ehtiyojlariga mos ravishda ularni moslashuvchan sozlashingiz mumkin.
 
-## Environment Configuration
+## Muhit konfiguratsiyasi
 
-Running applications in different environments usually requires different configurations. For example, you may want to turn on the Debug mode locally but don't need it in the production environment.
+Ilovalarni turli muhitlarda ishga tushirish odatda turli konfiguratsiyalarni talab qiladi. Misol uchun, siz mahalliy ravishda Debug rejimini yoqishni xohlashingiz mumkin, lekin ishlab chiqarish muhitida bunga ehtiyoj yo'q.
 
-Therefore, the framework provides the `.env.example` file in the root directory. You need to copy this file, rename it to `.env` before you start development, and modify the configuration items in the `.env` file according to your project needs.
+Shuning uchun, freymvork ildiz papkasida `.env.example` faylini taqdim etadi. Siz ishlab chiqishni boshlashdan oldin ushbu faylni nusxalashingiz, uni `.env` deb nomini o'zgartirishingiz va `.env` faylidagi konfiguratsiya bandlarini loyiha ehtiyojlariga mos ravishda o'zgartirishingiz kerak.
 
-Note that the `.env` file should not be added to version control, because when multiple people collaborate, different developers may use different configurations, and different deployment environment configurations are different.
+Diqqat qiling, `.env` fayli versiyalarni nazorat qilishga qo'shilmasligi kerak, chunki bir nechta odamlar hamkorlik qilganda, turli dasturchilar turli konfiguratsiyalardan foydalanishlari mumkin va turli joylashtirish muhitlari konfiguratsiyalari har xil bo'ladi.
 
-In addition, if an intruder gains access to your code repository, there will be a risk of exposing sensitive configuration. If you want to add a new configuration item, you can add it to the `.env.example` file to synchronize the configuration of all developers.
+Bundan tashqari, agar tashqi shaxs sizning kod omboringizga kirish huquqini olgan bo'lsa, sezuvchi konfiguratsiyani oshkor qilish xavfi mavjud bo'ladi. Agar siz yangi konfiguratsiya bandini qo'shmoqchi bo'lsangiz, uni `.env.example` fayliga qo'shishingiz mumkin, shunda barcha dasturchilarning konfiguratsiyasi sinxronlanadi.
 
-### Register Configuration
+### Konfiguratsiyani ro'yxatdan o'tkazish
 
-All configuration files will be registered via the `WithConfig` function in the `bootstrap/app.go` file. Given that it's a `init` function in the config file, you don't need to register each configuration file one by one. Just call the `WithConfig` function as follows:
+Barcha konfiguratsiya fayllari `bootstrap/app.go` faylidagi `WithConfig` funksiyasi orqali ro'yxatdan o'tkaziladi. Konfiguratsiya faylidagi `init` funksiyasi ekanligini hisobga olgan holda, siz har bir konfiguratsiya faylini birma-bir ro'yxatdan o'tkazishingiz shart emas. Shunchaki `WithConfig` funksiyasini quyidagicha chaqiring:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -28,34 +28,34 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-## Retrieve Environment Configuration
+## Muhit konfiguratsiyasini olish
 
-Use the following method to obtain the configuration items in the `.env` file:
+`.env` faylidagi konfiguratsiya bandlarini olish uchun quyidagi usuldan foydalaning:
 
 ```go
-// The first parameter is the configuration key, and the second parameter is the default value
+// Birinchi parametr konfiguratsiya kaliti, ikkinchi parametr standart qiymat
 facades.Config().Env("APP_NAME", "goravel")
 ```
 
-## Access Configuration Values
+## Konfiguratsiya qiymatlariga kirish
 
-You can easily use the global `facades.Config()` function anywhere in the application to access the configuration values in the `config` directory. The access to the configuration value can use the "." syntax. You can also specify a default value, if the configuration option does not exist, the default value is returned:
+Siz ilovaning istalgan joyidan `config` papkasidagi konfiguratsiya qiymatlariga kirish uchun global `facades.Config()` funksiyasidan osongina foydalanishingiz mumkin. Konfiguratsiya qiymatiga kirish "." sintaksisidan foydalanishi mumkin. Shuningdek, siz standart qiymatni belgilashingiz mumkin, agar konfiguratsiya opsiyasi mavjud bo'lmasa, standart qiymat qaytariladi:
 
 ```go
-// Get the configuration through assertion
+// Tasdiq orqali konfiguratsiyani olish
 facades.Config().Get("app.name", "goravel")
 
-// Get the configuration of the string type
+// String turidagi konfiguratsiyani olish
 facades.Config().GetString("app.name", "goravel")
 
-// Get the configuration of the int type
+// Int turidagi konfiguratsiyani olish
 facades.Config().GetInt("app.int", 1)
 
-// Get the configuration of the bool type
+// Bool turidagi konfiguratsiyani olish
 facades.Config().GetBool("app.debug", true)
 ```
 
-## Set Configuration
+## Konfiguratsiyani sozlash
 
 ```go
 facades.Config().Add("path", "value1")
@@ -63,9 +63,9 @@ facades.Config().Add("path.with.dot.case1", "value1")
 facades.Config().Add("path.with.dot", map[string]any{"case3": "value3"})
 ```
 
-## Get Project Information
+## Loyiha ma'lumotlarini olish
 
-You can use the `artisan about` command to view the framework version, configuration, etc.
+Siz freymvork versiyasi, konfiguratsiyasi va boshqalarni ko'rish uchun `artisan about` buyrug'idan foydalanishingiz mumkin.
 
 ```bash
 ./artisan about
