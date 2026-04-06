@@ -26,7 +26,7 @@ str.Of("Goravel")
 
 ### `After`
 
-The `After` method returns the portion of a string that appears after a specified value. If the value is an empty string or does not exist within the original string, the full string is returned.
+`After` usuli satrdagi belgilangan qiymatdan keyingi qismini qaytaradi. Agar qiymat bo'sh satr bo'lsa yoki asl satr ichida mavjud bo'lmasa, to'liq satr qaytariladi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -36,7 +36,7 @@ str.Of("Hello World!").After("Hello").String() // " World!"
 
 ### `AfterLast`
 
-The `AfterLast` method returns the portion of a string that appears after the last occurrence of a specified value. If the value is an empty string or does not exist within the original string, the full string is returned.
+`AfterLast` usuli satrdagi belgilangan qiymatning oxirgi paydo bo'lishidan keyingi qismini qaytaradi. Agar qiymat bo'sh satr bo'lsa yoki asl satr ichida mavjud bo'lmasa, to'liq satr qaytariladi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -46,7 +46,7 @@ str.Of("docs.goravel.dev").AfterLast(".").String() // "dev"
 
 ### `Append`
 
-The `Append` method appends the specified value to the end of the string.
+`Append` usuli belgilangan qiymatni satr oxiriga qo'shadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -56,7 +56,7 @@ str.Of("Bowen").Append(" Han").String() // "Bowen Han"
 
 ### `Basename`
 
-The `Basename` method returns the trailing name component of a path, optionally removing a specified suffix from the base name.
+`Basename` usuli yo'lning oxirgi nom komponentini qaytaradi, ixtiyoriy ravishda asosiy nomdan belgilangan qo'shimchani olib tashlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -68,7 +68,7 @@ str.Of("framework/support/str.go").Basename(".go").String() // "str"
 
 ### `Before`
 
-The `Before` method returns the portion of a string that appears before a specified value. If the value is an empty string or does not exist within the original string, the full string is returned.
+`Before` usuli satrdagi belgilangan qiymatdan oldingi qismini qaytaradi. Agar qiymat bo'sh satr bo'lsa yoki asl satr ichida mavjud bo'lmasa, to'liq satr qaytariladi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -78,7 +78,7 @@ str.Of("Hello World!").Before("World").String() // "Hello "
 
 ### `BeforeLast`
 
-The `BeforeLast` method returns the portion of a string that appears before the last occurrence of a specified value. If the value is an empty string or does not exist within the original string, the full string is returned.
+`BeforeLast` usuli satrdagi belgilangan qiymatning oxirgi paydo bo'lishidan oldingi qismini qaytaradi. Agar qiymat bo'sh satr bo'lsa yoki asl satr ichida mavjud bo'lmasa, to'liq satr qaytariladi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -88,7 +88,7 @@ str.Of("docs.goravel.dev").BeforeLast(".").String() // "docs.goravel"
 
 ### `Between`
 
-The `Between` method returns the portion of a string between two given values.
+`Between` usuli satrning berilgan ikki qiymat orasidagi qismini qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -98,7 +98,7 @@ str.Of("[Hello] World!").Between("[", "]").String() // "Hello"
 
 ### `BetweenFirst`
 
-The `BetweenFirst` method returns the portion of a string between the first occurrence of two given values.
+`BetweenFirst` usuli satrning berilgan ikki qiymatning birinchi paydo bo'lishi orasidagi qismini qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -108,7 +108,7 @@ str.Of("[Hello] [World]!").BetweenFirst("[", "]").String() // "Hello"
 
 ### `Camel`
 
-The `Camel` method converts the string to `camelCase`.
+`Camel` usuli satrni `camelCase` ga o'zgartiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -118,7 +118,7 @@ str.Of("hello_world").Camel().String() // "helloWorld"
 
 ### `CharAt`
 
-The `CharAt` method returns the character at the given index. If the index is out of bounds, an empty string will be returned.
+`CharAt` usuli berilgan indeksdagi belgini qaytaradi. Agar indeks chegaradan tashqarida bo'lsa, bo'sh satr qaytariladi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -128,7 +128,7 @@ str.Of("Goravel").CharAt(1) // "o"
 
 ### `ChopEnd`
 
-The `ChopEnd` method removes the given value(s) from the end of the string.
+`ChopEnd` usuli berilgan qiymat(lar)ni satr oxiridan olib tashlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -138,7 +138,7 @@ str.Of("https://goravel.com").ChopEnd(".dev", ".com").String() // https://gorave
 
 ### `ChopStart`
 
-The `ChopStart` method removes the given value(s) from the start of the string.
+`ChopStart` usuli berilgan qiymat(lar)ni satr boshidan olib tashlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -148,7 +148,7 @@ str.Of("https://goravel.dev").ChopStart("http://", "https://").String() // gorav
 
 ### `Contains`
 
-The `Contains` method determines if the given string contains the given value. The method is case-sensitive. If multiple values are provided, it will return `true` if the string contains any of the values.
+`Contains` usuli berilgan satr berilgan qiymatni o'z ichiga olganligini aniqlaydi. Usul registrga sezgir. Agar bir nechta qiymat berilgan bo'lsa, satr qiymatlardan birortasini o'z ichiga olsa, `true` qaytariladi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -160,7 +160,7 @@ str.Of("Hello World").Contains("Gor", "Hello") // true
 
 ### `ContainsAll`
 
-The `ContainsAll` method determines if the given string contains all of the given values. The method is case-sensitive.
+`ContainsAll` usuli berilgan satr berilgan barcha qiymatlarni o'z ichiga olganligini aniqlaydi. Usul registrga sezgir.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -172,7 +172,7 @@ str.Of("Hello World").ContainsAll("Hello", "Gor") // false
 
 ### `Dirname`
 
-The `Dirname` method returns the parent portion of a path.
+`Dirname` usuli yo'lning ota-ona qismini qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -180,7 +180,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("framework/support/str").Dirname().String() // "framework/support"
 ```
 
-Optionally, you may provide the directory level to trim from the path.
+Ixtiyoriy ravishda, yo'ldan kesib tashlash uchun kataloq darajasini ko'rsatishingiz mumkin.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -190,7 +190,7 @@ str.Of("framework/support/str").Dirname(2).String() // "framework"
 
 ### `EndsWith`
 
-The `EndsWith` method determines if the given string ends with the given value. The method is case-sensitive.
+`EndsWith` usuli berilgan satr berilgan qiymat bilan tugaydiganligini aniqlaydi. Usul registrga sezgir.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -198,7 +198,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("Goravel").EndsWith("vel") // true
 ```
 
-You may pass multiple values to the method to determine if the string ends with any of the values.
+Satr qiymatlardan birortasi bilan tugashini aniqlash uchun usulga bir nechta qiymat o'tkazishingiz mumkin.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -208,7 +208,7 @@ str.Of("Goravel").EndsWith("vel", "lie") // true
 
 ### `Exactly`
 
-The `Exactly` method determines if the given string is exactly equal to the given value. The method is case-sensitive.
+`Exactly` usuli berilgan satr berilgan qiymatga ancha tengligini aniqlaydi. Usul registrga sezgir.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -218,7 +218,7 @@ str.Of("Goravel").Exactly("Goravel") // true
 
 ### `Except`
 
-The `Except` method extracts an excerpt from the string that matches the first occurrence of the given value.
+`Except` usuli satrdan berilgan qiymatning birinchi paydo bo'lishiga mos keladigan parchani ajratib oladi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -229,7 +229,7 @@ str.Of("This is a beautiful morning").
     }).String() // "...is a beautiful morn...
 ```
 
-Additionally, you may use `Omission` option to change the string that is used to indicate the excerpt.
+Bundan tashqari, parchoni ko'rsatish uchun ishlatiladigan satrni o'zgartirish uchun `Omission` opsiyasidan foydalanishingiz mumkin.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -243,7 +243,7 @@ str.Of("This is a beautiful morning").
 
 ### `Explode`
 
-The `Explode` method splits the string into an array of strings using the given delimiter.
+`Explode` usuli satrni berilgan ajratgich yordamida satrlar massiviga ajratadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -253,7 +253,7 @@ str.Of("Hello World").Explode(" ") // []string{"Hello", "World"}
 
 ### `Finish`
 
-The `Finish` method ensures that the given string ends with the given value. If the string already ends with the value, it will not be added again.
+`Finish` usuli berilgan satr berilgan qiymat bilan tugashiga ishonch hosil qiladi. Agar satr allaqachon qiymat bilan tugasa, u qayta qo'shilmaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -265,7 +265,7 @@ str.Of("framework/").Finish("/").String() // "framework/"
 
 ### `Headline`
 
-The `Headline` method converts the string to a headline.
+`Headline` usuli satrni sarlavhaga o'zgartiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -277,7 +277,7 @@ str.Of("HelloWorld").Headline().String() // "Hello World"
 
 ### `Is`
 
-The `Is` method determines if the given string matches the given pattern. The method is case-sensitive.
+`Is` usuli berilgan satr berilgan andozaga mos kelishini aniqlaydi. Usul katta-kichik harflarga sezgir.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -287,7 +287,7 @@ str.Of("foo123").Is("bar*", "baz*", "foo*") // true
 
 ### `IsEmpty`
 
-The `IsEmpty` method determines if the given string is empty.
+`IsEmpty` usuli berilgan satr bo‘sh ekanligini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -297,7 +297,7 @@ str.Of("").IsEmpty() // true
 
 ### `IsNotEmpty`
 
-The `IsNotEmpty` method determines if the given string is not empty.
+`IsNotEmpty` usuli berilgan satr bo‘sh emasligini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -307,7 +307,7 @@ str.Of("Goravel").IsNotEmpty() // true
 
 ### `IsAscii`
 
-The `IsAscii` method determines if the given string contains only ASCII characters.
+`IsAscii` usuli berilgan satr faqat ASCII belgilardan iborat ekanligini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -319,7 +319,7 @@ str.Of("你好").IsAscii() // false
 
 ### `IsSlice`
 
-The `IsSlice` method determines if the given string is a slice.
+`IsSlice` usuli berilgan satr kesim (slice) ekanligini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -331,7 +331,7 @@ str.Of(`{"name": "John"}`).IsSlice() // false
 
 ### `IsMap`
 
-The `IsMap` method determines if the given string is a map.
+`IsMap` usuli berilgan satr xarita (map) ekanligini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -343,7 +343,7 @@ str.Of(`[{"name": "John"}, {"name": "Alice"}]`).IsMap() // false
 
 ### `IsUlid`
 
-The `IsUlid` method determines if the given string is a ULID.
+`IsUlid` usuli berilgan satr ULID ekanligini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -355,7 +355,7 @@ str.Of("krishan").IsUlid() // false
 
 ### `IsUuid`
 
-The `IsUuid` method determines if the given string is a UUID.
+`IsUuid` usuli berilgan satr UUID ekanligini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -367,7 +367,7 @@ str.Of("krishan").IsUuid() // false
 
 ### `Kebab`
 
-The `Kebab` method converts the string to `kebab-case`.
+`Kebab` usuli satrni `kebab-case` ga o‘zgartiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -377,7 +377,7 @@ str.Of("GoravelFramework").Kebab().String() // "goravel-framework"
 
 ### `LcFirst`
 
-The `LcFirst` method converts the first character of the string to lowercase.
+`LcFirst` usuli satrning birinchi belgisini kichik harfga o‘zgartiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -387,7 +387,7 @@ str.Of("Goravel Framework").LcFirst().String() // "goravel Framework"
 
 ### `Length`
 
-The `Length` method returns the length of the string.
+`Length` usuli satr uzunligini qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -397,7 +397,7 @@ str.Of("Goravel").Length() // 7
 
 ### `Limit`
 
-The `Limit` method truncates the string to the given length.
+`Limit` usuli satrni berilgan uzunlikka qisqartiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -405,7 +405,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("This is a beautiful morning").Limit(7).String() // "This is..."
 ```
 
-Optionally, you may provide the second argument to change the string that is used to indicate the truncation.
+Ixtiyoriy ravishda, siz qisqartirishni ko‘rsatish uchun ishlatiladigan satrni o‘zgartirish uchun ikkinchi argumentni taqdim etishingiz mumkin.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -415,7 +415,7 @@ str.Of("This is a beautiful morning").Limit(7, " (****)").String() // "This is (
 
 ### `Lower`
 
-The `Lower` method converts the string to lowercase.
+`Lower` usuli satrni kichik harflarga o‘zgartiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -425,7 +425,7 @@ str.Of("GORAVEL").Lower().String() // "goravel"
 
 ### `LTrim`
 
-The `LTrim` method trims the left side of the string.
+`LTrim` usuli satrning chap tomonini kesib tashlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -437,7 +437,7 @@ str.Of("/framework/").LTrim("/").String() // "framework/"
 
 ### `Mask`
 
-The `Mask` method masks the string with the given mask character.
+`Mask` usuli satrni berilgan maska belgisi bilan yashiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -445,7 +445,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("krishan@email.com").Mask("*", 3).String() // "kri**************"
 ```
 
-If needed, you may provide negative number to mask method which instruct the method to begin masking from the end of the string.
+Agar kerak bo‘lsa, siz maska usuliga manfiy sonni taqdim etishingiz mumkin, bu usulga satr oxiridan yashirishni boshlashni ko‘rsatadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -457,7 +457,7 @@ str.Of("krishan@email.com").Mask("*", -13).String() // "kris**************"
 
 ### `Match`
 
-The `Match` method determines if the given string matches the given regular expression.
+`Match` usuli berilgan satr berilgan oddiy ifodaga mos kelishini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -467,7 +467,7 @@ str.Of("This is a (test) string").Match(`\([^)]+\)`).String() // (test)
 
 ### `MatchAll`
 
-The `MatchAll` method determines if the given string matches all of the given regular expressions.
+`MatchAll` usuli berilgan satr berilgan barcha oddiy ifodalarga mos kelishini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -477,7 +477,7 @@ str.Of("abc123def456def").MatchAll(`\d+`) // []string{"123", "456"}
 
 ### `IsMatch`
 
-The `IsMatch` method determines if the given string matches (any of) the given regular expression.
+`IsMatch` usuli berilgan satr (har qanday) berilgan oddiy ifodaga mos kelishini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -487,7 +487,7 @@ str.Of("Hello, Goravel!").IsMatch(`(?i)goravel`, `goravel!(.*)`) // true
 
 ### `NewLine`
 
-The `NewLine` method appends a newline character to the string.
+`NewLine` usuli satrga yangi qator belgisini qo‘shadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -497,7 +497,7 @@ str.Of("Goravel").NewLine(2).Append("Framework").String() // "Goravel\n\nFramewo
 
 ### `PadBoth`
 
-The `PadBoth` method pads both sides of the string.
+`PadBoth` usuli satrning ikkala tomonini to‘ldiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -507,7 +507,7 @@ str.Of("Hello").PadBoth(10, "_").String() // "__Hello___"
 
 ### `PadLeft`
 
-The `PadLeft` method pads the left side of the string.
+`PadLeft` usuli satrning chap tomonini to‘ldiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -517,7 +517,7 @@ str.Of("Hello").PadLeft(10, "_").String() // "_____Hello"
 
 ### `PadRight`
 
-The `PadRight` method pads the right side of the string.
+`PadRight` usuli satrning o‘ng tomonini to‘ldiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -527,7 +527,7 @@ str.Of("Hello").PadRight(10, "_").String() // "Hello_____"
 
 ### `Pipe`
 
-The `Pipe` method allows you to transform the string using a given closure.
+`Pipe` usuli satrni berilgan yopilish (closure) yordamida o‘zgartirishga imkon beradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -539,8 +539,7 @@ str.Of("Goravel").Pipe(func(s string) string {
 
 ### `Plural`
 
-The `Plural` method converts a singular string to its plural form. This function supports any of
-the languages supported by the [pluralizer](pluralization.md).
+`Plural` usuli birlik shaklidagi satrni ko‘plik shakliga o‘zgartiradi. Bu funksiya [pluralizer](pluralization.md) tomonidan qo‘llab-quvvatlanadigan har qanday tilni qo‘llab-quvvatlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -549,7 +548,7 @@ plural := str.Of("goose").Plural().String()
 // "geese"
 ```
 
-You may provide an integer argument to the function to retrieve the singular or plural form of the string:
+Satrning birlik yoki ko‘plik shaklini olish uchun funksiyaga butun son argumentini taqdim etishingiz mumkin:
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -563,7 +562,7 @@ plural = str.Of("goose").Plural(1).String()
 
 ### `Prepend`
 
-The `Prepend` method prepends the given value to the string.
+`Prepend` usuli berilgan qiymatni satrning boshiga qo‘shadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -573,7 +572,7 @@ str.Of("Framework").Prepend("Goravel ").String() // "Goravel Framework"
 
 ### `Remove`
 
-The `Remove` method removes the given value(s) from the string.
+`Remove` usuli berilgan qiymat(lar)ni satrdan olib tashlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -583,9 +582,9 @@ str.Of("Hello World").Remove("World").String() // "Hello "
 str.Of("Hello World").Remove("World", "Hello").String() // " "
 ```
 
-### `Repeat`
+### `Takrorlash`
 
-The `Repeat` method repeats the string a given number of times.
+`Takrorlash` metodi matnni berilgan son marta takrorlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -593,9 +592,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("a").Repeat(2).String() // "aa"
 ```
 
-### `Replace`
+### `Almashtirish`
 
-The `Replace` method replaces the given value in the string.
+`Almashtirish` metodi matndagi berilgan qiymatni almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -603,7 +602,7 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello World").Replace("World", "Krishan").String() // "Hello Krishan"
 ```
 
-By default, the `Replace` method is case-sensitive. If you would like the method to be case-insensitive, you may pass `false` as the third argument.
+Sukut boʻyicha, `Almashtirish` metodi katta-kichik harflarga sezgir. Agar metod katta-kichik harflarga sezgir boʻlmasligini xohlasangiz, uchinchi argument sifatida `false` ni oʻtkazishingiz mumkin.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -611,9 +610,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello World").Replace("world", "Krishan", false).String() // "Hello Krishan"
 ```
 
-### `ReplaceEnd`
+### `Oxirini almashtirish`
 
-The `ReplaceEnd` method replaces the last occurrence of the given value in the string only if it is at the end of the string.
+`Oxirini almashtirish` metodi matndagi berilgan qiymatning oxirgi takrorlanishini faqat matn oxirida boʻlsa almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -623,9 +622,9 @@ str.Of("Hello World").ReplaceEnd("World", "Goravel").String() // "Hello Goravel"
 str.Of("Hello World").ReplaceEnd("Hello", "Goravel").String() // "Hello World"
 ```
 
-### `ReplaceFirst`
+### `Birinchi takrorlanishni almashtirish`
 
-The `ReplaceFirst` method replaces the first occurrence of the given value in the string.
+`Birinchi takrorlanishni almashtirish` metodi matndagi berilgan qiymatning birinchi takrorlanishini almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -633,9 +632,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello World").ReplaceFirst("World", "Goravel").String() // "Hello Goravel"
 ```
 
-### `ReplaceLast`
+### `Oxirgi takrorlanishni almashtirish`
 
-The `ReplaceLast` method replaces the last occurrence of the given value in the string.
+`Oxirgi takrorlanishni almashtirish` metodi matndagi berilgan qiymatning oxirgi takrorlanishini almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -643,9 +642,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello World").ReplaceLast("World", "Goravel").String() // "Hello Goravel"
 ```
 
-### `ReplaceMatches`
+### `Moslamalarni almashtirish`
 
-The `ReplaceMatches` method replaces the given regular expression matches in the string.
+`Moslamalarni almashtirish` metodi matndagi berilgan oddiy ifoda moslamalarini almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -653,9 +652,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello, Goravel!").ReplaceMatches(`goravel!(.*)`, "Krishan") // "Hello, Krishan!"
 ```
 
-### `ReplaceStart`
+### `Boshini almashtirish`
 
-The `ReplaceStart` method replaces the first occurrence of the given value in the string only if it is at the start of the string.
+`Boshini almashtirish` metodi matndagi berilgan qiymatning birinchi takrorlanishini faqat matn boshida boʻlsa almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -665,9 +664,9 @@ str.Of("Hello World").ReplaceStart("Hello", "Goravel").String() // "Goravel Worl
 str.Of("Hello World").ReplaceStart("World", "Goravel").String() // "Hello World"
 ```
 
-### `RTrim`
+### `Oʻng tomondan kesish`
 
-The `RTrim` method trims the right side of the string.
+`Oʻng tomondan kesish` metodi matnning oʻng tomonini kesadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -679,8 +678,7 @@ str.Of("/framework/").RTrim("/").String() // "/framework"
 
 ### `Singular`
 
-The `Singular` method converts a string to its singular form. This function supports any of
-the languages supported by the [pluralizer](pluralization.md).
+`Singular` usuli satrni uning birlik shakliga o‘zgartiradi. Bu funksiya [pluralizer](pluralization.md) tomonidan qo‘llab-quvvatlanadigan har qanday tilni qo‘llab-quvvatlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -689,9 +687,9 @@ singular := str.Of("heroes").Singular().String()
 // "hero"
 ```
 
-### `Snake`
+### `Iloncha`
 
-The `Snake` method converts the string to `snake_case`.
+`Iloncha` metodi matnni `iloncha_kichik` formatiga oʻtkazadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -699,9 +697,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("GoravelFramework").Snake().String() // "goravel_framework"
 ```
 
-### `Split`
+### `Ajratish`
 
-The `Split` method splits the string into an array of strings using the given delimiter.
+`Ajratish` metodi matnni berilgan ajratgich yordamida matnlar massiviga ajratadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -709,9 +707,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello World").Split(" ") // []string{"Hello", "World"}
 ```
 
-### `Squish`
+### `Siquvchan`
 
-The `Squish` method replaces consecutive whitespace characters with a single space.
+`Siquvchan` metodi ketma-ket boʻsh joy belgilarini bitta boʻsh joy bilan almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -719,9 +717,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello    World").Squish().String() // "Hello World"
 ```
 
-### `Start`
+### `Boshlash`
 
-The `Start` method adds a single instance of the given value to the beginning of the string if it does not already start with the value.
+`Boshlash` metodi matn allaqachon berilgan qiymat bilan boshlanmasa, uning boshiga berilgan qiymatning bitta nusxasini qoʻshadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -731,9 +729,9 @@ str.Of("framework").Start("/").String() // "/framework"
 str.Of("/framework").Start("/").String() // "/framework"
 ```
 
-### `StartsWith`
+### `Bilan boshlanadi`
 
-The `StartsWith` method determines if the given string starts with (any) given value(s). The method is case-sensitive.
+`Bilan boshlanadi` metodi berilgan matn (har qanday) berilgan qiymat(lar) bilan boshlanadimi yoki yoʻqligini aniqlaydi. Metod katta-kichik harflarga sezgir.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -743,9 +741,9 @@ str.Of("Goravel").StartsWith("Gor") // true
 str.Of("Hello World").StartsWith("Gor", "Hello") // true
 ```
 
-### `String`
+### `Matn`
 
-The `String` method returns the string.
+`Matn` metodi matnni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -753,9 +751,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("Goravel").String() // "Goravel"
 ```
 
-### `Studly`
+### `Studli`
 
-The `Studly` method converts the string to `StudlyCase`.
+`Studli` metodi matnni `StudliKatta` formatiga oʻtkazadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -763,9 +761,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("goravel_framework").Studly().String() // "GoravelFramework"
 ```
 
-### `Substr`
+### `Kesma`
 
-The `Substr` method returns the portion of the string starting at the given index and continuing for the given length.
+`Kesma` metodi matnning berilgan indeksdan boshlab berilgan uzunlikdagi qismini qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -773,9 +771,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("Goravel").Substr(1, 3) // "ora"
 ```
 
-### `Swap`
+### `Almashtir`
 
-The `Swap` method swaps multiple values in the string.
+`Almashtir` metodi matndagi bir nechta qiymatlarni almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -786,9 +784,9 @@ str.Of("Golang is awesome").Swap(map[string]string{
 	}).String() // "Go is excellent"
 ```
 
-### `Tap`
+### `Tepish`
 
-The `Tap` method passes the string to the given closure and returns the string.
+`Tepish` metodi matnni berilgan yopiq funksiyaga oʻtkazadi va matnni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -800,7 +798,7 @@ str.Of("Goravel").Tap(func(s string) {
 
 ### `Test`
 
-The `Test` method determines if the given string matches the given regular expression.
+`Test` metodi berilgan matn berilgan oddiy ifodaga mos keladimi yoki yoʻqligini aniqlaydi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -808,9 +806,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("Hello, Goravel!").Test(`goravel!(.*)`) // true
 ```
 
-### `Title`
+### `Sarlavha`
 
-The `Title` method converts the string to `Title Case`.
+`Sarlavha` metodi matnni `Sarlavha Katta` formatiga oʻtkazadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -818,9 +816,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("goravel framework").Title().String() // "Goravel Framework"
 ```
 
-### `Trim`
+### `Kesish`
 
-The `Trim` method trims the string.
+`Kesish` metodi matnni kesadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -830,9 +828,9 @@ str.Of("  Goravel  ").Trim().String() // "Goravel"
 str.Of("/framework/").Trim("/").String() // "framework"
 ```
 
-### `UcFirst`
+### `Birinchi harfni katta`
 
-The `UcFirst` method converts the first character of the string to uppercase.
+`Birinchi harfni katta` metodi matnning birinchi belgisini katta harfga oʻtkazadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -840,9 +838,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("goravel framework").UcFirst().String() // "Goravel framework"
 ```
 
-### `UcSplit`
+### `Katta harflar bilan ajratish`
 
-The `UcSplit` method splits the string into an array of strings using uppercase characters.
+`Katta harflar bilan ajratish` metodi matnni katta harflar yordamida matnlar massiviga ajratadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -850,9 +848,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("GoravelFramework").UcSplit() // []string{"Goravel", "Framework"}
 ```
 
-### `Unless`
+### `Agar boʻlmasa`
 
-The `Unless` method passes the string to the given closure and returns the string if the given condition is `false`.
+`Agar boʻlmasa` metodi matnni berilgan yopiq funksiyaga oʻtkazadi va agar berilgan shart `false` boʻlsa, matnni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -864,9 +862,9 @@ str.Of("Goravel").Unless(func(s *String) bool {
     }).String() // "Fallback Applied"
 ```
 
-### `Upper`
+### `Katta`
 
-The `Upper` method converts the string to uppercase.
+`Katta` metodi matnni katta harflarga oʻtkazadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -874,9 +872,9 @@ import "github.com/goravel/framework/support/str"
 str.Of("goravel").Upper().String() // "GORAVEL"
 ```
 
-### `When`
+### `Qachonki`
 
-The `When` method passes the string to the given closure and returns the string if the given condition is `true`.
+`When` usuli satrni berilgan yopilishga uzatadi va agar berilgan shart `true` bo‘lsa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -886,11 +884,11 @@ str.Of("Bowen").When(true, func(s *str.String) *str.String {
 }).String() // "Bowen Han"
 ```
 
-If necessary, you may provide the third argument to the `When` method which is a closure that will be executed when the condition is `false`.
+Agar kerak bo‘lsa, `When` usuliga uchinchi argument sifatida yopilishni taqdim etishingiz mumkin, u shart `false` bo‘lganda bajariladi.
 
 ### `WhenContains`
 
-The `WhenContains` method passes the string to the given closure and returns the string if the given string contains the given value.
+`WhenContains` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr berilgan qiymatni o‘z ichiga olsa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -900,11 +898,11 @@ str.Of("Hello Bowen").WhenContains("Hello", func(s *str.String) *str.String {
 }).String() // "Hello Bowen Han"
 ```
 
-If necessary, you may provide the third argument to the `WhenContains` method which is a closure that will be executed when the string does not contain the given value.
+Agar kerak bo‘lsa, `WhenContains` usuliga uchinchi argument sifatida yopilishni taqdim etishingiz mumkin, u satr berilgan qiymatni o‘z ichiga olmaganda bajariladi.
 
 ### `WhenContainsAll`
 
-The `WhenContainsAll` method passes the string to the given closure and returns the string if the given string contains all of the given values.
+`WhenContainsAll` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr berilgan barcha qiymatlarni o‘z ichiga olsa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -914,11 +912,11 @@ str.Of("Hello Bowen").WhenContainsAll([]string{"Hello", "Bowen"}, func(s *str.St
 }).String() // "Hello Bowen Han"
 ```
 
-If necessary, you may provide the third argument to the `WhenContainsAll` method which is a closure that will be executed when the string does not contain all the given values.
+Agar kerak bo‘lsa, `WhenContainsAll` usuliga uchinchi argument sifatida yopilishni taqdim etishingiz mumkin, u satr berilgan barcha qiymatlarni o‘z ichiga olmaganda bajariladi.
 
 ### `WhenEmpty`
 
-The `WhenEmpty` method passes the string to the given closure and returns the string if the given string is empty.
+`WhenEmpty` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr bo‘sh bo‘lsa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -930,7 +928,7 @@ str.Of("").WhenEmpty(func(s *str.String) *str.String {
 
 ### `WhenIsAscii`
 
-The `WhenIsAscii` method passes the string to the given closure and returns the string if the given string contains only ASCII characters.
+`WhenIsAscii` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr faqat ASCII belgilardan iborat bo‘lsa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -946,7 +944,7 @@ str.Of("你好").WhenIsAscii(func(s *str.String) *str.String {
 
 ### `WhenNotEmpty`
 
-The `WhenNotEmpty` method passes the string to the given closure and returns the string if the given string is not empty.
+`WhenNotEmpty` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr bo‘sh bo‘lmasa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -958,7 +956,7 @@ str.Of("Goravel").WhenNotEmpty(func(s *str.String) *str.String {
 
 ### `WhenStartsWith`
 
-The `WhenStartsWith` method passes the string to the given closure and returns the string if the given string starts with the given value.
+`WhenStartsWith` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr berilgan qiymat bilan boshlansa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -970,7 +968,7 @@ str.Of("hello world").WhenStartsWith("hello", func(s *str.String) *str.String {
 
 ### `WhenEndsWith`
 
-The `WhenEndsWith` method passes the string to the given closure and returns the string if the given string ends with the given value.
+`WhenEndsWith` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr berilgan qiymat bilan tugasa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -982,7 +980,7 @@ str.Of("hello world").WhenEndsWith("world", func(s *str.String) *str.String {
 
 ### `WhenExactly`
 
-The `WhenExactly` method passes the string to the given closure and returns the string if the given string is exactly equal to the given value.
+`WhenExactly` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr berilgan qiymatga aniq teng bo‘lsa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -994,7 +992,7 @@ str.Of("Goravel").WhenExactly("Goravel", func(s *str.String) *str.String {
 
 ### `WhenNotExactly`
 
-The `WhenNotExactly` method passes the string to the given closure and returns the string if the given string is not exactly equal to the given value.
+`WhenNotExactly` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr berilgan qiymatga aniq teng bo‘lmasa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -1006,7 +1004,7 @@ str.Of("Goravel").WhenNotExactly("Goravel", func(s *str.String) *str.String {
 
 ### `WhenIs`
 
-The `WhenIs` method passes the string to the given closure and returns the string if the given string matches the given pattern.
+`WhenIs` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr berilgan andozaga mos kelsa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -1018,7 +1016,7 @@ str.Of("foo/bar").WhenIs("foo/*", func(s *str.String) *str.String {
 
 ### `WhenIsUlid`
 
-The `WhenIsUlid` method passes the string to the given closure and returns the string if the given string is a ULID.
+`WhenIsUlid` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr ULID bo‘lsa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -1030,7 +1028,7 @@ str.Of("01E5Z6Z1Z6Z1Z6Z1Z6Z1Z6Z1Z6").WhenIsUlid(func(s *str.String) *str.String 
 
 ### `WhenIsUuid`
 
-The `WhenIsUuid` method passes the string to the given closure and returns the string if the given string is a UUID.
+`WhenIsUuid` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr UUID bo‘lsa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -1042,7 +1040,7 @@ str.Of("550e8400-e29b-41d4-a716-446655440000").WhenIsUuid(func(s *str.String) *s
 
 ### `WhenTest`
 
-The `WhenTest` method passes the string to the given closure and returns the string if the given string matches the given regular expression.
+`WhenTest` usuli satrni berilgan yopilishga uzatadi va agar berilgan satr berilgan muntazam ifodaga mos kelsa, satrni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -1054,7 +1052,7 @@ str.Of("goravel framework").WhenTest(`goravel(.*)`, func(s *str.String) *str.Str
 
 ### `WordCount`
 
-The `WordCount` method returns the number of words in the string.
+`WordCount` usuli satrdagi so‘zlar sonini qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -1064,7 +1062,7 @@ str.Of("Hello, World!").WordCount() // 2
 
 ### `Words`
 
-The `Words` method limits the number of words in the string. If necessary, you may provide the second argument to change the string that is used to indicate the truncation.
+`Words` usuli satrdagi so‘zlar sonini cheklaydi. Agar kerak bo‘lsa, ikkinchi argument sifatida qisqartirishni ko‘rsatish uchun ishlatiladigan satrni o‘zgartirish mumkin.
 
 ```go
 import "github.com/goravel/framework/support/str"
