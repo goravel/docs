@@ -1,18 +1,18 @@
-# Session
+# Seans
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Session enables you to store user information across multiple requests, providing a stateful experience within the inherently stateless HTTP protocol. This user information is stored persistently on the server side. Goravel offers a unified interface for interacting with various persistent storage drivers.
+Seans sizga bir nechta so‘rovlar bo‘yicha foydalanuvchi ma’lumotlarini saqlash imkonini beradi, bu esa tabiatan stateless HTTP protokolida holatli tajribani ta’minlaydi. Ushbu foydalanuvchi ma’lumotlari server tomonida doimiy ravishda saqlanadi. Goravel turli doimiy saqlash haydovchilari bilan o‘zaro aloqada bo‘lish uchun birlashtirilgan interfeysni taklif qiladi.
 
-## Configuration
+## Konfiguratsiya
 
-The `session` configuration file is located at `config/session.go`. The default driver is `file`, which stores sessions in the `storage/framework/sessions` directory. Goravel allows you to create a custom `session` driver by implementing the `contracts/session/driver` interface.
+`session` konfiguratsiya fayli `config/session.go` manzilida joylashgan. Standart haydovchi `file` bo‘lib, seanslarni `storage/framework/sessions` katalogida saqlaydi. Goravel sizga `contracts/session/driver` interfeysini amalga oshirish orqali maxsus `session` haydovchisini yaratish imkonini beradi.
 
-### Register Middleware
+### Middleware-ni ro‘yxatdan o‘tkazish
 
-By default, Goravel does not start a session automatically. However, it provides middleware to start a session. You can register the middleware in the `WithMiddleware` function in the `bootstrap/app.go` file, or you can add it to specific routes:
+Standart bo‘yicha, Goravel seansni avtomatik ravishda boshlab bermaydi. Biroq, u seansni boshlash uchun middleware-ni taqdim etadi. Siz middleware-ni `bootstrap/app.go` faylidagi `WithMiddleware` funksiyasida ro‘yxatdan o‘tkazishingiz yoki uni ma’lum yo‘nalishlarga qo‘shishingiz mumkin:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -27,41 +27,41 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-## Interacting With The Session
+## Seans bilan ishlash
 
-### Retrieving Data
+### Ma’lumotlarni olish
 
-You can use the `Get` method to retrieve data from the session. If the value does not exist, `nil` will be returned.
+Seansdan ma’lumotlarni olish uchun `Get` usulidan foydalanishingiz mumkin. Agar qiymat mavjud bo‘lmasa, `nil` qaytariladi.
 
 ```go
 value := ctx.Request().Session().Get("key")
 ```
 
-You may also pass a default value as the second argument to the `Get` method. This value will be returned if the specified key does not exist in the session:
+Shuningdek, siz `Get` usulining ikkinchi argumenti sifatida standart qiymatni ham o‘tkazishingiz mumkin. Agar belgilangan kalit seansda mavjud bo‘lmasa, bu qiymat qaytariladi:
 
 ```go
 value := ctx.Request().Session().Get("key", "default")
 ```
 
-### Retrieving All Data
+### Barcha ma’lumotlarni olish
 
-If you would like to retrieve all data from the session, you may use the `All` method:
+Agar siz seansdan barcha ma’lumotlarni olishni istasangiz, `All` usulidan foydalanishingiz mumkin:
 
 ```go
 data := ctx.Request().Session().All()
 ```
 
-### Retrieving a Subset of Data
+### Ma’lumotlarning kichik to‘plamini olish
 
-If you would like to retrieve a subset of the session data, you may use the `Only` method:
+Agar siz seans ma’lumotlarining kichik to‘plamini olishni istasangiz, `Only` usulidan foydalanishingiz mumkin:
 
 ```go
 data := ctx.Request().Session().Only([]string{"username", "email"})
 ```
 
-### Determining If An Item Exists In The Session
+### Elementning seansda mavjudligini aniqlash
 
-To determine if an item is present in the session, you may use the `Has` method. The `Has` method returns `true` if the item is present and is not `nil`:
+Elementning seansda mavjudligini aniqlash uchun `Has` usulidan foydalanishingiz mumkin. `Has` usuli element mavjud va `nil` bo‘lmasa, `true` qaytaradi:
 
 ```go
 if ctx.Request().Session().Has("user") {
@@ -69,7 +69,7 @@ if ctx.Request().Session().Has("user") {
 }
 ```
 
-To determine if an item is present and even if it is `nil`, you may use the `Exists` method:
+Element mavjud va hatto `nil` bo‘lsa ham, mavjudligini aniqlash uchun `Exists` usulidan foydalanishingiz mumkin:
 
 ```go
 if ctx.Request().Session().Exists("user") {
@@ -77,7 +77,7 @@ if ctx.Request().Session().Exists("user") {
 }
 ```
 
-To determine if an item is not present in the session, you may use the `Missing` method:
+Elementning seansda mavjud emasligini aniqlash uchun `Missing` usulidan foydalanishingiz mumkin:
 
 ```go
 if ctx.Request().Session().Missing("user") {
@@ -85,25 +85,25 @@ if ctx.Request().Session().Missing("user") {
 }
 ```
 
-### Storing Data
+### Ma’lumotlarni saqlash
 
-You can use the `Put` method to store data in the session:
+Ma’lumotlarni seansda saqlash uchun `Put` usulidan foydalanishingiz mumkin:
 
 ```go
 ctx.Request().Session().Put("key", "value")
 ```
 
-### Retrieving & Deleting Data
+### Ma’lumotlarni olish va o‘chirish
 
-If you would like to retrieve an item from the session and then delete it, you may use the `Pull` method:
+Agar siz elementni seansdan olishni va keyin uni o‘chirishni istasangiz, `Pull` usulidan foydalanishingiz mumkin:
 
 ```go
 value := ctx.Request().Session().Pull("key")
 ```
 
-### Deleting Data
+### Ma’lumotlarni o‘chirish
 
-The `Forget` method can be used to remove a piece of data from the session. If you would like to remove all data from the session, you can use the `Flush` method:
+`Forget` usuli seansdan bir qism ma’lumotni olib tashlash uchun ishlatilishi mumkin. Agar siz seansdan barcha ma’lumotlarni olib tashlashni istasangiz, `Flush` usulidan foydalanishingiz mumkin:
 
 ```go
 ctx.Request().Session().Forget("username", "email")
@@ -111,21 +111,21 @@ ctx.Request().Session().Forget("username", "email")
 ctx.Request().Session().Flush()
 ```
 
-### Regenerating The Session ID
+### Seans ID-sini qayta yaratish
 
-Regenerating the session ID is often done in order to prevent malicious users from exploiting a session fixation attack on your application. You may regenerate the session ID using the `Regenerate` method:
+Seans ID-sini qayta yaratish ko‘pincha zararli foydalanuvchilarning ilovangizda seans fiksatsiya hujumidan foydalanishining oldini olish uchun amalga oshiriladi. Seans ID-sini `Regenerate` usuli yordamida qayta yaratishingiz mumkin:
 
 ```go
 ctx.Request().Session().Regenerate()
 ```
 
-If you would like to regenerate the session ID and forget all data that was in the session, you may use the `Invalidate` method:
+Agar siz seans ID-sini qayta yaratishni va seansda bo‘lgan barcha ma’lumotlarni unutishni istasangiz, `Invalidate` usulidan foydalanishingiz mumkin:
 
 ```go
 ctx.Request().Session().Invalidate()
 ```
 
-Then, you need to save the new session to the cookie:
+Keyin, yangi seansni cookie-ga saqlashingiz kerak:
 
 ```go
 ctx.Response().Cookie(http.Cookie{
@@ -140,47 +140,47 @@ ctx.Response().Cookie(http.Cookie{
 })
 ```
 
-### Flash Data
+### Flash ma’lumotlar
 
-Flash data is session data that will only be available during the subsequent HTTP request, and then will be deleted. Flash data is useful for storing temporary messages such as status messages. You may use the `Flash` method to store flash data in the session:
+Flash ma’lumotlar faqat keyingi HTTP so‘rovi davomida mavjud bo‘ladigan va keyin o‘chiriladigan seans ma’lumotlaridir. Flash ma’lumotlar holat xabarlari kabi vaqtincha xabarlarni saqlash uchun foydalidir. Flash ma’lumotlarni seansda saqlash uchun `Flash` usulidan foydalanishingiz mumkin:
 
 ```go
 ctx.Request().Session().Flash("status", "Task was successful!")
 ```
 
-If you would like to keep your flash data around for an additional request, you may use the `Reflash` method:
+Agar siz flash ma’lumotlaringizni qo‘shimcha so‘rov uchun saqlamoqchi bo‘lsangiz, `Reflash` usulidan foydalanishingiz mumkin:
 
 ```go
 ctx.Request().Session().Reflash()
 ```
 
-If you would like to keep specific flash data around for an additional request, you may use the `Keep` method:
+Agar siz ma’lum flash ma’lumotlarni qo‘shimcha so‘rov uchun saqlamoqchi bo‘lsangiz, `Keep` usulidan foydalanishingiz mumkin:
 
 ```go
 ctx.Request().Session().Keep("status", "username")
 ```
 
-If you would like to keep specific data around for immediate use, you may use the `Now` method:
+Agar siz ma’lum ma’lumotlarni darhol foydalanish uchun saqlamoqchi bo‘lsangiz, `Now` usulidan foydalanishingiz mumkin:
 
 ```go
 ctx.Request().Session().Now("status", "Task was successful!")
 ```
 
-## Interacting With Session Manager
+## Seans menejeri bilan ishlash
 
-### Building A Custom Session
+### Maxsus seans yaratish
 
-Use the `Session` facade to build a custom session. The `Session` facade provides the `BuildSession` method, which takes a driver instance and an optional session ID if you want to specify a custom session ID:
+Maxsus seans yaratish uchun `Session` fasadidan foydalaning. `Session` fasad `BuildSession` usulini taqdim etadi, u haydovchi namunasini va agar siz maxsus seans ID-sini belgilamoqchi bo‘lsangiz, ixtiyoriy seans ID-sini qabul qiladi:
 
 ```go
 session := facades.Session().BuildSession(driver, "sessionID")
 ```
 
-### Add Custom Session Drivers
+### Maxsus seans haydovchilarini qo‘shish
 
-#### Implementing Driver
+#### Haydovchini amalga oshirish
 
-To implement a custom session driver, driver must implement the `contracts/session/driver` interface.
+Maxsus seans haydovchisini amalga oshirish uchun, haydovchi `contracts/session/driver` interfeysini amalga oshirishi kerak.
 
 ```go
 // Driver is the interface for Session handlers.
@@ -200,9 +200,9 @@ type Driver interface {
 }
 ```
 
-#### Register Driver
+#### Haydovchini ro‘yxatdan o‘tkazish
 
-After implementing the driver, you only need to add it to the `config/session.go` configuration file:
+Haydovchini amalga oshirgandan so‘ng, uni faqat `config/session.go` konfiguratsiya fayliga qo‘shishingiz kerak:
 
 ```go
 // config/session.go
@@ -221,22 +221,22 @@ After implementing the driver, you only need to add it to the `config/session.go
 },
 ```
 
-### Retrieving driver instance
+### Haydovchi namunasini olish
 
-Use the `Driver` method to retrieve the driver instance from the session manager. It accepts an optional driver name, if not provided, it returns the default driver instance:
+Haydovchi namunasini seans menejeridan olish uchun `Driver` usulidan foydalaning. U ixtiyoriy haydovchi nomini qabul qiladi, agar berilmasa, standart haydovchi namunasini qaytaradi:
 
 ```go
 driver, err := facades.Session().Driver("file")
 ```
 
-### Starting A New Session
+### Yangi seansni boshlash
 
 ```go
 session := facades.Session().BuildSession(driver)
 session.Start()
 ```
 
-### Saving The Session Data
+### Seans ma’lumotlarini saqlash
 
 ```go
 session := facades.Session().BuildSession(driver)
@@ -244,7 +244,7 @@ session.Start()
 session.Save()
 ```
 
-### Attaching the Session to the Request
+### Seansni so‘rovga biriktirish
 
 ```go
 session := facades.Session().BuildSession(driver)
@@ -252,7 +252,7 @@ session.Start()
 ctx.Request().SetSession(session)
 ```
 
-### Checking if request has session
+### So‘rovda seans mavjudligini tekshirish
 
 ```go
 if ctx.Request().HasSession() {
