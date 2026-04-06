@@ -1,12 +1,12 @@
-# Factories
+# Zavodlar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-When testing your application or seeding your database, it might be necessary to insert a few records into your database beforehand. Instead of manually inputting values for each column, Goravel allows you to define a set of default attributes for each of your models by creating model factories.
+Ilovingizni sinovdan o‘tkazish yoki ma’lumotlar bazangizni to‘ldirishda, oldindan ma’lumotlar bazangizga bir nechta yozuvlarni kiritish zarur bo‘lishi mumkin. Har bir ustun uchun qo‘lda qiymatlarni kiritish o‘rniga, Goravel sizga model zavodlarini yaratish orqali har bir modelingiz uchun standart atributlar to‘plamini belgilash imkonini beradi.
 
-To see an example of how to write a factory, you can check out the `user_factory.go` file located in your application's `database/factories` directory.
+Zavod qanday yozilishiga misol ko‘rish uchun, ilovingizning `database/factories` papkasida joylashgan `user_factory.go` fayliga qarashingiz mumkin.
 
 ```go
 package factories
@@ -14,7 +14,7 @@ package factories
 type UserFactory struct {
 }
 
-// Definition Define the model's default state.
+// Definition Modelning standart holatini aniqlang.
 func (f *UserFactory) Definition() map[string]any {
   return map[string]any{
     "Name": "Goravel",
@@ -22,21 +22,21 @@ func (f *UserFactory) Definition() map[string]any {
 }
 ```
 
-As you can see, in their most basic form, factories are structs that have a `Definition` method. The method returns the default set of attribute values that should be used when creating a model with the factory. To generate a range of random data, you can rely on [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit).
+Ko‘rib turganingizdek, ularning eng oddiy shaklida, zavodlar `Definition` usuliga ega bo‘lgan strukturalardir. Bu usul zavod yordamida model yaratilganda foydalanish kerak bo‘lgan atribut qiymatlari standart to‘plamini qaytaradi. Tasodifiy ma’lumotlar diapazonini yaratish uchun siz [brianvoe/gofakeit](https://github.com/brianvoe/gofakeit) kutubxonasiga tayanishingiz mumkin.
 
-## Generating Factories
+## Zavodlarni yaratish
 
-To create a factory, run the `make:factory` Artisan command:
+Zavod yaratish uchun `make:factory` Artisan buyrug‘ini ishga tushiring:
 
 ```
 go run . artisan make:factory PostFactory
 ```
 
-The new factory `struct` will be placed in your `database/factories` directory.
+Yangi zavod `struct`i sizning `database/factories` papkangizga joylashtiriladi.
 
-### Model & Factory Discovery Conventions
+### Model va Zavodni Aniqlash Qoidalari
 
-After defining a factory, you can use the `Factory()` method in the model to bind the factory to the model:
+Zavodni aniqlaganingizdan so‘ng, modelga zavodni bog‘lash uchun modeldagi `Factory()` usulidan foydalanishingiz mumkin:
 
 ```go
 package models
@@ -60,25 +60,25 @@ func (u *User) Factory() factory.Factory {
 }
 ```
 
-## Creating Models Using Factories
+## Zavodlar Yordamida Modellarni Yaratish
 
-### Instantiating Models
+### Modellarni Yaratish
 
-We can use the `Make` method to create models without persisting them in the database:
+Biz modellarni ma’lumotlar bazasida saqlamasdan yaratish uchun `Make` usulidan foydalanishimiz mumkin:
 
 ```go
 var user models.User
 err := facades.Orm().Factory().Make(&user)
 ```
 
-You may create a collection of many models using the `Count` method:
+`Count` usuli yordamida ko‘plab modellar to‘plamini yaratishingiz mumkin:
 
 ```go
 var users []models.User
 err := facades.Orm().Factory().Count(2).Make(&users)
 ```
 
-If you would like to override some of the default values of your models, you may pass `map[string]any` to the `Make` method. Only the specified attributes will be replaced while the rest of the attributes remain set to their default values as specified by the factory:
+Agar modellaringizning ba’zi standart qiymatlarini o‘zgartirishni istasangiz, `Make` usuliga `map[string]any` o‘tkazishingiz mumkin. Faqat ko‘rsatilgan atributlar almashtiriladi, qolgan atributlar esa zavod tomonidan belgilanganidek, standart qiymatlarida qoladi:
 
 ```go
 var user models.User
@@ -87,9 +87,9 @@ err := facades.Orm().Factory().Make(&user, map[string]any{
 })
 ```
 
-### Persisting Models
+### Modellarni Saqlash
 
-The `Create` method creates and saves model instances to the database using Orm's `Save` method.
+`Create` usuli model namunalarini yaratadi va Ormning `Save` usuli yordamida ma’lumotlar bazasiga saqlaydi.
 
 ```go
 var user models.User
@@ -99,7 +99,7 @@ var users []models.User
 err := facades.Orm().Factory().Count(2).Create(&users)
 ```
 
-You may override the factory's default model attributes by passing `map[string]any` of the attributes to the `Create` method:
+Zavodning standart model atributlarini `Create` usuliga atributlarning `map[string]any` to‘plamini o‘tkazish orqali o‘zgartirishingiz mumkin:
 
 ```go
 var user models.User
@@ -108,9 +108,9 @@ err := facades.Orm().Factory().Create(&user, map[string]any{
 })
 ```
 
-### Ignore Model Event
+### Model Voqealarini E‘tiborsiz Qoldirish
 
-There may be [model event](../orm/getting-started.md#events) defined on the model, you can ignore those events with the `CreateQuietly` method:
+Modelda [model voqeasi](../orm/getting-started.md#events) aniqlangan bo‘lishi mumkin, siz bu voqealarni `CreateQuietly` usuli bilan e‘tiborsiz qoldirishingiz mumkin:
 
 ```go
 var user models.User
