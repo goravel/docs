@@ -1,48 +1,48 @@
-# Queues
+# Navbatlar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-When building your web application, there may be tasks, like parsing and storing an uploaded CSV file, that take too long to complete during a web request. Fortunately, Goravel offers a solution by allowing you to create queued jobs that can run in the background. This way, by moving time-intensive tasks to a queue, your application can respond to web requests much faster and provide a better user experience for your customers. To implement this feature, we use `facades.Queue()`.
+Veb-ilovangizni yaratishda, veb-so‘rov davomida bajarish uchun juda uzoq vaqt talab qiladigan, yuklangan CSV faylini tahlil qilish va saqlash kabi vazifalar bo‘lishi mumkin. Xo‘sh, Goravel sizga orqa fonda ishlaydigan navbatga qo‘yilgan ishlarni yaratish imkoniyatini beruvchi yechimni taklif qiladi. Shu tarzda, vaqt talab qiladigan vazifalarni navbatga o‘tkazish orqali, ilovangiz veb-so‘rovlarga ancha tezroq javob bera oladi va mijozlaringiz uchun yaxshi foydalanuvchi tajribasini taqdim etadi. Ushbu xususiyatni amalga oshirish uchun biz `facades.Queue()` dan foydalanamiz.
 
-### Connections Vs. Queues
+### Ulanishlar va Navbatlar
 
-Before delving into Goravel queues, it's important to understand the difference between "connections" and "queues". In the configuration file, `config/queue.go`, you'll find an array for `connections` configuration. This option specifies the connections to backend queue services like Redis. However, every queue connection can have multiple "queues", which can be thought of as different stacks or piles of queued jobs.
+Goravel navbatlarini chuqur o‘rganishdan oldin, "ulanishlar" va "navbatlar" o‘rtasidagi farqni tushunish muhimdir. Konfiguratsiya faylida, `config/queue.go` da, `connections` konfiguratsiyasi uchun massivni topasiz. Ushbu parametr Redis kabi orqa fondagi navbat xizmatlariga ulanishlarni belgilaydi. Biroq, har bir navbat ulanishi bir nechta "navbatlarga" ega bo‘lishi mumkin, ular navbatga qo‘yilgan ishlarning turli steklari yoki to‘plamlari deb tushunilishi mumkin.
 
-It's essential to note that each connection configuration example in the queue configuration file includes a `queue` attribute. This attribute is the default queue to which jobs will be dispatched when they are sent to a given connection. In simpler terms, if you dispatch a job without explicitly defining which queue it should be dispatched to, the job will be placed in the queue defined in the queue attribute of the connection configuration.
+Navbat konfiguratsiya faylidagi har bir ulanish konfiguratsiyasi misolida `queue` atributi mavjudligini ta‘kidlash muhimdir. Ushbu atribut, ishlar berilgan ulanishga yuborilganda ular yuboriladigan standart navbatdir. Oddiyroq qilib aytganda, agar siz ishni qaysi navbatga yuborilishi kerakligini aniq belgilamasdan yuborsangiz, ish ulanish konfiguratsiyasining queue atributida belgilangan navbatga joylashtiriladi.
 
 ```go
-// This job is sent to the default connection's default queue
+// Bu ish standart ulanishning standart navbatiga yuboriladi
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
   {Type: "int", Value: 1},
 }).Dispatch()
 
-// This job is sent to the default connection's "emails" queue
+// Bu ish standart ulanishning "emails" navbatiga yuboriladi
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
   {Type: "int", Value: 1},
 }).OnQueue("emails").Dispatch()
 ```
 
-## Driver
+## Haydovchi
 
-The queue configuration file is stored in `config/queue.go`, and different queue drivers can be set in the configuration file.
+Navbat konfiguratsiya fayli `config/queue.go` da saqlanadi va konfiguratsiya faylida turli navbat haydovchilari o‘rnatilishi mumkin.
 
-### Sync Driver
+### Sinxron Haydovchi
 
-The sync driver is the default driver, it will not push tasks to the queue, but execute directly in the current process.
+Sinxron haydovchi standart haydovchidir, u vazifalarni navbatga qo‘ymaydi, balki joriy jarayonda bevosita bajaradi.
 
-### Database Driver
+### Ma'lumotlar Bazasi Haydovchisi
 
-To use the `database` driver, you need to create a database table to store tasks first: [20210101000002_create_jobs_table.go](https://github.com/goravel/goravel/blob/master/database/migrations/20210101000002_create_jobs_table.go). The migration file is located in the `database/migrations` directory by default.
+`database` haydovchisidan foydalanish uchun avval vazifalarni saqlash uchun ma'lumotlar bazasi jadvalini yaratishingiz kerak: [20210101000002_create_jobs_table.go](https://github.com/goravel/goravel/blob/master/database/migrations/20210101000002_create_jobs_table.go). Migratsiya fayli sukut bo‘yicha `database/migrations` katalogida joylashgan.
 
-### Custom Driver
+### Maxsus Haydovchi
 
-If the current driver cannot meet your needs, you can customize the driver. You need to implement the [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) interface in `contracts/queue/driver.go`.
+Agar joriy haydovchi sizning ehtiyojlaringizni qondira olmasa, siz haydovchini sozlashingiz mumkin. Siz `contracts/queue/driver.go` dagi [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) interfeysini amalga oshirishingiz kerak.
 
-The official implementation of the `Redis` driver, you can refer to [Redis Driver](https://github.com/goravel/redis) to implement your own custom driver.
+`Redis` drayverining rasmiy amalga oshirilishi, siz o'z maxsus drayveringizni amalga oshirish uchun [Redis Drayveri](https://github.com/goravel/redis) ga murojaat qilishingiz mumkin.
 
-After implementing the custom driver, you can add the configuration to `config/queue.go`:
+Maxsus haydovchini amalga oshirgandan so‘ng, konfiguratsiyani `config/queue.go` ga qo‘shishingiz mumkin:
 
 ```
 ...
@@ -52,26 +52,26 @@ After implementing the custom driver, you can add the configuration to `config/q
     "connection": "default",
     "queue": "default",
     "via": func() (queue.Driver, error) {
-        return redisfacades.Queue("redis") // The redis value is the key of connections
+        return redisfacades.Queue("redis") // redis qiymati connections kalitidir
     },
   },
 },
 ```
 
-## Creating Jobs
+## Ishlarni Yaratish
 
-### Generating Job Classes
+### Ish Klasslarini Yaratish
 
-By default, all of the jobs for your application are stored in the `app/jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the `make:job` Artisan command:
+Sukut bo‘yicha, ilovangizning barcha ishlari `app/jobs` katalogida saqlanadi. Agar `app/Jobs` katalogi mavjud bo‘lmasa, u `make:job` Artisan buyrug‘ini ishga tushirganingizda yaratiladi:
 
 ```shell
 ./artisan make:job ProcessPodcast
 ./artisan make:job user/ProcessPodcast
 ```
 
-### Register Jobs
+### Ishlarni ro'yxatdan o'tkazish
 
-A new job created by `make:job` will be registered automatically in the `bootstrap/jobs.go::Jobs()` function and the function will be called by `WithJobs`. You need register the job manually if you create the job file by yourself.
+`make:job` tomonidan yaratilgan yangi ish `bootstrap/jobs.go::Jobs()` funksiyasida avtomatik ro'yxatdan o'tkaziladi va funksiya `WithJobs` tomonidan chaqiriladi. Agar ish faylini o'zingiz yaratgan bo'lsangiz, ishni qo'lda ro'yxatdan o'tkazishingiz kerak.
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -82,9 +82,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-### Class Structure
+### Klass Tuzilmasi
 
-Job classes are very simple, consisting of two methods: `Signature` and `Handle`. `Signature` serves as a task's distinct identifier, while `Handle` executes when the queue processes the task. Additionally, the `[]queue.Arg{}` passed when the task executes will be transmitted into `Handle`:
+Ish klasslari juda oddiy, ikkita usuldan iborat: `Signature` va `Handle`. `Signature` vazifaning o‘ziga xos identifikatori vazifasini bajaradi, `Handle` esa navbat vazifani qayta ishlaganda bajariladi. Bundan tashqari, vazifa bajarilganda uzatilgan `[]queue.Arg{}` `Handle` ga uzatiladi:
 
 ```go
 package jobs
@@ -92,31 +92,31 @@ package jobs
 type ProcessPodcast struct {
 }
 
-// Signature The name and signature of the job.
+// Signature Ishning nomi va imzosi.
 func (r *ProcessPodcast) Signature() string {
   return "process_podcast"
 }
 
-// Handle Execute the job.
+// Handle Ishni bajarish.
 func (r *ProcessPodcast) Handle(args ...any) error {
   return nil
 }
 ```
 
-#### Job Retry
+#### Ishni Qayta Urinish
 
-Job classes support an optional `ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration)` method, which is used to control job retry.
+Ish klasslari ishni qayta urinishni boshqarish uchun ishlatiladigan ixtiyoriy `ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration)` usulini qo‘llab-quvvatlaydi.
 
 ```go
-// ShouldRetry determines if the job should be retried based on the error.
+// ShouldRetry xatoga asoslanib, ish qayta urinib ko‘rilishini belgilaydi.
 func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration) {
   return true, 10 * time.Second
 }
 ```
 
-## Start Queue Server
+## Navbat Serverini Ishga Tushirish
 
-The default queue worker will be run by the runner of queue seriver provider, if you want to start multiple queue workers with different configuration, you can create [a runner](../architecture-concepts/service-providers.md#runners) and add it to the `WithRunners` function in the `bootstrap/app.go` file:
+Standart navbat ishchisi navbat seriver provayderining runneri tomonidan ishga tushiriladi, agar siz turli konfiguratsiyalar bilan bir nechta navbat ishchilarini ishga tushirmoqchi bo'lsangiz, [runner](../architecture-concepts/service-providers.md#runners) yaratishingiz va uni `bootstrap/app.go` faylidagi `WithRunners` funksiyasiga qo'shishingiz mumkin:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -131,11 +131,11 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-You can check [the default queue runner](https://github.com/goravel/framework/blob/master/queue/runners.go) for reference.
+Siz ma'lumot uchun [standart navbat runneri](https://github.com/goravel/framework/blob/master/queue/runners.go) ni tekshirishingiz mumkin.
 
-## Dispatching Jobs
+## Ishlarni Yuborish
 
-Once you have written the job class, you can dispatch it using the `Dispatch` method on the job itself:
+Ish klassini yozganingizdan so‘ng, uni ishning o‘zidagi `Dispatch` usuli yordamida yuborishingiz mumkin:
 
 ```go
 package controllers
@@ -159,9 +159,9 @@ func (r *UserController) Show(ctx http.Context) {
 }
 ```
 
-### Synchronous Dispatching
+### Sinxron Yuborish
 
-If you want to dispatch a job immediately (synchronously), you can use the `DispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process:
+Agar siz ishni darhol (sinxron ravishda) yubormoqchi bo‘lsangiz, `DispatchSync` usulidan foydalanishingiz mumkin. Ushbu usuldan foydalanganda, ish navbatga qo‘yilmaydi va joriy jarayon ichida darhol bajariladi:
 
 ```go
 package controllers
@@ -185,9 +185,9 @@ func (r *UserController) Show(ctx http.Context) {
 }
 ```
 
-### Job Chaining
+### Ishlar Zanjiri
 
-Job chaining allows you to specify a list of queued jobs to be executed in a specific order. If any job in the sequence fails, the rest of the jobs will not be executed. To run a queued job chain, you can use the `Chain` method provided by the `facades.Queue()`:
+Ishlar zanjiri sizga ma‘lum tartibda bajarilishi kerak bo‘lgan navbatga qo‘yilgan ishlar ro‘yxatini belgilash imkonini beradi. Agar ketma-ketlikdagi har qanday ish muvaffaqiyatsiz bo‘lsa, qolgan ishlar bajarilmaydi. Navbatga qo‘yilgan ishlar zanjirini ishga tushirish uchun `facades.Queue()` tomonidan taqdim etilgan `Chain` usulidan foydalanishingiz mumkin:
 
 ```go
 err := facades.Queue().Chain([]queue.Jobs{
@@ -206,71 +206,71 @@ err := facades.Queue().Chain([]queue.Jobs{
 }).Dispatch()
 ```
 
-### Delayed Dispatching
+### Kechiktirilgan Yuborish
 
-If you would like to specify that a job should not be immediately processed by a queue worker, you may use the `Delay` method during job dispatch. For example, let's specify that a job should not be available for processing after 100 seconds of dispatching:
+Agar siz ishning navbat ishchisi tomonidan darhol qayta ishlanmasligini belgilamoqchi bo‘lsangiz, ish yuborilayotganda `Delay` usulidan foydalanishingiz mumkin. Misol uchun, ish yuborilgandan 100 soniyadan keyin qayta ishlash uchun mavjud bo‘lmasligini belgilaymiz:
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).Delay(time.Now().Add(100*time.Second)).Dispatch()
 ```
 
-### Customizing The Queue & Connection
+### Navbat va Ulanishni Sozlash
 
-#### Dispatching To A Particular Queue
+#### Muayyan Navbatga Yuborish
 
-By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you assign to various queues.
+Ishlarni turli navbatlarga yuborish orqali, siz navbatga qo‘yilgan ishlaringizni "toifalarga ajratishingiz" va hatto turli navbatlarga qancha ishchi tayinlash ustunligini belgilashingiz mumkin.
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnQueue("processing").Dispatch()
 ```
 
-#### Dispatching To A Particular Connection
+#### Muayyan Ulanishga Yuborish
 
-If your application interacts with multiple queue connections, you can use the `OnConnection` method to specify the connection to which the task is pushed.
+Agar ilovangiz bir nechta navbat ulanishlari bilan ishlayotgan bo‘lsa, vazifa qaysi ulanishga yuborilishini belgilash uchun `OnConnection` usulidan foydalanishingiz mumkin.
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").Dispatch()
 ```
 
-You may chain the `OnConnection` and `OnQueue` methods together to specify the connection and the queue for a job:
+Siz ish uchun ulanish va navbatni belgilash uchun `OnConnection` va `OnQueue` usullarini birgalikda zanjirlashingiz mumkin:
 
 ```go
 err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).OnConnection("sync").OnQueue("processing").Dispatch()
 ```
 
-## View Failed Jobs
+## Muvaffaqiyatsiz Ishlarni Ko‘rish
 
-You can use the `queue:failed` command to view failed jobs, this command will get the failed jobs from the `failed_jobs` table in the database:
+Muvaffaqiyatsiz ishlarni ko‘rish uchun `queue:failed` buyrug‘idan foydalanishingiz mumkin, bu buyruq ma‘lumotlar bazasidagi `failed_jobs` jadvalidan muvaffaqiyatsiz ishlarni oladi:
 
 ```shell
 ./artisan queue:failed
 ```
 
-## Retrying Failed Jobs
+## Muvaffaqiyatsiz Ishlarni Qayta Urinish
 
-If a job fails during processing, you can use the `queue:retry` command to retry the job. Before retrying the job, you need to get the UUID of the job to be retried from the `failed_jobs` table in the database:
+Agar ish qayta ishlash paytida muvaffaqiyatsiz bo‘lsa, ishni qayta urinish uchun `queue:retry` buyrug‘idan foydalanishingiz mumkin. Ishni qayta urinishdan oldin, ma‘lumotlar bazasidagi `failed_jobs` jadvalidan qayta urinilishi kerak bo‘lgan ishning UUID ni olishingiz kerak:
 
 ```shell
-# Retry a single job
+# Bitta ishni qayta urinish
 ./artisan queue:retry 4427387e-c75a-4295-afb3-2f3d0e410494
 
-# Retry multiple jobs
+# Bir nechta ishlarni qayta urinish
 ./artisan queue:retry 4427387e-c75a-4295-afb3-2f3d0e410494 eafdd963-a8b7-4aca-9421-b376ed9f4382
 
-# Retry failed jobs for a specific connection
+# Muayyan ulanish uchun muvaffaqiyatsiz ishlarni qayta urinish
 ./artisan queue:retry --connection=redis
 
-# Retry failed jobs for a specific queue
+# Muayyan navbat uchun muvaffaqiyatsiz ishlarni qayta urinish
 ./artisan queue:retry --queue=processing
 
-# Retry failed jobs for a specific connection and queue
+# Muayyan ulanish va navbat uchun muvaffaqiyatsiz ishlarni qayta urinish
 ./artisan queue:retry --connection=redis --queue=processing
 
-# Retry all failed jobs
+# Barcha muvaffaqiyatsiz ishlarni qayta urinish
 ./artisan queue:retry all
 ```
 
-## `queue.Arg.Type` Supported Types
+## `queue.Arg.Type` Qo‘llab-quvvatlanadigan Turlar
 
 ```go
 bool
