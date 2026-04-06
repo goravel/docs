@@ -2,13 +2,13 @@
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application.
+Middleware sizning ilovangizga kiruvchi HTTP so‘rovlarini tekshirish va filtrlash uchun qulay mexanizmni taqdim etadi.
 
-## Define Middleware
+## Middleware'ni aniqlash
 
-You can create your own middleware in the `app/http/middleware` directory, the structure is as follows.
+Siz o‘zingizning middleware'ingizni `app/http/middleware` katalogida yaratishingiz mumkin, strukturasi quyidagicha.
 
 ```go
 package middleware
@@ -24,20 +24,20 @@ func Auth() http.Middleware {
 }
 ```
 
-### Create Middleware By Command
+### Middleware'ni buyruq orqali yaratish
 
 ```
 ./artisan make:middleware Auth
 
-// Support nested folders
+// Ichki papkalarni qo‘llab-quvvatlaydi
 ./artisan make:middleware user/Auth
 ```
 
-## Register Middleware
+## Middleware'ni ro‘yxatdan o‘tkazish
 
 ### Global Middleware
 
-If you want to apply middleware for every HTTP request of your application, you only need to register the middleware in the `WithMiddleware` function in the `bootstrap/app.go` file.
+Agar siz middleware'ni ilovangizning har bir HTTP so‘rovi uchun qo‘llamoqchi bo‘lsangiz, faqat `bootstrap/app.go` faylidagi `WithMiddleware` funksiyasida middleware'ni ro‘yxatdan o‘tkazishingiz kifoya.
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -52,18 +52,18 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-The `handler` provides multiple functions to manage middleware:
+`handler` middleware'ni boshqarish uchun bir nechta funksiyalarni taqdim etadi:
 
-- `Append(middlewares ...http.Middleware)`: Append middleware to the end of the middleware stack.
-- `GetGlobalMiddleware() []http.Middleware`: Get all global middleware.
-- `GetRecover() func(ctx http.Context, err any)`: Get the custom recovery function.
-- `Prepend(middlewares ...http.Middleware)`: Prepend middleware to the beginning of the middleware stack.
-- `Recover(fn func(ctx http.Context, err any)) Middleware`: Set a custom recovery function to handle panics.
-- `Use(middleware ...http.Middleware) Middleware`: Replace the current middleware stack with the given middleware.
+- `Append(middlewares ...http.Middleware)`: Middleware'ni middleware stekining oxiriga qo‘shish.
+- `GetGlobalMiddleware() []http.Middleware`: Barcha global middleware'larni olish.
+- `GetRecover() func(ctx http.Context, err any)`: Maxsus tiklash funksiyasini olish.
+- `Prepend(middlewares ...http.Middleware)`: Middleware'ni middleware stekining boshiga qo‘shish.
+- `Recover(fn func(ctx http.Context, err any)) Middleware`: Panikalarni boshqarish uchun maxsus tiklash funksiyasini o‘rnatish.
+- `Use(middleware ...http.Middleware) Middleware`: Joriy middleware stekini berilgan middleware bilan almashtirish.
 
-### Assign Middleware for Routing
+### Routing uchun Middleware'ni tayinlash
 
-You can register the middleware for some routing separately:
+Siz middleware'ni ba‘zi routinglar uchun alohida ro‘yxatdan o‘tkazishingiz mumkin:
 
 ```go
 import "github.com/goravel/framework/http/middleware"
@@ -71,9 +71,9 @@ import "github.com/goravel/framework/http/middleware"
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
 
-## Abort Request
+## So‘rovni to‘xtatish
 
-In middleware, if you need to interrupt the request, you can use the `Abort` method.
+Middleware'da, agar so‘rovni to‘xtatish zarur bo‘lsa, `Abort` metodidan foydalanishingiz mumkin.
 
 ```go
 ctx.Request().Abort()
