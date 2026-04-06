@@ -1,18 +1,18 @@
-# HTTP Tests
+# HTTP Testlari
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-When building web applications, you'll often need to test if your HTTP requests work correctly from start to finish. Goravel's testing tools make this straightforward - you can simulate requests and verify responses without setting up complex test environments.
+Veb-ilovalarni yaratishda, siz tez-tez HTTP so'rovlaringiz boshidan oxirigacha to'g'ri ishlayotganligini sinab ko'rishingiz kerak bo'ladi. Goravelning test vositalari buni oddiy qiladi - siz murakkab test muhitlarini sozlashsiz so'rovlarni simulyatsiya qilishingiz va javoblarni tekshirishingiz mumkin.
 
-## Make Requests
+## So'rovlar berish
 
-Testing HTTP endpoints in Goravel uses a simple pattern. Start with the `Http` method from your `TestCase`, which needs a `*testing.T` parameter for assertions. This gives you a request object (`framework/contracts/testing.TestRequest`) that handles all common HTTP verbs like `Get`, `Post`, and `Put`.
+Goravel-da HTTP nuqtalarini test qilish oddiy naqshdan foydalanadi. O'zingizning `TestCase` dan `Http` usuli bilan boshlang, u tasdiqlashlar uchun `*testing.T` parametrini talab qiladi. Bu sizga `Get`, `Post` va `Put` kabi barcha umumiy HTTP fe'llarini boshqaradigan so'rov ob'ektini (`framework/contracts/testing.TestRequest`) beradi.
 
-Instead of making real HTTP calls, these methods simulate your application's request cycle internally. Each request returns a response object (`framework/contracts/testing.TestResponse`) with methods to check the results.
+Haqiqiy HTTP chaqiruvlarini amalga oshirish o'rniga, bu usullar ilovangizning so'rov tsikli ichki simulyatsiyasini amalga oshiradi. Har bir so'rov natijalarni tekshirish uchun usullarga ega bo'lgan javob ob'ektini (`framework/contracts/testing.TestResponse`) qaytaradi.
 
-Here's a basic example:
+Bu yerda oddiy misol:
 
 ```go
 func (s *ExampleTestSuite) TestIndex() {
@@ -22,16 +22,16 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-### Customize Request Headers
+### So'rov sarlavhalarini sozlash
 
-You can customize request headers using either `WithHeader` for a single header or `WithHeaders` for multiple headers:
+So'rov sarlavhalarini sozlash uchun bitta sarlavha uchun `WithHeader` yoki bir nechta sarlavhalar uchun `WithHeaders` dan foydalanishingiz mumkin:
 
 ```go
 func (s *ExampleTestSuite) TestIndex() {
-    // Single header
+    // Bitta sarlavha
     response, err := s.Http(s.T()).WithHeader("X-Custom-Header", "Value").Get("/users/1")
 
-    // Multiple headers
+    // Bir nechta sarlavhalar
     response, err := s.Http(s.T()).WithHeaders(map[string]string{
         "X-Custom-Header": "Value",
         "Accept": "application/json",
@@ -39,9 +39,9 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-### Cookies
+### Cookie
 
-You may use either `WithCookie` or `WithCookies` method to set cookies value before making a request.
+So'rov berishdan oldin cookie qiymatlarini o'rnatish uchun `WithCookie` yoki `WithCookies` usulidan foydalanishingiz mumkin.
 
 ```go
 import "github.com/goravel/framework/testing/http"
@@ -49,7 +49,7 @@ import "github.com/goravel/framework/testing/http"
 func (s *ExampleTestSuite) TestIndex() {
 	response, err := s.Http(s.T()).WithCookie(http.Cookie("name", "krishan")).Get("/users/1")
 
-	// or use WithCookies for multiple Cookies
+	// yoki bir nechta Cookie lar uchun WithCookies dan foydalaning
 	response, err := s.Http(s.T()).WithCookies(http.Cookies(map[string]string{
         "name": "krishan",
         "lang": "en",
@@ -59,7 +59,7 @@ func (s *ExampleTestSuite) TestIndex() {
 
 ### WithSession
 
-You may set the data to the session using the `WithSession` method:
+Ma'lumotlarni sessiyaga `WithSession` usuli yordamida o'rnatishingiz mumkin:
 
 ```go
 func (s *ExampleTestSuite) TestIndex() {
@@ -67,9 +67,9 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-### Debugging Responses
+### Javoblarni tuzatish
 
-After making request you may use `Session`, `Headers`, `Content`, `Cookies` or `Json` method to check data returned from the request.
+So'rov berilgandan so'ng, so'rovdan qaytarilgan ma'lumotlarni tekshirish uchun `Session`, `Headers`, `Content`, `Cookies` yoki `Json` usulidan foydalanishingiz mumkin.
 
 ```go
 func (s *ExampleTestSuite) TestIndex() {
@@ -81,15 +81,15 @@ func (s *ExampleTestSuite) TestIndex() {
 
 	headers := response.Headers()
 
-	json, err := response.Json() // response body parsed as json(map[string]any)
+	json, err := response.Json() // javob tanasi json (map[string]any) sifatida tahlil qilinadi
 
-	session, err := response.Session() // returns all values stored in the current request session
+	session, err := response.Session() // joriy so'rov sessiyasida saqlangan barcha qiymatlarni qaytaradi
 }
 ```
 
-## Building Body
+## Tana qurish
 
-For method like `Post`, `Put`, `Delete` etc. Goravel accepts `io.Reader` as second argument. To simplify building payloads, the framework provides utility methods for constructing request bodies.
+`Post`, `Put`, `Delete` va hokazo usullar uchun. Goravel `io.Reader` ni ikkinchi argument sifatida qabul qiladi. Yuklamalarni qurishni soddalashtirish uchun tizim so'rov tanalarini qurish uchun foydali usullarni taqdim etadi.
 
 ```go
 import "github.com/goravel/framework/support/http"
@@ -103,9 +103,9 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-## Testing Json APIs
+## JSON API larini test qilish
 
-Goravel provides several helpers to test JSON API responses effectively. It attempts to unmarshal the response body into a Go `map[string]any`. If unmarshalling fails, the associated assertions will also fail.
+Goravel JSON API javoblarini samarali test qilish uchun bir nechta yordamchilarni taqdim etadi. U javob tanasini Go `map[string]any` ga o'tkazishga harakat qiladi. Agar o'tkazish muvaffaqiyatsiz bo'lsa, bog'liq tasdiqlar ham muvaffaqiyatsiz bo'ladi.
 
 ```go
 func (s *ExampleTestSuite) TestIndex() {
@@ -119,7 +119,7 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-To access the unmarshalled JSON directly, use the `Json` method on the `TestResponse`. This lets you inspect individual elements of the response body.
+O'tkazilgan JSON ga to'g'ridan-to'g'ri kirish uchun `TestResponse` dagi `Json` usulidan foydalaning. Bu sizga javob tanasining alohida elementlarini tekshirish imkonini beradi.
 
 ```go
 json, err := response.Json()
@@ -128,12 +128,12 @@ s.True(json["created"])
 ```
 
 :::tip
-The `AssertJson` method checks whether the response contains all the specified values, even if the response includes additional fields. It doesn't require an exact match unless you use `AssertExactJson`.
+`AssertJson` usuli javobda qo'shimcha maydonlar bo'lsa ham, javobda ko'rsatilgan barcha qiymatlar mavjudligini tekshiradi. `AssertExactJson` dan foydalanmaguningizcha, u aniq mos kelishni talab qilmaydi.
 :::
 
-### Asserting Exact JSON Matches
+### Aniq JSON mosliklarini tasdiqlash
 
-If you need to verify that the response matches your expected JSON exactly (with no extra or missing fields), use the `AssertExactJson` method.
+Agar javobingiz kutilgan JSON bilan aniq mos kelishini (qo'shimcha yoki etishmayotgan maydonlarsiz) tekshirish kerak bo'lsa, `AssertExactJson` usulidan foydalaning.
 
 ```go
 func (s *ExampleTestSuite) TestIndex() {
@@ -147,11 +147,11 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-### Fluent JSON Testing
+### Oqimli JSON test qilish
 
-Goravel makes it easy to perform fluent assertions on JSON responses. Using the `AssertFluentJson` method, you can pass a closure that provides an instance of `framework/contracts/testing.AssertableJSON`. This instance allows you to check specific values or conditions in the JSON response returned by your request.
+Goravel JSON javoblarida oqimli tasdiqlarni amalga oshirishni osonlashtiradi. `AssertFluentJson` usulidan foydalangan holda, siz `framework/contracts/testing.AssertableJSON` ning namunasi bilan ta'minlaydigan yopilishni o'tkazishingiz mumkin. Bu namun sizga so'rovingiz tomonidan qaytarilgan JSON javobidagi aniq qiymatlar yoki shartlarni tekshirish imkonini beradi.
 
-For example, you can use the `Where` method to assert that a particular value exists in the JSON response, and the `Missing` method to ensure that an attribute is not present.
+Masalan, JSON javobida ma'lum bir qiymat mavjudligini tasdiqlash uchun `Where` usulidan, va atribut mavjud emasligiga ishonch hosil qilish uchun `Missing` usulidan foydalanishingiz mumkin.
 
 ```go
 import contractstesting "github.com/goravel/framework/contracts/testing"
@@ -170,9 +170,9 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-### Asserting Attribute Presence / Absence
+### Atribut mavjudligi / yo'qligini tasdiqlash
 
-If you want to check whether an attribute is present or missing, Goravel makes it simple with the `Has` and `Missing` methods.
+Agar atribut mavjud yoki yo'qligini tekshirishni istasangiz, Goravel buni `Has` va `Missing` usullari bilan soddalashtiradi.
 
 ```go
 response.AssertStatus(201).
@@ -182,7 +182,7 @@ response.AssertStatus(201).
     })
 ```
 
-You can also assert the presence or absence of multiple attributes at once using `HasAll` and `MissingAll`.
+Shuningdek, bir vaqtning o'zida bir nechta atributlarning mavjudligi yoki yo'qligini `HasAll` va `MissingAll` yordamida tasdiqlashingiz mumkin.
 
 ```go
 response.AssertStatus(201).
@@ -192,7 +192,7 @@ response.AssertStatus(201).
     })
 ```
 
-If you only need to check for the presence of at least one attribute from a list, use the `HasAny` method.
+Agar sizga ro'yxatdan kamida bitta atributning mavjudligini tekshirish kerak bo'lsa, `HasAny` usulidan foydalaning.
 
 ```go
 response.AssertStatus(201).
@@ -201,9 +201,9 @@ response.AssertStatus(201).
     })
 ```
 
-### Scoping JSON Collection Assertions
+### JSON kollektsiyasi tasdiqlarini qamrab olish
 
-When a response contains a collection of objects under a named key, you can use various methods to assert its structure and content.
+Javobda nomlangan kalit ostida ob'ektlar to'plami mavjud bo'lsa, uning tuzilishi va tarkibini tasdiqlash uchun turli usullardan foydalanishingiz mumkin.
 
 ```go
 type Item struct {
@@ -221,10 +221,10 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 }
 ```
 
-You can use the `Count` method to verify the number of elements in the collection. To assert properties of the first element, use the `First` method, which provides an instance of `AssertableJson`. Similarly, the `Each` method allows you to iterate over all elements and assert their properties individually. Alternatively, the `HasWithScope` method combines the functionality of `First` and `Count`, allowing you to assert both the first element and its contents while providing an `AssertableJson` instance for scoped assertions.
+Kolleksiyadagi elementlar sonini tekshirish uchun `Count` usulidan foydalanishingiz mumkin. Birinchi elementning xususiyatlarini tasdiqlash uchun `AssertableJson` namunasi bilan ta'minlaydigan `First` usulidan foydalaning. Xuddi shunday, `Each` usuli sizga barcha elementlar ustida aylanish va ularning xususiyatlarini alohida tasdiqlash imkonini beradi. Boshqa tomondan, `HasWithScope` usuli `First` va `Count` funksionalligini birlashtiradi, bu sizga birinchi elementni va uning tarkibini tasdiqlash imkonini beradi, shu bilan birga qamrovli tasdiqlar uchun `AssertableJson` namunasi bilan ta'minlaydi.
 
 ```go
-// Count and First
+// Count va First
 response.AssertStatus(200).
     AssertFluentJson(func(json contractstesting.AssertableJSON) {
         json.Count("items", 2).
@@ -251,9 +251,9 @@ response.AssertStatus(200).
     })
 ```
 
-## Available Assertions
+## Mavjud tasdiqlar
 
-### Response Assertions
+### Javob tasdiqlari
 
 |                                                   |                                                         |                                                         |
 | ------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
@@ -273,7 +273,7 @@ response.AssertStatus(200).
 
 ### AssertAccepted
 
-Asserts that the response has an `202 Accepted` HTTP status code:
+Javobning `202 Qabul qilindi` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertAccepted()
@@ -281,7 +281,7 @@ response.AssertAccepted()
 
 ### AssertBadRequest
 
-Asserts that the response has a `400 Bad Request` HTTP status code:
+Javobning `400 Noto‘g‘ri so‘rov` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertBadRequest()
@@ -289,7 +289,7 @@ response.AssertBadRequest()
 
 ### AssertConflict
 
-Asserts that the response has a `409 Conflict` HTTP status code:
+Javobning `409 Ziddiyat` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertConflict()
@@ -297,7 +297,7 @@ response.AssertConflict()
 
 ### AssertCookie
 
-Asserts that the response contains a cookie with the specified name and value:
+Javobda belgilangan nom va qiymatga ega cookie borligini tasdiqlaydi:
 
 ```go
 response.AssertCookie("name", "value")
@@ -305,7 +305,7 @@ response.AssertCookie("name", "value")
 
 ### AssertCookieExpired
 
-Asserts that the specified cookie has expired:
+Belgilangan cookie muddati o‘tganligini tasdiqlaydi:
 
 ```go
 response.AssertCookieExpired("name")
@@ -313,7 +313,7 @@ response.AssertCookieExpired("name")
 
 ### AssertCookieMissing
 
-Asserts that the response does not contain a cookie with the specified name:
+Javobda belgilangan nomga ega cookie yo‘qligini tasdiqlaydi:
 
 ```go
 response.AssertCookieMissing("name")
@@ -321,7 +321,7 @@ response.AssertCookieMissing("name")
 
 ### AssertCookieNotExpired
 
-Asserts that the specified cookie has not expired:
+Belgilangan cookie muddati o‘tmaganligini tasdiqlaydi:
 
 ```go
 response.AssertCookieNotExpired("name")
@@ -329,7 +329,7 @@ response.AssertCookieNotExpired("name")
 
 ### AssertCreated
 
-Asserts that the response has a `201 Created` HTTP status code:
+Javobning `201 Yaratildi` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertCreated()
@@ -337,15 +337,15 @@ response.AssertCreated()
 
 ### AssertDontSee
 
-Asserts that the response does not contain the specified values. The second parameter (optional) determines whether to escape special characters in the values before checking. If not provided, it defaults to true.
+Javobda belgilangan qiymatlar yo‘qligini tasdiqlaydi. Ikkinchi parametr (ixtiyoriy) qiymatlardagi maxsus belgilarni tekshirishdan oldin ekranlash kerakligini aniqlaydi. Agar ko‘rsatilmagan bo‘lsa, standart holatda true ga o‘rnatiladi.
 
 ```go
-response.AssertDontSee([]string{"<div>"}, false)  // Do not escape special characters
+response.AssertDontSee([]string{"<div>"}, false)  // Maxsus belgilarni ekranlamang
 ```
 
 ### AssertExactJson
 
-Asserts that the response JSON matches exactly the provided `map[string]any`:
+Javob JSONi taqdim etilgan `map[string]any` bilan aniq mos kelishini tasdiqlaydi:
 
 ```go
 response.AssertExactJson(map[string]any{"created": true})
@@ -353,7 +353,7 @@ response.AssertExactJson(map[string]any{"created": true})
 
 ### AssertFluentJson
 
-Asserts the response JSON using a fluent interface:
+Javob JSONini oqim interfeysi yordamida tasdiqlaydi:
 
 ```go
 import contractstesting "github.com/goravel/framework/contracts/testing"
@@ -365,7 +365,7 @@ response.AssertFluentJson(func(json contractstesting.AssertableJSON) {
 
 ### AssertForbidden
 
-Asserts that the response has a `403 Forbidden` HTTP status code:
+Javobning `403 Taqiqlangan` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertForbidden()
@@ -373,7 +373,7 @@ response.AssertForbidden()
 
 ### AssertFound
 
-Asserts that the response has a `302 Found` HTTP status code:
+Javobning `302 Topildi` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertFound()
@@ -381,7 +381,7 @@ response.AssertFound()
 
 ### AssertGone
 
-Asserts that the response has a `410 Gone` HTTP status code:
+Javobning `410 Yo‘qolgan` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertGone()
@@ -389,7 +389,7 @@ response.AssertGone()
 
 ### AssertHeader
 
-Asserts that the response contains the specified header with the given value:
+Javobda belgilangan sarlavha berilgan qiymat bilan borligini tasdiqlaydi:
 
 ```go
 response.AssertHeader("Content-Type", "application/json")
@@ -397,7 +397,7 @@ response.AssertHeader("Content-Type", "application/json")
 
 ### AssertHeaderMissing
 
-Asserts that the response does not contain the specified header:
+Javobda belgilangan sarlavha yo‘qligini tasdiqlaydi:
 
 ```go
 response.AssertHeaderMissing("X-Custom-Header")
@@ -405,7 +405,7 @@ response.AssertHeaderMissing("X-Custom-Header")
 
 ### AssertInternalServerError
 
-Asserts that the response has a `500 Internal Server` Error HTTP status code:
+Javobning `500 Ichki server` xatosi HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertInternalServerError()
@@ -413,7 +413,7 @@ response.AssertInternalServerError()
 
 ### AssertJson
 
-Asserts that the response JSON contains the provided fragment:
+Javob JSONida taqdim etilgan fragment borligini tasdiqlaydi:
 
 ```go
 response.AssertJson(map[string]any{"created": true})
@@ -421,7 +421,7 @@ response.AssertJson(map[string]any{"created": true})
 
 ### AssertJsonMissing
 
-Asserts that the specified keys or values are missing in the response JSON:
+Javob JSONida belgilangan kalitlar yoki qiymatlar yo'qligini tasdiqlaydi:
 
 ```go
 response.AssertJsonMissing(map[string]any{"created": false})
@@ -429,7 +429,7 @@ response.AssertJsonMissing(map[string]any{"created": false})
 
 ### AssertMethodNotAllowed
 
-Asserts that the response has a `405 Method Not Allowed` HTTP status code:
+Javobning `405 Method Not Allowed` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertMethodNotAllowed()
@@ -437,7 +437,7 @@ response.AssertMethodNotAllowed()
 
 ### AssertMovedPermanently
 
-Asserts that the response has a `301 Moved Permanently` HTTP status code:
+Javobning `301 Moved Permanently` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertMovedPermanently()
@@ -445,7 +445,7 @@ response.AssertMovedPermanently()
 
 ### AssertNoContent
 
-Asserts that the response has a `204 No Content` HTTP status code:
+Javobning `204 No Content` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertNoContent()
@@ -453,7 +453,7 @@ response.AssertNoContent()
 
 ### AssertNotAcceptable
 
-Asserts that the response has a `406 Not Acceptable` HTTP status code:
+Javobning `406 Not Acceptable` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertNotAcceptable()
@@ -461,7 +461,7 @@ response.AssertNotAcceptable()
 
 ### AssertNotFound
 
-Asserts that the response has a `404 Not Found` HTTP status code:
+Javobning `404 Not Found` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertNotFound()
@@ -469,7 +469,7 @@ response.AssertNotFound()
 
 ### AssertNotModified
 
-Asserts that the response has a `304 Not Modified` HTTP status code:
+Javobning `304 Not Modified` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertNotModified()
@@ -477,7 +477,7 @@ response.AssertNotModified()
 
 ### AssertOk
 
-Asserts that the response has a `200 OK` HTTP status code:
+Javobning `200 OK` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertOk()
@@ -485,7 +485,7 @@ response.AssertOk()
 
 ### AssertPartialContent
 
-Asserts that the response has a `206 Partial Content` HTTP status code:
+Javobning `206 Partial Content` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertPartialContent()
@@ -493,7 +493,7 @@ response.AssertPartialContent()
 
 ### AssertPaymentRequired
 
-Asserts that the response has a `402 Payment Required` HTTP status code:
+Javobning `402 Payment Required` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertPaymentRequired()
@@ -501,7 +501,7 @@ response.AssertPaymentRequired()
 
 ### AssertRequestTimeout
 
-Asserts that the response has a `408 Request Timeout` HTTP status code:
+Javobning `408 Request Timeout` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertRequestTimeout()
@@ -509,23 +509,23 @@ response.AssertRequestTimeout()
 
 ### AssertSee
 
-Asserts that the response contains the specified values. The second parameter (optional) determines whether to escape special characters in the values before checking. If not provided, it defaults to `true`.
+Javobda belgilangan qiymatlar mavjudligini tasdiqlaydi. Ikkinchi parametr (ixtiyoriy) tekshirishdan oldin qiymatlardagi maxsus belgilarni ekranlash kerakligini aniqlaydi. Agar ko'rsatilmagan bo'lsa, standart holatda `true` ga o'rnatiladi.
 
 ```go
-response.AssertSee([]string{"<div>"}, false)  // Do not escape special characters
+response.AssertSee([]string{"<div>"}, false)  // Maxsus belgilarni ekranlamang
 ```
 
 ### AssertSeeInOrder
 
-Asserts that the response contains the specified values in the given order. The second parameter (optional) determines whether to escape special characters in the values before checking. If not provided, it defaults to `true`.
+Javobda belgilangan qiymatlar berilgan tartibda mavjudligini tasdiqlaydi. Ikkinchi parametr (ixtiyoriy) tekshirishdan oldin qiymatlardagi maxsus belgilarni ekranlash kerakligini aniqlaydi. Agar ko'rsatilmagan bo'lsa, standart holatda `true` ga o'rnatiladi.
 
 ```go
-response.AssertSeeInOrder([]string{"First", "Second"}, false)  // Do not escape special characters
+response.AssertSeeInOrder([]string{"First", "Second"}, false)  // Maxsus belgilarni ekranlamang
 ```
 
 ### AssertServerError
 
-Asserts that the response has a server error (>= 500 , < 600) HTTP status code:
+Javobning server xatosi (>= 500 , < 600) HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertServerError()
@@ -533,7 +533,7 @@ response.AssertServerError()
 
 ### AssertServiceUnavailable
 
-Asserts that the response has a `503 Service Unavailable` HTTP status code:
+Javobning `503 Service Unavailable` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertServiceUnavailable()
@@ -541,7 +541,7 @@ response.AssertServiceUnavailable()
 
 ### AssertStatus
 
-Asserts that the response has the specified HTTP status code:
+Javobning belgilangan HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertStatus(200)
@@ -549,7 +549,7 @@ response.AssertStatus(200)
 
 ### AssertSuccessful
 
-Asserts that the response has a successful HTTP status code (2xx):
+Javobning muvaffaqiyatli HTTP holat kodiga (2xx) ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertSuccessful()
@@ -557,7 +557,7 @@ response.AssertSuccessful()
 
 ### AssertTemporaryRedirect
 
-Asserts that the response has a `307 Temporary Redirect` HTTP status code:
+Javobning `307 Temporary Redirect` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertTemporaryRedirect()
@@ -565,7 +565,7 @@ response.AssertTemporaryRedirect()
 
 ### AssertTooManyRequests
 
-Asserts that the response has a `429 Too Many Requests` HTTP status code:
+Javobning `429 Too Many Requests` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertTooManyRequests()
@@ -573,7 +573,7 @@ response.AssertTooManyRequests()
 
 ### AssertUnauthorized
 
-Asserts that the response has a `401 Unauthorized` HTTP status code:
+Javobning `401 Unauthorized` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertUnauthorized()
@@ -581,7 +581,7 @@ response.AssertUnauthorized()
 
 ### AssertUnprocessableEntity
 
-Asserts that the response has a `422 Unprocessable Entity` HTTP status code:
+Javobning `422 Unprocessable Entity` HTTP holat kodiga ega ekanligini tasdiqlaydi:
 
 ```go
 response.AssertUnprocessableEntity()
