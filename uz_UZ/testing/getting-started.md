@@ -1,16 +1,16 @@
-# Getting Started
+# Boshlash
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-The testing function of Goravel relies on Golang's official test component, extending unit testing to support integration testing and improve application robustness.
+Goravelning testlash funksiyasi Golangning rasmiy test komponentiga tayanadi, birlik testlarini kengaytirib, integratsion testlarni qo‘llab-quvvatlaydi va ilova mustahkamligini oshiradi.
 
-## Environment
+## Muhit
 
-### Custom Environment File
+### Maxsus Muhit Fayli
 
-By default, the `.env` file in the root directory is used to inject configuration information during testing. If you want to use different `.env` files for different packages, you can create a `.env` file in the package directory, and the test will read this file first.
+Standart bo‘yicha, testlash paytida konfiguratsiya ma’lumotlarini kiritish uchun ildiz katalogidagi `.env` fayli ishlatiladi. Agar turli paketlar uchun turli `.env` fayllaridan foydalanmoqchi bo‘lsangiz, paket katalogida `.env` faylini yaratishingiz mumkin va test avval bu faylni o‘qiydi.
 
 ```
 - /app
@@ -23,26 +23,26 @@ By default, the `.env` file in the root directory is used to inject configuratio
 - .env
 ```
 
-In addition, you may create a `.env.testing` file at the root of your project. This file will be used instead of the `.env` file when running `go test` with the `--env` option, note that this option needs to follow the test directory, for example:
+Bundan tashqari, loyihangizning ildizida `.env.testing` faylini yaratishingiz mumkin. Bu fayl `go test` buyrug‘ini `--env` opsiyasi bilan ishga tushirganda `.env` fayli o‘rniga ishlatiladi, eslatma, bu opsiya test katalogini kuzatishi kerak, masalan:
 
 ```shell
 go test ./... --env=.env.testing
 go test ./... -e=.env.testing
 ```
 
-### `TestCase` Struct
+### `TestCase` Strukturasi
 
-There is a `TestCase` Struct in Goravel, and the Struct will provide some convenient test methods in the future, in addition, there is an `init` method in the same file, this method guides the registration of the Goravel application before running the test. You may include any necessary logic in this method that needs to be executed before the test.
+Goravelda `TestCase` Strukturasi mavjud va bu Struktura kelajakda qulay test usullarini taqdim etadi, bundan tashqari, bir xil faylda `init` usuli mavjud, bu usul testni ishga tushirishdan oldin Goravel ilovasini ro‘yxatdan o‘tkazishni yo‘naltiradi. Siz testdan oldin bajarilishi kerak bo‘lgan har qanday zarur mantiqni ushbu usulga kiritishingiz mumkin.
 
-## Creating Tests
+## Testlarni Yaratish
 
-To create a new test case, use the `make:test` Artisan command:
+Yangi test holatini yaratish uchun `make:test` Artisan buyrug‘idan foydalaning:
 
 ```shell
 ./artisan make:test feature/UserTest
 ```
 
-Our test cases are written using the suite function of the [stretchr/testify](https://github.com/stretchr/testify) package by default. This function enables us to configure pre-test, post-test, sub-test, and assertion, among other things, which results in more organized test cases. For further information, kindly refer to the official documentation.
+Bizning test holatlarimiz standart bo‘yicha [stretchr/testify](https://github.com/stretchr/testify) paketining `suite` funksiyasidan foydalanib yozilgan. Bu funksiya bizga testdan oldingi, testdan keyingi, kichik test va tasdiqlash kabi narsalarni sozlash imkonini beradi, bu esa yaxshi tashkil etilgan test holatlariga olib keladi. Qo‘shimcha ma’lumot uchun iltimos, rasmiy hujjatlarga murojaat qiling.
 
 ```go
 package feature
@@ -77,22 +77,22 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-## Database Testing
+## Ma'lumotlar Bazasi Testi
 
-Goravel model factories and Seeders can easily create test database records for the application's model.
+Goravel model zavodlari va Seeders ilova modeli uchun test ma'lumotlar bazasi yozuvlarini osonlik bilan yaratishi mumkin.
 
-### Factories
+### Zavodlar
 
-If you're conducting tests, it might be necessary to add some records to your database before running the test. You don't have to manually input the values of each column for the test data creation. With Goravel, you can set default attributes for your models via [factories](../orm/factories.md).
+Agar siz testlar o‘tkazayotgan bo‘lsangiz, testni ishga tushirishdan oldin ma'lumotlar bazangizga ba’zi yozuvlar qo‘shish kerak bo‘lishi mumkin. Test ma’lumotlarini yaratish uchun har bir ustunning qiymatlarini qo‘lda kiritishingiz shart emas. Goravel bilan siz [zavodlar](../orm/factories.md) orqali modellaringiz uchun standart atributlarni o‘rnatishingiz mumkin.
 
 ```go
 var user models.User
 err := facades.Orm().Factory().Create(&user)
 ```
 
-### Running Seeders
+### Seederlarni Ishga Tushirish
 
-If you would like to use [database seeders](../database/seeding.md) to populate your database during a feature test, you may invoke the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
+Agar xususiyat testi davomida ma'lumotlar bazangizni to‘ldirish uchun [ma'lumotlar bazasi seeders](../database/seeding.md) dan foydalanmoqchi bo‘lsangiz, `Seed` usulini chaqirishingiz mumkin. Standart bo‘yicha, `Seed` usuli `DatabaseSeeder` ni bajaradi, bu esa boshqa barcha seederlaringizni bajarishi kerak. Yoki, `Seed` usuliga aniq bir seeder strukturasini o‘tkazishingiz mumkin:
 
 ```go
 package feature
@@ -132,15 +132,15 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-### Using Docker
+### Docker-dan Foydalanish
 
-When using `go test`, multiple packages are tested in parallel. As a result, refreshing the database or cache in a test case using a local database or cache can potentially affect other parallel test cases. To address this, Goravel offers Docker-based testing. With Docker, a database or cache image can be created and used independently across different packages.
+`go test` dan foydalanganda, bir nechta paketlar parallel ravishda testlanadi. Natijada, mahalliy ma'lumotlar bazasi yoki keshdagi test holatida ma'lumotlar bazasi yoki keshlarni yangilash boshqa parallel test holatlariga ta’sir qilishi mumkin. Buni hal qilish uchun Goravel Docker asosidagi testlarni taklif qiladi. Docker bilan, ma'lumotlar bazasi yoki keshlash tasviri yaratilishi va turli paketlar orasida mustaqil ravishda ishlatilishi mumkin.
 
-> Due to the limited support of the Docker image for the windows system, currently, the Docker test can only be run in non-windows environments.
+> Windows tizimi uchun Docker tasvirining cheklangan qo‘llab-quvvatlanishi tufayli, hozirda Docker testi faqat Windows bo‘lmagan muhitlarda ishga tushirilishi mumkin.
 
-#### Initiate Docker
+#### Docker-ni Ishlatish
 
-You can use the `Database` or `Cache` method to create an image, or you can pass the connection name to this method:
+Siz tasvir yaratish uchun `Database` yoki `Cache` usulidan foydalanishingiz mumkin yoki ushbu usulga ulanish nomini o‘tkazishingiz mumkin:
 
 ```go
 database, err := facades.Testing().Docker().Database()
@@ -150,7 +150,7 @@ cache, err := facades.Testing().Docker().Cache()
 cache, err := facades.Testing().Docker().Cache("redis")
 ```
 
-You can also use the `Image` method to customize the image:
+Shuningdek, siz tasvirni sozlash uchun `Image` usulidan foydalanishingiz mumkin:
 
 ```go
 import contractstesting "github.com/goravel/framework/contracts/testing"
@@ -166,41 +166,41 @@ image, err := facades.Testing().Docker().Image(contractstesting.Image{
 })
 ```
 
-#### Build Image
+#### Tasvirni Yaratish
 
-After the image is initiated, you can use the `Build` method to build the image:
+Tasvir ishga tushirilgandan so‘ng, tasvirni yaratish uchun `Build` usulidan foydalanishingiz mumkin:
 
 ```go
 err := database.Build()
 err := cache.Build()
 ```
 
-At this time, you can use the `docker ps` command to see that the image is already running on the system, and you can obtain the configuration information of the database through the `Config` method to facilitate connection debugging:
+Bu vaqtda siz `docker ps` buyrug‘i yordamida tasvir tizimda allaqachon ishlayotganini ko‘rishingiz mumkin va `Config` usuli orqali ma'lumotlar bazasining konfiguratsiya ma’lumotlarini olishingiz mumkin, bu ulanishni sozlashni osonlashtiradi:
 
 ```go
 config := database.Config()
 config := cache.Config()
 ```
 
-#### Running Seeders
+#### Seederlarni Ishga Tushirish
 
-If you wish to use [seeder](../database/seeding.md) to populate the database during testing, you can call the `Seed` method. By default, the `Seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you can pass a specific seeder struct to the `Seed` method:
+Agar testlash davomida ma'lumotlar bazasini to‘ldirish uchun [seeder](../database/seeding.md) dan foydalanmoqchi bo‘lsangiz, `Seed` usulini chaqirishingiz mumkin. Standart bo‘yicha, `Seed` usuli `DatabaseSeeder` ni bajaradi, bu esa boshqa barcha seederlaringizni bajarishi kerak. Yoki, `Seed` usuliga aniq bir seeder strukturasini o‘tkazishingiz mumkin:
 
 ```go
 err := database.Seed()
 err := database.Seed(&seeders.UserSeeder{})
 ```
 
-#### Refresh Database or Cache
+#### Ma'lumotlar Bazasi yoki Keshlashni Yangilash
 
-Because the test cases in the same package are executed serially, refreshing the database or cache after a single test case run will have no negative impact, we can use the `Fresh` method:
+Bir xil paketdagi test holatlari ketma-ket bajarilganligi sababli, bitta test holati ishlagandan keyin ma'lumotlar bazasi yoki keshlashni yangilash salbiy ta’sir ko‘rsatmaydi, biz `Fresh` usulidan foydalanishimiz mumkin:
 
 ```go
 err := database.Fresh()
 err := cache.Fresh()
 ```
 
-For the database, you can also use the `RefreshDatabase` method:
+Ma'lumotlar bazasi uchun, shuningdek, `RefreshDatabase` usulidan foydalanishingiz mumkin:
 
 ```go
 package feature
@@ -235,17 +235,17 @@ func (s *ExampleTestSuite) TestIndex() {
 }
 ```
 
-#### Uninstall Image
+#### Tasvirni O‘chirish
 
-After the test cases in the sub-package are executed, the image will be uninstalled automatically in one hour, you can also use the `Shutdown` method to uninstall the image manually.
+Kichik paketdagi test holatlari bajarilgandan so‘ng, tasvir bir soat ichida avtomatik ravishda o‘chiriladi, shuningdek, tasvirni qo‘lda o‘chirish uchun `Shutdown` usulidan foydalanishingiz mumkin.
 
 ```go
 err := database.Shutdown()
 ```
 
-#### Example
+#### Misol
 
-We can create a `TestMain` method in the sub-package and add the pre-logic of the test case:
+Biz kichik paketda `TestMain` usulini yaratishimiz va test holatining oldingi mantiqini qo‘shishimiz mumkin:
 
 ```go
 // tests/feature/main_test.go
@@ -292,4 +292,4 @@ func TestMain(m *testing.M) {
 }
 ```
 
-> For more usage of the TestMain method, see [Official Documentation](https://pkg.go.dev/testing#hdr-Main).
+> TestMain usulining ko‘proq qo‘llanilishi uchun [Rasmiy Hujjat](https://pkg.go.dev/testing#hdr-Main) ga qarang.
