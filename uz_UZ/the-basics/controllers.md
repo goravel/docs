@@ -1,14 +1,14 @@
-# Controllers
+# Kontrollerlar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Instead of defining all request processing logic in the form of a closure in a separate route, a controller can be used for integration. The controllers are stored in the `app/http/controllers` directory.
+Alohida marshrutda barcha so‘rovni qayta ishlash mantiqini yopish (closure) shaklida belgilash o‘rniga, birlashtirish uchun kontrollerdan foydalanish mumkin. Kontrollerlar `app/http/controllers` katalogida saqlanadi.
 
-## Define Controllers
+## Kontrollerlarni belgilash
 
-The following is an example of a basic controller:
+Quyida oddiy kontrollerning namunasi keltirilgan:
 
 ```go
 package controllers
@@ -36,7 +36,7 @@ func (r *UserController) Show(ctx http.Context) http.Response {
 }
 ```
 
-The route define:
+Marshrut belgilash:
 
 ```go
 package routes
@@ -52,33 +52,33 @@ func Api() {
 }
 ```
 
-### Create Controller
+### Kontroller yaratish
 
 ```shell
 ./artisan make:controller UserController
 ./artisan make:controller user/UserController
 ```
 
-## Resource Controllers
+## Resurs kontrollerlari
 
-If you think of each Eloquent model in your application as a "resource", it is typical to perform the same sets of actions against each resource in your application. For example, imagine your application contains a `Photo` model and a `Movie` model. It is likely that users can create, read, update, or delete these resources.
+Agar ilovangizdagi har bir Eloquent modelini "resurs" deb hisoblasangiz, ilovangizdagi har bir resursga nisbatan bir xil harakatlar to‘plamini bajarish odatiy holdir. Misol uchun, ilovangizda `Photo` modeli va `Movie` modeli bor deb tasavvur qiling. Foydalanuvchilar ushbu resurslarni yaratishi, o‘qishi, yangilashi yoki o‘chirishi mumkin.
 
-Because of this common use case, Goravel resource routing assigns the typical create, read, update, and delete ("CRUD") routes to a controller with a single line of code. To get started, we can use the `make:controller` Artisan command's `--resource` option to quickly create a controller to handle these actions:
+Ushbu umumiy foydalanish holati tufayli, Goravel resurs marshrutlash odatiy yaratish, o‘qish, yangilash va o‘chirish ("CRUD") marshrutlarini bitta kod satri bilan kontrollerga tayinlaydi. Boshlash uchun, biz ushbu harakatlarni boshqarish uchun tezda kontroller yaratish uchun `make:controller` Artisan buyrug‘ining `--resource` opsiyasidan foydalanishimiz mumkin:
 
 ```shell
 ./artisan make:controller --resource PhotoController
 ```
 
-This command will generate a controller at `app/http/controllers/photo_controller.go`. The controller will contain a method for each of the available resource operations. Next, you may register a resource route that points to the controller:
+Ushbu buyruq `app/http/controllers/photo_controller.go` faylida kontroller yaratadi. Kontrollerda mavjud bo‘lgan har bir resurs operatsiyasi uchun usul bo‘ladi. Keyin, siz kontrollerga yo‘naltirilgan resurs marshrutini ro‘yxatdan o‘tkazishingiz mumkin:
 
 ```go
 facades.Route().Resource("photos", controllers.NewPhotoController())
 ```
 
-| Verb      | URI               | Action  |
-| --------- | ----------------- | ------- |
-| GET       | `/photos`         | Index   |
-| POST      | `/photos`         | Store   |
-| GET       | `/photos/{photo}` | Show    |
-| PUT/PATCH | `/photos/{photo}` | Update  |
-| DELETE    | `/photos/{photo}` | Destroy |
+| Fe’l      | URI               | Harakat    |
+| --------- | ----------------- | ---------- |
+| GET       | `/photos`         | Indeks     |
+| POST      | `/photos`         | Saqlash    |
+| GET       | `/photos/{photo}` | Ko‘rsatish |
+| PUT/PATCH | `/photos/{photo}` | Yangilash  |
+| DELETE    | `/photos/{photo}` | O‘chirish  |
