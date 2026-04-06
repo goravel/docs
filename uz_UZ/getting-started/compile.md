@@ -1,82 +1,82 @@
-# Compile
+# Tuzish
 
 [[toc]]
 
-## Compile command
+## Tuzish buyrug‘i
 
-The Goravel project can be compiled with the following command:
+Goravel loyihasini quyidagi buyruq orqali tuzish mumkin:
 
 ```shell
-# Select the system to compile
+# Tuzish uchun tizimni tanlash
 ./artisan build
 
-# Specify the system to compile
+# Tuzish uchun tizimni ko‘rsatish
 ./artisan build --os=linux
 ./artisan build -o=linux
 
-# Static compilation
+# Statik tuzish
 ./artisan build --static
 ./artisan build -s
 
-# Specify the output file name
+# Chiqish fayli nomini ko‘rsatish
 ./artisan build --name=goravel
 ./artisan build -n=goravel
 ```
 
-## Manual compilation
+## Qo‘lda tuzish
 
-### Regular compilation
+### Oddiy tuzish
 
 ```shell
 go build .
 ```
 
-#### Deploy Server
+#### Serverga joylash
 
-The Following files and folders need to be uploaded to the server during deployment:
+Joylash vaqtida serverga quyidagi fayl va papkalarni yuklash kerak:
 
 ```
 .env
-./main // Compile the resulting binary file
-./public // if exists
-./resources // if exists
+./main // Tuzish natijasidagi binar fayl
+./public // mavjud bo‘lsa
+./resources // mavjud bo‘lsa
 ```
 
-### Static compilation
+### Statik tuzish
 
-The package by regular compilation also needs to rely on the support of the deployment environment, the statically compiled files can be freely put to run on the specified platform without environment configuration.
+Oddiy tuzish orqali olingan paket joylash muhitining qo‘llab-quvvatlashiga muhtoj bo‘ladi, statik tuzilgan fayllarni esa muayyan platformada muhit sozlamasisiz erkin ishlatish mumkin.
 
 ```shell
 go build --ldflags "-extldflags -static" -o main .
 ```
 
-### Cross compile
+### Platformalararo tuzish
 
-Compilation is differentiated by platform, you need to select a matching compilation method according to the deployment situation.
+Tuzish platformaga qarab farqlanadi, joylash holatiga mos tuzish usulini tanlashingiz kerak.
 
 ```shell
-// Compile Linux environment
+// Linux muhiti uchun tuzish
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build .
 
-// Compile Windows environment
+// Windows muhiti uchun tuzish
 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build .
 
-// Compile Mac environment
+// Mac muhiti uchun tuzish
 CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 ```
 
 ## Docker
 
-Goravel has a default `Dockerfile` and `docker-compose.yml` file, you can use it directly, note that `APP_HOST` should be `0.0.0.0` at this time.
+Goravelning standart `Dockerfile` va `docker-compose.yml` fayli mavjud, ularni to‘g‘ridan-to‘g‘ri ishlatishingiz mumkin, shu paytda `APP_HOST` `0.0.0.0` bo‘lishi kerakligiga e‘tibor bering.
 
 ```shell
 docker build .
 ```
 
-If you encounter slow download dependencies and time zone issues, you can optimize the Dockerfile content like the following script:
+Agar bog‘liqliklarni yuklash sekin va vaqt mintaqasi muammolari duch kelsangiz, Dockerfile mazmunini quyidagi skript kabi optimallashtirishingiz mumkin:
 
 ```dockerfile
-# China Special
+# Xitoy uchun maxsus
 
 FROM golang:alpine AS builder
 ENV GO111MODULE=on \
@@ -96,7 +96,7 @@ WORKDIR /www
 COPY --from=builder /build/.env /www/.env
 COPY --from=builder /build/main /www/
 
-# If exists
+# Mavjud bo‘lsa
 COPY --from=builder /build/database/ /www/database/
 COPY --from=builder /build/public/ /www/public/
 COPY --from=builder /build/storage/ /www/storage/
@@ -107,32 +107,32 @@ ENTRYPOINT ["/www/main"]
 
 ### Docker Compose
 
-You can also quickly start the service with the following command:
+Shuningdek, xizmatni quyidagi buyruq orqali tezda ishga tushirishingiz mumkin:
 
 ```shell
 docker-compose build
 docker-compose up
 ```
 
-> Note: If you need external access, you need to change APP_HOST to 0.0.0.0
+> Eslatma: Agar tashqi kirish kerak bo‘lsa, APP_HOST ni 0.0.0.0 ga o‘zgartirishingiz kerak
 
-## Set timezone
+## Vaqt mintaqasini o‘rnatish
 
-When the `app.timezone` configuration is not `UTC`, you need to set the timezone to the application during compilation. You can choose any of the following three methods:
+`app.timezone` sozlamasi `UTC` bo‘lmaganda, tuzish vaqtida ilovaga vaqt mintaqasini o‘rnatishingiz kerak. Quyidagi uch usuldan istalgan birini tanlashingiz mumkin:
 
-1. Add timezone settings in Dockerfile
+1. Dockerfile faylida vaqt mintaqasi sozlamalarini qo‘shish
 
 ```
 RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
 ```
 
-2. Set timezone during compilation
+2. Tuzish vaqtida vaqt mintaqasini o‘rnatish
 
 ```
 go build -tags timetzdata .
 ```
 
-3. Import timezone in `main.go`
+3. `main.go` faylida vaqt mintaqasini import qilish
 
 ```shell
 import (
