@@ -1,20 +1,20 @@
-# Authentication
+# Autentifikatsiya
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Authentication is an indispensable feature in Web Applications, the `facades.Auth()` module of Goravel provides support for JWT and Session drivers, and you can customize the driver and user provider.
+Autentifikatsiya veb-ilovalarda ajralmas xususiyatdir. Goravelning `facades.Auth()` moduli JWT va Session drayverlarini qo‘llab-quvvatlaydi va siz drayver va foydalanuvchi provayderini sozlashingiz mumkin.
 
-## Configuration
+## Konfiguratsiya
 
-You can configure `defaults` guard and multiple `guards` in the `config/auth.go` file to switch different user identities in the application.
+Ilovada turli foydalanuvchi identifikatorlarini almashtirish uchun `config/auth.go` faylida `defaults` guard va bir nechta `guards` ni sozlashingiz mumkin.
 
-You can configure the parameters of JWT in the `config/jwt.go` file, such as `secret`, `ttl`, `refresh_ttl`.
+JWT parametrlarini, masalan, `secret`, `ttl`, `refresh_ttl` ni `config/jwt.go` faylida sozlashingiz mumkin.
 
-### Different JWT Guard supports different configurations
+### Har xil JWT Guard har xil konfiguratsiyalarni qo‘llab-quvvatlaydi
 
-You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/auth.go` file, if not set, these three configurations are used by the `config/jwt.go` file as default.
+Har bir Guard uchun TTL, Secret va RefreshTTL ni alohida `config/auth.go` faylida sozlashingiz mumkin. Agar sozlanmagan bo‘lsa, ushbu uchta konfiguratsiya standart sifatida `config/jwt.go` fayli tomonidan ishlatiladi.
 
 ```go
 // config/auth.go
@@ -28,15 +28,15 @@ You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/
 },
 ```
 
-## Generate JWT Token
+## JWT Token Yaratish
 
 ```shell
 ./artisan jwt:secret
 ```
 
-## Generate Token Using User
+## Foydalanuvchi Yordamida Token Yaratish
 
-You can generate a token by Model, there is no extra configuration if the model uses `orm.Model`, otherwise, you need to configure Tag on the model primary key field, for example:
+Model orqali token yaratishingiz mumkin. Agar model `orm.Model` dan foydalansa, qo‘shimcha sozlash talab qilinmaydi, aks holda modelning asosiy kalit maydonida Tag ni sozlashingiz kerak, masalan:
 
 ```go
 type User struct {
@@ -50,28 +50,28 @@ user.ID = 1
 token, err := facades.Auth(ctx).Login(&user)
 ```
 
-## Generate Token Using ID
+## ID Yordamida Token Yaratish
 
 ```go
 token, err := facades.Auth(ctx).LoginUsingID(1)
 ```
 
-## Parse Token
+## Tokenni Tahlil Qilish
 
 ```go
 payload, err := facades.Auth(ctx).Parse(token)
 ```
 
-Through `payload` you can get:
+`payload` orqali quyidagilarni olishingiz mumkin:
 
-1. `Guard`: Current Guard;
-2. `Key`: User flag;
-3. `ExpireAt`: Expire time;
-4. `IssuedAt`: Issued time;
+1. `Guard`: Joriy Guard;
+2. `Key`: Foydalanuvchi belgisi;
+3. `ExpireAt`: Muddati tugash vaqti;
+4. `IssuedAt`: Berilgan vaqt;
 
-> If `err` isn't nil other than `ErrorTokenExpired`, the payload should be nil.
+> Agar `err` `ErrorTokenExpired` dan boshqa bo‘lsa va nolga teng bo‘lmasa, payload nolga teng bo‘lishi kerak.
 
-You can judge whether the Token is expired by err:
+Tokenni muddati o‘tganligini err orqali aniqlashingiz mumkin:
 
 ```go
 "errors"
@@ -80,33 +80,33 @@ You can judge whether the Token is expired by err:
 errors.Is(err, auth.ErrorTokenExpired)
 ```
 
-> The token can be parsed normally with or without the Bearer prefix.
+> Token Bearer prefiksi bilan yoki undan holi normal tahlil qilinishi mumkin.
 
-## Get User
+## Foydalanuvchini Olish
 
-You need to generate a Token by `Parse` before getting a user, the process can be handled in HTTP middleware.
+Foydalanuvchini olishdan oldin `Parse` orqali Token yaratishingiz kerak, bu jarayon HTTP middleware orqali boshqarilishi mumkin.
 
 ```go
 var user models.User
-err := facades.Auth(ctx).User(&user) // Must point
+err := facades.Auth(ctx).User(&user) // Ko‘rsatkich bo‘lishi kerak
 id, err := facades.Auth(ctx).ID()
 ```
 
-## Refresh Token
+## Tokenni Yangilash
 
-You need to generate a Token by `Parse` before refreshing the user.
+Foydalanuvchini yangilashdan oldin `Parse` orqali Token yaratishingiz kerak.
 
 ```go
 token, err := facades.Auth(ctx).Refresh()
 ```
 
-## Logout
+## Chiqish
 
 ```go
 err := facades.Auth(ctx).Logout()
 ```
 
-## Multiple Guards
+## Bir Nechta Guardlar
 
 ```go
 token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
@@ -114,13 +114,13 @@ err := facades.Auth(ctx).Guard("admin").Parse(token)
 token, err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
-> When the default guard is not used, the `Guard` method must be called before calling the above methods.
+> Standart guard ishlatilmaganda, yuqoridagi metodlarni chaqirishdan oldin `Guard` metodini chaqirish shart.
 
-## Custom Driver
+## Maxsus Drayver
 
-### Add Custom Guard
+### Maxsus Guard Qo‘shish
 
-You can use the `facades.Auth().Extend()` method to define your own authentication guard, this method can be called in the `Boot` method of `AuthServiceProvider`.
+O‘zingizning autentifikatsiya guard drayveringizni aniqlash uchun `facades.Auth().Extend()` metodidan foydalanishingiz mumkin, bu metod `AuthServiceProvider` ning `Boot` metodida chaqirilishi mumkin.
 
 ```go
 import "github.com/goravel/framework/contracts/auth"
@@ -132,7 +132,7 @@ func (receiver *AuthServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-After defining the custom guard, you can reference it in the `guards` configuration of the `auth.go` file:
+Maxsus guardni aniqlaganingizdan so‘ng, uni `auth.go` faylining `guards` konfiguratsiyasida ko‘rsatishingiz mumkin:
 
 ```go
 "guards": map[string]any{
@@ -143,9 +143,9 @@ After defining the custom guard, you can reference it in the `guards` configurat
 },
 ```
 
-### Add Custom UserProvider
+### Maxsus UserProvider Qo‘shish
 
-You can use the `facades.Auth().Provider()` method to define your own user provider, this method can also be called in the `Boot` method of `AuthServiceProvider`.
+O‘zingizning foydalanuvchi provayderingizni aniqlash uchun `facades.Auth().Provider()` metodidan foydalanishingiz mumkin, bu metod ham `AuthServiceProvider` ning `Boot` metodida chaqirilishi mumkin.
 
 ```go
 import "github.com/goravel/framework/contracts/auth"
@@ -155,7 +155,7 @@ facades.Auth().Provider("custom-provider", func(ctx http.Context) (auth.UserProv
 })
 ```
 
-After using the `Provider` method to register the provider, you can use the custom user provider in the `auth.go` configuration file. First, define a `provider` that uses the new driver:
+`Provider` metodi yordamida provayder ro‘yxatdan o‘tkazilgandan so‘ng, `auth.go` konfiguratsiya faylida maxsus foydalanuvchi provayderidan foydalanishingiz mumkin. Birinchidan, yangi drayverdan foydalanadigan `provider` ni aniqlang:
 
 ```go
 "providers": map[string]any{
@@ -165,7 +165,7 @@ After using the `Provider` method to register the provider, you can use the cust
 },
 ```
 
-Finally, you can reference this provider in the `guards` configuration:
+Nihoyat, ushbu provayderga `guards` konfiguratsiyasida murojaat qilishingiz mumkin:
 
 ```go
 "guards": map[string]any{
