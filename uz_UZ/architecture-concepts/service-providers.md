@@ -29,7 +29,7 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-## Dependency Relationship
+## Qaramlik munosabati
 
 `ServiceProvider` `Relationship()` ixtiyoriy usulini taqdim etadi `binding.Relationship`, bog'liqlik munosabatini e'lon qilish uchun ishlatiladi, ushbu usulni o'rnatgan `ServiceProvider` ro'yxatga olish tartibiga bog'liq bo'lmaydi, va uni o'rnatmagan `ServiceProvider` oxirgi ro'yxatga olinadi, masalan:
 
