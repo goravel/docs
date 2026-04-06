@@ -52,7 +52,7 @@ Namuna [https://github.com/goravel/example](https://github.com/goravel/example)
 | [Lokalizatsiya](https://www.goravel.dev/digging-deeper/localization.html)                 | Ko'p tilli tarjima va til sozlamalarini boshqarish                                      |
 | [Logger](https://www.goravel.dev/the-basics/logging.html)                                 | Ilovalarni fayllarga, konsolga yoki tashqi xizmatlarga yozish                           |
 | [Pochta](https://www.goravel.dev/digging-deeper/mail.html)                                | SMTP or navbatga asoslangan yetkazib berish orqali elektron pochta xabarlarini yuboring |
-| [Mock](https://www.goravel.dev/testing/mock.html)                                         | Create test mocks for facades and dependencies                                          |
+| [Mock](https://www.goravel.dev/testing/mock.html)                                         | Fasadlar va qaramliklar uchun sinov namunalarini yarating                               |
 | [Migrate](https://www.goravel.dev/database/migrations.html)                               | Ma'lumotlar bazasi sxemasi o'zgarishlari uchun versiyalarni boshqarish                  |
 | [Orm](https://www.goravel.dev/orm/getting-started.html)                                   | Ma'lumotlar bazasi operatsiyalari uchun nafis Orm amalga oshirilishi                    |
 | [Paketni Ishlab Chiqish](https://www.goravel.dev/digging-deeper/package-development.html) | Freymvork funksiyalarini kengaytirish uchun qayta ishlatiladigan paketlar yarating      |
