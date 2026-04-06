@@ -1,14 +1,14 @@
-# HTTP Requests
+# HTTP So‘rovlari
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-The `contracts/http/Request` method of Goravel can interact with the current HTTP request processed by the application, and get the input and files submitted together.
+Goravelning `contracts/http/Request` metodi ilova tomonidan qayta ishlangan joriy HTTP so‘rovi bilan o‘zaro aloqada bo‘lishi va birga yuborilgan kiritish ma’lumotlari va fayllarni olishi mumkin.
 
-## Interacting With The Request
+## So‘rov Bilan O‘zaro Aloqa
 
-The `http.Context` instance is automatically injected into the controller:
+`http.Context` namunasi kontrollerga avtomatik ravishda kiritiladi:
 
 ```go
 import "github.com/goravel/framework/contracts/http"
@@ -16,7 +16,7 @@ import "github.com/goravel/framework/contracts/http"
 facades.Route().Get("/", func(ctx http.Context) http.Response {})
 ```
 
-### Retrieving The Request Path
+### So‘rov Yo‘lini Olish
 
 ```go
 path := ctx.Request().Path() // /users/1
@@ -24,66 +24,66 @@ path := ctx.Request().Path() // /users/1
 originPath := ctx.Request().OriginPath() // /users/{id}
 ```
 
-### Retrieving The Request URL
+### So‘rov URL Manzilini Olish
 
 ```go
 url := ctx.Request().Url() // /users?name=Goravel
 ```
 
-### Retrieving The Request HOST
+### So‘rov HOST Manzilini Olish
 
 ```go
 url := ctx.Request().Host()
 ```
 
-### Retrieving The Full Request URL
+### To‘liq So‘rov URL Manzilini Olish
 
 ```go
 url := ctx.Request().FullUrl() // http://**/users?name=Goravel
 ```
 
-### Retrieving The Request Method
+### So‘rov Metodini Olish
 
 ```go
 method := ctx.Request().Method()
 ```
 
-### Retrieving The Request Route Information
+### So‘rov Yo‘li Ma’lumotlarini Olish
 
 ```go
 info := ctx.Request().Info()
 ```
 
-### Retrieving The Request Route Name
+### So‘rov Yo‘li Nomini Olish
 
 ```go
 name := ctx.Request().Name()
 ```
 
-### Request Headers
+### So‘rov Sarlavhalari
 
 ```go
 header := ctx.Request().Header("X-Header-Name", "default")
 headers := ctx.Request().Headers()
 ```
 
-### Request IP Address
+### So‘rov IP Manzili
 
 ```go
 ip := ctx.Request().Ip()
 ```
 
-## Input
+## Kiritish
 
-### Retrieving All Input Data
+### Barcha Kiritish Ma’lumotlarini Olish
 
-You may retrieve all of the incoming request's input data as `map[string]any` using the `All` method, which is a collection of `json`, `form` and `query`(priority from front to back).
+Siz kelayotgan so‘rovning barcha kiritish ma’lumotlarini `All` metodi yordamida `map[string]any` sifatida olishingiz mumkin, bu `json`, `form` va `query` (oldindan orqaga ustuvorlik) to‘plamidir.
 
 ```go
 data := ctx.Request().All()
 ```
 
-### Retrieving a Route Value
+### Yo‘l Qiymatini Olish
 
 ```go
 // /users/{id}
@@ -92,7 +92,7 @@ id := ctx.Request().RouteInt("id")
 id := ctx.Request().RouteInt64("id")
 ```
 
-### Retrieving Input From The Query String
+### So‘rov Qatori Orqali Kiritishni Olish
 
 ```go
 // /users?name=goravel
@@ -113,11 +113,11 @@ names := ctx.Request().QueryMap("names")
 queries := ctx.Request().Queries()
 ```
 
-> Note: Only one-dimensional Json data can be obtained, otherwise it will return empty.
+> Eslatma: Faqat bir o‘lchamli Json ma’lumotlari olinishi mumkin, aks holda bo‘sh qaytariladi.
 
-### Retrieving An Input Value
+### Kiritish Qiymatini Olish
 
-Access all of the user input without worrying about which HTTP verb was used for the request. Retrieve order: `json`, `form`.
+So‘rov qaysi HTTP fe’li uchun ishlatilganidan qat’iy nazar, foydalanuvchi kiritishining barchasiga kirish. Olish tartibi: `json`, `form`.
 
 ```go
 name := ctx.Request().Input("name")
@@ -130,7 +130,7 @@ name := ctx.Request().InputMap("name")
 name := ctx.Request().InputMapArray("name")
 ```
 
-### Bind Json/Form
+### Json/Form-ni Bog‘lash
 
 ```go
 type User struct {
@@ -146,9 +146,9 @@ var user map[string]any
 err := ctx.Request().Bind(&user)
 ```
 
-### Bind Query
+### So‘rovni Bog‘lash
 
-Only support bind Query to struct:
+Faqat struct-ga Query-ni bog‘lash qo‘llab-quvvatlanadi:
 
 ```go
 type Test struct {
@@ -160,58 +160,58 @@ err := ctx.Request().BindQuery(&test)
 
 ## Cookie
 
-### Retrieving a Cookie Value
+### Cookie Qiymatini Olish
 
-Goravel provides a simple way to work with `cookie`. Use the `Cookie` method on the `Request` instance to retrieve a `cookie` value, will return an empty string if the `cookie` is not present. You can also define a default value in the second argument.
+Goravel `cookie` bilan ishlashning oddiy usulini taqdim etadi. `cookie` qiymatini olish uchun `Request` namunasidagi `Cookie` metodidan foydalaning, agar `cookie` mavjud bo‘lmasa, bo‘sh satr qaytariladi. Shuningdek, ikkinchi argumentda standart qiymatni belgilashingiz mumkin.
 
 ```go
 value := ctx.Request().Cookie("name")
 value := ctx.Request().Cookie("name", "default")
 ```
 
-## File
+## Fayl
 
-### Retrieving File
+### Faylni Olish
 
 ```go
 file, err := ctx.Request().File("file")
 files, err := ctx.Request().Files("file")
 ```
 
-### Save File
+### Faylni Saqlash
 
 ```go
 file, err := ctx.Request().File("file")
 file.Store("./public")
 ```
 
-### Get Origin Request
+### Asl So‘rovni Olish
 
 ```go
 request := ctx.Request().Origin()
 ```
 
-### Attach Data
+### Ma’lumot Qo‘shish
 
 ```go
 ctx.WithValue("user", "Goravel")
 ```
 
-### Get Data
+### Ma’lumot Olish
 
 ```go
 user := ctx.Value("user")
 ```
 
-### Get Context
+### Kontekstni Olish
 
 ```go
 ctx := ctx.Context()
 ```
 
-## Custom Recovery
+## Maxsus Tiklash
 
-You can set a custom `recovery` in the `bootstrap/app.go::WithMiddleware` function.
+Siz `bootstrap/app.go::WithMiddleware` funksiyasida maxsus `recovery` ni o‘rnatishingiz mumkin.
 
 ```go
 func Boot() contractsfoundation.Application {
