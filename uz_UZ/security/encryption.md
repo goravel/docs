@@ -1,28 +1,28 @@
-# Encryption
+# Shifrlash
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Goravel's encryption services provide a simple, convenient interface for encrypting and decrypting text via OpenSSL using AES-256 encryption. All of Goravel's encrypted values are signed using a message authentication code (GMAC) so that their underlying value can not be modified or tampered with once encrypted.
+Goravelning shifrlash xizmatlari OpenSSL yordamida AES-256 shifrlash orqali matnni shifrlash va ochish uchun oddiy, qulay interfeysni taqdim etadi. Goravelning barcha shifrlangan qiymatlari xabar autentifikatsiya kodi (GMAC) yordamida imzolangan, shuning uchun ularning asosiy qiymati shifrlanganidan keyin o‘zgartirilishi yoki buzilishi mumkin emas.
 
-## Configuration
+## Konfiguratsiya
 
-Before using Goravel's encrypter, you must set the `key` configuration option in your `config/app.go` configuration file. This option is driven by the `APP_KEY` environment variable. Use the `./artisan key:generate` command to generate this variable's value since the `key:generate` command will utilize Golang's secure random bytes generator to create a secure cryptographic key for your application.
+Goravel shifrlovchisidan foydalanishdan oldin, `config/app.go` konfiguratsiya faylida `key` konfiguratsiya parametrini o‘rnatishingiz kerak. Bu parametr `APP_KEY` muhit o‘zgaruvchisi tomonidan boshqariladi. Ushbu o‘zgaruvchining qiymatini yaratish uchun `./artisan key:generate` buyrug‘idan foydalaning, chunki `key:generate` buyrug‘i ilovangiz uchun xavfsiz kriptografik kalit yaratishda Golangning xavfsiz tasodifiy baytlar generatoridan foydalanadi.
 
-## Using The Encrypter
+## Shifrlovchidan Foydalanish
 
-### Encrypting A Value
+### Qiymatni Shifrlash
 
-To encrypt a value, you can use the `EncryptString` method in `facades.Crypt()`. This method encrypts values using the OpenSSL and AES-256-GCM cipher. Additionally, all encrypted values are signed with a message authentication code (GMAC) to prevent decryption by malicious users who try to tamper with the data.
+Qiymatni shifrlash uchun `facades.Crypt()` dagi `EncryptString` usulidan foydalanishingiz mumkin. Bu usul qiymatlarni OpenSSL va AES-256-GCM shifri yordamida shifrlaydi. Bundan tashqari, barcha shifrlangan qiymatlar ma'lumotlarni buzishga urinayotgan zararli foydalanuvchilar tomonidan ochilishining oldini olish uchun xabar autentifikatsiya kodi (GMAC) bilan imzolanadi.
 
 ```go
 secret, err := facades.Crypt().EncryptString("goravel")
 ```
 
-### Decrypting A Value
+### Qiymatni Ochish
 
-You can use the `DecryptString` method from `facades.Crypt()` to decrypt values. If the value can not be properly decrypted, such as when the message authentication code is invalid, an error will be returned.
+Qiymatlarni ochish uchun `facades.Crypt()` dan `DecryptString` usulidan foydalanishingiz mumkin. Agar qiymat to‘g‘ri ochilmasa, masalan, xabar autentifikatsiya kodi noto‘g‘ri bo‘lsa, xato qaytariladi.
 
 ```go
 str, err := facades.Crypt().DecryptString(secret)
