@@ -194,7 +194,7 @@ file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFile("photos", file)
 ```
 
-### Specifying A File Name
+### Fayl nomini ko'rsatish
 
 Agar saqlangan faylingizga avtomatik ravishda fayl nomi berilmasligini istasangiz, `StoreAs` metodidan foydalanishingiz mumkin, bu metod argument sifatida yo‘l, fayl nomi va (ixtiyoriy) diskni qabul qiladi:
 
