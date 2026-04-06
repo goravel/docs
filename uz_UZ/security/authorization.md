@@ -1,22 +1,22 @@
-# Authorization
+# Avtorizatsiya
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Goravel offers built-in [authentication](./authentication.md) services and an easy-to-use authorization feature to manage user actions on resources. Even if a user is authenticated, they may not have the authority to modify or delete certain Eloquent models or database records. Goravel's authorization feature allows for a systematic way of managing these authorization checks.
+Goravel foydalanuvchilarning resurslar ustidagi amallarini boshqarish uchun o‘rnatilgan [autentifikatsiya](./authentication.md) xizmatlari va oson foydalaniladigan avtorizatsiya xususiyatini taklif etadi. Foydalanuvchi autentifikatsiyadan o‘tgan bo‘lsa ham, u ma’lum Eloquent modellarini yoki ma’lumotlar bazasi yozuvlarini o‘zgartirish yoki o‘chirish huquqiga ega bo‘lmasligi mumkin. Goravelning avtorizatsiya xususiyati bu avtorizatsiya tekshiruvlarini tizimli boshqarish usulini taqdim etadi.
 
-There are two ways to authorize actions in Goravel: [gates](#Gates) and [policies](#Policies). Imagine gates and policies as similar to routes and controllers. Gates are based on closures and provide a simple approach to authorization, whereas policies group logic around a specific resource, similar to controllers. This documentation will first cover gates and then delve into policies.
+Goravelda amallarni avtorizatsiya qilishning ikkita usuli mavjud: [darvoza](#Gates) va [siyosatlar](#Policies). Darvoza va siyosatlarni marshrut va kontrollerlarga o‘xshash deb tasavvur qiling. Darvozalar yopilishlar asosida bo‘lib, oddiy avtorizatsiya yondashuvini taqdim etadi, siyosatlar esa kontrollerlarga o‘xshab, ma’lum bir resurs atrofidagi mantiqni guruhlaydi. Ushbu hujjat avval darvozalarni, keyin esa siyosatlarni batafsil yoritadi.
 
-It's not necessary to exclusively use gates or policies when building an application. Most applications will use a combination of both, which is perfectly acceptable!
+Ilova yaratishda faqat darvoza yoki faqat siyosatlardan foydalanish shart emas. Ko‘pgina ilovalar ikkalasining kombinatsiyasidan foydalanadi va bu mutlaqo qabul qilinadi!
 
-## Gates
+## Darvozalar
 
-### Writing Gates
+### Darvozalarni yozish
 
-Gates serve as closures that verify whether a user is authorized to perform a specific action. They are commonly set up in the `bootstrap/app.go::WithCallback` function using the Gate facade.
+Darvozalar foydalanuvchi ma’lum bir amalni bajarishga ruxsat berilganligini tekshiruvchi yopilishlar vazifasini bajaradi. Ular odatda Gate fasadidan foydalanib, `bootstrap/app.go::WithCallback` funksiyasida o‘rnatiladi.
 
-In this scenario, we will establish a gate to check if a user can modify a particular Post model by comparing its ID to the user_id of the post's creator.
+Bu holatda, biz foydalanuvchi ma’lum bir Post modelini o‘zgartirishga ruxsat berilganligini tekshirish uchun darvoza o‘rnatamiz, buning uchun uning ID sini post muallifining user_id si bilan solishtiramiz.
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -40,9 +40,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-### Authorizing Actions
+### Amallarni avtorizatsiya qilish
 
-To authorize an action using gates, you should use the `Allows` or `Denies` methods provided by the Gate facade:
+Darvozalar yordamida amalni avtorizatsiya qilish uchun Gate fasadining `Allows` yoki `Denies` metodlaridan foydalanish kerak:
 
 ```go
 package controllers
@@ -63,39 +63,39 @@ func (r *UserController) Show(ctx http.Context) http.Response {
 }
 ```
 
-You can authorize multiple actions simultaneously using the `Any` or `None` methods.
+`Any` yoki `None` metodlaridan foydalanib, bir vaqtning o‘zida bir nechta amallarni avtorizatsiya qilishingiz mumkin.
 
 ```go
 if facades.Gate().Any([]string{"update-post", "delete-post"}, map[string]any{
   "post": post,
 }) {
-  // The user can update or delete the post...
+  // Foydalanuvchi postni yangilashi yoki o‘chirishi mumkin...
 }
 
 if facades.Gate().None([]string{"update-post", "delete-post"}, map[string]any{
   "post": post,
 }) {
-  // The user can't update or delete the post...
+  // Foydalanuvchi postni yangilay olmaydi yoki o‘chirolmaydi...
 }
 ```
 
-### Gate Responses
+### Darvoza javoblari
 
-The `Allows` method returns a boolean value. To get the full authorization response, use the `Inspect` method.
+`Allows` metodi mantiqiy qiymat qaytaradi. To‘liq avtorizatsiya javobini olish uchun `Inspect` metodidan foydalaning.
 
 ```go
 response := facades.Gate().Inspect("edit-settings", nil);
 
 if response.Allowed() {
-    // The action is authorized...
+    // Amalga ruxsat berilgan...
 } else {
     fmt.Println(response.Message())
 }
 ```
 
-### Intercepting Gate Checks
+### Darvoza tekshiruvlarini to‘sib qo‘yish
 
-Sometimes, you may wish to grant all abilities to a specific user. You can define a closure using the `Before` method, which runs before any other authorization checks:
+Ba’zan, ma’lum bir foydalanuvchiga barcha imkoniyatlarni berishni xohlashingiz mumkin. Boshqa barcha avtorizatsiya tekshiruvlaridan oldin ishlaydigan `Before` metodidan foydalanib, yopilish aniqlashingiz mumkin:
 
 ```go
 facades.Gate().Before(func(ctx context.Context, ability string, arguments map[string]any) contractsaccess.Response {
@@ -108,9 +108,9 @@ facades.Gate().Before(func(ctx context.Context, ability string, arguments map[st
 })
 ```
 
-If the `Before` closure returns a non-nil result, that result will be considered the result of the authorization check.
+Agar `Before` yopilishi nolga teng bo‘lmagan natija qaytarsa, bu natija avtorizatsiya tekshiruvining natijasi deb hisoblanadi.
 
-The `After` method can be used to define a closure that will be executed after all other authorization checks.
+`After` metodi boshqa barcha avtorizatsiya tekshiruvlari bajarilgandan keyin ijro etiladigan yopilishni aniqlash uchun ishlatilishi mumkin.
 
 ```go
 facades.Gate().After(func(ctx context.Context, ability string, arguments map[string]any, result contractsaccess.Response) contractsaccess.Response {
@@ -123,11 +123,11 @@ facades.Gate().After(func(ctx context.Context, ability string, arguments map[str
 })
 ```
 
-> Notice: The return result of `After` will be applied only when `facades.Gate().Define` returns nil.
+> Eslatma: `After` ning qaytarish natijasi faqat `facades.Gate().Define` nol qaytarganda qo‘llaniladi.
 
-### Inject Context
+### Kontekstni kiritish
 
-The `context` will be passed to the `Before`, `After`, and `Define` methods.
+`context` `Before`, `After` va `Define` metodlariga uzatiladi.
 
 ```go
 facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
@@ -135,20 +135,20 @@ facades.Gate().WithContext(ctx).Allows("update-post", map[string]any{
 })
 ```
 
-## Policies
+## Siyosatlar
 
-### Generating Policies
+### Siyosatlarni yaratish
 
-You can use the `make:policy` Artisan command to generate a policy. The generated policy will be saved in the `app/policies` directory. If the directory does not exist in your application, Goravel will create it for you.
+Siyosat yaratish uchun `make:policy` Artisan buyrug‘idan foydalanishingiz mumkin. Yaratilgan siyosat `app/policies` katalogiga saqlanadi. Agar bu katalog ilovangizda mavjud bo‘lmasa, Goravel uni siz uchun yaratadi.
 
 ```shell
 ./artisan make:policy PostPolicy
 ./artisan make:policy user/PostPolicy
 ```
 
-### Writing Policies
+### Siyosatlarni yozish
 
-Let's define an `Update` method on `PostPolicy` to check if a `User` can update a `Post`.
+Keling, `PostPolicy` da `User` `Post` ni yangilashi mumkinligini tekshirish uchun `Update` metodini aniqlaymiz.
 
 ```go
 package policies
@@ -180,7 +180,7 @@ func (r *PostPolicy) Update(ctx context.Context, arguments map[string]any) contr
 }
 ```
 
-Then we can register the policy to the `bootstrap/app.go::WithCallback` function:
+Keyin siyosatni `bootstrap/app.go::WithCallback` funksiyasiga ro‘yxatdan o‘tkazishimiz mumkin:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -193,4 +193,4 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-As you work on authorizing different actions, you can add more methods to your policy. For instance, you can create `View` or `Delete` methods to authorize various model-related actions. Feel free to name your policy methods as you see fit.
+Turli amallarni avtorizatsiya qilish jarayonida siyosatingizga ko‘proq metodlar qo‘shishingiz mumkin. Masalan, turli modelga oid amallarni avtorizatsiya qilish uchun `View` yoki `Delete` metodlarini yaratishingiz mumkin. Siyosat metodlaringizni o‘zingiz xohlagancha nomlang.
