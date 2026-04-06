@@ -1,35 +1,35 @@
-# Logging
+# Loglash
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-In order to understand the running status of the application, Goravel provides a powerful log service that can record log messages and system errors to a file or other channels through `facades.Log()`.
+Ilovaning ishlash holatini tushunish uchun Goravel kuchli log xizmatini taqdim etadi, u log xabarlari va tizim xatolarini `facades.Log()` orqali fayl yoki boshqa kanallarga yozishi mumkin.
 
-## Configuration
+## Konfiguratsiya
 
-To configure various log channels, custom configurations can be made in `config/logging.go`.
+Turli log kanallarini sozlash uchun `config/logging.go` faylida maxsus konfiguratsiyalar amalga oshirilishi mumkin.
 
-`Goravel` uses `stack` channel to record logs by default, `stack` allows logs to be forwarded to multiple channels.
+`Goravel` sukut bo'yicha loglarni yozish uchun `stack` kanalidan foydalanadi, `stack` loglarni bir nechta kanallarga yo'naltirish imkonini beradi.
 
-The `print` configuration in `single` and `daily` drivers can control log output to the console.
+`single` va `daily` haydovchilaridagi `print` konfiguratsiyasi log chiqishini konsolga boshqarishi mumkin.
 
-## Available channel drivers
+## Mavjud kanal haydovchilari
 
-| Name     | Description             |
-| -------- | ----------------------- |
-| `stack`  | Allow multiple channels |
-| `single` | Single log file         |
-| `daily`  | One log file per day    |
-| `custom` | Custom drive            |
+| Nomi     | Tavsifi                             |
+| -------- | ----------------------------------- |
+| `stack`  | Bir nechta kanallarga ruxsat berish |
+| `single` | Yagona log fayli                    |
+| `daily`  | Kuniga bitta log fayli              |
+| `custom` | Maxsus haydovchi                    |
 
-### Inject Context
+### Kontekstni kiritish
 
 ```go
 facades.Log().WithContext(ctx)
 ```
 
-## Write log messages
+## Log xabarlarini yozish
 
 ```go
 facades.Log().Debug(message)
@@ -46,45 +46,45 @@ facades.Log().Panic(message)
 facades.Log().Panicf(message, args)
 ```
 
-### Write to a specific channel
+### Muayyan kanalga yozish
 
-Sometimes, you may want to record messages to a channel other than the application's default channel:
+Ba'zan, siz xabarlarni ilovaning sukut bo'yicha kanalidan boshqa kanalga yozishni xohlashingiz mumkin:
 
 ```go
 facades.Log().Channel("single").Info(message)
 ```
 
-If you want to write to multiple channels at the same time, you can use the `Stack` method:
+Agar siz bir vaqtning o'zida bir nechta kanallarga yozishni istasangiz, `Stack` usulidan foydalanishingiz mumkin:
 
 ```go
 facades.Log().Stack([]string{"single", "slack"}).Info(message)
 ```
 
-## Chain Methods
+## Zanjir usullari
 
-Goravel provides convenient chain methods, that make it easy to insert more useful information into the log:
+Goravel qulay zanjir usullarini taqdim etadi, ular logga foydali ma'lumotlarni qo'shishni osonlashtiradi:
 
 ```go
 facades.Log().User("John").Debug(message)
 ```
 
-| Method    | Action                                                                                 |
-| --------- | -------------------------------------------------------------------------------------- |
-| Code      | Set a code or slug that describes the log.                             |
-| Hint      | Set a hint for faster debugging.                                       |
-| In        | Set the feature category or domain in which the log entry is relevant. |
-| Owner     | Useful for alerting purposes.                                          |
-| Request   | Supplies a http.Request.                               |
-| Response  | Supplies a http.Response.                              |
-| Tags      | Add multiple tags, describing the feature returning an error.          |
-| User      | Set the user associated with the log entry.                            |
-| With      | Add key-value pairs to the context of the log entry.                   |
-| WithTrace | Add stack information to the log entry.                                |
+| Usul          | Harakat                                                                                   |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| Kod           | Logni tavsiflovchi kod yoki slug'ni o'rnating.                            |
+| Maslahat      | Tezroq tuzatish uchun maslahat o'rnating.                                 |
+| Ichida        | Log yozuvining tegishli bo'lgan funksiya toifasi yoki domenini o'rnating. |
+| Egasi         | Ogohlantirish maqsadlari uchun foydali.                                   |
+| Request       | Http.Request'ni ta'minlaydi.                              |
+| Response      | Http.Response'ni ta'minlaydi.                             |
+| Teglar        | Xatoni qaytaradigan funksiyani tavsiflovchi bir nechta teglarni qo'shing. |
+| Foydalanuvchi | Log yozuvi bilan bog'liq foydalanuvchini o'rnating.                       |
+| Bilan         | Log yozuvi kontekstiga kalit-qiymat juftliklarini qo'shing.               |
+| WithTrace     | Log yozuviga stack ma'lumotlarini qo'shing.                               |
 
-## Create a custom channel
+## Maxsus kanal yaratish
 
-If you want to define a completely custom channel, you can specify the `custom` driver type in the `config/logging.go` configuration file.
-Then include a `via` option to implement a `framework\contracts\log\Logger` structure:
+Agar siz to'liq maxsus kanal aniqlashni istasangiz, `config/logging.go` konfiguratsiya faylida `custom` haydovchi turini ko'rsatishingiz mumkin.
+Keyin `framework\contracts\log\Logger` strukturini amalga oshirish uchun `via` opsiyasini qo'shing:
 
 ```go
 // config/logging.go
@@ -94,9 +94,9 @@ Then include a `via` option to implement a `framework\contracts\log\Logger` stru
 },
 ```
 
-### Implement Driver
+### Haydovchini amalga oshirish
 
-Implement `framework\contracts\log\Logger` interface.
+`framework\contracts\log\Logger` interfeysini amalga oshiring.
 
 ```go
 // framework/contracts/log/Logger
@@ -108,7 +108,7 @@ type Logger interface {
 }
 ```
 
-You can check the daily and single log drivers for reference:
+Siz ma'lumot uchun daily va single log haydovchilarini tekshirishingiz mumkin:
 
-- [Daily](https://github.com/goravel/framework/blob/master/log/logger/daily.go)
-- [Single](https://github.com/goravel/framework/blob/master/log/logger/single.go)
+- [Kunlik](https://github.com/goravel/framework/blob/master/log/logger/daily.go)
+- [Yagona](https://github.com/goravel/framework/blob/master/log/logger/single.go)
