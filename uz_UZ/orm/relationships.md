@@ -1,21 +1,21 @@
-# Relationships
+# Bog'lanishlar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-It's common for database tables to be interconnected. For instance, a blog post may have many comments, or an order may be linked to the user who placed it. `Orm` simplifies managing and dealing with such relationships, and it can handle various common relationships:
+Ma'lumotlar bazasi jadvallari o'zaro bog'langan bo'lishi odatiy holdir. Masalan, blog postida ko'p sharhlar bo'lishi mumkin yoki buyurtma uni joylagan foydalanuvchiga bog'langan bo'lishi mumkin. `Orm` bunday bog'lanishlarni boshqarish va ular bilan ishlashni osonlashtiradi va u turli keng tarqalgan bog'lanish turlarini qo'llab-quvvatlaydi:
 
-- [One To One](#One-To-One)
-- [One To Many](#One-To-Many)
-- [Many To Many](#Many-To-Many)
-- [Polymorphic](#Polymorphic)
+- [Bitta-birga](#One-To-One)
+- [Bitta-ko'pga](#One-To-Many)
+- [Ko'p-ko'pga](#Many-To-Many)
+- [Polimorfik](#Polymorphic)
 
-## Defining Relationships
+## Bog'lanishlarni aniqlash
 
-### One To One
+### Bitta-birga
 
-A one-to-one relationship is a very basic type of database relationship. For example, a `User` model might be associated with one `Phone` model.
+Bitta-birga bog'lanish ma'lumotlar bazasi munosabatlarining juda asosiy turidir. Masalan, `User` modeli bitta `Phone` modeli bilan bog'langan bo'lishi mumkin.
 
 ```go
 type User struct {
@@ -31,7 +31,7 @@ type Phone struct {
 }
 ```
 
-When using `Orm`, it automatically assigns the foreign key to the relationship based on the parent model name. For instance, the `Phone` model is assumed to have a `UserID` foreign key by default. However, if you wish to change this convention, you can add a `foreignKey` tag to the `Phone` field in `User` model. (This also applies to other relationships.)
+`Orm` dan foydalanganda, u chet kalitni ota model nomiga asoslanib bog'lanishga avtomatik tayinlaydi. Masalan, `Phone` modeli sukut bo'yicha `UserID` chet kalitiga ega deb hisoblanadi. Biroq, agar siz ushbu konventsiyani o'zgartirmoqchi bo'lsangiz, `User` modelidagi `Phone` maydoniga `foreignKey` tegnini qo'shishingiz mumkin. (Bu boshqa bog'lanishlarga ham tegishli.)
 
 ```go
 type User struct {
@@ -47,7 +47,7 @@ type Phone struct {
 }
 ```
 
-Additionally, when using `Orm`, it is assumed that the foreign key should match the primary key column of the parent. This means that `Orm` will search for the user's `ID` column value in the `UserId` column of the `Phone` record. If you wish to use a primary key value other than `ID`, you can add a "Tag" reference to the `Phone` field in `User` model. To do this, simply pass a third argument to the `hasOne` method. (Other relationship setups are similar.)
+Bundan tashqari, `Orm` dan foydalanganda, chet kalit ota modelning asosiy kalit ustuniga mos kelishi kerak deb hisoblanadi. Bu shuni anglatadiki, `Orm` foydalanuvchining `ID` ustun qiymatini `Phone` yozuvidagi `UserId` ustunida qidiradi. Agar siz `ID` dan boshqa asosiy kalit qiymatidan foydalanmoqchi bo'lsangiz, `User` modelidagi `Phone` maydoniga "Tag" havolasini qo'shishingiz mumkin. Buning uchun `hasOne` metodiga uchinchi argumentni o'tkazishingiz kifoya. (Boshqa bog'lanish sozlamalari ham o'xshash.)
 
 ```go
 type User struct {
@@ -63,9 +63,9 @@ type Phone struct {
 }
 ```
 
-#### Defining The Inverse Of The Relationship
+#### Bog'lanishning teskari tomonini aniqlash
 
-We can access the `Phone` model from our `User` model. Now, we need to establish a relationship on `Phone` model that allows us to access the phone's owner. To do this, we can define a `User` field in `Phone` model.
+Biz `User` modelimizdan `Phone` modeliga kirishimiz mumkin. Endi, bizga telefoning egasiga kirish imkonini beruvchi `Phone` modelida bog'lanish o'rnatish kerak. Buning uchun `Phone` modelida `User` maydonini aniqlashimiz mumkin.
 
 ```go
 type User struct {
@@ -81,9 +81,9 @@ type Phone struct {
 }
 ```
 
-### One To Many
+### Bitta-ko'pga
 
-A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a blog post may have an infinite number of comments. Like all other `Orm` relationships, one-to-many relationships are defined by defining a field on your `Orm` model:
+Bitta-ko'pga bog'lanish bitta model bir yoki bir nechta bola modellar uchun ota bo'lgan munosabatlarni aniqlash uchun ishlatiladi. Masalan, blog postida cheksiz sonli sharhlar bo'lishi mumkin. Boshqa barcha `Orm` bog'lanishlari singari, bitta-ko'pga bog'lanishlar ham `Orm` modelingizda maydon aniqlash orqali belgilanadi:
 
 ```go
 type Post struct {
@@ -99,11 +99,11 @@ type Comment struct {
 }
 ```
 
-Remember, `Orm` will automatically determine the proper foreign key column for the `Comment` model. By convention, Orm will take the "hump case" name of the parent model and suffix it with `ID`. So, in this example, Orm will assume the foreign key column on the `Comment` model is `PostID`.
+Esda tuting, `Orm` `Comment` modeli uchun tegishli chet kalit ustunini avtomatik aniqlaydi. Konventsiyaga ko'ra, Orm ota modelning "tuya yurishi" nomini oladi va unga `ID` qo'shimchasini qo'shadi. Shunday qilib, bu misolda Orm `Comment` modelidagi chet kalit ustuni `PostID` ekanligini taxmin qiladi.
 
-### One To Many (Inverse) / Belongs To
+### Bitta-ko'pga (Teskari) / Tegishli
 
-Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `One To Many` relationship, define a relationship method on the child model which calls the `belongsTo` method:
+Endi biz postning barcha sharhlariga kirishimiz mumkin bo'lgani uchun, sharhga o'zining ota postiga kirish imkonini beruvchi bog'lanishni aniqlaymiz. `Bitta-ko'pga` bog'lanishning teskari tomonini aniqlash uchun, bola modelda `belongsTo` metodini chaqiradigan bog'lanish metodini aniqlang:
 
 ```go
 type Post struct {
@@ -120,15 +120,15 @@ type Comment struct {
 }
 ```
 
-## Many To Many Relationships
+## Ko'p-ko'pga bog'lanishlar
 
-Many-to-many relations are slightly more complicated than `One To One` and `One To Many` relationships. An example of a many-to-many relationship is a user that has many roles and those roles are also shared by other users in the application. For example, a user may be assigned the role of "Author" and "Editor"; however, those roles may also be assigned to other users as well. So, a user has many roles and a role has many users.
+Ko'p-ko'pga munosabatlar `Bitta-birga` va `Bitta-ko'pga` bog'lanishlarga qaraganda biroz murakkabroq. Ko'p-ko'pga bog'lanishga misol sifatida ko'p rollarga ega bo'lgan foydalanuvchi va bu rollar ilovadagi boshqa foydalanuvchilar tomonidan ham ulashilishi mumkin. Masalan, foydalanuvchiga "Muallif" va "Tahrirchi" roli tayinlanishi mumkin; biroq, bu rollar boshqa foydalanuvchilarga ham tayinlanishi mumkin. Shunday qilib, foydalanuvchida ko'p rollar bor va rolda ko'p foydalanuvchilar bor.
 
-### Table Structure
+### Jadval tuzilmasi
 
-To define this relationship, three database tables are needed: `users`, `roles`, and `role_user`. The `role_user` table naming can be customized and it contains `user_id` and `role_id` columns. This table is used as an intermediate table linking users and roles.
+Ushbu bog'lanishni aniqlash uchun uchta ma'lumotlar bazasi jadvali kerak: `users`, `roles` va `role_user`. `role_user` jadvalining nomi sozlanishi mumkin va u `user_id` va `role_id` ustunlarini o'z ichiga oladi. Ushbu jadval foydalanuvchilar va rollarni bog'laydigan oraliq jadval sifatida ishlatiladi.
 
-Remember, since a role can belong to many users, we cannot simply place a `user_id` column on the `roles` table. This would mean that a role could only belong to a single user. In order to provide support for roles being assigned to multiple users, the `role_user` table is needed. We can summarize the relationship's table structure like so:
+Esda tuting, rol ko'p foydalanuvchilarga tegishli bo'lishi mumkinligi sababli, biz oddiygina `roles` jadvaliga `user_id` ustunini joylashtira olmaymiz. Bu rol faqat bitta foydalanuvchiga tegishli bo'lishi mumkinligini anglatardi. Rollarning bir nechta foydalanuvchilarga tayinlanishini qo'llab-quvvatlash uchun `role_user` jadvali kerak. Biz bog'lanishning jadval tuzilishini quyidagicha umumlashtirishimiz mumkin:
 
 ```
 users
@@ -144,9 +144,9 @@ role_user
   role_id - integer
 ```
 
-### Model Structure
+### Model tuzilmasi
 
-We can define a `Roles` field on `User` model:
+Biz `User` modelida `Roles` maydonini aniqlashimiz mumkin:
 
 ```go
 type User struct {
@@ -161,9 +161,9 @@ type Role struct {
 }
 ```
 
-### Defining The Inverse Of The Relationship
+### Bog'lanishning teskari tomonini aniqlash
 
-To define the inverse of the relationship, just define a `Users` field in `Role` model and append a Tag.
+Bog'lanishning teskari tomonini aniqlash uchun, shunchaki `Role` modelida `Users` maydonini aniqlang va Teg qo'shing.
 
 ```go
 type User struct {
@@ -179,9 +179,9 @@ type Role struct {
 }
 ```
 
-### Custom intermediate table
+### Maxsus oraliq jadval
 
-In general, the intermediate table foreign key is named by the "snake case" of the parent model name, you can override them by `joinForeignKey`, `joinReferences`:
+Umuman olganda, oraliq jadval chet kaliti ota model nomining "ilon yurishi" bilan nomlanadi, siz ularni `joinForeignKey`, `joinReferences` orqali bekor qilishingiz mumkin:
 
 ```go
 type User struct {
@@ -196,7 +196,7 @@ type Role struct {
 }
 ```
 
-Table structure:
+Jadval tuzilmasi:
 
 ```
 users
@@ -212,13 +212,13 @@ role_user
   role_name - integer
 ```
 
-## Polymorphic
+## Polimorfik
 
-A polymorphic relationship allows the child model to belong to more than one type of model using a single association. For example, imagine you are building an application that allows users to share blog posts and videos. In such an application, a `Comment` model might belong to both the `Post` and `Video` models.
+Polimorfik bog'lanish bola modelga bitta bog'lanish yordamida bir nechta turdagi modellarga tegishli bo'lish imkonini beradi. Masalan, foydalanuvchilarga blog postlari va videolarni ulashishga imkon beruvchi ilova yaratayotganingizni tasavvur qiling. Bunday ilovada `Comment` modeli ham `Post`, ham `Video` modellariga tegishli bo'lishi mumkin.
 
-### Table structure
+### Jadval tuzilmasi
 
-A polymorphic relation is similar to a normal relation; however, the child model can belong to more than one type of model using a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a polymorphic relation allows you to have a single table of unique images that may be associated with posts and users. First, let's examine the table structure:
+Polimorfik munosabat oddiy munosabatga o'xshaydi; biroq, bola model bitta bog'lanish yordamida bir nechta turdagi modellarga tegishli bo'lishi mumkin. Masalan, blog `Post` va `User` `Image` modeliga polimorfik munosabatda bo'lishi mumkin. Polimorfik munosabatdan foydalanish sizga postlar va foydalanuvchilar bilan bog'lanishi mumkin bo'lgan noyob rasmlarning bitta jadvaliga ega bo'lish imkonini beradi. Birinchidan, jadval tuzilishini ko'rib chiqamiz:
 
 ```
 posts
@@ -242,11 +242,11 @@ comments
   commentable_type - string
 ```
 
-Note the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Orm to determine which "type" of parent model to return when accessing the `imageable` relation. The `comments` table is similar.
+`images` jadvalidagi `imageable_id` va `imageable_type` ustunlariga e'tibor bering. `imageable_id` ustuni post yoki foydalanuvchining ID qiymatini o'z ichiga oladi, `imageable_type` ustuni esa ota modelning sinf nomini o'z ichiga oladi. `imageable_type` ustuni Orm tomonidan `imageable` bog'lanishiga murojaat qilganda qaytariladigan ota modelning "turi"ni aniqlash uchun ishlatiladi. `comments` jadvali ham shunga o'xshash.
 
-### Model Structure
+### Model tuzilmasi
 
-Next, let's examine the model definitions needed to build this relationship:
+Keyin, bu bog'lanishni qurish uchun zarur bo'lgan model ta'riflarini ko'rib chiqamiz:
 
 ```go
 type Post struct {
@@ -278,7 +278,7 @@ type Comment struct {
 }
 ```
 
-You can change the polymorphic value by `polymorphicValue` Tag, such as:
+Polimorfik qiymatni `polymorphicValue` tegi orqali o'zgartirishingiz mumkin, masalan:
 
 ```go
 type Post struct {
@@ -288,9 +288,9 @@ type Post struct {
 }
 ```
 
-## Querying Associations
+## Bog'lanishlarni so'rov qilish
 
-For example, imagine a blog application in which a `User` model has many associated `Post` models:
+Misol uchun, `User` modeli ko'plab bog'langan `Post` modellariga ega bo'lgan blog ilovasi tasavvur qiling:
 
 ```go
 type User struct {
@@ -306,43 +306,43 @@ type Post struct {
 }
 ```
 
-### Create or Update Associations
+### Bog'lanishlarni yaratish yoki yangilash
 
-You can use the `Select`, `Omit` methods to to control the create and update of associations. These two method cannot be used at the same time and the associated control functions are only applicable to `Create`, `Update`, `Save`:
+Bog'lanishlarni yaratish va yangilashni boshqarish uchun `Select`, `Omit` metodlaridan foydalanishingiz mumkin. Bu ikki metodni bir vaqtning o'zida ishlatib bo'lmaydi va bog'lanishni boshqarish funksiyalari faqat `Create`, `Update`, `Save` uchun qo'llaniladi:
 
 ```go
 user := models.User{Name: "user", Posts: []*models.Post{{Name: "post"}}}
 
-// Create all child associations while creating User
+// User yaratish bilan birga barcha farzand bog'lanishlarini yaratish
 facades.Orm().Query().Select(orm.Associations).Create(&user)
 
-// Only create Post while creating User. Note: If you don't use `orm.Associations`, but customize specific child associations separately, all fields in the parent model should also be listed at this time.
+// User yaratishda faqat Post yaratish. Eslatma: Agar `orm.Associations` dan foydalanmasangiz, balki maxsus farzand bog'lanishlarini alohida sozlashingiz kerak bo'lsa, ota modeldagi barcha maydonlar ham ushbu vaqtda ro'yxatga olinishi kerak.
 facades.Orm().Query().Select("Name", "Posts").Create(&user)
 
-// When creating a User, ignore the Post, but create all other child associations
+// User yaratishda Postni e'tiborsiz qoldirish, lekin boshqa barcha farzand bog'lanishlarini yaratish
 facades.Orm().Query().Omit("Posts").Create(&user)
 
-// When creating User, ignore Name field, but create all child associations
+// User yaratishda Name maydonini e'tiborsiz qoldirish, lekin barcha farzand bog'lanishlarini yaratish
 facades.Orm().Query().Omit("Name").Create(&user)
 
-// When creating User, ignore Name field and all child associations
+// User yaratishda Name maydoni va barcha farzand bog'lanishlarini e'tiborsiz qoldirish
 facades.Orm().Query().Omit("Name", orm.Associations).Create(&user)
 ```
 
-### Find Associations
+### Bog'lanishlarni topish
 
 ```go
-// Find all matching related records
+// Barcha mos keladigan bog'langan yozuvlarni topish
 var posts []models.Post
 facades.Orm().Query().Model(&user).Association("Posts").Find(&posts)
 
-// Find associations with conditions
+// Shartlar bilan bog'lanishlarni topish
 facades.Orm().Query().Model(&user).Where("name = ?", "goravel").Order("id desc").Association("Posts").Find(&posts)
 ```
 
-### Append Associations
+### Bog'lanishlarni qo'shish
 
-Append new associations for `Many To Many`, `One To Many`, replace current association for `One To One`, `One To One(revers)`:
+`Many To Many`, `One To Many` uchun yangi bog'lanishlarni qo'shing, `One To One`, `One To One(revers)` uchun joriy bog'lanishni almashtiring:
 
 ```go
 facades.Orm().Query().Model(&user).Association("Posts").Append([]*models.Post{Post1, Post2})
@@ -350,9 +350,9 @@ facades.Orm().Query().Model(&user).Association("Posts").Append([]*models.Post{Po
 facades.Orm().Query().Model(&user).Association("Posts").Append(&models.Post{Name: "goravel"})
 ```
 
-### Replace Associations
+### Bog'lanishlarni almashtirish
 
-Replace current associations with new ones:
+Joriy bog'lanishlarni yangilari bilan almashtirish:
 
 ```go
 facades.Orm().Query().Model(&user).Association("Posts").Replace([]*models.Post{Post1, Post2})
@@ -360,9 +360,9 @@ facades.Orm().Query().Model(&user).Association("Posts").Replace([]*models.Post{P
 facades.Orm().Query().Model(&user).Association("Posts").Replace(models.Post{Name: "goravel"}, Post2)
 ```
 
-### Delete Associations
+### Bog'lanishlarni o'chirish
 
-Remove the relationship between source & arguments if exists, only delete the reference, won’t delete those objects from DB, the foreign key must be NULL:
+Agar mavjud bo'lsa, manba va argumentlar o'rtasidagi bog'lanishni olib tashlang, faqat havolani o'chiring, ob'ektlarni DB dan o'chirmaydi, chet kalit NULL bo'lishi kerak:
 
 ```go
 facades.Orm().Query().Model(&user).Association("Posts").Delete([]*models.Post{Post1, Post2})
@@ -370,50 +370,50 @@ facades.Orm().Query().Model(&user).Association("Posts").Delete([]*models.Post{Po
 facades.Orm().Query().Model(&user).Association("Posts").Delete(Post1, Post2)
 ```
 
-### Clear Associations
+### Bog'lanishlarni tozalash
 
-Remove all reference between source & association, won’t delete those associations:
+Manba va bog'lanish o'rtasidagi barcha havolalarni olib tashlang, bog'lanishlarni o'chirmaydi:
 
 ```go
 facades.Orm().Query().Model(&user).Association("Posts").Clear()
 ```
 
-### Count Associations
+### Bog'lanishlarni sanash
 
-Return the count of current associations:
+Joriy bog'lanishlar sonini qaytarish:
 
 ```go
 facades.Orm().Query().Model(&user).Association("Posts").Count()
 
-// Count with conditions
+// Shartlar bilan sanash
 facades.Orm().Query().Model(&user).Where("name = ?", "goravel").Association("Posts").Count()
 ```
 
-### Batch Data
+### Paket ma'lumotlar
 
 ```go
-// Find all roles for all users
+// Barcha foydalanuvchilar uchun barcha rollarni topish
 facades.Orm().Query().Model(&users).Association("Posts").Find(&posts)
 
-// Delete User A from all user's Posts
+// Barcha foydalanuvchilarning Postlaridan User A ni o'chirish
 facades.Orm().Query().Model(&users).Association("Posts").Delete(&userA)
 
-// Get distinct count of all users' Posts
+// Barcha foydalanuvchilarning Postlarining noyob sonini olish
 facades.Orm().Query().Model(&users).Association("Posts").Count()
 
-// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
+// `Append`, `Replace` uchun paket ma'lumotlari bilan, argumentlar uzunligi ma'lumotlar uzunligiga teng bo'lishi kerak, aks holda xatolik qaytariladi
 var users = []models.User{user1, user2, user3}
 
-// We have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// Bizda 3 ta foydalanuvchi bor, user1 jamoasiga userA ni qo'shing, user2 jamoasiga userB ni qo'shing, user3 jamoasiga userA, userB va userC ni qo'shing
 facades.Orm().Query().Model(&users).Association("Team").Append(&userA, &userB, &[]models.User{userA, userB, userC})
 
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// user1 jamoasini userA ga, user2 jamoasini userB ga, user3 jamoasini userA, userB va userC ga qayta o'rnating
 facades.Orm().Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]models.User{userA, userB, userC})
 ```
 
-## Eager Loading
+## Oldindan yuklash
 
-Eager loading conveniences for querying multiple models, and alleviates the "N + 1" query problem. To illustrate the N + 1 query problem, consider a `Book` model that "belongs to" an `Author` model:
+Oldindan yuklash bir nechta modellarni so'rov qilish uchun qulaylik yaratadi va "N + 1" so'rov muammosini yengillashtiradi. N + 1 so'rov muammosini tasvirlash uchun, `Author` modeliga "tegishli" bo'lgan `Book` modelini ko'rib chiqing:
 
 ```go
 type Author struct {
@@ -429,7 +429,7 @@ type Book struct {
 }
 ```
 
-Now, let's retrieve all books and their authors:
+Endi, barcha kitoblarni va ularning mualliflarini olishimiz kerak:
 
 ```go
 var books []models.Book
@@ -441,20 +441,20 @@ for _, book := range books {
 }
 ```
 
-To retrieve all the books in the database table along with their authors, the loop code executes a query for each book. This means that for a collection of 25 books, the loop would run 26 queries - one for the collection of books and 25 more to get the author of each book.
+Ma'lumotlar bazasi jadvalidagi barcha kitoblarni ularning mualliflari bilan birga olish uchun, tsikl kodi har bir kitob uchun so'rovni bajaradi. Bu 25 ta kitob to'plami uchun tsikl 26 ta so'rovni ishlatishini anglatadi - bittasi kitoblar to'plami uchun va yana 25 tasi har bir kitobning muallifini olish uchun.
 
-However, we can simplify this process using eager loading. By using the `With` method, we can specify which relationships need to be eagerly loaded and reduce the number of queries to just two.
+Biroq, biz bu jarayonni oldindan yuklash yordamida soddalashtirishimiz mumkin. `With` metodidan foydalanib, qaysi bog'lanishlar oldindan yuklanishi kerakligini belgilashimiz va so'rovlar sonini faqat ikkitaga qisqartirishimiz mumkin.
 
 ```go
 var books []models.Book
-facades.Orm().Query().With("Author").Find(&books)
+facades.Orm().Query().With("Muallif").Find(&books)
 
 for _, book := range books {
   fmt.Println(book.Author)
 }
 ```
 
-For this operation, only two queries will be executed - one query to retrieve all books and one query to retrieve authors for all of the books:
+Ushbu amal uchun faqat ikkita so'rov bajariladi - barcha kitoblarni olish uchun bitta so'rov va barcha kitoblar uchun mualliflarni olish uchun bitta so'rov:
 
 ```sql
 select * from `books`;
@@ -462,27 +462,27 @@ select * from `books`;
 select * from `authors` where `id` in (1, 2, 3, 4, 5, ...);
 ```
 
-### Eager Loading Multiple Relationships
+### Bir nechta bog'lanishlarni oldindan yuklash
 
-Sometimes you may need to eager load several different relationships. To do so, just call the `With` method multiple times:
+Ba'zida siz bir nechta turli bog'lanishlarni oldindan yuklashingiz kerak bo'lishi mumkin. Buning uchun, `With` metodini bir necha marta chaqiring:
 
 ```go
 var book models.Book
 facades.Orm().Query().With("Author").With("Publisher").Find(&book)
 ```
 
-### Nested Eager Loading
+### Ichki oldindan yuklash
 
-To eager load a relationship's relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts:
+Bog'lanishning bog'lanishlarini oldindan yuklash uchun "nuqta" sintaksisidan foydalanishingiz mumkin. Misol uchun, kitobning barcha mualliflarini va muallifning barcha shaxsiy kontaktlarini oldindan yuklaymiz:
 
 ```go
 var book models.Book
 facades.Orm().Query().With("Author.Contacts").Find(&book)
 ```
 
-### Constraining Eager Loads
+### Oldindan yuklashni cheklash
 
-Sometimes you may wish to eager load a relationship but also specify additional query conditions for the eager loading query. You can accomplish this as below:
+Ba'zida siz bog'lanishni oldindan yuklamoqchi bo'lishingiz mumkin, lekin shu bilan birga oldindan yuklash so'rovi uchun qo'shimcha so'rov shartlarini belgilashingiz kerak bo'ladi. Buni quyidagicha amalga oshirishingiz mumkin:
 
 ```go
 import "github.com/goravel/framework/contracts/database/orm"
@@ -495,11 +495,11 @@ facades.Orm().Query().With("Author", func(query orm.Query) orm.Query {
 }).Find(&book)
 ```
 
-In this example, Orm will only eager load posts where the post's `name` column equals the word `author`.
+Ushbu misolda, Orm faqat postning `name` ustuni `author` so'ziga teng bo'lgan postlarni oldindan yuklaydi.
 
-### Lazy Eager Loading
+### Kechiktirilgan oldindan yuklash
 
-Sometimes you may need to eager load a relationship after the parent model has already been retrieved. For example, this may be useful if you need to dynamically decide whether to load related models:
+Ba'zida siz ota model allaqachon olingandan keyin bog'lanishni oldindan yuklashingiz kerak bo'lishi mumkin. Misol uchun, agar siz bog'langan modellarni yuklashni dinamik ravishda qaror qilishingiz kerak bo'lsa, bu foydali bo'lishi mumkin:
 
 ```go
 var books []models.Book
@@ -507,12 +507,12 @@ facades.Orm().Query().Find(&books)
 
 for _, book := range books {
   if someCondition {
-    err := facades.Orm().Query().Load(&book, "Author")
+    err := facades.Orm().Query().Load(&book, "Muallif")
   }
 }
 ```
 
-If you need to set additional query constraints on the eager loading query, you can use the code below:
+Agar siz oldindan yuklash so'roviga qo'shimcha so'rov cheklovlarini o'rnatishingiz kerak bo'lsa, quyidagi kodni ishlatishingiz mumkin:
 
 ```go
 import "github.com/goravel/framework/contracts/database/orm"
@@ -525,8 +525,8 @@ facades.Orm().Query().Load(&book, "Author", func(query orm.Query) orm.Query {
 }).Find(&book)
 ```
 
-To load a relationship only when it has not already been loaded, use the `LoadMissing` method:
+Bog'lanish faqat u allaqachon yuklanmagan bo'lsa yuklash uchun `LoadMissing` metodidan foydalaning:
 
 ```go
-facades.Orm().Query().LoadMissing(&book, "Author")
+facades.Orm().Query().LoadMissing(&book, "Muallif")
 ```
