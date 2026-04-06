@@ -737,7 +737,7 @@ collect.Split([]int{1, 2, 3, 4, 5}, 2)
 
 ### `collect.Sum()`
 
-The `collect.Sum()` function returns the sum of all items in the collection:
+`collect.Sum()` funksiyasi to'plamdagi barcha elementlarning yig'indisini qaytaradi:
 
 ```go
 collect.Sum([]int{1, 2, 3, 4, 5}) // 15
