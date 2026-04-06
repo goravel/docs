@@ -1,17 +1,17 @@
-# Release Notes
+# Chiqarish eslatmalari
 
-## Versioning Scheme
+## Versiyalash sxemasi
 
-Goravel releases are released every half of year (~Q1 and ~Q3), while patch releases may be released as often as every week. Patch releases should never contain breaking changes.
+Goravel relizlari har yarim yilda bir marta (~Q1 va ~Q3) chiqariladi, patch relizlari esa har hafta chiqarilishi mumkin. Patch relizlari hech qachon buziluvchi o'zgartirishlarni o'z ichiga olmasligi kerak.
 
-## Support Policy
+## Qo'llab-quvvatlash siyosati
 
-For all Goravel releases, bug fixes are provided for 12 months.
+Barcha Goravel relizlari uchun xatolar tuzatmalari 12 oy davomida taqdim etiladi.
 
-| Version              | Golang               | Release      | Bug Fixes Until |
-| -------------------- | -------------------- | ------------ | --------------- |
-| 1.18 | 1.25 | Q3 2026      | Q3 2027         |
-| 1.17 | 1.24 | Feb 3, 2026  | Feb 3, 2027     |
-| 1.16 | 1.23 | Jul 20, 2025 | Jul 20, 2026    |
-| 1.15 | 1.22 | Dec 31, 2024 | Dec 31, 2025    |
-| 1.14 | 1.21 | Jun 8, 2024  | Jun 8, 2025     |
+| Versiya              | Golang               | Reliz             | Xatolar tuzatilguncha |
+| -------------------- | -------------------- | ----------------- | --------------------- |
+| 1.18 | 1.25 | 2026-yil 3-chorak | 2027-yil 3-chorak     |
+| 1.17 | 1.24 | 3-fevral, 2026    | 3-fevral, 2027        |
+| 1.16 | 1.23 | 20-iyul, 2025     | 20-iyul, 2026         |
+| 1.15 | 1.22 | 31-dekabr, 2024   | 31-dekabr, 2025       |
+| 1.14 | 1.21 | 8-iyun, 2024      | 8-iyun, 2025          |
