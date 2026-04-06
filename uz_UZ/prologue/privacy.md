@@ -1,37 +1,32 @@
-# Privacy Policy
+# Maxfiylik siyosati
 
-## Collection of Information
+## Ma'lumot to'plash
 
-We collect certain information about you when you visit goravel.dev. This information may include:
+Siz goravel.dev saytiga tashrif buyurganingizda, biz siz haqingizda ma'lum ma'lumotlarni to'playmiz. Bu ma'lumotlarga quyidagilar kiradi:
 
-- Information about the pages you visit on our website
-- Any other information you provide voluntarily
+- Veb-saytimizda tashrif buyurgan sahifalaringiz haqida ma'lumot
+- Ixtiyoriy ravishda taqdim etgan boshqa har qanday ma'lumot
 
-## Use of Information
+## Ma'lumotlardan foydalanish
 
-We may use the collected information for various purposes, including:
+To'plangan ma'lumotlarni turli maqsadlarda, jumladan, quyidagilar uchun ishlatishimiz mumkin:
 
-- Personalizing your experience on our website
-- Improving our website and services
-- Contacting you regarding your inquiries or requests
+- Veb-saytimizdagi tajribangizni shaxsiylashtirish
+- Veb-saytimiz va xizmatlarimizni takomillashtirish
+- So'rovingiz yoki iltimoslaringiz bo'yicha siz bilan bog'lanish
 
-## Data Security
+## Ma'lumotlar xavfsizligi
 
-We take the security of your data seriously. We implement appropriate technical and organizational measures to protect
-your information from unauthorized access, disclosure, alteration, or destruction.
+Biz ma'lumotlaringiz xavfsizligini jiddiy qabul qilamiz. Ma'lumotlaringizni ruxsatsiz kirish, oshkor qilish, o'zgartirish yoki yo'q qilishdan himoya qilish uchun tegishli texnik va tashkiliy choralarni amalga oshiramiz.
 
-## Third-Party Disclosure
+## Uchinchi tomonlarga oshkor qilish
 
-We may share your information with trusted third parties who assist us in operating our website or providing services to
-you. These third parties are contractually obligated to keep your information confidential and secure.
+Biz ma'lumotlaringizni veb-saytimizni boshqarishda yoki sizga xizmat ko'rsatishda bizga yordam beradigan ishonchli uchinchi tomonlar bilan baham ko'rishimiz mumkin. Ushbu uchinchi tomonlar ma'lumotlaringizni maxfiy va xavfsiz saqlash majburiyatini shartnoma asosida olgan.
 
-## Cookies
+## Cookie-fayllar
 
-Our website may use cookies to enhance your browsing experience. Cookies are small files stored on your device that
-enable certain features and functionality. You may choose to disable cookies in your browser settings, but please note
-that some parts of our website may not function properly.
+Veb-saytimiz sizning ko'rish tajribangizni yaxshilash uchun cookies-lardan foydalanishi mumkin. Cookies - bu qurilmangizda saqlanadigan va ma'lum funksiyalar va imkoniyatlarni ta'minlaydigan kichik fayllardir. Siz brauzer sozlamalaringizda cookies-larni o'chirib qo'yishni tanlashingiz mumkin, ammo e'tibor bering, veb-saytimizning ba'zi qismlari to'g'ri ishlamasligi mumkin.
 
-## Changes to this Policy
+## Ushbu siyosatga o'zgartirishlar
 
-We may update this Privacy Policy from time to time. Any changes will be posted on this page, and the revised policy
-will take effect immediately upon posting.
+Biz ushbu Maxfiylik siyosatini vaqti-vaqti bilan yangilashimiz mumkin. Har qanday o'zgartirishlar ushbu sahifada joylashtiriladi va qayta ko'rib chiqilgan siyosat joylashtirilgandan so'ng darhol kuchga kiradi.
