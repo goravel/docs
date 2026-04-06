@@ -1,35 +1,35 @@
-# Excellent Extend Packages
+# Ajoyib Kengaytiruvchi Paketlar
 
-You can find extended packages for Goravel here, and you can also create a PR for [goravel/docs](https://github.com/goravel/docs) to commit your owner package, please improve the test coverage of your package as much as possible.
+Bu yerda Goravel uchun kengaytirilgan paketlarni topishingiz mumkin, shuningdek, o'zingizning paketingizni joylashtirish uchun [goravel/docs](https://github.com/goravel/docs) repozitoriyasiga PR yaratishingiz mumkin. Iltimos, paketingizning test qamrovini iloji boricha yaxshilang.
 
-| Package                                                                                 | Description                                 | Test Coverage\*       |
-| --------------------------------------------------------------------------------------- | ------------------------------------------- | --------------------- |
-| [goravel/gin](https://github.com/goravel/gin)                                           | The Gin driver for `facades.Route()`        | 83.1% |
-| [goravel/fiber](https://github.com/goravel/fiber)                                       | The Fiber driver for `facades.Route()`      | 81.0% |
-| [goravel/cos](https://github.com/goravel/cos)                                           | A COS disk driver for `facades.Storage()`   | 80.2% |
-| [goravel/minio](https://github.com/goravel/minio)                                       | A Minio disk driver for `facades.Storage()` | 79.6% |
-| [goravel/redis](https://github.com/goravel/redis)                                       | A Redis disk driver for `facades.Cache()`   | 79.1% |
-| [goravel/s3](https://github.com/goravel/s3)                                             | A S3 disk driver for `facades.Storage()`    | 77.8% |
-| [goravel/oss](https://github.com/goravel/oss)                                           | A OSS disk driver for `facades.Storage()`   | 76.5% |
-| [goravel/installer](https://github.com/goravel/installer)                               | Goravel installer                           | 76.2% |
-| [goravel/postgres](https://github.com/goravel/postgres)                                 | A Postgres database driver                  | 73.7% |
-| [goravel/mysql](https://github.com/goravel/mysql)                                       | A MySQL database driver                     | 73.3% |
-| [goravel/sqlserver](https://github.com/goravel/sqlserver)                               | A Sqlserver database driver                 | 60.6% |
-| [goravel/sqlite](https://github.com/goravel/sqlite)                                     | A Sqlite database driver                    | 45.2% |
-| [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | A MongoDB package                           | 16.9% |
-| [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli)         | A goravel scaffold commandline tool         | 15.2% |
-| [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow)       | A workflow package                          | 4.4%  |
-| [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud)               | A goravel crud package                      | 4.2%  |
-| [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                           | A goravel tinker package                    | 3.6%  |
-| [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)           | A webSocket package                         | 0%                    |
+| Paket                                                                                   | Tavsifi                                          | Test Qamrovi\*        |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------ | --------------------- |
+| [goravel/gin](https://github.com/goravel/gin)                                           | `facades.Route()` uchun Gin haydovchisi          | 83.1% |
+| [goravel/fiber](https://github.com/goravel/fiber)                                       | `facades.Route()` uchun Fiber haydovchisi        | 81.0% |
+| [goravel/cos](https://github.com/goravel/cos)                                           | `facades.Storage()` uchun COS disk haydovchisi   | 80.2% |
+| [goravel/minio](https://github.com/goravel/minio)                                       | `facades.Storage()` uchun Minio disk haydovchisi | 79.6% |
+| [goravel/redis](https://github.com/goravel/redis)                                       | `facades.Cache()` uchun Redis disk haydovchisi   | 79.1% |
+| [goravel/s3](https://github.com/goravel/s3)                                             | `facades.Storage()` uchun S3 disk haydovchisi    | 77.8% |
+| [goravel/oss](https://github.com/goravel/oss)                                           | `facades.Storage()` uchun OSS disk haydovchisi   | 76.5% |
+| [goravel/installer](https://github.com/goravel/installer)                               | Goravel o'rnatuvchisi                            | 76.2% |
+| [goravel/postgres](https://github.com/goravel/postgres)                                 | Postgres ma'lumotlar bazasi haydovchisi          | 73.7% |
+| [goravel/mysql](https://github.com/goravel/mysql)                                       | MySQL ma'lumotlar bazasi haydovchisi             | 73.3% |
+| [goravel/sqlserver](https://github.com/goravel/sqlserver)                               | SQL Server ma'lumotlar bazasi haydovchisi        | 60.6% |
+| [goravel/sqlite](https://github.com/goravel/sqlite)                                     | SQLite ma'lumotlar bazasi haydovchisi            | 45.2% |
+| [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | MongoDB paketi                                   | 16.9% |
+| [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli)         | Goravel qolip buyruq qatori vositasi             | 15.2% |
+| [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow)       | Ish jarayoni paketi                              | 4.4%  |
+| [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud)               | Goravel CRUD paketi                              | 4.2%  |
+| [hulutech-web/tinker](https://github.com/hulutech-web/tinker)                           | Goravel Tinker paketi                            | 3.6%  |
+| [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket)           | WebSocket paketi                                 | 0%                    |
 
-\***Note**: The packages are ordered based on their test rate.
+\***Eslatma**: Paketlar ularning test darajasi bo'yicha tartiblangan.
 
-💡 Tip: To help more developers discover your work, you can also add relevant topics to your repository.
-Recommended topic: [`goravel-package`](https://github.com/topics/goravel-package)
+💡 Maslahat: Ishingizni ko'proq dasturchilar topishi uchun, repozitoriyangizga tegishli mavzularni qo'shishingiz mumkin.
+Tavsiya etilgan mavzu: [`goravel-package`](https://github.com/topics/goravel-package)
 
-- On GitHub, navigate to the main page of the repository.
-- In the top right corner of the page, to the right of "About", click gear icon (settings).
-- Under "Topics", start to type the topic you want to add to your repository to display a dropdown menu of any matching topics.
-- Click the topic you want to add or continue typing to create a new topic. For example: `goravel-package`, `goravel` and any other relevant keywords.
-- Click `Save changes` — this will make your package more discoverable.
+- GitHub-da repozitoriyaning asosiy sahifasiga o'ting.
+- Sahifaning yuqori o'ng burchagida, "Haqida" yozuvining o'ng tomonida, tishli chana belgisini (sozlamalar) bosing.
+- "Mavzular" ostida, repozitoriyangizga qo'shmoqchi bo'lgan mavzuni yozishni boshlang va mos keladigan mavzular ro'yxati paydo bo'ladi.
+- Qo'shmoqchi bo'lgan mavzuni bosing yoki yangi mavzu yaratish uchun yozishni davom eting. Masalan: `goravel-package`, `goravel` va boshqa tegishli kalit so'zlar.
+- `O'zgarishlarni saqlash` tugmasini bosing — bu paketingizni topishni osonlashtiradi.
