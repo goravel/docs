@@ -1,12 +1,12 @@
-# HTTP Response
+# HTTP Javobi
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-You can use `ctx.Response()` for HTTP response in the Controller.
+Controllerda HTTP javobi uchun `ctx.Response()` dan foydalanishingiz mumkin.
 
-## String
+## Matn
 
 ```go
 import "github.com/goravel/framework/contracts/http"
@@ -34,13 +34,13 @@ ctx.Response().Json(http.StatusOK, struct {
 })
 ```
 
-## Custom Return
+## Maxsus Qaytarish
 
 ```go
 ctx.Response().Data(http.StatusOK, "text/html; charset=utf-8", []byte("<b>Goravel</b>"))
 ```
 
-## Response File
+## Javob Fayli
 
 ```go
 import "net/http"
@@ -48,7 +48,7 @@ import "net/http"
 ctx.Response().File("./public/logo.png")
 ```
 
-## Download File
+## Faylni Yuklab Olish
 
 ```go
 import "net/http"
@@ -56,7 +56,7 @@ import "net/http"
 ctx.Response().Download("./public/logo.png", "1.png")
 ```
 
-## Attach Header
+## Sarlavha Qo‘shish
 
 ```go
 import "github.com/goravel/framework/contracts/http"
@@ -66,9 +66,9 @@ ctx.Response().Header("Content", "Goravel").String(http.StatusOK, "Hello Goravel
 
 ## Cookie
 
-### Set Cookie
+### Cookie O‘rnatish
 
-Use the `Cookie` method on the `response` instance to set a `cookie`. The `Cookie` method accepts a `http.Cookie` instance, which allows you to set various cookie options.
+Cookie o‘rnatish uchun `response` namunasi ustidagi `Cookie` metodidan foydalaning. `Cookie` metodi `http.Cookie` namunasi qabul qiladi, bu sizga turli cookie parametrlarini o‘rnatish imkonini beradi.
 
 ```go
 import (
@@ -87,15 +87,15 @@ ctx.Response().Cookie(http.Cookie{
 })
 ```
 
-### Expire Cookie
+### Cookie Muddatini Tugatish
 
-Use the `WithoutCookie` method to remove a cookie.
+Cookie-ni o‘chirish uchun `WithoutCookie` metodidan foydalaning.
 
 ```go
 ctx.Response().WithoutCookie("name")
 ```
 
-## Return Success
+## Muvaffaqiyatli Javob Qaytarish
 
 ```go
 ctx.Response().Success().String("Hello Goravel")
@@ -104,7 +104,7 @@ ctx.Response().Success().Json(http.Json{
 })
 ```
 
-## Custom Code
+## Maxsus Kod
 
 ```go
 ctx.Response().Status(http.StatusOK).Json(http.Json{
@@ -112,7 +112,7 @@ ctx.Response().Status(http.StatusOK).Json(http.Json{
 })
 ```
 
-## Return Stream
+## Oqim Javobi Qaytarish
 
 ```go
 ctx.Response().Stream(http.StatusCreated, func(w http.StreamWriter) error {
@@ -133,32 +133,32 @@ ctx.Response().Stream(http.StatusCreated, func(w http.StreamWriter) error {
 })
 ```
 
-## Redirect
+## Qayta Yo‘naltirish
 
 ```go
 ctx.Response().Redirect(http.StatusMovedPermanently, "https://goravel.dev")
 ```
 
-## No Content
+## Kontent Yo‘q
 
 ```go
 ctx.Response().NoContent()
 ctx.Response().NoContent(http.StatusOk)
 ```
 
-## Get Response
+## Javobni Olish
 
-You can obtain all the information from `ctx.Response()`, which is commonly used in HTTP middleware:
+Siz `ctx.Response()` dan barcha ma’lumotni olishingiz mumkin, bu odatda HTTP middleware’ida ishlatiladi:
 
 ```go
 origin := ctx.Response().Origin()
 ```
 
-`origin` contains some methods as shown below：
+`origin` quyida ko‘rsatilganidek ba’zi metodlarni o‘z ichiga oladi:
 
-| Method | Action              |
-| ------ | ------------------- |
-| Body   | Get response data   |
-| Header | Get response header |
-| Size   | Get response size   |
-| Status | Get response status |
+| Metod    | Harakat                    |
+| -------- | -------------------------- |
+| Tana     | Javob ma’lumotlarini olish |
+| Sarlavha | Javob sarlavhasini olish   |
+| Hajm     | Javob hajmini olish        |
+| Holat    | Javob holatini olish       |
