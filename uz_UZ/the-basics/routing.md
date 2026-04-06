@@ -1,25 +1,25 @@
-# Routing
+# Marshrutlash
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-The Goravel routing module can be operated by `facades.Route()`.
+Goravel marshrutlash moduli `facades.Route()` orqali boshqarilishi mumkin.
 
-## HTTP Driver
+## HTTP haydovchisi
 
-Goravel uses [gin](https://github.com/gin-gonic/gin) as its default HTTP driver. To use other drivers, configure them in the `config/http.go` file. The official default supports [gin](https://github.com/gin-gonic/gin) and [fiber](https://github.com/gofiber/fiber).
+Goravel sukut boʻyicha HTTP haydovchisi sifatida [gin](https://github.com/gin-gonic/gin) dan foydalanadi. Boshqa haydovchilardan foydalanish uchun ularni `config/http.go` faylida sozlang. Rasmiy sukut boʻyicha [gin](https://github.com/gin-gonic/gin) va [fiber](https://github.com/gofiber/fiber) qoʻllab-quvvatlanadi.
 
-| Driver | Link                                                                                                 |
-| ------ | ---------------------------------------------------------------------------------------------------- |
-| Gin    | [https://github.com/goravel/gin](https://github.com/goravel/gin)     |
-| Fiber  | [https://github.com/goravel/fiber](https://github.com/goravel/fiber) |
+| Haydovchi | Havola                                                                                               |
+| --------- | ---------------------------------------------------------------------------------------------------- |
+| Gin       | [https://github.com/goravel/gin](https://github.com/goravel/gin)     |
+| Fiber     | [https://github.com/goravel/fiber](https://github.com/goravel/fiber) |
 
-## Default Routing File
+## Sukut boʻyicha marshrutlash fayli
 
-To define routing files, simply navigate to the `routes` directory. By default, the framework utilizes a sample route located in `routes/web.go` and it is registered in the `bootstrap/app.go::WithRouting` function.
+Marshrutlash fayllarini aniqlash uchun oddiygina `routes` katalogiga o‘ting. Sukut bo‘yicha, framework `routes/web.go` faylida joylashgan namunaviy marshrutdan foydalanadi va u `bootstrap/app.go::WithRouting` funksiyasida ro‘yxatdan o‘tkaziladi.
 
-If you require more precise management, you can add routing files to the `routes` directory and register them in the `bootstrap/app.go::WithRouting` function as well.
+Agar sizga aniqroq boshqaruv kerak bo‘lsa, `routes` katalogiga marshrutlash fayllarini qo‘shishingiz va ularni ham `bootstrap/app.go::WithRouting` funksiyasida ro‘yxatdan o‘tkazishingiz mumkin.
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -32,38 +32,38 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-## Get Routes List
+## Marshrutlar Ro‘yxatini Olish
 
-Use the `route:list` command to view routes list:
+Marshrutlar ro‘yxatini ko‘rish uchun `route:list` buyrug‘idan foydalaning:
 
 ```shell
 ./artisan route:list
 ```
 
-### Routing Methods
+### Marshrutlash usullari
 
-| Methods    | Action                                |
-| ---------- | ------------------------------------- |
-| Group      | [Group Routing](#group-routing)       |
-| Prefix     | [Routing Prefix](#routing-prefix)     |
-| ServeHTTP  | [Testing Routing](#testing-routing)   |
-| Get        | [Basic Routing](#basic-routing)       |
-| Post       | [Basic Routing](#basic-routing)       |
-| Put        | [Basic Routing](#basic-routing)       |
-| Delete     | [Basic Routing](#basic-routing)       |
-| Patch      | [Basic Routing](#basic-routing)       |
-| Options    | [Basic Routing](#basic-routing)       |
-| Any        | [Basic Routing](#basic-routing)       |
-| Resource   | [Resource Routing](#resource-routing) |
-| Static     | [File Routing](#file-routing)         |
-| StaticFile | [File Routing](#file-routing)         |
-| StaticFS   | [File Routing](#file-routing)         |
-| Middleware | [Middleware](#middleware)             |
-| GetRoutes  | [Get All Routes](#get-all-routes)     |
-| Name       | [Set Route Name](#set-route-name)     |
-| Info       | [Get Route Info](#get-route-info)     |
+| Usullar     | Harakat                                       |
+| ----------- | --------------------------------------------- |
+| Guruh       | [Guruh marshrutlash](#group-routing)          |
+| Prefiks     | [Marshrut prefiksi](#routing-prefix)          |
+| ServeHTTP   | [Marshrutlarni testlash](#testing-routing)    |
+| Oling       | [Asosiy marshrutlash](#basic-routing)         |
+| Post        | [Asosiy marshrutlash](#basic-routing)         |
+| Put         | [Asosiy marshrutlash](#basic-routing)         |
+| O‘chirish   | [Asosiy marshrutlash](#basic-routing)         |
+| Patch       | [Asosiy marshrutlash](#basic-routing)         |
+| Parametrlar | [Asosiy marshrutlash](#basic-routing)         |
+| Any         | [Asosiy Marshrutlash](#basic-routing)         |
+| Resurs      | [Resurs marshrutlash](#resource-routing)      |
+| Static      | [Fayl marshrutlash](#file-routing)            |
+| StaticFile  | [Fayl marshrutlash](#file-routing)            |
+| StaticFS    | [Fayl marshrutlash](#file-routing)            |
+| Middleware  | [Middleware](#middleware)                     |
+| GetRoutes   | [Barcha marshrutlarni olish](#get-all-routes) |
+| Name        | [Marshrut nomini belgilash](#set-route-name)  |
+| Info        | [Marshrut maʼlumotini olish](#get-route-info) |
 
-## Basic Routing
+## Asosiy marshrutlash
 
 ```go
 facades.Route().Get("/", func(ctx http.Context) http.Response {
@@ -79,7 +79,7 @@ facades.Route().Options("/", userController.Show)
 facades.Route().Any("/", userController.Show)
 ```
 
-## Resource Routing
+## Resurs marshrutlash
 
 ```go
 import "github.com/goravel/framework/contracts/http"
@@ -103,7 +103,7 @@ func (c *ResourceController) Update(ctx http.Context) {}
 func (c *ResourceController) Destroy(ctx http.Context) {}
 ```
 
-## Group Routing
+## Guruh marshrutlash
 
 ```go
 facades.Route().Group(func(router route.Router) {
@@ -113,13 +113,13 @@ facades.Route().Group(func(router route.Router) {
 })
 ```
 
-## Routing Prefix
+## Marshrut prefiksi
 
 ```go
 facades.Route().Prefix("users").Get("/", userController.Show)
 ```
 
-## File Routing
+## Fayl marshrutlash
 
 ```go
 import "net/http"
@@ -129,7 +129,7 @@ facades.Route().StaticFile("static-file", "./public/logo.png")
 facades.Route().StaticFS("static-fs", http.Dir("./public"))
 ```
 
-## Routing Parameters
+## Marshrut parametrlari
 
 ```go
 facades.Route().Get("/input/{id}", func(ctx http.Context) http.Response {
@@ -139,7 +139,7 @@ facades.Route().Get("/input/{id}", func(ctx http.Context) http.Response {
 })
 ```
 
-Detail [Request](./request.md)
+Batafsil [Soʻrov](./request.md)
 
 ## Middleware
 
@@ -149,29 +149,29 @@ import "github.com/goravel/framework/http/middleware"
 facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
-Detail [Middleware](./middleware.md)
+Batafsil [Middleware](./middleware.md)
 
-## Get All Routes
+## Barcha marshrutlarni olish
 
 ```go
 routes := facades.Route().GetRoutes()
 ```
 
-## Set Route Name
+## Marshrut nomini belgilash
 
 ```go
 facades.Route().Get("users", userController.Index).Name("users.index")
 ```
 
-## Get Route Info
+## Marshrut maʼlumotini olish
 
 ```go
 route := facades.Route().Info("users.index")
 ```
 
-## Fallback Routes
+## Zaxira marshrutlar
 
-Using the `Fallback` method, you may define a route that will be executed when no other route matches the incoming request.
+`Fallback` usulidan foydalanib, kiruvchi soʻrovga boshqa hech qanday marshrut mos kelmasa bajariladigan marshrutni belgilashingiz mumkin.
 
 ```go
 facades.Route().Fallback(func(ctx http.Context) http.Response {
@@ -179,13 +179,13 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 })
 ```
 
-## Rate Limiting
+## Cheklov tezligi
 
-### Defining Rate Limiters
+### Cheklov tezligi limitlarini belgilash
 
-Goravel includes powerful and customizable rate-limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs, then register them in the `bootstrap/app.go::WithCallback` function.
+Goravel berilgan marshrut yoki marshrutlar guruhi uchun trafik miqdorini cheklash uchun foydalanishingiz mumkin boʻlgan kuchli va sozlanishi mumkin boʻlgan cheklov tezligi xizmatlarini oʻz ichiga oladi. Boshlash uchun siz ilovangiz ehtiyojlariga javob beradigan cheklov konfiguratsiyalarini aniqlashingiz kerak, so‘ngra ularni `bootstrap/app.go::WithCallback` funksiyasida ro‘yxatdan o‘tkazishingiz kerak.
 
-Rate limiters are defined using the `facades.RateLimiter()`'s `For` method. The `For` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. The rate limiter name may be any string you wish:
+Cheklov tezligi limitlari `facades.RateLimiter()` ning `For` usuli yordamida belgilanadi. `For` usuli cheklov tezligi limiti nomini va cheklov tezligi limitiga tayinlangan marshrutlarga qoʻllanilishi kerak boʻlgan limit konfiguratsiyasini qaytaradigan yopilishni qabul qiladi. Cheklov tezligi limiti nomi siz xohlagan har qanday satr boʻlishi mumkin:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -200,7 +200,7 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Goravel. If you would like to define your own response that should be returned by a rate limit, you may use the response method:
+Agar kiruvchi soʻrov belgilangan tezlik chegarasidan oshib ketgan boʻlsa, Goravel tomonidan 429 HTTP holat kodi bilan javob avtomatik ravishda qaytariladi. Agar siz cheklov tezligi tomonidan qaytarilishi kerak boʻlgan oʻz javobingizni belgilamoqchi boʻlsangiz, javob usulidan foydalanishingiz mumkin:
 
 ```go
 facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
@@ -210,11 +210,11 @@ facades.RateLimiter().For("global", func(ctx http.Context) http.Limit {
 })
 ```
 
-Since rate limiter callbacks receive the incoming HTTP request instance, you may build the appropriate rate limit dynamically based on the incoming request or authenticated user:
+Cheklovli so‘rovlar chaqiruvlari kiruvchi HTTP so‘rov namunasini qabul qilganligi sababli, siz kiruvchi so‘rov yoki autentifikatsiyadan o‘tgan foydalanuvchiga asoslanib, tegishli cheklovni dinamik tarzda yaratishingiz mumkin:
 
 ```go
 facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
-  // Suppose
+  // Faraz qilaylik
   if is_vip() {
     return limit.PerMinute(100)
   }
@@ -223,9 +223,9 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
 })
 ```
 
-#### Segmenting Rate Limits
+#### Cheklovlarni Segmentlash
 
-Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `By` method when building your rate limit:
+Ba‘zan siz cheklovlarni ixtiyoriy qiymat bo‘yicha segmentlarga ajratmoqchi bo‘lishingiz mumkin. Masalan, siz foydalanuvchilarga har bir IP manzili uchun daqiqada 100 marta ma‘lum marshrutga kirish imkoniyatini berishni xohlashingiz mumkin. Buni amalga oshirish uchun cheklovni yaratishda `By` metodidan foydalanishingiz mumkin:
 
 ```go
 facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
@@ -237,7 +237,7 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
 })
 ```
 
-To illustrate this feature using another example, we can limit access to the route to 100 times per minute per authenticated user ID or 10 times per minute per IP address for guests:
+Ushbu xususiyatni yana bir misol bilan tushuntirish uchun, marshrutga kirishni autentifikatsiyadan o‘tgan foydalanuvchi IDsi uchun daqiqada 100 marta yoki mehmonlar uchun har bir IP manzili uchun daqiqada 10 marta cheklashimiz mumkin:
 
 ```go
 facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
@@ -249,9 +249,9 @@ facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshtt
 })
 ```
 
-#### Multiple Rate Limits
+#### Bir Nechta Cheklovlar
 
-If needed, you may return an array of rate limits for a given rate limiter configuration. Each rate limit will be evaluated for the route based on the order they are placed within the array:
+Agar kerak bo‘lsa, siz berilgan cheklov konfiguratsiyasi uchun cheklovlar massivini qaytarishingiz mumkin. Har bir cheklov marshrut uchun massiv ichida joylashgan tartibda baholanadi:
 
 ```go
 facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []contractshttp.Limit {
@@ -262,9 +262,9 @@ facades.RateLimiter().ForWithLimits("login", func(ctx contractshttp.Context) []c
 })
 ```
 
-### Attaching Rate Limiters To Routes
+### Cheklovlarni Marshrutlarga Biriktirish
 
-Rate limiters may be attached to routes or route groups using the throttle middleware. The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
+Cheklovlarni marshrutlarga yoki marshrut guruhlariga throttle middleware’i yordamida biriktirish mumkin. Throttle middleware’i marshrutga tayinlamoqchi bo‘lgan cheklov nomini qabul qiladi:
 
 ```go
 import github.com/goravel/framework/http/middleware
@@ -278,6 +278,6 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 
 ## Cross-Origin Resource Sharing (CORS)
 
-Goravel has CORS enabled by default, the configuration can be modified in `config/cors.go`.
+Goravel sukut bo‘yicha CORS’ni yoqilgan holda keladi, konfiguratsiyani `config/cors.go` faylida o‘zgartirish mumkin.
 
-> For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+> CORS va CORS sarlavhalari haqida qo‘shimcha ma‘lumot olish uchun iltimos, [CORS bo‘yicha MDN veb hujjatlari](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers) bilan tanishib chiqing.
