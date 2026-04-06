@@ -1,27 +1,27 @@
-# Views
+# Ko‘rishlar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Of course, it's not practical to return entire HTML document strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory.
+Albatta, marshrutlaringiz va kontrollerlaringizdan to‘liq HTML hujjatlarini to‘g‘ridan-to‘g‘ri qaytarish amaliy emas. Yaxshiyamki, ko‘rishlar barcha HTML kodimizni alohida fayllarga joylashtirishning qulay usulini taqdim etadi. Ko‘rishlar kontroller/dastur mantiqini taqdimot mantiqidan ajratadi va ular `resources/views` katalogida saqlanadi.
 
-## Creating & Rendering Views
+## Ko‘rishlarni Yaratish & Ko‘rsatish
 
-When using the Goravel default template `html/template`, you can create views by adding a file with the `.tmpl` extension in the application `resources/views` directory.
+Goravelning standart `html/template` shablonidan foydalanganda, dastur `resources/views` katalogida `.tmpl` kengaytmali fayl qo‘shib ko‘rishlarni yaratishingiz mumkin.
 
 ```
 // resources/views/welcome.tmpl
 {{ define "welcome.tmpl" }}
 <html>
   <body>
-  <h1>Hello, {{ .name }}</h1>
+  <h1>Salom, {{ .name }}</h1>
   </body>
 </html>
 {{ end }}
 ```
 
-After creating the view, you can use the `View` method to return the view from a route or controller in the application:
+Ko‘rishni yaratgandan so‘ng, dasturdagi marshrut yoki kontrollerdan ko‘rishni qaytarish uchun `View` metodidan foydalanishingiz mumkin:
 
 ```go
 facades.Route().Get("/", func(ctx http.Context) http.Response {
@@ -31,14 +31,14 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 })
 ```
 
-### Nested View Directories
+### Ichki Ko‘rish Kataloglari
 
-Views may also be nested within subdirectories of the `resources/views` directory. For example, if your view is stored at `resources/views/admin/profile.tmpl`, you can return it from one of your application's routes or controllers, note that the view needs to be defined as `define "admin/profile.tmpl"` as shown below:
+Ko‘rishlar, shuningdek, `resources/views` katalogining ichki kataloglarida joylashgan bo‘lishi mumkin. Masalan, agar ko‘rishingiz `resources/views/admin/profile.tmpl` manzilida saqlangan bo‘lsa, uni dasturingizning marshrutlari yoki kontrollerlaridan biridan qaytarishingiz mumkin. E‘tibor bering, ko‘rish quyidagicha `define "admin/profile.tmpl"` sifatida aniqlanishi kerak:
 
 ```go
 // resources/views/admin/profile.tmpl
 {{ define "admin/profile.tmpl" }}
-<h1>Welcome to the Admin Panel</h1>
+<h1>Admin paneliga xush kelibsiz</h1>
 {{ end }}
 
 ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
@@ -46,9 +46,9 @@ ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
 })
 ```
 
-### Creating The First Available View
+### Mavjud Birinchi Ko‘rishni Yaratish
 
-Using the `First` method, you can use the first view that exists in a given array of views. This may be useful if your application or package allows views to be customized or overwritten:
+`First` metodidan foydalanib, berilgan ko‘rishlar massividagi mavjud birinchi ko‘rishdan foydalanishingiz mumkin. Bu, agar dasturingiz yoki paketingiz ko‘rishlarni sozlash yoki ustidan yozishga imkon bersa, foydali bo‘lishi mumkin:
 
 ```go
 ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[string]any{
@@ -56,9 +56,9 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 })
 ```
 
-### Determining If A View Exists
+### Ko‘rish Mavjudligini Aniqlash
 
-If you need to determine if a view exists, you can use the `facades.View()` method:
+Agar ko‘rish mavjudligini aniqlash kerak bo‘lsa, `facades.View()` metodidan foydalanishingiz mumkin:
 
 ```go
 if facades.View().Exist("welcome.tmpl") {
@@ -66,9 +66,9 @@ if facades.View().Exist("welcome.tmpl") {
 }
 ```
 
-## Passing Data To Views
+## Ko‘rishlarga Ma'lumot O‘tkazish
 
-As you saw in the previous examples, you may pass an array of data to views to make that data available to the view. Please note, the format of the passed data needs to change according to the template driver used, in the following example, using the default `html/template` driver:
+Oldingi misollarda ko‘rganingizdek, ko‘rishlarga ma'lumot massivini o‘tkazib, bu ma'lumotni ko‘rish uchun mavjud qilishingiz mumkin. Iltimos, o‘tkazilgan ma'lumot formati ishlatiladigan shablon haydovchisiga qarab o‘zgarishi kerakligini unutmang. Quyidagi misolda standart `html/template` haydovchisi ishlatilmoqda:
 
 ```go
 facades.Route().Get("/", func(ctx http.Context) http.Response {
@@ -78,9 +78,9 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 })
 ```
 
-### Sharing Data With All Views
+### Barcha Ko‘rishlar bilan Ma'lumot Ulashish
 
-Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `Share` function in `facades.View()`. Typically, you should place calls to the `Share` function in the `bootstrap/app.go::WithCallback` function:
+Ba'zan, dasturingiz tomonidan ko‘rsatiladigan barcha ko‘rishlar bilan ma'lumot ulashishingiz kerak bo‘lishi mumkin. Buni `facades.View()` dagi `Share` funksiyasidan foydalanib amalga oshirishingiz mumkin. Odatda, `Share` funksiyasiga chaqiruvlarni `bootstrap/app.go::WithCallback` funksiyasiga joylashtirishingiz kerak:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -95,20 +95,20 @@ func Boot() contractsfoundation.Application {
 
 ## CSRF Token Middleware
 
-This middleware can be applied to routes to ensure that requests are coming from authenticated sources to against Cross-Site Request Forgery (CSRF) attacks.
+Bu middleware marshrutlarga qo‘llanilishi mumkin, bu esa so‘rovlar autentifikatsiyadan o‘tgan manbalardan kelayotganligini va Saytlararo So‘rov Soxtalashtirish (CSRF) hujumlariga qarshi himoyani ta'minlaydi.
 
 ::: v-pre
 
-1. Register the middleware (`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`) to global or a specific route.
-2. Add `<input type="hidden" name="_token" value="{{ .csrf_token }}" />` to your form in the view file, or add `X-CSRF-TOKEN={{ .csrf_token }}` to your request header to include the CSRF token.
-3. The middleware will automatically verify the token on form submission.
+1. Middleware'ni (`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`) global yoki ma'lum bir marshrutga ro‘yxatdan o‘tkazing.
+2. CSRF tokenini o‘z ichiga olish uchun ko‘rish faylidagi formangizga `<input type="hidden" name="_token" value="{{ .csrf_token }}" />` qo‘shing yoki so‘rov sarlavhangizga `X-CSRF-TOKEN={{ .csrf_token }}` qo‘shing.
+3. Middleware forma topshirilganda tokenni avtomatik tekshiradi.
    :::
 
-## Register Custom Delims And Functions
+## Maxsus Delims va Funksiyalarni Ro‘yxatdan O‘tkazish
 
-You can register custom Delims and functions to be used within your views, they can be registered in the configuration `http.drivers.*.template`.
+Ko‘rishlaringiz ichida ishlatilishi uchun maxsus Delims va funksiyalarni ro‘yxatdan o‘tkazishingiz mumkin, ular `http.drivers.*.template` konfiguratsiyasida ro‘yxatdan o‘tkazilishi mumkin.
 
-For the gin driver:
+Gin haydovchisi uchun:
 
 ```go
 // config/http.go
@@ -126,13 +126,13 @@ import (
       Right: "}}",
     },
     FuncMap: template.FuncMap{
-      // Add custom template functions here
+      // Maxsus shablon funksiyalarini shu yerda qo‘shing
     },
   })
 },
 ```
 
-For the fiber driver:
+Fiber haydovchisi uchun:
 
 ```go
 // config/http.go
@@ -151,7 +151,7 @@ import (
       Directory:  path.Resource("views"),
       Extension:  ".tmpl",
       LayoutName: "embed",
-      // Add custom template functions here
+      // Maxsus shablon funksiyalarini shu yerda qo‘shing
       Funcmap:    make(map[string]interface{}),
     },
   }
@@ -163,10 +163,10 @@ import (
 },
 ```
 
-## Custom Template Engines
+## Maxsus Shablon Dvigatellari
 
-You can create your own custom template engines by implementing the `render.HTMLRender` interface of gin or the `fiber.Views` interface of fiber. After creating your custom engine, you can register it to the configuration `http.drivers.*.template`.
+Ginning `render.HTMLRender` interfeysi yoki fiberning `fiber.Views` interfeysini amalga oshirib, o‘zingizning maxsus shablon dvigatellaringizni yaratishingiz mumkin. Maxsus dvigatelni yaratgandan so‘ng, uni `http.drivers.*.template` konfiguratsiyasiga ro‘yxatdan o‘tkazishingiz mumkin.
 
-## Advanced Features
+## Ilg‘or Xususiyatlar
 
-`http/template` is the default template engine, you can refer to the official documentation for more advanced features: https://pkg.go.dev/html/template.
+`http/template` standart shablon dvigatelidir, ilg‘or xususiyatlar uchun rasmiy hujjatga murojaat qilishingiz mumkin: https://pkg.go.dev/html/template.
