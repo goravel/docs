@@ -208,7 +208,7 @@ response, err := facades.Http().
 
 :::tip
 `WithToken` usuli shuningdek, token turini (masalan, "Bearer", "Token") belgilash uchun ixtiyoriy ikkinchi argumentni ham qabul qiladi.
-If no type is provided, it defaults to "Bearer".
+Agar hech qanday tur ko'rsatilmagan bo'lsa, u standart holatda "Tashiydigan" ga o'rnatiladi.
 
 ```go
 response, err := facades.Http().
@@ -404,15 +404,15 @@ facades.Http().AssertSent(func(req client.Request) bool {
 Shuningdek, ma'lum bir so'rov _yuborilmagan_ligini tasdiqlashingiz yoki yuborilgan so'rovlarning umumiy sonini tekshirishingiz mumkin:
 
 ```go
-// Assert a request was NOT sent
+// So'rov yuborilmaganligini tasdiqlang
 facades.Http().AssertNotSent(func(req client.Request) bool {
-    return req.Url() == "https://api.example.com/legacy-endpoint"
+return req.Url() == "https://api.example.com/legacy-endpoint"
 })
 
-// Assert that no requests were sent at all
+// Hech qanday so'rov yuborilmaganligini tasdiqlang
 facades.Http().AssertNothingSent()
 
-// Assert that exactly 3 requests were sent
+// Aynan 3 ta so'rov yuborilganligini tasdiqlang
 facades.Http().AssertSentCount(3)
 ```
 
