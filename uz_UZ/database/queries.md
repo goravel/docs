@@ -575,7 +575,7 @@ result, err := facades.DB().Table("products").Where("id", 1).Update(map[string]a
 })
 ```
 
-### Update JSON fields
+### JSON maydonlarini yangilang
 
 ```go
 result, err := facades.DB().Table("users").Where("id", 1).Update("options->enabled", true)
