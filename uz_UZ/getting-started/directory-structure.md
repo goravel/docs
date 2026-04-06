@@ -1,45 +1,45 @@
-# Directory Structure
+# Papka tuzilishi
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-The default file structure can make you better start project advancement, and you can also add new folders freely, but do not modify the default folders.
+Standart fayl tuzilmasi loyihaning rivojlanishini yaxshiroq boshlashingizga yordam beradi, shuningdek, siz yangi papkalarni bemalol qo‘shishingiz mumkin, lekin standart papkalarni o‘zgartirmang.
 
-## Folder Tree
+## Papka daraxti
 
 ```
 goravel/
-├── app/                        # Core application logic
-│   ├── console/                # Artisan console commands
-│   ├── grpc/                   # gRPC controllers and middleware
-│   ├── http/                   # HTTP controllers and middleware
-│   │   ├── controllers/        # HTTP request handlers
-│   │   ├── middleware/         # HTTP middleware (auth, cors, etc.)
-│   ├── models/                 # ORM models
-│   └── providers/              # Service providers
-├── bootstrap/                  # Application bootstrapping
-│   └── app.go                  # Framework initialization
-├── config/                     # Application configuration files
-├── database/                   # Database related files
-│   ├── migrations/             # Database migration files
-│   ├── seeders/                # Database seeders
-├── resources/                  # Raw, uncompiled assets
-│   └── views/                  # View templates
-├── routes/                     # Application route definitions
-├── storage/                    # Application storage
-├── tests/                      # Automated tests
-├── .air.toml                   # Air hot reload configuration
-├── .env.example                # Environment variables template
-├── artisan                     # Artisan console entry script
-├── go.mod                      # Go module dependencies
-├── go.sum                      # Go module checksums
-├── main.go                     # Application entry point
+├── app/                        # Asosiy ilova mantiqi
+│   ├── console/                # Artisan konsol buyruqlari
+│   ├── grpc/                   # gRPC kontrollerlari va middleware
+│   ├── http/                   # HTTP kontrollerlari va middleware
+│   │   ├── controllers/        # HTTP so‘rovlarini boshqaruvchilari
+│   │   ├── middleware/         # HTTP middleware (auth, cors va h.k.)
+│   ├── models/                 # ORM modellari
+│   └── providers/              # Xizmat provayderlari
+├── bootstrap/                  # Ilovani ishga tushirish
+│   └── app.go                  # Freymvorkni ishga tushirish
+├── config/                     # Ilova konfiguratsiya fayllari
+├── database/                   # Maʼlumotlar bazasi bilan bog‘liq fayllar
+│   ├── migrations/             # Maʼlumotlar bazasi migratsiya fayllari
+│   ├── seeders/                # Maʼlumotlar bazasi to‘ldiruvchilari
+├── resources/                  # Xom, kompilyatsiya qilinmagan resurslar
+│   └── views/                  # Shablon ko‘rinishlari
+├── routes/                     # Ilova marshrutlari taʼriflari
+├── storage/                    # Ilova saqlash joyi
+├── tests/                      # Avtomatlashtirilgan testlar
+├── .air.toml                   # Air hot reload konfiguratsiyasi
+├── .env.example                # Muhit o‘zgaruvchilari namunasi
+├── artisan                     # Artisan konsol kirish skripti
+├── go.mod                      # Go modul bog‘liqliklari
+├── go.sum                      # Go modul checksumlari
+├── main.go                     # Ilova kirish nuqtasi
 ```
 
-## Customize Directory Structure
+## Papka tuzilishini sozlash
 
-You can customize the directory structure by calling the `WithPath()` function in the `bootstrap/app.go` file. For example, if you want to change the default `app` directory to `src`, you can modify the `bootstrap/app.go` file as follows:
+Siz papka tuzilishini `bootstrap/app.go` faylidagi `WithPath()` funksiyasini chaqirib sozlashingiz mumkin. Masalan, agar siz standart `app` papkasini `src` ga o‘zgartirmoqchi bo‘lsangiz, `bootstrap/app.go` faylini quyidagicha o‘zgartirishingiz mumkin:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -52,4 +52,4 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-There are many other paths you can customize, such as `Config`, `Database`, `Routes`, `Storage`, and `Resources`. Just call the corresponding method on the `paths` object to set your desired directory.
+Siz sozlashingiz mumkin bo‘lgan boshqa ko‘plab yo‘llar mavjud, masalan, `Config`, `Database`, `Routes`, `Storage` va `Resources`. Kerakli papkani o‘rnatish uchun `paths` obyektida tegishli metodni chaqirish kifoya.
