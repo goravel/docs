@@ -2,17 +2,17 @@
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Grpc module can be operated by `facades.Grpc()`. Goravel provides an elegant way to build and consume gRPC services, supporting both server and client sides.
+Grpc moduli `facades.Grpc()` orqali boshqarilishi mumkin. Goravel gRPC xizmatlarini yaratish va ulardan foydalanishning nafis usulini taqdim etadi, ham server, ham mijoz tomonlarini qo'llab-quvvatlaydi.
 
-## Configuration
+## Konfiguratsiya
 
-In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.servers` configures the servers which the client will connect to.
+`config/grpc.go` faylida Grpc modulini sozlashingiz mumkin, bu yerda `grpc.host` server domen nomini, `grpc.servers` esa mijoz ulanadigan serverlarni sozlaydi.
 
-## Controllers
+## Kontrollerlar
 
-Controllers can be defined in the `app/grpc/controllers` directory.
+Kontrollerlar `app/grpc/controllers` katalogida aniqlanishi mumkin.
 
 ```go
 // app/grpc/controllers/user_controller.go
@@ -43,9 +43,9 @@ func (r *UserController) GetUser(ctx context.Context, req *proto.UserRequest) (*
 }
 ```
 
-## Define routing
+## Marshrutlashni aniqlash
 
-All routing files can be defined in the `routes` directory, such as `routes/grpc.go`.
+Barcha marshrutlash fayllari `routes` katalogida, masalan `routes/grpc.go` kabi aniqlanishi mumkin.
 
 ```go
 // routes/grpc.go
@@ -63,9 +63,9 @@ func Grpc() {
 }
 ```
 
-### Register routing
+### Marshrutlashni ro'yxatdan o'tkazish
 
-Register routing in the `bootstrap/app.go::WithRouting` function after routing was defined.
+Marshrutlash aniqlangandan so'ng, uni `bootstrap/app.go::WithRouting` funksiyasida ro'yxatdan o'tkazing.
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -80,13 +80,13 @@ func Boot() contractsfoundation.Application {
 
 ## Interceptor
 
-Interceptors provide a way to intercept and modify gRPC requests and responses. They can be used for logging, authentication, metrics, and more.
+Interceptorlar gRPC so'rovlari va javoblarini to'xtatish va o'zgartirish imkoniyatini beradi. Ular jurnalga yozish, autentifikatsiya, metrikalar va boshqalar uchun ishlatilishi mumkin.
 
-### Define Interceptors
+### Interceptorlarni aniqlash
 
-Interceptors can be defined in the `app/grpc/interceptors` folder.
+Interceptorlar `app/grpc/interceptors` papkasida aniqlanishi mumkin.
 
-**Server Interceptor Example:**
+**Server Interceptor misoli:**
 
 ```go
 // app/grpc/interceptors/test_server.go
@@ -99,14 +99,14 @@ import (
 )
 
 func TestServer(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) {
-  // Add your logic before the request is handled
-  // For example: logging, authentication, etc.
+  // So'rov boshqarilishidan oldin mantiqingizni qo'shing
+  // Masalan: jurnalga yozish, autentifikatsiya va hokazo.
   
   return handler(ctx, req)
 }
 ```
 
-**Client Interceptor Example:**
+**Mijoz Interceptor misoli:**
 
 ```go
 // app/grpc/interceptors/test_client.go
@@ -119,16 +119,16 @@ import (
 )
 
 func TestClient(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-  // Add your logic before the request is sent
-  // For example: logging, adding metadata, etc.
+  // So'rov yuborilishidan oldin mantiqingizni qo'shing
+  // Masalan: jurnalga yozish, metadata qo'shish va hokazo.
   
   return invoker(ctx, method, req, reply, cc, opts...)
 }
 ```
 
-### Register Interceptors
+### Interceptorlarni ro'yxatdan o'tkazish
 
-Register interceptors in the `bootstrap/app.go` file using the `WithGrpcServerInterceptors`, `WithGrpcClientInterceptors`, `WithGrpcServerStatsHandlers`, and `WithGrpcClientStatsHandlers` functions.
+Interceptorlarni `bootstrap/app.go` faylida `WithGrpcServerInterceptors`, `WithGrpcClientInterceptors`, `WithGrpcServerStatsHandlers` va `WithGrpcClientStatsHandlers` funksiyalari yordamida ro'yxatdan o'tkazing.
 
 ```go
 import (
@@ -163,9 +163,9 @@ func Boot() foundation.Application {
 }
 ```
 
-### Apply Interceptors to Servers
+### Interceptorlarni Serverlarga qo'llash
 
-The `default` in the example above is a group name that can be applied to the configuration item `grpc.servers.interceptors`. In this way, the client will be applied to all interceptors under the group.
+Yuqoridagi misoldagi `default` - bu `grpc.servers.interceptors` konfiguratsiya bandiga qo'llanilishi mumkin bo'lgan guruh nomi. Shu tarzda, mijoz guruh ostidagi barcha interceptorlarga qo'llaniladi.
 
 ```go
 package config
@@ -194,18 +194,18 @@ func init() {
 
 ## Stats Handlers
 
-Stats handlers are gRPC's mechanism for collecting metrics and monitoring RPC calls. They provide hooks into the lifecycle of both client and server RPCs, making them ideal for:
+Stats handlerlar RPC chaqiruvlarini monitoring qilish va metrikalarni yig'ish uchun gRPC mexanizmidir. Ular ham mijoz, ham server RPC'larining hayot tsikliga kirish imkoniyatini beradi, bu ularni quyidagilar uchun ideal qiladi:
 
-- Request/response monitoring
-- Performance metrics collection
-- Custom observability integrations
-- Logging and debugging
+- So'rov/javob monitoringi
+- Ishlash metrikalarini yig'ish
+- Maxsus kuzatish integratsiyalari
+- Jurnalga yozish va tuzatish
 
-### Register Stats Handlers
+### Stats Handlerlarni ro'yxatdan o'tkazish
 
-Stats handlers can be registered in the `bootstrap/app.go` file using the `WithGrpcServerStatsHandlers` and `WithGrpcClientStatsHandlers` functions.
+Stats handlerlar `bootstrap/app.go` faylida `WithGrpcServerStatsHandlers` va `WithGrpcClientStatsHandlers` funksiyalari yordamida ro'yxatdan o'tkazilishi mumkin.
 
-**Server Stats Handler Example:**
+**Server Stats Handler misoli:**
 
 ```go
 // app/grpc/stats/server_handler.go
@@ -224,25 +224,25 @@ func NewServerStatsHandler() stats.Handler {
 }
 
 func (h *ServerStatsHandler) TagRPC(ctx context.Context, info *stats.RPCTagInfo) context.Context {
-  // Called at the beginning of each RPC
+  // Har bir RPC boshida chaqiriladi
   return ctx
 }
 
 func (h *ServerStatsHandler) HandleRPC(ctx context.Context, s stats.RPCStats) {
-  // Called for each RPC event
+  // Har bir RPC hodisasi uchun chaqiriladi
 }
 
 func (h *ServerStatsHandler) TagConn(ctx context.Context, info *stats.ConnTagInfo) context.Context {
-  // Called when a connection is established
+  // Ulanish o'rnatilganda chaqiriladi
   return ctx
 }
 
 func (h *ServerStatsHandler) HandleConn(ctx context.Context, s stats.ConnStats) {
-  // Called for connection events
+  // Ulanish hodisalari uchun chaqiriladi
 }
 ```
 
-**Client Stats Handler Example:**
+**Mijoz Stats Handler misoli:**
 
 ```go
 // app/grpc/stats/client_handler.go
@@ -265,7 +265,7 @@ func (h *ClientStatsHandler) TagRPC(ctx context.Context, info *stats.RPCTagInfo)
 }
 
 func (h *ClientStatsHandler) HandleRPC(ctx context.Context, s stats.RPCStats) {
-  // Handle RPC events like Begin, End, InPayload, OutPayload
+  // Begin, End, InPayload, OutPayload kabi RPC hodisalarini boshqaring
 }
 
 func (h *ClientStatsHandler) TagConn(ctx context.Context, info *stats.ConnTagInfo) context.Context {
@@ -273,13 +273,13 @@ func (h *ClientStatsHandler) TagConn(ctx context.Context, info *stats.ConnTagInf
 }
 
 func (h *ClientStatsHandler) HandleConn(ctx context.Context, s stats.ConnStats) {
-  // Handle connection events
+  // Ulanish hodisalarini boshqaring
 }
 ```
 
-### Register in Bootstrap
+### Bootstrap'da ro'yxatdan o'tkazish
 
-Register your stats handlers in `bootstrap/app.go`:
+Stats handlerlaringizni `bootstrap/app.go` faylida ro'yxatdan o'tkazing:
 
 ```go
 import (
@@ -306,9 +306,9 @@ func Boot() foundation.Application {
 }
 ```
 
-### Apply Stats Handlers to Clients
+### Stats Handlerlarni Mijozlarga qo'llash
 
-The group name (e.g., `"user"`) must be referenced in your `config/grpc.go` file under the client's `stats_handlers` array:
+Guruh nomi (masalan, `"user"`) `config/grpc.go` faylida mijozning `stats_handlers` massivida ko'rsatilishi kerak:
 
 ```go
 package config
@@ -328,20 +328,20 @@ func init() {
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),
         "interceptors":   []string{"default"},
-        "stats_handlers": []string{"user"}, // Apply "user" stats handler group
+        "stats_handlers": []string{"user"}, // "user" stats handler guruhini qo'llash
       },
     },
   })
 }
 ```
 
-## gRPC Client
+## gRPC Mijozi
 
-Goravel provides an easy way to create gRPC clients to consume gRPC services.
+Goravel gRPC xizmatlaridan foydalanish uchun gRPC mijozlarini yaratishning oson usulini taqdim etadi.
 
-### Connect to gRPC Server
+### gRPC Serveriga ulanish
 
-You can connect to a gRPC server using the `facades.Grpc().Connect()` method. The connection name should match the key defined in `config/grpc.go`.
+Siz `facades.Grpc().Connect()` usuli yordamida gRPC serveriga ulanishingiz mumkin. Ulanish nomi `config/grpc.go` faylida aniqlangan kalitga mos kelishi kerak.
 
 ```go
 // app/http/controllers/grpc_controller.go
@@ -361,10 +361,10 @@ type GrpcController struct {
 }
 
 func NewGrpcController() *GrpcController {
-  // The initialization process can be moved to app/services/*.go
+  // Initsializatsiya jarayoni app/services/*.go fayliga ko‘chirilishi mumkin
   client, err := facades.Grpc().Connect("user")
   if err != nil {
-    facades.Log().Error(fmt.Sprintf("failed to connect to user server: %+v", err))
+    facades.Log().Error(fmt.Sprintf("foydalanuvchi serveriga ulanish muvaffaqiyatsiz: %+v", err))
   }
 
   return &GrpcController{
@@ -377,10 +377,10 @@ func (r *GrpcController) User(ctx http.Context) http.Response {
     Token: ctx.Request().Input("token"),
   })
   if err != nil {
-    return ctx.Response().String(http.StatusInternalServerError, fmt.Sprintf("call UserService.GetUser err: %+v", err))
+    return ctx.Response().String(http.StatusInternalServerError, fmt.Sprintf("UserService.GetUser chaqiruvi xatosi: %+v", err))
   }
   if resp.Code != http.StatusOK {
-    return ctx.Response().String(http.StatusInternalServerError, fmt.Sprintf("user service returns error, code: %d, message: %s", resp.Code, resp.Message))
+    return ctx.Response().String(http.StatusInternalServerError, fmt.Sprintf("foydalanuvchi xizmati xatoni qaytardi, kod: %d, xabar: %s", resp.Code, resp.Message))
   }
 
   return ctx.Response().Success().Json(resp.GetData())
