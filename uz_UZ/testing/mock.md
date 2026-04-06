@@ -2,9 +2,9 @@
 
 [[toc]]
 
-## Description
+## Tavsifi
 
-All functions of Goravel are implemented using `facades`, and all `facades` are made up of interfaces. So with the mock function from [stretchr/testify](http://github.com/stretchr/testify), Goravel can deliver an exceptional testing experience.
+Goravelning barcha funksiyalari `facades` yordamida amalga oshiriladi va barcha `facades` interfeyslardan tashkil topgan. Shunday qilib, [stretchr/testify](http://github.com/stretchr/testify) dan olingan mock funksiyasi bilan Goravel ajoyib sinov tajribasini taqdim eta oladi.
 
 ## Mock facades.App
 
@@ -297,7 +297,7 @@ func TestLang(t *testing.T) {
 
 ## Mock facades.Log
 
-`facades.Log()` doesn't implement mock, use `fmt` instead of the actual log output, easy to debug during testing.
+`facades.Log()` mock-ni amalga oshirmaydi, sinov paytida nosozliklarni tuzatish uchun haqiqiy log chiqishi o'rniga `fmt` dan foydalaning.
 
 ```go
 import "github.com/goravel/framework/testing/mock"
