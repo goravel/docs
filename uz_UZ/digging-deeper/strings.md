@@ -612,7 +612,7 @@ str.Of("Hello World").Replace("world", "Krishan", false).String() // "Hello Kris
 
 ### `Oxirini almashtirish`
 
-`Oxirini almashtirish` metodi matndagi berilgan qiymatning oxirgi takrorlanishini faqat matn oxirida boʻlsa almashtiradi.
+`ReplaceEnd` metodi matndagi berilgan qiymatning oxirgi takrorlanishini faqat matn oxirida boʻlsa almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -624,7 +624,7 @@ str.Of("Hello World").ReplaceEnd("Hello", "Goravel").String() // "Hello World"
 
 ### `Birinchi takrorlanishni almashtirish`
 
-`Birinchi takrorlanishni almashtirish` metodi matndagi berilgan qiymatning birinchi takrorlanishini almashtiradi.
+`ReplaceFirst` metodi matndagi berilgan qiymatning birinchi takrorlanishini almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -634,7 +634,7 @@ str.Of("Hello World").ReplaceFirst("World", "Goravel").String() // "Hello Gorave
 
 ### `Oxirgi takrorlanishni almashtirish`
 
-`Oxirgi takrorlanishni almashtirish` metodi matndagi berilgan qiymatning oxirgi takrorlanishini almashtiradi.
+`ReplaceLast` metodi matndagi berilgan qiymatning oxirgi takrorlanishini almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -644,7 +644,7 @@ str.Of("Hello World").ReplaceLast("World", "Goravel").String() // "Hello Goravel
 
 ### `Moslamalarni almashtirish`
 
-`Moslamalarni almashtirish` metodi matndagi berilgan oddiy ifoda moslamalarini almashtiradi.
+`ReplaceMatches` metodi matndagi berilgan oddiy ifoda moslamalarini almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -654,7 +654,7 @@ str.Of("Hello, Goravel!").ReplaceMatches(`goravel!(.*)`, "Krishan") // "Hello, K
 
 ### `Boshini almashtirish`
 
-`Boshini almashtirish` metodi matndagi berilgan qiymatning birinchi takrorlanishini faqat matn boshida boʻlsa almashtiradi.
+`ReplaceStart` metodi matndagi berilgan qiymatning birinchi takrorlanishini faqat matn boshida boʻlsa almashtiradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -666,7 +666,7 @@ str.Of("Hello World").ReplaceStart("World", "Goravel").String() // "Hello World"
 
 ### `Oʻng tomondan kesish`
 
-`Oʻng tomondan kesish` metodi matnning oʻng tomonini kesadi.
+`RTrim` metodi matnning oʻng tomonini kesadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -753,7 +753,7 @@ str.Of("Goravel").String() // "Goravel"
 
 ### `Studli`
 
-`Studli` metodi matnni `StudliKatta` formatiga oʻtkazadi.
+`Studly` metodi matnni `StudlyCase` formatiga oʻtkazadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -784,7 +784,7 @@ str.Of("Golang is awesome").Swap(map[string]string{
 	}).String() // "Go is excellent"
 ```
 
-### `Tepish`
+### `Tap`
 
 `Tepish` metodi matnni berilgan yopiq funksiyaga oʻtkazadi va matnni qaytaradi.
 
@@ -830,7 +830,7 @@ str.Of("/framework/").Trim("/").String() // "framework"
 
 ### `Birinchi harfni katta`
 
-`Birinchi harfni katta` metodi matnning birinchi belgisini katta harfga oʻtkazadi.
+`UcFirst` metodi matnning birinchi belgisini katta harfga oʻtkazadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -840,7 +840,7 @@ str.Of("goravel framework").UcFirst().String() // "Goravel framework"
 
 ### `Katta harflar bilan ajratish`
 
-`Katta harflar bilan ajratish` metodi matnni katta harflar yordamida matnlar massiviga ajratadi.
+`UcSplit` metodi matnni katta harflar yordamida matnlar massiviga ajratadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -850,7 +850,7 @@ str.Of("GoravelFramework").UcSplit() // []string{"Goravel", "Framework"}
 
 ### `Agar boʻlmasa`
 
-`Agar boʻlmasa` metodi matnni berilgan yopiq funksiyaga oʻtkazadi va agar berilgan shart `false` boʻlsa, matnni qaytaradi.
+`Unless` metodi matnni berilgan yopiq funksiyaga oʻtkazadi va agar berilgan shart `false` boʻlsa, matnni qaytaradi.
 
 ```go
 import "github.com/goravel/framework/support/str"
@@ -864,7 +864,7 @@ str.Of("Goravel").Unless(func(s *String) bool {
 
 ### `Katta`
 
-`Katta` metodi matnni katta harflarga oʻtkazadi.
+`Upper` metodi matnni katta harflarga oʻtkazadi.
 
 ```go
 import "github.com/goravel/framework/support/str"
