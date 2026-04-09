@@ -215,10 +215,10 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 
 | Nomi        | Harakat                                                                                           |
 | ----------- | ------------------------------------------------------------------------------------------------- |
-| Ulanish     | [Ma'lumotlar bazasi ulanishini ko'rsatish](#specify-database-connection)                          |
+| Connection  | [Ma'lumotlar bazasi ulanishini ko'rsatish](#specify-database-connection)                          |
 | DB          | [Umumiy ma'lumotlar bazasi interfeysi sql.DB](#generic-database-interface-sql-db) |
-| So'rov      | [Ma'lumotlar bazasi instansiyasini olish](#get-database-instance)                                 |
-| Tranzaksiya | [Tranzaksiya](#transaction)                                                                       |
+| Query       | [Ma'lumotlar bazasi instansiyasini olish](#get-database-instance)                                 |
+| Transaction | [Tranzaksiya](#transaction)                                                                       |
 | WithContext | [Kontekstni kiritish](#inject-context)                                                            |
 
 ## facades.Orm().Query() mavjud funksiyalari
