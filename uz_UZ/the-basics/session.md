@@ -1,4 +1,4 @@
-# Seans
+# Session
 
 [[toc]]
 
