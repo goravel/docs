@@ -1,0 +1,17 @@
+# Yangilash tarixi
+
+- [v1.14 dan v1.15 ga yangilash](v1.15.md)
+- [v1.13 dan v1.14 ga yangilash](v1.14.md)
+- [v1.12 dan v1.13 ga yangilash](v1.13.md)
+- [v1.11 dan v1.12 ga yangilash](v1.12.md)
+- [v1.10 dan v1.11 ga yangilash](v1.11.md)
+- [v1.9 dan v1.10 ga yangilash](v1.10.md)
+- [v1.8 dan v1.9 ga yangilash](v1.9.md)
+- [v1.7 dan v1.8 ga yangilash](v1.8.md)
+- [v1.6 dan v1.7 ga yangilash](v1.7.md)
+- [v1.5 dan v1.6 ga yangilash](v1.6.md)
+- [v1.4 dan v1.5 ga yangilash](v1.5.md)
+- [v1.3 dan v1.4 ga yangilash](v1.4.md)
+- [v1.2 dan v1.3 ga yangilash](v1.3.md)
+- [v1.1 dan v1.2 ga yangilash](v1.2.md)
+- [v1.0 dan v1.1 ga yangilash](v1.1.md)
