@@ -71,7 +71,7 @@ Yuqoridagi shartlar bajarilmagan taqdirda, framework bo‘sh migratsiya faylini 
 
 ### Go Tili Migratsiyasi
 
-Migratsiya strukturasida ikkita metod mavjud: `Up` va `Down`. `Up` usuli ma'lumotlar bazasiga yangi jadvallar, ustunlar yoki indekslar qo'shish uchun ishlatiladi, `Down` usuli esa `Up` usuli tomonidan bajarilgan amallarni bekor qilish uchun ishlatiladi. Ushbu ikki usulda siz `facades.Schema()` yordamida ma'lumotlar bazasi jadvallarini yaratish va boshqarish mumkin. Mavjud usullar uchun [hujjat](#tables)ga qarang. Quyidagi migratsiya `users` jadvalini yaratadi:
+Migratsiya strukturasida ikkita metod mavjud: `Up` va `Down`. `Up` usuli ma'lumotlar bazasiga yangi jadvallar, ustunlar yoki indekslar qo'shish uchun ishlatiladi, `Down` usuli esa `Up` usuli tomonidan bajarilgan amallarni bekor qilish uchun ishlatiladi. Ushbu ikki usulda siz `facades.Schema()` yordamida ma'lumotlar bazasi jadvallarini yaratish va boshqarish mumkin. Mavjud usullar uchun [hujjat](#jadvallar)ga qarang. Quyidagi migratsiya `users` jadvalini yaratadi:
 
 ```go
 migratsiyalar paketi
@@ -275,7 +275,7 @@ BigIncrements, BigInteger, Decimal, Double, Float, [ID](#id), Increments, Intege
 
 #### Sana va Vaqt Turlari
 
-Sana, SanaVaqt, SanaVaqtTz, [YumshoqO'chirishlar](#softdeletes), YumshoqO'chirishlarTz, Vaqt, VaqtTz, VaqtBelgisi, VaqtBelgisiTz, VaqtBelgilari, VaqtBelgilariTz
+Sana, SanaVaqt, SanaVaqtTz, [YumshoqO'chirishlar](#yumşoq-o-chirishlar), YumshoqO'chirishlarTz, Vaqt, VaqtTz, VaqtBelgisi, VaqtBelgisiTz, VaqtBelgilari, VaqtBelgilariTz
 
 #### Boshqa turlar
 

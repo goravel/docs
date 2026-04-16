@@ -6,10 +6,10 @@
 
 Ma'lumotlar bazasi jadvallari o'zaro bog'langan bo'lishi odatiy holdir. Masalan, blog postida ko'p sharhlar bo'lishi mumkin yoki buyurtma uni joylagan foydalanuvchiga bog'langan bo'lishi mumkin. `Orm` bunday bog'lanishlarni boshqarish va ular bilan ishlashni osonlashtiradi va u turli keng tarqalgan bog'lanish turlarini qo'llab-quvvatlaydi:
 
-- [Bitta-birga](#One-To-One)
-- [Bitta-ko'pga](#One-To-Many)
-- [Ko'p-ko'pga](#Many-To-Many)
-- [Polimorfik](#Polymorphic)
+- [Bitta-birga](#bitta-birga)
+- [Bitta-ko'pga](#bitta-ko-pga)
+- [Ko'p-ko'pga](#bitta-birga)
+- [Polimorfik](#polimorfik)
 
 ## Bog'lanishlarni aniqlash
 

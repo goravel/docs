@@ -44,24 +44,24 @@ Marshrutlar ro‘yxatini ko‘rish uchun `route:list` buyrug‘idan foydalaning:
 
 | Usullar     | Harakat                                       |
 | ----------- | --------------------------------------------- |
-| Guruh       | [Guruh marshrutlash](#group-routing)          |
-| Prefiks     | [Marshrut prefiksi](#routing-prefix)          |
-| ServeHTTP   | [Marshrutlarni testlash](#testing-routing)    |
-| Oling       | [Asosiy marshrutlash](#basic-routing)         |
-| Post        | [Asosiy marshrutlash](#basic-routing)         |
-| Put         | [Asosiy marshrutlash](#basic-routing)         |
-| O‘chirish   | [Asosiy marshrutlash](#basic-routing)         |
-| Patch       | [Asosiy marshrutlash](#basic-routing)         |
-| Parametrlar | [Asosiy marshrutlash](#basic-routing)         |
-| Any         | [Asosiy Marshrutlash](#basic-routing)         |
-| Resurs      | [Resurs marshrutlash](#resource-routing)      |
-| Static      | [Fayl marshrutlash](#file-routing)            |
-| StaticFile  | [Fayl marshrutlash](#file-routing)            |
-| StaticFS    | [Fayl marshrutlash](#file-routing)            |
+| Guruh       | [Guruh marshrutlash](#guruh-marshrutlash)          |
+| Prefiks     | [Marshrut prefiksi](#marshrut-prefiksi)          |
+| ServeHTTP   | [Marshrutlarni testlash](#asosiy-marshrutlash)    |
+| Oling       | [Asosiy marshrutlash](#asosiy-marshrutlash)         |
+| Post        | [Asosiy marshrutlash](#asosiy-marshrutlash)         |
+| Put         | [Asosiy marshrutlash](#asosiy-marshrutlash)         |
+| O‘chirish   | [Asosiy marshrutlash](#asosiy-marshrutlash)         |
+| Patch       | [Asosiy marshrutlash](#asosiy-marshrutlash)         |
+| Parametrlar | [Asosiy marshrutlash](#asosiy-marshrutlash)         |
+| Any         | [Asosiy Marshrutlash](#asosiy-marshrutlash)         |
+| Resurs      | [Resurs marshrutlash](#resurs-marshrutlash)      |
+| Static      | [Fayl marshrutlash](#fayl-marshrutlash)            |
+| StaticFile  | [Fayl marshrutlash](#fayl-marshrutlash)            |
+| StaticFS    | [Fayl marshrutlash](#fayl-marshrutlash)            |
 | Middleware  | [Middleware](#middleware)                     |
-| GetRoutes   | [Barcha marshrutlarni olish](#get-all-routes) |
-| Name        | [Marshrut nomini belgilash](#set-route-name)  |
-| Info        | [Marshrut maʼlumotini olish](#get-route-info) |
+| GetRoutes   | [Barcha marshrutlarni olish](#barcha-marshrutlarni-olish) |
+| Name        | [Marshrut nomini belgilash](#marshrut-nomini-belgilash)  |
+| Info        | [Marshrut maʼlumotini olish](#marshrut-ma-lumotini-olish) |
 
 ## Asosiy marshrutlash
 
