@@ -6,43 +6,43 @@ export const config = defineConfig({
     nav: nav(),
     sidebar: [{
       text: "Kirish",
-      base: '/uz_UZ/prologue/',
+      base: "/uz_UZ/prologue/",
       items: sidebarPrologue()
     }, {
       text: "Yangilash",
-      base: '/uz_UZ/upgrade/',
+      base: "/uz_UZ/upgrade/",
       items: sidebarUpgrade()
     }, {
       text: "Boshlash",
-      base: '/uz_UZ/getting-started/',
+      base: "/uz_UZ/getting-started/",
       items: sidebarGettingStarted()
     }, {
       text: "Arxitektura tushunchalari",
-      base: '/uz_UZ/architecture-concepts/',
+      base: "/uz_UZ/architecture-concepts/",
       items: sidebarFoundation()
     }, {
       text: "Asosiy tushunchalar",
-      base: '/uz_UZ/the-basics/',
+      base: "/uz_UZ/the-basics/",
       items: sidebarBasic()
     }, {
       text: "Chuqurroq o'rganish",
-      base: '/uz_UZ/digging-deeper/',
+      base: "/uz_UZ/digging-deeper/",
       items: sidebarAdvanced()
     }, {
       text: "Xavfsizlik",
-      base: '/uz_UZ/security/',
+      base: "/uz_UZ/security/",
       items: sidebarSecurity()
     }, {
       text: "Ma'lumotlar bazasi",
-      base: '/uz_UZ/database/',
+      base: "/uz_UZ/database/",
       items: sidebarDatabase()
     }, {
       text: 'ORM',
-      base: '/uz_UZ/orm/',
+      base: "/uz_UZ/orm/",
       items: sidebarOrm()
     }, {
       text: "Testlash",
-      base: '/uz_UZ/testing/',
+      base: "/uz_UZ/testing/",
       items: sidebarTesting()
     }],
     editLink: {
@@ -63,8 +63,8 @@ export const config = defineConfig({
     lastUpdated: {
       text: "Oxirgi yangilanish",
       formatOptions: {
-        dateStyle: "short",
-        timeStyle: "medium"
+        dateStyle: 'short',
+        timeStyle: 'medium'
       }
     },
     langMenuLabel: "Tilni o'zgartirish",
@@ -79,8 +79,8 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [{
     text: "Tez boshlash",
-    link: '/uz_UZ/getting-started/installation',
-    activeMatch: '/uz_UZ/getting-started/'
+    link: "/uz_UZ/getting-started/installation",
+    activeMatch: "/uz_UZ/getting-started/"
   }, {
     text: "Video darsliklar",
     link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
@@ -95,7 +95,7 @@ function nav(): DefaultTheme.NavItem[] {
     }]
   }, {
     text: "Tarjima qilish",
-    link: '/uz_UZ/prologue/contributions#add-a-new-language'
+    link: "/uz_UZ/prologue/contributions#add-a-new-language"
   }];
 }
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
