@@ -215,91 +215,91 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 
 | Nomi        | Harakat                                                                                           |
 | ----------- | ------------------------------------------------------------------------------------------------- |
-| Connection  | [Ma'lumotlar bazasi ulanishini ko'rsatish](#specify-database-connection)                          |
-| DB          | [Umumiy ma'lumotlar bazasi interfeysi sql.DB](#generic-database-interface-sql-db) |
-| Query       | [Ma'lumotlar bazasi instansiyasini olish](#get-database-instance)                                 |
-| Transaction | [Tranzaksiya](#transaction)                                                                       |
-| WithContext | [Kontekstni kiritish](#inject-context)                                                            |
+| Connection  | [Ma'lumotlar bazasi ulanishini ko'rsatish](#ma-lumotlar-bazasi-ulanishini-aniqlash)                          |
+| DB          | [Umumiy ma'lumotlar bazasi interfeysi sql.DB](#umumiy-ma-lumotlar-bazasi-interfeysi-sql-db) |
+| Query       | [Ma'lumotlar bazasi instansiyasini olish](#ma-lumotlar-bazasi-instansini-olish)                                 |
+| Transaction | [Tranzaksiya](#tranzaksiya)                                                                       |
+| WithContext | [Kontekstni kiritish](#kontekstni-kiritish)                                                            |
 
 ## facades.Orm().Query() mavjud funksiyalari
 
 | Funksiyalar                 | Harakat                                                                               |
 | --------------------------- | ------------------------------------------------------------------------------------- |
-| Avg                         | [Avg](#Avarage)                                                                       |
-| BeginTransaction            | [Tranzaksiyani boshlash](#transaction)                                                |
-| Commit                      | [Tranzaksiyani tasdiqlash](#transaction)                                              |
+| Avg                         | [Avg](#o-rtacha)                                                                       |
+| BeginTransaction            | [Tranzaksiyani boshlash](#tranzaksiya)                                                |
+| Commit                      | [Tranzaksiyani tasdiqlash](#tranzaksiya)                                              |
 | Count                       | [Hisoblash](#count)                                                                   |
 | Create                      | [Yaratish](#create)                                                                   |
-| Cursor                      | [Kursor](#cursor)                                                                     |
-| Delete                      | [O‘chirish](#delete)                                                                  |
-| Distinct                    | [Takrorlanishni filtrlash](#filter-repetition)                                        |
-| Driver                      | [Haydovchini olish](#get-driver)                                                      |
-| Exec                        | [Mahalliy yangilash SQL-ni bajarish](#execute-native-update-sql)                      |
-| Exists                      | [Mavjudligi](#exists)                                                                 |
-| Find                        | [ID bo'yicha bir yoki bir nechta qatorni so'rash](#query-one-or-multiple-lines-by-id) |
-| FindOrFail                  | [Topilmasa xatoni qaytarish](#not-found-return-error)                                 |
-| First                       | [Bir qatorni so'rash](#query-one-line)                                                |
-| FirstOr                     | [So'rash yoki callback orqali ma'lumot qaytarish](#query-one-line)                    |
-| FirstOrCreate               | [Modellarni olish yoki yaratish](#retrieving-or-creating-models)                      |
-| FirstOrNew                  | [Modellarni olish yoki yangisini yaratish](#retrieving-or-creating-models)            |
-| FirstOrFail                 | [Topilmagan xatosi](#not-found-error)                                                 |
-| ForceDelete                 | [Majburiy o'chirish](#delete)                                                         |
-| Get                         | [Bir nechta qatorni so'rash](#query-multiple-lines)                                   |
-| Group                       | [Guruhlash](#group-by--having)                                                        |
-| Having                      | [Having](#group-by-having)                                                            |
-| Qo'shiladi                  | [Join](#join)                                                                         |
+| Cursor                      | [Kursor](#kursor)                                                                     |
+| Delete                      | [O‘chirish](#o-chirish)                                                                  |
+| Distinct                    | [Takrorlanishni filtrlash](#takrorlanishni-filtrlash)                                        |
+| Driver                      | [Haydovchini olish](#haydovchini-olish)                                                      |
+| Exec                        | [Mahalliy yangilash SQL-ni bajarish](#mahalliy-sql-ni-bajarish)                      |
+| Exists                      | [Mavjudligi](#mavjud)                                                                 |
+| Find                        | [ID bo'yicha bir yoki bir nechta qatorni so'rash](#id-bo-yicha-bitta-yoki-bir-nechta-qatorni-so-rov-qilish) |
+| FindOrFail                  | [Topilmasa xatoni qaytarish](#topilmasa-xatoni-qaytaradi)                                 |
+| First                       | [Bir qatorni so'rash](#bitta-qatorni-so-rov-qilish)                                                |
+| FirstOr                     | [So'rash yoki callback orqali ma'lumot qaytarish](#bitta-qatorni-so-rov-qilish)                    |
+| FirstOrCreate               | [Modellarni olish yoki yaratish](#modellarni-topish-yoki-yaratish)                      |
+| FirstOrNew                  | [Modellarni olish yoki yangisini yaratish](#modellarni-topish-yoki-yaratish)            |
+| FirstOrFail                 | [Topilmagan xatosi](#topilmagan-xatosi)                                                 |
+| ForceDelete                 | [Majburiy o'chirish](#o-chirish)                                                         |
+| Get                         | [Bir nechta qatorni so'rash](#bir-nechta-qatorni-so-rov-qilish)                                   |
+| Group                       | [Guruhlash](#guruhlash-having)                                                        |
+| Having                      | [Having](#guruhlash-having)                                                            |
+| Qo'shiladi                  | [Join](#qo-shiladi)                                                                         |
 | Limit                       | [Limit](#limit)                                                                       |
-| LockForUpdate               | [Pessimistic Locking](#pessimistic-locking)                                           |
-| Max                         | [Max](#Avarage)                                                                       |
-| Min                         | [Min](#Avarage)                                                                       |
-| Model                       | [Jadvalni aniqlash](#specify-table-query)                                             |
-| Offset                      | [Offset](#offset)                                                                     |
-| Tartiblash                  | [Order](#order)                                                                       |
-| OrderBy                     | [Order](#order)                                                                       |
-| OrderByDesc                 | [Order](#order)                                                                       |
-| InRandomOrder               | [Order](#order)                                                                       |
-| OrWhere                     | [OrWhere](#where)                                                                     |
-| OrWhereNotIn                | [OrWhereNotIn](#where)                                                                |
-| OrWhereNull                 | [OrWhereNull](#where)                                                                 |
-| OrWhereIn                   | [OrWhereIn](#where)                                                                   |
-| OrWhereJsonContains         | [OrWhereJsonContains](#where)                                                         |
-| OrWhereJsonContainsKey      | [OrWhereJsonContainsKey](#where)                                                      |
-| OrWhereJsonDoesntContain    | [OrWhereJsonDoesntContain](#where)                                                    |
-| OrWhereJsonDoesntContainKey | [OrWhereJsonDoesntContainKey](#where)                                                 |
-| OrWhereJsonLength           | [OrWhereJsonLength](#where)                                                           |
-| Sahifalash                  | [Paginate](#paginate)                                                                 |
-| Pluck                       | [Yagona ustunni so'rov qilish](#query-single-column)                                  |
-| Raw                         | [Asl SQL-ni bajarish](#execute-native-sql)                                            |
-| Restore                     | [Restore](#restore)                                                                   |
-| Rollback                    | [Tranzaksiyani bekor qilish](#transaction)                                            |
-| Save                        | [Mavjud modelni yangilash](#update-a-existing-model)                                  |
-| SaveQuietly                 | [Yagona modelni hodisasiz saqlash](#saving-a-single-model-without-events)             |
-| Scan                        | [Scan struct](#execute-native-sql)                                                    |
-| Scopes                      | [Scopes](#scopes)                                                                     |
-| Tanlash                     | [Maydonlarni aniqlash](#specify-fields)                                               |
-| SharedLock                  | [Pessimistic Locking](#pessimistic-locking)                                           |
-| Sum                         | [Sum](#Avarage)                                                                       |
-| Jadval                      | [Jadvalni aniqlash](#specify-table-query)                                             |
-| ToSql                       | [SQL olish](#get-sql)                                                                 |
-| ToRawSql                    | [SQL olish](#get-sql)                                                                 |
-| Yangilash                   | [Yagona ustunni yangilash](#update-a-single-column)                                   |
-| UpdateOrCreate              | [Yangilash yoki yaratish](#update-or-create)                                          |
-| Where                       | [Where](#where)                                                                       |
-| WhereAll                    | [WhereAll](#where)                                                                    |
-| WhereAny                    | [WhereAny](#where)                                                                    |
-| WhereBetween                | [WhereBetween](#where)                                                                |
-| WhereNone                   | [WhereNone](#where)                                                                   |
-| WhereNotBetween             | [WhereNotBetween](#where)                                                             |
-| WhereNotIn                  | [WhereNotIn](#where)                                                                  |
-| WhereNull                   | [WhereNull](#where)                                                                   |
-| WhereIn                     | [WhereIn](#where)                                                                     |
-| WhereJsonContains           | [WhereJsonContains](#where)                                                           |
-| WhereJsonContainsKey        | [WhereJsonContainsKey](#where)                                                        |
-| WhereJsonDoesntContain      | [WhereJsonDoesntContain](#where)                                                      |
-| WhereJsonDoesntContainKey   | [WhereJsonDoesntContainKey](#where)                                                   |
-| WhereJsonLength             | [WhereJsonLength](#where)                                                             |
-| WithoutEvents               | [Hodisalarni o'chirish](#muting-events)                                               |
-| WithTrashed                 | [Yumshoq o'chirilgan ma'lumotlarni so'rov qilish](#query-soft-delete-data)            |
+| LockForUpdate               | [Pessimistic Locking](#pessimistik-blokirovka)                                           |
+| Max                         | [Max](#o-rtacha)                                                                       |
+| Min                         | [Min](#o-rtacha)                                                                       |
+| Model                       | [Jadvalni aniqlash](#jadvalni-belgilash-orqali-so-rov-qilish)                                             |
+| Offset                      | [Offset](#ofset)                                                                     |
+| Tartiblash                  | [Order](#tartiblash)                                                                       |
+| OrderBy                     | [Order](#tartiblash)                                                                       |
+| OrderByDesc                 | [Order](#tartiblash)                                                                       |
+| InRandomOrder               | [Order](#tartiblash)                                                                       |
+| OrWhere                     | [OrWhere](#qayerda)                                                                     |
+| OrWhereNotIn                | [OrWhereNotIn](#qayerda)                                                                |
+| OrWhereNull                 | [OrWhereNull](#qayerda)                                                                 |
+| OrWhereIn                   | [OrWhereIn](#qayerda)                                                                   |
+| OrWhereJsonContains         | [OrWhereJsonContains](#qayerda)                                                         |
+| OrWhereJsonContainsKey      | [OrWhereJsonContainsKey](#qayerda)                                                      |
+| OrWhereJsonDoesntContain    | [OrWhereJsonDoesntContain](#qayerda)                                                    |
+| OrWhereJsonDoesntContainKey | [OrWhereJsonDoesntContainKey](#qayerda)                                                 |
+| OrWhereJsonLength           | [OrWhereJsonLength](#qayerda)                                                           |
+| Sahifalash                  | [Paginate](#sahifalash)                                                                 |
+| Pluck                       | [Yagona ustunni so'rov qilish](#bitta-ustunni-so-rov-qilish)                                  |
+| Raw                         | [Asl SQL-ni bajarish](#mahalliy-sql-ni-bajarish)                                            |
+| Restore                     | [Restore](#tiklash)                                                                   |
+| Rollback                    | [Tranzaksiyani bekor qilish](#tranzaksiya)                                            |
+| Save                        | [Mavjud modelni yangilash](#mavjud-modelni-yangilash)                                  |
+| SaveQuietly                 | [Yagona modelni hodisasiz saqlash](#tadbirlarsiz-bitta-modelni-saqlash)             |
+| Scan                        | [Scan struct](#mahalliy-sql-ni-bajarish)                                                    |
+| Scopes                      | [Scopes](#skoplar)                                                                     |
+| Tanlash                     | [Maydonlarni aniqlash](#maydonlarni-belgilash)                                               |
+| SharedLock                  | [Pessimistic Locking](#pessimistik-blokirovka)                                           |
+| Sum                         | [Sum](#o-rtacha)                                                                       |
+| Jadval                      | [Jadvalni aniqlash](#jadvalni-belgilash-orqali-so-rov-qilish)                                             |
+| ToSql                       | [SQL olish](#sql-ni-olish)                                                                 |
+| ToRawSql                    | [SQL olish](#sql-ni-olish)                                                                 |
+| Yangilash                   | [Yagona ustunni yangilash](#ustunlarni-yangilash)                                   |
+| UpdateOrCreate              | [Yangilash yoki yaratish](#yangilash-yoki-yaratish)                                          |
+| Where                       | [Where](#qayerda)                                                                       |
+| WhereAll                    | [WhereAll](#qayerda)                                                                    |
+| WhereAny                    | [WhereAny](#qayerda)                                                                    |
+| WhereBetween                | [WhereBetween](#qayerda)                                                                |
+| WhereNone                   | [WhereNone](#qayerda)                                                                   |
+| WhereNotBetween             | [WhereNotBetween](#qayerda)                                                             |
+| WhereNotIn                  | [WhereNotIn](#qayerda)                                                                  |
+| WhereNull                   | [WhereNull](#qayerda)                                                                   |
+| WhereIn                     | [WhereIn](#qayerda)                                                                     |
+| WhereJsonContains           | [WhereJsonContains](#qayerda)                                                           |
+| WhereJsonContainsKey        | [WhereJsonContainsKey](#qayerda)                                                        |
+| WhereJsonDoesntContain      | [WhereJsonDoesntContain](#qayerda)                                                      |
+| WhereJsonDoesntContainKey   | [WhereJsonDoesntContainKey](#qayerda)                                                   |
+| WhereJsonLength             | [WhereJsonLength](#qayerda)                                                             |
+| WithoutEvents               | [Hodisalarni o'chirish](#tadbirlarni-o-chirish)                                               |
+| WithTrashed                 | [Yumshoq o'chirilgan ma'lumotlarni so'rov qilish](#yumshoq-o-chirilgan-ma-lumotlarni-so-rov-bering)            |
 
 ## So'rov Quruvchi
 

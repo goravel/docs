@@ -135,7 +135,7 @@ func (r *PostController) Store(ctx http.Context) {
 }
 ```
 
-Ko'proq qoidalarni [Mavjud Tekshirish Qoidalari](#available-validation-rules) bo'limida tekshiring.
+Ko'proq qoidalarni [Mavjud Tekshirish Qoidalari](#mavjud-tekshirish-qoidalari) bo'limida tekshiring.
 
 > E'tibor bering, `form` orqali uzatilgan qiymatlar sukut bo'yicha `string` turiga ega bo'lgani uchun, so'rovdagi barcha maydonlar ham `string` turida bo'lishi kerak, aks holda qiymatlarni uzatish uchun `JSON` dan foydalaning.
 
@@ -422,7 +422,7 @@ Quyida barcha mavjud tekshirish qoidalari va ularning funktsiyalari ro'yxati kel
 
 **Yechimlar**
 
-Variant 1: Ma’lumotlarni tekshirishdan oldin [`validation.PrepareForValidation`](#Format-Data-Before-Validation) qo‘shish, ma’lumotlarni formatlash;
+Variant 1: Ma’lumotlarni tekshirishdan oldin [`validation.PrepareForValidation`](#tekshirishdan-oldin-ma-lumotlarni-formatlash) qo‘shish, ma’lumotlarni formatlash;
 
 Variant 2: Qoidalarni tekshirish uchun `facades.Validation().Make()` dan foydalanish;
 
