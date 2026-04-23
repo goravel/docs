@@ -177,12 +177,12 @@ carbon.SetLocale("zh-CN")
 carbon.SetTestNow(carbon.Now())
 ```
 
-### `carbon.CleanTestNow()`
+### `carbon.ClearTestNow()`
 
-清除系统时间为正常值：
+The `carbon.ClearTestNow()` function clears the test now Carbon object:
 
 ```go
-carbon.CleanTestNow()
+carbon.ClearTestNow()
 ```
 
 ### `carbon.IsTestNow()`
