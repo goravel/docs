@@ -80,11 +80,11 @@ export const shared = defineConfig({
               }
             }
           },
-          zh_TW: {
-            placeholder: '搜尋檔案',
+          uz_UZ: {
+            placeholder: 'Fayllarni qidirish',
             translations: {
               button: {
-                buttonText: '搜尋檔案'
+                buttonText: 'Fayllarni qidirish'
               }
             }
           }
