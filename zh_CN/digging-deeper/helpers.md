@@ -179,7 +179,7 @@ carbon.SetTestNow(carbon.Now())
 
 ### `carbon.ClearTestNow()`
 
-The `carbon.ClearTestNow()` function clears the test now Carbon object:
+清除系统时间为正常值：
 
 ```go
 carbon.ClearTestNow()
