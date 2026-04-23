@@ -180,10 +180,10 @@ func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
 Siz forma so'rovi tomonidan ishlatiladigan xato xabarlarini `Messages` usulini bekor qilish orqali sozlashingiz mumkin. Ushbu usul atribut / qoida juftlari va ularning mos keladigan xato xabarlaridan iborat massivni qaytarishi kerak:
 
 ```go
-func (r *StorePostRequest) Messages() map[string]string {
+func (r *StorePostRequest) Messages(ctx http.Context) map[string]string {
   return map[string]string{
-    "title.required": "Sarlavha talab qilinadi",
-    "body.required": "Xabar talab qilinadi",
+    "title.required": "A title is required",
+    "body.required": "A message is required",
   }
 }
 ```
@@ -193,9 +193,9 @@ func (r *StorePostRequest) Messages() map[string]string {
 Goravelning ko'plab o'rnatilgan tekshirish qoidasi xato xabarlari `:attribute` joy egasini o'z ichiga oladi. Agar siz tekshirish xabaringizning `:attribute` joy egasi maxsus atribut nomi bilan almashtirilishini istasangiz, `Attributes` usulini bekor qilish orqali maxsus nomlarni belgilashingiz mumkin. Ushbu usul atribut / nom juftlaridan iborat massivni qaytarishi kerak:
 
 ```go
-func (r *StorePostRequest) Attributes() map[string]string {
+func (r *StorePostRequest) Attributes(ctx http.Context) map[string]string {
   return map[string]string{
-    "email": "elektron pochta manzili",
+    "email": "email address",
   }
 }
 ```
