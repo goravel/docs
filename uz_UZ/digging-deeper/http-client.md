@@ -13,7 +13,7 @@ Goravelning HTTP mijozi HTTP so'rovlarini amalga oshirish uchun `net/http.Client
 
 ## So'rovlar berish
 
-Http jabhasi tanish fe'llar yordamida HTTP so'rovlarini amalga oshirishning qulay usulini taqdim etadi: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD` va \`OPTIONS.
+Http jabhasi tanish fe'llar yordamida HTTP so'rovlarini amalga oshirishning qulay usulini taqdim etadi: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD` va `OPTIONS`.
 
 **Example: GET Request**
 
