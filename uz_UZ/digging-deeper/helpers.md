@@ -177,12 +177,12 @@ carbon.SetLocale("en")
 carbon.SetTestNow(carbon.Now())
 ```
 
-### `carbon.CleanTestNow()`
+### `carbon.ClearTestNow()`
 
-`carbon.CleanTestNow()` funksiyasi testni hozir tozalaydi. Carbon obyekti:
+`carbon.ClearTestNow()` funksiyasi testni hozir tozalaydi. Carbon obyekti:
 
 ```go
-carbon.CleanTestNow()
+carbon.ClearTestNow()
 ```
 
 ### `carbon.IsTestNow()`
