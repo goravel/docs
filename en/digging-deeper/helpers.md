@@ -177,12 +177,12 @@ The `carbon.SetTestNow()` function sets the time to a test value:
 carbon.SetTestNow(carbon.Now())
 ```
 
-### `carbon.CleanTestNow()`
+### `carbon.ClearTestNow()`
 
-The `carbon.CleanTestNow()` function clears the test now Carbon object:
+The `carbon.ClearTestNow()` function clears the test now Carbon object:
 
 ```go
-carbon.CleanTestNow()
+carbon.ClearTestNow()
 ```
 
 ### `carbon.IsTestNow()`
