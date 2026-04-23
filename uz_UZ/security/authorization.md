@@ -6,7 +6,7 @@
 
 Goravel foydalanuvchilarning resurslar ustidagi amallarini boshqarish uchun o‘rnatilgan [autentifikatsiya](./authentication.md) xizmatlari va oson foydalaniladigan avtorizatsiya xususiyatini taklif etadi. Foydalanuvchi autentifikatsiyadan o‘tgan bo‘lsa ham, u ma’lum Eloquent modellarini yoki ma’lumotlar bazasi yozuvlarini o‘zgartirish yoki o‘chirish huquqiga ega bo‘lmasligi mumkin. Goravelning avtorizatsiya xususiyati bu avtorizatsiya tekshiruvlarini tizimli boshqarish usulini taqdim etadi.
 
-Goravelda amallarni avtorizatsiya qilishning ikkita usuli mavjud: [darvoza](#Gates) va [siyosatlar](#Policies). Darvoza va siyosatlarni marshrut va kontrollerlarga o‘xshash deb tasavvur qiling. Darvozalar yopilishlar asosida bo‘lib, oddiy avtorizatsiya yondashuvini taqdim etadi, siyosatlar esa kontrollerlarga o‘xshab, ma’lum bir resurs atrofidagi mantiqni guruhlaydi. Ushbu hujjat avval darvozalarni, keyin esa siyosatlarni batafsil yoritadi.
+Goravelda amallarni avtorizatsiya qilishning ikkita usuli mavjud: [darvoza](#darvozalar) va [siyosatlar](#siyosatlar). Darvoza va siyosatlarni marshrut va kontrollerlarga o‘xshash deb tasavvur qiling. Darvozalar yopilishlar asosida bo‘lib, oddiy avtorizatsiya yondashuvini taqdim etadi, siyosatlar esa kontrollerlarga o‘xshab, ma’lum bir resurs atrofidagi mantiqni guruhlaydi. Ushbu hujjat avval darvozalarni, keyin esa siyosatlarni batafsil yoritadi.
 
 Ilova yaratishda faqat darvoza yoki faqat siyosatlardan foydalanish shart emas. Ko‘pgina ilovalar ikkalasining kombinatsiyasidan foydalanadi va bu mutlaqo qabul qilinadi!
 
