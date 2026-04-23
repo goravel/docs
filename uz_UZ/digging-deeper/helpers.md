@@ -12,7 +12,7 @@
 | [path.Database()](#path-database) | [path.Storage()](#path-storage) | [path.Public()](#path-public) |
 | [path.Resource()](#path-resource) |                                                                    |                                                                  |
 
-### Carbon
+### Karbon
 
 |                                                                                            |                                                                                              |                                                                                              |
 | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -355,7 +355,7 @@ carbon.FromTimeNano(13, 14, 15, 999999999)
 carbon.FromStdTime(time.Now())
 ```
 
-## Debug
+## Nosozliklarni tuzatish
 
 ```go
 import "github.com/goravel/framework/support/debug"
