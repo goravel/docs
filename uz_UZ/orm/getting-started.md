@@ -445,7 +445,7 @@ err := facades.Orm().Query().FirstOrFail(&user)
 // if errors.Is(err, errors.OrmRecordNotFound) {}
 ```
 
-### Where
+### Qayerda
 
 ```go
 facades.Orm().Query().Where("name", "tom")
@@ -671,7 +671,7 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 
 > `created_at` va `updated_at` avtomatik ravishda to'ldiriladi.
 
-### Cursor
+### Kursor
 
 O'n minglab Eloquent model yozuvlari orqali takrorlashda ilovangizning xotira sarfini sezilarli darajada kamaytirish uchun ishlatilishi mumkin. E'tibor bering, `Cursor` metodi `With` bilan bir vaqtda ishlatilishi mumkin, iltimos, `for` mantiqida bog'lanishni yuklash uchun [Lazy Eager Loading](./relationships.md#lazy-eager-loading) dan foydalaning.
 
@@ -740,7 +740,7 @@ facades.Orm().Query().UpdateOrCreate(&user, models.User{Name: "name"}, models.Us
 // UPDATE `users` SET `name`='name',avatar`='avatar',`updated_at`='2023-03-11 10:11:08.881' WHERE users`.`deleted_at` IS NULL AND `id` = 1;
 ```
 
-### Delete
+### O‘chirish
 
 Model bo'yicha o'chirish, bayonot ta'sir qilgan qatorlar soni usul tomonidan qaytariladi:
 
@@ -848,13 +848,13 @@ res, err := facades.Orm().Query().Exec("DROP TABLE users")
 num := res.RowsAffected
 ```
 
-### Exists
+### Mavjud
 
 ```go
 exists, err := facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Exists()
 ```
 
-### Restore
+### Tiklash
 
 ```go
 facades.Orm().Query().WithTrashed().Restore(&models.User{ID: 1})
@@ -862,7 +862,7 @@ facades.Orm().Query().Model(&models.User{ID: 1}).WithTrashed().Restore()
 // UPDATE `users` SET `deleted_at`=NULL WHERE `id` = 1;
 ```
 
-### Transaction
+### Tranzaksiya
 
 Siz `Transaction` funksiyasi orqali tranzaksiyani bajarishingiz mumkin.
 
@@ -895,7 +895,7 @@ if err := tx.Create(&user); err != nil {
 }
 ```
 
-### Scopes
+### Skoplar
 
 Metodlar chaqirilganda murojaat qilish mumkin bo'lgan tez-tez ishlatiladigan so'rovlarni belgilash imkonini beradi.
 
