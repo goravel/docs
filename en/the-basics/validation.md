@@ -180,7 +180,7 @@ func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
 You may customize the error messages used by the form request by overriding the `Messages` method. This method should return an array of attribute / rule pairs and their corresponding error messages:
 
 ```go
-func (r *StorePostRequest) Messages() map[string]string {
+func (r *StorePostRequest) Messages(ctx http.Context) map[string]string {
   return map[string]string{
     "title.required": "A title is required",
     "body.required": "A message is required",
@@ -193,7 +193,7 @@ func (r *StorePostRequest) Messages() map[string]string {
 Many of Goravel's built-in validation rule error messages contain an `:attribute` placeholder. If you would like the `:attribute` placeholder of your validation message to be replaced with a custom attribute name, you may specify the custom names by overriding the `Attributes` method. This method should return an array of attribute / name pairs:
 
 ```go
-func (r *StorePostRequest) Attributes() map[string]string {
+func (r *StorePostRequest) Attributes(ctx http.Context) map[string]string {
   return map[string]string{
     "email": "email address",
   }
