@@ -1,11 +1,11 @@
 ---
 name: add-contributor
-description: "Use when adding a new contributor to the Goravel docs. Fetches GitHub avatar and adds contributor link to contributions.md"
+description: "Use when adding a new contributor to the Goravel docs. Fetches GitHub avatar and adds contributor links to en/prologue/contributions.md and en/index.md"
 ---
 
 # Add Contributor Skill
 
-This skill automates adding a new contributor to the Goravel documentation's contributors list in `contributions.md`.
+This skill automates adding a new contributor to the Goravel documentation contributor lists in `en/prologue/contributions.md` and `en/index.md`.
 
 ## Workflow
 
@@ -34,17 +34,22 @@ Create an HTML anchor tag with the avatar image:
 <a href="https://github.com/{username}" target="_blank"><img src="{avatar_url}" width="48" height="48"></a>
 ```
 
-### 5. Add to Contribution Section
+### 5. Add to Contribution Sections
 
-Locate the appropriate section in `en/prologue/contributions.md`:
+Locate the appropriate sections:
+- `en/prologue/contributions.md`
 - **Contributors** section: Add to the Contributors `<div>` block
 - **Core Developers** section: Add to the Core Developers `<div>` block (if applicable)
+- `en/index.md`
+- **Contributors** section: Add to the contributors avatar list under `## Contributors`
 
-Insert the HTML snippet as a new line before the closing `</div>` tag.
+Insert the HTML snippet as a new line in both files:
+- In `en/prologue/contributions.md`, insert before the closing `</div>` tag of the target list.
+- In `en/index.md`, insert in the contributors avatar list before the closing `</div>` of the contributors block.
 
 ### 6. Update Documentation
 
-Update the file and verify the contributor appears correctly in the rendered documentation.
+Update both files and verify the contributor appears correctly in the rendered documentation.
 
 ## Implementation Steps
 
@@ -53,7 +58,8 @@ Update the file and verify the contributor appears correctly in the rendered doc
 3. Fetch user data from GitHub API to get the avatar URL
 4. Create the HTML contributor entry
 5. Insert into the appropriate section of `en/prologue/contributions.md`
-6. Confirm addition
+6. Insert into the `## Contributors` list in `en/index.md`
+7. Confirm addition in both files
 
 ## Example
 
@@ -66,4 +72,6 @@ Update the file and verify the contributor appears correctly in the rendered doc
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/108449432?v=4" width="48" height="48"></a>
 ```
 
-**Location in File:** Added to Contributors section before `</div>` closing tag
+**Location in Files:**
+- `en/prologue/contributions.md`: Added to Contributors section before `</div>` closing tag
+- `en/index.md`: Added to Contributors section before the closing `</div>`

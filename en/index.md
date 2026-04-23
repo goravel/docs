@@ -116,6 +116,8 @@ features:
 <a href="https://github.com/oguzhankrcb" target="_blank"><img src="https://avatars.githubusercontent.com/u/7572058?v=4" width="48" height="48"></a>
 <a href="https://github.com/ChisThanh" target="_blank"><img src="https://avatars.githubusercontent.com/u/93512710?v=4" width="48" height="48"></a>
 <a href="https://github.com/wyicwx" target="_blank"><img src="https://avatars.githubusercontent.com/u/1241187?v=4" width="48" height="48"></a>
+<a href="https://github.com/LinboLen" target="_blank"><img src="https://avatars.githubusercontent.com/u/5467712?v=4" width="48" height="48"></a>
+<a href="https://github.com/president-tuychiyev" target="_blank"><img src="https://avatars.githubusercontent.com/u/68532523?v=4" width="48" height="48"></a>
 
 </div>
 
