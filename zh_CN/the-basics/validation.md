@@ -180,7 +180,7 @@ func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
 你可以通过完善表单请求的 `Messages` 方法来自定义错误消息。 此方法应返回 `属性.规则/对应错误消息` 的 Map：
 
 ```go
-func (r *StorePostRequest) Messages() map[string]string {
+func (r *StorePostRequest) Messages(ctx http.Context) map[string]string {
   return map[string]string{
     "title.required": "A title is required",
     "body.required": "A message is required",
@@ -193,7 +193,7 @@ func (r *StorePostRequest) Messages() map[string]string {
 Goravel 的许多内置验证规则错误消息都包含 `:attribute` 占位符。 如果你希望将验证消息的 `:attribute` 部分替换为自定义属性名称，则可以重写 `Attributes` 方法来指定自定义名称。 此方法应返回属性 / 名称对的数组：
 
 ```go
-func (r *StorePostRequest) Attributes() map[string]string {
+func (r *StorePostRequest) Attributes(ctx http.Context) map[string]string {
   return map[string]string{
     "email": "email address",
   }
