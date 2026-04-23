@@ -179,7 +179,7 @@ carbon.SetTestNow(carbon.Now())
 
 ### `carbon.ClearTestNow()`
 
-The `carbon.ClearTestNow()` function clears the test now Carbon object:
+`carbon.ClearTestNow()` funksiyasi testni hozir tozalaydi. Carbon obyekti:
 
 ```go
 carbon.ClearTestNow()
