@@ -71,7 +71,7 @@ Yuqoridagi shartlar bajarilmagan taqdirda, framework bo‘sh migratsiya faylini 
 
 ### Go Tili Migratsiyasi
 
-Migratsiya strukturasida ikkita metod mavjud: `Up` va `Down`. `Up` usuli ma'lumotlar bazasiga yangi jadvallar, ustunlar yoki indekslar qo'shish uchun ishlatiladi, `Down` usuli esa `Up` usuli tomonidan bajarilgan amallarni bekor qilish uchun ishlatiladi. Ushbu ikki usulda siz `facades.Schema()` yordamida ma'lumotlar bazasi jadvallarini yaratish va boshqarish mumkin. Mavjud usullar uchun [hujjat](#jadvallar)ga qarang. Quyidagi migratsiya `users` jadvalini yaratadi:
+Migratsiya strukturasida ikkita metod mavjud: `Up` va `Down`. `Up` usuli ma'lumotlar bazasiga yangi jadvallar, ustunlar yoki indekslar qo'shish uchun ishlatiladi, `Down` usuli esa `Up` usuli tomonidan bajarilgan amallarni bekor qilish uchun ishlatiladi. Ushbu ikki usulda siz `facades.Schema()` yordamida ma'lumotlar bazasi jadvallarini yaratish va boshqarish mumkin. Mavjud usullar uchun [hujjat](#tables)ga qarang. Quyidagi migratsiya `users` jadvalini yaratadi:
 
 ```go
 migratsiyalar paketi
@@ -327,20 +327,20 @@ facades.Schema().Table("users", func(table schema.Blueprint) {
 
 Quyidagi jadvalda barcha mavjud ustun modifikatorlari keltirilgan:
 
-| O'zgartirilgan                                 | Tavsif                                                                                                                                                                                                      |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `.Har doim()`                                  | Ushbu ustunning qiymati har doim ma'lumotlar bazasi tizimi tomonidan yaratiladi va foydalanuvchilar uni to'g'ridan-to'g'ri kiritish yoki o'zgartirishlari mumkin emas (faqat PostgreSQL) |
-| `.AutoIncrement()`                             | Butun sonli ustunni avtomatik o'sish (asosiy kalit) sifatida belgilaydi                                                                                                                  |
-| `.After("ustun")`                              | Belgilangan ustundan keyingi ustunni o‘rnatadi (faqat MySQL)                                                                                                                             |
-| `.Comment("mening izohim")`                    | Ustunga izoh qo'shadi (MySQL / PostgreSQL)                                                                                                                                               |
-| \`.Change() | Ustun tuzilishini o'zgartirish (MySQL / PostgreSQL / Sqlserver)                                                                                                                          |
-| `.Default(value)`                              | Ustunning standart qiymatini belgilaydi                                                                                                                                                                     |
-| `.First()`                                     | Ustunni birinchi ustun sifatida belgilaydi (faqat MySQL)                                                                                                                                 |
-| `.GeneratedAs()`                               | Ushbu ustunning qiymatini ma'lumotlar bazasi tizimi tomonidan yaratilishi uchun belgilaydi (faqat PostgreSQL)                                                                            |
-| `.Nullable()`                                  | Ustunga NULL qiymatlarni kiritishga ruxsat beradi                                                                                                                                                           |
-| `.Unsigned()`                                  | Butun sonli ustunni UNSIGNED qilib belgilaydi (faqat MySQL uchun)                                                                                                                        |
-| `.UseCurrent()`                                | Jadval ustuniga standart qiymat sifatida CURRENT_TIMESTAMP ni belgilaydi                                                                                                               |
-| `.UseCurrentOnUpdate()`                        | Yozuv yangilanganda CURRENT_TIMESTAMP dan foydalanish uchun vaqt belgisi ustunini belgilaydi (faqat MySQL)                                                          |
+| O'zgartirilgan              | Tavsif                                                                                                                                                                                                      |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.Har doim()`               | Ushbu ustunning qiymati har doim ma'lumotlar bazasi tizimi tomonidan yaratiladi va foydalanuvchilar uni to'g'ridan-to'g'ri kiritish yoki o'zgartirishlari mumkin emas (faqat PostgreSQL) |
+| `.AutoIncrement()`          | Butun sonli ustunni avtomatik o'sish (asosiy kalit) sifatida belgilaydi                                                                                                                  |
+| `.After("ustun")`           | Belgilangan ustundan keyingi ustunni o‘rnatadi (faqat MySQL)                                                                                                                             |
+| `.Comment("mening izohim")` | Ustunga izoh qo'shadi (MySQL / PostgreSQL)                                                                                                                                               |
+| `.Change()`                 | Ustun tuzilishini o'zgartirish (MySQL / PostgreSQL / Sqlserver)                                                                                                                          |
+| `.Default(value)`           | Ustunning standart qiymatini belgilaydi                                                                                                                                                                     |
+| `.First()`                  | Ustunni birinchi ustun sifatida belgilaydi (faqat MySQL)                                                                                                                                 |
+| `.GeneratedAs()`            | Ushbu ustunning qiymatini ma'lumotlar bazasi tizimi tomonidan yaratilishi uchun belgilaydi (faqat PostgreSQL)                                                                            |
+| `.Nullable()`               | Ustunga NULL qiymatlarni kiritishga ruxsat beradi                                                                                                                                                           |
+| `.Unsigned()`               | Butun sonli ustunni UNSIGNED qilib belgilaydi (faqat MySQL uchun)                                                                                                                        |
+| `.UseCurrent()`             | Jadval ustuniga standart qiymat sifatida CURRENT_TIMESTAMP ni belgilaydi                                                                                                               |
+| `.UseCurrentOnUpdate()`     | Yozuv yangilanganda CURRENT_TIMESTAMP dan foydalanish uchun vaqt belgisi ustunini belgilaydi (faqat MySQL)                                                          |
 
 ### Ustunni tashlash
 
