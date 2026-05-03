@@ -1,115 +1,136 @@
-# View Facade
+# View (Templates)
 
-## Core Imports
+Render templates from `resources/views/`. Backed by Go's `html/template` (or driver). The View facade itself is small (`Exists` + Share state); rendering goes through `ctx.Response().View().Make(name, data)`.
+
+## Authoritative contracts
+
+Relative paths — combine with the framework source URL declared in `AGENTS.md`:
+
+- `contracts/view/view.go` — `View`
+- `contracts/http/response.go` — `ResponseView` (returned by `ctx.Response().View()`)
+
+## Imports
 
 ```go
 import (
     "github.com/goravel/framework/contracts/http"
+
     "yourmodule/app/facades"
 )
 ```
 
-## Contracts
+## Methods
 
-Fetch these files for exact, always-current type definitions:
+### `facades.View()` returns `view.View`
 
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/view/view.go`
+| Method | Signature | Notes |
+|---|---|---|
+| Exists | `(name string) bool` | Check if a template file exists. |
+| Share | `(key string, value any)` | Inject shared data available to ALL future renders. |
+| Shared | `(key string, def ...any) any` | Read a shared value. |
+| GetShared | `() map[string]any` | All shared data. |
 
-## Available Methods
+### `http.ResponseView` (via `ctx.Response().View()`)
 
-**ctx.Response().View():**
+| Method | Signature | Notes |
+|---|---|---|
+| Make | `(view string, data ...any) Response` | Render one template. |
+| First | `(views []string, data ...any) Response` | Try each template in order; render the first that exists. |
 
-- `Make(viewName, data?)` http.Response - render template; returns full http.Response
-- `First([]string, data?)` http.Response - render first existing view from list
+## Config
 
-**facades.View():**
+User-owned: templates live in `resources/views/`. No config keys for the View facade itself; the `goravel/gin` or `goravel/fiber` driver may have its own template-engine config (e.g. delimiters).
 
-- `Exist(name)` bool - check if template exists
-- `Share(key, value)` - share data with all views (call in `WithCallback`)
-- `GetShared()` map[string]any - get all shared data
+The render driver is the framework's default `html/template` unless replaced.
 
-## Implementation Example
+## Patterns & gotchas
+
+- **Templates live in `resources/views/<name>.tmpl`**. Reference by name without extension: `Make("home")` → `resources/views/home.tmpl`.
+- **Sub-folders**: dot or slash notation depends on driver. `Make("admin/dashboard")` is the safe portable form.
+- **Data is variadic `...any`**: typically pass a `map[string]any` or a struct. The template engine reflects fields/keys.
+- **`Share` injects globally**: any value set via `facades.View().Share("appVersion", "1.2.3")` is available in all templates as `{{ .appVersion }}` (or via the engine's shared-data convention). Useful for nav state, current user, asset URLs.
+- **`Exists` before `Make`** when the template name is dynamic — guards against panic on missing file.
+- **`First([]string, data)`** picks the first existing template — useful for layouts that fall back to a default.
+- **Layouts/partials**: handled by the underlying engine. Go `html/template` supports `{{ template "name" . }}` and `{{ block "name" . }}{{ end }}`. The framework's default loader auto-loads all files in `resources/views`.
+- **Escape behaviour**: Go `html/template` auto-escapes HTML by default. To inject raw HTML use `template.HTML(s)` (and only after sanitising on a security audit basis).
+- **CSRF token**: include in forms via `{{ csrf_field }}` (template helper provided by session middleware), or read from `ctx.Request().Session().Token()` and inject manually.
+- **Per-driver delimiters**: `goravel/fiber` uses different default delimiters than `gin`. Config it explicitly if you need consistency.
+- **Don't call `View()` (the facade) from a request handler when you mean to render** — the request response builder is the renderer: `ctx.Response().View().Make(...)`. The facade is for sharing state across renders.
+
+## Wrong → Right
+
+| Wrong | Right | Why |
+|---|---|---|
+| `return facades.View().Make("home", data)` | `return ctx.Response().View().Make("home", data)` | Render goes through the response builder; the facade only manages shared state. |
+| `Make("home.tmpl", ...)` | `Make("home", ...)` | Pass the name without the file extension. |
+| Inject raw HTML as a `string` | Wrap in `template.HTML(s)` after sanitising | Plain string is auto-escaped. |
+| Use the facade `View().Make(...)` (doesn't exist) | Use `ResponseView.Make(...)` | Facade has only `Exists`/`Share`/`Shared`/`GetShared`. |
+| Hard-code shared state in every controller | `facades.View().Share("nav", buildNav())` once at boot | Shared state is global. |
+
+## Worked example: render with shared layout data + dynamic fallback
 
 ```go
-// resources/views/welcome.tmpl
-// {{ define "welcome.tmpl" }}
-// <html><body><h1>Hello, {{ .name }}!</h1></body></html>
-// {{ end }}
-
-// resources/views/admin/dashboard.tmpl
-// {{ define "admin/dashboard.tmpl" }}
-// <h1>Admin: {{ .appName }}</h1>
-// {{ end }}
-
-// bootstrap/app.go - share global data
-// WithCallback(func() {
-//     facades.View().Share("appName", "MyApp")
-//     facades.View().Share("version", "1.0")
+// bootstrap/app.go (excerpt) — share global view data once at boot
+// app.WithCallback(func() {
+//     facades.View().Share("appName", "Goravel")
+//     facades.View().Share("appVersion", "1.0.0")
 // })
 
+// app/http/controllers/home_controller.go
 package controllers
 
 import (
     "github.com/goravel/framework/contracts/http"
+
     "yourmodule/app/facades"
 )
 
-type PageController struct{}
+type HomeController struct{}
 
-func (r *PageController) Welcome(ctx http.Context) http.Response {
-    return ctx.Response().View().Make("welcome.tmpl", map[string]any{
-        "name": ctx.Request().Query("name", "Guest"),
+func (c *HomeController) Show(ctx http.Context) http.Response {
+    return ctx.Response().View().Make("home", map[string]any{
+        "title": "Welcome",
+        "user":  ctx.Request().Session().Get("user"),
     })
 }
 
-func (r *PageController) Dashboard(ctx http.Context) http.Response {
-    return ctx.Response().View().Make("admin/dashboard.tmpl", map[string]any{
-        "user": "Alice",
-    })
-}
-
-func (r *PageController) TryViews(ctx http.Context) http.Response {
-    // Try custom theme first, fall back to default
+// Pick the first available theme variant
+func (c *HomeController) Profile(ctx http.Context) http.Response {
     return ctx.Response().View().First(
-        []string{"themes/custom/welcome.tmpl", "welcome.tmpl"},
-        map[string]any{"name": "Guest"},
+        []string{"profiles/" + ctx.Request().Route("id"), "profiles/default"},
+        map[string]any{"id": ctx.Request().Route("id")},
     )
 }
 
-func (r *PageController) CheckView(ctx http.Context) http.Response {
-    if facades.View().Exist("maintenance.tmpl") {
-        return ctx.Response().View().Make("maintenance.tmpl")
+// Guard a dynamic template name
+func (c *HomeController) Page(ctx http.Context) http.Response {
+    name := ctx.Request().Route("name")
+    if !facades.View().Exists("pages/" + name) {
+        return ctx.Response().Json(http.StatusNotFound, http.Json{"error": "no such page"})
     }
-    return ctx.Response().View().Make("welcome.tmpl")
+    return ctx.Response().View().Make("pages/"+name, http.Json{})
 }
 ```
 
-### CSRF Protection
+`resources/views/home.tmpl`:
 
-```go
-// Register middleware globally or per-route
-import "github.com/goravel/framework/http/middleware"
-
-handler.Append(middleware.VerifyCsrfToken([]string{
-    "api/*",       // exclude these paths from CSRF check
-    "webhook/*",
-}))
-
-// In template - include the injected csrf_token variable
-// <input type="hidden" name="_token" value="{{ .csrf_token }}" />
-// Or in AJAX headers: X-CSRF-TOKEN: {{ .csrf_token }}
+```html
+<!doctype html>
+<html>
+<head><title>{{ .title }} - {{ .appName }}</title></head>
+<body>
+  <h1>Welcome, {{ if .user }}{{ .user.Name }}{{ else }}guest{{ end }}!</h1>
+  <footer>v{{ .appVersion }}</footer>
+</body>
+</html>
 ```
 
 ## Rules
 
-- Template `define` name **must** match the string passed to `Make` exactly - including subdirectory path.
-  - `Make("admin/dashboard.tmpl")` requires `{{ define "admin/dashboard.tmpl" }}` in the file.
-- Default template engine: `html/template`; files use `.tmpl` extension.
-- Default views directory: `resources/views/` - configurable via `paths.Resources("dir")` in `WithPaths`.
-- `Share` data is global to all views; per-request data is passed via `Make`'s second argument - per-request data takes precedence on key collision.
-- Call `facades.View().Share(...)` in `WithCallback`, not in `Register` or `Boot` of a provider.
-- `View` facade is new in v1.17 - register `&view.ServiceProvider{}` in providers.
-- CSRF token is auto-injected as `csrf_token` into view data when `VerifyCsrfToken` middleware is active.
-- `VerifyCsrfToken` excludes paths by glob pattern; always exclude API and webhook endpoints.
-- Custom template engine (Gin): configure `"template"` key in `config/http.go` with `gin.NewTemplate(...)`.
-- `make:view welcome` generates `resources/views/welcome.tmpl` scaffold.
+- Render via `ctx.Response().View().Make(name, data)` — the facade does not render.
+- Reference templates by name only, not full path or extension.
+- Use `Share`/`Shared` for global view state (set once at boot, available in every render).
+- Use `Exists` to guard dynamic template names.
+- For raw HTML, wrap in `template.HTML(s)` after sanitising — the engine auto-escapes plain strings.
+- Layouts/partials use the underlying engine's syntax (`{{ template }}`/`{{ block }}` for `html/template`).
+- Per-driver template delimiter quirks exist between `gin` and `fiber` — pin via driver config if cross-driver consistency matters.

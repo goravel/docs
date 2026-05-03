@@ -1,205 +1,176 @@
 # Testing
 
-## Core Imports
+Test helpers for HTTP, database (via Docker), and cache (via Docker). Application-level: `facades.Testing()` exposes `Docker()` for ephemeral cache/db containers. HTTP test surface: route's `Test()` (Fiber driver only) or build a `httptest.Server` against `facades.Route().ServeHTTP`. Mocks for facades are generated in `mocks/` (regenerate via `go tool mockery`).
+
+## Authoritative contracts
+
+Relative paths — combine with the framework source URL declared in `AGENTS.md`:
+
+- `contracts/testing/testing.go` — `Testing`, `Docker`, `TestingT`
+- `contracts/testing/docker/` — driver-specific container interfaces
+- `contracts/testing/http/` — HTTP test helpers
+
+## Imports
 
 ```go
 import (
     "testing"
-    "github.com/stretchr/testify/suite"
-    testinghttp "github.com/goravel/framework/testing/http"
-    "github.com/goravel/framework/testing/mock"
-    contractstesting "github.com/goravel/framework/contracts/testing"
-    contractsorm "github.com/goravel/framework/contracts/database/orm"
 
-    "yourmodule/tests"
+    "github.com/stretchr/testify/assert"
+    "github.com/stretchr/testify/suite"
+
+    "github.com/goravel/framework/contracts/testing"
+    "github.com/goravel/framework/contracts/testing/docker"
+
+    mocksconsole "github.com/goravel/framework/mocks/console"
+    mockscache   "github.com/goravel/framework/mocks/cache"
+
     "yourmodule/app/facades"
 )
 ```
 
-## Contracts
+## Methods
 
-Fetch these files for exact, always-current type definitions:
+### `facades.Testing()` returns `testing.Testing`
 
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/testing/testing.go`
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/testing/http/request.go`
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/testing/http/response.go`
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/testing/http/assertable_json.go`
+| Method | Signature | Notes |
+|---|---|---|
+| Docker | `() Docker` | Get the Docker manager for ephemeral test resources. |
 
-## Available Methods
+### `testing.Docker`
 
-**Suite helpers (from `tests.TestCase`):**
+| Method | Signature | Notes |
+|---|---|---|
+| Cache | `(store ...string) (docker.CacheDriver, error)` | Spin up a cache container (defaults to configured store). |
+| Database | `(connection ...string) (docker.Database, error)` | Spin up a DB container (defaults to configured connection). |
+| Image | `(image docker.Image) docker.ImageDriver` | Custom container by image. |
 
-- `s.Http(t)` TestRequest - create HTTP test client
-- `s.Seed(seeders ...Seeder)` - run seeders (no arg = DatabaseSeeder)
-- `s.RefreshDatabase()` - migrate fresh before each test (call in `SetupTest`)
+### Mocks (generated under `mocks/`)
 
-**TestRequest (from `s.Http(t)`):**
+For every facade and most major contract there is a `mocks/<package>/X.go` testify-style mock. Examples: `mocks/console.Context`, `mocks/cache.Cache`, `mocks/database/orm.Orm`. Use the `EXPECT()` API (NOT `mock.On(...)`).
 
-- `.WithHeader(key, value)` TestRequest
-- `.WithHeaders(map[string]string)` TestRequest
-- `.WithCookie(testinghttp.Cookie(name, value))` TestRequest
-- `.WithCookies(testinghttp.Cookies(map[string]string))` TestRequest
-- `.WithSession(map[string]any)` TestRequest
-- `.Get(path)` (TestResponse, error)
-- `.Post(path, body)` (TestResponse, error)
-- `.Put(path, body)` (TestResponse, error)
-- `.Patch(path, body)` (TestResponse, error)
-- `.Delete(path, body?)` (TestResponse, error)
-
-**TestResponse assertions:**
-
-- `.AssertStatus(code)`
-- `.AssertOk()` / `.AssertCreated()` / `.AssertAccepted()` / `.AssertNoContent()`
-- `.AssertPartialContent()` / `.AssertNotModified()` / `.AssertTemporaryRedirect()`
-- `.AssertMovedPermanently()` / `.AssertFound()`
-- `.AssertBadRequest()` / `.AssertUnauthorized()` / `.AssertPaymentRequired()`
-- `.AssertForbidden()` / `.AssertNotFound()` / `.AssertMethodNotAllowed()`
-- `.AssertRequestTimeout()` / `.AssertConflict()` / `.AssertGone()`
-- `.AssertUnprocessableEntity()` / `.AssertTooManyRequests()`
-- `.AssertInternalServerError()` / `.AssertServiceUnavailable()`
-- `.AssertSuccessful()` (2xx) / `.AssertServerError()` (5xx)
-- `.AssertHeader(key, value)` / `.AssertHeaderMissing(key)`
-- `.AssertCookie(name, value)` / `.AssertCookieMissing(name)`
-- `.AssertCookieExpired(name)` / `.AssertCookieNotExpired(name)`
-- `.AssertJson(map[string]any)` - subset match
-- `.AssertExactJson(map[string]any)` - exact match
-- `.AssertJsonMissing(map[string]any)`
-- `.AssertFluentJson(func(AssertableJSON))` - fluent chain
-- `.AssertSee([]string, escape bool)` / `.AssertDontSee([]string, escape bool)`
-- `.AssertSeeInOrder([]string, escape bool)`
-
-**TestResponse data:**
-
-- `.Content()` (string, error)
-- `.Json()` (map[string]any, error)
-- `.Cookies()` []\*http.Cookie
-- `.Headers()` http.Header
-- `.Session()` (map[string]any, error)
-
-**Mock factory (`mock.Factory()`):**
-
-- `.App()` / `.Artisan()` / `.Auth()` / `.Cache()` / `.Config()` / `.Crypt()`
-- `.Event()` + `.EventTask()`
-- `.Gate()` / `.Grpc()` / `.Hash()` / `.Lang()` / `.Log()` / `.Mail()`
-- `.Orm()` + `.OrmQuery()` + `.OrmTransaction()`
-- `.Queue()` + `.QueueTask()`
-- `.Storage()` + `.StorageDriver()`
-- `.Validation()` + `.ValidationValidator()` + `.ValidationErrors()`
-- `.View()`
-
-**Docker testing (`facades.Testing().Docker()`):**
-
-- `.Database(driver?)` (DatabaseImage, error) - default driver from config
-- `.Cache(driver?)` (CacheImage, error)
-- `.Image(contractstesting.Image)` (Image, error) - custom image
-- `.Build()` error - start container
-- `.Ready()` error - wait until healthy
-- `.Migrate()` error
-- `.Seed(seeders ...Seeder)` error
-- `.Config()` - get connection config (use after Build)
-- `.Fresh()` error - drop+migrate (not safe for parallel)
-- `.Shutdown()` error - stop container
-
-## Implementation Example
+### `testing.TestingT`
 
 ```go
-// tests/feature/user_test.go
-package feature
+type TestingT interface {
+    Errorf(format string, args ...any)
+    FailNow()
+}
+```
+
+Pass `*testing.T` wherever the framework asks for a `TestingT`.
+
+## Config
+
+User-owned: `config/database.go` (used by `Docker.Database()`), `config/cache.go` (used by `Docker.Cache()`). The Docker container picks driver/image from these.
+
+For test isolation: set `database.connections.<name>.driver` to the matching test driver in your test environment (e.g. `sqlite` for fast unit tests, `postgres` via docker for integration).
+
+## Patterns & gotchas
+
+- **Mocks: use `EXPECT()`, NOT `mock.Anything`**. Per project convention (CLAUDE.md): `mockContext.EXPECT().OptionBool("force").Return(true).Once()`. Avoid `mock.Anything`; spell out the expected argument.
+- **Don't edit `mocks/` directly** — they're generated. Run `go tool mockery` to regenerate after contract changes.
+- **HTTP testing options**:
+  - **Fiber driver**: `facades.Route().Test(req)` returns a fake response — driver-specific, easiest path on Fiber.
+  - **Driver-portable**: `httptest.NewServer(http.HandlerFunc(facades.Route().ServeHTTP))` — wraps the route as a stdlib handler, then test via `http.Get`/`http.Post`.
+- **Docker DB**: `db, err := facades.Testing().Docker().Database()` returns a `docker.Database` with `Driver()`, `Config()`, `Image()`, `Stop()`. Use `t.Cleanup(func() { _ = db.Stop() })` to tear down.
+- **Docker Cache**: same pattern — ephemeral redis container for cache tests. `t.Cleanup` to stop.
+- **Test isolation**: each `t.Run(...)` should set up + tear down its own state. For DB tests, wrap each test in a transaction and rollback in cleanup, OR use a fresh container per test (slower but bullet-proof).
+- **Don't run `go test ./...` blindly** (per CLAUDE.md) — it's slow. Run on the specific package: `go test ./ai/console/...`.
+- **Suite-style tests**: `testify/suite` works well for shared setup; the framework doesn't ship its own test base.
+- **Mock context propagation**: the `mocksconsole.Context` mock implements `console.Context`. Set up expected calls via `mockContext.EXPECT().X().Return(y).Once()` and pass the mock to your `Handle(ctx)`.
+- **Sync queue driver in tests**: set `queue.default = "sync"` in your test config to make Dispatch run inline — easier to assert effects.
+- **Mail testing**: there's typically a `null` driver for tests. Set `mail.driver = "null"` (or use a test double via the mock).
+- **HTTP request fixtures**: `httptest.NewRequest("POST", "/x", body)` then pass to `facades.Route().Test(req)` (Fiber) or `srv.Client().Do(req)` (httptest server).
+
+## Wrong → Right
+
+| Wrong | Right | Why |
+|---|---|---|
+| `mock.On("X", mock.Anything).Return(y)` | `mock.EXPECT().X(specificArg).Return(y).Once()` | Project rule: no `mock.Anything`; use EXPECT with explicit args. |
+| Edit `mocks/console/context.go` directly | Run `go tool mockery` to regenerate | Mocks are generated; manual edits get clobbered. |
+| `go test ./...` | `go test ./<specific-package>/...` | Full sweep is slow; per CLAUDE.md prefer narrow target. |
+| Forget to `t.Cleanup(db.Stop)` after `Docker().Database()` | Always pair with cleanup | Otherwise containers leak. |
+| Test against the real production DB | Use `Docker().Database()` for an ephemeral instance | Per-test isolation. |
+| Use `time.Sleep` to wait for queued jobs | Set `queue.default = "sync"` in test config | Sync = inline = no waiting. |
+
+## Worked example: HTTP test against the route facade
+
+```go
+package controllers_test
+
+import (
+    "encoding/json"
+    "io"
+    "net/http"
+    "net/http/httptest"
+    "strings"
+    "testing"
+
+    "github.com/stretchr/testify/assert"
+
+    "yourmodule/app/facades"
+    "yourmodule/bootstrap"
+)
+
+func TestPostsStore(t *testing.T) {
+    // Boot the app once for the test (or use a shared TestMain).
+    app := bootstrap.Boot()
+    t.Cleanup(func() { _ = app.Shutdown() })
+
+    // Driver-portable: wrap the framework's HTTP handler in a httptest server.
+    srv := httptest.NewServer(http.HandlerFunc(facades.Route().ServeHTTP))
+    t.Cleanup(srv.Close)
+
+    body := `{"title": "First post", "body": "Hello world"}`
+    resp, err := http.Post(srv.URL+"/posts", "application/json", strings.NewReader(body))
+    assert.NoError(t, err)
+    defer func() { _ = resp.Body.Close() }()
+
+    assert.Equal(t, http.StatusCreated, resp.StatusCode)
+    raw, _ := io.ReadAll(resp.Body)
+    var got map[string]any
+    assert.NoError(t, json.Unmarshal(raw, &got))
+    assert.Equal(t, "First post", got["data"].(map[string]any)["title"])
+}
+
+// Mock-based unit test for an artisan command
+package console_test
 
 import (
     "testing"
-    "github.com/stretchr/testify/suite"
-    contractstesting "github.com/goravel/framework/contracts/testing"
-    "github.com/goravel/framework/support/http"
-    testinghttp "github.com/goravel/framework/testing/http"
-    "github.com/goravel/framework/testing/mock"
 
-    "yourmodule/tests"
-    "yourmodule/app/facades"
+    "github.com/stretchr/testify/assert"
+
+    mocksconsole "github.com/goravel/framework/mocks/console"
+    "yourmodule/app/console/commands"
 )
 
-type UserTestSuite struct {
-    suite.Suite
-    tests.TestCase
+func TestPruneUsers_NoUsers(t *testing.T) {
+    mockCtx := mocksconsole.NewContext(t)
+    mockCtx.EXPECT().OptionInt("days").Return(30).Once()
+    mockCtx.EXPECT().Info("Found 0 user(s) to prune.").Once()
+
+    cmd := &commands.PruneUsers{}
+    assert.NoError(t, cmd.Handle(mockCtx))
 }
 
-func TestUserSuite(t *testing.T) { suite.Run(t, new(UserTestSuite)) }
-
-func (s *UserTestSuite) SetupTest() {
-    s.RefreshDatabase() // fresh DB before each test
-}
-
-func (s *UserTestSuite) TestIndex() {
-    resp, err := s.Http(s.T()).
-        WithHeader("Accept", "application/json").
-        Get("/api/users")
-
-    s.Nil(err)
-    resp.AssertOk()
-    resp.AssertFluentJson(func(json contractstesting.AssertableJSON) {
-        json.Has("data").Count("data", 0)
-    })
-}
-
-func (s *UserTestSuite) TestCreate() {
-    body := http.NewBody().
-        SetField("name", "Alice").
-        SetField("email", "alice@example.com")
-    built, _ := body.Build()
-
-    resp, err := s.Http(s.T()).
-        WithHeader("Content-Type", built.ContentType()).
-        Post("/api/users", built)
-
-    s.Nil(err)
-    resp.AssertCreated()
-    resp.AssertFluentJson(func(json contractstesting.AssertableJSON) {
-        json.Where("name", "Alice").Has("id").Missing("password")
-    })
-}
-
-// Unit test with mock
-func TestUserServiceCache(t *testing.T) {
-    mockFactory := mock.Factory()
-    mockCache := mockFactory.Cache()
-    mockCache.On("Remember", "user:1", mock.Anything, mock.Anything).
-        Return(&User{ID: 1, Name: "Alice"}, nil).Once()
-
-    svc := &UserService{} // uses facades.Cache() internally
-    user, err := svc.GetUser(1)
-    assert.Nil(t, err)
-    assert.Equal(t, "Alice", user.Name)
-    mockCache.AssertExpectations(t)
-}
-
-// Docker test - tests/feature/main_test.go
-func TestMain(m *testing.M) {
+// Docker-backed DB test
+func TestUserRepository(t *testing.T) {
     db, err := facades.Testing().Docker().Database()
-    if err != nil { panic(err) }
-    if err := db.Build(); err != nil { panic(err) }
-    if err := db.Ready(); err != nil { panic(err) }
-    if err := db.Migrate(); err != nil { panic(err) }
-    if err := facades.App().Restart(); err != nil { panic(err) }
+    assert.NoError(t, err)
+    t.Cleanup(func() { _ = db.Stop() })
 
-    exit := m.Run()
-    db.Shutdown()
-    os.Exit(exit)
+    // ... run migrations against db.Config(), exercise repository, assert ...
 }
 ```
 
 ## Rules
 
-- Embed `tests.TestCase` (not `suite.Suite` alone) to get `Http()`, `Seed()`, `RefreshDatabase()`.
-- `s.RefreshDatabase()` in `SetupTest()` drops and re-migrates before **each** test.
-- `s.Http(s.T())` creates a new test HTTP client per call; chain builder methods before the verb.
-- Post/Put/Patch body: use `http.NewBody().SetField(k,v).Build()` and set `Content-Type` from `built.ContentType()`.
-- `AssertJson` is a **subset** match - extra fields in response are allowed.
-- `AssertExactJson` requires **exact** match - no extra or missing fields.
-- JSON numeric values come back as `float64` in Go - use `float64(1)` not `1` in assertions.
-- Mock `Log` facade uses `fmt.Print` - it does not write real log files during tests.
-- `mock.Factory()` replaces the global facade binding for that test scope automatically.
-- Docker `Fresh()` is **not safe** for parallel tests - it drops all tables.
-- Never use `t.Parallel()` alongside `facades.Http().Fake(...)` - global state, race conditions.
-- Always `defer facades.Http().Reset()` in any test using `Fake`.
-- Docker images auto-shutdown after 1 hour if `Shutdown()` is not called.
-- `.env` in the test package directory overrides root `.env`; or pass `--env=.env.testing`.
+- Mocks live in `mocks/`; never edit by hand. Regenerate via `go tool mockery`.
+- Use `mock.EXPECT().X(args).Return(y).Once()` — never `mock.Anything`.
+- For ephemeral DB/cache: `facades.Testing().Docker().Database()` / `Cache()`. Always pair with `t.Cleanup(func() { _ = x.Stop() })`.
+- Use a per-package `go test ./ai/console/...` rather than `go test ./...` (CLAUDE.md rule).
+- For driver-portable HTTP tests: `httptest.NewServer(http.HandlerFunc(facades.Route().ServeHTTP))`.
+- For Fiber-only fast tests: `facades.Route().Test(req)`.
+- In tests, swap to `sync` queue driver and `null` mail driver via test config — keeps assertions deterministic.

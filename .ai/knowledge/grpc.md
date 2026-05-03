@@ -1,145 +1,157 @@
-# gRPC Facade
+# gRPC
 
-## Core Imports
+`facades.Grpc()` exposes both server and client. Server registration is grpc-go-style: get `Server()`, register your generated `RegisterFooServiceServer(server, impl)`. Client connections are name-based, cached, with optional grouped credentials/interceptors per server name.
+
+## Authoritative contracts
+
+Relative paths — combine with the framework source URL declared in `AGENTS.md`:
+
+- `contracts/grpc/grpc.go` — `Grpc`
+
+## Imports
 
 ```go
 import (
     "context"
-    "net/http"
-    "google.golang.org/grpc"
-    "google.golang.org/grpc/stats"
-    contractshttp "github.com/goravel/framework/contracts/http"
+    "net"
 
-    proto "github.com/goravel/example-proto" // your generated proto package
+    "google.golang.org/grpc"
+    "google.golang.org/grpc/credentials"
+    "google.golang.org/grpc/stats"
+
     "yourmodule/app/facades"
 )
 ```
 
-## Contracts
+## Methods
 
-Fetch these files for exact, always-current type definitions:
+### `facades.Grpc()` returns `grpc.Grpc`
 
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/grpc/grpc.go`
+| Group | Methods (signature-only) |
+|---|---|
+| Server | `Server() *grpc.Server` (get the underlying server to register services on), `Run(host ...string) error` (start), `Listen(l net.Listener) error`, `Shutdown(force ...bool) error` |
+| Server config | `ServerCredentials(credentials.TransportCredentials)` (TLS/mTLS; nil = no TLS), `UnaryServerInterceptors([]grpc.UnaryServerInterceptor)`, `ServerStatsHandlers([]stats.Handler)` |
+| Client | `Connect(server string) (*grpc.ClientConn, error)` (cached) |
+| Client config | `ClientCredentials(map[string]credentials.TransportCredentials)` (per-server-name), `UnaryClientInterceptorGroups(map[string][]grpc.UnaryClientInterceptor)`, `ClientStatsHandlerGroups(map[string][]stats.Handler)` |
+| Deprecated | `Client(ctx context.Context, name string) (*grpc.ClientConn, error)` — use `Connect` instead, removed in v1.18 |
 
-## Available Methods
+## Config
 
-**facades.Grpc():**
+User-owned: `config/grpc.go`. Read directly for current server / client definitions.
 
-- `Server()` \*grpc.Server - get the gRPC server instance (use to register services in routes)
-- `Connect(name)` (\*grpc.ClientConn, error) - get client connection by server name from config
+Keys this facade reads:
 
-**bootstrap/app.go registration:**
+- `grpc.host` (string) — server bind address
+- `grpc.port` (string) — server port
+- `grpc.servers.<name>.host` (string) — client target host
+- `grpc.servers.<name>.port` (string) — client target port
+- `grpc.servers.<name>.creds` (string) — credential group name (matches a key in `WithGrpcClientCredentials` map)
+- `grpc.servers.<name>.interceptors` ([]string) — interceptor group names
+- `grpc.servers.<name>.stats_handlers` ([]string) — stats handler group names
 
-- `WithGrpcServerInterceptors(func() []grpc.UnaryServerInterceptor)`
-- `WithGrpcClientInterceptors(func() map[string][]grpc.UnaryClientInterceptor)` - key = interceptor group name
-- `WithGrpcServerStatsHandlers(func() []stats.Handler)`
-- `WithGrpcClientStatsHandlers(func() map[string][]stats.Handler)` - key = server name from config
+Greenfield default: `config/grpc.go` from goravel-scaffold URL declared in `AGENTS.md`.
 
-## Implementation Example
+## Patterns & gotchas
+
+- **`Connect("name")` is the canonical client API** — `Client(ctx, name)` is deprecated and removed in v1.18. `Connect` looks up `grpc.servers.<name>` config, applies any matching credential/interceptor/stats groups, returns a cached `*grpc.ClientConn`.
+- **Server registration**: get `Server()` (returns `*grpc.Server`), then call your generated `RegisterFooServiceServer(server, impl)` from the proto stub. Do this in a service provider's `Boot` or in `WithCallback`.
+- **Server start**: `Run()` blocks. Wire as a Runner in `bootstrap/app.go` `WithRunners` so the framework manages it.
+- **TLS / mTLS**: `ServerCredentials(creds)` for the server; `ClientCredentials(map[string]creds)` for clients (keyed by name; client config's `creds` field selects the group). Default is insecure.
+- **Interceptors and stats handlers are GROUPED for clients**: declare maps via `WithGrpcClientInterceptors(func() map[string][]grpc.UnaryClientInterceptor { ... })` in `bootstrap/app.go`; the per-server-name lookup in config picks groups.
+- **Server interceptors are flat**: `UnaryServerInterceptors([]grpc.UnaryServerInterceptor{...})` — applied to ALL server methods.
+- **Connection caching**: `Connect("foo")` returns the same `*grpc.ClientConn` on repeated calls. Don't `Close()` it manually unless you mean to drop the cached entry.
+- **Context propagation**: pass `ctx` directly to client method calls — `http.Context` embeds `context.Context`, so it works through unary RPCs naturally.
+- **Stats handlers** (OpenTelemetry, custom metrics) attach via `ServerStatsHandlers` / `ClientStatsHandlerGroups`. Otel exporter typically goes here.
+- **Streaming RPCs**: the `UnaryServerInterceptors` API is for unary only. For streaming interceptors, use `Server()` to get the `*grpc.Server` and apply via stdlib options BEFORE `Run`.
+
+## Wrong → Right
+
+| Wrong | Right | Why |
+|---|---|---|
+| `facades.Grpc().Client(ctx, "user_service")` | `facades.Grpc().Connect("user_service")` | Client is deprecated; Connect is the active API. |
+| `conn, _ := facades.Grpc().Connect("svc"); defer conn.Close()` | `conn, _ := facades.Grpc().Connect("svc")` (no Close) | Connection is cached; closing drops the shared instance. |
+| Register service in `Register(app)` of provider | Register in `Boot(app)` or `WithCallback` | Service registration needs `Server()` ready. |
+| Pass `ctx.Context()` to grpc client call | Pass `ctx` directly | `http.Context` satisfies `context.Context`. |
+| Build connection from scratch via `grpc.NewClient(...)` | Use `Connect("name")` | You bypass interceptors/credentials/stats configured for that server. |
+| `UnaryServerInterceptors(stream)` | Use `Server()` + stdlib options for streaming interceptors | Method is unary-only. |
+
+## Worked example: server registration + client call
 
 ```go
-// config/grpc.go
-config.Add("grpc", map[string]any{
-    "host": config.Env("GRPC_HOST", ""),
-    "port": config.Env("GRPC_PORT", "9000"),
-    "servers": map[string]any{           // BREAKING v1.17: was "clients"
-        "user": map[string]any{
-            "host":           config.Env("GRPC_USER_HOST", "127.0.0.1"),
-            "port":           config.Env("GRPC_USER_PORT", "9001"),
-            "interceptors":   []string{"default"},   // client interceptor group
-            "stats_handlers": []string{"user"},       // client stats handler group
-        },
-    },
-})
-
-// routes/grpc.go - register gRPC service
-package routes
-
-import (
-    proto "github.com/goravel/example-proto"
-    "yourmodule/app/facades"
-    grpccontrollers "yourmodule/app/grpc/controllers"
-)
-
-func Grpc() {
-    proto.RegisterUserServiceServer(
-        facades.Grpc().Server(),
-        grpccontrollers.NewUserController(),
-    )
-}
-
-// app/grpc/controllers/user_controller.go
+// app/grpc/controllers/user_controller.go (server impl)
 package controllers
 
 import (
     "context"
-    "net/http"
-    proto "github.com/goravel/example-proto"
+
+    pb "yourmodule/proto"
 )
 
-type UserController struct{}
-
-func NewUserController() *UserController { return &UserController{} }
-
-func (r *UserController) GetUser(ctx context.Context, req *proto.UserRequest) (*proto.UserResponse, error) {
-    return &proto.UserResponse{
-        Code: http.StatusOK,
-        Data: &proto.User{Id: 1, Name: "Goravel", Token: req.GetToken()},
-    }, nil
+type UserController struct {
+    pb.UnimplementedUserServiceServer
 }
 
-// HTTP controller calling gRPC
-// app/http/controllers/grpc_controller.go
+func (c *UserController) GetUser(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse, error) {
+    // ... look up user ...
+    return &pb.UserResponse{Id: req.Id, Name: "Alice"}, nil
+}
+
+// app/providers/grpc_service_provider.go
+package providers
+
+import (
+    "github.com/goravel/framework/contracts/foundation"
+
+    pb "yourmodule/proto"
+    "yourmodule/app/facades"
+    "yourmodule/app/grpc/controllers"
+)
+
+type GrpcServiceProvider struct{}
+
+func (p *GrpcServiceProvider) Register(app foundation.Application) {}
+
+func (p *GrpcServiceProvider) Boot(app foundation.Application) {
+    server := facades.Grpc().Server()
+    pb.RegisterUserServiceServer(server, &controllers.UserController{})
+}
+
+// bootstrap/app.go (excerpt) — wire as Runner so framework manages start/stop
+// app.WithRunners(func() []foundation.Runner {
+//     return []foundation.Runner{ ... grpc runner ... }
+// })
+
+// Calling another service from a controller (client side)
 package controllers
 
 import (
-    "fmt"
-    proto "github.com/goravel/example-proto"
-    contractshttp "github.com/goravel/framework/contracts/http"
+    "github.com/goravel/framework/contracts/http"
+
+    pb "yourmodule/proto"
     "yourmodule/app/facades"
 )
 
-type GrpcController struct {
-    userService proto.UserServiceClient
-}
-
-func NewGrpcController() *GrpcController {
-    conn, err := facades.Grpc().Connect("user") // BREAKING: was Client()
+func (c *Handler) FetchUser(ctx http.Context) http.Response {
+    conn, err := facades.Grpc().Connect("user_service")  // resolves grpc.servers.user_service config
     if err != nil {
-        facades.Log().Errorf("grpc connect failed: %+v", err)
+        return ctx.Response().Json(http.StatusInternalServerError, http.Json{"error": err.Error()})
     }
-    return &GrpcController{userService: proto.NewUserServiceClient(conn)}
-}
-
-func (r *GrpcController) GetUser(ctx contractshttp.Context) contractshttp.Response {
-    resp, err := r.userService.GetUser(ctx.Context(), &proto.UserRequest{
-        Token: ctx.Request().Input("token"),
-    })
+    client := pb.NewUserServiceClient(conn)
+    resp, err := client.GetUser(ctx, &pb.UserRequest{Id: ctx.Request().RouteInt("id")})
     if err != nil {
-        return ctx.Response().String(contractshttp.StatusInternalServerError, fmt.Sprintf("%+v", err))
+        return ctx.Response().Json(http.StatusInternalServerError, http.Json{"error": err.Error()})
     }
-    return ctx.Response().Success().Json(resp.GetData())
+    return ctx.Response().Json(http.StatusOK, http.Json{"id": resp.Id, "name": resp.Name})
 }
-
-// Interceptors - bootstrap/app.go
-// WithGrpcServerInterceptors(func() []grpc.UnaryServerInterceptor {
-//     return []grpc.UnaryServerInterceptor{interceptors.AuthServer}
-// }).
-// WithGrpcClientInterceptors(func() map[string][]grpc.UnaryClientInterceptor {
-//     return map[string][]grpc.UnaryClientInterceptor{
-//         "default": {interceptors.LogClient}, // "default" matches config interceptors array
-//     }
-// })
 ```
 
 ## Rules
 
-- `facades.Grpc().Client("name")` is **deprecated** - use `facades.Grpc().Connect("name")`.
-- Config key is `grpc.servers` - **not** `grpc.clients` (renamed in v1.17).
-- gRPC controllers use `context.Context` (stdlib), not `http.Context` (Goravel).
-- Register gRPC services in `routes/grpc.go` → called from `WithRouting` in `bootstrap/app.go`.
-- Client interceptor map key matches the `interceptors` array value in `config/grpc.go` servers config.
-- Stats handler map key for clients matches the `stats_handlers` array value in config.
-- `Connect` returns `*grpc.ClientConn` - wrap with `proto.NewXxxServiceClient(conn)` to get typed client.
-- Instantiate gRPC clients in the controller constructor (once), not per-request.
-- Server interceptors apply to all incoming gRPC calls; client interceptors apply per-connection group.
+- Use `Connect("name")` for clients; `Client(ctx, name)` is deprecated and removed in v1.18.
+- Don't `Close()` connections returned by `Connect` — they're cached.
+- Pass `ctx` (http.Context) directly to RPC calls; it satisfies `context.Context`.
+- Register services in `Boot` (or `WithCallback`), never `Register` — `Server()` needs to exist.
+- Server credentials: `ServerCredentials(creds)`; nil = no TLS.
+- Client credentials/interceptors/stats handlers are GROUPED — declare maps via `WithGrpcClient*` builders, select per-server in `config/grpc.go`.
+- Server start blocks — wire via `WithRunners` so framework manages lifecycle.
+- For streaming interceptors, use `Server()` directly with stdlib options before `Run`.

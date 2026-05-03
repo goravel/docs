@@ -1,74 +1,131 @@
-# ORM Facade
+# ORM
 
-## Core Imports
+Active-record ORM over GORM. Models are Go structs with embeds (`orm.Model`, `orm.SoftDeletes`); queries chain via `facades.Orm().Query()`. Multi-driver: mysql, postgres, sqlite, sqlserver via the matching `goravel/<driver>` package.
+
+## Authoritative contracts
+
+Relative paths — combine with the framework source URL declared in `AGENTS.md`:
+
+- `contracts/database/orm/orm.go` — `Orm`, `Query`, `Association`, `Factory`
+- `contracts/database/orm/events.go` — `Event`, event types
+- `contracts/database/orm/observer.go` — `Observer`, `ObserverWithRestored`
+- `contracts/database/orm/factory.go` — `Factory`
+- `contracts/database/factory/factory.go` — `Factory[Model]` for model-side factory binding
+- `database/orm/model.go` — `Model`, `SoftDeletes`, `Timestamps` embed structs
+
+Fetch when you need full type bodies, edge-case argument types, or methods not listed below.
+
+## Imports
 
 ```go
 import (
-    "github.com/goravel/framework/database/orm"
+    "github.com/goravel/framework/database/orm"                  // Model, SoftDeletes, Associations
     contractsorm "github.com/goravel/framework/contracts/database/orm"
-    "github.com/goravel/framework/contracts/database/factory"
-    "github.com/goravel/framework/database/db"           // for db.Raw()
-    "github.com/goravel/framework/errors"                // for errors.OrmRecordNotFound
-    "github.com/goravel/framework/support/carbon"        // for carbon.DateTime model fields
+    "github.com/goravel/framework/database/db"                   // db.Raw(), db.Result
+    "github.com/goravel/framework/errors"                        // errors.OrmRecordNotFound
+    "github.com/goravel/framework/support/carbon"                // carbon.Date, carbon.DateTime
 
     "yourmodule/app/facades"
     "yourmodule/database/factories"
 )
 ```
 
-## Contracts
+## Methods
 
-Fetch these files for exact, always-current type definitions:
+### `facades.Orm()` returns `contractsorm.Orm`
 
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/orm.go`
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/events.go`
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/observer.go`
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/orm/factory.go`
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/database/factory/factory.go`
+| Method | Signature | Notes |
+|---|---|---|
+| Query | `() Query` | Default DB query builder. |
+| Connection | `(name string) Orm` | Switch connection (configured in `config/database.go`). |
+| WithContext | `(ctx context.Context) Orm` | Bind a context. Use `ctx` from `http.Context`. |
+| DB | `() (*sql.DB, error)` | Raw `*sql.DB` for go-sql work. |
+| Transaction | `(func(tx Query) error) error` | Atomic; return non-nil from fn to roll back. |
+| Observe | `(model any, observer Observer)` | Register observer (call inside `WithCallback`). |
+| Factory | `() Factory` | Factory builder for the model bound via `Factory()` method. |
 
-## Available Methods
+### `Query` (chained — most return `Query`)
 
-**facades.Orm():**
+| Group | Methods (signature-only) |
+|---|---|
+| Filter | `Where(query any, args ...any) Query`, `OrWhere`, `WhereIn(col string, vals []any)`, `OrWhereIn`, `WhereNotIn`, `WhereBetween(col, x, y)`, `WhereNotBetween`, `WhereNull(col)`, `WhereNotNull`, `WhereJsonContains(col, val)`, `WhereJsonContainsKey(col)`, `WhereJsonLength(col, n)`, `WhereAll(cols, args)`, `WhereAny`, `WhereNone` |
+| Order/limit | `OrderBy(col string, dir ...string) Query`, `OrderByRaw(raw string) Query`, `InRandomOrder()`, `Limit(n int)`, `Offset(n int)`, `Distinct(cols ...string)` |
+| Join/group | `Join(query string, args ...any) Query`, `GroupBy(cols ...string)`, `Having(query, args)` |
+| Eager-load | `With(relation string, args ...any) Query` (uses struct field name, PascalCase), `Load(dest, relation, args)` (lazy load on already-fetched parent), `Association(field string) Association` |
+| Trash | `WithTrashed() Query`, `WithoutGlobalScopes(names ...string) Query`, `WithoutEvents()` |
+| Read terminal | `Find(dest any, conds ...any) error`, `FindOrFail(dest, conds...) error`, `First(dest) error`, `FirstOrFail(dest) error`, `FirstOr(dest, fn func() error) error`, `FirstOrCreate(dest, conds ...any) error`, `FirstOrNew(dest, attrs, vals ...any) error`, `Get(dest) error`, `Cursor() chan db.Row`, `Paginate(page, limit int, dest any, total *int64) error` |
+| Write | `Create(value any) error`, `Save(value any) error`, `Update(column any, value ...any) (*db.Result, error)` (column may be string OR `map[string]any`), `UpdateOrCreate(dest, attrs, vals any) error`, `Delete(value ...any) (*db.Result, error)`, `ForceDelete(value ...any) (*db.Result, error)`, `Restore(model ...any) (*db.Result, error)` |
+| Aggregates | `Count() (int64, error)`, `Exists() (bool, error)`, `Sum(col string, dest any) error` |
+| Locks | `LockForUpdate() Query`, `SharedLock() Query` |
+| Transactions | `BeginTransaction() (Query, error)`, `Commit() error`, `Rollback() error` |
+| Inspect | `ToSql() ToSql`, `ToRawSql() ToSql` |
+| Table | `Table(name string, args ...any) Query` (raw-table query, bypasses model events) |
 
-- `Query()` Query - get default DB query instance
-- `Connection(name)` Orm - switch database connection
-- `WithContext(ctx)` Orm - inject context
-- `DB()` (\*sql.DB, error) - raw sql.DB instance
-- `Transaction(func(Query) error)` error - atomic transaction
-- `Observe(model, observer)` - register model observer
-- `Factory()` Factory - get factory builder for the model
+### `Factory`
 
-**facades.Orm().Factory():**
+| Method | Signature | Notes |
+|---|---|---|
+| Make | `(value any, attributes ...map[string]any) error` | Build, do NOT persist. |
+| Create | `(value any, attributes ...map[string]any) error` | Build + persist. |
+| CreateQuietly | `(value any, attributes ...map[string]any) error` | Persist without firing events. |
+| Count | `(n int) Factory` | Produce a slice of n models. There is **no** `Times()` alias. |
 
-- `Make(&model, overrides ...map[string]any)` error - build without saving
-- `Create(&model, overrides ...map[string]any)` error - build and save to DB
-- `CreateQuietly(&model, overrides ...map[string]any)` error - create without model events
-- `Count(n int)` Factory - produce a collection of n models
-- `Times(n int)` Factory - alias for Count
+### Model-side hooks (defined ON your struct)
 
-**Query (chained):**
+```go
+func (u *User) TableName() string  { return "goravel_user" }     // override table name
+func (u *User) Connection() string { return "postgres" }         // override connection
+func (u *User) Factory() factory.Factory { return &factories.UserFactory{} }  // bind factory
+func (u *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query { ... }
+```
 
-- `Find(&dest, id?)` error - nil error if not found (use FindOrFail for error)
-- `FindOrFail(&dest, id)` error - errors if not found
-- `First(&dest)` error - first record ordered by PK
-- `FirstOrFail(&dest)` error - errors if not found
-- `Get(&dest)` error - all matching records
-- `Create(&value)` error - INSERT; auto-fills CreatedAt/UpdatedAt
-- `Save(&value)` error - full UPDATE of existing model
-- `Update(col, val)` error - UPDATE specific column(s)
-- `Delete(&value)` (Result, error) - soft delete (or hard if no SoftDeletes)
-- `ForceDelete(&value)` (Result, error) - bypass soft delete
-- `WithTrashed()` Query - include soft-deleted records
-- `Restore(&value)` error - undelete soft-deleted record
-- `Count()` (int64, error)
-- `Exists()` (bool, error)
-- `Sum(col, &dest)` error - aggregate into pointer
-- `Paginate(page, perPage, &dest, &total)` error
-- `With("Relation")` Query - eager load
-- `Load(&model, "Relation")` error - lazy eager load
-- `Association("Field")` Association - manage has-many/m2m
+## Config
 
-## Implementation Example
+User-owned files: `config/database.go`. Read directly for current connection definitions.
+
+Keys this facade reads:
+
+- `database.default` (string) — default connection name (e.g. `"postgres"`)
+- `database.connections.<name>.driver` (string) — driver name (`"mysql"`, `"postgres"`, `"sqlite"`, `"sqlserver"`)
+- `database.connections.<name>.host`, `port`, `database`, `username`, `password` — DSN inputs (env-backed)
+- `database.connections.<name>.charset`, `prefix` — schema-level options
+- `database.connections.<name>.via` (function) — driver factory closure (e.g. `func() (orm.Driver, error) { return postgresfacades.Orm("postgres"), nil }`)
+- `database.migrations.driver` — schema-builder driver
+
+Greenfield default: `config/database.go` from goravel-scaffold URL declared in `AGENTS.md`.
+
+## Patterns & gotchas
+
+- **Soft delete auto-filter**: queries on a model with `orm.SoftDeletes` automatically exclude soft-deleted rows. Use `WithTrashed()` to include them, `Restore()` to undelete, `ForceDelete()` to permanently remove.
+- **Eager load names are struct field names** (PascalCase), not column names: `.With("Posts")` for `User.Posts`, not `.With("posts")`.
+- **`Cursor` does not support `With`**: when iterating with `Cursor()`, use `Load()` inside the loop to lazy-load relationships.
+- **Batch operations skip events**: `Table("users").Delete()` and other raw-table queries do NOT trigger model events. Operate on a model instance to fire events.
+- **`SaveQuietly` / `WithoutEvents` / `CreateQuietly`** all suppress events for that operation.
+- **Observer vs DispatchesEvents**: if both are set on a model, only `DispatchesEvents` applies. Pick one.
+- **Custom date/time fields** must use `carbon` types (`carbon.Date`, `carbon.DateTime`, `carbon.Timestamp`, `carbon.DateTimeNano`). `time.Time` causes scan errors. `orm.Model.CreatedAt` and `UpdatedAt` are `*carbon.DateTime` POINTERS — not direct values.
+- **`SoftDeletes.DeletedAt` is `gorm.DeletedAt`**, not a carbon type. The library handles the soft-delete query rewrite via this type.
+- **Relationships are gorm-style struct tags** — no Goravel-specific `HasMany`/`BelongsTo` methods. Define on the model struct: `Posts []Post `gorm:"foreignKey:UserID"``.
+- **Transaction returns rollback automatically** when the callback returns non-nil; commits on nil. Do not call `Commit`/`Rollback` manually inside `Transaction`.
+- **`Factory()` map keys must be PascalCase struct field names**, not column names.
+- **`Connection("name")` switches per-query**; the chain reverts after terminal call.
+- **`facades.Orm().DB()` returns the standard `*sql.DB`** for raw SQL when the ORM is not enough — use sparingly.
+
+## Wrong → Right
+
+| Wrong | Right | Why |
+|---|---|---|
+| `err := q.Update("name", "x")` | `_, err := q.Update("name", "x")` | `Update` returns `(*db.Result, error)`, NOT just `error`. |
+| `q.Update(User{Age: 0})` | `q.Update(map[string]any{"age": 0})` | Struct update skips zero-value fields; map sets them explicitly. |
+| `var u User; q.Find(&u); if err != nil` | `if err := q.FindOrFail(&u, id); err != nil` | `Find` returns `nil` error on miss; use `FindOrFail` for explicit not-found. |
+| `q.Sum("amount")` (returns value) | `var total float64; q.Sum("amount", &total)` | Sum signature: `(col, dest)` returning `error` only. |
+| `q.With("posts")` | `q.With("Posts")` | Eager-load uses struct field name (PascalCase). |
+| `q.Cursor().With("Posts")` | `for row := range q.Cursor() { q.Load(&row, "Posts") }` | `With` not supported on Cursor. |
+| `Times(5)` on Factory | `Count(5)` | `Times` does not exist. |
+| `User { CreatedAt time.Time }` | use `orm.Model` (gives `*carbon.DateTime`) or `Created carbon.DateTime` | `time.Time` fails to scan from DB. |
+| `User { DeletedAt carbon.DateTime }` | `User { orm.SoftDeletes }` (gives `gorm.DeletedAt`) | Soft delete column type must be `gorm.DeletedAt` for query auto-filter. |
+| `tx.Begin(); tx.Commit()` inside `Transaction(fn)` | return `nil` to commit, non-nil to roll back | Manual commit conflicts with `Transaction`'s auto-commit. |
+
+## Worked example: model + factory + transactional repository
 
 ```go
 // app/models/user.go
@@ -78,27 +135,23 @@ import (
     "github.com/goravel/framework/contracts/database/factory"
     "github.com/goravel/framework/database/orm"
     "github.com/goravel/framework/support/carbon"
+
     "yourmodule/database/factories"
 )
 
 type User struct {
-    orm.Model                    // ID, CreatedAt carbon.DateTime, UpdatedAt carbon.DateTime
+    orm.Model                       // ID uint, CreatedAt/UpdatedAt *carbon.DateTime
     Name     string
-    Email    string
-    Birthday carbon.Date         // date-only field; use carbon types, not time.Time
-    orm.SoftDeletes              // DeletedAt carbon.DateTime
+    Email    string                 `gorm:"uniqueIndex"`
+    Birthday carbon.Date            // date-only field, NOT time.Time
+    orm.SoftDeletes                 // DeletedAt gorm.DeletedAt
+    Posts    []Post                 `gorm:"foreignKey:UserID"`  // relationship via gorm tag
 }
 
-// Bind factory for test seeding
-func (u *User) Factory() factory.Factory {
-    return &factories.UserFactory{}
-}
+func (u *User) TableName() string         { return "users" }
+func (u *User) Factory() factory.Factory  { return &factories.UserFactory{} }
 
-// Optional overrides
-func (u *User) TableName() string  { return "goravel_user" }
-func (u *User) Connection() string { return "postgres" }
-
-// controllers/user_controller.go
+// app/http/controllers/user_controller.go
 package controllers
 
 import (
@@ -114,70 +167,53 @@ type UserController struct{}
 
 func (r *UserController) Index(ctx http.Context) http.Response {
     var users []models.User
-    if err := facades.Orm().WithContext(ctx.Context()).Query().
+    var total int64
+    if err := facades.Orm().WithContext(ctx).Query().
         With("Posts").
         Where("active", 1).
         OrderBy("created_at", "desc").
-        Paginate(1, 15, &users, new(int64)); err != nil {
+        Paginate(1, 15, &users, &total); err != nil {
         return ctx.Response().Json(http.StatusInternalServerError, http.Json{"error": err.Error()})
     }
-    return ctx.Response().Json(http.StatusOK, users)
+    return ctx.Response().Json(http.StatusOK, http.Json{"data": users, "total": total})
 }
 
 func (r *UserController) Show(ctx http.Context) http.Response {
     var user models.User
-    err := facades.Orm().Query().FindOrFail(&user, ctx.Request().RouteInt("id"))
-    if errors.Is(err, errors.OrmRecordNotFound) {
-        return ctx.Response().Json(http.StatusNotFound, http.Json{"error": "not found"})
+    if err := facades.Orm().Query().FindOrFail(&user, ctx.Request().RouteInt("id")); err != nil {
+        if errors.Is(err, errors.OrmRecordNotFound) {
+            return ctx.Response().Json(http.StatusNotFound, http.Json{"error": "not found"})
+        }
+        return ctx.Response().Json(http.StatusInternalServerError, http.Json{"error": err.Error()})
     }
     return ctx.Response().Json(http.StatusOK, user)
 }
 
-func (r *UserController) Store(ctx http.Context) http.Response {
-    user := models.User{Name: ctx.Request().Input("name")}
-    if err := facades.Orm().Query().Create(&user); err != nil {
-        return ctx.Response().Json(http.StatusInternalServerError, http.Json{"error": err.Error()})
-    }
-    return ctx.Response().Json(http.StatusCreated, user)
-}
-
-func (r *UserController) Transaction(ctx http.Context) http.Response {
+func (r *UserController) TransferOwnership(ctx http.Context) http.Response {
     err := facades.Orm().Transaction(func(tx contractsorm.Query) error {
-        user := models.User{Name: "Alice"}
-        if err := tx.Create(&user); err != nil {
-            return err
+        if _, err := tx.Model(&models.Post{}).
+            Where("user_id", ctx.Request().InputInt("from_id")).
+            Update("user_id", ctx.Request().InputInt("to_id")); err != nil {
+            return err  // rolls back
         }
-        return tx.Model(&models.Role{}).Where("id", 1).Update("user_id", user.ID)
+        return nil  // commits
     })
     if err != nil {
         return ctx.Response().Json(http.StatusInternalServerError, http.Json{"error": err.Error()})
     }
     return ctx.Response().Json(http.StatusOK, http.Json{"ok": true})
 }
-
-// Factory usage (in tests or seeders)
-// var user models.User
-// facades.Orm().Factory().Create(&user)
-// facades.Orm().Factory().Count(5).Create(&users)
-// facades.Orm().Factory().Create(&user, map[string]any{"Name": "Alice"})
-// facades.Orm().Factory().CreateQuietly(&user)  // no model events
 ```
 
 ## Rules
 
-- `Find(&model, id)` returns **nil error** when record not found - use `FindOrFail` to error on missing.
-- Struct `Update(struct{})` skips zero-value fields - use `map[string]any` to set zero values explicitly.
-- `GlobalScopes()` must return `map[string]func(contractsorm.Query) contractsorm.Query` - **not** a slice.
-- `Sum(column, &dest)` signature: `error` only (dest is a pointer to the result variable).
-- Model events only trigger when operating on a model instance. Batch operations (`Table("users").Delete()`) do **not** trigger events.
-- If both `DispatchesEvents` and `Observer` are set, only `DispatchesEvents` applies.
-- `WithoutEvents()` suppresses all model events for that query chain.
-- `SaveQuietly` saves without dispatching any events.
-- Relations use struct field names (PascalCase), not column names: `.With("Posts")` not `.With("posts")`.
-- `Association("Posts").Find(&posts)` uses the parent model instance already loaded.
-- `Cursor()` - do not use `With()` in the same query; use `Load()` inside the loop instead.
-- `ForceDelete` permanently removes records even if `orm.SoftDeletes` is embedded.
-- Default connection is set in `config/database.go`; override per-query with `Connection("name")`.
-- `orm.Model` embeds `CreatedAt` and `UpdatedAt` as `carbon.DateTime`, NOT `time.Time`. Using `time.Time` causes scan errors.
-- For custom date/time model fields use carbon types: `carbon.Date`, `carbon.DateTime`, `carbon.Timestamp`.
-- Factory `Definition()` map keys must be PascalCase struct field names, not column names.
+- `Update` returns `(*db.Result, error)` — always capture both, do not assign just to `err`.
+- `Find`/`FindOrFail`/`Delete`/`ForceDelete`/`Restore` are variadic on conditions or model values — pass IDs or model pointers as additional args.
+- `orm.Model` provides `*carbon.DateTime` pointers for timestamps. Do not redeclare `CreatedAt`/`UpdatedAt`.
+- `orm.SoftDeletes` provides `gorm.DeletedAt` — do not redeclare `DeletedAt` with a different type.
+- Custom date/time fields use `carbon.Date`/`carbon.DateTime`/`carbon.Timestamp`. Never `time.Time`.
+- Relationships are declared via gorm struct tags on slice/pointer fields — no method definitions needed.
+- Inside `Transaction(fn)`: return non-nil to roll back, nil to commit. Do not call `Commit`/`Rollback`.
+- Eager-load names use struct field names (PascalCase), not column names.
+- For event-bypass writes use `Table()`, `WithoutEvents()`, `SaveQuietly`, or `CreateQuietly`.
+- Register observers in `bootstrap/app.go` `WithCallback`, not at runtime.

@@ -1,124 +1,178 @@
-# Event Facade
+# Event
 
-## Core Imports
+Pub/sub: an `Event` (publisher) maps to one or more `Listener`s. Listeners can be sync or queued. Dispatch builds a `Task` and calls `.Dispatch()`.
+
+## Authoritative contracts
+
+Relative paths — combine with the framework source URL declared in `AGENTS.md`:
+
+- `contracts/event/events.go` — `Instance`, `Event`, `Listener`, `Task`, `Arg`, `Queue`
+
+## Imports
 
 ```go
 import (
     "github.com/goravel/framework/contracts/event"
 
     "yourmodule/app/facades"
-    "yourmodule/app/events"
 )
 ```
 
-## Contracts
+## Methods
 
-Fetch these files for exact, always-current type definitions:
+### `facades.Event()` returns `event.Instance`
 
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/event/events.go`
+| Method | Signature | Notes |
+|---|---|---|
+| Register | `(map[Event][]Listener)` | Wire events → listeners. Call inside `WithCallback`. |
+| Job | `(event Event, args []Arg) Task` | Build a dispatchable task. |
+| GetEvents | `() map[Event][]Listener` | Inspect registered map. |
 
-## Available Methods
-
-**facades.Event():**
-
-- `Job(event Event, args []Arg)` Task - create dispatchable event task
-- `Job(...).Dispatch()` error - fire event synchronously or via queue
-
-**Registration (bootstrap/app.go):**
-
-- `WithEvents(func() map[event.Event][]event.Listener)` - map events to listeners
-
-## Implementation Example
+### `event.Event` (the contract you implement on a publisher)
 
 ```go
-// app/events/order_shipped.go
+type Event interface {
+    Handle(args []Arg) ([]Arg, error)   // mutate args before listeners receive them; return non-nil err to abort
+}
+```
+
+### `event.Listener` (the contract you implement on each subscriber)
+
+```go
+type Listener interface {
+    Signature() string                       // unique listener id
+    Queue(args ...any) Queue                 // {Connection, Queue, Enable} — Enable=true => queued
+    Handle(args ...any) error                // run the side effect; non-nil = listener failed
+}
+```
+
+### `event.Task`
+
+```go
+type Task interface {
+    Dispatch() error
+}
+```
+
+### Value types
+
+```go
+type Arg struct {
+    Value any
+    Type  string  // "string" | "int" | "uint" | "[]string" | etc.
+}
+
+type Queue struct {
+    Connection string
+    Queue      string
+    Enable     bool   // false = run sync; true = push to queue facade
+}
+```
+
+## Config
+
+User-owned: events are wired in code, not config. See `bootstrap/app.go` `WithCallback` for registration.
+
+If `Listener.Queue().Enable` is true, the queue facade's config (`config/queue.go`) governs delivery — see `queue.md`.
+
+## Patterns & gotchas
+
+- **Event vs Listener**: the Event is the *thing that happened*; the Listener is the *reaction*. The Event's `Handle(args)` runs FIRST and can mutate/replace the args slice; listeners then receive the mutated args.
+- **Register inside `WithCallback`** in `bootstrap/app.go`. Events registered after boot are silently ignored.
+- **`Job(event, args)` builds a task; `.Dispatch()` actually fires it**. The args slice is value-typed (`[]event.Arg`), each entry `{Value, Type}`. Type strings drive deserialization on the queue side (when listeners are queued).
+- **Listener `Queue(args ...any) Queue`**: this is a GETTER returning the routing config for THIS listener. Set `Enable: true` to push the listener invocation to the queue facade. The args param lets you customise routing per dispatch (rarely used; usually return a static struct).
+- **`Handle(args ...any) error`** on listeners receives `any` values — type-assert at the top: `userID, _ := args[0].(uint)`.
+- **Sync vs queued**: if ALL listeners are sync (`Queue.Enable = false`), `Task.Dispatch()` runs them inline and returns the first non-nil error. If any listener is queued, the dispatch enqueues — the listener's error surfaces via the queue's failed-job store, not the dispatch return.
+- **Listener `Signature()` is the queue-side lookup key**. Stable forever; renaming orphans pending invocations.
+- **One event → many listeners**: register `map[event.Event][]event.Listener{ &MyEvent{}: {&L1{}, &L2{}} }`.
+- **Listener order**: listeners run in the slice order. If one returns an error, the rest still run (errors are aggregated by the dispatcher).
+- **Stop propagation**: there's no built-in "stop" signal — to short-circuit, have the Event's `Handle(args)` return an error before listeners are called.
+
+## Wrong → Right
+
+| Wrong | Right | Why |
+|---|---|---|
+| `func (l *L) Queue() event.Queue` (no args) | `func (l *L) Queue(args ...any) event.Queue` | Interface requires variadic args. |
+| `func (l *L) Handle(userID uint) error` | `func (l *L) Handle(args ...any) error` then assert | Variadic any per interface. |
+| Register at startup outside WithCallback | `app.WithCallback(func() { facades.Event().Register(...) })` | Boot order. |
+| `event.Job(&e, ...)` then forget `.Dispatch()` | `event.Job(&e, args).Dispatch()` | Job builds; Dispatch sends. |
+| Listener `Signature()` rename | New listener + deprecate old | Pending queue items orphan. |
+| Pass struct directly as Arg | `event.Arg{Type: "string", Value: jsonBytes}` (JSON-marshal first) | Args are flat values; complex types serialize via JSON. |
+
+## Worked example: UserRegistered → email + analytics
+
+```go
+// app/events/user_registered.go
 package events
 
 import "github.com/goravel/framework/contracts/event"
 
-type OrderShipped struct{}
+type UserRegistered struct{}
 
-func NewOrderShipped() *OrderShipped { return &OrderShipped{} }
-
-func (r *OrderShipped) Handle(args []event.Arg) ([]event.Arg, error) {
-    // Transform or enrich args before passing to listeners
+// Handle: mutate/inspect args before listeners. Return non-nil to abort dispatch.
+func (e *UserRegistered) Handle(args []event.Arg) ([]event.Arg, error) {
     return args, nil
 }
 
-// app/listeners/send_shipment_notification.go
+// app/listeners/send_welcome_email.go
 package listeners
 
-import "github.com/goravel/framework/contracts/event"
-
-type SendShipmentNotification struct{}
-
-func NewSendShipmentNotification() *SendShipmentNotification {
-    return &SendShipmentNotification{}
-}
-
-func (r *SendShipmentNotification) Signature() string {
-    return "send_shipment_notification"
-}
-
-func (r *SendShipmentNotification) Queue(args ...any) event.Queue {
-    return event.Queue{
-        Enable:     true,        // true = async via queue
-        Connection: "redis",
-        Queue:      "notifications",
-    }
-}
-
-func (r *SendShipmentNotification) Handle(args ...any) error {
-    orderID := args[0].(int)
-    // send notification logic
-    _ = orderID
-    return nil
-}
-
-// bootstrap/app.go - registration
-// WithEvents(func() map[event.Event][]event.Listener {
-//     return map[event.Event][]event.Listener{
-//         events.NewOrderShipped(): {
-//             listeners.NewSendShipmentNotification(),
-//         },
-//     }
-// })
-
-// controllers/order_controller.go - dispatching
-package controllers
-
 import (
-    "github.com/goravel/framework/contracts/http"
     "github.com/goravel/framework/contracts/event"
 
     "yourmodule/app/facades"
-    "yourmodule/app/events"
 )
 
-type OrderController struct{}
+type SendWelcomeEmail struct{}
 
-func (r *OrderController) Ship(ctx http.Context) http.Response {
-    orderID := ctx.Request().RouteInt("id")
+func (l *SendWelcomeEmail) Signature() string { return "listeners.send_welcome_email" }
 
-    err := facades.Event().Job(&events.OrderShipped{}, []event.Arg{
-        {Type: "int", Value: orderID},
-        {Type: "string", Value: "express"},
-    }).Dispatch()
-    if err != nil {
-        return ctx.Response().Json(http.StatusInternalServerError, http.Json{"error": err.Error()})
-    }
-    return ctx.Response().Json(http.StatusOK, http.Json{"shipped": true})
+func (l *SendWelcomeEmail) Queue(args ...any) event.Queue {
+    return event.Queue{Enable: true, Queue: "emails"}
+}
+
+func (l *SendWelcomeEmail) Handle(args ...any) error {
+    userID, _ := args[0].(uint)
+    facades.Log().Info("welcome email queued", map[string]any{"user_id": userID})
+    // ... build mail, dispatch ...
+    return nil
+}
+
+// app/listeners/track_signup.go
+type TrackSignup struct{}
+
+func (l *TrackSignup) Signature() string                   { return "listeners.track_signup" }
+func (l *TrackSignup) Queue(args ...any) event.Queue       { return event.Queue{Enable: false} }  // sync
+func (l *TrackSignup) Handle(args ...any) error {
+    userID, _ := args[0].(uint)
+    facades.Log().Channel("audit").Info("signup", map[string]any{"user_id": userID})
+    return nil
+}
+
+// bootstrap/app.go (excerpt)
+// app.WithCallback(func() {
+//     facades.Event().Register(map[event.Event][]event.Listener{
+//         &events.UserRegistered{}: {
+//             &listeners.SendWelcomeEmail{},
+//             &listeners.TrackSignup{},
+//         },
+//     })
+// })
+
+// Dispatch
+func OnSignup(userID uint) error {
+    return facades.Event().
+        Job(&events.UserRegistered{}, []event.Arg{{Type: "uint", Value: userID}}).
+        Dispatch()
 }
 ```
 
 ## Rules
 
-- Events and listeners are registered via `WithEvents` in `bootstrap/app.go` - `make:event`/`make:listener` auto-register.
-- `Listener.Signature()` must be unique across all listeners.
-- `Event.Handle(args)` receives the dispatched args, can modify them, and returns the (potentially modified) args to listeners.
-- `Listener.Handle(args ...any)` receives the output of `Event.Handle` as variadic `any`.
-- To stop propagation to subsequent listeners, return an `error` from `Listener.Handle`.
-- `Listener.Queue(args).Enable = true` makes the listener asynchronous - requires queue to be configured.
-- Queued listeners dispatched within a DB transaction may run before the transaction commits - place the dispatch outside the transaction when the listener depends on newly committed data.
-- `event.Arg.Type` must be one of the supported primitive types (same as `queue.Arg`).
-- `make:event` creates in `app/events/`; `make:listener` creates in `app/listeners/`.
+- Event interface: `Handle(args []Arg) ([]Arg, error)`. Mutate-and-pass-through is the common shape.
+- Listener interface: `Signature() string` + `Queue(args ...any) Queue` + `Handle(args ...any) error` — all three required.
+- Register events → listeners in `bootstrap/app.go` `WithCallback`.
+- Dispatch: `facades.Event().Job(&event, []event.Arg{...}).Dispatch()`. Forgetting `.Dispatch()` is silent.
+- For queued listeners, `Queue.Enable = true` and route via Connection/Queue. Errors then flow through the queue's failer.
+- Listener `Signature()` is stable forever — never rename in-flight.
+- For "stop on first error" semantics, return the error from the Event's `Handle` (before listeners fire).

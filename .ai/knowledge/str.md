@@ -1,167 +1,123 @@
-# Fluent String (str)
+# Str (String Helpers)
 
-## Import
+Fluent string manipulation. `str.Of("hello")` returns a chainable `*Stringable`; static helpers exposed directly on the `str` package. Covers case conversions, slugify, trim, replace, substring, padding, pluralisation.
+
+## Authoritative source
+
+Relative paths — combine with the framework source URL declared in `AGENTS.md`:
+
+- `support/str/str.go` — `Of()` constructor, `Stringable` type, all chain methods + static helpers
+
+## Imports
 
 ```go
 import "github.com/goravel/framework/support/str"
 ```
 
-## Contracts
-
-Support library. No framework contract file.
-The `*str.String` type and all methods are defined in `support/str`.
-
-## Usage Pattern
-
-`str.Of(s)` returns `*str.String`. Chain methods. Call `.String()` at the end to get a `string`.
-Methods that return a non-string value (`bool`, `int`, `[]string`) do NOT need `.String()`.
-
-## Transform Methods
+## Common usage
 
 ```go
-str.Of(s).Append(values ...string) *str.String
-str.Of(s).Prepend(values ...string) *str.String
-str.Of(s).Remove(values ...string) *str.String
-str.Of(s).Replace(search, replace string, caseSensitive ...bool) *str.String
-str.Of(s).ReplaceFirst(search, replace string) *str.String
-str.Of(s).ReplaceLast(search, replace string) *str.String
-str.Of(s).ReplaceStart(search, replace string) *str.String
-str.Of(s).ReplaceEnd(search, replace string) *str.String
-str.Of(s).ReplaceMatches(pattern, replace string) *str.String
-str.Of(s).Swap(pairs map[string]string) *str.String
-str.Of(s).Repeat(times int) *str.String
-str.Of(s).Limit(limit int, end ...string) *str.String   // default end: "..."
-str.Of(s).Words(words int, end ...string) *str.String
-str.Of(s).Mask(char string, index int, length ...int) *str.String
-str.Of(s).PadLeft(length int, pad string) *str.String
-str.Of(s).PadRight(length int, pad string) *str.String
-str.Of(s).PadBoth(length int, pad string) *str.String
-str.Of(s).NewLine(count ...int) *str.String
+s := str.Of("Hello World").Lower().Slug("-").String()  // "hello-world"
+slug := str.Slug("Hello World", "-")                   // "hello-world" (static form)
 ```
 
-## Case Methods
+## Methods (typical surface — see source for full list)
+
+### `str.Of(s string) *Stringable` — chainable
+
+| Group | Methods (signature-only) |
+|---|---|
+| Case | `Lower() *Stringable`, `Upper()`, `Title()`, `Camel()`, `Snake(delimiters ...string)`, `Kebab()`, `Studly()`, `Headline()`, `Apa()`, `Lcfirst()`, `Ucfirst()` |
+| Trim | `Trim(chars ...string)`, `Ltrim(chars ...string)`, `Rtrim(chars ...string)`, `Squish()` (collapse whitespace) |
+| Modify | `Append(...string)`, `Prepend(...string)`, `Replace(search, replace string)`, `ReplaceArray(search string, replace []string)`, `ReplaceFirst(search, replace)`, `ReplaceLast`, `ReplaceMatches(pattern, replace string)`, `Remove(search string, caseSensitive ...bool)` |
+| Slice | `Substr(start, length int)`, `After(search string)`, `AfterLast(search)`, `Before(search)`, `BeforeLast(search)`, `Between(from, to string)`, `BetweenFirst`, `Limit(limit int, end ...string)` |
+| Format | `Slug(separator string, dictionary ...map[string]string)`, `Mask(char string, index, length int)`, `Pad(length int, pad string)`, `PadLeft`, `PadRight` |
+| Pluralisation | `Plural(count int)`, `Singular()`, `Inflect()` (locale-aware) |
+| Test | `Contains(needles ...string)`, `ContainsAll(needles []string)`, `StartsWith(needles ...string)`, `EndsWith(needles ...string)`, `Is(pattern string)`, `IsEmpty() bool`, `IsNotEmpty() bool`, `IsAscii() bool`, `IsUuid() bool`, `IsUlid() bool`, `IsJson() bool` |
+| Output | `String() string`, `Length() int`, `WordCount() int`, `Words(words int, end ...string)` |
+| Encoding | `Md5()`, `Sha1()`, `Sha256()`, `Base64Encode()`, `Base64Decode()` |
+| Other | `Tap(func(*Stringable))`, `When(condition bool, fn func(*Stringable))`, `Pipe(callback func(string) string)` |
+
+### Static helpers (call directly on the package)
+
+`str.Random(n int)`, `str.RandomInt(n int)`, `str.Slug(s, sep string)`, `str.Snake(s string)`, `str.Camel(s)`, `str.Kebab(s)`, `str.Studly(s)`, `str.Lower(s)`, `str.Upper(s)`, `str.Title(s)`, `str.Plural(s, count int)`, `str.Singular(s)`, `str.Uuid()`, `str.Ulid()`, `str.IsUuid(s)`, `str.IsUlid(s)`, `str.IsJson(s)`.
+
+## Patterns & gotchas
+
+- **`Of(s)` returns `*Stringable`** — chain methods, end with `.String()` to extract the result.
+- **Static vs fluent**: most case/format helpers exist in BOTH forms. `str.Slug("x", "-")` is the one-shot form; `str.Of("x").Slug("-")` is the chainable form. Use whichever reads better in context.
+- **`Plural(count)` is count-aware**: `str.Plural("apple", 1)` → `"apple"`, `str.Plural("apple", 2)` → `"apples"`. Handles irregular nouns (mouse → mice, person → people).
+- **`Slug(separator)` defaults to `-`** but accepts any separator string. Pass a `dictionary` map to override character substitutions (e.g. `{"@": "at"}`).
+- **`Mask(char, index, length)`** masks a substring. `str.Of("4242 4242 4242 4242").Mask("*", 0, 12).String()` → `"************4242"`.
+- **`Replace` vs `ReplaceMatches`**: Replace is literal; ReplaceMatches takes a regex pattern.
+- **`Tap` for side-effects**: `str.Of("x").Tap(func(s *Stringable) { log.Println(s.String()) }).Upper().String()` — useful for logging mid-chain without breaking it.
+- **`When(cond, fn)` for conditional ops**: `str.Of("x").When(addPrefix, func(s *Stringable) { s.Prepend("!") })`.
+- **`Random(n)` is cryptographically random** (uses `crypto/rand`). Safe for tokens; for fast non-secure use `math/rand` directly.
+- **`Uuid()` generates a v4 UUID**; `Ulid()` generates a ULID (lexicographically sortable). Both are strings.
+- **Chain ordering matters**: case methods return new state; e.g. `Lower().Snake()` differs from `Snake().Lower()` for inputs like `"FooBar"` (the former snake-cases lowercased, the latter snake-cases first).
+- **Multi-byte safe**: methods handle UTF-8 properly (uses Go runes internally).
+
+## Wrong → Right
+
+| Wrong | Right | Why |
+|---|---|---|
+| `str.Of("x").Upper()` (forget `.String()`) | `str.Of("x").Upper().String()` | Stringable is a chain; extract via String. |
+| `strings.ReplaceAll(s, " ", "-")` for slugs | `str.Slug(s, "-")` | Slug also strips diacritics, lowercases, removes special chars. |
+| `s + "-" + suffix` for joining | `str.Of(s).Append("-", suffix).String()` | Variadic Append; chainable with rest of pipeline. |
+| `regexp.MustCompile(p).ReplaceAllString(s, r)` | `str.Of(s).ReplaceMatches(p, r).String()` | Pipeline-friendly. |
+| `len(s) > 0` | `str.Of(s).IsNotEmpty()` (when in a chain) — for one-shot, plain `len` is fine | Use the helper when reading better in context. |
+| `s + strings.Repeat(" ", n - len(s))` | `str.Of(s).PadRight(n, " ").String()` | Built-in; multi-byte safe. |
+| `math/rand.Read(buf)` for tokens | `str.Random(32)` | crypto/rand backed. |
+
+## Worked example: slugified title + masked PII + token
 
 ```go
-str.Of(s).Lower() *str.String              // "GORAVEL" -> "goravel"
-str.Of(s).Upper() *str.String              // "goravel" -> "GORAVEL"
-str.Of(s).Title() *str.String              // "goravel framework" -> "Goravel Framework"
-str.Of(s).UcFirst() *str.String            // "goravel" -> "Goravel"
-str.Of(s).LcFirst() *str.String            // "Goravel" -> "goravel"
-str.Of(s).Camel() *str.String              // "hello_world" -> "helloWorld"
-str.Of(s).Studly() *str.String             // "hello_world" -> "HelloWorld"
-str.Of(s).Snake() *str.String              // "GoravelFramework" -> "goravel_framework"
-str.Of(s).Kebab() *str.String              // "GoravelFramework" -> "goravel-framework"
-str.Of(s).Headline() *str.String           // "bowen_han" -> "Bowen Han"
-str.Of(s).UcSplit() []string               // "GoravelFramework" -> ["Goravel","Framework"]
-```
+package services
 
-## Trim Methods
+import (
+    "github.com/goravel/framework/support/str"
+)
 
-```go
-str.Of(s).Trim(chars ...string) *str.String     // both sides; optional chars to trim
-str.Of(s).LTrim(chars ...string) *str.String    // left only
-str.Of(s).RTrim(chars ...string) *str.String    // right only
-str.Of(s).Squish() *str.String                  // collapse internal whitespace
-```
+func GenerateSlug(title string) string {
+    return str.Of(title).
+        Lower().
+        ReplaceMatches(`[^\w\s-]`, "").  // strip non-alphanumeric (extra safety)
+        Squish().                        // collapse internal whitespace
+        Slug("-").
+        String()
+}
 
-## Extract Methods
+func MaskCardNumber(cardNumber string) string {
+    return str.Of(cardNumber).Remove(" ").Mask("*", 0, 12).String()
+}
 
-```go
-str.Of(s).After(search string) *str.String
-str.Of(s).AfterLast(search string) *str.String
-str.Of(s).Before(search string) *str.String
-str.Of(s).BeforeLast(search string) *str.String
-str.Of(s).Between(from, to string) *str.String
-str.Of(s).BetweenFirst(from, to string) *str.String
-str.Of(s).ChopStart(needle string) *str.String
-str.Of(s).ChopEnd(needle string) *str.String
-str.Of(s).Substr(start, length int) string       // returns string directly
-str.Of(s).CharAt(index int) string               // returns string directly
-str.Of(s).Basename(suffix ...string) *str.String
-str.Of(s).Dirname(levels ...int) *str.String
-str.Of(s).Except(excerpt string, opts ...str.ExcerptOption) *str.String
-str.Of(s).Explode(delimiter string) []string     // returns []string directly
-str.Of(s).Split(delimiter string) []string       // returns []string directly
-```
+func ApiToken() string {
+    return str.Random(40)
+}
 
-## Check Methods (return bool -- no .String() needed)
+func IsSafeUuid(s string) bool {
+    return str.IsUuid(s)
+}
 
-```go
-str.Of(s).Contains(needles ...string) bool       // any needle matches
-str.Of(s).ContainsAll(needles ...string) bool    // all needles match
-str.Of(s).StartsWith(needles ...string) bool
-str.Of(s).EndsWith(needles ...string) bool
-str.Of(s).Exactly(value string) bool
-str.Of(s).Is(patterns ...string) bool            // glob patterns
-str.Of(s).IsEmpty() bool
-str.Of(s).IsNotEmpty() bool
-str.Of(s).IsAscii() bool
-str.Of(s).IsSlice() bool                         // valid JSON array
-str.Of(s).IsMap() bool                           // valid JSON object
-str.Of(s).IsUlid() bool
-str.Of(s).IsUuid() bool
-str.Of(s).IsMatch(pattern string) bool           // regex
-str.Of(s).Test(pattern string) bool              // alias for IsMatch
-str.Of(s).Length() int
-str.Of(s).WordCount() int
-```
-
-## Regex Methods
-
-```go
-str.Of(s).Match(pattern string) *str.String      // first match
-str.Of(s).MatchAll(pattern string) []string      // all matches; returns []string directly
-```
-
-## Pluralization
-
-```go
-str.Of(s).Plural(count ...int) *str.String       // no arg or count>1 = plural; count=1 = singular
-str.Of(s).Singular() *str.String
-```
-
-## Path-like Methods
-
-```go
-str.Of(s).Finish(cap string) *str.String         // ensure ends with cap
-str.Of(s).Start(prefix string) *str.String       // ensure starts with prefix
-```
-
-## Conditional Chaining
-
-```go
-str.Of(s).When(cond bool, fn func(*str.String) *str.String, otherwise ...func(*str.String) *str.String) *str.String
-str.Of(s).Unless(cond func(*str.String) bool, fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenEmpty(fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenNotEmpty(fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenContains(needle string, fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenContainsAll(needles []string, fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenStartsWith(needle string, fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenEndsWith(needle string, fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenExactly(value string, fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenNotExactly(value string, fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenIs(pattern string, fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenIsAscii(fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenIsUlid(fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenIsUuid(fn func(*str.String) *str.String) *str.String
-str.Of(s).WhenTest(pattern string, fn func(*str.String) *str.String) *str.String
-```
-
-## Utility
-
-```go
-str.Of(s).Tap(fn func(string)) *str.String       // inspect without modifying
-str.Of(s).Pipe(fn func(string) string) *str.String
-str.Of(s).String() string                         // terminal: get final string value
+// Tap for logging mid-chain
+func ProcessName(input string) string {
+    return str.Of(input).
+        Trim().
+        Tap(func(s *str.Stringable) {
+            // log s.String() if needed
+        }).
+        Title().
+        String()
+}
 ```
 
 ## Rules
 
-- Always call `.String()` to extract a plain `string`; intermediate chain returns `*str.String`.
-- Methods returning `bool`, `int`, `[]string`, or `string` directly (e.g. `CharAt`, `Substr`, `Explode`) do NOT need `.String()`.
-- `Plural()` with no argument returns plural form. `Plural(1)` returns singular.
-- `Replace(search, replace, false)` performs case-insensitive replacement.
-- `Limit(7)` truncates to 7 characters and appends `"..."` by default.
-- `Mask("*", 3)` masks from index 3 to end. `Mask("*", -13, 3)` masks 3 chars from position -13 (from end).
-- `Except` extracts a contextual excerpt around the search term; `Radius` controls surrounding character count; `Omission` changes the ellipsis string (default `"..."`).
-- `UcFirst` (not `UpperFirst`) is the correct method name for capitalising the first character.
+- `str.Of(s)` for chaining; `.String()` to extract.
+- Static `str.X(...)` helpers exist for one-shot use — pick whichever reads cleaner.
+- `Slug(sep)` does more than `strings.Replace` — it lowercases, strips diacritics, removes special chars.
+- `Plural(count)` and `Singular()` handle irregular nouns.
+- `Random(n)` uses crypto/rand — safe for security tokens.
+- Methods are UTF-8 safe (rune-based).
+- For non-trivial substitutions chain via `Tap` / `When` / `Pipe` to keep the pipeline readable.
+- `Uuid()` = v4, `Ulid()` = lexicographically sortable; both return string.

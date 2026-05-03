@@ -1,137 +1,157 @@
-# Session Facade
+# Session
 
-## Core Imports
+Per-request session attached to `http.Context` via the session middleware. Mutating methods chain (return `Session`). Drivers: `file`, `cookie`, `database`, `redis`, custom.
+
+## Authoritative contracts
+
+Relative paths — combine with the framework source URL declared in `AGENTS.md`:
+
+- `contracts/session/session.go` — `Session`
+- `contracts/session/manager.go` — `Manager`
+- `contracts/session/driver.go` — `Driver`
+
+## Imports
 
 ```go
 import (
     "github.com/goravel/framework/contracts/http"
-    contractssession "github.com/goravel/framework/contracts/session"
-    httpmiddleware "github.com/goravel/framework/http/middleware"
-    "yourmodule/app/facades"
+    "github.com/goravel/framework/contracts/session"
 )
 ```
 
-## Contracts
+## Methods
 
-Fetch these files for exact, always-current type definitions:
+### `ctx.Request().Session()` returns `session.Session`
 
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/session/session.go`
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/session/manager.go`
-- `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/session/driver.go`
+(Requires session middleware — registered via `WithMiddleware` in `bootstrap/app.go`.)
 
-## Available Methods
+| Group | Methods (signature-only) |
+|---|---|
+| Read | `All() map[string]any`, `Get(key string, def ...any) any`, `Only(keys []string) map[string]any`, `Has(key) bool`, `Exists(key) bool`, `Missing(key) bool`, `Pull(key string, def ...any) any` (read+remove) |
+| Write (chainable, returns `Session`) | `Put(key string, value any) Session`, `Forget(keys ...string) Session`, `Flush() Session` (clear all) |
+| Flash data (one-request lifetime, chainable) | `Flash(key string, value any) Session`, `Now(key string, value any) Session` (immediate use), `Reflash() Session` (extend all flash by one request), `Keep(keys ...string) Session` (extend specific) |
+| Lifecycle | `Start() bool`, `Save() error`, `Invalidate() error` (clear + new id), `Regenerate(destroy ...bool) error` (new id, optionally destroy old) |
+| Identity | `GetID() string`, `SetID(id string) Session`, `GetName() string`, `SetName(name string) Session`, `Token() string` (CSRF token) |
+| Helpers | `Remove(key string) any` (returns removed value), `SetDriver(driver Driver) Session` |
 
-**ctx.Request():**
-
-- `HasSession()` bool
-- `Session()` Session
-- `SetSession(session)` ContextRequest
-
-**Session:**
-
-- `Get(key, default?)` any
-- `All()` map[string]any
-- `Only([]string)` map[string]any
-- `Has(key)` bool - present and not nil
-- `Exists(key)` bool - present even if nil
-- `Missing(key)` bool
-- `Token()` string - CSRF token
-- `Put(key, value)` Session
-- `Pull(key, default?)` any - retrieve + delete
-- `Flash(key, value)` Session - available next request only
-- `Now(key, value)` Session - available current request only
-- `Reflash()` Session - extend all flash by one more request
-- `Keep(keys...)` Session - extend specific flash keys
-- `Forget(keys...)` Session
-- `Flush()` Session - clear all
-- `Remove(key)` any - remove and return value
-- `Regenerate(destroy?)` error - new session ID
-- `Invalidate()` error - new ID + flush data
-- `GetID()` / `SetID(id)` / `GetName()` / `SetName(name)`
-- `Save()` error
-- `Start()` bool
-
-**facades.Session():**
-
-- `Driver(name?)` (Driver, error)
-- `BuildSession(driver, sessionID?)` (Session, error)
-- `ReleaseSession(session)`
-
-## Implementation Example
+### Access pattern
 
 ```go
-// bootstrap/app.go - register session middleware globally
-// WithMiddleware(func(h configuration.Middleware) {
-//     h.Append(httpmiddleware.StartSession())
-// })
+sess := ctx.Request().Session()
+sess.Put("user_id", 42).Flash("notice", "Welcome").Save()
+```
 
+`Save()` is required to persist for some drivers. Many drivers auto-save at end of request, but explicit `Save()` is the safe pattern when writing post-mutation.
+
+## Config
+
+User-owned: `config/session.go`. Read directly for current driver and lifetime.
+
+Keys this facade reads:
+
+- `session.default` (string) — driver name (`"file"`, `"cookie"`, `"database"`, `"redis"`)
+- `session.lifetime` (int, minutes) — session TTL
+- `session.expire_on_close` (bool) — invalidate on browser close
+- `session.encrypt` (bool) — encrypt cookie value
+- `session.cookie` (string) — cookie name
+- `session.path`, `session.domain`, `session.secure`, `session.http_only`, `session.same_site` — cookie attrs
+- `session.files` (string) — for `file` driver, storage path
+- `session.connection` (string) — for `database`/`redis`, named connection
+- `session.table` (string) — for `database`, table name
+
+Greenfield default: `config/session.go` from goravel-scaffold URL declared in `AGENTS.md`.
+
+## Patterns & gotchas
+
+- **`Regenerate(destroy bool)`** returns `error` (not `bool` like Laravel). Call it on login to prevent session-fixation attacks. Pass `true` to also destroy old data.
+- **All mutating methods return `Session`** — chain them: `sess.Put("k", v).Flash("notice", "x").Save()`. Treating them as void-returning is wrong.
+- **Flash data lives ONE request**: `Flash(key, value)` — available in NEXT request only. `Now(key, value)` — available in CURRENT request immediately. `Reflash()` extends all flash by one more request; `Keep("a", "b")` extends only the listed keys.
+- **`Forget(keys ...string)`** is variadic: `sess.Forget("a", "b", "c")`.
+- **`Pull(key)` is atomic read + remove** — useful for one-shot tokens.
+- **CSRF token**: `sess.Token()` — pair with the framework's CSRF middleware (auto-registered when session middleware is on).
+- **Session middleware MUST be registered** — `WithMiddleware([]http.Middleware{httpmiddleware.StartSession()})` in `bootstrap/app.go`. Without it, `ctx.Request().Session()` panics or returns a no-op.
+- **`HasSession()` on the request** — guard before access if a route may run with no session middleware.
+- **`Save()` after mutations**: many drivers auto-save at request end, but explicit `Save()` is required if you mutate after the response is partially written.
+- **Driver lock-in**: `cookie` driver stores all data in the cookie itself (size-limited, ~4KB). For larger payloads use `file`/`database`/`redis`.
+
+## Wrong → Right
+
+| Wrong | Right | Why |
+|---|---|---|
+| `sess.Regenerate()` returning bool | `if err := sess.Regenerate(); err != nil { ... }` | Returns `error`, not `bool`. |
+| `sess.Put("k", v); sess.Flash(...)` (two statements) | `sess.Put("k", v).Flash(...)` (chained) | Mutators return `Session`. |
+| `sess.Forget([]string{"a", "b"})` | `sess.Forget("a", "b")` | Variadic, not slice. |
+| `sess.Get("k")` (no nil-check) | `if v := sess.Get("k"); v != nil { ... }` or use `Has`/`Exists` first | Get may return nil for missing keys. |
+| Mutating without `Save()` then expecting persistence cross-request | `sess.Put(...).Save()` (or rely on driver auto-save when sure) | Some drivers persist only on Save. |
+| Use session without middleware | Register `StartSession()` middleware in `bootstrap/app.go` | No middleware = no session. |
+| `sess.Flash("notice", v)` then read `sess.Get("notice")` SAME request | Use `sess.Now("notice", v)` for current-request, `Flash` for next-request | Flash is for the NEXT request. |
+
+## Worked example: login flow with regeneration + flash notice
+
+```go
 package controllers
 
 import (
-    "fmt"
     "github.com/goravel/framework/contracts/http"
+
     "yourmodule/app/facades"
 )
 
-type SessionController struct{}
+type AuthController struct{}
 
-func (r *SessionController) Store(ctx http.Context) http.Response {
-    session := ctx.Request().Session()
-
-    session.Put("user_id", 42)
-    session.Flash("status", "Profile updated!")
-    session.Now("notice", "Visible this request only")
-
-    return ctx.Response().Json(http.StatusOK, http.Json{"stored": true})
-}
-
-func (r *SessionController) Read(ctx http.Context) http.Response {
-    session := ctx.Request().Session()
-
-    userID := session.Get("user_id", 0)
-    status := session.Pull("status") // read + delete
-
-    if session.Missing("preferences") {
-        session.Put("preferences", map[string]any{"theme": "light"})
+func (c *AuthController) Login(ctx http.Context) http.Response {
+    var creds struct{ Email, Password string }
+    if err := ctx.Request().Bind(&creds); err != nil {
+        return ctx.Response().Json(http.StatusBadRequest, http.Json{"error": err.Error()})
     }
 
-    return ctx.Response().Json(http.StatusOK, http.Json{
-        "user_id": userID,
-        "status":  status,
-    })
-}
+    // ... verify creds, get user ...
+    var userID uint = 42
 
-func (r *SessionController) Regenerate(ctx http.Context) http.Response {
-    // Regenerate session ID after login (prevents fixation)
-    if err := ctx.Request().Session().Regenerate(); err != nil {
+    sess := ctx.Request().Session()
+
+    // Always regenerate on login to prevent fixation.
+    if err := sess.Regenerate(true); err != nil {
         return ctx.Response().Json(http.StatusInternalServerError, http.Json{"error": err.Error()})
     }
 
-    // Update session cookie with new ID
-    ctx.Response().Cookie(http.Cookie{
-        Name:     ctx.Request().Session().GetName(),
-        Value:    ctx.Request().Session().GetID(),
-        MaxAge:   facades.Config().GetInt("session.lifetime") * 60,
-        Path:     facades.Config().GetString("session.path"),
-        Domain:   facades.Config().GetString("session.domain"),
-        Secure:   facades.Config().GetBool("session.secure"),
-        HttpOnly: facades.Config().GetBool("session.http_only"),
-        SameSite: facades.Config().GetString("session.same_site"),
-    })
+    // Persist user identity + flash welcome message for the NEXT request.
+    sess.Put("user_id", userID).
+        Flash("notice", "Welcome back!").
+        Save()
 
+    return ctx.Response().Json(http.StatusOK, http.Json{"ok": true})
+}
+
+func (c *AuthController) Profile(ctx http.Context) http.Response {
+    sess := ctx.Request().Session()
+    userID := sess.Get("user_id")
+    if userID == nil {
+        return ctx.Response().Json(http.StatusUnauthorized, http.Json{"error": "not logged in"})
+    }
+
+    notice := sess.Pull("notice")  // read + remove the flash
+    return ctx.Response().Json(http.StatusOK, http.Json{
+        "user_id": userID,
+        "notice":  notice,
+    })
+}
+
+func (c *AuthController) Logout(ctx http.Context) http.Response {
+    if err := ctx.Request().Session().Invalidate(); err != nil {
+        return ctx.Response().Json(http.StatusInternalServerError, http.Json{"error": err.Error()})
+    }
     return ctx.Response().Json(http.StatusOK, http.Json{"ok": true})
 }
 ```
 
 ## Rules
 
-- Sessions are not started automatically; register `httpmiddleware.StartSession()` explicitly.
-- `ctx.Request().Session()` panics if no session middleware is registered; check `HasSession()` first if uncertain.
-- `Put/Flash/Now/Reflash/Keep/Forget/Flush` all return `Session` for chaining.
-- `Regenerate()` and `Invalidate()` return `error`, not `bool`.
-- `Remove(key)` returns the removed value as `any`.
-- `Flash` is available for exactly one subsequent request; `Reflash()` extends by one more.
-- `Now` is an immediate flash; visible in the **current** request, not the next.
-- After `Regenerate`/`Invalidate`, update the session cookie manually (see example above).
-- Default driver is `file`; configure in `config/session.go`.
-- `Token()` returns the CSRF token associated with the session.
+- `Regenerate(destroy ...bool) error` — call on login. Pass `true` to destroy old data.
+- All mutators return `Session` — chain them.
+- `Flash` is for the NEXT request; `Now` for CURRENT; `Reflash`/`Keep` to extend.
+- Call `Save()` explicitly after mutations when the request flow is unusual (early return, streaming, etc.).
+- Register `StartSession()` middleware in `bootstrap/app.go` — required for `ctx.Request().Session()` to work.
+- `Forget(keys ...string)` is variadic.
+- `Token()` returns the CSRF token; pair with the CSRF middleware.
+- `cookie` driver has ~4KB size limit — use `file`/`database`/`redis` for large payloads.

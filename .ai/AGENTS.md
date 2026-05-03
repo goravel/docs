@@ -1,43 +1,56 @@
 # Goravel Agent Reference
 
+> **Start here**: for any task that touches a Goravel facade, the matching file in `.ai/knowledge/` is the fastest path to the right answer — pre-distilled API tables, gotchas, and worked examples. The Knowledge Files table at the bottom maps each task to its file. **Read the relevant knowledge file before starting.**
+>
+> Source is always authoritative. If a knowledge file looks stale, contradicts what you observe, or is missing the API surface you need, fall back to the framework's `contracts/**/*.go` (or its replace-target / module-cache equivalent). The contract Go files are the ground truth — knowledge files are an optimisation over them.
+>
+> When source and knowledge disagree, source wins. Note the discrepancy in your output so the knowledge file can be corrected.
+
 Go-first framework. Not Laravel. Do not port PHP patterns directly.
+
+---
+
+## Framework version
+
+This documentation matches Goravel framework branch **`master`**.
+
+Knowledge files reference contracts by **relative path** (e.g. `contracts/auth/auth.go`). Resolve them against:
+
+- Framework source: `https://raw.githubusercontent.com/goravel/framework/refs/heads/master/`
+- Goravel scaffold (for greenfield config defaults): `https://raw.githubusercontent.com/goravel/goravel/refs/heads/master/`
+
+Each docs branch has its own `AGENTS.md` with the matching version. The `v1.17.x` branch substitutes `master` → `v1.17.x` in this section; knowledge files stay version-agnostic so this single declaration controls all URL pinning. Branch naming convention across `goravel/framework`, `goravel/goravel`, and `goravel/docs` is `vMAJOR.MINOR.x`.
 
 ---
 
 ## Setup
 
-Knowledge files are installed per-facade via the framework CLI:
+Knowledge is installed and updated via the framework CLI:
 
 ```bash
-# Install knowledge for specific facades you are using
-./artisan agents:install --facade=Orm,Route,Auth
-
-# Install all knowledge files
-./artisan agents:install --all
-
-# Update already-installed files to latest
-./artisan agents:install --update
+./artisan agents:install            # install all knowledge files
+./artisan agents:install --force    # overwrite without prompting
+./artisan agents:update             # sync to latest, preserving local edits via .ai/.version checksums
+./artisan agents:update --force     # overwrite even on local edits
 ```
 
-Files are downloaded from the docs repo and placed in `.ai/knowledge/`.
-The manifest at `.ai/agents.json` maps facade names to file URLs.
+Files land in `.ai/knowledge/`. Drift is tracked via SHA256 in `.ai/.version` so updates do not silently overwrite your customisations.
 
 ---
 
-## Facade Import
+## Facade import
 
 ```go
-// WRONG: import "github.com/goravel/framework/facades" (does not exist)
-// RIGHT: import path from go.mod module name
+// WRONG: import "github.com/goravel/framework/facades" (only used by framework internals)
+// RIGHT: import path matches your go.mod module name
 import "yourmodule/app/facades"
 ```
 
-Your installed facades are in `app/facades/`. Check which ones exist before using them.
-Not all facades are installed in every project.
+Your installed facades are in `app/facades/`. Check which ones exist before using them. Not all facades are installed in every project.
 
 ---
 
-## Wrong vs Right Patterns
+## Wrong → Right patterns (cross-facade)
 
 | Pattern               | Wrong                         | Right                                                               |
 | --------------------- | ----------------------------- | ------------------------------------------------------------------- |
@@ -72,7 +85,7 @@ Not all facades are installed in every project.
 
 ---
 
-## Available Facades
+## Available facades
 
 ```
 App  Artisan  Auth(ctx)  Cache  Config  Crypt  DB  Event  Gate  Grpc
@@ -82,47 +95,40 @@ Route  Schedule  Schema  Seeder  Session  Storage  Validation  View
 
 `Auth(ctx)` and `Lang(ctx)` take `http.Context`. All others: `facades.Name()`.
 
-For the latest interface of any facade, the authoritative source is the framework contracts:
-`https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/`
+`http.Context` embeds `context.Context`, so any function taking `context.Context` accepts `ctx` directly — no need to call `ctx.Context()`. Use `ctx.Context()` only when you need the underlying request-scoped context explicitly (e.g. handing to a long-running goroutine that should outlive the response builder but still observe request cancellation).
 
 ---
 
-## Bootstrap Entry Point
+## Bootstrap entry point
 
-The application entry is `bootstrap/app.go`. For the full `ApplicationBuilder` interface:
-`https://raw.githubusercontent.com/goravel/framework/refs/heads/master/contracts/foundation/application_builder.go`
+The application entry is `bootstrap/app.go`. See `bootstrap.md` knowledge file, or fetch the contract directly: `contracts/foundation/application_builder.go` (resolve via the framework source URL above).
 
-Boot order: **Config** -> **Register providers** -> **Boot providers** -> **WithCallback** -> **Runners**
+Boot order: **Config** → **Register providers** → **Boot providers** → **WithCallback** → **Runners**
 
 `WithCallback` is the only safe place to call facades during startup (gates, observers, rate limiters).
 
 ---
 
-## Section-Based Loading
+## Knowledge file structure
 
-Every knowledge file has this structure. Load only what the sub-task requires.
+Every file follows this shape. Load only what your sub-task needs:
 
-| Section                     | Contains                                    | Load when                                                |
-| --------------------------- | ------------------------------------------- | -------------------------------------------------------- |
-| `## Core Imports`           | Exact import paths                          | Writing import blocks                                    |
-| `## Contracts`              | Raw GitHub URLs to framework contract files | Need exact type/interface definition; fetch the URL live |
-| `## Available Methods`      | Concise method list with return types       | Looking up a method name or return type                  |
-| `## Implementation Example` | One complete working code block             | Starting an implementation from scratch                  |
-| `## Rules`                  | Constraints, gotchas, deprecated notices    | Debugging; something is not working                      |
+| Section | Contains | Load when |
+|---|---|---|
+| `## Authoritative contracts` | Relative URL paths to contract Go files | Need exact type/interface — fetch via the source URL above |
+| `## Imports` | Canonical import block | Writing imports |
+| `## Methods` | Signature-only method/function table | Looking up an API surface |
+| `## Config` (when present) | User-owned config files + keys this facade reads | Configuring the facade |
+| `## Patterns & gotchas` | Edge-case rules the contract doesn't show | Writing implementation |
+| `## Wrong → Right` (when present) | Footguns specific to this facade | Debugging or reviewing code |
+| `## Worked example` | One complete minimal example | Starting from scratch |
+| `## Rules` | Hard constraints | Final review |
 
-**Interface and struct definitions are not duplicated in these files.**
-Fetch the contract URL(s) from `## Contracts` when you need exact signatures.
-The framework contracts are always current and authoritative.
-
-- Skip `## Implementation Example` when you only need a method signature.
-- Skip `## Core Imports` when imports are already established in the file being edited.
-- Read `## Rules` last -- only needed when the straightforward approach is failing.
+Knowledge files do NOT duplicate the full type definitions in the contracts. Fetch the contract URL when you need exact signatures or method bodies.
 
 ---
 
-## Knowledge Files
-
-Install and load the relevant file for your task. Check `.ai/agents.json` for the full facade-to-file map.
+## Knowledge files
 
 | When task involves...                                         | File                  |
 | ------------------------------------------------------------- | --------------------- |

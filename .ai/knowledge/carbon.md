@@ -1,205 +1,144 @@
 # Carbon (Date/Time)
 
-## Import
+Goravel's date/time package — a thin wrapper over `dromara/carbon/v2` plus typed aliases for ORM scanning. Use `carbon.Date`, `carbon.DateTime`, `carbon.Timestamp` (and Milli/Micro/Nano variants) instead of `time.Time` in models. The `*Carbon` value handles arithmetic, formatting, parsing, and timezones.
+
+## Authoritative source
+
+Relative paths — combine with the framework source URL declared in `AGENTS.md`:
+
+- `support/carbon/carbon.go` — `Carbon` constructor + helpers (re-exports from `dromara/carbon/v2`)
+- `support/carbon/type.go` — typed aliases (`Date`, `DateTime`, `Timestamp`, etc.) + `New*` constructors
+- `support/carbon/constant.go` — layout constants (`DateLayout`, `DateTimeLayout`, etc.)
+
+External: `dromara/carbon/v2` is the upstream library. For the full method surface fetch its docs.
+
+## Imports
 
 ```go
-import "github.com/goravel/framework/support/carbon"
+import (
+    "time"
+
+    "github.com/goravel/framework/support/carbon"
+)
 ```
 
-## Contracts
+## Type aliases (use these in models / API responses)
 
-Support library wrapping `dromara/carbon`. No framework contract file.
-All types (`Carbon`, `DateTime`, `Date`, `Timestamp`, etc.) are defined in the `support/carbon` package directly.
+| Alias | Underlying | Use case |
+|---|---|---|
+| `carbon.Carbon` | upstream `*Carbon` | The mutable date/time value type |
+| `carbon.Timestamp` | typed alias | Unix seconds (int64) — JSON encodes as integer |
+| `carbon.TimestampMilli`/`Micro`/`Nano` | typed alias | Higher-precision unix ints |
+| `carbon.Date` | typed alias | Date-only (`YYYY-MM-DD`) — JSON encodes as string |
+| `carbon.DateTime` | typed alias | DateTime (`YYYY-MM-DD HH:MM:SS`) |
+| `carbon.DateMilli`/`Micro`/`Nano`, `DateTimeMilli`/`Micro`/`Nano` | typed alias | Higher precision date / datetime strings |
+| `carbon.Time` | typed alias | Time-only (`HH:MM:SS`) |
+| `carbon.TimeMilli`/`Micro`/`Nano` | typed alias | Higher precision time |
 
-Wraps `dromara/carbon`. All methods are on the `Carbon` type returned by constructors.
+Each alias has a `New*(c *Carbon)` constructor (e.g. `carbon.NewDateTime(c)`).
 
-## Constructors
+## Common `*Carbon` methods (from upstream — fetch upstream docs for the full list)
+
+| Group | Examples |
+|---|---|
+| Construct | `carbon.Now()`, `carbon.Parse("2024-05-03")`, `carbon.ParseByLayout("...", layout)`, `carbon.CreateFromTimestamp(unix)`, `carbon.CreateFromDate(2024, 5, 3)`, `carbon.CreateFromDateTime(2024, 5, 3, 12, 0, 0)` |
+| Format | `.ToDateString()`, `.ToDateTimeString()`, `.ToTimeString()`, `.Format("Y-m-d H:i:s")`, `.ToRfc3339String()`, `.ToIso8601String()` |
+| Arithmetic | `.AddDays(n int) *Carbon`, `.SubDays`, `.AddMonths`, `.AddYears`, `.AddHours`, `.AddMinutes`, `.SetTimezone("UTC") *Carbon` |
+| Compare | `.Lt`, `.Lte`, `.Eq`, `.Gt`, `.Gte`, `.Between(start, end *Carbon) bool`, `.IsToday() bool`, `.IsPast() bool`, `.IsFuture() bool` |
+| Diff | `.DiffInDays(other *Carbon) int64`, `.DiffInHours`, `.DiffInMinutes`, `.DiffForHumans()` (e.g. "2 hours ago") |
+| Period | `.StartOfDay() *Carbon`, `.EndOfDay`, `.StartOfMonth`, `.EndOfMonth` |
+| Convert | `.Timestamp() int64`, `.TimestampMilli() int64`, `.ToStdTime() time.Time` |
+| Locale | `.SetLocale("fr") *Carbon` (for human-friendly output) |
+
+## Layout constants
 
 ```go
-carbon.Now()
-carbon.Now(timezone ...string)
-carbon.Yesterday(timezone ...string)
-carbon.Tomorrow(timezone ...string)
-
-// Parse
-carbon.Parse("2020-08-05 13:14:15")
-carbon.ParseByLayout("2020-08-05 13:14:15", carbon.DateTimeLayout)
-carbon.ParseByLayout("2020|08|05", []string{"2006|01|02", "2006|1|2"})  // multiple layouts
-carbon.ParseByFormat("2020-08-05 13:14:15", carbon.DateTimeFormat)
-carbon.ParseByFormat("2020|08|05", []string{"Y|m|d", "y|m|d"})          // multiple formats
-
-// From primitives
-carbon.FromTimestamp(int64)
-carbon.FromTimestampMilli(int64)
-carbon.FromTimestampMicro(int64)
-carbon.FromTimestampNano(int64)
-carbon.FromStdTime(t time.Time)
-
-// From components
-carbon.FromDateTime(year, month, day, hour, minute, second int)
-carbon.FromDateTimeMilli(year, month, day, hour, minute, second, millisecond int)
-carbon.FromDateTimeMicro(year, month, day, hour, minute, second, microsecond int)
-carbon.FromDateTimeNano(year, month, day, hour, minute, second, nanosecond int)
-carbon.FromDate(year, month, day int)
-carbon.FromDateMilli(year, month, day, millisecond int)
-carbon.FromDateMicro(year, month, day, microsecond int)
-carbon.FromDateNano(year, month, day, nanosecond int)
-carbon.FromTime(hour, minute, second int)
-carbon.FromTimeMilli(hour, minute, second, millisecond int)
-carbon.FromTimeMicro(hour, minute, second, microsecond int)
-carbon.FromTimeNano(hour, minute, second, nanosecond int)
+carbon.DateLayout       // "2006-01-02"
+carbon.DateTimeLayout   // "2006-01-02 15:04:05"
+carbon.TimeLayout       // "15:04:05"
+// + Milli/Micro/Nano variants
 ```
 
-## Built-in Layout / Format Constants
+## Config
+
+User-owned: `config/app.go.timezone` (string) — application timezone (default `"UTC"`). All `carbon.Now()` calls use this unless `.SetTimezone()` is chained.
+
+## Patterns & gotchas
+
+- **Use `carbon.*` types in models, NEVER `time.Time`**: GORM's scanner doesn't know how to deserialize `time.Time` into the typed alias correctly across drivers. `orm.Model` already gives you `*carbon.DateTime` for CreatedAt/UpdatedAt.
+- **Pointer types in `orm.Model`**: `CreatedAt` and `UpdatedAt` are `*carbon.DateTime` (POINTER) — nil before persistence, populated after. Don't dereference without nil-check on a fresh struct.
+- **`*Carbon` is mutable across some methods**: many arithmetic methods (`AddDays`) return a new `*Carbon` — chain them. Read upstream docs to confirm per-method.
+- **Parsing**: `carbon.Parse("...")` accepts many common formats (RFC3339, ISO8601, "YYYY-MM-DD", "YYYY-MM-DD HH:MM:SS"). For ambiguous input, use `ParseByLayout(s, layout)` with an explicit Go time layout.
+- **Format strings use PHP-style** (Y, m, d, H, i, s) in `.Format(...)` — NOT Go's reference time. For Go-style, use `time.Time` after `.ToStdTime()`.
+- **Timezone**: `carbon.Now()` returns local time per `app.timezone`. Use `.SetTimezone("Asia/Tokyo")` to convert (returns new *Carbon).
+- **JSON encoding**: typed aliases (`Date`, `DateTime`, `Timestamp`) implement `json.Marshaler`/`Unmarshaler`. `Date` → `"2024-05-03"`, `DateTime` → `"2024-05-03 12:00:00"`, `Timestamp` → integer.
+- **Diff sign convention**: `a.DiffInDays(b)` is `b - a` — if b is later, positive. Use `.DiffAbsInDays` for unsigned.
+- **`DiffForHumans` is locale-aware**: `.SetLocale("fr").DiffForHumans()` → "il y a 2 heures".
+- **Don't compare two `*Carbon` with `==`** — use `.Eq()` (semantic equality including timezone).
+- **`carbon.NewDateTime(c)` etc.** wrap a `*Carbon` into the typed alias — typically only needed if you build a value programmatically and need to assign it to a model field.
+
+## Wrong → Right
+
+| Wrong | Right | Why |
+|---|---|---|
+| `User { CreatedAt time.Time }` | `User { orm.Model }` (gives `*carbon.DateTime`) or `Created carbon.DateTime` | time.Time fails to scan from DB into the carbon alias. |
+| `if user.CreatedAt.Before(...)` (nil deref) | `if user.CreatedAt != nil && user.CreatedAt.ToCarbon().Before(...)` | Pointer can be nil before save. |
+| `t := time.Now()` for new model timestamp | `t := carbon.Now()` (or rely on `orm.Model`'s autoCreateTime) | Stay in carbon for consistency + JSON encoding. |
+| `c.Format("2006-01-02")` | `c.Format("Y-m-d")` | Carbon uses PHP-style format chars. |
+| `if c1 == c2` | `if c1.Eq(c2)` | Pointer equality vs semantic equality. |
+| `Parse(input).AddDays(7)` (no error check on Parse) | `c := carbon.Parse(input); if c.IsInvalid() { ... }; c.AddDays(7)` | Parse may produce an invalid Carbon — check `IsInvalid()` (or `Error()`). |
+
+## Worked example: model + arithmetic + JSON
 
 ```go
-carbon.DateTimeLayout       // "2006-01-02 15:04:05"
-carbon.DateLayout           // "2006-01-02"
-carbon.TimeLayout           // "15:04:05"
-carbon.DateTimeFormat       // "Y-m-d H:i:s"
-carbon.DateFormat           // "Y-m-d"
-carbon.TimeFormat           // "H:i:s"
-```
+package models
 
-## Global Config
-
-```go
-carbon.SetTimezone(carbon.UTC)       // or "Asia/Shanghai" etc.
-carbon.SetLocale("en")               // affects DiffForHumans, weekday names
-carbon.SetWeekStartsAt(carbon.Monday)
-```
-
-## Arithmetic
-
-```go
-c.AddYears(n int) Carbon
-c.AddYear() Carbon
-c.SubYears(n int) Carbon
-c.AddMonths(n int) Carbon
-c.AddWeeks(n int) Carbon
-c.AddDays(n int) Carbon
-c.AddDay() Carbon
-c.SubDays(n int) Carbon
-c.AddHours(n int) Carbon
-c.AddMinutes(n int) Carbon
-c.AddSeconds(n int) Carbon
-c.SubSeconds(n int) Carbon
-```
-
-## Start / End Of Period
-
-```go
-c.StartOfDay() Carbon
-c.EndOfDay() Carbon
-c.StartOfWeek() Carbon
-c.EndOfWeek() Carbon
-c.StartOfMonth() Carbon
-c.EndOfMonth() Carbon
-c.StartOfYear() Carbon
-c.EndOfYear() Carbon
-```
-
-## Comparison
-
-```go
-c.Gt(other Carbon) bool        // greater than
-c.Lt(other Carbon) bool        // less than
-c.Eq(other Carbon) bool        // equal
-c.Gte(other Carbon) bool
-c.Lte(other Carbon) bool
-c.Between(min, max Carbon) bool
-c.IsPast() bool
-c.IsFuture() bool
-c.IsToday() bool
-c.IsYesterday() bool
-c.IsTomorrow() bool
-c.IsWeekday() bool
-c.IsWeekend() bool
-```
-
-## Output
-
-```go
-c.String() string                    // "2020-08-05 13:14:15"
-c.ToDateTimeString() string
-c.ToDateString() string
-c.ToTimeString() string
-c.ToTimestamp() int64
-c.ToTimestampMilli() int64
-c.ToTimestampMicro() int64
-c.ToTimestampNano() int64
-c.ToStdTime() time.Time
-c.DiffForHumans() string             // "2 hours ago"
-c.Format(layout string) string       // carbon format: "Y-m-d"
-c.Layout(layout string) string       // Go layout: "2006-01-02"
-```
-
-## Getters
-
-```go
-c.Year() int
-c.Month() int
-c.Day() int
-c.Hour() int
-c.Minute() int
-c.Second() int
-c.DayOfWeek() int       // 0=Sunday
-c.DayOfYear() int
-c.WeekOfYear() int
-c.DaysInMonth() int
-c.Timezone() string
-```
-
-## Validity
-
-```go
-c.IsZero() bool     // true when carbon holds the zero value (invalid/unparseable input)
-c.IsValid() bool    // true when carbon holds a non-zero value
-```
-
-## ORM Model Fields
-
-`orm.Model` embeds `CreatedAt` and `UpdatedAt` as `carbon.DateTime`, not `time.Time`.
-Use `carbon.DateTime` (or `carbon.Date`, `carbon.Timestamp` etc.) for model date fields.
-
-```go
 import (
     "github.com/goravel/framework/database/orm"
     "github.com/goravel/framework/support/carbon"
 )
 
-type User struct {
-    orm.Model                        // CreatedAt, UpdatedAt are carbon.DateTime
-    Name      string
-    Birthday  carbon.Date            // date only, no time component
-    LastLogin carbon.DateTime        // full datetime
-    DeletedAt carbon.DateTime        `gorm:"column:deleted_at"`
+type Subscription struct {
+    orm.Model
+    UserID    uint
+    StartedAt carbon.DateTime    // string in JSON: "2024-05-03 12:00:00"
+    ExpiresAt carbon.DateTime
+    Trial     carbon.Date        // date-only: "2024-05-10"
 }
 
-// Reading a value
-user.CreatedAt.ToDateTimeString()   // "2024-01-15 10:30:00"
-user.CreatedAt.ToStdTime()          // time.Time
+// app/services/subscription.go
+package services
 
-// Writing a value
-user.Birthday = carbon.NewDate(1990, 6, 15)
-user.LastLogin = carbon.NewDateTime(2024, 1, 15, 10, 30, 0)
-```
+import (
+    "github.com/goravel/framework/support/carbon"
 
-## Test Time Control
+    "yourmodule/app/models"
+)
 
-```go
-carbon.SetTestNow(carbon.Now())    // freeze time for tests
-carbon.CleanTestNow()              // unfreeze (call in test teardown)
-carbon.IsTestNow() bool
+func IsActive(s *models.Subscription) bool {
+    now := carbon.Now()
+    expires := carbon.Parse(string(s.ExpiresAt))
+    return expires.Gt(now)
+}
+
+func ExtendByDays(s *models.Subscription, days int) {
+    extended := carbon.Parse(string(s.ExpiresAt)).AddDays(days)
+    s.ExpiresAt = *carbon.NewDateTime(extended)
+}
+
+func DaysUntilExpiry(s *models.Subscription) int64 {
+    return carbon.Parse(string(s.ExpiresAt)).DiffInDays(carbon.Now())
+}
 ```
 
 ## Rules
 
-- `carbon.SetTimezone` and `carbon.SetLocale` are global and affect all subsequent calls.
-- In tests, always call `carbon.CleanTestNow()` in teardown to avoid polluting other tests.
-- `ParseByLayout` accepts either a single `string` layout or `[]string` (tries each in order).
-- `ParseByFormat` also accepts either a single `string` format or `[]string`.
-- `Format` uses carbon/PHP format strings (`Y`, `m`, `d`); `Layout` uses Go time format strings (`2006`, `01`, `02`).
-- Invalid parse returns a zero `Carbon` -- check `c.IsZero()` before use.
-- `orm.Model` fields `CreatedAt` and `UpdatedAt` are `carbon.DateTime`, NOT `time.Time`. Using `time.Time` causes scan errors.
-- For model date fields use the typed carbon wrappers: `carbon.Date`, `carbon.DateTime`, `carbon.Timestamp`, `carbon.TimestampMilli`, `carbon.TimestampMicro`, `carbon.TimestampNano`.
+- Use `carbon.*` typed aliases in models — never `time.Time`.
+- `orm.Model.CreatedAt`/`UpdatedAt` are `*carbon.DateTime` POINTERS — nil-check before deref.
+- Format strings use PHP-style chars (`Y-m-d H:i:s`), not Go's reference time.
+- Compare `*Carbon` via `.Eq()` / `.Lt` / `.Gt`, never `==`.
+- Always check `c.IsInvalid()` (or `c.Error()`) after `Parse(...)` on untrusted input.
+- For Go interop, `c.ToStdTime()` returns a `time.Time`.
+- Timezone: configured via `app.timezone`; per-call override with `.SetTimezone(...)`.
+- For human-friendly output: `.DiffForHumans()` after `.SetLocale("...")`.
+- For full method list, fetch the upstream `dromara/carbon/v2` docs — Goravel re-exports the type but does not duplicate it.
