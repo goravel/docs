@@ -221,7 +221,10 @@ role_user
 
 `Has One Through` and `Has Many Through` reach a distant relation via an intermediate table. For example, a `Country` has many `Posts` through a `User`: countries do not directly own posts, but they own users, and users own posts.
 
-Because GORM has no struct-tag representation for these "through" relationships, models must declare them by implementing the `orm.ModelWithThroughRelations` interface:
+Because GORM has no struct-tag representation for these "through" relationships, models must declare them in two places:
+
+1. A field on the parent struct that the loader writes results into. Use `[]*Post` for `HasManyThrough` and `*Post` for `HasOneThrough`. The field name must match the key used in `ThroughRelations` (here, `"Posts"`).
+2. A `ThroughRelations()` method on the parent that implements `orm.ModelWithThroughRelations`. The map describes the join columns so Goravel can compile the SQL.
 
 ```go
 import "github.com/goravel/framework/contracts/database/orm"
@@ -229,6 +232,11 @@ import "github.com/goravel/framework/contracts/database/orm"
 type Country struct {
   orm.Model
   Name  string
+
+  // Slice of pointers for HasManyThrough; the field name must match the key
+  // ("Posts") used in ThroughRelations below. WithRelation / Load will
+  // populate this slice
+  Posts []*Post
 }
 
 func (Country) ThroughRelations() map[string]orm.ThroughRelation {
@@ -246,7 +254,31 @@ func (Country) ThroughRelations() map[string]orm.ThroughRelation {
 }
 ```
 
-Use `orm.HasOneThrough` for one-to-one through relations. Once declared, a through relation can be used in `Has`, `WhereHas`, `WithCount`, and the other relationship-query helpers below just like any other relation.
+For a one-to-one variant, set `Kind: orm.HasOneThrough` and use `*Post` instead of `[]*Post` on the parent struct:
+
+```go
+type Supplier struct {
+  orm.Model
+  Name    string
+  Account *Account // single pointer for HasOneThrough
+}
+
+func (Supplier) ThroughRelations() map[string]orm.ThroughRelation {
+  return map[string]orm.ThroughRelation{
+    "Account": {
+      Kind:           orm.HasOneThrough,
+      Related:        &Account{},
+      Through:        &User{},
+      FirstKey:       "supplier_id",
+      SecondKey:      "user_id",
+      LocalKey:       "id",
+      SecondLocalKey: "id",
+    },
+  }
+}
+```
+
+Once declared, a through relation can be used in `Has`, `WhereHas`, `WithCount`, `WithRelation`, and the other relationship-query helpers below just like any other relation. Note that `With` (the GORM-`Preload` shim) does **not** support through-relations — use `WithRelation` for eager loading them.
 
 ## Polymorphic
 
