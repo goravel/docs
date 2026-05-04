@@ -9,7 +9,12 @@ It's common for database tables to be interconnected. For instance, a blog post 
 - [One To One](#One-To-One)
 - [One To Many](#One-To-Many)
 - [Many To Many](#Many-To-Many)
+- [Has One Through / Has Many Through](#Has-One-Through-Has-Many-Through)
 - [Polymorphic](#Polymorphic)
+- [Querying Relationship Existence](#Querying-Relationship-Existence)
+- [Querying Relationship Absence](#Querying-Relationship-Absence)
+- [Querying Polymorphic Relationships](#Querying-Polymorphic-Relationships)
+- [Aggregating Related Models](#Aggregating-Related-Models)
 
 ## Defining Relationships
 
@@ -211,6 +216,37 @@ role_user
   user_name - integer
   role_name - integer
 ```
+
+## Has One Through / Has Many Through
+
+`Has One Through` and `Has Many Through` reach a distant relation via an intermediate table. For example, a `Country` has many `Posts` through a `User`: countries do not directly own posts, but they own users, and users own posts.
+
+Because GORM has no struct-tag representation for these "through" relationships, models must declare them by implementing the `orm.ModelWithThroughRelations` interface:
+
+```go
+import "github.com/goravel/framework/contracts/database/orm"
+
+type Country struct {
+  orm.Model
+  Name  string
+}
+
+func (Country) ThroughRelations() map[string]orm.ThroughRelation {
+  return map[string]orm.ThroughRelation{
+    "Posts": {
+      Kind:           orm.HasManyThrough,
+      Related:        &Post{},   // far model
+      Through:        &User{},   // intermediate model
+      FirstKey:       "country_id", // FK on Through (users) pointing at Parent (countries)
+      SecondKey:      "user_id",    // FK on Related (posts) pointing at Through (users)
+      LocalKey:       "id",         // PK on Parent (countries)
+      SecondLocalKey: "id",         // PK on Through (users)
+    },
+  }
+}
+```
+
+Use `orm.HasOneThrough` for one-to-one through relations. Once declared, a through relation can be used in `Has`, `WhereHas`, `WithCount`, and the other relationship-query helpers below just like any other relation.
 
 ## Polymorphic
 
@@ -529,4 +565,396 @@ To load a relationship only when it has not already been loaded, use the `LoadMi
 
 ```go
 facades.Orm().Query().LoadMissing(&book, "Author")
+```
+
+### Goravel's Loader: `WithRelation`
+
+`WithRelation` is an alternative to `With` that uses Goravel's own eager loader instead of delegating to GORM's `Preload`. Unlike `With`, it also supports `HasOneThrough` and `HasManyThrough` relations:
+
+```go
+import "github.com/goravel/framework/contracts/database/orm"
+
+// Single relation.
+facades.Orm().Query().WithRelation("Books").Find(&users)
+
+// String + callback to scope the inner query.
+cb := func(query orm.Query) orm.Query {
+  return query.Where("status = ?", "published")
+}
+facades.Orm().Query().WithRelation("Books", cb).Find(&users)
+
+// Multiple relations in one call.
+facades.Orm().Query().WithRelation("Books", "Roles", "Address").Find(&users)
+
+// Column pruning — only select id and name from books.
+facades.Orm().Query().WithRelation("Books:id,name").Find(&users)
+
+// Nested relation; "Books" is auto-filled as a noop entry if not already requested.
+facades.Orm().Query().WithRelation("Books.Author").Find(&users)
+
+// Map of relation -> callback.
+facades.Orm().Query().WithRelation(map[string]orm.RelationCallback{
+  "Books": cb,
+  "Roles": rolesCb,
+}).Find(&users)
+```
+
+For very large parent collections, `WithRelation` splits the inner `WHERE IN` query into batches of 1000 keys by default to stay within dialect limits (Oracle's 1000-expression cap, SQLite's `SQLITE_MAX_VARIABLE_NUMBER`). The chunk size is configurable via the `database.eager_load_chunk_size` config key — set it to `0` or a negative value to disable chunking entirely.
+
+#### `WithoutRelation`
+
+Removes the named relations from the eager-load list set by `WithRelation`. Names must match exactly (including dot-paths):
+
+```go
+facades.Orm().Query().
+  WithRelation("Books", "Roles", "Books.Author").
+  WithoutRelation("Roles").
+  Find(&users)
+```
+
+#### `WithRelationOnly`
+
+Clears the eager-load list set by `WithRelation`, then adds the given relations. Useful when a default-scoped query has eager loads you want to override:
+
+```go
+facades.Orm().Query().WithRelationOnly("Books").Find(&users)
+```
+
+## Querying Relationship Existence
+
+When fetching a model, you may want to limit results based on whether a relationship exists. Use `Has` to add an exists / count condition on a related model:
+
+```go
+// Retrieve all users that have at least one book.
+var users []models.User
+facades.Orm().Query().Has("Books").Get(&users)
+```
+
+`Has` accepts an optional comparison operator and count to constrain how many related records must exist. The default is `>= 1`, which compiles to a `WHERE EXISTS (...)` clause; any other operator/count compiles to a `(SELECT COUNT(*) ...) <op> ?` comparison:
+
+```go
+// Users with at least three books.
+facades.Orm().Query().Has("Books", ">=", 3).Get(&users)
+```
+
+Dot notation is supported for nested relations: `Has("Books.Author")` is shorthand for "users that have at least one book that has an author".
+
+```go
+facades.Orm().Query().Has("Books.Author").Get(&users)
+```
+
+### WhereHas / OrWhereHas
+
+`WhereHas` is functionally identical to `Has` but reads more naturally when scoping the inner subquery with a callback. The callback receives a `Query` for the related model:
+
+```go
+import "github.com/goravel/framework/contracts/database/orm"
+
+cb := func(query orm.Query) orm.Query {
+  return query.Where("name = ?", "wh_target")
+}
+facades.Orm().Query().WhereHas("Books", cb).Get(&users)
+```
+
+`OrHas` and `OrWhereHas` join the existence clause with `OR` instead of `AND`:
+
+```go
+facades.Orm().Query().Where("name = ?", "x").OrHas("Books").Get(&users)
+```
+
+The variadic `args` accepted by `Has` / `OrHas` / `WhereHas` / `OrWhereHas` may include, in any order: a callback (`func(orm.Query) orm.Query` or `orm.RelationCallback`), a string operator (defaults to `>=`), and an integer count (defaults to `1`).
+
+## Querying Relationship Absence
+
+The `DoesntHave` family is the inverse of `Has` — equivalent to `Has(rel, "<", 1)`, compiled as `WHERE NOT EXISTS (...)`:
+
+```go
+// Users that have no books.
+facades.Orm().Query().DoesntHave("Books").Get(&users)
+```
+
+`WhereDoesntHave` accepts a callback to scope the subquery, and the `Or*` variants join with `OR`:
+
+```go
+import "github.com/goravel/framework/contracts/database/orm"
+
+cb := func(query orm.Query) orm.Query {
+  return query.Where("title like ?", "draft%")
+}
+facades.Orm().Query().WhereDoesntHave("Books", cb).Get(&users)
+
+facades.Orm().Query().Where("name = ?", "x").OrDoesntHave("Books").Get(&users)
+```
+
+## Querying Polymorphic Relationships
+
+The `HasMorph` family scopes existence checks against polymorphic relations. Pass a slice of model instances for the morph types to consider — the value used for the polymorphic type column is derived from each model's resolved table name (e.g. `&User{}` → `"users"`):
+
+```go
+// Records whose polymorphic "Imageable" relation points at a User.
+facades.Orm().Query().HasMorph("Image", []any{&User{}}).Get(&records)
+```
+
+Multiple morph types are allowed and combined with `OR` inside the existence clause:
+
+```go
+facades.Orm().Query().HasMorph("Commentable", []any{&Post{}, &Video{}}).Get(&comments)
+```
+
+`WhereHasMorph` accepts either a regular callback or a `MorphRelationCallback` that receives the morph type currently being scoped, letting you apply per-type conditions:
+
+```go
+import "github.com/goravel/framework/contracts/database/orm"
+
+cb := func(query orm.Query, morphType string) orm.Query {
+  if morphType == "posts" {
+    return query.Where("status = ?", "published")
+  }
+  return query
+}
+facades.Orm().Query().WhereHasMorph("Commentable", []any{&Post{}, &Video{}}, cb).Get(&comments)
+```
+
+The full polymorphic family — `HasMorph`, `OrHasMorph`, `DoesntHaveMorph`, `OrDoesntHaveMorph`, `WhereHasMorph`, `OrWhereHasMorph`, `WhereDoesntHaveMorph`, `OrWhereDoesntHaveMorph` — mirrors the non-polymorphic helpers, with the same operator/count/callback semantics.
+
+> Auto-discovery of morph types via `["*"]` is not supported; the slice of model instances must be explicit.
+
+## Aggregating Related Models
+
+`WithCount`, `WithSum`, `WithMax`, `WithMin`, `WithAvg`, `WithExists` and the lower-level `WithAggregate` add a sub-select column to the parent query for an aggregate over a related model. The result column is exposed alongside the parent's columns and can be scanned into a custom struct or read off the destination model.
+
+### Reading the Aggregate Result
+
+Each call appends an extra column to the parent `SELECT`, e.g. `WithCount("Books")` produces:
+
+```sql
+SELECT users.*, (SELECT COUNT(*) FROM books WHERE books.user_id = users.id) AS books_count FROM users
+```
+
+Because the value comes back as just another column, you read it the same way you read any column. There are three common patterns:
+
+#### 1. Add a field to the model (most common)
+
+Add a field whose `gorm:"column:..."` tag (or auto-derived name) matches the alias. Use a pointer for aggregates that can be `NULL`:
+
+```go
+type User struct {
+  orm.Model
+  Name          string
+  Books         []*Book
+
+  // Counts and EXISTS never return NULL — int64 is fine.
+  BooksCount    int64    `gorm:"column:books_count"`
+
+  // SUM / AVG / MAX / MIN return NULL when there are no related rows —
+  // use a pointer so the zero-row case stays distinguishable from "0".
+  BooksMaxPrice *float64 `gorm:"column:books_max_price"`
+}
+
+var users []User
+facades.Orm().Query().
+  WithCount("Books").
+  WithMax("Books", "price").
+  Get(&users)
+
+for _, u := range users {
+  fmt.Println(u.Name, u.BooksCount, u.BooksMaxPrice)
+}
+```
+
+#### 2. Scan into a DTO
+
+If you don't want to pollute the model, define a separate struct that embeds (or copies) the columns you care about:
+
+```go
+type UserWithStats struct {
+  orm.Model
+  Name          string
+  BooksCount    int64    `gorm:"column:books_count"`
+  BooksAvgPrice *float64 `gorm:"column:books_avg_price"`
+}
+
+var rows []UserWithStats
+facades.Orm().Query().Model(&User{}).
+  WithCount("Books").
+  WithAvg("Books", "price").
+  Get(&rows)
+```
+
+Note: pass `Model(&User{})` so the query knows which table to project from when the destination type isn't itself a registered model.
+
+#### 3. Scan into `map[string]any`
+
+For ad-hoc reporting where you don't want a typed struct, scan into a slice of maps:
+
+```go
+var rows []map[string]any
+facades.Orm().Query().Model(&User{}).
+  WithCount("Books").
+  WithMax("Books", "price").
+  Get(&rows)
+
+// rows[0]["books_count"], rows[0]["books_max_price"], etc.
+```
+
+### Alias Naming Rules
+
+The default alias is generated from the relation name, the function, and (for non-count/exists) the column. Relation names are converted from CamelCase to snake_case; nested relations join with `_`.
+
+| Call                                  | Generated alias            | Suggested field type        |
+| ------------------------------------- | -------------------------- | --------------------------- |
+| `WithCount("Books")`                  | `books_count`              | `int64`                     |
+| `WithMax("Books", "price")`           | `books_max_price`          | `*float64` (may be `NULL`)  |
+| `WithMin("Books", "price")`           | `books_min_price`          | `*float64` (may be `NULL`)  |
+| `WithSum("Books", "price")`           | `books_sum_price`          | `*float64` (may be `NULL`)  |
+| `WithAvg("Books", "price")`           | `books_avg_price`          | `*float64` (may be `NULL`)  |
+| `WithExists("Books")`                 | `books_exists`             | `bool` (auto-cast from 0/1) |
+| `WithCount("Books.Author")`           | `books_author_count`       | `int64`                     |
+| `WithCount("MyBooks")`                | `my_books_count`           | `int64`                     |
+| `WithAggregate("Books", "*", "count")`| same as `WithCount("Books")` | `int64`                   |
+
+A model that binds every alias above looks like this — the field name can be anything; what matters is the `gorm:"column:..."` tag matching the alias:
+
+```go
+type User struct {
+  orm.Model
+  Name             string
+
+  // COUNT never returns NULL — int64 is fine.
+  BooksCount       int64    `gorm:"column:books_count"`
+  BooksAuthorCount int64    `gorm:"column:books_author_count"`
+  MyBooksCount     int64    `gorm:"column:my_books_count"`
+
+  // EXISTS comes back as 0/1; database/sql + GORM coerce it into a bool field automatically.
+  BooksExists      bool     `gorm:"column:books_exists"`
+
+  // SUM / AVG / MAX / MIN can return NULL — use pointer types.
+  BooksMaxPrice    *float64 `gorm:"column:books_max_price"`
+  BooksMinPrice    *float64 `gorm:"column:books_min_price"`
+  BooksSumPrice    *float64 `gorm:"column:books_sum_price"`
+  BooksAvgPrice    *float64 `gorm:"column:books_avg_price"`
+}
+
+var users []User
+facades.Orm().Query().
+  WithCount("Books").
+  WithCount("Books.Author").
+  WithCount("MyBooks").
+  WithExists("Books").
+  WithMax("Books", "price").
+  WithMin("Books", "price").
+  WithSum("Books", "price").
+  WithAvg("Books", "price").
+  Get(&users)
+```
+
+If you'd rather rely on GORM's column-name convention instead of explicit tags, name the field exactly the snake_case alias in CamelCase form — e.g. `BooksCount` resolves to `books_count` automatically. The `gorm:"column:..."` tag is only required when your field name diverges from the alias.
+
+### Customising the Alias
+
+Only `WithCount` accepts a custom alias, via `orm.RelationCount`:
+
+```go
+import "github.com/goravel/framework/contracts/database/orm"
+
+facades.Orm().Query().WithCount(
+  orm.RelationCount{Name: "Books", Alias: "total_books"},
+).Get(&users)
+```
+
+`WithMax` / `WithMin` / `WithSum` / `WithAvg` / `WithExists` and `WithAggregate` do not expose an alias parameter — the field on your model must match the default alias above. If a default alias collides with another column, switch to `WithAggregate` and project into a DTO whose columns are arranged to avoid the clash.
+
+### WithCount
+
+```go
+// Adds a "books_count" column equal to (SELECT COUNT(*) FROM books WHERE books.user_id = users.id).
+facades.Orm().Query().WithCount("Books").Get(&users)
+```
+
+To scope the inner subquery or override the alias, pass an `orm.RelationCount` value instead of a plain string:
+
+```go
+import "github.com/goravel/framework/contracts/database/orm"
+
+cb := func(query orm.Query) orm.Query {
+  return query.Where("status = ?", "active")
+}
+
+facades.Orm().Query().WithCount(
+  orm.RelationCount{Name: "Books", Callback: cb},
+  orm.RelationCount{Name: "Books", Alias: "book_total"},
+).Get(&users)
+```
+
+`WithCount` is variadic — string and `RelationCount` entries may be mixed in a single call.
+
+### WithMax / WithMin / WithSum / WithAvg
+
+Each takes a relation name plus the related-model column to aggregate. The result alias is `<relation>_<fn>_<column>` in snake_case:
+
+```go
+facades.Orm().Query().WithMax("Books", "pages").Get(&users)  // adds books_max_pages
+facades.Orm().Query().WithSum("Books", "price").Get(&users)  // adds books_sum_price
+```
+
+Like `WithCount`, these accept an optional callback as the trailing argument to scope the subquery:
+
+```go
+cb := func(query orm.Query) orm.Query {
+  return query.Where("status = ?", "published")
+}
+facades.Orm().Query().WithSum("Books", "pages", cb).Get(&users)
+```
+
+> SQL `SUM` / `AVG` / `MAX` / `MIN` return `NULL` when no rows match. To distinguish "no related rows" from "the aggregate happens to equal zero", use a pointer field (`*float64`, `*int64`) on your destination struct.
+
+### WithExists
+
+`WithExists` adds a `0/1` integer column indicating whether a related record exists:
+
+```go
+facades.Orm().Query().WithExists("Books").Get(&users)  // adds books_exists
+```
+
+`WithExists` is also variadic — pass any number of relation names. The column is yielded as a `0/1` integer in SQL, but `database/sql` together with GORM coerces it into a `bool` field on your destination struct automatically, so declaring the field as `bool` is the recommended form.
+
+### WithAggregate
+
+`WithAggregate` is the building block for the helpers above. Its signature is `WithAggregate(relation, column, fn string, args ...any)`, where `fn` is one of `count`, `max`, `min`, `sum`, `avg`, or `exists`. The trailing `args` can include a callback to scope the inner subquery:
+
+```go
+import "github.com/goravel/framework/contracts/database/orm"
+
+// Maximum book price per user — adds books_max_price.
+facades.Orm().Query().WithAggregate("Books", "price", "max").Get(&users)
+
+// Sum of pages over only published books — adds books_sum_pages.
+cb := func(query orm.Query) orm.Query {
+  return query.Where("status = ?", "published")
+}
+facades.Orm().Query().WithAggregate("Books", "pages", "sum", cb).Get(&users)
+
+// Existence — column is ignored; pass "*" by convention. Adds books_exists.
+facades.Orm().Query().WithAggregate("Books", "*", "exists").Get(&users)
+```
+
+For `count` and `exists`, `column` is ignored and the alias drops the column suffix (`<relation>_count`, `<relation>_exists`). For the other functions, the alias is `<relation>_<fn>_<column>`. Passing an unknown `fn` returns a query that errors at execution time.
+
+### Combining with Has / WhereHas
+
+Aggregate sub-selects compose with `Has`, `WhereHas`, and the rest of the query builder, so a single query can both filter and project relationship aggregates:
+
+```go
+// Users with at least 3 books, projecting the count of their roles.
+facades.Orm().Query().Has("Books", ">=", 3).WithCount("Roles").Get(&users)
+
+// Active users with their published-book stats.
+cb := func(query orm.Query) orm.Query {
+  return query.Where("status = ?", "published")
+}
+facades.Orm().Query().
+  Where("active = ?", true).
+  WithCount(orm.RelationCount{Name: "Books", Callback: cb, Alias: "published_books"}).
+  WithSum("Books", "pages", cb).
+  Get(&users)
 ```
