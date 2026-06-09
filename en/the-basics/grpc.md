@@ -10,6 +10,75 @@ Grpc module can be operated by `facades.Grpc()`. Goravel provides an elegant way
 
 In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.servers` configures the servers which the client will connect to.
 
+## Transport Credentials
+
+By default, gRPC clients use insecure transport credentials and the gRPC server listens without TLS. You can register `credentials.TransportCredentials` during application bootstrap when your services require TLS or mTLS.
+
+### Server Credentials
+
+Register server credentials before the gRPC server is created:
+
+```go
+import "google.golang.org/grpc/credentials"
+
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithGrpcServerCredentials(func() credentials.TransportCredentials {
+      creds, err := credentials.NewServerTLSFromFile(
+        "storage/certs/server.crt",
+        "storage/certs/server.key",
+      )
+      if err != nil {
+        panic(err)
+      }
+
+      return creds
+    }).
+    Create()
+}
+```
+
+### Client Credentials
+
+Register client credential groups in `bootstrap/app.go`, then reference the group name in `config/grpc.go` with `grpc.servers.<name>.credentials`:
+
+```go
+import "google.golang.org/grpc/credentials"
+
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithGrpcClientCredentials(func() map[string]credentials.TransportCredentials {
+      userCreds, err := credentials.NewClientTLSFromFile(
+        "storage/certs/ca.crt",
+        "user.example.com",
+      )
+      if err != nil {
+        panic(err)
+      }
+
+      return map[string]credentials.TransportCredentials{
+        "user": userCreds,
+      }
+    }).
+    Create()
+}
+```
+
+```go
+// config/grpc.go
+"servers": map[string]any{
+  "user": map[string]any{
+    "host":           config.Env("GRPC_USER_HOST", ""),
+    "port":           config.Env("GRPC_USER_PORT", ""),
+    "credentials":    "user",
+    "interceptors":   []string{},
+    "stats_handlers": []string{},
+  },
+},
+```
+
+If a client has no `credentials` value, Goravel uses insecure credentials for backward compatibility. If the configured group is not registered, Goravel logs a warning and falls back to insecure credentials. For mTLS, return credentials created with `credentials.NewTLS` and a `tls.Config` that includes the required client certificates or trusted CA pools.
+
 ## Controllers
 
 Controllers can be defined in the `app/grpc/controllers` directory.

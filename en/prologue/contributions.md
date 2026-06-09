@@ -135,7 +135,6 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 | [goravel/mysql](https://github.com/goravel/mysql)                     | The MySQL driver of Database module                                 |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver)             | The SQLServer driver of Database module                             |
 | [goravel/sqlite](https://github.com/goravel/sqlite)                   | The SQLite driver of Database module                                |
-| [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | Providers log splitting functionality for Log module                |
 | [goravel/.github](https://github.com/goravel/.github)                 | [Community health file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
 
 ## Code of Conduct
