@@ -79,6 +79,39 @@ func main() {
 }
 ```
 
+If the package import path is long or its default package name is not convenient, setup modify helpers support an import alias in the `"<alias> <import-path>"` format. Use the same aliased import string when installing and uninstalling:
+
+```go
+func main() {
+	setup := packages.Setup(os.Args)
+
+	serviceProvider := "&admin.ServiceProvider{}"
+	moduleImport := "admin " + setup.Paths().Module().Import()
+
+	setup.Install(
+		modify.RegisterProvider(moduleImport, serviceProvider),
+	).Uninstall(
+		modify.UnregisterProvider(moduleImport, serviceProvider),
+	).Execute()
+}
+```
+
+After installation, the generated import uses the alias and the registered item can reference that alias:
+
+```go
+import (
+	admin "github.com/example/goravel-admin"
+)
+
+func Providers() []foundation.ServiceProvider {
+	return []foundation.ServiceProvider{
+		&admin.ServiceProvider{},
+	}
+}
+```
+
+Alias import strings are also supported by setup helpers that add and remove routes, middleware, commands, jobs, migrations, rules, filters, seeders, and service providers.
+
 ## Resources
 
 ### Configuration

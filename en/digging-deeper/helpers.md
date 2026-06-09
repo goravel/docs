@@ -599,6 +599,8 @@ convert.Pointer(1) // *int(1)
 import "github.com/goravel/framework/support/collect"
 ```
 
+The helpers below operate directly on slices or maps. For fluent eager and lazy collections, see [Collections](collections.md).
+
 ### `collect.Count()`
 
 The `collect.Count()` function returns the number of items in the given collection:

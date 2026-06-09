@@ -71,3 +71,48 @@ You can use the `artisan about` command to view the framework version, configura
 ```bash
 ./artisan about
 ```
+
+### Maintenance Mode
+
+You may use the `down` command to put your application into maintenance mode. The command stores maintenance metadata at the `framework/maintenance.json` storage path:
+
+```shell
+./artisan down
+```
+
+You may provide a custom reason and HTTP status code for the maintenance response:
+
+```shell
+./artisan down --reason="Upgrading database" --status=503
+```
+
+The `down` command also supports redirecting users to a path or rendering a view while the application is in maintenance mode:
+
+```shell
+./artisan down --redirect=/maintenance
+./artisan down --render=errors/503
+```
+
+When using `--render`, the view must already exist. If `--redirect` or `--render` is provided, the `--reason` response body is not used.
+
+You may allow temporary access to the application by setting a secret. Users can bypass maintenance mode by visiting the application with the matching `secret` query parameter:
+
+```shell
+./artisan down --secret=let-me-in
+```
+
+```text
+https://example.com?secret=let-me-in
+```
+
+You can also let Goravel generate a random secret for you:
+
+```shell
+./artisan down --with-secret
+```
+
+To bring the application out of maintenance mode, run the `up` command:
+
+```shell
+./artisan up
+```

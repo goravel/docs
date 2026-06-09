@@ -201,6 +201,37 @@ func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Q
 }
 ```
 
+You can access the context passed by `facades.Orm().WithContext(ctx)` from the query inside a global scope:
+
+```go
+import (
+  "context"
+
+  contractsorm "github.com/goravel/framework/contracts/database/orm"
+  "github.com/goravel/framework/database/orm"
+  "github.com/goravel/framework/facades"
+)
+
+type User struct {
+  orm.Model
+  Name string
+}
+
+func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query {
+  return map[string]func(contractsorm.Query) contractsorm.Query{
+    "tenant": func(query contractsorm.Query) contractsorm.Query {
+      tenantID, _ := query.Context().Value("tenant_id").(uint)
+
+      return query.Where("tenant_id", tenantID)
+    },
+  }
+}
+
+ctx := context.WithValue(context.Background(), "tenant_id", uint(1))
+var users []User
+err := facades.Orm().WithContext(ctx).Query().Find(&users)
+```
+
 If you want to remove global scopes in a query, you can use the `WithoutGlobalScopes` function:
 
 ```go
@@ -228,6 +259,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Avg                         | [Avg](#Avarage)                                                               |
 | BeginTransaction            | [Begin transaction](#transaction)                                             |
 | Commit                      | [Commit transaction](#transaction)                                            |
+| Context                     | [Inject Context](#inject-context)                                             |
 | Count                       | [Count](#count)                                                               |
 | Create                      | [Create](#create)                                                             |
 | Cursor                      | [Cursor](#cursor)                                                             |

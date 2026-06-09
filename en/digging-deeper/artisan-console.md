@@ -31,7 +31,7 @@ Then you can simply run your commands like this:
 artisan make:controller DemoController
 ```
 
-You can also use `artisan` shell script like this:
+You can also use the `artisan` shell script to run built-in commands.
 
 ### Generating Commands
 
@@ -448,6 +448,31 @@ ctx.NewLine()
 
 // write multiple blank lines
 ctx.NewLine(2)
+```
+
+#### Tables
+
+You may use the `Table` method to render structured data in a tabular format. The method accepts headers and rows, and writes the rendered table directly to the console:
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+    headers := []string{"ID", "Email", "Status"}
+    rows := [][]string{
+        {"1", "a@example.com", "Queued"},
+        {"2", "b@example.com", "Sent"},
+    }
+
+    ctx.Table(headers, rows)
+
+    return nil
+}
+```
+
+You can pass a `console.TableOption` as the third argument to customize borders, dimensions, and styles.
+```go
+ctx.Table(headers, rows, console.TableOption{
+    Width: 80,
+})
 ```
 
 #### Progress Bars
