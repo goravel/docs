@@ -52,6 +52,12 @@ func init() {
         "providers": map[string]any{
             "openai": map[string]any{
                 "key": config.Env("OPENAI_API_KEY", ""),
+                "failover": map[string][]string{
+                    "context_length_exceeded": {
+                        "maximum context length",
+                        "/(?i)context.*length/",
+                    },
+                },
                 "url": config.Env("OPENAI_BASE_URL", ""),
                 "via": func() (ai.Provider, error) {
                     return openaifacades.OpenAI("openai")
@@ -85,6 +91,8 @@ OPENAI_BASE_URL=
 ```
 
 `OPENAI_BASE_URL` is optional. Use it when routing requests through a proxy or an OpenAI-compatible endpoint. If a model default is empty, the provider package uses its own default model. Set `models.text.max_tokens` to limit generated text tokens; leave it as `0` to use the provider default.
+
+The `failover` map is optional. Provider packages may use it to map provider-specific error messages to failover reasons. Plain strings use substring matching, and slash-delimited strings use Go regular expressions.
 
 ## Creating Agents
 
@@ -178,6 +186,15 @@ conversation, err := facades.AI().Agent(
     &agents.SupportAgent{},
     frameworkai.WithProvider("openai"),
     frameworkai.WithModel("gpt-5.4"),
+)
+```
+
+Pass additional provider names to `WithProvider` to create an ordered failover chain. Goravel tries the next provider only when the current provider returns a failover error:
+
+```go
+conversation, err := facades.AI().Agent(
+    &agents.SupportAgent{},
+    frameworkai.WithProvider("openai", "anthropic"),
 )
 ```
 
@@ -758,6 +775,29 @@ Provider packages implement the AI provider contracts and may support different 
 
 The OpenAI provider uses the Responses API for prompts, streaming, tool calling, and attachments. It also supports image generation, image edits, audio generation, transcription, media storage helpers, and provider-managed files.
 
+### Provider Failover
+
+When a provider chain is configured with `WithProvider("primary", "backup")`, Goravel retries the next provider only for errors that implement `ai.FailoverError`. If every provider in the chain fails with a failover error, the last error is returned. Streaming responses can fail over before output starts; after output starts, the stream returns the current provider error instead of switching providers.
+
+Configure `ai.providers.openai.failover` to add OpenAI-specific error message mappings:
+
+```go
+"openai": map[string]any{
+    "key": config.Env("OPENAI_API_KEY", ""),
+    "failover": map[string][]string{
+        "context_length_exceeded": {
+            "maximum context length",
+            "/(?i)context.*length/",
+        },
+    },
+    "via": func() (ai.Provider, error) {
+        return openaifacades.OpenAI("openai")
+    },
+},
+```
+
+Each `failover` key is the reason returned by `FailoverError.Reason()`. Empty reasons or patterns are ignored. Invalid regular expressions return an error while resolving the provider.
+
 ### Custom Providers
 
 You may build a custom provider by following the same structure as `goravel/openai`, `goravel/anthropic`, or `goravel/gemini`: implement the AI provider contracts, register a service provider, expose a facade that resolves the provider, then configure it in `config/ai.go`.
@@ -800,6 +840,33 @@ func (r *CustomProvider) Stream(ctx context.Context, prompt ai.AgentPrompt) (ai.
 ```
 
 The agent response implementation should expose generated text with `Text`, usage metadata with `Usage`, requested tool invocations with `ToolCalls`, and completion callbacks with `Then`. For streaming, populate `StreamEvent.ToolCalls` when emitting `StreamEventTypeToolCall` events.
+
+Custom providers can return `frameworkai.NewFailoverError` for provider-specific retryable errors:
+
+```go
+import (
+    frameworkai "github.com/goravel/framework/ai"
+    "github.com/goravel/framework/contracts/ai"
+)
+
+return nil, frameworkai.NewFailoverError("custom", ai.FailoverReason("rate_limited"), err)
+```
+
+They can also compile configured `failover` rules with `frameworkai.NewFailoverRules` and wrap matching errors before returning them:
+
+```go
+rules, err := frameworkai.NewFailoverRules("custom", providerConfig.Failover)
+if err != nil {
+    return nil, err
+}
+
+response, err := r.callProvider(ctx, prompt)
+if err != nil {
+    return nil, rules.Wrap("custom", err)
+}
+
+return response, nil
+```
 
 Providers that support image generation should implement `ImageProvider`:
 
