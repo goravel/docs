@@ -3,7 +3,8 @@ name: Generate Agent Skill Files
 on:
   push:
     branches:
-      - "**"
+      - master
+      - "v1.*"
     paths:
       - "en/**"
   workflow_dispatch:
