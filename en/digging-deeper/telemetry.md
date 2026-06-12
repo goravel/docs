@@ -206,18 +206,69 @@ Metrics use a periodic reader instead, configured by `metrics.reader.interval` (
 
 ### Creating Spans
 
-To create a span, request a tracer from the `Telemetry` facade using the `Tracer` method, then call `Start`. The first argument is a `context.Context`, if the context already contains a span (for example, one started by the HTTP middleware), the new span is automatically attached as its child:
+To create a span, request a tracer from the `Telemetry` facade using the `Tracer` method, then call `Start`. The first argument is a `context.Context`, if the context already contains a span (for example, one started by the HTTP middleware), the new span is automatically attached as its child.
+
+The following service traces an order through its processing steps: the `Process` method opens a span, records what happened on it, and passes the returned context down so that `chargePayment` becomes a child span within the same trace:
 
 ```go
-import "goravel/app/facades"
+// app/services/order_service.go
+package services
 
-tracer := facades.Telemetry().Tracer("app")
+import (
+    "context"
 
-ctx, span := tracer.Start(ctx.Context(), "process-order")
-defer span.End()
+    "github.com/goravel/framework/telemetry"
 
-// Pass ctx down to create child spans
-orderItems(ctx)
+    "goravel/app/facades"
+)
+
+type OrderService struct {
+}
+
+func (r *OrderService) Process(ctx context.Context, orderID string) error {
+    ctx, span := facades.Telemetry().Tracer("app").Start(ctx, "order.process")
+    defer span.End()
+
+    span.SetAttributes(telemetry.String("order.id", orderID))
+
+    if err := r.chargePayment(ctx, orderID); err != nil {
+        span.RecordError(err)
+        span.SetStatus(telemetry.CodeError, "failed to charge payment")
+
+        return err
+    }
+
+    span.AddEvent("payment_charged")
+
+    return nil
+}
+
+func (r *OrderService) chargePayment(ctx context.Context, orderID string) error {
+    // This span automatically becomes a child of "order.process".
+    _, span := facades.Telemetry().Tracer("app").Start(ctx, "order.charge_payment")
+    defer span.End()
+
+    // Charge the payment...
+
+    return nil
+}
+```
+
+When the service is called from a controller, pass `ctx.Context()`. If the [HTTP server middleware](#http-server) is registered, the spans are attached to the request's trace, so your backend shows the full picture: the HTTP request, the order processing, and the payment charge as one tree:
+
+```go
+// app/http/controllers/order_controller.go
+func (r *OrderController) Store(ctx http.Context) http.Response {
+    if err := r.orders.Process(ctx.Context(), ctx.Request().Input("order_id")); err != nil {
+        return ctx.Response().Status(http.StatusInternalServerError).Json(http.Json{
+            "error": "failed to process order",
+        })
+    }
+
+    return ctx.Response().Success().Json(http.Json{
+        "message": "order processed",
+    })
+}
 ```
 
 The name passed to `Tracer` (and `Meter`) identifies the instrumentation scope, typically your application or package name, and is shown alongside each span in your backend.
@@ -256,7 +307,7 @@ span.AddEvent("cache_miss", telemetry.WithAttributes(
 
 ### Recording Errors
 
-When an operation fails, you should record the error on the span and mark its status, so failed traces can be filtered in your backend:
+When an operation fails, two calls work together: `RecordError` attaches the error to the span as an event, and `SetStatus` marks the whole span as failed so it can be filtered in your backend. Calling `RecordError` alone does not change the span status:
 
 ```go
 if err != nil {
@@ -296,29 +347,63 @@ If there is no active span in the context, a no-op span is returned, so it is al
 
 ## Metrics
 
-To record metrics, request a meter from the `Telemetry` facade using the `Meter` method, then create instruments from it. Instruments are safe for concurrent use and should be created once and reused:
+To record metrics, request a meter from the `Telemetry` facade using the `Meter` method, then create instruments from it. Instruments are safe for concurrent use and should be created once and reused, a common pattern is to create them when the service is constructed and record values in its methods.
+
+The following service uses a **counter** (a value that only goes up, ideal for counting processed payments or sent emails) and a **histogram** (a distribution of values, such as durations or payload sizes):
 
 ```go
+// app/services/payment_service.go
+package services
+
 import (
+    "context"
+    "time"
+
     "go.opentelemetry.io/otel/metric"
 
-    "goravel/app/facades"
     "github.com/goravel/framework/telemetry"
+
+    "goravel/app/facades"
 )
 
-meter := facades.Telemetry().Meter("app")
-```
+type PaymentService struct {
+    processed metric.Int64Counter
+    duration  metric.Float64Histogram
+}
 
-A **counter** only goes up, ideal for counting processed orders or sent emails:
+func NewPaymentService() (*PaymentService, error) {
+    meter := facades.Telemetry().Meter("app")
 
-```go
-counter, err := meter.Int64Counter("orders.processed",
-    metric.WithDescription("Number of processed orders"),
-)
+    processed, err := meter.Int64Counter("payments.processed",
+        metric.WithDescription("Number of processed payments"),
+    )
+    if err != nil {
+        return nil, err
+    }
 
-counter.Add(ctx, 1, metric.WithAttributes(
-    telemetry.String("payment.method", "card"),
-))
+    duration, err := meter.Float64Histogram("payments.duration",
+        metric.WithUnit("s"),
+        metric.WithDescription("Duration of payment processing"),
+    )
+    if err != nil {
+        return nil, err
+    }
+
+    return &PaymentService{processed: processed, duration: duration}, nil
+}
+
+func (r *PaymentService) Charge(ctx context.Context, method string) error {
+    start := time.Now()
+
+    // Charge the payment...
+
+    r.processed.Add(ctx, 1, metric.WithAttributes(
+        telemetry.String("payment.method", method),
+    ))
+    r.duration.Record(ctx, time.Since(start).Seconds())
+
+    return nil
+}
 ```
 
 An **up-down counter** can also decrease, useful for tracking in-flight values:
@@ -328,17 +413,6 @@ inFlight, err := meter.Int64UpDownCounter("jobs.in_flight")
 
 inFlight.Add(ctx, 1)
 defer inFlight.Add(ctx, -1)
-```
-
-A **histogram** records a distribution of values, such as durations or payload sizes:
-
-```go
-histogram, err := meter.Float64Histogram("order.process.duration",
-    metric.WithUnit("s"),
-    metric.WithDescription("Duration of order processing"),
-)
-
-histogram.Record(ctx, time.Since(start).Seconds())
 ```
 
 An **observable gauge** reports a value that is sampled rather than recorded, such as a queue depth or the number of open connections. Instead of calling it yourself, you register a callback that is invoked on every collection cycle:
@@ -378,7 +452,15 @@ Add the channel to your logging stack and every entry written through `facades.L
 To correlate logs with the active trace, write them using `WithContext`, the trace and span IDs are attached to the record so your backend can link logs to the exact request that produced them:
 
 ```go
-facades.Log().WithContext(ctx).Info("order processed")
+func (r *OrderController) Store(ctx http.Context) http.Response {
+    facades.Log().WithContext(ctx.Context()).
+        With(map[string]any{
+            "order_id": ctx.Request().Input("order_id"),
+        }).
+        Info("order received")
+
+    // ...
+}
 ```
 
 You can also temporarily stop exporting logs without touching your logging configuration by setting `telemetry.instrumentation.log.enabled` to `false`. If you need full control over the emitted records, you may bypass the logging facade and emit OpenTelemetry log records directly using `facades.Telemetry().Logger("app")`.
@@ -462,17 +544,42 @@ Both handlers accept options such as `WithFilter`, `WithSpanAttributes`, and `Wi
 
 The `propagators` configuration option defines how trace context crosses process boundaries. The default is the W3C `tracecontext` standard; `baggage`, `b3`, and `b3multi` (Zipkin) are also supported and can be combined as a comma-separated list.
 
-The built-in HTTP and gRPC instrumentation propagate context automatically. If you communicate over a custom transport (e.g., a message queue), you can inject and extract the context manually using the `Propagator` method:
+The built-in HTTP and gRPC instrumentation propagate context automatically. If you communicate over a custom transport, such as a message queue, you can carry the trace across the boundary yourself using the `Propagator` method: the producer injects the active context into the message headers, and the consumer extracts it and continues the same trace:
 
 ```go
-import "github.com/goravel/framework/telemetry"
+import (
+    "context"
 
-// Producer: inject the trace context into the message
-carrier := telemetry.PropagationMapCarrier(message.Headers)
-facades.Telemetry().Propagator().Inject(ctx, carrier)
+    "github.com/goravel/framework/telemetry"
 
-// Consumer: continue the trace from the message
-ctx := facades.Telemetry().Propagator().Extract(context.Background(), telemetry.PropagationMapCarrier(message.Headers))
+    "goravel/app/facades"
+)
+
+type Message struct {
+    Headers map[string]string
+    Body    []byte
+}
+
+func (r *OrderPublisher) Publish(ctx context.Context, message *Message) error {
+    // Attach the active trace context to the message
+    facades.Telemetry().Propagator().Inject(ctx, telemetry.PropagationMapCarrier(message.Headers))
+
+    // Send the message to the broker...
+
+    return nil
+}
+
+func (r *OrderConsumer) Consume(message *Message) error {
+    // Continue the trace started by the producer
+    ctx := facades.Telemetry().Propagator().Extract(context.Background(), telemetry.PropagationMapCarrier(message.Headers))
+
+    ctx, span := facades.Telemetry().Tracer("app").Start(ctx, "orders.consume",
+        telemetry.WithSpanKind(telemetry.SpanKindConsumer),
+    )
+    defer span.End()
+
+    return r.process(ctx, message)
+}
 ```
 
 If you need the identifiers of the current trace, for example, to return them in an error response, you can read them from the context:
