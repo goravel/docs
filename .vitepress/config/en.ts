@@ -316,6 +316,10 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     {
       text: 'Pluralization',
       link: 'pluralization'
+    },
+    {
+      text: 'Telemetry',
+      link: 'telemetry'
     }
   ]
 }
