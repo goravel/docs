@@ -74,7 +74,7 @@ You can use the `artisan about` command to view the framework version, configura
 
 ### Maintenance Mode
 
-You may use the `down` command to put your application into maintenance mode. By default, Goravel uses the `file` maintenance driver and stores maintenance metadata at the `framework/maintenance.json` storage path:
+If you installed the Route facade, you can use the `down` command to put your application into maintenance mode. By default, Goravel uses the `file` maintenance driver and stores maintenance metadata at the `framework/maintenance.json` storage path:
 
 ```shell
 ./artisan down
@@ -109,6 +109,15 @@ You can also let Goravel generate a random secret for you:
 
 ```shell
 ./artisan down --with-secret
+```
+
+The maintenance driver and cache store are configured in `config/app.go`. The default configuration reads from the `APP_MAINTENANCE_DRIVER` and `APP_MAINTENANCE_STORE` environment variables:
+
+```go
+"maintenance": map[string]any{
+    "driver": config.Env("APP_MAINTENANCE_DRIVER", "file"),
+    "store":  config.Env("APP_MAINTENANCE_STORE", ""),
+},
 ```
 
 If your application runs on multiple servers, you may use the `cache` maintenance driver so all servers share the same maintenance state. Configure the driver and, optionally, the cache store name in your `.env` file:
