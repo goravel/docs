@@ -18,7 +18,7 @@ Install the AI facade and core service provider with the `package:install` comma
 ./artisan package:install ai
 ```
 
-This makes `facades.AI()` available and registers the `make:agent` Artisan command.
+This makes `facades.AI()` available and registers the `make:agent` and `make:tool` Artisan commands.
 
 ### Install Providers
 
@@ -622,6 +622,42 @@ Agent middleware runs before middleware passed with `WithMiddleware`. The same m
 
 Tools allow an agent to expose callable capabilities to the model. A tool has a unique name, a description, a JSON Schema parameter definition, and an `Execute` method that returns the tool result as a string.
 
+You can generate a tool with Artisan:
+
+```shell
+./artisan make:tool WeatherTool
+./artisan make:tool user/WeatherTool
+```
+
+The generated file is placed under `app/tools`. Nested names create subdirectories, and `--force` or `-f` overwrites an existing tool file.
+
+```go
+package tools
+
+import "context"
+
+type WeatherTool struct {
+}
+
+func (r *WeatherTool) Name() string {
+    return "weather_tool"
+}
+
+func (r *WeatherTool) Description() string {
+    return "A description of the tool."
+}
+
+func (r *WeatherTool) Parameters() map[string]any {
+    return nil
+}
+
+func (r *WeatherTool) Execute(ctx context.Context, args map[string]any) (string, error) {
+    return "", nil
+}
+```
+
+After generating the tool, update `Description`, `Parameters`, and `Execute` for the capability you want to expose:
+
 ```go
 type WeatherTool struct {
 }
@@ -653,12 +689,12 @@ func (r *WeatherTool) Execute(ctx context.Context, args map[string]any) (string,
 }
 ```
 
-Return the tool from your agent's `Tools` method:
+Import your application's tools package, then return the tool from your agent's `Tools` method:
 
 ```go
 func (r *SupportAgent) Tools() []ai.Tool {
     return []ai.Tool{
-        &WeatherTool{},
+        &tools.WeatherTool{},
     }
 }
 ```
