@@ -11,6 +11,9 @@ The default file structure can make you better start project advancement, and yo
 ```
 goravel/
 ├── app/                        # Core application logic
+│   ├── ai/                     # AI agents and tools
+│   │   ├── agents/             # AI agent classes
+│   │   └── tools/              # AI tool classes
 │   ├── console/                # Artisan console commands
 │   ├── grpc/                   # gRPC controllers and middleware
 │   ├── http/                   # HTTP controllers and middleware
@@ -39,7 +42,7 @@ goravel/
 
 ## Customize Directory Structure
 
-You can customize the directory structure by calling the `WithPath()` function in the `bootstrap/app.go` file. For example, if you want to change the default `app` directory to `src`, you can modify the `bootstrap/app.go` file as follows:
+You can customize the directory structure by calling the `WithPaths()` function in the `bootstrap/app.go` file. For example, if you want to change the default `app` directory to `src`, you can modify the `bootstrap/app.go` file as follows:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -52,4 +55,16 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-There are many other paths you can customize, such as `Config`, `Database`, `Routes`, `Storage`, and `Resources`. Just call the corresponding method on the `paths` object to set your desired directory.
+There are many other paths you can customize, such as `Config`, `Database`, `Routes`, `Storage`, and `Resources`. AI generator paths can also be customized with `Agents` and `Tools`:
+
+```go
+func Boot() contractsfoundation.Application {
+    return foundation.Setup().
+        WithPaths(func(paths configuration.Paths) {
+            paths.Agents("internal/ai/agents")
+            paths.Tools("internal/ai/tools")
+        }).
+        WithConfig(config.Boot).
+        Create()
+}
+```

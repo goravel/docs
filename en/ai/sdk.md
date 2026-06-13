@@ -105,7 +105,7 @@ You can generate an agent with Artisan:
 ./artisan make:agent user/SupportAgent
 ```
 
-The generated file is placed under `app/agents` and contains the required methods:
+The generated file is placed under `app/ai/agents` and contains the required methods:
 
 ```go
 package agents
@@ -560,7 +560,7 @@ import (
 
     frameworkai "github.com/goravel/framework/ai"
     "github.com/goravel/framework/contracts/ai"
-    "goravel/app/agents"
+    "goravel/app/ai/agents"
     "goravel/app/facades"
 )
 ```
@@ -629,7 +629,7 @@ You can generate a tool with Artisan:
 ./artisan make:tool user/WeatherTool
 ```
 
-The generated file is placed under `app/tools`. Nested names create subdirectories, and `--force` or `-f` overwrites an existing tool file.
+The generated file is placed under `app/ai/tools`. Nested names create subdirectories, and `--force` or `-f` overwrites an existing tool file.
 
 ```go
 package tools
@@ -689,7 +689,7 @@ func (r *WeatherTool) Execute(ctx context.Context, args map[string]any) (string,
 }
 ```
 
-Import your application's tools package, then return the tool from your agent's `Tools` method:
+Import your application's tools package, such as `goravel/app/ai/tools`, then return the tool from your agent's `Tools` method:
 
 ```go
 func (r *SupportAgent) Tools() []ai.Tool {
@@ -716,6 +716,26 @@ fmt.Println(response.Text())
 ```
 
 Goravel limits the tool-call loop to prevent a model from requesting tools indefinitely.
+
+## Custom Generator Paths
+
+By default, `make:agent` writes to `app/ai/agents` and `make:tool` writes to `app/ai/tools`. You may customize those paths in `bootstrap/app.go` with `WithPaths`:
+
+```go
+package bootstrap
+
+import (
+    "github.com/goravel/framework/contracts/foundation/configuration"
+    "github.com/goravel/framework/foundation"
+)
+
+var App = foundation.Setup().
+    WithPaths(func(paths configuration.Paths) {
+        paths.Agents("internal/ai/agents")
+        paths.Tools("internal/ai/tools")
+    }).
+    Create()
+```
 
 ## Streaming
 
