@@ -284,6 +284,18 @@ attachment := document.FromStorage(
 )
 ```
 
+Use `WithTitle` to set a display title for an attachment. This is especially useful when creating attachments from strings or byte slices, where there is no natural filename:
+
+```go
+attachment := frameworkai.DocumentFromString(
+    "The alpha release ships on July 1, 2026.",
+    frameworkai.WithMimeType("text/plain"),
+    frameworkai.WithTitle("Release Schedule"),
+)
+```
+
+When an attachment resolves from a natural source (path, URL, storage, or upload), the resolved filename overrides the title. Use `WithTitle` on attachments where you want a descriptive label instead of an auto-detected name. The option is available on all attachment constructors, including `document.WithTitle` and `image.WithTitle`.
+
 `Stream` accepts the same attachment option:
 
 ```go
