@@ -529,6 +529,58 @@ ctx.Divider()     // ----------
 ctx.Divider("=>") // =>=>=>=>=>
 ```
 
+## Graceful Shutdown
+
+By default, pressing `Ctrl+C` (or sending `SIGTERM`) cancels the `console.Context` passed to `Handle`. The framework runs `Handle` in a goroutine, so it returns `context.Canceled` as soon as the signal fires and the process exits. Commands that need to release resources — closing network listeners, draining queues, flushing buffers — can opt into a cleanup callback by implementing the optional `console.Shutdownable` interface.
+
+```go
+type Shutdownable interface {
+  Shutdown(ctx Context) error
+}
+```
+
+When a command implements `Shutdownable`, the framework races `Handle` against the signal context. If `Handle` returns first, the framework then calls `Shutdown` with a fresh `console.Context` (the original is already cancelled) and a 30s budget so the command can finish any cleanup. If the signal fires first, the framework calls `Shutdown` with the same fresh context and 30s budget, then returns; `Handle` is left to run on its own in the goroutine and the process exits.
+
+`console.Context` now embeds `context.Context`, so commands can use `<-ctx.Done()` directly, pass `ctx` to functions that expect a `context.Context`, and call `ctx.Deadline()` / `ctx.Err()` / `ctx.Value(key)` without an accessor.
+
+```go
+package commands
+
+import (
+  "errors"
+  "net/http"
+
+  "github.com/goravel/framework/contracts/console"
+  "github.com/goravel/framework/contracts/console/command"
+)
+
+type Serve struct {
+  server *http.Server
+}
+
+func (r *Serve) Signature() string   { return "serve" }
+func (r *Serve) Description() string { return "Start the HTTP server" }
+func (r *Serve) Extend() command.Extend {
+  return command.Extend{Category: "server"}
+}
+
+func (r *Serve) Handle(ctx console.Context) error {
+  if err := r.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+    return err
+  }
+  return nil
+}
+
+func (r *Serve) Shutdown(ctx console.Context) error {
+  ctx.Info("received signal, shutting down gracefully...")
+  return r.server.Shutdown(ctx)
+}
+```
+
+The built-in `schedule:run` command is a real example. Its `Handle` blocks on `schedule.Run()`, and on signal the framework calls `Shutdown`, which delegates to `schedule.Shutdown(ctx)` so scheduled tasks get a chance to finish their work.
+
+Commands that do not implement `Shutdownable` keep the original behavior — the process exits as soon as the signal is received.
+
 ## Category
 
 You can set a set of commands to the same category, convenient in `./artisan list`:
