@@ -134,3 +134,46 @@ To bring the application out of maintenance mode, run the `up` command:
 ```shell
 ./artisan up
 ```
+
+### Disabled Runners
+
+When the application starts via `app.Start()`, Goravel automatically runs the auto-run [runners](../architecture-concepts/service-providers.md#runners) registered by service providers, such as the HTTP server, gRPC server, queue worker, scheduler, and telemetry. You can selectively skip specific runners in the main process by setting the `app.disabled_runners` option in `config/app.go`. The framework evaluates this list centrally, so the same option works for any current or future runner.
+
+```go
+// config/app.go
+"app": map[string]any{
+    "env":   config.Env("APP_ENV", "production"),
+    "debug": config.Env("APP_DEBUG", false),
+    "disabled_runners": []string{"goravel:schedule"},
+},
+```
+
+The value is a slice of glob patterns matched against each runner's signature. The framework uses Go's [`path.Match`](https://pkg.go.dev/path#Match) for matching, so `*` is the only wildcard. The framework runner signatures are:
+
+| Signature | Runner | Started by |
+| --- | --- | --- |
+| `goravel:http` | `HTTPRunner` (HTTP server) | `http` service provider |
+| `goravel:grpc` | `GrpcRunner` (gRPC server) | `grpc` service provider |
+| `goravel:queue` | `QueueRunner` (queue worker) | `queue` service provider |
+| `goravel:schedule` | `ScheduleRunner` (scheduler) | `schedule` service provider |
+| `goravel:telemetry` | `TelemetryRunner` | `telemetry` service provider |
+
+Common patterns:
+
+```go
+// Web container — only skip the scheduler so it runs on a dedicated container
+"disabled_runners": []string{"goravel:schedule"},
+
+// Scheduler-only container — disable http, queue, grpc
+"disabled_runners": []string{"goravel:http", "goravel:queue", "goravel:grpc"},
+
+// Disable every framework runner
+"disabled_runners": []string{"goravel:*"},
+
+// Kill switch: run no auto-run runners in the main process
+"disabled_runners": []string{"*"},
+```
+
+Patterns are evaluated in order and the first match wins. Invalid patterns (for example, an unmatched bracket) are logged as warnings and the runner is left running, so a typo in the config never crashes the boot.
+
+User-defined runners that you register with `WithRunners` are not affected by the `goravel:*` namespace. Use the runner's own signature to disable it.
