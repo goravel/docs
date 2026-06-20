@@ -57,6 +57,43 @@ func Boot() contractsfoundation.Application {
 
 A new command created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the command manually if you create the command file by yourself.
 
+### Filtering Commands
+
+You may want to scope which built-in Artisan commands are registered in different environments — for example, hiding dev commands like `make:*`, `package:*`, and `vendor:publish` in production. The `WithCommandsFilter` method on `ApplicationBuilder` lets you return a positive list of command signatures to keep:
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithCommandsFilter(func() []string {
+			if facades.Config().GetString("app.env") == "production" {
+				return []string{
+					"up", "down", "key:generate", "about",
+					"schedule:*", // glob
+					"queue:*",    // glob
+				}
+			}
+			return nil // keep everything in other environments
+		}).
+		WithConfig(config.Boot).
+		Create()
+}
+```
+
+The callback runs once at build time and each entry is matched against `command.Signature()` in one of two ways:
+
+- **Exact match** (no wildcard) — the signature must match the entry exactly.
+- **Glob match** (entry contains `*`) — checked using `path.Match`. `*` matches any sequence of non-`/` characters.
+
+The return value determines the filtering behavior:
+
+- **Method not called** — all commands are kept (default).
+- **Return `nil`** — all commands are kept (no filter applied).
+- **Return `[]string{}`** — all commands are dropped.
+- **Return entries** — only commands whose signature matches an entry are kept.
+
+> Note: The filter applies to all commands including those added via `WithCommands`, so the user cannot bypass the filter by adding commands manually.
+
 ### Command Structure
 
 After generating your command, assign suitable values to the signature and description properties of the struct. The `Handle` method will be called when your command is executed. You need to implement your logic in this method.
