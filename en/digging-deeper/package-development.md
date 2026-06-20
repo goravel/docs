@@ -161,6 +161,18 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
+### Views
+
+If your package provides default [views](../the-basics/views.md), register their directory using `LoadViewsFrom` in your service provider's `Boot` method:
+
+```go
+func (receiver *ServiceProvider) Boot(app foundation.Application) {
+    facades.View().LoadViewsFrom("/path/to/package/views")
+}
+```
+
+The application's `resources/views` directory takes priority over registered package views, so users can override any package view by creating a file with the same name.
+
 ## Commands
 
 You can register `Artisan` command by the `Commands` method, you can run the commands using [Artisan CLI](../digging-deeper/artisan-console.md) after registering them.
