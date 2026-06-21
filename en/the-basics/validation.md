@@ -377,6 +377,52 @@ if validator.Errors().Has("email") {
 }
 ```
 
+## Translation & Localization
+
+### Using Translation for Validation Messages
+
+Validation error messages are now powered by the framework's [localization](../digging-deeper/localization.md) system. Default messages are embedded in the framework and automatically use the application's current locale. The message lookup follows this order:
+
+1. Form-request `Messages()` or explicit `validation.Messages()` overrides (`field.rule`, then `rule`)
+2. Custom rule's `Message()` method
+3. Translation file lookup with `validation.*` keys (e.g., `validation.required`, `validation.min.string`)
+4. Embedded default messages
+
+For size-based rules like `min`, `max`, `between`, `size`, `gt`, `gte`, `lt`, and `lte`, the translation key includes the attribute type suffix (e.g., `min.string`, `min.numeric`, `min.array`, `min.file`).
+
+### Publishing Validation Language Files
+
+Use the `lang:publish` Artisan command to publish the validation language files to your application's `lang` directory:
+
+```shell
+go run . artisan lang:publish
+```
+
+This copies the validation translation files from the framework into `lang/en/validation.json`, where you can customize the default error messages.
+
+To overwrite existing files, use the `--force` (or `-f`) flag:
+
+```shell
+go run . artisan lang:publish --force
+```
+
+### Customizing Default Messages
+
+After publishing, edit `lang/en/validation.json` to customize any validation message. For example:
+
+```json
+{
+    "required": "You forgot the :attribute field!",
+    "email": "The :attribute must be a valid email address."
+}
+```
+
+These custom messages will be used by all validators in your application, unless overridden by form request `Messages()` or explicit `validation.Messages()`.
+
+### Translating to Other Languages
+
+To support additional languages, create a copy of the published `lang/en/validation.json` in the corresponding language directory (e.g., `lang/zh/validation.json`) and translate the messages. The framework will use the appropriate language file based on the current locale set by `facades.App().SetLocale(ctx, "zh")`.
+
 ## Available Validation Rules
 
 Validation rule names now use snake_case by default. Rules and filters are defined with `map[string]any`; each value must be either a pipe-separated `string` or a `[]string` of rule names.
@@ -479,6 +525,21 @@ func (receiver *Uppercase) Passes(ctx context.Context, data validation.Data, val
 // Message Get the validation error message.
 func (receiver *Uppercase) Message(ctx context.Context) string {
   return "The :attribute must be uppercase."
+}
+```
+
+Custom rule messages support the following placeholders:
+
+| Placeholder | Description |
+| --- | --- |
+| `:attribute` | The field name or custom attribute |
+| `:value` | The field value being validated |
+| `:option0`, `:option1`, ... | Rule parameters passed to `Passes()` |
+
+```go
+// Example with all placeholders
+func (receiver *Between) Message(ctx context.Context) string {
+  return "The :attribute value :value must be between :option0 and :option1."
 }
 ```
 
