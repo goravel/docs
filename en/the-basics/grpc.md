@@ -8,7 +8,7 @@ Grpc module can be operated by `facades.Grpc()`. Goravel provides an elegant way
 
 ## Configuration
 
-In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.servers` configures the servers which the client will connect to.
+In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.clients` configures the clients which will connect to gRPC services.
 
 ## Transport Credentials
 
@@ -40,7 +40,7 @@ func Boot() contractsfoundation.Application {
 
 ### Client Credentials
 
-Register client credential groups in `bootstrap/app.go`, then reference the group name in `config/grpc.go` with `grpc.servers.<name>.credentials`:
+Register client credential groups in `bootstrap/app.go`, then reference the group name in `config/grpc.go` with `grpc.clients.<name>.credentials`:
 
 ```go
 import "google.golang.org/grpc/credentials"
@@ -232,9 +232,9 @@ func Boot() foundation.Application {
 }
 ```
 
-### Apply Interceptors to Servers
+### Apply Interceptors to Clients
 
-The `default` in the example above is a group name that can be applied to the configuration item `grpc.servers.interceptors`. In this way, the client will be applied to all interceptors under the group.
+The `default` in the example above is a group name that can be applied to the configuration item `grpc.clients.interceptors`. In this way, the client will use all interceptors under the group.
 
 ```go
 package config
@@ -249,7 +249,7 @@ func init() {
     "host": config.Env("GRPC_HOST", ""),
     "port": config.Env("GRPC_PORT", ""),
     
-    "servers": map[string]any{
+    "clients": map[string]any{
       "user": map[string]any{
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),
@@ -392,7 +392,7 @@ func init() {
     "host": config.Env("GRPC_HOST", ""),
     "port": config.Env("GRPC_PORT", ""),
     
-    "servers": map[string]any{
+    "clients": map[string]any{
       "user": map[string]any{
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),
