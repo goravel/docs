@@ -208,6 +208,8 @@ Metrics use a periodic reader instead, configured by `metrics.reader.interval` (
 
 To create a span, request a tracer from the `Telemetry` facade using the `Tracer` method, then call `Start`. The first argument is a `context.Context`, if the context already contains a span (for example, one started by the HTTP middleware), the new span is automatically attached as its child.
 
+The `Tracer` argument (`"app"` above) is the **instrumentation scope name**: it identifies the code that produced the span. Use a stable name that points back to the instrumenting code, by convention the package import path (for example `github.com/you/app/services`) or, for application code, the application or module name. It is recorded on every span as `otel.scope.name`, so your backend can group and filter spans by the component that emitted them. The framework's built-in instrumentation uses its own scope (for example `github.com/goravel/framework/telemetry/instrumentation/http`), which keeps your spans distinct from the framework's.
+
 The following service traces an order through its processing steps: the `Process` method opens a span, records what happened on it, and passes the returned context down so that `chargePayment` becomes a child span within the same trace:
 
 ```go
@@ -348,6 +350,8 @@ If there is no active span in the context, a no-op span is returned, so it is al
 ## Metrics
 
 To record metrics, request a meter from the `Telemetry` facade using the `Meter` method, then create instruments from it. Instruments are safe for concurrent use and should be created once and reused, a common pattern is to create them when the service is constructed and record values in its methods.
+
+Like `Tracer`, the `Meter` argument is the **instrumentation scope name** that identifies the code producing the metrics (see [Creating Spans](#creating-spans)). It is recorded as `otel.scope.name` on the exported metrics.
 
 The following service uses a **counter** (a value that only goes up, ideal for counting processed payments or sent emails) and a **histogram** (a distribution of values, such as durations or payload sizes):
 
