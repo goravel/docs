@@ -58,8 +58,9 @@ Use the `route:list` command to view routes list:
 | Static     | [File Routing](#file-routing)         |
 | StaticFile | [File Routing](#file-routing)         |
 | StaticFS   | [File Routing](#file-routing)         |
-| Middleware | [Middleware](#middleware)             |
-| GetRoutes  | [Get All Routes](#get-all-routes)     |
+| Middleware         | [Middleware](#middleware)                   |
+| WithoutMiddleware  | [Without Middleware](#without-middleware)   |
+| GetRoutes          | [Get All Routes](#get-all-routes)           |
 | Name       | [Set Route Name](#set-route-name)     |
 | Info       | [Get Route Info](#get-route-info)     |
 
@@ -150,6 +151,41 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 Detail [Middleware](./middleware.md)
+
+## Without Middleware
+
+The `WithoutMiddleware` method allows you to exclude specific middleware from routes that would otherwise be applied by parent groups. This is useful for webhook endpoints, public APIs, or any route that should bypass certain middleware (like authentication or rate limiting).
+
+### Route-Level Exclusion
+
+```go
+import "github.com/goravel/framework/http/middleware"
+
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  // This route has both middlewares
+  router.Get("/dashboard", dashboardController.Index)
+
+  // This route excludes the throttle middleware
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+### Group-Level Exclusion
+
+Exclude middleware for all routes within a group:
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    // All routes in this group bypass Auth middleware
+    router.Get("/public", publicController.Index)
+    router.Get("/public/{id}", publicController.Show)
+  })
+```
+
+> **Note**: The middleware comparison uses reflection to match middleware types. Closure-based middleware (created inline with `func(ctx http.Context)`) share a single type and cannot be individually excluded. Use struct-based middleware for `WithoutMiddleware` to work correctly.
 
 ## Get All Routes
 

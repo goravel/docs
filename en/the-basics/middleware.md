@@ -71,6 +71,34 @@ import "github.com/goravel/framework/http/middleware"
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
 
+### Excluding Middleware
+
+The `WithoutMiddleware` method allows specific routes to bypass certain middleware that would otherwise be applied by parent groups. This is useful for public endpoints, webhook handlers, or routes that should skip authentication or rate limiting.
+
+Use `WithoutMiddleware` on individual routes after `Middleware` is applied to a group:
+
+```go
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  router.Get("/dashboard", dashboardController.Index)
+
+  // This route excludes the throttle middleware
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+You can also exclude middleware for an entire group:
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    router.Get("/public", publicController.Index)
+  })
+```
+
+> **Note**: Middleware exclusion uses reflection to compare types. Closure-based middleware (inline `func(ctx http.Context)`) share a single type and cannot be individually excluded. Use struct-based middleware for reliable exclusion.
+
 ## Abort Request
 
 In middleware, if you need to interrupt the request, you can use the `Abort` method.
