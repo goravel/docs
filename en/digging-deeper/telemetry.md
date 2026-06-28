@@ -556,14 +556,14 @@ For structured queries, the table comes from the builder, so the span is named a
 facades.DB().Table("users").Where("id", 1).Get(&users) // span: SELECT users
 ```
 
-Raw queries run through `Select` or `Statement` pass an opaque SQL string that the framework does not parse, so the span is named after the operation alone. Tag the context with the table to restore the full name and the `db.collection.name` attribute:
+Raw queries run through `Select` or `Statement` pass an opaque SQL string that the framework does not parse, so the span is named after the operation alone. Use `ContextWithTable` to tag the table onto the request context to restore the full name and the `db.collection.name` attribute:
 
 ```go
 import (
     instrumentationdatabase "github.com/goravel/framework/telemetry/instrumentation/database"
 )
 
-queryCtx := instrumentationdatabase.ContextWithTable(ctx.Context(), "users")
+queryCtx := instrumentationdatabase.ContextWithTable(ctx, "users")
 facades.DB().WithContext(queryCtx).Select(&users, "SELECT * FROM users WHERE id = ?", 1) // span: SELECT users
 ```
 
