@@ -544,6 +544,29 @@ func Boot() contractsfoundation.Application {
 
 Both handlers accept options such as `WithFilter`, `WithSpanAttributes`, and `WithMetricAttributes`, and can be toggled via the `grpc_server.enabled` and `grpc_client.enabled` configuration options.
 
+### Database
+
+Queries executed through the [ORM](../orm/getting-started.md) (`facades.Orm()`) and the [Query Builder](../database/queries.md) (`facades.DB()`) are instrumented automatically, no setup required. Each query records a client span along with the `db.client.operation.duration` metric, and every connection pool reports `db.client.connection.count` and `db.client.connection.max`, so you can watch pool usage and saturation.
+
+You can disable it via the `telemetry.instrumentation.database.enabled` configuration option (the `OTEL_DATABASE_ENABLED` environment variable).
+
+For structured queries, the table comes from the builder, so the span is named after the operation and table and carries the `db.collection.name` attribute. Nothing extra is required:
+
+```go
+facades.DB().Table("users").Where("id", 1).Get(&users) // span: SELECT users
+```
+
+Raw queries run through `Select` or `Statement` pass an opaque SQL string that the framework does not parse, so the span is named after the operation alone. Tag the context with the table to restore the full name and the `db.collection.name` attribute:
+
+```go
+import (
+    instrumentationdatabase "github.com/goravel/framework/telemetry/instrumentation/database"
+)
+
+queryCtx := instrumentationdatabase.ContextWithTable(ctx.Context(), "users")
+facades.DB().WithContext(queryCtx).Select(&users, "SELECT * FROM users WHERE id = ?", 1) // span: SELECT users
+```
+
 ## Context Propagation
 
 The `propagators` configuration option defines how trace context crosses process boundaries. The default is the W3C `tracecontext` standard; `baggage`, `b3`, and `b3multi` (Zipkin) are also supported and can be combined as a comma-separated list.
