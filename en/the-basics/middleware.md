@@ -17,10 +17,14 @@ import (
   "github.com/goravel/framework/contracts/http"
 )
 
-func Auth() http.Middleware {
-  return func(ctx http.Context) {
-    ctx.Request().Next()
-  }
+type Auth struct{}
+
+func (a *Auth) Handle(ctx http.Context) {
+  ctx.Request().Next()
+}
+
+func (a *Auth) Signature() string {
+  return "auth"
 }
 ```
 
@@ -97,7 +101,7 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **Note**: Middleware exclusion uses reflection to compare types. Closure-based middleware (inline `func(ctx http.Context)`) share a single type and cannot be individually excluded. Use struct-based middleware for reliable exclusion.
+> **Note**: Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
 
 ## Abort Request
 

@@ -185,7 +185,7 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **Note**: The middleware comparison uses reflection to match middleware types. Closure-based middleware (created inline with `func(ctx http.Context)`) share a single type and cannot be individually excluded. Use struct-based middleware for `WithoutMiddleware` to work correctly.
+> **Note**: Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
 
 ## Get All Routes
 
