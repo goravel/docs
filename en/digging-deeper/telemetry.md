@@ -256,12 +256,12 @@ func (r *OrderService) chargePayment(ctx context.Context, orderID string) error 
 }
 ```
 
-When the service is called from a controller, pass `ctx.Context()`. If the [HTTP server middleware](#http-server) is registered, the spans are attached to the request's trace, so your backend shows the full picture: the HTTP request, the order processing, and the payment charge as one tree:
+When the service is called from a controller, pass `ctx` directly (`http.Context` implements `context.Context`). If the [HTTP server middleware](#http-server) is registered, the spans are attached to the request's trace, so your backend shows the full picture: the HTTP request, the order processing, and the payment charge as one tree:
 
 ```go
 // app/http/controllers/order_controller.go
 func (r *OrderController) Store(ctx http.Context) http.Response {
-    if err := r.orders.Process(ctx.Context(), ctx.Request().Input("order_id")); err != nil {
+    if err := r.orders.Process(ctx, ctx.Request().Input("order_id")); err != nil {
         return ctx.Response().Status(http.StatusInternalServerError).Json(http.Json{
             "error": "failed to process order",
         })
@@ -338,7 +338,7 @@ You don't always need to create a new span, often you just want to enrich the on
 import "go.opentelemetry.io/otel/trace"
 
 func (r *OrderController) Store(ctx http.Context) http.Response {
-    span := trace.SpanFromContext(ctx.Context())
+    span := trace.SpanFromContext(ctx)
     span.SetAttributes(telemetry.String("order.id", "1234"))
 
     // ...
@@ -457,7 +457,7 @@ To correlate logs with the active trace, write them using `WithContext`, the tra
 
 ```go
 func (r *OrderController) Store(ctx http.Context) http.Response {
-    facades.Log().WithContext(ctx.Context()).
+    facades.Log().WithContext(ctx).
         With(map[string]any{
             "order_id": ctx.Request().Input("order_id"),
         }).
