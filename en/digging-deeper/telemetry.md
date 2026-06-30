@@ -256,7 +256,7 @@ func (r *OrderService) chargePayment(ctx context.Context, orderID string) error 
 }
 ```
 
-When the service is called from a controller, pass `ctx` directly (`http.Context` implements `context.Context`). If the [HTTP server middleware](#http-server) is registered, the spans are attached to the request's trace, so your backend shows the full picture: the HTTP request, the order processing, and the payment charge as one tree:
+When the service is called from a controller, pass `ctx`. If the [HTTP server middleware](#http-server) is registered, the spans are attached to the request's trace, so your backend shows the full picture: the HTTP request, the order processing, and the payment charge as one tree:
 
 ```go
 // app/http/controllers/order_controller.go
