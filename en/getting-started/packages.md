@@ -6,6 +6,7 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | --------------------------------------------------------------------------------- | --------------------------------------------- | ------------- |
 | [goravel/gin](https://github.com/goravel/gin) | The Gin driver for `facades.Route()` | 83.1% |
 | [goravel/fiber](https://github.com/goravel/fiber) | The Fiber driver for `facades.Route()` | 81.0% |
+| [goravel/openai](https://github.com/goravel/openai) | An OpenAI driver for `facades.AI()` | 80.4% |
 | [goravel/cos](https://github.com/goravel/cos) | A COS disk driver for `facades.Storage()` | 80.2% |
 | [goravel/minio](https://github.com/goravel/minio) | A Minio disk driver for `facades.Storage()` | 79.6% |
 | [goravel/redis](https://github.com/goravel/redis) | A Redis disk driver for `facades.Cache()` | 79.1% |
@@ -13,9 +14,11 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [goravel/oss](https://github.com/goravel/oss) | A OSS disk driver for `facades.Storage()` | 76.5% |
 | [goravel/installer](https://github.com/goravel/installer) | Goravel installer | 76.2% |
 | [goravel/postgres](https://github.com/goravel/postgres) | A Postgres database driver | 73.7% |
+| [goravel/anthropic](https://github.com/goravel/anthropic) | An Anthropic driver for `facades.AI()` | 73.3% |
 | [goravel/mysql](https://github.com/goravel/mysql) | A MySQL database driver | 73.3% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver) | A Sqlserver database driver | 60.6% |
 | [goravel/sqlite](https://github.com/goravel/sqlite) | A Sqlite database driver | 45.2% |
+| [goravel/gemini](https://github.com/goravel/gemini) | A Gemini driver for `facades.AI()` | 51.8% |
 | [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | A MongoDB package | 16.9% |
 | [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli) | A goravel scaffold commandline tool | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | A workflow package | 4.4% |

@@ -1008,3 +1008,20 @@ conversation, err := facades.AI().Agent(
     frameworkai.WithProvider("custom"),
 )
 ```
+
+## AI Agent Development Skill
+
+The `goravel-lite` scaffold ships a `.agents/skills/goravel-development/SKILL.md` skill file that teaches AI coding agents (Cursor, Copilot, Codex, etc.) how to work with Goravel projects. The skill covers project structure, facades, routing, ORM, testing conventions, and Artisan scaffolding commands.
+
+When an AI agent reads this skill, it already knows:
+
+- How to bootstrap a Goravel project and use `package:install` to add facades.
+- The facade pattern, testing with `testify` suites, and mock helpers.
+- Artisan `make:*` generators for controllers, middleware, models, migrations, and more.
+- Where to find contract interfaces, reference implementations, and docs.
+
+### Customization
+
+You can extend the built-in skill with project-specific rules by creating `.agents/skills/goravel-development/CUSTOM.md`. AI agents will read and apply both files automatically. Add conventions unique to your project, such as preferred import aliases, domain-specific naming, or custom directory layouts.
+
+The skill is versioned alongside the `goravel-lite` scaffold and is updated when you upgrade the framework. After upgrading, review the skill file for new conventions and merge your `CUSTOM.md` rules as needed.

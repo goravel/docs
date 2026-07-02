@@ -38,6 +38,11 @@ export const config = defineConfig({
         items: sidebarAdvanced()
       },
       {
+        text: 'AI',
+        base: '/ai/',
+        items: sidebarAI()
+      },
+      {
         text: 'Security',
         base: '/security/',
         items: sidebarSecurity()
@@ -320,6 +325,15 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     {
       text: 'Telemetry',
       link: 'telemetry'
+    }
+  ]
+}
+
+function sidebarAI(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'AI SDK',
+      link: 'sdk'
     }
   ]
 }
