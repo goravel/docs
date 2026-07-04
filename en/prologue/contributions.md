@@ -137,6 +137,55 @@ You can find or create an issue in [Issue List](https://github.com/goravel/gorav
 | [goravel/sqlite](https://github.com/goravel/sqlite)                   | The SQLite driver of Database module                                |
 | [goravel/.github](https://github.com/goravel/.github)                 | [Community health file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
 
+## Agent Skills
+
+Goravel provides agent skills for AI coding assistants (Claude Code, OpenCode, etc.) to help contributors follow Goravel development conventions such as testing, naming, and pull request workflows. Skills are sourced from the [goravel/agents](https://github.com/goravel/agents) repository.
+
+First, install the `goravel` CLI if you haven't already:
+
+```shell
+go install github.com/goravel/goravel@latest
+```
+
+### List Available Skills
+
+View all available Goravel agent skills:
+
+```shell
+goravel skill:list
+
+// Show skills with descriptions
+goravel skill:list --detail
+```
+
+### Install Skills
+
+Install all Goravel agent skills to `~/.agents/skills` by default:
+
+```shell
+goravel skill:install
+```
+
+Install specific skills by name:
+
+```shell
+goravel skill:install goravel-testing goravel-planning
+```
+
+Install to a custom directory with `--path`:
+
+```shell
+goravel skill:install --path ~/goravel-skills
+```
+
+Overwrite existing skills with `--force`:
+
+```shell
+goravel skill:install --force goravel-testing
+```
+
+> **Note**: Existing skills are preserved unless `--force` is used.
+
 ## Code of Conduct
 
 The Goravel code of conduct is derived from the Laravel code of conduct. Any violations of the code of conduct may be reported to Bowen.
