@@ -14,7 +14,7 @@
 
 `single` 和 `daily` 驱动中的 `print` 配置可以控制日志输出到控制台。
 
-The `level` configuration controls the minimum log level. Logs below this level will be filtered out. Available levels are `debug` (default), `info`, `warning`, and `error`.
+`level` 配置控制最小日志级别。 低于此级别的日志将被过滤掉。 可用的级别有 `debug`（默认）、`info`、`warning` 和 `error`。
 
 ## 可用的通道驱动
 
