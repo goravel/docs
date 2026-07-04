@@ -14,6 +14,8 @@ Turli log kanallarini sozlash uchun `config/logging.go` faylida maxsus konfigura
 
 `single` va `daily` haydovchilaridagi `print` konfiguratsiyasi log chiqishini konsolga boshqarishi mumkin.
 
+`level` konfiguratsiyasi minimal log darajasini boshqaradi. Ushbu darajadan past boʻlgan loglar filtrlangan boʻladi. Mavjud darajalar: `debug` (standart), `info`, `warning`, va `error`.
+
 ## Mavjud kanal haydovchilari
 
 | Nomi     | Tavsifi                             |

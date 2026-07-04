@@ -404,7 +404,7 @@ facades.Http().AssertSent(func(req client.Request) bool {
 
 **其他断言**
 
-你也可以断言某个特定请求_未_被发送，或者检查发送的请求总数：
+你也可以断言某个特定请求未被发送，或者检查发送的请求总数：
 
 ```go
 // 断言请求未被发送
