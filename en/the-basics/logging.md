@@ -14,6 +14,8 @@ To configure various log channels, custom configurations can be made in `config/
 
 The `print` configuration in `single` and `daily` drivers can control log output to the console.
 
+The `level` configuration controls the minimum log level. Logs below this level will be filtered out. Available levels are `debug` (default), `info`, `warning`, and `error`.
+
 ## Available channel drivers
 
 | Name     | Description             |
