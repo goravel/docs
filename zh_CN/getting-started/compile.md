@@ -7,21 +7,33 @@
 Goravel 项目可以通过以下命令编译：
 
 ```shell
-# 选择系统进行编译
+# Select the system to compile
 ./artisan build
 
-# 指定系统进行编译
+# Specify the system to compile
 ./artisan build --os=linux
 ./artisan build -o=linux
 
-# 静态编译
+# Static compilation
 ./artisan build --static
 ./artisan build -s
 
-# 指定输出文件名
+# Specify the output file name
 ./artisan build --name=goravel
 ./artisan build -n=goravel
+
+# Run go generate before building
+./artisan build --generate
+./artisan build -g
 ```
+
+The `--generate` flag runs `go generate ./...` before the build step. It is disabled by default and can be combined with other build options:
+
+```shell
+./artisan build --generate --os=linux --arch=amd64
+```
+
+When `--generate` is combined with target options such as `--os` or `--arch`, the generate step uses the same build environment.
 
 ## 手动编译
 
