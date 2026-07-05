@@ -76,7 +76,7 @@ type Runner interface {
 }
 ```
 
-There is an example of an `HTTPRunner` defined in the `ServiceProvider` to start and shutdown the HTTP server. Its signature is `goravel:http`, which means it can be selectively disabled from `app.Start()` via the [app.disabled_runners](../getting-started/configuration.md#disabled-runners) config option.
+`ServiceProvider` ichida `HTTPRunner` aniqlangan misol mavjud bo‘lib, u HTTP serverini ishga tushirish va o‘chirish uchun ishlatiladi. Uning imzosi `goravel:http` bo‘lib, bu [app.disabled_runners](../getting-started/configuration.md#disabled-runners) konfiguratsiya opsiyasi orqali `app.Start()` dan tanlab o‘chirilishi mumkinligini bildiradi.
 
 ```go
 type ServiceProvider struct {}
