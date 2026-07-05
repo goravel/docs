@@ -31,9 +31,9 @@ Turli log kanallarini sozlash uchun `config/logging.go` faylida maxsus konfigura
 facades.Log().WithContext(ctx)
 ```
 
-When `WithContext` is used, Goravel writes context key-value pairs to the log output. Framework-internal keys such as `GoravelAuthJwt` and `goravel_http_client_name` are excluded automatically to avoid leaking sensitive or noisy values.
+`WithContext` ishlatilganda, Goravel kontekst kalit-qiymat juftliklarini log chiqishiga yozadi. `GoravelAuthJwt` va `goravel_http_client_name` kabi framework ichki kalitlari maxfiy yoki shovqinli qiymatlarni sizdirishning oldini olish uchun avtomatik ravishda chiqarib tashlanadi.
 
-You can exclude additional context keys by adding `context.exclude` to `config/logging.go`:
+`config/logging.go` ga `context.exclude` qo'shish orqali qo'shimcha kontekst kalitlarini chiqarib tashlashingiz mumkin:
 
 ```go
 // config/logging.go
@@ -45,7 +45,7 @@ You can exclude additional context keys by adding `context.exclude` to `config/l
 },
 ```
 
-String entries match string context keys and typed string context keys by their displayed name. Comparable non-string entries match the exact context key value, which is useful for struct sentinel keys. Uncomparable entries, such as slices or maps, are ignored.
+String yozuvlari string kontekst kalitlari va tipli string kontekst kalitlariga ularning ko'rsatilgan nomi bo'yicha mos keladi. Taqqoslanadigan string bo'lmagan yozuvlar aniq kontekst kalit qiymatiga mos keladi, bu struct sentinel kalitlari uchun foydali. Taqqoslanmaydigan yozuvlar, masalan, slice yoki map, e'tiborga olinmaydi.
 
 ## Log xabarlarini yozish
 
