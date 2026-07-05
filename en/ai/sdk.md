@@ -15,7 +15,7 @@ The core AI module manages conversations and provider resolution. Provider imple
 Install the AI facade and core service provider with the `package:install` command:
 
 ```shell
-./artisan package:install ai
+./artisan package:install AI
 ```
 
 This makes `facades.AI()` available and registers the `make:agent` and `make:tool` Artisan commands.
