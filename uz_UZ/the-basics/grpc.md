@@ -8,15 +8,15 @@ Grpc moduli `facades.Grpc()` orqali boshqarilishi mumkin. Goravel gRPC xizmatlar
 
 ## Konfiguratsiya
 
-In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.clients` configures the clients which will connect to gRPC services.
+`config/grpc.go` faylida Grpc modulini sozlashingiz mumkin, bu yerda `grpc.host` server domen nomini, `grpc.clients` esa gRPC xizmatlariga ulanadigan mijozlarni sozlaydi.
 
-## Transport Credentials
+## Transport kredensiallari
 
-By default, gRPC clients use insecure transport credentials and the gRPC server listens without TLS. You can register `credentials.TransportCredentials` during application bootstrap when your services require TLS or mTLS.
+Odatiy bo'lib, gRPC mijozlari xavfsiz bo'lmagan transport kredensiallaridan foydalanadi va gRPC server TLS siz tinglaydi. Siz `credentials.TransportCredentials` ni ilova ishga tushirish vaqtida ro'yxatdan o'tkazishingiz mumkin, agar xizmatlaringiz TLS yoki mTLS talab qilsa.
 
-### Server Credentials
+### Server kredensiallari
 
-Register server credentials before the gRPC server is created:
+gRPC server yaratilishidan oldin server kredensiallarini ro'yxatdan o'tkazing:
 
 ```go
 import "google.golang.org/grpc/credentials"
@@ -38,9 +38,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-### Client Credentials
+### Mijoz kredensiallari
 
-Register client credential groups in `bootstrap/app.go`, then reference the group name in `config/grpc.go` with `grpc.clients.<name>.credentials`:
+Mijoz kredensial guruhlarini `bootstrap/app.go` da ro'yxatdan o'tkazing, so'ngra guruh nomiga `config/grpc.go` da `grpc.clients.<name>` bilan murojaat qiling..credentials\`:"
 
 ```go
 import "google.golang.org/grpc/credentials"
@@ -77,7 +77,7 @@ func Boot() contractsfoundation.Application {
 },
 ```
 
-If a client has no `credentials` value, Goravel uses insecure credentials for backward compatibility. If the configured group is not registered, Goravel logs a warning and falls back to insecure credentials. For mTLS, return credentials created with `credentials.NewTLS` and a `tls.Config` that includes the required client certificates or trusted CA pools.
+Agar mijozda `credentials` qiymati bo'lmasa, Goravel orqaga qarab moslik uchun himoyalanmagan ma'lumotnomalardan foydalanadi. Agar sozlangan guruh ro'yxatdan o'tmagan bo'lsa, Goravel ogohlantirish yozadi va himoyalanmagan ma'lumotnomalarga qaytadi. mTLS uchun, talab qilinadigan mijoz sertifikatlari yoki ishonchli CA hovuzlarini o'z ichiga olgan `tls.Config` va `credentials.NewTLS` bilan yaratilgan ma'lumotnomalarni qaytaring.
 
 ## Kontrollerlar
 
@@ -232,9 +232,9 @@ func Boot() foundation.Application {
 }
 ```
 
-### Apply Interceptors to Clients
+### Interceptorlarni Mijozlarga qo'llash
 
-The `default` in the example above is a group name that can be applied to the configuration item `grpc.clients.interceptors`. In this way, the client will use all interceptors under the group.
+Yuqoridagi misoldagi `default` - bu `grpc.clients.interceptors` konfiguratsiya bandiga qo'llanilishi mumkin bo'lgan guruh nomi. Shu tarzda, mijoz guruh ostidagi barcha interceptorlardan foydalanadi.
 
 ```go
 package config
@@ -397,7 +397,7 @@ func init() {
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),
         "interceptors":   []string{"default"},
-        "stats_handlers": []string{"user"}, // Apply "user" stats handler group
+        "stats_handlers": []string{"user"}, // "user" stats handler guruhini qo'llash
       },
     },
   })
