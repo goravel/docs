@@ -245,7 +245,7 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     text: "复数",
     link: 'pluralization'
   }, {
-    text: "遥测",
+    text: 'Telemetry',
     link: 'telemetry'
   }];
 }
