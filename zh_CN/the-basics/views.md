@@ -58,7 +58,7 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 
 ### 判断视图文件是否存在
 
-If you need to determine if a view exists, you can use the `facades.View()` method. It checks `resources/views/` as well as any directories registered with `LoadViewsFrom`:
+如果需要判断视图文件是否存在，可以使用 `facades.View()` 方法。 它会检查 `resources/views/` 以及通过 `LoadViewsFrom` 注册的任何目录：
 
 ```go
 if facades.View().Exist("welcome.tmpl") {
@@ -66,20 +66,20 @@ if facades.View().Exist("welcome.tmpl") {
 }
 ```
 
-## Registering Views From Packages
+## 从包中注册视图
 
-Extension packages may register their own view directory using the `LoadViewsFrom` method. This allows packages to provide default views without cluttering the user's `resources/views` directory:
+扩展包可以使用 `LoadViewsFrom` 方法注册自己的视图目录。 这允许包提供默认视图，而不会使 `resources/views` 目录混乱：
 
 ```go
-// In an extension package's service_provider.go
+// 在扩展包的 service_provider.go 中
 func (r *ServiceProvider) Boot(app foundation.Application) {
     facades.View().LoadViewsFrom("/path/to/package/views")
 }
 ```
 
-When a view is rendered, the application's `resources/views` directory takes priority — users can override any package view by creating a file with the same name in `resources/views`. If the view is not found there, the registered package view directories are searched in registration order as fallbacks.
+当渲染视图时，应用程序的 `resources/views` 目录优先——用户可以通过在 `resources/views` 中创建同名文件来覆盖任何包视图。 如果在那里找不到视图，则会按照注册顺序搜索已注册的包视图目录作为备用。
 
-The `Exist` method also checks registered package view paths in addition to `resources/views/`.
+`Exist` 方法除了检查 `resources/views/` 之外，还会检查已注册的包视图路径。
 
 ## 向视图传递数据
 
