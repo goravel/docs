@@ -58,13 +58,28 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 
 ### Ko‘rish Mavjudligini Aniqlash
 
-Agar ko‘rish mavjudligini aniqlash kerak bo‘lsa, `facades.View()` metodidan foydalanishingiz mumkin:
+If you need to determine if a view exists, you can use the `facades.View()` method. It checks `resources/views/` as well as any directories registered with `LoadViewsFrom`:
 
 ```go
 if facades.View().Exist("welcome.tmpl") {
   // ...
 }
 ```
+
+## Registering Views From Packages
+
+Extension packages may register their own view directory using the `LoadViewsFrom` method. This allows packages to provide default views without cluttering the user's `resources/views` directory:
+
+```go
+// In an extension package's service_provider.go
+func (r *ServiceProvider) Boot(app foundation.Application) {
+    facades.View().LoadViewsFrom("/path/to/package/views")
+}
+```
+
+When a view is rendered, the application's `resources/views` directory takes priority — users can override any package view by creating a file with the same name in `resources/views`. If the view is not found there, the registered package view directories are searched in registration order as fallbacks.
+
+The `Exist` method also checks registered package view paths in addition to `resources/views/`.
 
 ## Ko‘rishlarga Ma'lumot O‘tkazish
 
