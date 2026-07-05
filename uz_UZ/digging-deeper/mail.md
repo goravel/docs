@@ -25,7 +25,7 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Send()
 ```
 
-To send raw plain-text body content, set the `Text` field. Goravel sends `Text` as the plain-text email part and does not render it as a template path:
+Yalpi matnli tana kontentini yuborish uchun `Text` maydonini o'rnating. Goravel `Text` ni oddiy matnli elektron pochta qismi sifatida yuboradi va uni shablon yo'li sifatida ko'rsatmaydi:
 
 ```go
 import "github.com/goravel/framework/mail"
@@ -178,13 +178,13 @@ Belgilangan ko'rinishlar katalogida elektron pochta shablonlaringizni yarating. 
 
 ```text
 # resources/views/mail/welcome.txt
-Welcome {{.Name}}!
-Thank you for joining {{.AppName}}.
+Xush kelibsiz {{.Name}}!
+{{.AppName}} ga qo'shilganingiz uchun rahmat.
 ```
 
 ### Shablonlar yordamida elektron pochta xabarlarini yuborish
 
-You can use the `Content` method to specify the template and pass dynamic data. Use `HtmlView` for HTML templates and `TextView` for plain-text templates:
+Shablonni belgilash va dinamik ma'lumotlarni uzatish uchun siz "Content" usulidan foydalanishingiz mumkin. HTML shablonlari uchun `HtmlView` va oddiy matn shablonlari uchun `TextView` dan foydalaning:
 
 ```go
 facades.Mail().
