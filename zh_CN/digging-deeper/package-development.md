@@ -79,7 +79,7 @@ func main() {
 }
 ```
 
-If the package import path is long or its default package name is not convenient, setup modify helpers support an import alias in the `"<alias> <import-path>"` format. Use the same aliased import string when installing and uninstalling:
+如果包导入路径很长或其默认包名不方便，setup modify helpers 支持使用 `\"<别名> <导入路径>\"` 格式的导入别名。 在安装和卸载时使用相同的别名导入字符串：
 
 ```go
 func main() {
@@ -96,7 +96,7 @@ func main() {
 }
 ```
 
-After installation, the generated import uses the alias and the registered item can reference that alias:
+安装后，生成的导入使用别名，注册项可以引用该别名：
 
 ```go
 import (
@@ -110,7 +110,7 @@ func Providers() []foundation.ServiceProvider {
 }
 ```
 
-Alias import strings are also supported by setup helpers that add and remove routes, middleware, commands, jobs, migrations, rules, filters, seeders, and service providers.
+别名导入字符串也受到 setup helpers 的支持，这些 helpers 用于添加和删除路由、中间件、命令、任务、迁移、规则、过滤器、数据填充和服务提供者。
 
 ## 资源
 
@@ -161,9 +161,9 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-### Views
+### 视图
 
-If your package provides default [views](../the-basics/views.md), register their directory using `LoadViewsFrom` in your service provider's `Boot` method:
+如果你的包提供默认[视图](../the-basics/views.md)，请在你的服务提供者的 `Boot` 方法中使用 `LoadViewsFrom` 注册其目录：
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -171,7 +171,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-The application's `resources/views` directory takes priority over registered package views, so users can override any package view by creating a file with the same name.
+应用程序的 `resources/views` 目录优先于注册的包视图，因此用户可以通过创建同名文件来覆盖任何包视图。
 
 ## 命令
 
