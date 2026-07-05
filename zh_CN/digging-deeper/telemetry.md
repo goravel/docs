@@ -1,37 +1,37 @@
-# Telemetry
+# 遥测
 
 [[toc]]
 
-## Introduction
+## 简介
 
-Goravel provides an observability module built on top of [OpenTelemetry](https://opentelemetry.io) that can be operated using `facades.Telemetry()`. It allows you to collect traces, metrics, and logs from your application and export them to any OTLP-compatible backend, such as Jaeger, Prometheus, Grafana, or Datadog.
+Goravel 提供了一个基于 [OpenTelemetry](https://opentelemetry.io) 的可观测性模块，可以使用 `facades.Telemetry()` 进行操作。 它允许您从应用程序中收集追踪、指标和日志，并将其导出到任何兼容 OTLP 的后端，例如 Jaeger、Prometheus、Grafana 或 Datadog。
 
-The module is integrated with the application lifecycle: providers are configured in a single configuration file, buffered data is flushed automatically when the application shuts down, and built-in instrumentation is available for the HTTP server, the HTTP client, gRPC, and the logger.
+该模块与应用程序生命周期集成：提供者在单个配置文件中配置，缓冲数据在应用程序关闭时自动刷新，并且内置了适用于 HTTP 服务器、HTTP 客户端、gRPC 和日志器的检测功能。
 
-If you are new to OpenTelemetry, the module revolves around three signals:
+如果您刚开始接触 OpenTelemetry，该模块围绕三个信号：
 
-- **Traces** record the full path of a request as it travels through your services. Each trace is a tree of spans, where a span represents a single timed operation, such as an HTTP request, a database query, or a function call.
-- **Metrics** are numerical measurements aggregated over time, such as request counts, durations, or memory usage.
-- **Logs** are timestamped records of events, which can be linked to the trace that produced them.
+- **追踪**记录请求在服务间传输的完整路径。 每个追踪是一个跨度树，跨度代表一个计时的操作，例如 HTTP 请求、数据库查询或函数调用。
+- **指标**是随时间聚合的数值测量，例如请求计数、持续时间或内存使用量。
+- **日志**是带有时间戳的事件记录，可以链接到产生它们的追踪。
 
-## Installation
+## 安装
 
-The telemetry module is optional, you can install it using the `package:install` command:
+遥测模块是可选的，你可以使用 `package:install` 命令安装它：
 
 ```shell
 ./artisan package:install Telemetry
 ```
 
-This command performs the following actions:
+此命令执行以下操作：
 
-- Creates the `config/telemetry.go` configuration file;
-- Creates the `facades/telemetry.go` facade file;
-- Registers `&telemetry.ServiceProvider{}` in `bootstrap/providers.go`;
-- Adds an `otel` channel to `config/logging.go` for log export.
+- 创建 `config/telemetry.go` 配置文件；
+- 创建 `facades/telemetry.go` 门面文件；
+- 在 `bootstrap/providers.go` 中注册 `&telemetry.ServiceProvider{}`；
+- 向 `config/logging.go` 添加 `otel` 通道用于日志导出。
 
-## Configuration
+## 配置
 
-All of the configuration options live in the `config/telemetry.go` file. The `service` section defines the identity attached to every trace, metric, and log record, this is what observability platforms use to group your data:
+所有配置选项都在 `config/telemetry.go` 文件中。 `service` 部分定义了附加到每个追踪、度量和日志记录的标识，这是可观测性平台用来对数据进行分组的方式：
 
 ```go
 "service": map[string]any{
@@ -41,11 +41,11 @@ All of the configuration options live in the `config/telemetry.go` file. The `se
 },
 ```
 
-You can attach additional static metadata (e.g., `k8s.pod.name`, `region`, `team`) to all telemetry data using the `resource` section.
+你可以使用 `resource` 部分将额外的静态元数据（例如 `k8s.pod.name`、`region`、`team`）附加到所有遥测数据。
 
-### Enabling Signals
+### 启用信号
 
-Each signal (traces, metrics, and logs) is disabled by default. To enable a signal, point its `exporter` option to one of the exporter definitions in the `exporters` section. The easiest way is through your `.env` file:
+每个信号（追踪、度量和日志）默认是禁用的。 要启用信号，将其 `exporter` 选项指向 `exporters` 部分中的一个导出器定义。 最简单的方法是通过你的 `.env` 文件：
 
 ```ini
 OTEL_TRACES_EXPORTER=otlptrace
@@ -53,42 +53,42 @@ OTEL_METRICS_EXPORTER=otlpmetric
 OTEL_LOGS_EXPORTER=otlplog
 ```
 
-Setting an exporter to an empty string disables the corresponding signal entirely.
+将导出器设置为空字符串将完全禁用相应的信号。
 
 :::tip
-During local development, you can set any of these to `console` to print telemetry data directly to stdout instead of sending it to a backend.
+在本地开发期间，您可以将其中任何一个设置为 `console`，以便直接将遥测数据打印到 stdout，而不是发送到后端。
 :::
 
-### Exporters
+### 导出器
 
-The `exporters` section defines how the data leaves your application. Each entry is referenced by name from the signal sections, three drivers are supported: `otlp`, `console`, and `custom`.
+`exporters` 部分定义了数据如何离开您的应用程序。 每个条目通过名称从信号部分引用，支持三种驱动程序：`otlp`、`console` 和 `custom`。
 
 #### OTLP
 
-The `otlp` driver sends data to any OpenTelemetry collector or vendor endpoint, using either `http/protobuf` (port 4318) or `grpc` (port 4317):
+`otlp` 驱动程序使用 `http/protobuf`（端口 4318）或 `grpc`（端口 4317）将数据发送到任何 OpenTelemetry 收集器或供应商端点：
 
 ```go
 "otlptrace": map[string]any{
     "driver":   "otlp",
     "endpoint": config.Env("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT", "localhost:4318"),
 
-    // Protocol: "http/protobuf" or "grpc".
+    // 协议："http/protobuf" 或 "grpc"。
     "protocol": config.Env("OTEL_EXPORTER_OTLP_TRACES_PROTOCOL", "http/protobuf"),
 
-    // Set to false to require TLS/SSL.
+    // 设置为 false 以要求 TLS/SSL。
     "insecure": config.Env("OTEL_EXPORTER_OTLP_TRACES_INSECURE", true),
 
-    // Compression: "gzip" or "" (none).
+    // 压缩："gzip" 或 ""（无）。
     "compression": config.Env("OTEL_EXPORTER_OTLP_TRACES_COMPRESSION", ""),
 
-    // TLS certificate file paths. Leave empty to use system roots.
+    // TLS 证书文件路径。留空以使用系统根证书。
     "tls": map[string]any{
         "ca":   config.Env("OTEL_EXPORTER_OTLP_TRACES_CERTIFICATE", ""),
         "cert": config.Env("OTEL_EXPORTER_OTLP_TRACES_CLIENT_CERTIFICATE", ""),
         "key":  config.Env("OTEL_EXPORTER_OTLP_TRACES_CLIENT_KEY", ""),
     },
 
-    // Retry with exponential backoff on export failure.
+    // 导出失败时以指数退避重试。
     "retry": map[string]any{
         "enabled":          true,
         "initial_interval": "5s",
@@ -98,9 +98,9 @@ The `otlp` driver sends data to any OpenTelemetry collector or vendor endpoint, 
 },
 ```
 
-The `endpoint` option accepts either a bare `host:port` pair or a full URL. When a URL with a scheme is provided (e.g., `https://otlp.example.com/v1/traces`), the scheme and path determine the TLS setting and export path, and the `insecure` option is ignored.
+`endpoint` 选项可以接受裸 `host:port` 对或完整 URL。 当提供带有协议的 URL 时（例如 `https://otlp.example.com/v1/traces`），方案和路径决定 TLS 设置和导出路径，`insecure` 选项将被忽略。
 
-If your backend requires authentication, such as a vendor API key, you may attach headers to every export request using the `headers` option:
+如果您的后端需要身份验证，例如供应商 API 密钥，您可以使用 `headers` 选项将标头附加到每个导出请求：
 
 ```go
 "otlptrace": map[string]any{
@@ -112,21 +112,21 @@ If your backend requires authentication, such as a vendor API key, you may attac
 },
 ```
 
-The metric exporter additionally supports the `metric_temporality` option: `cumulative` (Prometheus), `delta` (Datadog/StatsD), or `lowmemory`.
+指标导出器还支持 `metric_temporality` 选项：`cumulative`（Prometheus）、`delta`（Datadog/StatsD）或 `lowmemory`。
 
 :::tip
-To see your traces locally, you can run Jaeger with a single command, it accepts OTLP on the default ports and requires no extra configuration:
+要在本地查看追踪信息，您可以使用一条命令运行 Jaeger，它接受默认端口上的 OTLP 且无需额外配置：
 
 ```shell
 docker run --rm -p 16686:16686 -p 4317:4317 -p 4318:4318 jaegertracing/jaeger:latest
 ```
 
-Then set `OTEL_TRACES_EXPORTER=otlptrace` and open `http://localhost:16686`.
+然后设置 `OTEL_TRACES_EXPORTER=otlptrace` 并打开 `http://localhost:16686`。
 :::
 
-#### Console
+#### 控制台
 
-The `console` driver prints telemetry data to stdout, which is useful for debugging your instrumentation locally:
+`console` 驱动程序将遥测数据打印到 stdout，这对于在本地调试您的检测很有用：
 
 ```go
 "console": map[string]any{
@@ -137,15 +137,15 @@ The `console` driver prints telemetry data to stdout, which is useful for debugg
 
 #### Custom
 
-If you need to export data to a destination that is not supported out of the box, you may provide your own exporter using the `custom` driver. The `via` key accepts either a ready-made instance or a factory function, depending on the signal the exporter is used for:
+如果您需要将数据导出到默认不支持的存储目标，您可以使用 `custom` 驱动程序提供自己的导出程序。 `via` 键接受一个现成的实例或工厂函数，具体取决于导出程序用于哪个信号：
 
-| Signal  | Instance                | Factory                                                |
-| ------- | ----------------------- | ------------------------------------------------------ |
-| Traces  | `sdktrace.SpanExporter` | `func(context.Context) (sdktrace.SpanExporter, error)` |
-| Metrics | `sdkmetric.Reader`      | `func(context.Context) (sdkmetric.Reader, error)`      |
-| Logs    | `sdklog.Exporter`       | `func(context.Context) (sdklog.Exporter, error)`       |
+| 信号 | 实例                      | 工厂                                                     |
+| -- | ----------------------- | ------------------------------------------------------ |
+| 追踪 | `sdktrace.SpanExporter` | `func(context.Context) (sdktrace.SpanExporter, error)` |
+| 指标 | `sdkmetric.Reader`      | `func(context.Context) (sdkmetric.Reader, error)`      |
+| 日志 | `sdklog.Exporter`       | `func(context.Context) (sdklog.Exporter, error)`       |
 
-For example, to write spans to a file instead of stdout:
+例如，将 spans 写入文件而非 stdout：
 
 ```go
 import (
@@ -169,28 +169,28 @@ import (
 },
 ```
 
-### Sampling
+### 采样
 
-Recording every trace can be expensive in high-traffic applications. The `traces.sampler` section controls which traces are recorded:
+记录每个跟踪在高流量应用中可能代价高昂。 The `traces.sampler` section controls which traces are recorded:
 
 ```go
 "sampler": map[string]any{
-    // If true, respects the sampling decision of the upstream service.
+    // 如果为 true，则尊重上游服务的采样决策。
     "parent": config.Env("OTEL_TRACES_SAMPLER_PARENT", true),
 
-    // "always_on", "always_off" or "traceidratio"
+    // "always_on"、"always_off" 或 "traceidratio"
     "type": config.Env("OTEL_TRACES_SAMPLER_TYPE", "always_on"),
 
-    // The ratio for "traceidratio" sampling, e.g., 0.1 records ~10% of traces.
+    // "traceidratio" 采样的比率，例如 0.1 记录约 10% 的追踪。
     "ratio": config.Env("OTEL_TRACES_SAMPLER_RATIO", 0.05),
 },
 ```
 
-When `parent` is enabled, your service follows the sampling decision already made by the calling service, ensuring distributed traces are never broken in the middle.
+当 `parent` 启用时，你的服务会遵循调用服务已作出的采样决策，确保分布式追踪不会在中间中断。
 
-### Processors
+### 处理器
 
-Traces and logs are handed to their exporters through a processor. The default `batch` processor buffers data and pushes it on an interval, which is the recommended setting for production. The `simple` processor exports each record synchronously and should only be used for debugging:
+追踪和日志通过处理器传递给其导出器。 默认的 `batch` 处理器会缓冲数据并按时间间隔推送，这是推荐的生产环境设置。 `simple` 处理器同步导出每条记录，仅应用于调试：
 
 ```go
 "processor": map[string]any{
@@ -200,17 +200,17 @@ Traces and logs are handed to their exporters through a processor. The default `
 },
 ```
 
-Metrics use a periodic reader instead, configured by `metrics.reader.interval` (default `60s`).
+指标使用周期性读取器，由 `metrics.reader.interval` 配置（默认 `60s`）。
 
-## Tracing
+## 跟踪
 
-### Creating Spans
+### 创建跨度
 
-To create a span, request a tracer from the `Telemetry` facade using the `Tracer` method, then call `Start`. The first argument is a `context.Context`, if the context already contains a span (for example, one started by the HTTP middleware), the new span is automatically attached as its child.
+要创建跨度，从 `Telemetry` 外观使用 `Tracer` 方法请求一个跟踪器，然后调用 `Start`。 第一个参数是一个 `context.Context`，如果上下文已经包含一个跨度（例如由 HTTP 中间件启动的），则新跨度自动作为其子跨度附加。
 
-The `Tracer` argument (`"app"` above) is the **instrumentation scope name**: it identifies the code that produced the span. Use a stable name that points back to the instrumenting code, by convention the package import path (for example `github.com/you/app/services`) or, for application code, the application or module name. It is recorded on every span as `otel.scope.name`, so your backend can group and filter spans by the component that emitted them. The framework's built-in instrumentation uses its own scope (for example `github.com/goravel/framework/telemetry/instrumentation/http`), which keeps your spans distinct from the framework's.
+`Tracer` 参数（上面的 `"app"`）是 **检测范围名称**：它标识产生跨度的代码。 使用指向检测代码的稳定名称，按照惯例是包导入路径（例如 `github.com/you/app/services`），或者对于应用程序代码，使用应用程序或模块名称。 它在每个 span 上记录为 `otel.scope.name`，因此您的后端可以按发出它们的组件对 span 进行分组和过滤。 框架内置的 instrumentation 使用自己的 scope（例如 `github.com/goravel/framework/telemetry/instrumentation/http`），这使您的 span 与框架的 span 保持区分。
 
-The following service traces an order through its processing steps: the `Process` method opens a span, records what happened on it, and passes the returned context down so that `chargePayment` becomes a child span within the same trace:
+以下服务跟踪订单的处理步骤：`Process` 方法打开一个 span，记录其上发生的事件，并将返回的 context 向下传递，使得 `chargePayment` 成为同一 trace 中的子 span：
 
 ```go
 // app/services/order_service.go
@@ -246,17 +246,17 @@ func (r *OrderService) Process(ctx context.Context, orderID string) error {
 }
 
 func (r *OrderService) chargePayment(ctx context.Context, orderID string) error {
-    // This span automatically becomes a child of "order.process".
+    // 此 span 自动成为 "order.process" 的子 span。
     _, span := facades.Telemetry().Tracer("app").Start(ctx, "order.charge_payment")
     defer span.End()
 
-    // Charge the payment...
+    // 处理支付...
 
     return nil
 }
 ```
 
-When the service is called from a controller, pass `ctx`. If the [HTTP server middleware](#http-server) is registered, the spans are attached to the request's trace, so your backend shows the full picture: the HTTP request, the order processing, and the payment charge as one tree:
+当从控制器调用服务时，传递 `ctx`。 如果注册了 [HTTP 服务器中间件](#http-server)，跨度将附加到请求的追踪中，因此您的后端会显示完整视图：HTTP 请求、订单处理和支付费用作为一棵树：
 
 ```go
 // app/http/controllers/order_controller.go
@@ -273,43 +273,43 @@ func (r *OrderController) Store(ctx http.Context) http.Response {
 }
 ```
 
-The name passed to `Tracer` (and `Meter`) identifies the instrumentation scope, typically your application or package name, and is shown alongside each span in your backend.
+传递给 `Tracer`（以及 `Meter`）的名称标识了检测范围，通常是您的应用程序或包名，并且会与每个跨度一起显示在您的后端中。
 
-### Span Attributes
+### 跨度属性
 
-You can attach key-value attributes to a span using the `SetAttributes` method. The `telemetry` package re-exports the OpenTelemetry attribute helpers so you don't need to import additional packages:
+您可以使用 `SetAttributes` 方法将键值属性附加到跨度。 `telemetry` 包重新导出了 OpenTelemetry 属性的辅助函数，因此您无需导入额外的包：
 
 ```go
 import "github.com/goravel/framework/telemetry"
 
 span.SetAttributes(
-    telemetry.String("order.id", "1234"),
-    telemetry.Int("order.items", 3),
-    telemetry.Bool("order.gift", false),
+    telemetry.String("订单ID", "1234"),
+    telemetry.Int("订单项", 3),
+    telemetry.Bool("订单礼物", false),
 )
 ```
 
-Attributes can also be set at creation time using the `WithAttributes` option:
+也可以使用 `WithAttributes` 选项在创建时设置属性：
 
 ```go
-ctx, span := tracer.Start(ctx, "process-order", telemetry.WithAttributes(
-    telemetry.String("order.id", "1234"),
+ctx, span := tracer.Start(ctx, "处理订单", telemetry.WithAttributes(
+    telemetry.String("订单ID", "1234"),
 ))
 ```
 
-### Span Events
+### Span 事件
 
-Events mark a point in time within a span, such as a cache miss or a retry attempt. You can add them using the `AddEvent` method:
+事件标记跨度内的时间点，例如缓存未命中或重试尝试。 您可以使用 `AddEvent` 方法添加它们：
 
 ```go
-span.AddEvent("cache_miss", telemetry.WithAttributes(
-    telemetry.String("cache.key", "user:42"),
+span.AddEvent("缓存未命中", telemetry.WithAttributes(
+    telemetry.String("缓存键", "user:42"),
 ))
 ```
 
-### Recording Errors
+### 记录错误
 
-When an operation fails, two calls work together: `RecordError` attaches the error to the span as an event, and `SetStatus` marks the whole span as failed so it can be filtered in your backend. Calling `RecordError` alone does not change the span status:
+当操作失败时，两个调用协同工作：`RecordError` 将错误作为事件附加到跨度上，`SetStatus` 将整个跨度标记为失败，以便在后端进行过滤。 单独调用 `RecordError` 不会更改跨度状态：
 
 ```go
 if err != nil {
@@ -320,19 +320,19 @@ if err != nil {
 }
 ```
 
-### Span Kinds
+### 跨度种类
 
-By default, spans are created with the `internal` kind. When a span represents a boundary like publishing a message to a queue or consuming one, you can declare its role using the `WithSpanKind` option:
+默认情况下，跨度以 `internal` 类型创建。 当跨度表示边界，例如将消息发布到队列或消费消息时，您可以使用 `WithSpanKind` 选项声明其角色：
 
 ```go
 ctx, span := tracer.Start(ctx, "orders.publish", telemetry.WithSpanKind(telemetry.SpanKindProducer))
 ```
 
-Available kinds: `SpanKindInternal`, `SpanKindServer`, `SpanKindClient`, `SpanKindProducer`, `SpanKindConsumer`.
+可用的类型：`SpanKindInternal`、`SpanKindServer`、`SpanKindClient`、`SpanKindProducer`、`SpanKindConsumer`。
 
-### The Current Span
+### 当前跨度
 
-You don't always need to create a new span, often you just want to enrich the one that is already active, such as the span started by the [HTTP server middleware](#http-server). You can retrieve it from the context using the `SpanFromContext` function:
+您并不总是需要创建新的跨度，通常您只想丰富已激活的跨度，例如 [HTTP 服务器中间件](#http-服务器) 启动的跨度。 您可以使用 `SpanFromContext` 函数从上下文中检索它：
 
 ```go
 import "go.opentelemetry.io/otel/trace"
@@ -345,15 +345,15 @@ func (r *OrderController) Store(ctx http.Context) http.Response {
 }
 ```
 
-If there is no active span in the context, a no-op span is returned, so it is always safe to call.
+如果上下文中没有活动 span，则返回一个无操作 span，因此始终可以安全调用。
 
-## Metrics
+## 指标
 
-To record metrics, request a meter from the `Telemetry` facade using the `Meter` method, then create instruments from it. Instruments are safe for concurrent use and should be created once and reused, a common pattern is to create them when the service is constructed and record values in its methods.
+要记录指标，请使用 `Meter` 方法从 `Telemetry` 外观请求一个 meter，然后从中创建仪器。 仪器可安全并发使用，应创建一次并重复使用，常见模式是在服务构造时创建它们，并在其方法中记录值。
 
-Like `Tracer`, the `Meter` argument is the **instrumentation scope name** that identifies the code producing the metrics (see [Creating Spans](#creating-spans)). It is recorded as `otel.scope.name` on the exported metrics.
+与 `Tracer` 类似，`Meter` 参数是 **instrumentation scope name**，用于标识产生指标的代码（请参阅[创建 Spans](#创建-spans)）。 它在导出的指标中记录为 `otel.scope.name`。
 
-The following service uses a **counter** (a value that only goes up, ideal for counting processed payments or sent emails) and a **histogram** (a distribution of values, such as durations or payload sizes):
+以下服务使用**计数器**（仅增加的值，适合计算已处理的付款或已发送的电子邮件）和**直方图**（值的分布，例如持续时间或负载大小）：
 
 ```go
 // app/services/payment_service.go
@@ -379,7 +379,7 @@ func NewPaymentService() (*PaymentService, error) {
     meter := facades.Telemetry().Meter("app")
 
     processed, err := meter.Int64Counter("payments.processed",
-        metric.WithDescription("Number of processed payments"),
+        metric.WithDescription("已处理支付数量"),
     )
     if err != nil {
         return nil, err
@@ -387,7 +387,7 @@ func NewPaymentService() (*PaymentService, error) {
 
     duration, err := meter.Float64Histogram("payments.duration",
         metric.WithUnit("s"),
-        metric.WithDescription("Duration of payment processing"),
+        metric.WithDescription("支付处理持续时间"),
     )
     if err != nil {
         return nil, err
@@ -399,7 +399,7 @@ func NewPaymentService() (*PaymentService, error) {
 func (r *PaymentService) Charge(ctx context.Context, method string) error {
     start := time.Now()
 
-    // Charge the payment...
+    // 处理支付...
 
     r.processed.Add(ctx, 1, metric.WithAttributes(
         telemetry.String("payment.method", method),
@@ -410,7 +410,7 @@ func (r *PaymentService) Charge(ctx context.Context, method string) error {
 }
 ```
 
-An **up-down counter** can also decrease, useful for tracking in-flight values:
+**上下计数器** 也可以递减，用于跟踪运行中的值：
 
 ```go
 inFlight, err := meter.Int64UpDownCounter("jobs.in_flight")
@@ -419,7 +419,7 @@ inFlight.Add(ctx, 1)
 defer inFlight.Add(ctx, -1)
 ```
 
-An **observable gauge** reports a value that is sampled rather than recorded, such as a queue depth or the number of open connections. Instead of calling it yourself, you register a callback that is invoked on every collection cycle:
+**可观测计量器**报告的是采样而非记录的值，例如队列深度或打开的连接数。 无需自行调用，而是注册一个在每个采集周期中被调用的回调：
 
 ```go
 _, err := meter.Int64ObservableGauge("queue.depth",
@@ -431,11 +431,11 @@ _, err := meter.Int64ObservableGauge("queue.depth",
 )
 ```
 
-Metrics are collected and pushed to the exporter periodically based on the `metrics.reader.interval` configuration.
+指标将根据 `metrics.reader.interval` 配置定期采集并推送到导出器。
 
-## Logs
+## 日志
 
-During installation, an `otel` channel is added to your `config/logging.go` file:
+在安装过程中，会向 `config/logging.go` 文件添加一个 `otel` 通道：
 
 ```go
 "otel": map[string]any{
@@ -444,7 +444,7 @@ During installation, an `otel` channel is added to your `config/logging.go` file
 },
 ```
 
-Add the channel to your logging stack and every entry written through `facades.Log()` will also be exported as an OpenTelemetry log record, with levels, structured fields, and stack traces mapped automatically:
+将该通道添加到您的日志堆栈中，通过 `facades.Log()` 写入的每条记录也将作为 OpenTelemetry 日志记录导出，其级别、结构化字段和堆栈跟踪会自动映射：
 
 ```go
 "stack": map[string]any{
@@ -453,7 +453,7 @@ Add the channel to your logging stack and every entry written through `facades.L
 },
 ```
 
-To correlate logs with the active trace, write them using `WithContext`, the trace and span IDs are attached to the record so your backend can link logs to the exact request that produced them:
+为了将日志与活动跟踪关联起来，请使用 `WithContext` 编写日志，跟踪和跨度 ID 会附加到记录中，以便您的后端可以将日志链接到产生它们的精确请求：
 
 ```go
 func (r *OrderController) Store(ctx http.Context) http.Response {
@@ -461,21 +461,21 @@ func (r *OrderController) Store(ctx http.Context) http.Response {
         With(map[string]any{
             "order_id": ctx.Request().Input("order_id"),
         }).
-        Info("order received")
+        Info("收到订单")
 
     // ...
 }
 ```
 
-You can also temporarily stop exporting logs without touching your logging configuration by setting `telemetry.instrumentation.log.enabled` to `false`. If you need full control over the emitted records, you may bypass the logging facade and emit OpenTelemetry log records directly using `facades.Telemetry().Logger("app")`.
+您还可以通过将 `telemetry.instrumentation.log.enabled` 设置为 `false` 来临时停止导出日志，而无需修改日志配置。 如果您需要完全控制发出的记录，可以绕过日志门面，直接使用 `facades.Telemetry().Logger("app")` 发出 OpenTelemetry 日志记录。
 
-## Automatic Instrumentation
+## 自动检测
 
-Goravel ships with built-in instrumentation for the most common components. Each one can be toggled in the `instrumentation` section of `config/telemetry.go`.
+Goravel 为最常见的组件提供了内置检测。 每个都可以在 `config/telemetry.go` 的 `instrumentation` 部分中切换。
 
-### HTTP Server
+### HTTP 服务器
 
-The HTTP server middleware extracts the incoming trace context, starts a server span for every request, and records standard metrics (`http.server.request.duration`, `http.server.request.body.size`, `http.server.response.body.size`). Register it in the `bootstrap/app.go` file:
+HTTP 服务器中间件提取传入的跟踪上下文，为每个请求启动一个服务器跨度，并记录标准度量（`http.server.request.duration`、`http.server.request.body.size`、`http.server.response.body.size`）。 在 `bootstrap/app.go` 文件中注册它：
 
 ```go
 import (
@@ -491,7 +491,7 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-You can skip noisy endpoints using the `excluded_paths` and `excluded_methods` configuration options:
+您可以使用 `excluded_paths` 和 `excluded_methods` 配置选项跳过嘈杂的端点：
 
 ```go
 "http_server": map[string]any{
@@ -501,7 +501,7 @@ You can skip noisy endpoints using the `excluded_paths` and `excluded_methods` c
 },
 ```
 
-For more advanced control, the middleware accepts options: `WithFilter` to skip requests programmatically, `WithSpanNameFormatter` to customize span names, and `WithMetricAttributes` to attach extra attributes to recorded metrics.
+为了更高级的控制，中间件接受选项：`WithFilter` 以编程方式跳过请求，`WithSpanNameFormatter` 自定义跨度名称，以及 `WithMetricAttributes` 为记录的指标附加额外属性。
 
 ```go
 handler.Append(telemetryhttp.Telemetry(
@@ -511,15 +511,15 @@ handler.Append(telemetryhttp.Telemetry(
 ))
 ```
 
-### HTTP Client
+### HTTP 客户端
 
-Outgoing requests made through the [HTTP Client](./http-client.md) are instrumented automatically, no setup required. The active trace context is injected into outgoing headers, so downstream Goravel services continue the same trace.
+通过 [HTTP 客户端](./http-client.md) 发出的请求会自动进行检测，无需额外设置。 活跃的追踪上下文被注入到传出头中，因此下游的 Goravel 服务继续同一追踪。
 
-You can disable it globally via `telemetry.instrumentation.http_client.enabled`, or per client by setting `enable_telemetry` to `false` in the corresponding client configuration in `config/http.go`.
+您可以通过 `telemetry.instrumentation.http_client.enabled` 全局禁用它，或者通过在 `config/http.go` 中的相应客户端配置中将 `enable_telemetry` 设置为 `false` 来按客户端禁用。
 
 ### gRPC
 
-gRPC instrumentation is provided through stats handlers. Register them in the `bootstrap/app.go` file using the `WithGrpcServerStatsHandlers` and `WithGrpcClientStatsHandlers` functions:
+gRPC 仪表化通过 stats handlers 提供。 在 `bootstrap/app.go` 文件中使用 `WithGrpcServerStatsHandlers` 和 `WithGrpcClientStatsHandlers` 函数注册它们：
 
 ```go
 import (
@@ -542,21 +542,21 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-Both handlers accept options such as `WithFilter`, `WithSpanAttributes`, and `WithMetricAttributes`, and can be toggled via the `grpc_server.enabled` and `grpc_client.enabled` configuration options.
+两个处理器都接受诸如 `WithFilter`、`WithSpanAttributes` 和 `WithMetricAttributes` 之类的选项，并可以通过 `grpc_server.enabled` 和 `grpc_client.enabled` 配置选项进行切换。
 
-### Database
+### 数据库
 
-Queries executed through the [ORM](../orm/getting-started.md) (`facades.Orm()`) and the [Query Builder](../database/queries.md) (`facades.DB()`) are instrumented automatically, no setup required. Each query records a client span along with the `db.client.operation.duration` metric, and every connection pool reports `db.client.connection.count` and `db.client.connection.max`, so you can watch pool usage and saturation.
+通过 [ORM](../orm/getting-started.md)（`facades.Orm()`）和 [查询构建器](../database/queries.md)（`facades.DB()`）执行的查询会自动进行检测，无需任何设置。 每个查询记录一个客户端 span 以及 `db.client.operation.duration` 指标，每个连接池报告 `db.client.connection.count` 和 `db.client.connection.max`，因此您可以监控池的使用情况和饱和度。
 
-You can disable it via the `telemetry.instrumentation.database.enabled` configuration option (the `OTEL_DATABASE_ENABLED` environment variable).
+您可以通过 `telemetry.instrumentation.database.enabled` 配置选项（`OTEL_DATABASE_ENABLED` 环境变量）禁用它。
 
-For structured queries, the table comes from the builder, so the span is named after the operation and table and carries the `db.collection.name` attribute. Nothing extra is required:
+对于结构化查询，表来自构建器，因此 span 以操作和表命名，并携带 `db.collection.name` 属性。 无需额外操作：
 
 ```go
 facades.DB().Table("users").Where("id", 1).Get(&users) // span: SELECT users
 ```
 
-Raw queries run through `Select` or `Statement` pass an opaque SQL string that the framework does not parse, so the span is named after the operation alone. Use `ContextWithTable` to tag the table onto the request context to restore the full name and the `db.collection.name` attribute:
+通过 `Select` 或 `Statement` 运行的原始查询传递一个不透明的 SQL 字符串，框架不会解析它，因此 span 仅以操作命名。 使用 `ContextWithTable` 将表标记到请求上下文中，以恢复完整名称和 `db.collection.name` 属性：
 
 ```go
 import (
@@ -564,14 +564,14 @@ import (
 )
 
 queryCtx := instrumentationdatabase.ContextWithTable(ctx, "users")
-facades.DB().WithContext(queryCtx).Select(&users, "SELECT * FROM users WHERE id = ?", 1) // span: SELECT users
+facades.DB().WithContext(queryCtx).Select(&users, "SELECT * FROM users WHERE id = ?", 1) // 跨度：SELECT users
 ```
 
-## Context Propagation
+## 上下文传播
 
-The `propagators` configuration option defines how trace context crosses process boundaries. The default is the W3C `tracecontext` standard; `baggage`, `b3`, and `b3multi` (Zipkin) are also supported and can be combined as a comma-separated list.
+`propagators` 配置选项定义了跟踪上下文如何跨越进程边界。 默认是 W3C `tracecontext` 标准；也支持 `baggage`、`b3` 和 `b3multi`（Zipkin），并且可以组合为逗号分隔的列表。
 
-The built-in HTTP and gRPC instrumentation propagate context automatically. If you communicate over a custom transport, such as a message queue, you can carry the trace across the boundary yourself using the `Propagator` method: the producer injects the active context into the message headers, and the consumer extracts it and continues the same trace:
+内置的 HTTP 和 gRPC 检测会自动传播上下文。 如果您通过自定义传输（例如消息队列）进行通信，您可以使用 `Propagator` 方法自行跨越边界传递跟踪：生产者将活动上下文注入消息头，消费者提取它并继续相同的跟踪：
 
 ```go
 import (
@@ -588,16 +588,16 @@ type Message struct {
 }
 
 func (r *OrderPublisher) Publish(ctx context.Context, message *Message) error {
-    // Attach the active trace context to the message
+    // 将活跃追踪上下文附加到消息
     facades.Telemetry().Propagator().Inject(ctx, telemetry.PropagationMapCarrier(message.Headers))
 
-    // Send the message to the broker...
+    // 发送消息到代理...
 
     return nil
 }
 
 func (r *OrderConsumer) Consume(message *Message) error {
-    // Continue the trace started by the producer
+    // 继续由生产者开始的追踪
     ctx := facades.Telemetry().Propagator().Extract(context.Background(), telemetry.PropagationMapCarrier(message.Headers))
 
     ctx, span := facades.Telemetry().Tracer("app").Start(ctx, "orders.consume",
@@ -609,7 +609,7 @@ func (r *OrderConsumer) Consume(message *Message) error {
 }
 ```
 
-If you need the identifiers of the current trace, for example, to return them in an error response, you can read them from the context:
+如果你需要当前追踪的标识符，例如在错误响应中返回它们，你可以从上下文中读取：
 
 ```go
 import "go.opentelemetry.io/otel/trace"
@@ -620,11 +620,11 @@ traceID := spanCtx.TraceID().String()
 spanID := spanCtx.SpanID().String()
 ```
 
-## Flushing & Shutdown
+## 刷新与关闭
 
-You don't need to manage the telemetry lifecycle yourself: when the application stops, Goravel automatically flushes all buffered data and shuts the providers down, waiting at most `shutdown_timeout` (default `15s`).
+你无需自行管理遥测生命周期：当应用停止时，Goravel 会自动刷新所有缓冲数据并关闭提供者，最多等待 `shutdown_timeout`（默认 `15s`）。
 
-If you need to push buffered data immediately without stopping the providers, for example, before a serverless function freezes, you can use the `ForceFlush` method:
+如果您需要在不停止提供者的情况下立即推送缓冲的数据，例如在无服务器函数冻结之前，您可以使用 `ForceFlush` 方法：
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
