@@ -8,7 +8,76 @@ Grpc 模块可以使用 `facades.Grpc()` 进行操作。 Goravel 提供了一种
 
 ## 配置
 
-在 `config/grpc.go` 文件中，你可以配置 Grpc 模块，其中 `grpc.host` 配置服务器的域名，`grpc.servers` 配置客户端将连接到的服务器。
+In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.clients` configures the clients which will connect to gRPC services.
+
+## Transport Credentials
+
+By default, gRPC clients use insecure transport credentials and the gRPC server listens without TLS. You can register `credentials.TransportCredentials` during application bootstrap when your services require TLS or mTLS.
+
+### Server Credentials
+
+Register server credentials before the gRPC server is created:
+
+```go
+import "google.golang.org/grpc/credentials"
+
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithGrpcServerCredentials(func() credentials.TransportCredentials {
+      creds, err := credentials.NewServerTLSFromFile(
+        "storage/certs/server.crt",
+        "storage/certs/server.key",
+      )
+      if err != nil {
+        panic(err)
+      }
+
+      return creds
+    }).
+    Create()
+}
+```
+
+### Client Credentials
+
+Register client credential groups in `bootstrap/app.go`, then reference the group name in `config/grpc.go` with `grpc.clients.<name>.credentials`:
+
+```go
+import "google.golang.org/grpc/credentials"
+
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithGrpcClientCredentials(func() map[string]credentials.TransportCredentials {
+      userCreds, err := credentials.NewClientTLSFromFile(
+        "storage/certs/ca.crt",
+        "user.example.com",
+      )
+      if err != nil {
+        panic(err)
+      }
+
+      return map[string]credentials.TransportCredentials{
+        "user": userCreds,
+      }
+    }).
+    Create()
+}
+```
+
+```go
+// config/grpc.go
+"servers": map[string]any{
+  "user": map[string]any{
+    "host":           config.Env("GRPC_USER_HOST", ""),
+    "port":           config.Env("GRPC_USER_PORT", ""),
+    "credentials":    "user",
+    "interceptors":   []string{},
+    "stats_handlers": []string{},
+  },
+},
+```
+
+If a client has no `credentials` value, Goravel uses insecure credentials for backward compatibility. If the configured group is not registered, Goravel logs a warning and falls back to insecure credentials. For mTLS, return credentials created with `credentials.NewTLS` and a `tls.Config` that includes the required client certificates or trusted CA pools.
 
 ## 控制器
 
@@ -163,9 +232,9 @@ func Boot() foundation.Application {
 }
 ```
 
-### 将拦截器应用于服务
+### Apply Interceptors to Clients
 
-上面示例中的 `default` 是一个组名，可以应用于配置项 `grpc.servers.interceptors`。 这样，客户端将应用该组下的所有拦截器。
+The `default` in the example above is a group name that can be applied to the configuration item `grpc.clients.interceptors`. In this way, the client will use all interceptors under the group.
 
 ```go
 package config
@@ -180,7 +249,7 @@ func init() {
     "host": config.Env("GRPC_HOST", ""),
     "port": config.Env("GRPC_PORT", ""),
     
-    "servers": map[string]any{
+    "clients": map[string]any{
       "user": map[string]any{
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),
@@ -323,12 +392,12 @@ func init() {
     "host": config.Env("GRPC_HOST", ""),
     "port": config.Env("GRPC_PORT", ""),
     
-    "servers": map[string]any{
+    "clients": map[string]any{
       "user": map[string]any{
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),
         "interceptors":   []string{"default"},
-        "stats_handlers": []string{"user"}, // 应用 "user" Stats Handlers
+        "stats_handlers": []string{"user"}, // Apply "user" stats handler group
       },
     },
   })
