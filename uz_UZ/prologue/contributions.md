@@ -133,8 +133,56 @@ Siz [Muammolar ro‘yxati](https://github.com/goravel/goravel/issues) da muammo 
 | [goravel/mysql](https://github.com/goravel/mysql)                     | Database modulining MySQL drayveri                                                                                                                           |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver)             | Database modulining SQLServer drayveri                                                                                                                       |
 | [goravel/sqlite](https://github.com/goravel/sqlite)                   | Database modulining SQLite drayveri                                                                                                                          |
-| [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | Log moduli uchun jurnalni boʻlish funksionalligini taqdim etadi                                                                                              |
 | [goravel/.github](https://github.com/goravel/.github) | [Jamiyat sogʻligʻi fayli](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
+
+## Agent Skills
+
+Goravel provides agent skills for AI coding assistants (Claude Code, OpenCode, etc.) to help contributors follow Goravel development conventions such as testing, naming, and pull request workflows. Skills are sourced from the [goravel/agents](https://github.com/goravel/agents) repository.
+
+First, install the `goravel` CLI if you haven't already:
+
+```shell
+go install github.com/goravel/goravel@latest
+```
+
+### List Available Skills
+
+View all available Goravel agent skills:
+
+```shell
+goravel skill:list
+
+// Show skills with descriptions
+goravel skill:list --detail
+```
+
+### Install Skills
+
+Install all Goravel agent skills to `~/.agents/skills` by default:
+
+```shell
+goravel skill:install
+```
+
+Install specific skills by name:
+
+```shell
+goravel skill:install goravel-testing goravel-planning
+```
+
+Install to a custom directory with `--path`:
+
+```shell
+goravel skill:install --path ~/goravel-skills
+```
+
+Overwrite existing skills with `--force`:
+
+```shell
+goravel skill:install --force goravel-testing
+```
+
+> **Note**: Existing skills are preserved unless `--force` is used.
 
 ## Xulq qoidalari
 
