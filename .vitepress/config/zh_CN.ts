@@ -30,7 +30,7 @@ export const config = defineConfig({
       items: sidebarAdvanced()
     }, {
       text: 'AI',
-      base: '/ai/',
+      base: "/zh_CN/ai/",
       items: sidebarAI()
     }, {
       text: "安全",
