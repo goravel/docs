@@ -116,7 +116,7 @@ err := facades.Auth(ctx).Guard("admin").User(&user)
 
 > 当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。
 
-JWT tokens are bound to the guard that generated them. If you parse a token with a different guard, Goravel returns `auth.ErrorGuardMismatch`:
+JWT 令牌绑定到生成它们的守卫。 如果你使用不同的守卫解析令牌，Goravel 会返回 `auth.ErrorGuardMismatch`：
 
 ```go
 token, err := facades.Auth(ctx).Guard("user").LoginUsingID(1)
