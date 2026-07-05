@@ -135,19 +135,19 @@ Siz [Muammolar ro‘yxati](https://github.com/goravel/goravel/issues) da muammo 
 | [goravel/sqlite](https://github.com/goravel/sqlite)                   | Database modulining SQLite drayveri                                                                                                                          |
 | [goravel/.github](https://github.com/goravel/.github) | [Jamiyat sogʻligʻi fayli](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
 
-## Agent Skills
+## Agent Ko'nikmalari
 
-Goravel provides agent skills for AI coding assistants (Claude Code, OpenCode, etc.) to help contributors follow Goravel development conventions such as testing, naming, and pull request workflows. Skills are sourced from the [goravel/agents](https://github.com/goravel/agents) repository.
+Goravel AI kodlash yordamchilari (Claude Code, OpenCode va boshqalar) uchun agent ko'nikmalarini taqdim etadi. hissa qo'shuvchilarga Goravel ishlab chiqish konvensiyalariga (testlash, nomlash va pull request ish oqimlari) rioya qilishda yordam berish uchun. Ko'nikmalar [goravel/agents](https://github.com/goravel/agents) omboridan olinadi.
 
-First, install the `goravel` CLI if you haven't already:
+Avval, `goravel` CLI ni o'rnating, agar hali o'rnatmagan bo'lsangiz:
 
 ```shell
 go install github.com/goravel/goravel@latest
 ```
 
-### List Available Skills
+### Mavjud Ko'nikmalar Ro'yxati
 
-View all available Goravel agent skills:
+Barcha mavjud Goravel agent ko'nikmalarini ko'ring:
 
 ```shell
 goravel skill:list
@@ -156,33 +156,33 @@ goravel skill:list
 goravel skill:list --detail
 ```
 
-### Install Skills
+### Ko'nikmalarni O'rnatish
 
-Install all Goravel agent skills to `~/.agents/skills` by default:
+Barcha Goravel agent ko'nikmalarini sukut bo'yicha `~/.agents/skills` ga o'rnating:
 
 ```shell
 goravel skill:install
 ```
 
-Install specific skills by name:
+Nom bo'yicha maxsus ko'nikmalarni o'rnating:
 
 ```shell
 goravel skill:install goravel-testing goravel-planning
 ```
 
-Install to a custom directory with `--path`:
+Maxsus katalogga `--path` bilan o'rnating:
 
 ```shell
 goravel skill:install --path ~/goravel-skills
 ```
 
-Overwrite existing skills with `--force`:
+Mavjud ko'nikmalarni `--force` bilan ustiga yozing:
 
 ```shell
 goravel skill:install --force goravel-testing
 ```
 
-> **Note**: Existing skills are preserved unless `--force` is used.
+> **Eslatma**: Agar `--force` ishlatilmasa, mavjud ko'nikmalar saqlanadi.
 
 ## Xulq qoidalari
 
