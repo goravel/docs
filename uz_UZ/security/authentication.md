@@ -116,7 +116,7 @@ err := facades.Auth(ctx).Guard("admin").User(&user)
 
 > Standart guard ishlatilmaganda, yuqoridagi metodlarni chaqirishdan oldin `Guard` metodini chaqirish shart.
 
-JWT tokens are bound to the guard that generated them. If you parse a token with a different guard, Goravel returns `auth.ErrorGuardMismatch`:
+JWT tokenlari ularni yaratgan guard bilan bog'langan. Agar siz boshqa guard bilan token parslasangiz, Goravel `auth.ErrorGuardMismatch` qaytaradi:
 
 ```go
 token, err := facades.Auth(ctx).Guard("user").LoginUsingID(1)
