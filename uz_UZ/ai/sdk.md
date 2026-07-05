@@ -2,27 +2,27 @@
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-The AI SDK provides a unified API for interacting with AI providers in Goravel applications. It introduces an `AI` facade, stateful conversations, agent classes, provider/model options, prompt attachments, streaming responses, image generation, audio generation, and transcription.
+AI SDK Goravel ilovalarida AI provayderlari bilan ishlash uchun yagona API ni taqdim etadi. U `AI` fasadini, holatli suhbatlarni, agent sinflarini, provayder/model variantlarini, prompt biriktirmalarini, streaming javoblarni, tasvir yaratish, audio yaratish va transkripsiyani taqdim etadi.
 
-The core AI module manages conversations and provider resolution. Provider implementations are installed separately, such as `goravel/openai`, `goravel/anthropic`, and `goravel/gemini`.
+Asosiy AI moduli suhbatlar va provayderlarni aniqlashni boshqaradi. Provayder implementatsiyalari alohida o'rnatiladi, masalan `goravel/openai`, `goravel/anthropic` va `goravel/gemini`.
 
-## Installation
+## O'rnatish
 
-### Install AI Facade
+### AI fasadini o'rnating
 
-Install the AI facade and core service provider with the `package:install` command:
+AI fasadini va asosiy xizmat provayderini `package:install` buyrug'i bilan o'rnating:
 
 ```shell
 ./artisan package:install ai
 ```
 
-This makes `facades.AI()` available and registers the `make:agent` and `make:tool` Artisan commands.
+Bu `facades.AI()` ni mavjud qiladi va `make:agent` va `make:tool` Artisan buyruqlarini ro'yxatdan o'tkazadi.
 
-### Install Providers
+### Provayderlarni o'rnatish
 
-Install at least one provider package before prompting an agent:
+Agentni so'roshdan oldin kamida bitta provayder paketini o'rnating:
 
 ```shell
 ./artisan package:install github.com/goravel/openai
@@ -30,11 +30,11 @@ Install at least one provider package before prompting an agent:
 ./artisan package:install github.com/goravel/gemini
 ```
 
-Each provider package registers its own service provider and updates `config/ai.go` so `ai.providers.<name>.via` resolves through the package facade.
+Har bir provayder paketi o'zining xizmat provayderini ro'yxatdan o'tkazadi va `config/ai.go` faylini yangilaydi, shunda `ai.providers.<name>.via` paket fasad orqali hal qilinadi.
 
-### Provider Configuration
+### Provayder konfiguratsiyasi
 
-The provider installers update `config/ai.go` automatically. For example, `goravel/openai` adds an OpenAI provider similar to this:
+Provayder o'rnatuvchilari `config/ai.go` faylini avtomatik ravishda yangilaydi. Masalan, `goravel/openai` OpenAI provayderini quyidagicha qo'shadi:
 
 ```go
 package config
@@ -83,29 +83,29 @@ func init() {
 }
 ```
 
-Then add the provider credentials to `.env`:
+Keyin provayder hisob ma'lumotlarini `.env` ga qo'shing:
 
 ```ini
 OPENAI_API_KEY=
 OPENAI_BASE_URL=
 ```
 
-`OPENAI_BASE_URL` is optional. Use it when routing requests through a proxy or an OpenAI-compatible endpoint. If a model default is empty, the provider package uses its own default model. Set `models.text.max_tokens` to limit generated text tokens; leave it as `0` to use the provider default.
+`OPENAI_BASE_URL` ixtiyoriy. Proksi orqali yoki OpenAI bilan mos keladigan so'nggi nuqtaga so'rovlarni yo'naltirishda undan foydalaning. Agar modelning standarti bo'sh bo'lsa, provayder paketi o'zining standart modelidan foydalanadi. Yaratilgan matn tokenlarini cheklash uchun `models.text.max_tokens` ni o'rnating; provayder standartidan foydalanish uchun uni `0` qilib qoldiring.
 
-The `failover` map is optional. Provider packages may use it to map provider-specific error messages to failover reasons. Plain strings use substring matching, and slash-delimited strings use Go regular expressions.
+`failover` xaritasi ixtiyoriy. Provayder paketlari provayderga xos xato xabarlarini failover sabablariga xaritalash uchun undan foydalanishi mumkin. Oddiy satrlar substring moslashuvidan foydalanadi va slash bilan ajratilgan satrlar Go muntazam ifodalaridan foydalanadi.
 
-## Creating Agents
+## Agentlarni Yaratish
 
-Agents define the system instructions and any initial conversation context that should be sent to the provider.
+Agentlar tizim ko'rsatmalarini va provayderga yuborilishi kerak bo'lgan har qanday dastlabki suhbat kontekstini belgilaydi.
 
-You can generate an agent with Artisan:
+Artisan bilan agent yaratishingiz mumkin:
 
 ```shell
 ./artisan make:agent SupportAgent
 ./artisan make:agent user/SupportAgent
 ```
 
-The generated file is placed under `app/ai/agents` and contains the required methods:
+Yaratilgan fayl `app/ai/agents` ostiga joylashtiriladi va kerakli metodlarni o'z ichiga oladi.
 
 ```go
 package agents
@@ -134,11 +134,11 @@ func (r *SupportAgent) Tools() []ai.Tool {
 }
 ```
 
-`Instructions` becomes the system prompt. `Messages` returns the initial conversation history copied into each new conversation. `Middleware` returns the default prompt middleware applied to each new conversation. `Tools` returns the callable tools the model may invoke.
+`Instructions` tizim so'roviga aylanadi. `Messages` har bir yangi suhbatga ko'chirilgan dastlabki suhbat tarixini qaytaradi. `Middleware` har bir yangi suhbatga qo'llaniladigan standart so'rov o'rtadasturini qaytaradi. `Tools` model chaqirishi mumkin bo'lgan chaqiriladigan vositalarni qaytaradi.
 
-## Prompting
+## So'rov yuborish
 
-Use `facades.AI().Agent` to create a conversation for an agent, then call `Prompt`:
+Agent uchun suhbat yaratish uchun `facades.AI().Agent` dan foydalaning, so'ng `Prompt` ni chaqiring.
 
 ```go
 conversation, err := facades.AI().Agent(&agents.SupportAgent{})
@@ -154,7 +154,7 @@ if err != nil {
 fmt.Println(response.Text())
 ```
 
-The response exposes generated text, usage metadata, and any tool calls returned by the provider:
+Javob matn, foydalanish metama'lumotlari va provayder tomonidan qaytarilgan har qanday vosita chaqiruvlarini ochib beradi:
 
 ```go
 text := response.Text()
@@ -166,7 +166,7 @@ fmt.Println(usage.Input(), usage.Output(), usage.Total())
 fmt.Println(toolCalls)
 ```
 
-Use `Then` to run a callback after a response is resolved:
+`Then` dan javob hal qilingandan so'ng callbackni ishga tushirish uchun foydalaning:
 
 ```go
 import (
@@ -179,7 +179,7 @@ response.Then(func(response ai.AgentResponse) {
 })
 ```
 
-You can override the configured provider or model for a single conversation:
+Siz bitta suhbat uchun sozlangan provayder yoki modelni bekor qilishingiz mumkin:
 
 ```go
 conversation, err := facades.AI().Agent(
@@ -189,7 +189,7 @@ conversation, err := facades.AI().Agent(
 )
 ```
 
-Pass additional provider names to `WithProvider` to create an ordered failover chain. Goravel tries the next provider only when the current provider returns a failover error:
+Buyurtma qilingan nosozlikni bartaraf etish zanjirini yaratish uchun `WithProvider` ga qo'shimcha provayder nomlarini o'tkazing. Goravel keyingi provayderni faqat joriy provayder failover xatolik qaytarsa sinab ko'radi:
 
 ```go
 conversation, err := facades.AI().Agent(
@@ -198,15 +198,15 @@ conversation, err := facades.AI().Agent(
 )
 ```
 
-If the request should use a specific Go context, call `WithContext` before creating the conversation:
+Agar so'rov ma'lum bir Go kontekstidan foydalanishi kerak bo'lsa, suhbatni yaratishdan oldin `WithContext` ni chaqiring:
 
 ```go
 conversation, err := facades.AI().WithContext(ctx).Agent(&agents.SupportAgent{})
 ```
 
-## Conversation History
+## Suhbat tarixi
 
-A conversation stores runtime messages in memory. After a successful `Prompt`, Goravel appends the user input and assistant response to the conversation history:
+Suhbat ish vaqti xabarlarini xotirada saqlaydi. Muvaffaqiyatli `Prompt` dan so'ng, Goravel foydalanuvchi kiritmasini va yordamchi javobini suhbat tarixiga qo'shadi:
 
 ```go
 conversation, err := facades.AI().Agent(&agents.SupportAgent{})
@@ -222,17 +222,17 @@ if err != nil {
 messages := conversation.Messages()
 ```
 
-Use `Reset` to discard runtime messages and restore the initial messages returned by the agent:
+Ish vaqti xabarlarini bekor qilish va agent tomonidan qaytarilgan boshlang'ich xabarlarni tiklash uchun `Reset` dan foydalaning:
 
 ```go
 conversation.Reset()
 ```
 
-## Attachments
+## Qo‘shimchalar
 
-Attachments let you send request-scoped documents and images with a single `Prompt` or `Stream` call. Goravel resolves attachments lazily from common sources and does not persist the binary content in conversation history.
+Qo‘shimchalar sizga bitta `Prompt` yoki `Stream` chaqiruvi bilan so‘rov doirasidagi hujjatlar va rasmlarni yuborish imkonini beradi. Goravel qo‘shimchalarni umumiy manbalardan kechiktirib (lazy) hal qiladi va ikkilik kontentni suhbat tarixida saqlamaydi.
 
-The attachment examples use these imports:
+Qo‘shimchalar misollari quyidagi importlardan foydalanadi:
 
 ```go
 import (
@@ -244,7 +244,7 @@ import (
 )
 ```
 
-Attach files with `WithAttachments`:
+Fayllarni `WithAttachments` bilan qo‘shing:
 
 ```go
 response, err := conversation.Prompt("Summarize these files", frameworkai.WithAttachments(
@@ -258,23 +258,23 @@ if err != nil {
 fmt.Println(response.Text())
 ```
 
-The helper packages are available from `github.com/goravel/framework/ai/document` and `github.com/goravel/framework/ai/image`. The same constructors are also available from the root `github.com/goravel/framework/ai` package as `DocumentFromPath`, `ImageFromPath`, and related helpers.
+Yordamchi paketlar `github.com/goravel/framework/ai/document` va `github.com/goravel/framework/ai/image` dan mavjud. Xuddi shu konstruktorlar `github.com/goravel/framework/ai` asosiy paketidan `DocumentFromPath`, `ImageFromPath` va tegishli yordamchilar sifatida ham mavjud.
 
-Supported attachment sources:
+Qo'llab-quvvatlanadigan biriktiruvchi manbalar:
 
-| Source           | Document Helper        | Image Helper        |
-| ---------------- | ---------------------- | ------------------- |
-| Bytes            | `document.FromByte`    | `image.FromByte`    |
-| String           | `document.FromString`  | -                   |
-| Base64           | `document.FromBase64`  | `image.FromBase64`  |
-| Reader           | `document.FromReader`  | `image.FromReader`  |
-| Local path       | `document.FromPath`    | `image.FromPath`    |
-| Storage          | `document.FromStorage` | `image.FromStorage` |
-| URL              | `document.FromURL`     | `image.FromURL`     |
-| Uploaded file    | `document.FromUpload`  | `image.FromUpload`  |
-| Provider file ID | `document.FromID`      | `image.FromID`      |
+| Manba             | Hujjat yordamchisi     | Rasm yordamchisi    |
+| ----------------- | ---------------------- | ------------------- |
+| Bayt              | `document.FromByte`    | `image.FromByte`    |
+| String            | `document.FromString`  | -                   |
+| Base64            | `document.FromBase64`  | `image.FromBase64`  |
+| Reader            | `document.FromReader`  | `image.FromReader`  |
+| Mahalliy yo'l     | `document.FromPath`    | `image.FromPath`    |
+| Saqlash           | `document.FromStorage` | `image.FromStorage` |
+| URL               | `document.FromURL`     | `image.FromURL`     |
+| Yuklangan fayl    | `document.FromUpload`  | `image.FromUpload`  |
+| Provayder fayl ID | `document.FromID`      | `image.FromID`      |
 
-Use `WithMimeType` to override the detected MIME type. Use `WithDisk` with `FromStorage` when the attachment should be read from a non-default filesystem disk:
+Aniqlangan MIME turini bekor qilish uchun `WithMimeType` dan foydalaning. Ilova standart bo'lmagan fayl tizimi diskidan o'qilishi kerak bo'lganda `WithDisk` va `FromStorage` dan foydalaning:
 
 ```go
 attachment := document.FromStorage(
@@ -284,7 +284,7 @@ attachment := document.FromStorage(
 )
 ```
 
-Use `WithTitle` to set a display title for an attachment. This is especially useful when creating attachments from strings or byte slices, where there is no natural filename:
+Ilova uchun displey sarlavhasini o'rnatish uchun `WithTitle` dan foydalaning. Bu, ayniqsa, satrlar yoki bayt bo'laklaridan ilova yaratishda foydalidir, bunda tabiiy fayl nomi mavjud emas:
 
 ```go
 attachment := frameworkai.DocumentFromString(
@@ -294,9 +294,9 @@ attachment := frameworkai.DocumentFromString(
 )
 ```
 
-When an attachment resolves from a natural source (path, URL, storage, or upload), the resolved filename overrides the title. Use `WithTitle` on attachments where you want a descriptive label instead of an auto-detected name. The option is available on all attachment constructors, including `document.WithTitle` and `image.WithTitle`.
+Ilova tabiiy manbadan (yo'l, URL, saqlash yoki yuklash) olinganda, hal qilingan fayl nomi sarlavhani bekor qiladi. `WithTitle` dan avtomatik aniqlangan nom o'rniga tavsiflovchi yorliq kerak bo'lgan biriktirmalarda foydalaning. Ushbu parametr barcha biriktirma konstruktorlarida mavjud, jumladan `document.WithTitle` va `image.WithTitle`.
 
-`Stream` accepts the same attachment option:
+`Stream` bir xil biriktirma parametrini qabul qiladi:
 
 ```go
 stream, err := conversation.Stream("Describe this chart", frameworkai.WithAttachments(
@@ -304,9 +304,9 @@ stream, err := conversation.Stream("Describe this chart", frameworkai.WithAttach
 ))
 ```
 
-### Uploading Attachments
+### Biriktirmalarni yuklash
 
-If a provider supports file uploads, call `Put` on an attachment to upload it and receive a provider-managed file handle:
+Agar provayder fayl yuklashni qo'llab-quvvatlasa, uni yuklash va provayder tomonidan boshqariladigan fayl tutqichini olish uchun biriktirmada `Put` ni chaqiring.
 
 ```go
 file, err := document.FromPath("storage/app/reports/quarterly.pdf").Put(
@@ -320,20 +320,20 @@ if err != nil {
 fmt.Println(file.ID())
 ```
 
-Providers that do not support uploads return an explicit error. The OpenAI provider supports uploads and uses the Responses API for prompts, streaming, tool calling, and attachments.
+Yuklashni qo'llab-quvvatlamaydigan provayderlar aniq xato qaytaradi. OpenAI provayderi yuklashni qo'llab-quvvatlaydi va so'rovlar, striming, vosita chaqiruvlari va biriktirmalar uchun Responses API dan foydalanadi.
 
-You may attach a provider-managed file by ID without uploading it again:
+Provayder tomonidan boshqariladigan faylni qayta yuklamasdan, ID bo'yicha biriktirishingiz mumkin:
 
 ```go
 file := document.FromID("file-abc123")
 
-response, err := conversation.Prompt("Summarize this file", frameworkai.WithAttachments(file))
+response, err := conversation.Prompt("Ushbu faylni xulosa qiling", frameworkai.WithAttachments(file))
 if err != nil {
     return err
 }
 ```
 
-Use `Get` to resolve file metadata or content from the provider, and `Delete` to remove the provider-managed file:
+Fayl metamaʼlumotlarini yoki mazmunini provayderdan olish uchun `Get` dan foydalaning va provayder tomonidan boshqariladigan faylni o'chirish uchun `Delete` dan foydalaning:
 
 ```go
 file := document.FromID("file-abc123")
@@ -353,11 +353,11 @@ fmt.Println(resolved.ID(), resolved.MimeType(), len(content))
 err = file.Delete(ctx, frameworkai.WithProvider("openai"))
 ```
 
-Use `image.FromID` for provider-managed image files.
+Provayder tomonidan boshqariladigan rasm fayllari uchun `image.FromID` dan foydalaning.
 
-## Image Generation
+## Rasm yaratish
 
-Use `facades.AI().Image` to generate images from a prompt:
+Rasmlarni so'rov bo'yicha yaratish uchun `facades.AI().Image` dan foydalaning:
 
 ```go
 import (
@@ -383,7 +383,7 @@ if err != nil {
 fmt.Println(response.MimeType(), len(content))
 ```
 
-You may set the provider and model on the fluent image request:
+Fluent image requestda provider va modelni o'rnatishingiz mumkin:
 
 ```go
 response, err := facades.AI().Image("A launch banner for Goravel v1.18").
@@ -393,7 +393,7 @@ response, err := facades.AI().Image("A launch banner for Goravel v1.18").
     Generate()
 ```
 
-Use image attachments when editing existing images:
+Mavjud rasmlarni tahrirlashda rasm ilovalaridan foydalaning:
 
 ```go
 import (
@@ -408,7 +408,7 @@ response, err := facades.AI().Image("Turn this chart into a watercolor illustrat
     Generate()
 ```
 
-The generated image response exposes bytes, MIME type, usage metadata, storage helpers, and a `Then` callback:
+Yaratilgan rasm javobi baytlar, MIME turi, foydalanish metama'lumotlari, saqlash yordamchilari va `Then` qayta chaqiruvini ochib beradi:
 
 ```go
 import (
@@ -421,7 +421,7 @@ response.Then(func(response ai.ImageResponse) {
 })
 ```
 
-Store generated images directly on the configured filesystem:
+Yaratilgan tasvirlarni to'g'ridan-to'g'ri sozlangan fayl tizimiga saqlang:
 
 ```go
 path, err := response.Store("public")
@@ -432,7 +432,7 @@ if err != nil {
 path, err = response.StoreAs("images/gopher.png", "public")
 ```
 
-You may also generate and store in one step:
+Shuningdek, bir qadamda yaratib va saqlashingiz mumkin:
 
 ```go
 path, err := facades.AI().Image("A Goravel mascot").
@@ -440,9 +440,9 @@ path, err := facades.AI().Image("A Goravel mascot").
     StoreAs("images/mascot.png", "public")
 ```
 
-## Audio Generation
+## Audio yaratish
 
-Use `facades.AI().Audio` to generate speech from text:
+Matndan nutq yaratish uchun `facades.AI().Audio` dan foydalaning:
 
 ```go
 import (
@@ -452,11 +452,11 @@ import (
     "goravel/app/facades"
 )
 
-response, err := facades.AI().Audio("Welcome to Goravel").
+response, err := facades.AI().Audio("Goravelga xush kelibsiz").
     Provider("openai").
     Model("gpt-4o-mini-tts").
     Male().
-    Instructions("Speak slowly and warmly.").
+    Instructions("Sekin va iliq gapiring.").
     Timeout(30 * time.Second).
     Generate()
 if err != nil {
@@ -471,15 +471,15 @@ if err != nil {
 fmt.Println(response.MimeType(), len(content))
 ```
 
-Use `Female` for the default female voice, `Male` for the default male voice, or `Voice` for a provider-specific voice:
+Ayol ovozi uchun `Female`, erkak ovozi uchun `Male`, yoki provayderga xos ovoz uchun `Voice` dan foydalaning:
 
 ```go
-response, err := facades.AI().Audio("Your report is ready.").
+response, err := facades.AI().Audio("Hisobotingiz tayyor.").
     Voice("alloy").
     Generate()
 ```
 
-Audio responses expose bytes, MIME type, usage metadata, storage helpers, and a `Then` callback:
+Audio javoblar bayt, MIME turi, foydalanish meta-maʼlumotlari, saqlash yordamchilari va `Then` qayta chaqiruvini taqdim etadi:
 
 ```go
 import (
@@ -492,7 +492,7 @@ response.Then(func(response ai.AudioResponse) {
 })
 ```
 
-Store generated audio directly on the configured filesystem:
+Yaratilgan audioni to'g'ridan-to'g'ri sozlangan fayl tizimiga saqlang:
 
 ```go
 path, err := response.Store("public")
@@ -503,7 +503,7 @@ if err != nil {
 path, err = response.StoreAs("audio/welcome.mp3", "public")
 ```
 
-You may also generate and store in one step:
+Siz shuningdek, bir bosqichda yaratishingiz va saqlashingiz mumkin:
 
 ```go
 path, err := facades.AI().Audio("Welcome to Goravel").
@@ -511,9 +511,9 @@ path, err := facades.AI().Audio("Welcome to Goravel").
     StoreAs("audio/welcome.mp3", "public")
 ```
 
-## Transcription
+## Transkripsiya
 
-Use `facades.AI().Transcription` to convert audio files to text. The input must implement `ai.StorableFile`, so you can reuse document attachments or any custom file type that exposes `FileName`, `MimeType`, and `Content`:
+`facades.AI().Transcription` dan audio fayllarni matnga o‘tkazish uchun foydalaning. Kirish `ai.StorableFile` interfeysini amalga oshirishi kerak, shuning uchun siz hujjat qo‘shimchalarini yoki `FileName`, `MimeType` va `Content` maydonlarini ochib beradigan har qanday maxsus fayl turini qayta ishlatishingiz mumkin:
 
 ```go
 import (
@@ -538,7 +538,7 @@ if err != nil {
 fmt.Println(response.Text())
 ```
 
-Use `Segments` when the provider returns timestamps or speaker labels:
+`Segments` dan foydalaning, agar provider vaqt tamg'alari yoki so'zlovchi yorliqlarini qaytarsa:
 
 ```go
 for _, segment := range response.Segments() {
@@ -546,7 +546,7 @@ for _, segment := range response.Segments() {
 }
 ```
 
-Transcription responses expose transcript text, optional segments, usage metadata, and a `Then` callback:
+Transkripsiya javoblari transkript matni, ixtiyoriy segmentlar, foydalanish metama'lumotlari va `Then` chaqiruviga ega:
 
 ```go
 import (
@@ -561,9 +561,9 @@ response.Then(func(response ai.TranscriptionResponse) {
 
 ## Middleware
 
-Prompt middleware intercepts requests before they reach the provider. Middleware can mutate the prompt, call the next middleware/provider, short-circuit the provider call by returning a response directly, or register callbacks that run after the final response is available.
+Prompt middleware so'rovlarni provayderga yetib borishidan oldin ushlab turadi. Middleware promptni o'zgartirishi, keyingi middleware/provayderni chaqirishi, to'g'ridan-to'g'ri javob qaytarish orqali provayder chaqiruvini qisqa tutashtirishi yoki yakuniy javob mavjud bo'lgandan keyin ishlaydigan qayta chaqiruvlarni ro'yxatdan o'tkazishi mumkin.
 
-The middleware examples use these imports:
+Middleware misollari ushbu importlardan foydalanadi:
 
 ```go
 import (
@@ -577,7 +577,7 @@ import (
 )
 ```
 
-Middleware implements the `ai.Middleware` contract:
+Middleware `ai.Middleware` shartnomasini amalga oshiradi:
 
 ```go
 type TrimPromptMiddleware struct {
@@ -590,7 +590,7 @@ func (r *TrimPromptMiddleware) Handle(ctx context.Context, prompt ai.AgentPrompt
 }
 ```
 
-You may also post-process the final response with `Then`:
+Siz yakuniy javobni `Then` bilan qayta ishlashingiz mumkin:
 
 ```go
 type LogResponseMiddleware struct {
@@ -608,7 +608,7 @@ func (r *LogResponseMiddleware) Handle(ctx context.Context, prompt ai.AgentPromp
 }
 ```
 
-Apply middleware to a single conversation with `WithMiddleware`:
+`WithMiddleware` yordamida bitta suhbatga middleware qo'llang:
 
 ```go
 conversation, err := facades.AI().Agent(
@@ -617,7 +617,7 @@ conversation, err := facades.AI().Agent(
 )
 ```
 
-To apply middleware every time an agent is used, return it from the agent's `Middleware` method:
+Agent har safar ishlatilganda middleware qo'llash uchun uni agentning `Middleware` metodidan qaytaring:
 
 ```go
 func (r *SupportAgent) Middleware() []ai.Middleware {
@@ -628,20 +628,20 @@ func (r *SupportAgent) Middleware() []ai.Middleware {
 }
 ```
 
-Agent middleware runs before middleware passed with `WithMiddleware`. The same middleware pipeline is used by both `Prompt` and `Stream`, so cross-cutting behavior such as prompt enrichment, conversation memory, guards, and response logging can live in one place.
+Agent middleware `WithMiddleware` bilan uzatilgan middleware dan oldin ishlaydi. Xuddi shu middleware quvuri `Prompt` va `Stream` tomonidan ishlatiladi, shuning uchun prompt boyitish, suhbat xotirasi, himoya va javob loglash kabi cross-cutting xatti-harakatlar bir joyda joylashishi mumkin.
 
-## Tools
+## Asboblar
 
-Tools allow an agent to expose callable capabilities to the model. A tool has a unique name, a description, a JSON Schema parameter definition, and an `Execute` method that returns the tool result as a string.
+Asboblar agentga modelga chaqiriladigan imkoniyatlarni taqdim etishga imkon beradi. Asbob noyob nomga, tavsifga, JSON Schema parametr ta'rifiga va natijani satr sifatida qaytaradigan `Execute` metodiga ega.
 
-You can generate a tool with Artisan:
+Asbobni Artisan yordamida yaratishingiz mumkin:
 
 ```shell
 ./artisan make:tool WeatherTool
 ./artisan make:tool user/WeatherTool
 ```
 
-The generated file is placed under `app/ai/tools`. Nested names create subdirectories, and `--force` or `-f` overwrites an existing tool file.
+Yaratilgan fayl `app/ai/tools` katalogiga joylashtiriladi. Ichki nomlar subkataloglarni yaratadi va `--force` yoki `-f` mavjud asbob faylini qayta yozadi.
 
 ```go
 package tools
@@ -656,7 +656,7 @@ func (r *WeatherTool) Name() string {
 }
 
 func (r *WeatherTool) Description() string {
-    return "A description of the tool."
+    return "Asbobning tavsifi."
 }
 
 func (r *WeatherTool) Parameters() map[string]any {
@@ -668,7 +668,7 @@ func (r *WeatherTool) Execute(ctx context.Context, args map[string]any) (string,
 }
 ```
 
-After generating the tool, update `Description`, `Parameters`, and `Execute` for the capability you want to expose:
+Asbobni yaratgandan so'ng, ochmoqchi bo'lgan imkoniyat uchun `Description`, `Parameters`, va `Execute` ni yangilang:
 
 ```go
 type WeatherTool struct {
@@ -679,7 +679,7 @@ func (r *WeatherTool) Name() string {
 }
 
 func (r *WeatherTool) Description() string {
-    return "Returns the current weather for a city."
+    return "Shahar uchun joriy ob-havoni qaytaradi."
 }
 
 func (r *WeatherTool) Parameters() map[string]any {
@@ -697,11 +697,11 @@ func (r *WeatherTool) Parameters() map[string]any {
 func (r *WeatherTool) Execute(ctx context.Context, args map[string]any) (string, error) {
     city, _ := args["city"].(string)
 
-    return fmt.Sprintf("Sunny, 25 C in %s", city), nil
+    return fmt.Sprintf("Quyoshli, %s da 25 C", city), nil
 }
 ```
 
-Import your application's tools package, such as `goravel/app/ai/tools`, then return the tool from your agent's `Tools` method:
+Ilovangizning vositalar paketini import qiling, masalan `goravel/app/ai/tools`, so'ngra agentingizning `Tools` usulidan vositani qaytaring:
 
 ```go
 func (r *SupportAgent) Tools() []ai.Tool {
@@ -711,7 +711,7 @@ func (r *SupportAgent) Tools() []ai.Tool {
 }
 ```
 
-When the model requests a tool call during `Prompt`, Goravel executes the tool, appends the tool result to the conversation, and re-prompts the model until it returns a final text response:
+Model `Prompt` vaqtida asbob chaqiruvini so'raganda, Goravel asbobni bajaradi, asbob natijasini suhbatga qo'shadi va model yakuniy matn javobini qaytarmaguncha uni qayta so'raydi:
 
 ```go
 conversation, err := facades.AI().Agent(&agents.SupportAgent{})
@@ -727,11 +727,11 @@ if err != nil {
 fmt.Println(response.Text())
 ```
 
-Goravel limits the tool-call loop to prevent a model from requesting tools indefinitely.
+Goravel asbob chaqiruvi siklni cheklaydi, modelning cheksiz asbob so'rashiga yo'l qo'ymaslik uchun.
 
-## Custom Generator Paths
+## Maxsus Generator Yo'llari
 
-By default, `make:agent` writes to `app/ai/agents` and `make:tool` writes to `app/ai/tools`. You may customize those paths in `bootstrap/app.go` with `WithPaths`:
+Odatiy bo'lib, `make:agent` `app/ai/agents` ga va `make:tool` `app/ai/tools` ga yozadi. Siz bu yo'llarni `bootstrap/app.go` da `WithPaths` bilan sozlashingiz mumkin:
 
 ```go
 package bootstrap
@@ -749,9 +749,9 @@ var App = foundation.Setup().
     Create()
 ```
 
-## Streaming
+## Oqimli
 
-Use `Stream` when you want token deltas as they are produced by the provider:
+Agar siz token deltalarni ishlab chiqaruvchi tomonidan yaratilgan holda olishni istasangiz, `Stream` dan foydalaning:
 
 ```go
 stream, err := conversation.Stream("Write a short release note.")
@@ -779,11 +779,11 @@ err = stream.Each(func(event ai.StreamEvent) error {
 })
 ```
 
-Streaming supports the same conversation options, middleware pipeline, and tool-call loop as `Prompt`. When the model requests tools, the stream emits a `StreamEventTypeToolCall` event, Goravel executes the tools, and the stream continues with the final model response. The stream appends the user input, tool calls, tool results, and final assistant text to the conversation history only after the stream completes successfully.
+Streaming `Prompt` kabi bir xil suhbat variantlari, middleware quvur liniyasi va vosita chaqiruv tsiklini qo'llab-quvvatlaydi. Model vositalarni so'raganda, stream `StreamEventTypeToolCall` hodisasini chiqaradi, Goravel vositalarni bajaradi va stream yakuniy model javobi bilan davom etadi. Oqim foydalanuvchi kiritishi, vosita chaqiruvlari, vosita natijalari va yakuniy yordamchi matnini suhbat tarixiga faqat oqim muvaffaqiyatli tugagandan so'ng qo'shadi.
 
-### Completion Callback
+### Tugatish Chaqueruvi
 
-Use `Then` to run logic after the stream has completed and the final response is available:
+Oqim tugagandan va yakuniy javob mavjud bo'lgandan keyin mantiqni ishga tushirish uchun `Then` dan foydalaning:
 
 ```go
 stream.Then(func(response ai.AgentResponse) {
@@ -791,9 +791,9 @@ stream.Then(func(response ai.AgentResponse) {
 })
 ```
 
-### HTTP Streaming
+### HTTP Oqimi
 
-`HTTPResponse` converts a stream into a Server-Sent Events response. This is useful in controllers and routes:
+`HTTPResponse` oqimni Server-Sent Events javobiga aylantiradi. Bu kontrollerlar va marshrutlarda foydalidir:
 
 ```go
 func Chat(ctx http.Context) http.Response {
@@ -811,7 +811,7 @@ func Chat(ctx http.Context) http.Response {
 }
 ```
 
-By default, Goravel renders SSE events with `Content-Type: text/event-stream`. You may customize the status code or event renderer:
+Odatiy bo'lib, Goravel SSE hodisalarini `Content-Type: text/event-stream` bilan render qiladi. Siz holat kodi yoki hodisa rendererini moslashtirishingiz mumkin:
 
 ```go
 return stream.HTTPResponse(
@@ -827,27 +827,27 @@ return stream.HTTPResponse(
 )
 ```
 
-## Providers
+## Provayderlar
 
-### First-party Providers
+### Birinchi tomon provayderlari
 
-Goravel provides these first-party AI provider packages:
+Goravel quyidagi birinchi tomon AI provayder paketlarini taqdim etadi:
 
-| Provider  | Package                                                   | Install Command                                          |
-| --------- | --------------------------------------------------------- | -------------------------------------------------------- |
-| OpenAI    | [goravel/openai](https://github.com/goravel/openai)       | `./artisan package:install github.com/goravel/openai`    |
-| Anthropic | [goravel/anthropic](https://github.com/goravel/anthropic) | `./artisan package:install github.com/goravel/anthropic` |
-| Gemini    | [goravel/gemini](https://github.com/goravel/gemini)       | `./artisan package:install github.com/goravel/gemini`    |
+| Provayder | Paket                                                     | O'rnatish buyrug'i                                              |
+| --------- | --------------------------------------------------------- | --------------------------------------------------------------- |
+| OpenAI    | [goravel/openai](https://github.com/goravel/openai)       | `./artisan to'plami: github.com/goravel/openai ni o'rnating`    |
+| Anthropic | [goravel/anthropic](https://github.com/goravel/anthropic) | `./artisan to'plami: github.com/goravel/anthropic ni o'rnating` |
+| Gemini    | [goravel/gemini](https://github.com/goravel/gemini)       | `./artisan to'plami: github.com/goravel/gemini ni o'rnating`    |
 
-Provider packages implement the AI provider contracts and may support different capabilities. Check the provider package README for supported features and configuration details.
+Provayder paketlari AI provayder shartnomalarini amalga oshiradi va turli imkoniyatlarni qo'llab-quvvatlashi mumkin. Provayder paketining README faylidan qo'llab-quvvatlanadigan xususiyatlar va konfiguratsiya tafsilotlarini tekshiring.
 
-The OpenAI provider uses the Responses API for prompts, streaming, tool calling, and attachments. It also supports image generation, image edits, audio generation, transcription, media storage helpers, and provider-managed files.
+OpenAI provayderi so'rovlar, streaming, vosita chaqiruvi va qo'shimchalar uchun Responses API dan foydalanadi. Shuningdek, u tasvir yaratish, tasvirni tahrirlash, audio yaratish, transkripsiya, media saqlash yordamchilari va provayder tomonidan boshqariladigan fayllarni qo'llab-quvvatlaydi.
 
-### Provider Failover
+### Provayderning uzilish holatiga o'tishi
 
-When a provider chain is configured with `WithProvider("primary", "backup")`, Goravel retries the next provider only for errors that implement `ai.FailoverError`. If every provider in the chain fails with a failover error, the last error is returned. Streaming responses can fail over before output starts; after output starts, the stream returns the current provider error instead of switching providers.
+Agar provayder zanjiri `WithProvider("primary", "backup")` bilan sozlangan bo'lsa, Goravel faqat `ai.FailoverError` ni amalga oshiradigan xatolar uchun keyingi provayderga qayta urinadi. Agar zanjirdagi har bir provayder uzilish xatosi bilan muvaffaqiyatsizlikka uchrasa, oxirgi xato qaytariladi. Oqimli javoblar chiqish boshlanishidan oldin uzilishga o'tishi mumkin; chiqish boshlangandan so'ng, oqim provayderlarni almashtirish o'rniga joriy provayder xatosini qaytaradi.
 
-Configure `ai.providers.openai.failover` to add OpenAI-specific error message mappings:
+`ai.providers.openai.failover` ni OpenAI-ga xos xato xabarlari xaritalashlarini qo'shish uchun sozlang:
 
 ```go
 "openai": map[string]any{
@@ -864,13 +864,13 @@ Configure `ai.providers.openai.failover` to add OpenAI-specific error message ma
 },
 ```
 
-Each `failover` key is the reason returned by `FailoverError.Reason()`. Empty reasons or patterns are ignored. Invalid regular expressions return an error while resolving the provider.
+Har bir `failover` kaliti `FailoverError.Reason()` tomonidan qaytarilgan sababdir. Bo'sh sabablar yoki naqshlar e'tiborga olinmaydi. Noto'g'ri muntazam ifodalar provayderni hal qilishda xatolik qaytaradi.
 
-### Custom Providers
+### Maxsus Provayderlar
 
-You may build a custom provider by following the same structure as `goravel/openai`, `goravel/anthropic`, or `goravel/gemini`: implement the AI provider contracts, register a service provider, expose a facade that resolves the provider, then configure it in `config/ai.go`.
+Siz xuddi `goravel/openai`, `goravel/anthropic` yoki `goravel/gemini` kabi tuzilishga amal qilgan holda maxsus provayder yaratishingiz mumkin: AI provayder shartnomalarini amalga oshiring, xizmat provayderini ro'yxatdan o'tkazing, provayderni hal qiladigan fasadni oching, keyin uni `config/ai.go` da sozlang.
 
-The provider resolver accepts either an `ai.Provider` instance or a `func() (ai.Provider, error)` in the provider's `via` configuration.
+Provayder hal qiluvchi provayderning `via` konfiguratsiyasida `ai.Provider` namunasi yoki `func() (ai.Provider, error)` ni qabul qiladi.
 
 ```go
 "providers": map[string]any{
@@ -882,7 +882,7 @@ The provider resolver accepts either an `ai.Provider` instance or a `func() (ai.
 },
 ```
 
-A provider must implement both `Prompt` and `Stream`:
+Provayder ham `Prompt`, ham `Stream` ni amalga oshirishi kerak:
 
 ```go
 import (
@@ -895,21 +895,21 @@ type CustomProvider struct {
 }
 
 func (r *CustomProvider) Prompt(ctx context.Context, prompt ai.AgentPrompt) (ai.AgentResponse, error) {
-    // Use prompt.Attachments when calling providers that support documents or images.
-    // Use prompt.Tools when calling providers that support tool calling.
-    // Use prompt.ProviderState to keep provider-specific state across tool-call loops.
+    // Hujjatlar yoki rasmlarni qo'llab-quvvatlovchi provayderlarni chaqirishda prompt.Attachments dan foydalaning.
+    // Asboblarni chaqirishni qo'llab-quvvatlovchi provayderlarni chaqirishda prompt.Tools dan foydalaning.
+    // Asbob chaqiruvlari davomida provayderga xos holatni saqlash uchun prompt.ProviderState dan foydalaning.
     return nil, nil
 }
 
 func (r *CustomProvider) Stream(ctx context.Context, prompt ai.AgentPrompt) (ai.StreamableAgentResponse, error) {
-    // Return tool calls on the final streamed response when the model requests tools.
+    // Model asboblarni so'raganda, yakuniy oqim javobida asbob chaqiruvlarini qaytaring.
     return nil, nil
 }
 ```
 
-The agent response implementation should expose generated text with `Text`, usage metadata with `Usage`, requested tool invocations with `ToolCalls`, and completion callbacks with `Then`. For streaming, populate `StreamEvent.ToolCalls` when emitting `StreamEventTypeToolCall` events.
+Agent javobining implementatsiyasi `Text` bilan yaratilgan matnni, `Usage` bilan foydalanish metama'lumotlarini, `ToolCalls` bilan so'ralgan asbob chaqiruvlarini va `Then` bilan tugallash callbacklarini ochiq qilishi kerak. Oqim uchun, `StreamEventTypeToolCall` hodisalarini chiqarishda `StreamEvent.ToolCalls` ni to'ldiring.
 
-Custom providers can return `frameworkai.NewFailoverError` for provider-specific retryable errors:
+Maxsus provayderlar provayderga xos qayta urinish mumkin bo'lgan xatolar uchun `frameworkai.NewFailoverError` ni qaytarishi mumkin:
 
 ```go
 import (
@@ -920,7 +920,7 @@ import (
 return nil, frameworkai.NewFailoverError("custom", ai.FailoverReason("rate_limited"), err)
 ```
 
-They can also compile configured `failover` rules with `frameworkai.NewFailoverRules` and wrap matching errors before returning them:
+Ular, shuningdek, `frameworkai.NewFailoverRules` bilan sozlangan `failover` qoidalarini kompilyatsiya qilishlari va mos keladigan xatolarni qaytarishdan oldin ularni o'rashlari mumkin:
 
 ```go
 rules, err := frameworkai.NewFailoverRules("custom", providerConfig.Failover)
@@ -936,40 +936,40 @@ if err != nil {
 return response, nil
 ```
 
-Providers that support image generation should implement `ImageProvider`:
+Rasm yaratishni qo'llab-quvvatlovchi provayderlar `ImageProvider` ni amalga oshirishi kerak:
 
 ```go
 func (r *CustomProvider) Image(ctx context.Context, prompt ai.ImagePrompt) (ai.ImageResponse, error) {
-    // Use prompt.Prompt, prompt.Model, prompt.Size, prompt.Quality, prompt.Attachments, and prompt.Timeout.
+    // prompt.Prompt, prompt.Model, prompt.Size, prompt.Quality, prompt.Attachments va prompt.Timeout dan foydalaning.
     return nil, nil
 }
 ```
 
-An image response should expose generated bytes with `Content`, the MIME type with `MimeType`, usage metadata with `Usage`, storage helpers with `Store` / `StoreAs`, and completion callbacks with `Then`.
+Rasm javobi yaratilgan baytlarni `Content` bilan, MIME turini `MimeType` bilan, foydalanish metama'lumotlarini `Usage` bilan, saqlash yordamchilarini `Store` / `StoreAs` bilan va tugallash chaqiruvlarini `Then` bilan ko'rsatishi kerak.
 
-Providers that support audio generation should implement `AudioProvider`:
+Audio yaratishni qo'llab-quvvatlovchi provayderlar `AudioProvider` ni amalga oshirishi kerak:
 
 ```go
 func (r *CustomProvider) Audio(ctx context.Context, prompt ai.AudioPrompt) (ai.AudioResponse, error) {
-    // Use prompt.Prompt, prompt.Model, prompt.Voice, prompt.Instructions, and prompt.Timeout.
+    // prompt.Prompt, prompt.Model, prompt.Voice, prompt.Instructions va prompt.Timeout dan foydalaning.
     return nil, nil
 }
 ```
 
-An audio response should expose generated bytes with `Content`, the MIME type with `MimeType`, usage metadata with `Usage`, storage helpers with `Store` / `StoreAs`, and completion callbacks with `Then`.
+Audio javobi yaratilgan baytlarni `Content` bilan, MIME turini `MimeType` bilan, foydalanish metama'lumotlarini `Usage` bilan, saqlash yordamchilarini `Store` / `StoreAs` bilan va tugallash chaqiruvlarini `Then` bilan ko'rsatishi kerak.
 
-Providers that support speech-to-text should implement `TranscriptionProvider`:
+Nutqni matnga aylantirishni qo'llab-quvvatlovchi provayderlar `TranscriptionProvider` ni amalga oshirishi kerak:
 
 ```go
 func (r *CustomProvider) Transcription(ctx context.Context, prompt ai.TranscriptionPrompt) (ai.TranscriptionResponse, error) {
-    // Use prompt.File, prompt.Model, prompt.Language, prompt.Diarize, and prompt.Timeout.
+    // prompt.File, prompt.Model, prompt.Language, prompt.Diarize va prompt.Timeout dan foydalaning.
     return nil, nil
 }
 ```
 
-A transcription response should expose transcript text with `Text`, optional timestamp or speaker segments with `Segments`, usage metadata with `Usage`, and completion callbacks with `Then`.
+Transkripsiya javobi matnni `Text` bilan, ixtiyoriy vaqt tamg'asi yoki ma'ruzachi segmentlarini `Segments` bilan, foydalanish metama'lumotlarini `Usage` bilan va tugallanish chaqiruvlarini `Then` bilan ochib berishi kerak.
 
-Providers that support attachment uploads should also implement `FileProvider`:
+Ilovalarni yuklashni qo'llab-quvvatlovchi provayderlar `FileProvider` ni ham amalga oshirishi kerak:
 
 ```go
 import (
@@ -1000,7 +1000,7 @@ func (r *CustomProvider) DeleteFile(ctx context.Context, id string) error {
 }
 ```
 
-Then select it per conversation:
+Keyin uni har bir suhbat uchun tanlang:
 
 ```go
 conversation, err := facades.AI().Agent(
@@ -1009,19 +1009,19 @@ conversation, err := facades.AI().Agent(
 )
 ```
 
-## AI Agent Development Skill
+## AI Agentni rivojlantirish mahorati
 
-The `goravel-lite` scaffold ships a `.agents/skills/goravel-development/SKILL.md` skill file that teaches AI coding agents (Cursor, Copilot, Codex, etc.) how to work with Goravel projects. The skill covers project structure, facades, routing, ORM, testing conventions, and Artisan scaffolding commands.
+`goravel-lite` skafoldi AI kodlash agentlariga (Cursor, Copilot, Codex va boshqalar) o'rgatuvchi `.agents/skills/goravel-development/SKILL.md` mahorat faylini o'z ichiga oladi. Goravel loyihalari bilan qanday ishlashni. Mahorat loyiha tuzilmasini, fasadlarni, marshrutlashni, ORMni, testlash konvensiyalarini va Artisan skafolding buyruqlarini o'z ichiga oladi.
 
-When an AI agent reads this skill, it already knows:
+AI agent bu mahoratni o'qiganda, u allaqachon biladi:
 
-- How to bootstrap a Goravel project and use `package:install` to add facades.
-- The facade pattern, testing with `testify` suites, and mock helpers.
-- Artisan `make:*` generators for controllers, middleware, models, migrations, and more.
-- Where to find contract interfaces, reference implementations, and docs.
+- Goravel loyihasini boshlash va fasadlarni qo'shish uchun `package:install` dan foydalanish.
+- Fasad naqshi, `testify` to'plamlari bilan testlash va mock yordamchilari.
+- Kontrollerlar, middleware, modellar, migratsiyalar va boshqalar uchun Artisan `make:*` generatorlari.
+- Kontrakt interfeyslari, referent amalga oshirishlar va hujjatlarni qayerdan topish.
 
-### Customization
+### Moslashtirish
 
-You can extend the built-in skill with project-specific rules by creating `.agents/skills/goravel-development/CUSTOM.md`. AI agents will read and apply both files automatically. Add conventions unique to your project, such as preferred import aliases, domain-specific naming, or custom directory layouts.
+Siz o‘rnatilgan ko‘nikmani loyihaga xos qoidalar bilan kengaytirishingiz mumkin, `.agents/skills/goravel-development/CUSTOM.md` faylini yaratib. AI agentlari ikkala faylni avtomatik ravishda o‘qiydi va qo‘llaydi. Loyihangizga xos konventsiyalarni qo‘shing, masalan, afzal ko‘rilgan import aliaslari, domenga xos nomlash yoki maxsus katalog tuzilmalari.
 
-The skill is versioned alongside the `goravel-lite` scaffold and is updated when you upgrade the framework. After upgrading, review the skill file for new conventions and merge your `CUSTOM.md` rules as needed.
+Ko‘nikma `goravel-lite` skafoldi bilan birga versiyalanadi va ramkani yangilaganingizda yangilanadi. Yangilashdan so‘ng, ko‘nikma faylini yangi konventsiyalar uchun ko‘rib chiqing va kerak bo‘lganda `CUSTOM.md` qoidalarini birlashtiring.
