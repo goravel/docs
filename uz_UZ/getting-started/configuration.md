@@ -71,30 +71,30 @@ Siz freymvork versiyasi, konfiguratsiyasi va boshqalarni ko'rish uchun `artisan 
 ./artisan about
 ```
 
-### Maintenance Mode
+### Xizmat ko'rsatish rejimi
 
-If you installed the Route facade, you can use the `down` command to put your application into maintenance mode. By default, Goravel uses the `file` maintenance driver and stores maintenance metadata at the `framework/maintenance.json` storage path:
+Agar siz Route fasadini o'rnatgan bo'lsangiz, ilovangizni xizmat ko'rsatish rejimiga o'tkazish uchun `down` buyrug'idan foydalanishingiz mumkin. Odatiy holda, Goravel `file` xizmat ko'rsatish drayveridan foydalanadi va xizmat ko'rsatish meta ma'lumotlarini `framework/maintenance.json` saqlash yo'lida saqlaydi:
 
 ```shell
 ./artisan down
 ```
 
-You may provide a custom reason and HTTP status code for the maintenance response:
+Xizmat ko'rsatish javobi uchun maxsus sabab va HTTP holat kodini taqdim etishingiz mumkin:
 
 ```shell
 ./artisan down --reason="Upgrading database" --status=503
 ```
 
-The `down` command also supports redirecting users to a path or rendering a view while the application is in maintenance mode:
+`down` buyrug'i, shuningdek, ilova xizmat ko'rsatish rejimida bo'lganida foydalanuvchilarni yo'lga yo'naltirish yoki ko'rinishni ko'rsatishni qo'llab-quvvatlaydi:
 
 ```shell
 ./artisan down --redirect=/maintenance
 ./artisan down --render=errors/503
 ```
 
-When using `--render`, the view must already exist. If `--redirect` or `--render` is provided, the `--reason` response body is not used.
+`--render` dan foydalanganda, ko'rinish allaqachon mavjud bo'lishi kerak. Agar `--redirect` yoki `--render` ko'rsatilgan bo'lsa, `--reason` javob tanasi ishlatilmaydi.
 
-You may allow temporary access to the application by setting a secret. Users can bypass maintenance mode by visiting the application with the matching `secret` query parameter:
+Maxfiy kalit o'rnatish orqali ilovaga vaqtinchalik ruxsat berishingiz mumkin. Foydalanuvchilar mos keladigan `secret` so‘rov parametri bilan ilovaga kirish orqali texnik xizmat ko‘rsatish rejimini chetlab o‘tishlari mumkin:
 
 ```shell
 ./artisan down --secret=let-me-in
@@ -104,13 +104,13 @@ You may allow temporary access to the application by setting a secret. Users can
 https://example.com?secret=let-me-in
 ```
 
-You can also let Goravel generate a random secret for you:
+Goravel siz uchun tasodifiy maxfiy kod yaratishiga ham ruxsat berishingiz mumkin:
 
 ```shell
 ./artisan down --with-secret
 ```
 
-The maintenance driver and cache store are configured in `config/app.go`. The default configuration reads from the `APP_MAINTENANCE_DRIVER` and `APP_MAINTENANCE_STORE` environment variables:
+Texnik xizmat ko‘rsatish drayveri va kesh ombori `config/app.go` da sozlangan. Standart konfiguratsiya `APP_MAINTENANCE_DRIVER` va `APP_MAINTENANCE_STORE` muhit o‘zgaruvchilaridan o‘qiladi:
 
 ```go
 "maintenance": map[string]any{
@@ -119,24 +119,24 @@ The maintenance driver and cache store are configured in `config/app.go`. The de
 },
 ```
 
-If your application runs on multiple servers, you may use the `cache` maintenance driver so all servers share the same maintenance state. Configure the driver and, optionally, the cache store name in your `.env` file:
+Agar ilovangiz bir nechta serverlarda ishlayotgan bo‘lsa, siz `cache` texnik xizmat ko‘rsatish drayveridan foydalanishingiz mumkin, shunda barcha serverlar bir xil texnik xizmat ko‘rsatish holatini baham ko‘radi. `.env` faylingizda drayver va ixtiyoriy ravishda kesh ombori nomini sozlang:
 
 ```ini
 APP_MAINTENANCE_DRIVER=cache
 APP_MAINTENANCE_STORE=redis
 ```
 
-If `APP_MAINTENANCE_STORE` is not set, Goravel uses the default cache store. Running `down` or `up` on one server updates the maintenance state for every server using the same cache store.
+Agar `APP_MAINTENANCE_STORE` o'rnatilmagan bo'lsa, Goravel standart kesh omboridan foydalanadi. Bir serverda `down` yoki `up` buyrug'ini ishga tushirish, bir xil kesh omboridan foydalanadigan barcha serverlar uchun texnik xizmat ko'rsatish holatini yangilaydi.
 
-To bring the application out of maintenance mode, run the `up` command:
+Ilovani texnik xizmat ko'rsatish rejimidan chiqarish uchun `up` buyrug'ini ishga tushiring:
 
 ```shell
 ./artisan up
 ```
 
-### Disabled Runners
+### O'chirilgan Runnerlar
 
-When the application starts via `app.Start()`, Goravel automatically runs the auto-run [runners](../architecture-concepts/service-providers.md#runners) registered by service providers, such as the HTTP server, gRPC server, queue worker, scheduler, and telemetry. You can selectively skip specific runners in the main process by setting the `app.disabled_runners` option in `config/app.go`. The framework evaluates this list centrally, so the same option works for any current or future runner.
+Ilova `app.Start()` orqali boshlanganda, Goravel avtomatik ravishda xizmat ko'rsatuvchi provayderlar tomonidan ro'yxatdan o'tkazilgan avtomatik ishga tushiriladigan [runnerlar](../architecture-concepts/service-providers.md#runnerlar) ishga tushiradi, masalan, HTTP server, gRPC server, navbat ishchisi, rejalashtiruvchi va telemetriya. Asosiy jarayonda ma'lum runnerlarni tanlab o'tkazib yuborishingiz mumkin, buning uchun `config/app.go` faylida `app.disabled_runners` opsiyasini sozlang. Framework ushbu ro'yxatni markazlashtirilgan holda baholaydi, shuning uchun bir xil variant joriy yoki kelajakdagi har qanday runner uchun ishlaydi.
 
 ```go
 // config/app.go
@@ -147,32 +147,32 @@ When the application starts via `app.Start()`, Goravel automatically runs the au
 },
 ```
 
-The value is a slice of glob patterns matched against each runner's signature. The framework uses Go's [`path.Match`](https://pkg.go.dev/path#Match) for matching, so `*` is the only wildcard. The framework runner signatures are:
+Qiymat har bir ishlovchining imzosiga mos keladigan glob naqshlarining bir qismidir. Framework moslashtirish uchun Go’ning [`path.Match`](https://pkg.go.dev/path#Match) dan foydalanadi, shuning uchun `*` yagona joker belgidir. Framework ishlovchi imzolari:
 
-| Signature           | Runner                                          | Started by                   |
-| ------------------- | ----------------------------------------------- | ---------------------------- |
-| `goravel:http`      | `HTTPRunner` (HTTP server)   | `http` service provider      |
-| `goravel:grpc`      | `GrpcRunner` (gRPC server)   | `grpc` service provider      |
-| `goravel:queue`     | `QueueRunner` (queue worker) | `queue` service provider     |
-| `goravel:schedule`  | `ScheduleRunner` (scheduler) | `schedule` service provider  |
-| `goravel:telemetry` | `TelemetryRunner`                               | `telemetry` service provider |
+| Imzo                | Ishlovchi                                              | Boshlovchi                        |
+| ------------------- | ------------------------------------------------------ | --------------------------------- |
+| `goravel:http`      | `HTTPRunner` (HTTP server)          | `http` xizmat ko'rsatuvchisi      |
+| `goravel:grpc`      | `GrpcRunner` (gRPC serveri)         | `grpc` xizmat ko'rsatuvchi        |
+| `goravel:queue`     | `QueueRunner` (navbat ishchisi)     | `queue` xizmat ko'rsatuvchi       |
+| `goravel:schedule`  | `ScheduleRunner` (rejalashtiruvchi) | `schedule` xizmat ko'rsatuvchi    |
+| `goravel:telemetry` | `TelemetryRunner`                                      | `telemetry` xizmat ko'rsatuvchisi |
 
-Common patterns:
+Umumiy naqshlar:
 
 ```go
-// Web container — only skip the scheduler so it runs on a dedicated container
+// Veb konteyner — faqat rejalashtiruvchini o'tkazib yuboring, shunda u ajratilgan konteynerda ishlaydi
 "disabled_runners": []string{"goravel:schedule"},
 
-// Scheduler-only container — disable http, queue, grpc
+// Faqat rejalashtiruvchi konteyner — http, queue, grpc ni o'chiring
 "disabled_runners": []string{"goravel:http", "goravel:queue", "goravel:grpc"},
 
-// Disable every framework runner
+// Barcha framework ishga tushiruvchilarni o'chiring
 "disabled_runners": []string{"goravel:*"},
 
-// Kill switch: run no auto-run runners in the main process
+// O'chirish tugmasi: asosiy jarayonda avtomatik ishga tushiruvchilarni ishga tushirmang
 "disabled_runners": []string{"*"},
 ```
 
-Patterns are evaluated in order and the first match wins. Invalid patterns (for example, an unmatched bracket) are logged as warnings and the runner is left running, so a typo in the config never crashes the boot.
+Naqshlar ketma-ketlikda baholanadi va birinchi mos keladigan g'alaba qozonadi. Noto'g'ri naqshlar (masalan, mos kelmaydigan qavs) ogohlantirish sifatida qayd etiladi va ishga tushiruvchi ishlashda qoldiriladi, shuning uchun konfigdagi xato hech qachon yuklashni buzmaydi.
 
-User-defined runners that you register with `WithRunners` are not affected by the `goravel:*` namespace. Use the runner's own signature to disable it.
+`WithRunners` bilan ro'yxatdan o'tkazgan foydalanuvchi tomonidan belgilangan ishga tushiruvchilarga `goravel:*` nom maydoni ta'sir qilmaydi. Uni o'chirish uchun ishga tushiruvchining o'z imzosidan foydalaning.
