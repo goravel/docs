@@ -10,7 +10,8 @@ Barcha Goravel relizlari uchun xatolar tuzatmalari 12 oy davomida taqdim etiladi
 
 | Versiya              | Golang               | Reliz             | Xatolar tuzatilguncha |
 | -------------------- | -------------------- | ----------------- | --------------------- |
-| 1.18 | 1.25 | 2026-yil 3-chorak | 2027-yil 3-chorak     |
+| 1.19 | 1.25 | 2027-yil 1-chorak | 2028-yil 1-chorak     |
+| 1.18 | 1.23 | 5-iyul, 2026      | 5-iyul, 2027         |
 | 1.17 | 1.24 | 3-fevral, 2026    | 3-fevral, 2027        |
 | 1.16 | 1.23 | 20-iyul, 2025     | 20-iyul, 2026         |
 | 1.15 | 1.22 | 31-dekabr, 2024   | 31-dekabr, 2025       |
