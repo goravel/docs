@@ -31,7 +31,7 @@ Keyin siz buyruqlaringizni shunchaki shunday ishga tushirishingiz mumkin:
 artisan make:controller DemoController
 ```
 
-You can also use the `artisan` shell script to run built-in commands.
+Siz o'rnatilgan buyruqlarni ishga tushirish uchun `artisan` shell skriptidan ham foydalanishingiz mumkin.
 
 ### Buyruqlarni yaratish
 
@@ -57,9 +57,9 @@ func Boot() contractsfoundation.Application {
 
 `make:command` tomonidan yaratilgan yangi buyruq `bootstrap/commands.go::Commands()` funksiyasida avtomatik ro'yxatdan o'tkaziladi va funksiya `WithCommands` tomonidan chaqiriladi. Agar buyruq faylini o'zingiz yaratgan bo'lsangiz, buyruqni qo'lda ro'yxatdan o'tkazishingiz kerak.
 
-### Filtering Commands
+### Buyruqlarni filtrlash
 
-You may want to scope which built-in Artisan commands are registered in different environments — for example, hiding dev commands like `make:*`, `package:*`, and `vendor:publish` in production. The `WithCommandsFilter` method on `ApplicationBuilder` lets you return a positive list of command signatures to keep:
+Siz turli muhitlarda ro'yxatdan o'tgan o'rnatilgan Artisan buyruqlarini chegaralashni xohlashingiz mumkin — masalan, ishlab chiqarishda `make:*`, `package:*`, va `vendor:publish` kabi ishlab chiquvchi buyruqlarini yashirish. `ApplicationBuilder`'dagi `WithCommandsFilter` metodi sizga saqlab qolish uchun buyruq imzolari ijobiy ro'yxatini qaytarish imkonini beradi:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -80,19 +80,19 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-The callback runs once at build time and each entry is matched against `command.Signature()` in one of two ways:
+Qayta chaqiruv (callback) qurilish vaqtida bir marta ishlaydi va har bir yozuv ikki usuldan biri bilan `command.Signature()` ga moslashtiriladi:
 
-- **Exact match** (no wildcard) — the signature must match the entry exactly.
-- **Glob match** (entry contains `*`) — checked using `path.Match`. `*` matches any sequence of non-`/` characters.
+- **Aniq moslik** (wildcard yo'q) — imzo yozuvga to'liq mos kelishi kerak.
+- **Glob mosligi** (yozuvda `*` mavjud) — `path.Match` yordamida tekshiriladi. `*` `/` bo'lmagan belgilar ketma-ketligiga mos keladi.
 
-The return value determines the filtering behavior:
+Qaytariladigan qiymat filtrlash xatti-harakatini belgilaydi:
 
-- **Method not called** — all commands are kept (default).
-- **Return `nil`** — all commands are kept (no filter applied).
-- **Return `[]string{}`** — all commands are dropped.
-- **Return entries** — only commands whose signature matches an entry are kept.
+- **Metod chaqirilmagan** — barcha buyruqlar saqlanadi (odatiy).
+- **`nil` qaytarish** — barcha buyruqlar saqlanadi (filtr qo'llanilmagan).
+- **`[]string{}` qaytarish** — barcha buyruqlar o'chiriladi.
+- **Yozuvlarni qaytarish** — faqat imzosi yozuvga mos keladigan buyruqlar saqlanadi.
 
-> Note: The filter applies to all commands including those added via `WithCommands`, so the user cannot bypass the filter by adding commands manually.
+> Eslatma: Filtr barcha buyruqlarga, shu jumladan `WithCommands` orqali qo'shilganlarga ham qo'llaniladi, shuning uchun foydalanuvchi buyruqlarni qo'lda qo'shish orqali filtrni chetlab o'tolmaydi.
 
 ### Buyruq tuzilmasi
 
@@ -487,9 +487,9 @@ ctx.NewLine()
 ctx.NewLine(2)
 ```
 
-#### Tables
+#### Jadvallar
 
-You may use the `Table` method to render structured data in a tabular format. The method accepts headers and rows, and writes the rendered table directly to the console:
+Strukturalangan ma'lumotlarni jadval formatida ko'rsatish uchun `Table` metodidan foydalanishingiz mumkin. Usul sarlavhalar va qatorlarni qabul qiladi va tayyorlangan jadvalni to'g'ridan-to'g'ri konsolga yozadi:
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
@@ -505,7 +505,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
-You can pass a `console.TableOption` as the third argument to customize borders, dimensions, and styles.
+Uchinchi argument sifatida `console.TableOption` ni o‘tkazishingiz mumkin, bu chegaralar, o‘lchamlar va uslublarni sozlash imkonini beradi.
 
 ```go
 ctx.Table(headers, rows, console.TableOption{
@@ -567,9 +567,9 @@ ctx.Divider()     // ----------
 ctx.Divider("=>") // =>=>=>=>=>
 ```
 
-## Graceful Shutdown
+## Xotirjam o‘chirish
 
-By default, pressing `Ctrl+C` (or sending `SIGTERM`) cancels the `console.Context` passed to `Handle`. The framework runs `Handle` in a goroutine, so it returns `context.Canceled` as soon as the signal fires and the process exits. Commands that need to release resources — closing network listeners, draining queues, flushing buffers — can opt into a cleanup callback by implementing the optional `console.Shutdownable` interface.
+Odatiy bo‘yicha, `Ctrl+C` tugmasini bosish (yoki `SIGTERM` yuborish) `Handle` ga uzatilgan `console.Context` ni bekor qiladi. Framework `Handle` ni goroutine da ishlatadi, shuning uchun signal ishga tushganda va jarayon chiqqanda darhol `context.Canceled` ni qaytaradi. Resurslarni bo‘shatish kerak bo‘lgan buyruqlar — tarmoq tinglovchilarini yopish, navbatlarni bo‘shatish, buferlarni tozalash — ixtiyoriy `console.Shutdownable` interfeysini amalga oshirish orqali tozalash chaqiruviga o‘tishi mumkin.
 
 ```go
 type Shutdownable interface {
@@ -577,9 +577,9 @@ type Shutdownable interface {
 }
 ```
 
-When a command implements `Shutdownable`, the framework races `Handle` against the signal context. If `Handle` returns first, the framework then calls `Shutdown` with a fresh `console.Context` (the original is already cancelled) and a 30s budget so the command can finish any cleanup. If the signal fires first, the framework calls `Shutdown` with the same fresh context and 30s budget, then returns; `Handle` is left to run on its own in the goroutine and the process exits.
+Qachonki buyruq `Shutdownable` interfeysini amalga oshirsa, framework `Handle` va signal kontekstini poyga qiladi. Agar `Handle` birinchi bo'lib qaytsa, framework yangi `console.Context` (asl nusxasi allaqachon bekor qilingan) va 30 sekundlik byudjet bilan `Shutdown`ni chaqiradi, shunda buyruq tozalash ishlarini tugatishi mumkin. Agar signal birinchi bo'lib ishga tushsa, framework xuddi shu yangi kontekst va 30 sekundlik byudjet bilan `Shutdown`ni chaqiradi, so'ng qaytadi; `Handle` o'z gorutinasida mustaqil ishlashga qoldiriladi va jarayon tugaydi.
 
-`console.Context` now embeds `context.Context`, so commands can use `<-ctx.Done()` directly, pass `ctx` to functions that expect a `context.Context`, and call `ctx.Deadline()` / `ctx.Err()` / `ctx.Value(key)` without an accessor.
+`console.Context` endi `context.Context`ni o'z ichiga oladi, shuning uchun buyruqlar to'g'ridan-to'g'ri `<-ctx.Done()` dan foydalanishi, `ctx`ni `context.Context` kutadigan funksiyalarga uzatishi va `ctx.Deadline()` / `ctx.Err()` / `ctx.Value(key)` ni aksessuarsiz chaqirishi mumkin.
 
 ```go
 package commands
@@ -615,9 +615,9 @@ func (r *Serve) Shutdown(ctx console.Context) error {
 }
 ```
 
-The built-in `schedule:run` command is a real example. Its `Handle` blocks on `schedule.Run()`, and on signal the framework calls `Shutdown`, which delegates to `schedule.Shutdown(ctx)` so scheduled tasks get a chance to finish their work.
+`schedule:run` buyrug'i haqiqiy misoldir. Uning `Handle` metodida `schedule.Run()` chaqiriladi, va signal kelganda framework `Shutdown` ni chaqiradi, u esa `schedule.Shutdown(ctx)` ga topshiradi, shu bilan rejalashtirilgan vazifalar ishini tugatish imkoniyatiga ega bo'ladi.
 
-Commands that do not implement `Shutdownable` keep the original behavior — the process exits as soon as the signal is received.
+`Shutdownable` ni amalga oshirmagan buyruqlar asl xatti-harakatni saqlaydi — signal qabul qilinganda jarayon darhol tugatiladi.
 
 ## Kategoriya
 
