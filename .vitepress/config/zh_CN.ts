@@ -33,7 +33,7 @@ export const config = defineConfig({
       base: '/ai/',
       items: sidebarAI()
     }, {
-      text: 'Security',
+      text: "安全",
       base: "/zh_CN/security/",
       items: sidebarSecurity()
     }, {
@@ -137,10 +137,10 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Upgrading To v1.18 From v1.17',
+    text: "从 v1.17 升级到 v1.18",
     link: 'v1.18'
   }, {
-    text: 'Upgrading To v1.17 From v1.16',
+    text: "从 v1.16 升级到 v1.17",
     link: 'v1.17'
   }, {
     text: "历史",
@@ -233,10 +233,10 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     text: "字符串",
     link: 'strings'
   }, {
-    text: 'Collections',
+    text: "集合",
     link: 'collections'
   }, {
-    text: 'Helpers',
+    text: "辅助函数",
     link: 'helpers'
   }, {
     text: "HTTP 客户端",
@@ -245,7 +245,7 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     text: "复数",
     link: 'pluralization'
   }, {
-    text: 'Telemetry',
+    text: "遥测",
     link: 'telemetry'
   }];
 }
