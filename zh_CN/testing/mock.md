@@ -6,7 +6,7 @@
 
 Goravel 所有功能都使用 `facades` 实现，而所有的 `facades` 均由接口构成。 因此配合 [stretchr/testify](http://github.com/stretchr/testify) 的 mock 功能，Goravel 可以提供优秀的测试体验。
 
-## Mock facades.AI
+## 模拟 facades.AI
 
 ```go
 import (
@@ -199,7 +199,7 @@ func TestCrypt(t *testing.T) {
 }
 ```
 
-## Mock facades.DB
+## 模拟 facades.DB
 
 ```go
 import (
@@ -548,7 +548,7 @@ func TestStorage(t *testing.T) {
 
 ```
 
-## Mock facades.Testing
+## 模拟 facades.Testing
 
 ```go
 import (
@@ -576,7 +576,7 @@ func TestTesting(t *testing.T) {
 }
 ```
 
-## Mock facades.Session
+## 模拟 facades.Session
 
 ```go
 import (
@@ -610,7 +610,7 @@ func TestSession(t *testing.T) {
 }
 ```
 
-## Mock facades.Schema
+## 模拟 facades.Schema
 
 ```go
 import (
@@ -639,7 +639,7 @@ func TestSchema(t *testing.T) {
 }
 ```
 
-## Mock facades.Schedule
+## 模拟 facades.Schedule
 
 ```go
 import (
@@ -667,7 +667,7 @@ func TestSchedule(t *testing.T) {
 }
 ```
 
-## Mock facades.Route
+## 模拟 facades.Route
 
 ```go
 import (
