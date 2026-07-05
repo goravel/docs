@@ -33,7 +33,7 @@ export const config = defineConfig({
       base: '/ai/',
       items: sidebarAI()
     }, {
-      text: 'Security',
+      text: "Xavfsizlik",
       base: "/uz_UZ/security/",
       items: sidebarSecurity()
     }, {
@@ -137,10 +137,10 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
-    text: 'Upgrading To v1.18 From v1.17',
+    text: "v1.17 dan v1.18 ga yangilash",
     link: 'v1.18'
   }, {
-    text: 'Upgrading To v1.17 From v1.16',
+    text: "v1.16-dan v1.17-ga yangilash",
     link: 'v1.17'
   }, {
     text: "Tarix",
@@ -233,20 +233,20 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     text: "Satrlar",
     link: 'strings'
   }, {
-    text: 'Collections',
-    link: 'collections'
+    text: "To'plamlar",
+    link: "to'plamlar"
   }, {
-    text: 'Helpers',
+    text: "Yordamchilar",
     link: 'helpers'
   }, {
     text: "HTTP Klienti",
     link: 'http-client'
   }, {
     text: "Ko‘plik shakllari",
-    link: 'pluralization'
+    link: "ko'plik shakli"
   }, {
-    text: 'Telemetry',
-    link: 'telemetry'
+    text: "Telemetriya",
+    link: "telemetriya"
   }];
 }
 function sidebarAI(): DefaultTheme.SidebarItem[] {
