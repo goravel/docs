@@ -111,10 +111,21 @@ err := facades.Auth(ctx).Logout()
 ```go
 token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
 err := facades.Auth(ctx).Guard("admin").Parse(token)
-token, err := facades.Auth(ctx).Guard("admin").User(&user)
+err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
 > 当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。
+
+JWT tokens are bound to the guard that generated them. If you parse a token with a different guard, Goravel returns `auth.ErrorGuardMismatch`:
+
+```go
+token, err := facades.Auth(ctx).Guard("user").LoginUsingID(1)
+payload, err := facades.Auth(ctx).Guard("admin").Parse(token)
+
+if errors.Is(err, auth.ErrorGuardMismatch) {
+  // The token was issued by another guard.
+}
+```
 
 ## 自定义驱动
 
