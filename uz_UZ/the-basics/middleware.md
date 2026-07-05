@@ -75,11 +75,11 @@ import "github.com/goravel/framework/http/middleware"
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
 
-### Excluding Middleware
+### Middleware'ni istisno qilish
 
-The `WithoutMiddleware` method allows specific routes to bypass certain middleware that would otherwise be applied by parent groups. This is useful for public endpoints, webhook handlers, or routes that should skip authentication or rate limiting.
+`WithoutMiddleware` usuli ma'lum marshrutlarga ota guruhlar tomonidan qo'llaniladigan ba'zi middleware'ni chetlab o'tish imkonini beradi. Bu umumiy endpointlar, webhook ishlovchilari yoki autentifikatsiya yoki tezlik cheklashni o'tkazib yuborishi kerak bo'lgan marshrutlar uchun foydalidir.
 
-Use `WithoutMiddleware` on individual routes after `Middleware` is applied to a group:
+Guruhga `Middleware` qo'llanilgandan so'ng alohida marshrutlarda `WithoutMiddleware` dan foydalaning:
 
 ```go
 facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
@@ -91,7 +91,7 @@ facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Gro
 })
 ```
 
-You can also exclude middleware for an entire group:
+Shuningdek, butun guruh uchun middleware'ni istisno qilishingiz mumkin:
 
 ```go
 facades.Route().Middleware(middleware.Auth()).
@@ -101,7 +101,7 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **Note**: Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
+> **Eslatma**: Middleware istisnolari middlewareslarni aniqlash uchun `Signature()` usulidan foydalanadi. Har bir middleware `WithoutMiddleware` to'g'ri ishlashi uchun noyob imzo qaytarishiga ishonch hosil qiling. O'rnatilgan framework middlewareslari allaqachon noyob imzolarni taqdim etadi.
 
 ## So‘rovni to‘xtatish
 
