@@ -8,15 +8,15 @@ Grpc 模块可以使用 `facades.Grpc()` 进行操作。 Goravel 提供了一种
 
 ## 配置
 
-In the `config/grpc.go` file, you can configure the Grpc module, where `grpc.host` configures the domain name of the server, and `grpc.clients` configures the clients which will connect to gRPC services.
+在 `config/grpc.go` 文件中，你可以配置 Grpc 模块，其中 `grpc.host` 配置服务器的域名，`grpc.clients` 配置将连接到 gRPC 服务的客户端。
 
-## Transport Credentials
+## 传输凭据
 
-By default, gRPC clients use insecure transport credentials and the gRPC server listens without TLS. You can register `credentials.TransportCredentials` during application bootstrap when your services require TLS or mTLS.
+默认情况下，gRPC 客户端使用不安全的传输凭据，gRPC 服务器监听时没有 TLS。 当你的服务需要 TLS 或 mTLS 时，你可以在应用程序引导过程中注册 `credentials.TransportCredentials`。
 
-### Server Credentials
+### 服务器凭据
 
-Register server credentials before the gRPC server is created:
+在创建 gRPC 服务器之前注册服务器凭据：
 
 ```go
 import "google.golang.org/grpc/credentials"
@@ -38,9 +38,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-### Client Credentials
+### 客户端凭据
 
-Register client credential groups in `bootstrap/app.go`, then reference the group name in `config/grpc.go` with `grpc.clients.<name>.credentials`:
+在 `bootstrap/app.go` 中注册客户端凭据组，然后在 `config/grpc.go` 中使用 `grpc.clients.<name>` 引用组名。.credentials\`:
 
 ```go
 import "google.golang.org/grpc/credentials"
@@ -77,7 +77,7 @@ func Boot() contractsfoundation.Application {
 },
 ```
 
-If a client has no `credentials` value, Goravel uses insecure credentials for backward compatibility. If the configured group is not registered, Goravel logs a warning and falls back to insecure credentials. For mTLS, return credentials created with `credentials.NewTLS` and a `tls.Config` that includes the required client certificates or trusted CA pools.
+如果客户端没有 `credentials` 值，Goravel 会使用不安全凭据以实现向后兼容。 如果配置的组未注册，Goravel 会记录警告并回退到不安全凭据。 对于 mTLS，返回使用 `credentials.NewTLS` 和包含所需客户端证书或受信任 CA 池的 `tls.Config` 创建的凭据。
 
 ## 控制器
 
@@ -232,9 +232,9 @@ func Boot() foundation.Application {
 }
 ```
 
-### Apply Interceptors to Clients
+### 将拦截器应用于客户端
 
-The `default` in the example above is a group name that can be applied to the configuration item `grpc.clients.interceptors`. In this way, the client will use all interceptors under the group.
+上面示例中的 `default` 是一个组名，可以应用于配置项 `grpc.clients.interceptors`。 这样，客户端将使用该组下的所有拦截器。
 
 ```go
 package config
@@ -397,7 +397,7 @@ func init() {
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),
         "interceptors":   []string{"default"},
-        "stats_handlers": []string{"user"}, // Apply "user" stats handler group
+        "stats_handlers": []string{"user"}, // 应用 "user" stats handler 组
       },
     },
   })
