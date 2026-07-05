@@ -593,6 +593,8 @@ convert.Pointer(1) // *int(1)
 import "github.com/goravel/framework/support/collect"
 ```
 
+The helpers below operate directly on slices or maps. For fluent eager and lazy collections, see [Collections](collections.md).
+
 ### `collect.Count()`
 
 `collect.Count()` 函数返回给定集合中的项目数：
