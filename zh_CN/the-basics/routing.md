@@ -42,26 +42,27 @@ func Boot() contractsfoundation.Application {
 
 ### 路由方法
 
-| 方法         | 作用                |
-| ---------- | ----------------- |
-| Group      | [路由分组](#路由分组)     |
-| Prefix     | [路由前缀](#路由前缀)     |
-| ServeHTTP  | [测试路由](#测试路由)     |
-| Get        | [基本路由](#基本路由)     |
-| Post       | [基本路由](#基本路由)     |
-| Put        | [基本路由](#基本路由)     |
-| Delete     | [基本路由](#基本路由)     |
-| Patch      | [基本路由](#基本路由)     |
-| Options    | [基本路由](#基本路由)     |
-| Any        | [基本路由](#基本路由)     |
-| Resource   | [资源路由](#资源路由)     |
-| Static     | [文件路由](#文件路由)     |
-| StaticFile | [文件路由](#文件路由)     |
-| StaticFS   | [文件路由](#文件路由)     |
-| Middleware | [中间件](#中间件)       |
-| GetRoutes  | [获取所有路由](#获取所有路由) |
-| Name       | [设置路由名称](#设置路由名称) |
-| Info       | [获取路由信息](#获取路由信息) |
+| 方法                | 作用                                        |
+| ----------------- | ----------------------------------------- |
+| Group             | [路由分组](#路由分组)                             |
+| Prefix            | [路由前缀](#路由前缀)                             |
+| ServeHTTP         | [测试路由](#测试路由)                             |
+| Get               | [基本路由](#基本路由)                             |
+| Post              | [基本路由](#基本路由)                             |
+| Put               | [基本路由](#基本路由)                             |
+| Delete            | [基本路由](#基本路由)                             |
+| Patch             | [基本路由](#基本路由)                             |
+| Options           | [基本路由](#基本路由)                             |
+| Any               | [基本路由](#基本路由)                             |
+| Resource          | [资源路由](#资源路由)                             |
+| Static            | [文件路由](#文件路由)                             |
+| StaticFile        | [文件路由](#文件路由)                             |
+| StaticFS          | [文件路由](#文件路由)                             |
+| Middleware        | [中间件](#中间件)                               |
+| WithoutMiddleware | [Without Middleware](#without-middleware) |
+| GetRoutes         | [获取所有路由](#获取所有路由)                         |
+| Name              | [设置路由名称](#设置路由名称)                         |
+| Info              | [获取路由信息](#获取路由信息)                         |
 
 ## 基本路由
 
@@ -150,6 +151,41 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 详见[中间件](./middleware.md)
+
+## Without Middleware
+
+The `WithoutMiddleware` method allows you to exclude specific middleware from routes that would otherwise be applied by parent groups. This is useful for webhook endpoints, public APIs, or any route that should bypass certain middleware (like authentication or rate limiting).
+
+### Route-Level Exclusion
+
+```go
+import "github.com/goravel/framework/http/middleware"
+
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  // This route has both middlewares
+  router.Get("/dashboard", dashboardController.Index)
+
+  // This route excludes the throttle middleware
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+### Group-Level Exclusion
+
+Exclude middleware for all routes within a group:
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    // All routes in this group bypass Auth middleware
+    router.Get("/public", publicController.Index)
+    router.Get("/public/{id}", publicController.Show)
+  })
+```
+
+> **Note**: Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
 
 ## 获取所有路由
 
