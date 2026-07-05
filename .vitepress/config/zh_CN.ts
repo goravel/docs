@@ -29,7 +29,11 @@ export const config = defineConfig({
       base: "/zh_CN/digging-deeper/",
       items: sidebarAdvanced()
     }, {
-      text: "安全",
+      text: 'AI',
+      base: '/ai/',
+      items: sidebarAI()
+    }, {
+      text: 'Security',
       base: "/zh_CN/security/",
       items: sidebarSecurity()
     }, {
@@ -133,11 +137,11 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "从 v1.16 升级到 v1.17",
-    link: 'v1.17'
+    text: 'Upgrading To v1.18 From v1.17',
+    link: 'v1.18'
   }, {
-    text: "从 v1.15 升级到 v1.16",
-    link: 'v1.16'
+    text: 'Upgrading To v1.17 From v1.16',
+    link: 'v1.17'
   }, {
     text: "历史",
     link: 'history'
@@ -229,7 +233,10 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     text: "字符串",
     link: 'strings'
   }, {
-    text: "辅助函数",
+    text: 'Collections',
+    link: 'collections'
+  }, {
+    text: 'Helpers',
     link: 'helpers'
   }, {
     text: "HTTP 客户端",
@@ -237,6 +244,15 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
   }, {
     text: "复数",
     link: 'pluralization'
+  }, {
+    text: 'Telemetry',
+    link: 'telemetry'
+  }];
+}
+function sidebarAI(): DefaultTheme.SidebarItem[] {
+  return [{
+    text: 'AI SDK',
+    link: 'sdk'
   }];
 }
 function sidebarSecurity(): DefaultTheme.SidebarItem[] {
