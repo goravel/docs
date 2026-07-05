@@ -31,9 +31,9 @@
 facades.Log().WithContext(ctx)
 ```
 
-When `WithContext` is used, Goravel writes context key-value pairs to the log output. Framework-internal keys such as `GoravelAuthJwt` and `goravel_http_client_name` are excluded automatically to avoid leaking sensitive or noisy values.
+当使用 `WithContext` 时，Goravel 会将上下文键值对写入日志输出。 框架内部键（如 `GoravelAuthJwt` 和 `goravel_http_client_name`）会自动排除，以避免泄露敏感或冗余值。
 
-You can exclude additional context keys by adding `context.exclude` to `config/logging.go`:
+您可以通过在 `config/logging.go` 中添加 `context.exclude` 来排除额外的上下文键：
 
 ```go
 // config/logging.go
@@ -45,7 +45,7 @@ You can exclude additional context keys by adding `context.exclude` to `config/l
 },
 ```
 
-String entries match string context keys and typed string context keys by their displayed name. Comparable non-string entries match the exact context key value, which is useful for struct sentinel keys. Uncomparable entries, such as slices or maps, are ignored.
+字符串条目通过其显示名称匹配字符串上下文键和类型化字符串上下文键。 可比较的非字符串条目匹配确切的上下文键值，这对于结构体哨兵键很有用。 不可比较的条目（如切片或映射）将被忽略。
 
 ## 写日志消息
 
