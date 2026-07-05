@@ -1,44 +1,44 @@
-# Collections
+# To'plamlar
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Goravel provides a fluent collection API through the `github.com/goravel/framework/support/collect` package. Collections make it convenient to filter, transform, aggregate, and inspect slice data with chainable methods.
+Goravel `github.com/goravel/framework/support/collect` paketi orqali silliq to'plam API'sini taqdim etadi. To'plamlar zanjirlangan usullar bilan ma'lumotlarni filtrlash, o'zgartirish, jamlash va tekshirishni qulay qiladi.
 
-The package provides two collection types:
+Paket ikki xil to'plam turini taqdim etadi:
 
-- `Collection`: an eager collection that works with data already loaded into memory.
-- `LazyCollection`: a lazy collection that evaluates pipelines only when a terminal method is called.
+- `Collection`: xotiraga yuklangan ma'lumotlar bilan ishlaydigan eager to'plam.
+- `LazyCollection`: faqat terminal usuli chaqirilganda pipalarni baholaydigan lazy to'plam.
 
 ```go
 import "github.com/goravel/framework/support/collect"
 ```
 
-## Creating Collections
+## To'plamlarni Yaratish
 
-Use `collect.New` to create a collection from variadic arguments:
+Variadik argumentlardan to'plam yaratish uchun `collect.New` dan foydalaning:
 
 ```go
 numbers := collect.New(1, 2, 3, 4, 5)
 ```
 
-Use `collect.Of` to create a collection from an existing slice:
+Mavjud boʻlimdan toʻplam yaratish uchun `collect.Of` dan foydalaning:
 
 ```go
 items := []string{"apple", "banana", "cherry"}
 fruits := collect.Of(items)
 ```
 
-You may retrieve all underlying items with `All`:
+Barcha asosiy elementlarni `All` bilan olishingiz mumkin:
 
 ```go
 fruits.All() // []string{"apple", "banana", "cherry"}
 ```
 
-## Basic Operations
+## Asosiy operatsiyalar
 
-Collections provide common methods for reading and modifying items:
+Toʻplamlar elementlarni oʻqish va oʻzgartirish uchun umumiy metodlarni taqdim etadi:
 
 ```go
 numbers := collect.New(1, 2, 3, 4, 5)
@@ -52,18 +52,18 @@ numbers.Contains(3)  // true
 numbers.Search(4)    // 3
 ```
 
-Some methods mutate the current collection and return it for chaining:
+Ba'zi metodlar joriy toʻplamni oʻzgartirib, zanjirlash uchun qaytaradi:
 
 ```go
 numbers.Push(6).Prepend(0)
 numbers.All() // []int{0, 1, 2, 3, 4, 5, 6}
 ```
 
-Mutating methods include `Push`, `Prepend`, `Pop`, `Pull`, `Shift`, `Unshift`, `Forget`, `Put`, `Splice`, and `Transform`. Methods such as `Push`, `Prepend`, `Forget`, `Put`, and `Transform` return the current collection, while methods such as `Pop`, `Pull`, `Shift`, and `Splice` return the removed item or items.
+O'zgartiruvchi metodlar `Push`, `Prepend`, `Pop`, `Pull`, `Shift`, `Unshift`, `Forget`, `Put`, `Splice` va `Transform` ni o'z ichiga oladi. `Push`, `Prepend`, `Forget`, `Put` va `Transform` kabi metodlar joriy to'plamni qaytaradi, `Pop`, `Pull`, `Shift` va `Splice` kabi metodlar esa olib tashlangan elementni yoki elementlarni qaytaradi.
 
-## Filtering And Mapping
+## Filtrlash va Xaritalash
 
-Use `Filter` and `Reject` to keep or remove items by callback:
+Elementlarni callback bo'yicha saqlash yoki olib tashlash uchun `Filter` va `Reject` dan foydalaning:
 
 ```go
 numbers := collect.New(1, 2, 3, 4, 5, 6)
@@ -75,7 +75,7 @@ evens := numbers.Filter(func(n int, _ int) bool {
 evens.All() // []int{2, 4, 6}
 ```
 
-Use `Map` to transform each item. The `Map` method returns `*collect.Collection[any]` because the callback can return any type:
+Har bir elementni o'zgartirish uchun `Map` dan foydalaning. `Map` metodi `*collect.Collection[any]` ni qaytaradi, chunki callback har qanday turni qaytarishi mumkin:
 
 ```go
 labels := numbers.Map(func(n int, i int) any {
@@ -85,9 +85,9 @@ labels := numbers.Map(func(n int, i int) any {
 labels.All() // []any{"item_0_1", "item_1_2", ...}
 ```
 
-Other transformation helpers include `FlatMap`, `MapInto`, `MapSpread`, `MapToDictionary`, `MapToGroups`, and `MapWithKeys`.
+Boshqa transformatsion yordamchilar `FlatMap`, `MapInto`, `MapSpread`, `MapToDictionary`, `MapToGroups` va `MapWithKeys` ni o'z ichiga oladi.
 
-Use `Unique`, `UniqueBy`, and `Duplicates` to work with repeated values. The `Duplicates` method returns each duplicated value once:
+Takroriy qiymatlar bilan ishlash uchun `Unique`, `UniqueBy` va `Duplicates` dan foydalaning. `Duplicates` metodi har bir takroriy qiymatni bir marta qaytaradi:
 
 ```go
 numbers := collect.New(1, 2, 2, 3, 3, 3)
@@ -96,9 +96,9 @@ numbers.Unique().All()     // []int{1, 2, 3}
 numbers.Duplicates().All() // []int{2, 3}
 ```
 
-## Working With Structs
+## Strukturalar bilan ishlash
 
-The `Where` method supports callback filtering and Laravel-style field comparisons.
+`Where` metodi callback filtratsiyasi va Laravel uslubidagi maydon taqqoslashlarini qo'llab-quvvatlaydi.
 
 ```go
 type User struct {
@@ -125,9 +125,9 @@ adultUsers := users.Where(func(user User) bool {
 })
 ```
 
-Supported comparison operators are `=`, `==`, `!=`, `>`, `>=`, `<`, `<=`, `like`, and `not like`. Equality comparisons support simple mixed numeric values, so an integer field can match a numeric string such as `"25"`.
+Qo'llab-quvvatlanadigan taqqoslash operatorlari: `=`, `==`, `!=`, `>`, `>=`, `<`, `<=`, `like` va `not like`. Tenglik taqqoslashlari oddiy aralash sonli qiymatlarni qo'llab-quvvatlaydi, shuning uchun butun son maydoni `"25"` kabi sonli satrga mos kelishi mumkin.
 
-You may also use field-specific helpers:
+Siz shuningdek, maydonga oid yordamchilardan foydalanishingiz mumkin:
 
 ```go
 activeUsers := users.WhereNull("DeletedAt")
@@ -137,9 +137,9 @@ otherUsers := users.WhereNotIn("Country", []any{"FR"})
 names := users.Pluck("Name")
 ```
 
-## Aggregates
+## Agregatlar
 
-Collection aggregate helpers calculate values from the items:
+Kollektsiya agregat yordamchilari elementlardan qiymatlarni hisoblaydi:
 
 ```go
 numbers := collect.New(1, 2, 3, 4, 5)
@@ -150,7 +150,7 @@ numbers.Min(func(n int) float64 { return float64(n) }) // 1
 numbers.Max(func(n int) float64 { return float64(n) }) // 5
 ```
 
-Use `Reduce` when you need to build a single value from the collection:
+Kollektsiyadan bitta qiymat yaratish kerak bo'lganda `Reduce` dan foydalaning:
 
 ```go
 total := numbers.Reduce(func(acc any, n int, _ int) any {
@@ -158,9 +158,9 @@ total := numbers.Reduce(func(acc any, n int, _ int) any {
 }, 0)
 ```
 
-## Sorting And Slicing
+## Saralash va Kesish
 
-Collections include helpers for ordering and slicing data:
+Kollektsiyalar ma'lumotlarni tartiblash va kesish uchun yordamchilarni o'z ichiga oladi:
 
 ```go
 numbers := collect.New(5, 1, 4, 2, 3)
@@ -173,7 +173,7 @@ numbers.Slice(2).All()                                   // []int{4, 2, 3}
 numbers.Chunk(2)                                         // [][]int{{5, 1}, {4, 2}, {3}}
 ```
 
-Use `Splice` when you need to remove or insert items in place. It mutates the current collection and returns the removed items. A negative `deleteCount` is treated as `0`, so it inserts without removing existing items:
+Agar o'rinida elementlarni olib tashlash yoki qo'shish kerak bo'lsa, `Splice` dan foydalaning. U joriy to'plamni o'zgartiradi va olib tashlangan elementlarni qaytaradi. Manfiy `deleteCount` `0` deb hisoblanadi, shuning uchun mavjud elementlarni olib tashlamasdan qo'shadi:
 
 ```go
 letters := collect.New("a", "b", "c", "d")
@@ -187,7 +187,7 @@ inserted.All() // []string{}
 letters.All()  // []string{"a", "y", "x", "d"}
 ```
 
-For structs, use `SortBy` or `SortByDesc` with a key function:
+Strukturalar uchun `SortBy` yoki `SortByDesc` ni kalit funksiyasi bilan ishlating:
 
 ```go
 sortedUsers := users.SortBy(func(user User) string {
@@ -195,9 +195,9 @@ sortedUsers := users.SortBy(func(user User) string {
 })
 ```
 
-## Conditional Operations
+## Shartli amallar
 
-Use `When` and `Unless` to conditionally apply transformations while keeping a fluent chain:
+Shartli ravishda o'zgartirishlarni qo'llash va fluent zanjirni saqlash uchun `When` va `Unless` dan foydalaning:
 
 ```go
 result := collect.New(1, 2, 3, 4, 5).
@@ -211,7 +211,7 @@ result := collect.New(1, 2, 3, 4, 5).
 result.All() // []int{3, 4}
 ```
 
-Use `Tap` to run side effects without breaking the chain:
+Zanjirni buzmasdan yon effektlarni bajarish uchun `Tap` dan foydalaning:
 
 ```go
 numbers.Tap(func(c *collect.Collection[int]) {
@@ -219,11 +219,11 @@ numbers.Tap(func(c *collect.Collection[int]) {
 })
 ```
 
-## Lazy Collections
+## Kechiktirilgan kolleksiyalar
 
-Lazy collections are useful for large datasets or generated values because intermediate operations are not executed until a terminal method or helper, such as `All`, `Count`, `First`, `Collect`, `Sum`, or `LazyReduce`, is called.
+Kechiktirilgan to'plamlar katta ma'lumotlar to'plami yoki yaratilgan qiymatlar uchun foydalidir, chunki oraliq operatsiyalar `All`, `Count`, `First`, `Collect`, `Sum` yoki `LazyReduce` kabi terminal metodi yoki yordamchisi chaqirilguncha bajarilmaydi.
 
-Create lazy collections from slices, ranges, generators, functions, repeated values, or channels:
+Kechiktirilgan to'plamlarni slice, range, generator, funksiya, takrorlanuvchi qiymatlar yoki kanallardan yarating:
 
 ```go
 lazy := collect.LazyOf([]int{1, 2, 3, 4, 5})
@@ -236,7 +236,7 @@ generated := collect.LazyGenerate(func(i int) int {
 repeated := collect.LazyRepeat("Goravel", 3)
 ```
 
-Chain lazy operations and consume only the items you need:
+Kechiktirilgan operatsiyalarni zanjir qilib, faqat kerakli elementlarni iste'mol qiling:
 
 ```go
 result := collect.LazyRange(1, 1000000).
@@ -247,15 +247,15 @@ result := collect.LazyRange(1, 1000000).
 result // []int{100, 200, 300, 400, 500}
 ```
 
-Lazy collections handle early-exit operations safely for finite channel producers. Methods such as `First`, `FirstWhere`, `Contains`, `Every`, `IsEmpty`, `Take`, and `TakeWhile` drain remaining input when they stop early.
+Kechiktirilgan to'plamlar cheklangan kanal ishlab chiqaruvchilari uchun erta chiqish operatsiyalarini xavfsiz boshqaradi. `First`, `FirstWhere`, `Contains`, `Every`, `IsEmpty`, `Take` va `TakeWhile` kabi metodlar erta to'xtaganda qolgan kirishni to'kib tashlaydi.
 
-Use `Collect` to convert a lazy collection into an eager collection:
+Lazy collectionni eager collectionga aylantirish uchun `Collect` dan foydalaning:
 
 ```go
 eager := collect.LazyRange(1, 10).Collect()
 ```
 
-When mapping a lazy collection to another concrete type, use the generic `LazyMap` helper:
+Lazy collectionni boshqa aniq turga xaritalashda `LazyMap` helperidan foydalaning:
 
 ```go
 numbers := collect.LazyOf([]string{"1", "2", "3"})
@@ -268,25 +268,25 @@ ints := collect.LazyMap(numbers, func(value string, _ int) int {
 ints.All() // []int{1, 2, 3}
 ```
 
-## Method Overview
+## Metodlar umumiy ko‘rinishi
 
-Common eager collection methods include:
+Eager collectionning keng tarqalgan usullari quyidagilardan iborat:
 
-| Category  | Methods                                                                                                                               |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Create    | `New`, `Of`                                                                                                                           |
-| Read      | `All`, `Count`, `First`, `Last`, `Get`, `Has`, `Contains`, `ContainsStrict`, `DoesntContain`, `Search`, `SearchBy`, `Random`          |
-| Transform | `Map`, `FlatMap`, `MapInto`, `MapSpread`, `Transform`, `Reverse`, `Shuffle`, `Concat`, `Collapse`, `Unique`, `UniqueBy`, `Duplicates` |
-| Filter    | `Filter`, `Reject`, `Where`, `WhereIn`, `WhereNotIn`, `WhereNull`, `WhereNotNull`                                                     |
-| Aggregate | `Sum`, `Avg`, `Min`, `Max`, `Median`, `Mode`, `Reduce`, `CountBy`                                                                     |
-| Slice     | `Chunk`, `Slice`, `Take`, `Skip`, `Split`, `ForPage`, `Splice`                                                                        |
-| Utility   | `Clone`, `Tap`, `Pipe`, `ToJson`, `Join`, `KeyBy`, `Pluck`, `Zip`                                                                     |
+| Kategoriya      | Usullar                                                                                                                                                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Yaratish        | `New`, `Of`                                                                                                                                                                                    |
+| O‘qish          | `Barcha`, `Sanoq`, `Birinchi`, `Oxirgi`, `Olish`, `Mavjud`, `O'z ichiga oladi`, `Qat'iy o'z ichiga oladi`, `O'z ichiga olmaydi`, `Qidirish`, `Bo'yicha qidirish`, `Tasodifiy`                  |
+| Transformatsiya | `Xaritalashtirish`, `Yassi xarita`, `Ichiga xaritalash`, `Yoyilgan xarita`, `Transformatsiya`, `Teskari`, `Aralashtirish`, `Birlashtirish`, `Yiqilish`, `Noyob`, `Bo'yicha noyob`, `Takrorlar` |
+| Filtrlash       | `Filtrlash`, `Rad etish`, `Qaerda`, `Qaerda ichida`, `Qaerda ichida emas`, `Null qaerda`, `Null bo'lmagan qaerda`                                                                              |
+| Agregat         | `Yig'indi`, `O'rtacha`, `Eng kichik`, `Eng katta`, `Mediana`, `Moda`, `Kamaytirish`, `Bo'yicha sanash`                                                                                         |
+| Slice           | `Bo'lak`, `Slice`, `Olish`, `O'tkazib yuborish`, `Bo'lish`, `Sahifa uchun`, `Ulash`                                                                                                            |
+| Yordamchi       | `Clone`, `Tap`, `Pipe`, `ToJson`, `Join`, `KeyBy`, `Pluck`, `Zip`                                                                                                                              |
 
-Common lazy collection methods include:
+Umumiy dangasa kolleksiya usullari quyidagilarni o'z ichiga oladi:
 
-| Category | Methods                                                                                                                                                  |
-| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Create   | `LazyNew`, `LazyOf`, `LazyRange`, `LazyGenerate`, `LazyFromFunc`, `LazyFromChannel`, `LazyRepeat`                                                        |
-| Pipeline | `Filter`, `Reject`, `Map`, `FlatMap`, `Where`, `WhereIn`, `WhereNotIn`, `Take`, `Skip`, `TakeWhile`, `SkipWhile`, `Unique`, `UniqueBy`, `Sort`           |
-| Terminal | `All`, `Count`, `First`, `FirstWhere`, `Last`, `Contains`, `Every`, `IsEmpty`, `IsNotEmpty`, `Collect`, `Sum`, `Avg`, `Min`, `Max`, `ToJson`, `Iterator` |
-| Generic  | `LazyMap`, `LazyReduce`                                                                                                                                  |
+| Kategoriya | Usullar                                                                                                                                                  |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Create     | `LazyNew`, `LazyOf`, `LazyRange`, `LazyGenerate`, `LazyFromFunc`, `LazyFromChannel`, `LazyRepeat`                                                        |
+| Quvur      | `Filter`, `Reject`, `Map`, `FlatMap`, `Where`, `WhereIn`, `WhereNotIn`, `Take`, `Skip`, `TakeWhile`, `SkipWhile`, `Unique`, `UniqueBy`, `Sort`           |
+| Yakuniy    | `All`, `Count`, `First`, `FirstWhere`, `Last`, `Contains`, `Every`, `IsEmpty`, `IsNotEmpty`, `Collect`, `Sum`, `Avg`, `Min`, `Max`, `ToJson`, `Iterator` |
+| Umumiy     | `LazyMap`, `LazyReduce`                                                                                                                                  |
