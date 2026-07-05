@@ -79,7 +79,7 @@ func main() {
 }
 ```
 
-If the package import path is long or its default package name is not convenient, setup modify helpers support an import alias in the `"<alias> <import-path>"` format. Use the same aliased import string when installing and uninstalling:
+Agar paket import yo'li uzun bo'lsa yoki uning standart paket nomi qulay bo'lmasa, o'rnatishni o'zgartirish yordamchilari `"<alias> <import-path>"` formatida import aliasini qo'llab-quvvatlaydi. O'rnatish va o'chirishda bir xil alias import satridan foydalaning:
 
 ```go
 func main() {
@@ -96,7 +96,7 @@ func main() {
 }
 ```
 
-After installation, the generated import uses the alias and the registered item can reference that alias:
+O'rnatishdan so'ng, yaratilgan import aliasni ishlatadi va ro'yxatdan o'tgan element ushbu aliasga murojaat qilishi mumkin:
 
 ```go
 import (
@@ -110,7 +110,7 @@ func Providers() []foundation.ServiceProvider {
 }
 ```
 
-Alias import strings are also supported by setup helpers that add and remove routes, middleware, commands, jobs, migrations, rules, filters, seeders, and service providers.
+Alias import satrlari, shuningdek, marshrutlar, o'rta dasturlar, buyruqlar, ishlar, migratsiyalar, qoidalar, filtrlar, seeders va xizmat ko'rsatuvchi provayderlarni qo'shadigan va olib tashlaydigan o'rnatish yordamchilari tomonidan qo'llab-quvvatlanadi.
 
 ## Resurslar
 
@@ -161,9 +161,9 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-### Views
+### Ko‘rishlar
 
-If your package provides default [views](../the-basics/views.md), register their directory using `LoadViewsFrom` in your service provider's `Boot` method:
+Agar paketingiz standart [ko‘rishlar](../the-basics/views.md)ni taqdim etsa, ularning katalogini xizmat ko'rsatuvchi provayderingizning `Boot` metodida `LoadViewsFrom` yordamida ro'yxatdan o'tkazing:
 
 ```go
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
@@ -171,7 +171,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-The application's `resources/views` directory takes priority over registered package views, so users can override any package view by creating a file with the same name.
+Ilovaning `resources/views` katalogi ro'yxatdan o'tgan paket ko'rinishlaridan ustunlikka ega, shuning uchun foydalanuvchilar bir xil nom bilan fayl yaratish orqali har qanday paket ko'rinishini bekor qilishi mumkin.
 
 ## Buyruqlar
 
