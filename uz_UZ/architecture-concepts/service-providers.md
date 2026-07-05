@@ -76,7 +76,7 @@ type Runner interface {
 }
 ```
 
-`ServiceProvider` ichida `Route` xizmatini ishga tushirish va o‘chirish uchun aniqlangan `RouteRunner` misoli mavjud.
+`ServiceProvider` ichida HTTP serverini ishga tushirish va o‘chirish uchun aniqlangan `HTTPRunner` misoli mavjud. Uning imzosi `goravel:http` bo‘lib, bu [app.disabled_runners](../getting-started/configuration.md#disabled-runners) konfiguratsiya opsiyasi orqali `app.Start()` dan tanlab o‘chirilishi mumkinligini anglatadi.
 
 ```go
 type ServiceProvider struct {}
@@ -86,39 +86,43 @@ func (r *ServiceProvider) Register(app foundation.Application) {}
 func (r *ServiceProvider) Boot(app foundation.Application) {}
 
 func (r *ServiceProvider) Runners(app foundation.Application) []foundation.Runner {
-	return []foundation.Runner{NewRouteRunner(app.MakeConfig(), app.MakeRoute())}
+	return []foundation.Runner{NewHTTPRunner(app.MakeConfig(), app.MakeRoute())}
 }
 ```
 
 ```go
-package route
+package http
 
 import (
 	"github.com/goravel/framework/contracts/config"
 	"github.com/goravel/framework/contracts/route"
 )
 
-type RouteRunner struct {
+type HTTPRunner struct {
 	config config.Config
 	route  route.Route
 }
 
-func NewRouteRunner(config config.Config, route route.Route) *RouteRunner {
-	return &RouteRunner{
+func NewHTTPRunner(config config.Config, route route.Route) *HTTPRunner {
+	return &HTTPRunner{
 		config: config,
 		route:  route,
 	}
 }
 
-func (r *RouteRunner) ShouldRun() bool {
+func (r *HTTPRunner) Signature() string {
+	return "goravel:http"
+}
+
+func (r *HTTPRunner) ShouldRun() bool {
 	return r.route != nil && r.config.GetString("http.default") != ""
 }
 
-func (r *RouteRunner) Run() error {
+func (r *HTTPRunner) Run() error {
 	return r.route.Run()
 }
 
-func (r *RouteRunner) Shutdown() error {
+func (r *HTTPRunner) Shutdown() error {
 	return r.route.Shutdown()
 }
 ```

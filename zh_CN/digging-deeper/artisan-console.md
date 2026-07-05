@@ -31,7 +31,7 @@ echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 artisan make:controller DemoController
 ```
 
-你也可以使用 `artisan` shell 脚本来运行：
+你也可以使用 `artisan` shell 脚本来运行内置命令。
 
 ### 生成命令
 
@@ -56,6 +56,43 @@ func Boot() contractsfoundation.Application {
 ```
 
 通过 `make:command` 创建的新命令将自动注册到 `bootstrap/commands.go::Commands()` 函数中，并且该函数将由 `WithCommands` 调用。 如果你自行创建命令文件，则需要手动注册。
+
+### 命令过滤
+
+你可能想要在不同环境中限制注册的内置 Artisan 命令——例如，在生产环境中隐藏 `make:*`、`package:*` 和 `vendor:publish` 等开发命令。`ApplicationBuilder` 上的 `WithCommandsFilter` 方法允许你返回一个要保留的命令签名正选列表：
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithCommandsFilter(func() []string {
+			if facades.Config().GetString("app.env") == "production" {
+				return []string{
+					"up", "down", "key:generate", "about",
+					"schedule:*", // 通配符
+					"queue:*",    // 通配符
+				}
+			}
+			return nil // 其他环境中保留所有命令
+		}).
+		WithConfig(config.Boot).
+		Create()
+}
+```
+
+该回调在构建时运行一次，每个条目通过以下两种方式之一与 `command.Signature()` 匹配：
+
+- **精确匹配**（无通配符）——签名必须与条目完全匹配。
+- **通配符匹配**（条目包含 `*`）——使用 `path.Match` 进行检查。`*` 匹配任意非 `/` 字符序列。
+
+返回值决定过滤行为：
+
+- **未调用该方法**——保留所有命令（默认）。
+- **返回 `nil`**——保留所有命令（不应用过滤）。
+- **返回 `[]string{}`**——删除所有命令。
+- **返回条目**——仅保留签名与某个条目匹配的命令。
+
+> 注意：过滤器适用于所有命令，包括通过 `WithCommands` 添加的命令，因此用户无法通过手动添加命令来绕过过滤器。
 
 ### 命令结构
 
@@ -448,6 +485,31 @@ ctx.NewLine()
 ctx.NewLine(2)
 ```
 
+#### 表格
+
+你可以使用 `Table` 方法以表格格式渲染结构化数据。该方法接受表头和数据行，并将渲染后的表格直接输出到控制台：
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+    headers := []string{"ID", "Email", "Status"}
+    rows := [][]string{
+        {"1", "a@example.com", "Queued"},
+        {"2", "b@example.com", "Sent"},
+    }
+
+    ctx.Table(headers, rows)
+
+    return nil
+}
+```
+
+你可以传递 `console.TableOption` 作为第三个参数来自定义边框、尺寸和样式。
+```go
+ctx.Table(headers, rows, console.TableOption{
+    Width: 80,
+})
+```
+
 #### 进度条
 
 对于长时间运行的任务，通常需要向用户提供任务所需时间的指示。 你可以使用 `WithProgressBar` 方法显示一个进度条。
@@ -501,6 +563,58 @@ err := ctx.Spinner("Loading...", console.SpinnerOption{
 ctx.Divider()     // ----------
 ctx.Divider("=>") // =>=>=>=>=>
 ```
+
+## 优雅关闭
+
+默认情况下，按下 `Ctrl+C`（或发送 `SIGTERM`）会取消传递给 `Handle` 的 `console.Context`。框架在一个 goroutine 中运行 `Handle`，因此收到信号后会立即返回 `context.Canceled`，进程随即退出。需要释放资源——关闭网络监听器、排空队列、刷新缓冲区——的命令可以通过实现可选的 `console.Shutdownable` 接口来注册清理回调。
+
+```go
+type Shutdownable interface {
+  Shutdown(ctx Context) error
+}
+```
+
+当命令实现了 `Shutdownable` 时，框架会将 `Handle` 与信号上下文进行竞争。如果 `Handle` 先返回，框架会使用一个新的 `console.Context`（原始上下文已取消）和 30 秒预算调用 `Shutdown`，以便命令完成清理工作。如果信号先触发，框架会使用相同的新上下文和 30 秒预算调用 `Shutdown`，然后返回；`Handle` 则在 goroutine 中独立运行，进程退出。
+
+`console.Context` 现在嵌入了 `context.Context`，因此命令可以直接使用 `<-ctx.Done()`、将 `ctx` 传递给期望 `context.Context` 的函数，以及无需访问器即可调用 `ctx.Deadline()` / `ctx.Err()` / `ctx.Value(key)`。
+
+```go
+package commands
+
+import (
+  "errors"
+  "net/http"
+
+  "github.com/goravel/framework/contracts/console"
+  "github.com/goravel/framework/contracts/console/command"
+)
+
+type Serve struct {
+  server *http.Server
+}
+
+func (r *Serve) Signature() string   { return "serve" }
+func (r *Serve) Description() string { return "Start the HTTP server" }
+func (r *Serve) Extend() command.Extend {
+  return command.Extend{Category: "server"}
+}
+
+func (r *Serve) Handle(ctx console.Context) error {
+  if err := r.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+    return err
+  }
+  return nil
+}
+
+func (r *Serve) Shutdown(ctx console.Context) error {
+  ctx.Info("received signal, shutting down gracefully...")
+  return r.server.Shutdown(ctx)
+}
+```
+
+内置的 `schedule:run` 命令是一个实际的例子。它的 `Handle` 会阻塞在 `schedule.Run()` 上，当收到信号时框架调用 `Shutdown`，该方法委托给 `schedule.Shutdown(ctx)`，以便计划任务有机会完成它们的工作。
+
+未实现 `Shutdownable` 的命令保持原有行为——进程在收到信号后立即退出。
 
 ## 分类
 

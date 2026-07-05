@@ -42,7 +42,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 {{ end }}
 
 ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
-  "Name": "Goravel",
+  "name": "Goravel",
 })
 ```
 
@@ -58,13 +58,28 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 
 ### 判断视图文件是否存在
 
-如果需要判断视图文件是否存在，可以使用 `facades.View()`：
+如果需要判断视图文件是否存在，可以使用 `facades.View()` 方法。它会检查 `resources/views/` 目录以及通过 `LoadViewsFrom` 注册的任何目录：
 
 ```go
 if facades.View().Exist("welcome.tmpl") {
   // ...
 }
 ```
+
+## 从包注册视图
+
+扩展包可以使用 `LoadViewsFrom` 方法注册自己的视图目录。这使得包能够提供默认视图，而不会污染用户的 `resources/views` 目录：
+
+```go
+// 在扩展包的 service_provider.go 中
+func (r *ServiceProvider) Boot(app foundation.Application) {
+    facades.View().LoadViewsFrom("/path/to/package/views")
+}
+```
+
+渲染视图时，应用程序的 `resources/views` 目录具有优先权——用户可以在 `resources/views` 中创建同名文件来覆盖任何包视图。如果在此目录中未找到视图，则会按注册顺序在已注册的包视图目录中进行回退搜索。
+
+`Exist` 方法除了检查 `resources/views/` 外，也会检查已注册的包视图路径。
 
 ## 向视图传递数据
 

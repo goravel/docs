@@ -31,7 +31,7 @@ Keyin siz buyruqlaringizni shunchaki shunday ishga tushirishingiz mumkin:
 artisan make:controller DemoController
 ```
 
-Shuningdek, siz `artisan` shell skriptidan shunday foydalanishingiz mumkin:
+Shuningdek, siz `artisan` shell skriptidan o'rnatilgan buyruqlarni ishga tushirish uchun foydalanishingiz mumkin.
 
 ### Buyruqlarni yaratish
 
@@ -56,6 +56,43 @@ func Boot() contractsfoundation.Application {
 ```
 
 `make:command` tomonidan yaratilgan yangi buyruq `bootstrap/commands.go::Commands()` funksiyasida avtomatik ro'yxatdan o'tkaziladi va funksiya `WithCommands` tomonidan chaqiriladi. Agar buyruq faylini o'zingiz yaratgan bo'lsangiz, buyruqni qo'lda ro'yxatdan o'tkazishingiz kerak.
+
+### Buyruqlarni Filtrlash
+
+Siz turli muhitlarda qaysi o'rnatilgan Artisan buyruqlari ro'yxatdan o'tkazilishini cheklashni xohlashingiz mumkin — masalan, ishlab chiqarish muhitida `make:*`, `package:*` va `vendor:publish` kabi ishlab chiqish buyruqlarini yashirish. `ApplicationBuilder` dagi `WithCommandsFilter` metodi saqlanishi kerak bo'lgan buyruq imzolarining ijobiy ro'yxatini qaytarishga imkon beradi:
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithCommandsFilter(func() []string {
+			if facades.Config().GetString("app.env") == "production" {
+				return []string{
+					"up", "down", "key:generate", "about",
+					"schedule:*", // glob
+					"queue:*",    // glob
+				}
+			}
+			return nil // keep everything in other environments
+		}).
+		WithConfig(config.Boot).
+		Create()
+}
+```
+
+Qayta chaqiruv qurish vaqtida bir marta ishlaydi va har bir yozuv `command.Signature()` bilan ikkita usuldan birida solishtiriladi:
+
+- **Aniq moslik** (wildcard yo'q) — imzo yozuvga aniq mos kelishi kerak.
+- **Glob moslik** (yozuvda `*` mavjud) — `path.Match` yordamida tekshiriladi. `*` `/` bo'lmagan belgilar ketma-ketligiga mos keladi.
+
+Qaytarilgan qiymat filtrlash xatti-harakatini belgilaydi:
+
+- **Metod chaqirilmagan** — barcha buyruqlar saqlanadi (sukut bo'yicha).
+- **`nil` qaytarilsa** — barcha buyruqlar saqlanadi (filtr qo'llanilmaydi).
+- **`[]string{}` qaytarilsa** — barcha buyruqlar olib tashlanadi.
+- **Yozuvlar qaytarilsa** — faqat imzosi yozuvga mos keladigan buyruqlar saqlanadi.
+
+> Eslatma: Filtr `WithCommands` orqali qo'shilgan barcha buyruqlarga, shu jumladan foydalanuvchi tomonidan qo'lda qo'shilgan buyruqlarga ham qo'llaniladi, shuning uchun foydalanuvchi filtrni chetlab o'ta olmaydi.
 
 ### Buyruq tuzilmasi
 
@@ -450,6 +487,31 @@ ctx.NewLine()
 ctx.NewLine(2)
 ```
 
+#### Jadvallar
+
+Strukturaviy ma'lumotlarni jadval formatida ko'rsatish uchun `Table` metodidan foydalanishingiz mumkin. Metod sarlavhalar va qatorlarni qabul qiladi va ko'rsatilgan jadvalni to'g'ridan-to'g'ri konsolga yozadi:
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+    headers := []string{"ID", "Email", "Status"}
+    rows := [][]string{
+        {"1", "a@example.com", "Queued"},
+        {"2", "b@example.com", "Sent"},
+    }
+
+    ctx.Table(headers, rows)
+
+    return nil
+}
+```
+
+Chegaralar, o'lchamlar va uslublarni sozlash uchun uchinchi argument sifatida `console.TableOption` o'tkazishingiz mumkin.
+```go
+ctx.Table(headers, rows, console.TableOption{
+    Width: 80,
+})
+```
+
 #### Progress Bars
 
 Uzoq davom etadigan vazifalar uchun, foydalanuvchiga vazifa qancha vaqt oladi haqida ma'lumot berish foydali bo'ladi. Siz taraqqiyot panelini ko'rsatish uchun `WithProgressBar` usulidan foydalanishingiz mumkin.
@@ -503,6 +565,58 @@ Terminal kengligidagi ajratuvchini ko'rsatish uchun `Divider` metodidan foydalan
 ctx.Divider()     // ----------
 ctx.Divider("=>") // =>=>=>=>=>
 ```
+
+## Nafis O'chirish
+
+Sukut bo'yicha, `Ctrl+C` tugmachasini bosish (yoki `SIGTERM` yuborish) `Handle` ga o'tkazilgan `console.Context` ni bekor qiladi. Freymvork `Handle` ni goroutineda ishlaydi, shuning uchun signal kelishi bilanoq `context.Canceled` qaytariladi va jarayon tugaydi. Resurslarni bo'shatishi kerak bo'lgan buyruqlar — tarmoq tinglovchilarini yopish, navbatlarni to'kish, buferlarni tozalash — ixtiyoriy `console.Shutdownable` interfeysini amalga oshirish orqali tozalash qayta chaqiruviga o'tishi mumkin.
+
+```go
+type Shutdownable interface {
+  Shutdown(ctx Context) error
+}
+```
+
+Buyruq `Shutdownable` ni amalga oshirganda, freymvork `Handle` va signal konteksti o'rtasida raqobat qiladi. Agar `Handle` birinchi bo'lib qaytsa, freymvork yangi `console.Context` (asl nusxasi allaqachon bekor qilingan) va 30s byudjet bilan `Shutdown` ni chaqiradi, shunda buyruq har qanday tozalashni yakunlashi mumkin. Agar signal birinchi bo'lib kelsa, freymvork yangi kontekst va 30s byudjet bilan `Shutdown` ni chaqiradi, so'ngra qaytadi; `Handle` goroutineda o'z-o'zidan ishlashda davom etadi va jarayon tugaydi.
+
+`console.Context` endi `context.Context` ni o'z ichiga oladi, shuning uchun buyruqlar to'g'ridan-to'g'ri `<-ctx.Done()` dan foydalanishi, `ctx` ni `context.Context` kutadigan funksiyalarga o'tkazishi va `ctx.Deadline()` / `ctx.Err()` / `ctx.Value(key)` ni aksessuarsiz chaqirishi mumkin.
+
+```go
+package commands
+
+import (
+  "errors"
+  "net/http"
+
+  "github.com/goravel/framework/contracts/console"
+  "github.com/goravel/framework/contracts/console/command"
+)
+
+type Serve struct {
+  server *http.Server
+}
+
+func (r *Serve) Signature() string   { return "serve" }
+func (r *Serve) Description() string { return "Start the HTTP server" }
+func (r *Serve) Extend() command.Extend {
+  return command.Extend{Category: "server"}
+}
+
+func (r *Serve) Handle(ctx console.Context) error {
+  if err := r.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+    return err
+  }
+  return nil
+}
+
+func (r *Serve) Shutdown(ctx console.Context) error {
+  ctx.Info("received signal, shutting down gracefully...")
+  return r.server.Shutdown(ctx)
+}
+```
+
+O'rnatilgan `schedule:run` buyrug'i haqiqiy misoldir. Uning `Handle` i `schedule.Run()` da bloklanadi va signalda freymvork `Shutdown` ni chaqiradi, bu esa rejalashtirilgan vazifalarga o'z ishlarini yakunlash imkoniyatini berish uchun `schedule.Shutdown(ctx)` ga yo'naltiradi.
+
+`Shutdownable` ni amalga oshirmaydigan buyruqlar asl xatti-harakatni saqlab qoladi — signal qabul qilinishi bilanoq jarayon tugaydi.
 
 ## Kategoriya
 

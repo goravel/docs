@@ -133,8 +133,56 @@ Siz [Muammolar ro‘yxati](https://github.com/goravel/goravel/issues) da muammo 
 | [goravel/mysql](https://github.com/goravel/mysql)                     | Database modulining MySQL drayveri                                                                                                                           |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver)             | Database modulining SQLServer drayveri                                                                                                                       |
 | [goravel/sqlite](https://github.com/goravel/sqlite)                   | Database modulining SQLite drayveri                                                                                                                          |
-| [goravel/file-rotatelogs](https://github.com/goravel/file-rotatelogs) | Log moduli uchun jurnalni boʻlish funksionalligini taqdim etadi                                                                                              |
 | [goravel/.github](https://github.com/goravel/.github) | [Jamiyat sogʻligʻi fayli](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) |
+
+## Agent Ko‘nikmalari
+
+Goravel AI kodlash yordamchilari (Claude Code, OpenCode va h.k.) uchun agent ko‘nikmalarini taqdim etadi, bu hissa qo‘shuvchilarga test yozish, nomlash va pull request ish jarayonlari kabi Goravel ishlab chiqish qoidalariga rioya qilishda yordam beradi. Ko‘nikmalar [goravel/agents](https://github.com/goravel/agents) repozitoriyasidan olinadi.
+
+Avval, agar hali o‘rnatmagan bo‘lsangiz, `goravel` CLI-ni o‘rnating:
+
+```shell
+go install github.com/goravel/goravel@latest
+```
+
+### Mavjud ko‘nikmalarni ko‘rish
+
+Barcha mavjud Goravel agent ko‘nikmalarini ko‘rish:
+
+```shell
+goravel skill:list
+
+// Ko‘nikmalarni tavsifi bilan ko‘rsatish
+goravel skill:list --detail
+```
+
+### Ko‘nikmalarni o‘rnatish
+
+Barcha Goravel agent ko‘nikmalarini sukut bo‘yicha `~/.agents/skills` ga o‘rnatish:
+
+```shell
+goravel skill:install
+```
+
+Muayyan ko‘nikmalarni nomi bo‘yicha o‘rnatish:
+
+```shell
+goravel skill:install goravel-testing goravel-planning
+```
+
+`--path` orqali maxsus katalogga o‘rnatish:
+
+```shell
+goravel skill:install --path ~/goravel-skills
+```
+
+Mavjud ko‘nikmalarni `--force` bilan qayta yozish:
+
+```shell
+goravel skill:install --force goravel-testing
+```
+
+> **Eslatma**: Mavjud ko‘nikmalar `--force` ishlatilmaguncha saqlanadi.
 
 ## Xulq qoidalari
 

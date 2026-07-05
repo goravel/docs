@@ -25,6 +25,17 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Send()
 ```
 
+To'g'ridan-to'g'ri matn ko'rinishidagi xabarni yuborish uchun `Text` maydonini o'rnating. Goravel `Text` ni oddiy matnli elektron pochta qismi sifatida yuboradi va uni shablon yo'li sifatida ko'rsatmaydi:
+
+```go
+import "github.com/goravel/framework/mail"
+
+err := facades.Mail().To([]string{"example@example.com"}).
+  Subject("Subject").
+  Content(mail.Content{Text: "Hello Goravel"}).
+  Send()
+```
+
 ## Navbat bo'yicha xat yuborish
 
 ```go
@@ -104,7 +115,10 @@ func (m *OrderShipped) Attachments() []string {
 }
 
 func (m *OrderShipped) Content() *mail.Content {
-	return &mail.Content{Html: "<0>Hello Goravel</0>"}
+	return &mail.Content{
+		Html: "<h0>Hello Goravel</h0>",
+		Text: "Hello Goravel",
+	}
 }
 
 func (m *OrderShipped) Envelope() *mail.Envelope {
@@ -162,16 +176,23 @@ Belgilangan ko'rinishlar katalogida elektron pochta shablonlaringizni yarating. 
 <p>Thank you for joining {{.AppName}}.</p>
 ```
 
+```text
+# resources/views/mail/welcome.txt
+Welcome {{.Name}}!
+Thank you for joining {{.AppName}}.
+```
+
 ### Shablonlar yordamida elektron pochta xabarlarini yuborish
 
-Shablonni belgilash va dinamik ma'lumotlarni uzatish uchun siz "Content" usulidan foydalanishingiz mumkin:
+Shablonni belgilash va dinamik ma'lumotlarni uzatish uchun siz `Content` usulidan foydalanishingiz mumkin. HTML shablonlar uchun `HtmlView`, oddiy matnli shablonlar uchun `TextView` dan foydalaning:
 
 ```go
 facades.Mail().
     To([]string{"user@example.com"}).
     Subject("Welcome").
     Content(mail.Content{
-        View: "welcome.tmpl",
+        HtmlView: "welcome.html",
+        TextView: "welcome.txt",
         With: map[string]any{
             "Name": "John",
             "AppName": "Goravel",

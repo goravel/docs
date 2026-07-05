@@ -17,10 +17,14 @@ import (
   "github.com/goravel/framework/contracts/http"
 )
 
-func Auth() http.Middleware {
-  return func(ctx http.Context) {
-    ctx.Request().Next()
-  }
+type Auth struct{}
+
+func (a *Auth) Handle(ctx http.Context) {
+  ctx.Request().Next()
+}
+
+func (a *Auth) Signature() string {
+  return "auth"
 }
 ```
 
@@ -70,6 +74,34 @@ import "github.com/goravel/framework/http/middleware"
 
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
+
+### 排除中间件
+
+`WithoutMiddleware` 方法允许特定路由绕过父级路由组已应用的某些中间件。这对于公开端点、Webhook 处理器或需要跳过身份验证或速率限制的路由非常有用。
+
+在路由组应用 `Middleware` 后，可以在单个路由上使用 `WithoutMiddleware`：
+
+```go
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  router.Get("/dashboard", dashboardController.Index)
+
+  // 此路由排除了 throttle 中间件
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+你也可以为一整个路由组排除中间件：
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    router.Get("/public", publicController.Index)
+  })
+```
+
+> **注意**：中间件排除使用 `Signature()` 方法来识别中间件。请确保每个中间件返回唯一的签名，以便 `WithoutMiddleware` 正常工作。框架内置的中间件已经提供了唯一的签名。
 
 ## 中断请求
 

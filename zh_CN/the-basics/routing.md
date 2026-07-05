@@ -58,8 +58,9 @@ func Boot() contractsfoundation.Application {
 | Static     | [文件路由](#文件路由)     |
 | StaticFile | [文件路由](#文件路由)     |
 | StaticFS   | [文件路由](#文件路由)     |
-| Middleware | [中间件](#中间件)       |
-| GetRoutes  | [获取所有路由](#获取所有路由) |
+| Middleware         | [中间件](#中间件)                   |
+| WithoutMiddleware  | [排除中间件](#排除中间件)          |
+| GetRoutes          | [获取所有路由](#获取所有路由)       |
 | Name       | [设置路由名称](#设置路由名称) |
 | Info       | [获取路由信息](#获取路由信息) |
 
@@ -150,6 +151,41 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 详见[中间件](./middleware.md)
+
+## 排除中间件
+
+`WithoutMiddleware` 方法允许你排除父级路由组已应用的特定中间件。这对于 Webhook 端点、公开 API 或任何需要绕过某些中间件（如身份验证或速率限制）的路由非常有用。
+
+### 路由级排除
+
+```go
+import "github.com/goravel/framework/http/middleware"
+
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  // 此路由包含两个中间件
+  router.Get("/dashboard", dashboardController.Index)
+
+  // 此路由排除了 throttle 中间件
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+### 路由组级排除
+
+为一组路由中的所有路由排除中间件：
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    // 此组中的所有路由都绕过了 Auth 中间件
+    router.Get("/public", publicController.Index)
+    router.Get("/public/{id}", publicController.Show)
+  })
+```
+
+> **注意**：中间件排除使用 `Signature()` 方法来识别中间件。请确保每个中间件返回唯一的签名，以便 `WithoutMiddleware` 正常工作。框架内置的中间件已经提供了唯一的签名。
 
 ## 获取所有路由
 

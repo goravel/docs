@@ -31,6 +31,22 @@
 facades.Log().WithContext(ctx)
 ```
 
+当使用 `WithContext` 时，Goravel 会将 context 中的键值对写入日志输出。框架内部键（如 `GoravelAuthJwt` 和 `goravel_http_client_name`）会被自动排除，以避免泄露敏感或冗余的值。
+
+你可以通过在 `config/logging.go` 中添加 `context.exclude` 来排除额外的 context 键：
+
+```go
+// config/logging.go
+"context": map[string]any{
+  "exclude": []any{
+    "access_token",
+    "secret_key",
+  },
+},
+```
+
+字符串条目通过显示名称匹配字符串 context 键和类型化字符串 context 键。可比较的非字符串条目匹配精确的 context 键值，这对于 struct 哨兵键非常有用。不可比较的条目（如 slices 或 maps）将被忽略。
+
 ## 写日志消息
 
 ```go

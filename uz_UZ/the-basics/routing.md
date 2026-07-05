@@ -58,8 +58,9 @@ Marshrutlar ro‘yxatini ko‘rish uchun `route:list` buyrug‘idan foydalaning:
 | Static      | [Fayl marshrutlash](#fayl-marshrutlash)                   |
 | StaticFile  | [Fayl marshrutlash](#fayl-marshrutlash)                   |
 | StaticFS    | [Fayl marshrutlash](#fayl-marshrutlash)                   |
-| Middleware  | [Middleware](#middleware)                                 |
-| GetRoutes   | [Barcha marshrutlarni olish](#barcha-marshrutlarni-olish) |
+| Middleware         | [Middleware](#middleware)                                   |
+| WithoutMiddleware  | [Without Middleware](#without-middleware)                   |
+| GetRoutes          | [Barcha marshrutlarni olish](#barcha-marshrutlarni-olish)   |
 | Name        | [Marshrut nomini belgilash](#marshrut-nomini-belgilash)   |
 | Info        | [Marshrut maʼlumotini olish](#marshrut-ma-lumotini-olish) |
 
@@ -150,6 +151,41 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 Batafsil [Middleware](./middleware.md)
+
+## Without Middleware
+
+`WithoutMiddleware` metodi ota guruhlar tomonidan qo'llaniladigan middleware'ni ma'lum marshrutlardan chiqarib tashlashga imkon beradi. Bu webhook endpointlari, ochiq API'lar yoki ma'lum middleware'ni (autentifikatsiya yoki cheklov tezligi kabi) chetlab o'tishi kerak bo'lgan har qanday marshrut uchun foydalidir.
+
+### Marshrut darajasida chiqarib tashlash
+
+```go
+import "github.com/goravel/framework/http/middleware"
+
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  // Bu marshrut ikkala middleware'ga ega
+  router.Get("/dashboard", dashboardController.Index)
+
+  // Bu marshrut throttle middleware'ni chiqarib tashlaydi
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+### Guruh darajasida chiqarib tashlash
+
+Guruh ichidagi barcha marshrutlar uchun middleware'ni chiqarib tashlang:
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    // Bu guruhdagi barcha marshrutlar Auth middleware'ni chetlab o'tadi
+    router.Get("/public", publicController.Index)
+    router.Get("/public/{id}", publicController.Show)
+  })
+```
+
+> **Eslatma**: Middleware'ni chiqarib tashlash middleware'larni aniqlash uchun `Signature()` metodidan foydalanadi. `WithoutMiddleware` to'g'ri ishlashi uchun har bir middleware noyob imzo qaytarishiga ishonch hosil qiling. O'rnatilgan freymvork middleware'lari allaqachon noyob imzolarni taqdim etadi.
 
 ## Barcha marshrutlarni olish
 

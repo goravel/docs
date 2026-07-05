@@ -25,6 +25,17 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Send()
 ```
 
+要发送纯文本正文内容，只需设置 `Text` 字段。Goravel 会将 `Text` 作为纯文本邮件部分发送，不会将其渲染为模板路径：
+
+```go
+import "github.com/goravel/framework/mail"
+
+err := facades.Mail().To([]string{"example@example.com"}).
+  Subject("Subject").
+  Content(mail.Content{Text: "Hello Goravel"}).
+  Send()
+```
+
 ## 以队列发送邮件
 
 ```go
@@ -93,9 +104,9 @@ func NewOrderShipped() *OrderShipped {
 	return &OrderShipped{}
 }
 
-func (m *OrderShipped) Headers() map[string]string{
+func (m *OrderShipped) Headers() map[string]string {
 	return map[string]string{
-		"X-Mailer": "Goravel",
+		"X-Mailer": "goravel",
 	}
 }
 
@@ -104,7 +115,10 @@ func (m *OrderShipped) Attachments() []string {
 }
 
 func (m *OrderShipped) Content() *mail.Content {
-	return &mail.Content{Html: "<h1>Hello Goravel</h1>"}
+	return &mail.Content{
+		Html: "<h1>Hello Goravel</h1>",
+		Text: "Hello Goravel",
+	}
 }
 
 func (m *OrderShipped) Envelope() *mail.Envelope {
@@ -162,16 +176,23 @@ err := facades.Mail().Queue(mails.NewOrderShipped())
 <p>感谢您加入 {{.AppName}}。</p>
 ```
 
+```text
+# resources/views/mail/welcome.txt
+Welcome {{.Name}}!
+Thank you for joining {{.AppName}}.
+```
+
 ### 使用模板发送电子邮件
 
-你可以使用 `Content` 方法来指定模板并传递动态数据：
+你可以使用 `Content` 方法来指定模板并传递动态数据。使用 `HtmlView` 指定 HTML 模板，使用 `TextView` 指定纯文本模板：
 
 ```go
 facades.Mail().
     To([]string{"user@example.com"}).
     Subject("Welcome").
     Content(mail.Content{
-        View: "welcome.tmpl",
+        HtmlView: "welcome.html",
+        TextView: "welcome.txt",
         With: map[string]any{
             "Name": "John",
             "AppName": "Goravel",

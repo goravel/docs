@@ -58,6 +58,39 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 },
 ```
 
+### 批量接收驱动
+
+对于高吞吐量场景（如 Kafka、RabbitMQ 消费者通道），你可以选择实现 `DriverWithReceive` 接口以启用带阻塞语义的批量消息消费。当驱动实现了该接口时，队列工作器会自动使用 `Receive` 而非 `Pop`，从而减少轮询开销并提高吞吐量：
+
+```go
+import (
+  "context"
+  "github.com/goravel/framework/contracts/queue"
+)
+
+type KafkaDriver struct{}
+
+// Implement the base Driver interface
+func (d *KafkaDriver) Driver() string {
+  return "kafka"
+}
+
+func (d *KafkaDriver) Push(task queue.Task, queue string) error {
+  // push job to Kafka
+}
+
+func (d *KafkaDriver) Pop(queue string) (queue.ReservedJob, error) {
+  // standard single-job pop
+}
+
+// Implement the optional DriverWithReceive for batch consumption
+func (d *KafkaDriver) Receive(ctx context.Context, queue string, count int) ([]queue.ReservedJob, error) {
+  // batch receive up to `count` jobs, blocking until at least one is available or ctx expires
+}
+```
+
+当 `Receive` 可用时，工作器会运行一个阻塞的批量循环，每次调用有 5 秒超时，并在出错或空批次时使用指数退避（100ms–3.2s）。`context.Context` 会在工作器关闭时取消，确保干净的终止。
+
 ## 创建任务
 
 ### 生成任务类

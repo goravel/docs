@@ -58,13 +58,28 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 
 ### Ko‘rish Mavjudligini Aniqlash
 
-Agar ko‘rish mavjudligini aniqlash kerak bo‘lsa, `facades.View()` metodidan foydalanishingiz mumkin:
+Agar ko‘rish mavjudligini aniqlash kerak bo‘lsa, `facades.View()` metodidan foydalanishingiz mumkin. U `resources/views/` katalogini hamda `LoadViewsFrom` orqali ro‘yxatdan o‘tkazilgan har qanday kataloglarni tekshiradi:
 
 ```go
 if facades.View().Exist("welcome.tmpl") {
   // ...
 }
 ```
+
+## Paketlardan Ko‘rishlarni Ro‘yxatdan O‘tkazish
+
+Kengaytiruvchi paketlar `LoadViewsFrom` metodi yordamida o‘z ko‘rish kataloglarini ro‘yxatdan o‘tkazishi mumkin. Bu paketlarga foydalanuvchining `resources/views` katalogini chalkashtirmasdan, standart ko‘rishlarni taqdim etish imkonini beradi:
+
+```go
+// Kengaytiruvchi paketning service_provider.go faylida
+func (r *ServiceProvider) Boot(app foundation.Application) {
+    facades.View().LoadViewsFrom("/path/to/package/views")
+}
+```
+
+Ko‘rish ko‘rsatilganda, ilovaning `resources/views` katalogi ustunlikka ega — foydalanuvchilar `resources/views` da xuddi shu nomli fayl yaratib, har qanday paket ko‘rinishini bekor qilishi mumkin. Agar ko‘rish u yerda topilmasa, ro‘yxatdan o‘tkazilgan paket ko‘rish kataloglari ro‘yxatdan o‘tish tartibida zaxira sifatida qidiriladi.
+
+`Exist` metodi ham `resources/views/` dan tashqari ro‘yxatdan o‘tkazilgan paket ko‘rish yo‘llarini ham tekshiradi.
 
 ## Ko‘rishlarga Ma'lumot O‘tkazish
 

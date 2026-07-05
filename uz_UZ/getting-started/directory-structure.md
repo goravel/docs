@@ -11,6 +11,9 @@ Standart fayl tuzilmasi loyihaning rivojlanishini yaxshiroq boshlashingizga yord
 ```
 goravel/
 ├── app/                        # Asosiy ilova mantiqi
+│   ├── ai/                     # AI agentlari va vositalari
+│   │   ├── agents/             # AI agent sinflari
+│   │   └── tools/              # AI vosita sinflari
 │   ├── console/                # Artisan konsol buyruqlari
 │   ├── grpc/                   # gRPC kontrollerlari va middleware
 │   ├── http/                   # HTTP kontrollerlari va middleware
@@ -39,7 +42,7 @@ goravel/
 
 ## Papka tuzilishini sozlash
 
-Siz papka tuzilishini `bootstrap/app.go` faylidagi `WithPath()` funksiyasini chaqirib sozlashingiz mumkin. Masalan, agar siz standart `app` papkasini `src` ga o‘zgartirmoqchi bo‘lsangiz, `bootstrap/app.go` faylini quyidagicha o‘zgartirishingiz mumkin:
+Siz papka tuzilishini `bootstrap/app.go` faylidagi `WithPaths()` funksiyasini chaqirib sozlashingiz mumkin. Masalan, agar siz standart `app` papkasini `src` ga o‘zgartirmoqchi bo‘lsangiz, `bootstrap/app.go` faylini quyidagicha o‘zgartirishingiz mumkin:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -52,4 +55,16 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-Siz sozlashingiz mumkin bo‘lgan boshqa ko‘plab yo‘llar mavjud, masalan, `Config`, `Database`, `Routes`, `Storage` va `Resources`. Kerakli papkani o‘rnatish uchun `paths` obyektida tegishli metodni chaqirish kifoya.
+Siz sozlashingiz mumkin bo‘lgan boshqa ko‘plab yo‘llar mavjud, masalan, `Config`, `Database`, `Routes`, `Storage` va `Resources`. AI generator yo‘llari ham `Agents` va `Tools` bilan sozlanishi mumkin:
+
+```go
+func Boot() contractsfoundation.Application {
+    return foundation.Setup().
+        WithPaths(func(paths configuration.Paths) {
+            paths.Agents("internal/ai/agents")
+            paths.Tools("internal/ai/tools")
+        }).
+        WithConfig(config.Boot).
+        Create()
+}
+```

@@ -599,6 +599,8 @@ convert.Pointer(1) // *int(1)
 import "github.com/goravel/framework/support/collect"
 ```
 
+Quyidagi yordamchilar to‘g‘ridan-to‘g‘ri slice yoki map ustida ishlaydi. Oqimli eager va lazy kolleksiyalar uchun [Collections](collections.md) bo‘limiga qarang.
+
 ### `collect.Count()`
 
 `collect.Count()` funksiyasi berilgan to'plamdagi elementlar sonini qaytaradi:

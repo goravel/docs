@@ -201,6 +201,37 @@ func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Q
 }
 ```
 
+Global skop ichida `facades.Orm().WithContext(ctx)` orqali uzatilgan kontekstga so'rovdan kirishingiz mumkin:
+
+```go
+import (
+  "context"
+
+  contractsorm "github.com/goravel/framework/contracts/database/orm"
+  "github.com/goravel/framework/database/orm"
+  "github.com/goravel/framework/facades"
+)
+
+type User struct {
+  orm.Model
+  Name string
+}
+
+func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query {
+  return map[string]func(contractsorm.Query) contractsorm.Query{
+    "tenant": func(query contractsorm.Query) contractsorm.Query {
+      tenantID, _ := query.Context().Value("tenant_id").(uint)
+
+      return query.Where("tenant_id", tenantID)
+    },
+  }
+}
+
+ctx := context.WithValue(context.Background(), "tenant_id", uint(1))
+var users []User
+err := facades.Orm().WithContext(ctx).Query().Find(&users)
+```
+
 Agar so'rovda global skoplarni olib tashlamoqchi bo'lsangiz, `WithoutGlobalScopes` funksiyasidan foydalanishingiz mumkin:
 
 ```go
@@ -228,6 +259,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Avg                         | [Avg](#o-rtacha)                                                                                            |
 | BeginTransaction            | [Tranzaksiyani boshlash](#tranzaksiya)                                                                      |
 | Commit                      | [Tranzaksiyani tasdiqlash](#tranzaksiya)                                                                    |
+| Context                     | [Kontekstni kiritish](#kontekstni-kiritish)                                                                 |
 | Count                       | [Hisoblash](#count)                                                                                         |
 | Create                      | [Yaratish](#create)                                                                                         |
 | Cursor                      | [Kursor](#kursor)                                                                                           |
