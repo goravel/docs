@@ -10,36 +10,39 @@ Standart fayl tuzilmasi loyihaning rivojlanishini yaxshiroq boshlashingizga yord
 
 ```
 goravel/
-├── app/                        # Asosiy ilova mantiqi
-│   ├── console/                # Artisan konsol buyruqlari
-│   ├── grpc/                   # gRPC kontrollerlari va middleware
-│   ├── http/                   # HTTP kontrollerlari va middleware
-│   │   ├── controllers/        # HTTP so‘rovlarini boshqaruvchilari
-│   │   ├── middleware/         # HTTP middleware (auth, cors va h.k.)
-│   ├── models/                 # ORM modellari
-│   └── providers/              # Xizmat provayderlari
-├── bootstrap/                  # Ilovani ishga tushirish
-│   └── app.go                  # Freymvorkni ishga tushirish
-├── config/                     # Ilova konfiguratsiya fayllari
-├── database/                   # Maʼlumotlar bazasi bilan bog‘liq fayllar
-│   ├── migrations/             # Maʼlumotlar bazasi migratsiya fayllari
-│   ├── seeders/                # Maʼlumotlar bazasi to‘ldiruvchilari
-├── resources/                  # Xom, kompilyatsiya qilinmagan resurslar
-│   └── views/                  # Shablon ko‘rinishlari
-├── routes/                     # Ilova marshrutlari taʼriflari
-├── storage/                    # Ilova saqlash joyi
-├── tests/                      # Avtomatlashtirilgan testlar
-├── .air.toml                   # Air hot reload konfiguratsiyasi
-├── .env.example                # Muhit o‘zgaruvchilari namunasi
-├── artisan                     # Artisan konsol kirish skripti
-├── go.mod                      # Go modul bog‘liqliklari
-├── go.sum                      # Go modul checksumlari
-├── main.go                     # Ilova kirish nuqtasi
+├── app/                        # Core application logic
+│   ├── ai/                     # AI agents and tools
+│   │   ├── agents/             # AI agent classes
+│   │   └── tools/              # AI tool classes
+│   ├── console/                # Artisan console commands
+│   ├── grpc/                   # gRPC controllers and middleware
+│   ├── http/                   # HTTP controllers and middleware
+│   │   ├── controllers/        # HTTP request handlers
+│   │   ├── middleware/         # HTTP middleware (auth, cors, etc.)
+│   ├── models/                 # ORM models
+│   └── providers/              # Service providers
+├── bootstrap/                  # Application bootstrapping
+│   └── app.go                  # Framework initialization
+├── config/                     # Application configuration files
+├── database/                   # Database related files
+│   ├── migrations/             # Database migration files
+│   ├── seeders/                # Database seeders
+├── resources/                  # Raw, uncompiled assets
+│   └── views/                  # View templates
+├── routes/                     # Application route definitions
+├── storage/                    # Application storage
+├── tests/                      # Automated tests
+├── .air.toml                   # Air hot reload configuration
+├── .env.example                # Environment variables template
+├── artisan                     # Artisan console entry script
+├── go.mod                      # Go module dependencies
+├── go.sum                      # Go module checksums
+├── main.go                     # Application entry point
 ```
 
 ## Papka tuzilishini sozlash
 
-Siz papka tuzilishini `bootstrap/app.go` faylidagi `WithPath()` funksiyasini chaqirib sozlashingiz mumkin. Masalan, agar siz standart `app` papkasini `src` ga o‘zgartirmoqchi bo‘lsangiz, `bootstrap/app.go` faylini quyidagicha o‘zgartirishingiz mumkin:
+You can customize the directory structure by calling the `WithPaths()` function in the `bootstrap/app.go` file. Masalan, agar siz standart `app` papkasini `src` ga o‘zgartirmoqchi bo‘lsangiz, `bootstrap/app.go` faylini quyidagicha o‘zgartirishingiz mumkin:
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -52,4 +55,16 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-Siz sozlashingiz mumkin bo‘lgan boshqa ko‘plab yo‘llar mavjud, masalan, `Config`, `Database`, `Routes`, `Storage` va `Resources`. Kerakli papkani o‘rnatish uchun `paths` obyektida tegishli metodni chaqirish kifoya.
+Siz sozlashingiz mumkin bo‘lgan boshqa ko‘plab yo‘llar mavjud, masalan, `Config`, `Database`, `Routes`, `Storage` va `Resources`. AI generator paths can also be customized with `Agents` and `Tools`:
+
+```go
+func Boot() contractsfoundation.Application {
+    return foundation.Setup().
+        WithPaths(func(paths configuration.Paths) {
+            paths.Agents("internal/ai/agents")
+            paths.Tools("internal/ai/tools")
+        }).
+        WithConfig(config.Boot).
+        Create()
+}
+```
