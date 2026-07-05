@@ -1,37 +1,37 @@
-# Telemetry
+# Telemetriya
 
 [[toc]]
 
-## Introduction
+## Kirish
 
-Goravel provides an observability module built on top of [OpenTelemetry](https://opentelemetry.io) that can be operated using `facades.Telemetry()`. It allows you to collect traces, metrics, and logs from your application and export them to any OTLP-compatible backend, such as Jaeger, Prometheus, Grafana, or Datadog.
+Goravel [OpenTelemetry](https://opentelemetry.io) asosida qurilgan kuzatuv modulini taqdim etadi, uni `facades.Telemetry()` yordamida boshqarish mumkin. Bu sizga ilovangizdan tracelar, metrikalar va loglarni to‘plash va ularni Jaeger, Prometheus, Grafana yoki Datadog kabi har qanday OTLP-mos keladigan backendga eksport qilish imkonini beradi.
 
-The module is integrated with the application lifecycle: providers are configured in a single configuration file, buffered data is flushed automatically when the application shuts down, and built-in instrumentation is available for the HTTP server, the HTTP client, gRPC, and the logger.
+Modul dastur hayotiy sikli bilan integratsiyalangan: provayderlar bitta konfiguratsiya faylida sozlanadi, buferlangan ma'lumotlar dastur yopilganda avtomatik ravishda tozalanadi va HTTP server, HTTP mijoz, gRPC va logger uchun o‘rnatilgan instrumentatsiya mavjud.
 
-If you are new to OpenTelemetry, the module revolves around three signals:
+Agar siz OpenTelemetry bilan tanish bo‘lmasangiz, modul uchta signal atrofida aylanadi:
 
-- **Traces** record the full path of a request as it travels through your services. Each trace is a tree of spans, where a span represents a single timed operation, such as an HTTP request, a database query, or a function call.
-- **Metrics** are numerical measurements aggregated over time, such as request counts, durations, or memory usage.
-- **Logs** are timestamped records of events, which can be linked to the trace that produced them.
+- **Tracelar** so‘rovning xizmatlaringiz bo‘ylab o‘tishdagi to‘liq yo‘lini qayd etadi. Har bir trace spanlar daraxtidir, bunda span HTTP so‘rov, ma'lumotlar bazasi so‘rovi yoki funksiya chaqiruvi kabi bitta vaqtli operatsiyani ifodalaydi.
+- **Metrikalar** vaqt davomida agregatsiyalangan raqamli o'lchovlardir, masalan, so'rovlar soni, davomiylik yoki xotira ishlatilishi.
+- **Jurnallar** vaqt tamg'asi bilan belgilangan hodisalar yozuvlari bo'lib, ularni ishlab chiqargan treyega ulanish mumkin.
 
-## Installation
+## O'rnatish
 
-The telemetry module is optional, you can install it using the `package:install` command:
+Telemetriya moduli ixtiyoriy, uni `package:install` buyrug'i yordamida o'rnatishingiz mumkin:
 
 ```shell
-./artisan package:install Telemetry
+./artisan package:install Telemetriya
 ```
 
-This command performs the following actions:
+Bu buyruq quyidagi amallarni bajaradi:
 
-- Creates the `config/telemetry.go` configuration file;
-- Creates the `facades/telemetry.go` facade file;
-- Registers `&telemetry.ServiceProvider{}` in `bootstrap/providers.go`;
-- Adds an `otel` channel to `config/logging.go` for log export.
+- `config/telemetry.go` konfiguratsiya faylini yaratadi;
+- `facades/telemetry.go` fasad faylini yaratadi;
+- `bootstrap/providers.go` faylida `&telemetry.ServiceProvider{}` ni ro'yxatdan o'tkazadi;
+- Jurnal eksporti uchun `config/logging.go` ga `otel` kanalini qo'shadi.
 
-## Configuration
+## Konfiguratsiya
 
-All of the configuration options live in the `config/telemetry.go` file. The `service` section defines the identity attached to every trace, metric, and log record, this is what observability platforms use to group your data:
+Barcha konfiguratsiya variantlari `config/telemetry.go` faylida joylashgan. `service` bo'limi har bir trace, metric va log yozuviga biriktirilgan identifikatorni belgilaydi, kuzatuv platformalari ma'lumotlaringizni guruhlash uchun undan foydalanadi.
 
 ```go
 "service": map[string]any{
@@ -41,11 +41,11 @@ All of the configuration options live in the `config/telemetry.go` file. The `se
 },
 ```
 
-You can attach additional static metadata (e.g., `k8s.pod.name`, `region`, `team`) to all telemetry data using the `resource` section.
+`resource` bo'limi yordamida barcha telemetriya ma'lumotlariga qo'shimcha statik metama'lumotlarni (masalan, `k8s.pod.name`, `region`, `team`) biriktirishingiz mumkin.
 
-### Enabling Signals
+### Signallarni yoqish
 
-Each signal (traces, metrics, and logs) is disabled by default. To enable a signal, point its `exporter` option to one of the exporter definitions in the `exporters` section. The easiest way is through your `.env` file:
+Har bir signal (traces, metrics va logs) sukut bo'yicha o'chirilgan. Signalni yoqish uchun uning `exporter` optsionini `exporters` bo'limidagi eksportir ta'riflaridan biriga yo'naltiring. Eng oson yo'l - bu `.env` faylingiz orqali:
 
 ```ini
 OTEL_TRACES_EXPORTER=otlptrace
@@ -53,19 +53,19 @@ OTEL_METRICS_EXPORTER=otlpmetric
 OTEL_LOGS_EXPORTER=otlplog
 ```
 
-Setting an exporter to an empty string disables the corresponding signal entirely.
+Eksportchini bo'sh stringga o'rnatish tegishli signalni butunlay o'chiradi.
 
 :::tip
-During local development, you can set any of these to `console` to print telemetry data directly to stdout instead of sending it to a backend.
+Mahalliy ishlab chiqishda, siz ulardan birini `console` ga o'rnatishingiz mumkin, bu esa telemetriya ma'lumotlarini backendga yuborish o'rniga to'g'ridan-to'g'ri stdoutga chop etadi.
 :::
 
-### Exporters
+### Eksportchilar
 
-The `exporters` section defines how the data leaves your application. Each entry is referenced by name from the signal sections, three drivers are supported: `otlp`, `console`, and `custom`.
+`exporters` bo'limi ma'lumotlarni ilovangizdan qanday chiqishini belgilaydi. Har bir yozuv signal bo'limlaridan nom bilan havola qilinadi, uchta drayver qo'llab-quvvatlanadi: `otlp`, `console` va `custom`.
 
 #### OTLP
 
-The `otlp` driver sends data to any OpenTelemetry collector or vendor endpoint, using either `http/protobuf` (port 4318) or `grpc` (port 4317):
+`otlp` drayveri ma'lumotlarni `http/protobuf` (port 4318) yoki `grpc` (port 4317) yordamida istalgan OpenTelemetry kollektori yoki sotuvchi so'nggi nuqtasiga yuboradi:
 
 ```go
 "otlptrace": map[string]any{
@@ -98,9 +98,9 @@ The `otlp` driver sends data to any OpenTelemetry collector or vendor endpoint, 
 },
 ```
 
-The `endpoint` option accepts either a bare `host:port` pair or a full URL. When a URL with a scheme is provided (e.g., `https://otlp.example.com/v1/traces`), the scheme and path determine the TLS setting and export path, and the `insecure` option is ignored.
+`endpoint` opsiyasi yalang'och `host:port` juftligi yoki to'liq URLni qabul qiladi. Agar URL sxema bilan ta'minlangan bo'lsa (masalan, `https://otlp.example.com/v1/traces`), sxema va yo'l TLS sozlamasi va eksport yo'lini aniqlaydi va `insecure` opsiyasi e'tiborga olinmaydi.
 
-If your backend requires authentication, such as a vendor API key, you may attach headers to every export request using the `headers` option:
+Agar backend autentifikatsiyani talab qilsa, masalan, vendor API kaliti, siz `headers` opsiyasidan foydalanib, har bir eksport so'roviga headerlarni biriktirishingiz mumkin:
 
 ```go
 "otlptrace": map[string]any{
@@ -112,21 +112,21 @@ If your backend requires authentication, such as a vendor API key, you may attac
 },
 ```
 
-The metric exporter additionally supports the `metric_temporality` option: `cumulative` (Prometheus), `delta` (Datadog/StatsD), or `lowmemory`.
+Metrik eksportyor qo'shimcha ravishda `metric_temporality` opsiyasini qo'llab-quvvatlaydi: `cumulative` (Prometheus), `delta` (Datadog/StatsD) yoki `lowmemory`.
 
 :::tip
-To see your traces locally, you can run Jaeger with a single command, it accepts OTLP on the default ports and requires no extra configuration:
+Traceslarni mahalliy ko'rish uchun siz Jaeger-ni bitta buyruq bilan ishga tushirishingiz mumkin, u standart portlarda OTLPni qabul qiladi va qo'shimcha konfiguratsiyani talab qilmaydi:
 
 ```shell
 docker run --rm -p 16686:16686 -p 4317:4317 -p 4318:4318 jaegertracing/jaeger:latest
 ```
 
-Then set `OTEL_TRACES_EXPORTER=otlptrace` and open `http://localhost:16686`.
+Keyin `OTEL_TRACES_EXPORTER=otlptrace` ni o'rnating va `http://localhost:16686` ni oching.
 :::
 
-#### Console
+#### Konsol
 
-The `console` driver prints telemetry data to stdout, which is useful for debugging your instrumentation locally:
+`console` drayveri telemetriya ma'lumotlarini stdout ga chiqaradi, bu sizning instrumentatsiyangizni mahalliy darajada disk raskadrovka qilish uchun foydalidir:
 
 ```go
 "console": map[string]any{
@@ -135,17 +135,17 @@ The `console` driver prints telemetry data to stdout, which is useful for debugg
 },
 ```
 
-#### Custom
+#### Maxsus
 
-If you need to export data to a destination that is not supported out of the box, you may provide your own exporter using the `custom` driver. The `via` key accepts either a ready-made instance or a factory function, depending on the signal the exporter is used for:
+Agar siz ma'lumotlarni o'rnatilgan qo'llab-quvvatlanmaydigan manzilga eksport qilishingiz kerak bo'lsa, `custom` drayveridan foydalanib o'zingizning eksport qiluvchingizni taqdim etishingiz mumkin. `via` kaliti tayyor instansiya yoki zavod funksiyasini qabul qiladi, eksport qiluvchi qaysi signal uchun ishlatilishiga qarab:
 
-| Signal  | Instance                | Factory                                                |
-| ------- | ----------------------- | ------------------------------------------------------ |
-| Traces  | `sdktrace.SpanExporter` | `func(context.Context) (sdktrace.SpanExporter, error)` |
-| Metrics | `sdkmetric.Reader`      | `func(context.Context) (sdkmetric.Reader, error)`      |
-| Logs    | `sdklog.Exporter`       | `func(context.Context) (sdklog.Exporter, error)`       |
+| Signal     | Instansiya              | Zavod                                                  |
+| ---------- | ----------------------- | ------------------------------------------------------ |
+| Kuzatuvlar | `sdktrace.SpanExporter` | `func(context.Context) (sdktrace.SpanExporter, error)` |
+| Metriklar  | `sdkmetric.Reader`      | `func(context.Context) (sdkmetric.Reader, error)`      |
+| Loglar     | `sdklog.Exporter`       | `func(context.Context) (sdklog.Exporter, error)`       |
 
-For example, to write spans to a file instead of stdout:
+Masalan, spanlarni stdout o'rniga faylga yozish uchun:
 
 ```go
 import (
@@ -169,28 +169,28 @@ import (
 },
 ```
 
-### Sampling
+### Namuna olish
 
-Recording every trace can be expensive in high-traffic applications. The `traces.sampler` section controls which traces are recorded:
+Har bir izni yozib olish yuqori trafikli ilovalarda qimmatga tushishi mumkin. `traces.sampler` bo'limi qaysi treyslar yozilishini boshqaradi:
 
 ```go
 "sampler": map[string]any{
-    // If true, respects the sampling decision of the upstream service.
+    // Agar rost bo'lsa, yuqori oqim xizmatining tanlab olish qarorini hurmat qiladi.
     "parent": config.Env("OTEL_TRACES_SAMPLER_PARENT", true),
 
-    // "always_on", "always_off" or "traceidratio"
+    // "always_on", "always_off" yoki "traceidratio"
     "type": config.Env("OTEL_TRACES_SAMPLER_TYPE", "always_on"),
 
-    // The ratio for "traceidratio" sampling, e.g., 0.1 records ~10% of traces.
+    // "traceidratio" tanlash uchun nisbat, masalan, 0.1 treyslarning ~10% ini qayd etadi.
     "ratio": config.Env("OTEL_TRACES_SAMPLER_RATIO", 0.05),
 },
 ```
 
-When `parent` is enabled, your service follows the sampling decision already made by the calling service, ensuring distributed traces are never broken in the middle.
+`parent` yoqilganida, xizmatiz chaqiruvchi xizmat tomonidan qabul qilingan tanlash qaroriga amal qiladi va taqsimlangan treyslar hech qachon o'rtada uzilmasligini kafolatlaydi.
 
-### Processors
+### Protsessorlar
 
-Traces and logs are handed to their exporters through a processor. The default `batch` processor buffers data and pushes it on an interval, which is the recommended setting for production. The `simple` processor exports each record synchronously and should only be used for debugging:
+Treyslar va jurnallar protsessor orqali eksport qiluvchilarga topshiriladi. Odatiy `batch` protsessori ma'lumotlarni buferlaydi va interval bo'yicha yuboradi, bu ishlab chiqarish uchun tavsiya etilgan sozlama. `simple` protsessori har bir yozuvni sinxron ravishda eksport qiladi va faqat disk raskadrovka uchun ishlatilishi kerak:
 
 ```go
 "processor": map[string]any{
@@ -200,17 +200,17 @@ Traces and logs are handed to their exporters through a processor. The default `
 },
 ```
 
-Metrics use a periodic reader instead, configured by `metrics.reader.interval` (default `60s`).
+Metrikalar o'rniga davriy o'quvchidan foydalanadi, `metrics.reader.interval` (sukut bo'yicha `60s`) bilan sozlanadi.
 
-## Tracing
+## Kuzatish
 
-### Creating Spans
+### Spanlarni Yaratish
 
-To create a span, request a tracer from the `Telemetry` facade using the `Tracer` method, then call `Start`. The first argument is a `context.Context`, if the context already contains a span (for example, one started by the HTTP middleware), the new span is automatically attached as its child.
+Span yaratish uchun `Telemetry` fasadidan `Tracer` metodi yordamida treyser so'rang, so'ngra `Start` ni chaqiring. Birinchi argument `context.Context` dir, agar kontekst allaqachon spanni o'z ichiga olgan bo'lsa (masalan, HTTP middleware tomonidan boshlangan), yangi span avtomatik ravishda uning bolasi sifatida biriktiriladi.
 
-The `Tracer` argument (`"app"` above) is the **instrumentation scope name**: it identifies the code that produced the span. Use a stable name that points back to the instrumenting code, by convention the package import path (for example `github.com/you/app/services`) or, for application code, the application or module name. It is recorded on every span as `otel.scope.name`, so your backend can group and filter spans by the component that emitted them. The framework's built-in instrumentation uses its own scope (for example `github.com/goravel/framework/telemetry/instrumentation/http`), which keeps your spans distinct from the framework's.
+`Tracer` argumenti (yuqoridagi `"app"`) **instrumentatsiya doira nomi** dir: u spanni yaratgan kodni aniqlaydi. Instrumentatsiya kodiga ishora qiluvchi barqaror nomdan foydalaning, an'anaga ko'ra paket import yo'li (masalan `github.com/you/app/services`) yoki dastur kodi uchun dastur yoki modul nomi. Bu har bir spanga `otel.scope.name` sifatida yoziladi, shuning uchun backend'ingiz spanlarni chiqargan komponent bo'yicha guruhlashi va filtrlashi mumkin. Framework'ning o'rnatilgan instrumentatsiyasi o'zining qamrovidan (masalan `github.com/goravel/framework/telemetry/instrumentation/http`) foydalanadi, bu sizning spanlaringizni framework'nikidan ajratib turadi.
 
-The following service traces an order through its processing steps: the `Process` method opens a span, records what happened on it, and passes the returned context down so that `chargePayment` becomes a child span within the same trace:
+Quyidagi xizmat buyurtmani qayta ishlash bosqichlari orqali kuzatadi: `Process` metodi spanni ochadi, unda sodir bo'lganlarni yozib oladi va qaytarilgan kontekstni uzatadi, shunda `chargePayment` bir xil izdagi bolak spanga aylanadi:
 
 ```go
 // app/services/order_service.go
@@ -246,17 +246,17 @@ func (r *OrderService) Process(ctx context.Context, orderID string) error {
 }
 
 func (r *OrderService) chargePayment(ctx context.Context, orderID string) error {
-    // This span automatically becomes a child of "order.process".
+    // Bu span avtomatik ravishda "order.process" ning bolak spanga aylanadi.
     _, span := facades.Telemetry().Tracer("app").Start(ctx, "order.charge_payment")
     defer span.End()
 
-    // Charge the payment...
+    // To'lovni amalga oshirish...
 
     return nil
 }
 ```
 
-When the service is called from a controller, pass `ctx`. If the [HTTP server middleware](#http-server) is registered, the spans are attached to the request's trace, so your backend shows the full picture: the HTTP request, the order processing, and the payment charge as one tree:
+Xizmat nazoratchi (controller) dan chaqirilganda, `ctx` ni o'tkazing. Agar [HTTP server vositasi](#http-server) ro'yxatdan o'tkazilgan bo'lsa, spannlar so'rovning traasiga biriktiriladi, shuning uchun sizning backend to'liq rasmni ko'rsatadi: HTTP so'rov, buyurtmani qayta ishlash va to'lovni bitta daraxt sifatida:
 
 ```go
 // app/http/controllers/order_controller.go
@@ -273,11 +273,11 @@ func (r *OrderController) Store(ctx http.Context) http.Response {
 }
 ```
 
-The name passed to `Tracer` (and `Meter`) identifies the instrumentation scope, typically your application or package name, and is shown alongside each span in your backend.
+`Tracer` (va `Meter`) ga uzatilgan nom instrumentatsiya doirasini aniqlaydi, odatda sizning dasturingiz yoki paket nomi, va har bir spann yonida sizning backend ko'rsatiladi.
 
-### Span Attributes
+### Span Atributlari
 
-You can attach key-value attributes to a span using the `SetAttributes` method. The `telemetry` package re-exports the OpenTelemetry attribute helpers so you don't need to import additional packages:
+Siz `SetAttributes` usuli yordamida spanga kalit-qiymat atributlarini biriktirishingiz mumkin. `telemetry` paketi OpenTelemetry atribut yordamchilarini qayta eksport qiladi, shuning uchun qo'shimcha paketlarni import qilishingiz shart emas:
 
 ```go
 import "github.com/goravel/framework/telemetry"
@@ -289,7 +289,7 @@ span.SetAttributes(
 )
 ```
 
-Attributes can also be set at creation time using the `WithAttributes` option:
+Attributlarni yaratish vaqtida `WithAttributes` opsiyasi yordamida ham o'rnatish mumkin:
 
 ```go
 ctx, span := tracer.Start(ctx, "process-order", telemetry.WithAttributes(
@@ -297,9 +297,9 @@ ctx, span := tracer.Start(ctx, "process-order", telemetry.WithAttributes(
 ))
 ```
 
-### Span Events
+### Span tadbirlari
 
-Events mark a point in time within a span, such as a cache miss or a retry attempt. You can add them using the `AddEvent` method:
+Tadbirlar (Events) span ichidagi vaqt nuqtasini belgilaydi, masalan kesh xatosi yoki qayta urinish. Ularni `AddEvent` usuli yordamida qo'shishingiz mumkin:
 
 ```go
 span.AddEvent("cache_miss", telemetry.WithAttributes(
@@ -307,9 +307,9 @@ span.AddEvent("cache_miss", telemetry.WithAttributes(
 ))
 ```
 
-### Recording Errors
+### Xatolarni yozib olish
 
-When an operation fails, two calls work together: `RecordError` attaches the error to the span as an event, and `SetStatus` marks the whole span as failed so it can be filtered in your backend. Calling `RecordError` alone does not change the span status:
+Operatsiya muvaffaqiyatsiz bo'lganda, ikkita chaqiruv birgalikda ishlaydi: `RecordError` xatolikni span'ga hodisa sifatida biriktiradi va `SetStatus` butun spanni muvaffaqiyatsiz deb belgilaydi, shuning uchun uni backend'ingizda filtrlash mumkin. `RecordError` ni yolg'iz chaqirish span holatini o'zgartirmaydi:
 
 ```go
 if err != nil {
@@ -320,19 +320,19 @@ if err != nil {
 }
 ```
 
-### Span Kinds
+### Span turlari
 
-By default, spans are created with the `internal` kind. When a span represents a boundary like publishing a message to a queue or consuming one, you can declare its role using the `WithSpanKind` option:
+Odatiy bo'lib, spanlar `internal` turi bilan yaratiladi. Agar span navbatga xabar yuborish yoki uni iste'mol qilish kabi chegarani ifodalasa, uning rolini `WithSpanKind` opsiyasi yordamida e'lon qilishingiz mumkin:
 
 ```go
 ctx, span := tracer.Start(ctx, "orders.publish", telemetry.WithSpanKind(telemetry.SpanKindProducer))
 ```
 
-Available kinds: `SpanKindInternal`, `SpanKindServer`, `SpanKindClient`, `SpanKindProducer`, `SpanKindConsumer`.
+Mavjud turlar: `SpanKindInternal`, `SpanKindServer`, `SpanKindClient`, `SpanKindProducer`, `SpanKindConsumer`.
 
-### The Current Span
+### Joriy Span
 
-You don't always need to create a new span, often you just want to enrich the one that is already active, such as the span started by the [HTTP server middleware](#http-server). You can retrieve it from the context using the `SpanFromContext` function:
+Har doim yangi span yaratish shart emas, ko'pincha siz allaqachon faol bo'lgan spanni boyitmoqchi bo'lasiz, masalan, [HTTP server o'rta dasturi](#http-server) tomonidan boshlangan span. Uni kontekstdan `SpanFromContext` funksiyasi yordamida olishingiz mumkin:
 
 ```go
 import "go.opentelemetry.io/otel/trace"
@@ -345,81 +345,27 @@ func (r *OrderController) Store(ctx http.Context) http.Response {
 }
 ```
 
-If there is no active span in the context, a no-op span is returned, so it is always safe to call.
+Agar kontekstda faol span bo'lmasa, no-op spani qaytariladi, shuning uchun uni chaqirish har doim xavfsiz.
 
-## Metrics
+## Metrikalar
 
-To record metrics, request a meter from the `Telemetry` facade using the `Meter` method, then create instruments from it. Instruments are safe for concurrent use and should be created once and reused, a common pattern is to create them when the service is constructed and record values in its methods.
+Metrikalarni yozib olish uchun `Telemetry` fasadidan `Meter` metodi yordamida metr so'rang, so'ngra undan asboblar yarating. Asboblar bir vaqtning o'zida foydalanish uchun xavfsiz va bir marta yaratilib, qayta ishlatilishi kerak. Umumiy usul - ularni xizmat yaratilganda yaratish va uning usullarida qiymatlarni qayd etish.
 
-Like `Tracer`, the `Meter` argument is the **instrumentation scope name** that identifies the code producing the metrics (see [Creating Spans](#creating-spans)). It is recorded as `otel.scope.name` on the exported metrics.
+`Tracer` kabi, `Meter` argumenti metrikalarni ishlab chiqaruvchi kodni aniqlaydigan **instrumentatsiya doirasi nomi** (qarang: [Spanlar yaratish](#creating-spans)). U eksport qilingan metrikalarda `otel.scope.name` sifatida qayd etiladi.
 
-The following service uses a **counter** (a value that only goes up, ideal for counting processed payments or sent emails) and a **histogram** (a distribution of values, such as durations or payload sizes):
-
-```go
-// app/services/payment_service.go
-package services
-
-import (
-    "context"
-    "time"
-
-    "go.opentelemetry.io/otel/metric"
-
-    "github.com/goravel/framework/telemetry"
-
-    "goravel/app/facades"
-)
-
-type PaymentService struct {
-    processed metric.Int64Counter
-    duration  metric.Float64Histogram
-}
-
-func NewPaymentService() (*PaymentService, error) {
-    meter := facades.Telemetry().Meter("app")
-
-    processed, err := meter.Int64Counter("payments.processed",
-        metric.WithDescription("Number of processed payments"),
-    )
-    if err != nil {
-        return nil, err
-    }
-
-    duration, err := meter.Float64Histogram("payments.duration",
-        metric.WithUnit("s"),
-        metric.WithDescription("Duration of payment processing"),
-    )
-    if err != nil {
-        return nil, err
-    }
-
-    return &PaymentService{processed: processed, duration: duration}, nil
-}
-
-func (r *PaymentService) Charge(ctx context.Context, method string) error {
-    start := time.Now()
-
-    // Charge the payment...
-
-    r.processed.Add(ctx, 1, metric.WithAttributes(
-        telemetry.String("payment.method", method),
-    ))
-    r.duration.Record(ctx, time.Since(start).Seconds())
-
-    return nil
-}
-```
-
-An **up-down counter** can also decrease, useful for tracking in-flight values:
+Quyidagi xizmat **counter** (faqat oshib boradigan qiymat, to'langan to'lovlar yoki yuborilgan elektron xatlarni hisoblash uchun ideal) va **histogram** (qiymatlarning taqsimoti, masalan, davomiylik yoki yuk hajmi) dan foydalanadi:
 
 ```go
-inFlight, err := meter.Int64UpDownCounter("jobs.in_flight")
-
-inFlight.Add(ctx, 1)
-defer inFlight.Add(ctx, -1)
+// app/services/payment_service.go\npackage services\n\nimport (\n    \"context\"\n    \"time\"\n\n    \"go.opentelemetry.io/otel/metric\"\n\n    \"github.com/goravel/framework/telemetry\"\n\n    \"goravel/app/facades\"\n)\n\ntype PaymentService struct {\n    processed metric.Int64Counter\n    duration  metric.Float64Histogram\n}\n\nfunc NewPaymentService() (*PaymentService, error) {\n    meter := facades.Telemetry().Meter(\"app\")\n\n    processed, err := meter.Int64Counter(\"payments.processed\",\n        metric.WithDescription(\"Number of processed payments\"),\n    )\n    if err != nil {\n        return nil, err\n    }\n\n    duration, err := meter.Float64Histogram(\"payments.duration\",\n        metric.WithUnit(\"s\"),\n        metric.WithDescription(\"Duration of payment processing\"),\n    )\n    if err != nil {\n        return nil, err\n    }\n\n    return &PaymentService{processed: processed, duration: duration}, nil\n}\n\nfunc (r *PaymentService) Charge(ctx context.Context, method string) error {\n    start := time.Now()\n\n    // To'lovni qayta ishlash...\n\n    r.processed.Add(ctx, 1, metric.WithAttributes(\n        telemetry.String(\"payment.method\", method),\n    ))\n    r.duration.Record(ctx, time.Since(start).Seconds())\n\n    return nil\n}
 ```
 
-An **observable gauge** reports a value that is sampled rather than recorded, such as a queue depth or the number of open connections. Instead of calling it yourself, you register a callback that is invoked on every collection cycle:
+**Yuqori-past hisoblagich** ham kamayishi mumkin, bajarilayotgan qiymatlarni kuzatish uchun foydalidir:
+
+```go
+inFlight, err := meter.Int64UpDownCounter(\"jobs.in_flight\")\n\ninFlight.Add(ctx, 1)\ndefer inFlight.Add(ctx, -1)
+```
+
+**Kuzatiladigan o‘lchagich** yozib olinmagan, namunaviy qiymatni bildiradi, masalan, navbat chuqurligi yoki ochiq ulanishlar soni. Uni o‘zingiz chaqirish o‘rniga, har bir yig‘ish tsiklida chaqiriladigan callback funksiyasini ro‘yxatdan o‘tkazasiz:
 
 ```go
 _, err := meter.Int64ObservableGauge("queue.depth",
@@ -431,11 +377,11 @@ _, err := meter.Int64ObservableGauge("queue.depth",
 )
 ```
 
-Metrics are collected and pushed to the exporter periodically based on the `metrics.reader.interval` configuration.
+Metrikalar `metrics.reader.interval` konfiguratsiyasiga asoslangan holda davriy ravishda yig‘iladi va eksport qiluvchiga jo‘natiladi.
 
-## Logs
+## Loglar
 
-During installation, an `otel` channel is added to your `config/logging.go` file:
+O‘rnatish jarayonida sizning `config/logging.go` faylingizga `otel` kanali qo‘shiladi:
 
 ```go
 "otel": map[string]any{
@@ -444,7 +390,7 @@ During installation, an `otel` channel is added to your `config/logging.go` file
 },
 ```
 
-Add the channel to your logging stack and every entry written through `facades.Log()` will also be exported as an OpenTelemetry log record, with levels, structured fields, and stack traces mapped automatically:
+Kanalni logging stack-ga qo‘shing va `facades.Log()` orqali yozilgan har bir yozuv ham avtomatik ravishda darajalar, strukturali maydonlar va stack trace‘lar bilan OpenTelemetry log yozuvi sifatida eksport qilinadi.
 
 ```go
 "stack": map[string]any{
@@ -453,7 +399,7 @@ Add the channel to your logging stack and every entry written through `facades.L
 },
 ```
 
-To correlate logs with the active trace, write them using `WithContext`, the trace and span IDs are attached to the record so your backend can link logs to the exact request that produced them:
+Faol trace bilan loglarni bog'lash uchun ularni `WithContext` yordamida yozing, trace va span IDlari yozuvga biriktiriladi, shuning uchun backend loglarni ularni yaratgan aniq so'rov bilan bog'lashi mumkin.
 
 ```go
 func (r *OrderController) Store(ctx http.Context) http.Response {
@@ -467,15 +413,15 @@ func (r *OrderController) Store(ctx http.Context) http.Response {
 }
 ```
 
-You can also temporarily stop exporting logs without touching your logging configuration by setting `telemetry.instrumentation.log.enabled` to `false`. If you need full control over the emitted records, you may bypass the logging facade and emit OpenTelemetry log records directly using `facades.Telemetry().Logger("app")`.
+Shuningdek, logging konfiguratsiyasiga tegmasdan, `telemetry.instrumentation.log.enabled` ni `false` ga o'rnatish orqali loglarni eksport qilishni vaqtincha to'xtatishingiz mumkin. Agar siz chiqarilgan yozuvlar ustidan to'liq nazoratga ega bo'lishni istasangiz, logging fasadini chetlab o'tib, `facades.Telemetry().Logger("app")` yordamida to'g'ridan-to'g'ri OpenTelemetry log yozuvlarini chiqarishingiz mumkin.
 
-## Automatic Instrumentation
+## Avtomatik Instrumentatsiya
 
-Goravel ships with built-in instrumentation for the most common components. Each one can be toggled in the `instrumentation` section of `config/telemetry.go`.
+Goravel eng keng tarqalgan komponentlar uchun o'rnatilgan instrumentatsiya bilan birga keladi. Har biri `config/telemetry.go` faylining `instrumentation` bo'limida yoqilishi/o'chirilishi mumkin.
 
 ### HTTP Server
 
-The HTTP server middleware extracts the incoming trace context, starts a server span for every request, and records standard metrics (`http.server.request.duration`, `http.server.request.body.size`, `http.server.response.body.size`). Register it in the `bootstrap/app.go` file:
+HTTP server middleware kiruvchi trace kontekstini chiqaradi, har bir so'rov uchun server spanni boshlaydi va standart metrikalarni (`http.server.request.duration`, `http.server.request.body.size`, `http.server.response.body.size`) yozib oladi. Uni `bootstrap/app.go` faylida ro'yxatdan o'tkazing:
 
 ```go
 import (
@@ -491,7 +437,7 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-You can skip noisy endpoints using the `excluded_paths` and `excluded_methods` configuration options:
+Shovqinli nuqtalarni `excluded_paths` va `excluded_methods` sozlama opsiyalari yordamida o'tkazib yuborishingiz mumkin:
 
 ```go
 "http_server": map[string]any{
@@ -501,7 +447,7 @@ You can skip noisy endpoints using the `excluded_paths` and `excluded_methods` c
 },
 ```
 
-For more advanced control, the middleware accepts options: `WithFilter` to skip requests programmatically, `WithSpanNameFormatter` to customize span names, and `WithMetricAttributes` to attach extra attributes to recorded metrics.
+Yanada ilg'or nazorat uchun middleware quyidagi opsiyalarni qabul qiladi: `WithFilter` so'rovlarni dasturiy ravishda o'tkazib yuborish uchun, `WithSpanNameFormatter` span nomlarini moslashtirish uchun va `WithMetricAttributes` yozib olingan metrikalarga qo'shimcha atributlarni biriktirish uchun.
 
 ```go
 handler.Append(telemetryhttp.Telemetry(
@@ -511,15 +457,15 @@ handler.Append(telemetryhttp.Telemetry(
 ))
 ```
 
-### HTTP Client
+### HTTP mijozi
 
-Outgoing requests made through the [HTTP Client](./http-client.md) are instrumented automatically, no setup required. The active trace context is injected into outgoing headers, so downstream Goravel services continue the same trace.
+[HTTP mijozi](./http-client.md) orqali amalga oshirilgan chiquvchi so'rovlar avtomatik ravishda instrumentatsiya qilinadi, hech qanday sozlash talab qilinmaydi. Faol iz konteksti chiquvchi sarlavhalarga joylanadi, shuning uchun quyi Goravel xizmatlari bir xil izni davom ettiradi.
 
-You can disable it globally via `telemetry.instrumentation.http_client.enabled`, or per client by setting `enable_telemetry` to `false` in the corresponding client configuration in `config/http.go`.
+Siz uni global darajada `telemetry.instrumentation.http_client.enabled` orqali o'chirib qo'yishingiz mumkin, yoki har bir mijoz uchun `config/http.go` dagi tegishli mijoz konfiguratsiyasida `enable_telemetry` ni `false` ga o'rnatish orqali.
 
 ### gRPC
 
-gRPC instrumentation is provided through stats handlers. Register them in the `bootstrap/app.go` file using the `WithGrpcServerStatsHandlers` and `WithGrpcClientStatsHandlers` functions:
+gRPC instrumentatsiyasi stats handlerlar orqali taqdim etiladi. Ularni `bootstrap/app.go` faylida `WithGrpcServerStatsHandlers` va `WithGrpcClientStatsHandlers` funksiyalari yordamida ro'yxatdan o'tkazing:
 
 ```go
 import (
@@ -542,21 +488,21 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-Both handlers accept options such as `WithFilter`, `WithSpanAttributes`, and `WithMetricAttributes`, and can be toggled via the `grpc_server.enabled` and `grpc_client.enabled` configuration options.
+Ikkala handler ham `WithFilter`, `WithSpanAttributes` va `WithMetricAttributes` kabi opsiyalarni qabul qiladi va `grpc_server.enabled` va `grpc_client.enabled` konfiguratsiya opsiyalari orqali yoqilishi/ochirilishi mumkin.
 
-### Database
+### Ma'lumotlar bazasi
 
-Queries executed through the [ORM](../orm/getting-started.md) (`facades.Orm()`) and the [Query Builder](../database/queries.md) (`facades.DB()`) are instrumented automatically, no setup required. Each query records a client span along with the `db.client.operation.duration` metric, and every connection pool reports `db.client.connection.count` and `db.client.connection.max`, so you can watch pool usage and saturation.
+ORM (`facades.Orm()`) va [So'rovlar quruvchi](../database/queries.md) (`facades.DB()`) orqali bajarilgan so'rovlar avtomatik ravishda asboblanadi, sozlash talab qilinmaydi. Har bir so'rov `db.client.operation.duration` metriyasi bilan birga mijoz spanini qayd qiladi, va har bir ulanish havuzi `db.client.connection.count` va `db.client.connection.max` hisobotini beradi, shuning uchun siz havuz foydalanishi va to'yinganligini kuzatishingiz mumkin.
 
-You can disable it via the `telemetry.instrumentation.database.enabled` configuration option (the `OTEL_DATABASE_ENABLED` environment variable).
+Siz uni `telemetry.instrumentation.database.enabled` konfiguratsiya opsiyasi (`OTEL_DATABASE_ENABLED` muhit o'zgaruvchisi) orqali o'chirib qo'yishingiz mumkin.
 
-For structured queries, the table comes from the builder, so the span is named after the operation and table and carries the `db.collection.name` attribute. Nothing extra is required:
+Strukturli so'rovlar uchun jadval quruvchidan keladi, shuning uchun span operatsiya va jadval nomi bilan ataladi va `db.collection.name` atributini olib yuradi. Qo'shimcha hech narsa talab qilinmaydi:
 
 ```go
 facades.DB().Table("users").Where("id", 1).Get(&users) // span: SELECT users
 ```
 
-Raw queries run through `Select` or `Statement` pass an opaque SQL string that the framework does not parse, so the span is named after the operation alone. Use `ContextWithTable` to tag the table onto the request context to restore the full name and the `db.collection.name` attribute:
+Xom so'rovlar `Select` yoki `Statement` orqali bajariladi, framework tahlil qilmaydigan shaffof bo'lmagan SQL qatorini uzatadi, shuning uchun span faqat operatsiya nomi bilan ataladi. To'liq nom va `db.collection.name` atributini tiklash uchun so'rov kontekstiga jadvalni belgilash uchun `ContextWithTable` dan foydalaning:
 
 ```go
 import (
@@ -567,11 +513,11 @@ queryCtx := instrumentationdatabase.ContextWithTable(ctx, "users")
 facades.DB().WithContext(queryCtx).Select(&users, "SELECT * FROM users WHERE id = ?", 1) // span: SELECT users
 ```
 
-## Context Propagation
+## Kontekst tarqalishi
 
-The `propagators` configuration option defines how trace context crosses process boundaries. The default is the W3C `tracecontext` standard; `baggage`, `b3`, and `b3multi` (Zipkin) are also supported and can be combined as a comma-separated list.
+`propagators` konfiguratsiya opsiyasi trace kontekstining jarayon chegaralaridan qanday o'tishini belgilaydi. Standart W3C `tracecontext` standartidir; `baggage`, `b3` va `b3multi` (Zipkin) ham qo'llab-quvvatlanadi va ular vergul bilan ajratilgan ro'yxat sifatida birlashtirilishi mumkin.
 
-The built-in HTTP and gRPC instrumentation propagate context automatically. If you communicate over a custom transport, such as a message queue, you can carry the trace across the boundary yourself using the `Propagator` method: the producer injects the active context into the message headers, and the consumer extracts it and continues the same trace:
+O'rnatilgan HTTP va gRPC instrumentatsiyasi kontekstni avtomatik tarqatadi. Agar siz maxsus transport (masalan, xabarlar navbati) orqali aloqa qilsangiz, `Propagator` metodidan foydalanib, tracening o'zingizni chegaradan o'tkazishingiz mumkin: ishlab chiqaruvchi faol kontekstni xabar sarlavhalariga kiritadi, iste'molchi esa uni chiqaradi va xuddi shu traceni davom ettiradi:
 
 ```go
 import (
@@ -609,7 +555,7 @@ func (r *OrderConsumer) Consume(message *Message) error {
 }
 ```
 
-If you need the identifiers of the current trace, for example, to return them in an error response, you can read them from the context:
+Agar joriy iz identifikatorlari kerak bo'lsa, masalan, ularni xato javobida qaytarish uchun, ularni kontekstdan o'qishingiz mumkin:
 
 ```go
 import "go.opentelemetry.io/otel/trace"
@@ -620,11 +566,11 @@ traceID := spanCtx.TraceID().String()
 spanID := spanCtx.SpanID().String()
 ```
 
-## Flushing & Shutdown
+## Tozalash va o'chirish
 
-You don't need to manage the telemetry lifecycle yourself: when the application stops, Goravel automatically flushes all buffered data and shuts the providers down, waiting at most `shutdown_timeout` (default `15s`).
+Telemetriya hayotiy siklini o'zingiz boshqarishingiz shart emas: ilova to'xtaganda, Goravel avtomatik ravishda barcha buferlangan ma'lumotlarni tozalaydi va provayderlarni o'chiradi, eng ko'pi bilan `shutdown_timeout` (odatda `15s`) kutadi.
 
-If you need to push buffered data immediately without stopping the providers, for example, before a serverless function freezes, you can use the `ForceFlush` method:
+Agar provayderlarni to'xtatmasdan buferlangan ma'lumotlarni darhol surish kerak bo'lsa, masalan, serverless funksiya muzlashidan oldin, `ForceFlush` metodidan foydalanishingiz mumkin:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
