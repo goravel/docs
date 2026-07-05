@@ -58,7 +58,7 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 
 ### Ko‘rish Mavjudligini Aniqlash
 
-If you need to determine if a view exists, you can use the `facades.View()` method. It checks `resources/views/` as well as any directories registered with `LoadViewsFrom`:
+Agar ko‘rish mavjudligini aniqlash kerak bo‘lsa, `facades.View()` metodidan foydalanishingiz mumkin. U `resources/views/` va `LoadViewsFrom` bilan ro‘yxatdan o‘tgan har qanday kataloglarni tekshiradi:
 
 ```go
 if facades.View().Exist("welcome.tmpl") {
@@ -66,9 +66,9 @@ if facades.View().Exist("welcome.tmpl") {
 }
 ```
 
-## Registering Views From Packages
+## Paketlardan ko‘rinishlarni ro‘yxatdan o‘tkazish
 
-Extension packages may register their own view directory using the `LoadViewsFrom` method. This allows packages to provide default views without cluttering the user's `resources/views` directory:
+Kengaytma paketlari `LoadViewsFrom` metodi yordamida o‘zlarining ko‘rinish kataloglarini ro‘yxatdan o‘tkazishlari mumkin. Bu paketlarga foydalanuvchining `resources/views` katalogini bezovta qilmasdan standart ko‘rinishlarni taqdim etish imkonini beradi:
 
 ```go
 // In an extension package's service_provider.go
@@ -77,9 +77,9 @@ func (r *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
-When a view is rendered, the application's `resources/views` directory takes priority — users can override any package view by creating a file with the same name in `resources/views`. If the view is not found there, the registered package view directories are searched in registration order as fallbacks.
+Ko‘rinish ko‘rsatilganda, ilovaning `resources/views` katalogi ustuvor ahamiyatga ega — foydalanuvchilar `resources/views` da bir xil nomdagi fayl yaratish orqali har qanday paket ko‘rinishini bekor qilishlari mumkin. Agar ko‘rinish u yerda topilmasa, ro‘yxatdan o‘tgan paket ko‘rinish kataloglari ro‘yxatdan o‘tish tartibida zaxira sifatida qidiriladi.
 
-The `Exist` method also checks registered package view paths in addition to `resources/views/`.
+`Exist` metodi `resources/views/` dan tashqari ro‘yxatdan o‘tgan paket ko‘rinish yo‘llarini ham tekshiradi.
 
 ## Ko‘rishlarga Ma'lumot O‘tkazish
 
