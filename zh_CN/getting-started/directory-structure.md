@@ -10,36 +10,39 @@
 
 ```
 goravel/
-├── app/                        # 核心应用逻辑
-│   ├── console/                # Artisan 控制台命令
-│   ├── grpc/                   # gRPC 控制器和中间件
-│   ├── http/                   # HTTP 控制器和中间件
-│   │   ├── controllers/        # HTTP 请求处理器
-│   │   ├── middleware/         # HTTP 中间件（认证、CORS 等）
-│   ├── models/                 # ORM 模型
-│   └── providers/              # 服务提供者
-├── bootstrap/                  # 应用引导
-│   └── app.go                  # 框架初始化
-├── config/                     # 应用配置文件
-├── database/                   # 数据库相关文件
-│   ├── migrations/             # 迁移文件
-│   ├── seeders/                # 数据填充
-├── resources/                  # 资源
-│   └── views/                  # 视图
-├── routes/                     # 路由
-├── storage/                    # 存储
-├── tests/                      # 测试
-├── .air.toml                   # Air 热重载配置
-├── .env.example                # 配置
-├── artisan                     # Artisan 控制台入口脚本
-├── go.mod                      # Go 模块依赖
-├── go.sum                      # Go 模块校验
-├── main.go                     # 应用入口点
+├── app/                        # Core application logic
+│   ├── ai/                     # AI agents and tools
+│   │   ├── agents/             # AI agent classes
+│   │   └── tools/              # AI tool classes
+│   ├── console/                # Artisan console commands
+│   ├── grpc/                   # gRPC controllers and middleware
+│   ├── http/                   # HTTP controllers and middleware
+│   │   ├── controllers/        # HTTP request handlers
+│   │   ├── middleware/         # HTTP middleware (auth, cors, etc.)
+│   ├── models/                 # ORM models
+│   └── providers/              # Service providers
+├── bootstrap/                  # Application bootstrapping
+│   └── app.go                  # Framework initialization
+├── config/                     # Application configuration files
+├── database/                   # Database related files
+│   ├── migrations/             # Database migration files
+│   ├── seeders/                # Database seeders
+├── resources/                  # Raw, uncompiled assets
+│   └── views/                  # View templates
+├── routes/                     # Application route definitions
+├── storage/                    # Application storage
+├── tests/                      # Automated tests
+├── .air.toml                   # Air hot reload configuration
+├── .env.example                # Environment variables template
+├── artisan                     # Artisan console entry script
+├── go.mod                      # Go module dependencies
+├── go.sum                      # Go module checksums
+├── main.go                     # Application entry point
 ```
 
 ## 自定义目录结构
 
-你可以通过在 `bootstrap/app.go` 文件中调用 `WithPath()` 函数来自定义目录结构。 例如，如果你想将默认的 `app` 目录更改为 `src`，可以按如下方式修改 `bootstrap/app.go` 文件：
+You can customize the directory structure by calling the `WithPaths()` function in the `bootstrap/app.go` file. 例如，如果你想将默认的 `app` 目录更改为 `src`，可以按如下方式修改 `bootstrap/app.go` 文件：
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -52,4 +55,16 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-你还可以自定义许多其他路径，例如 `Config`、`Database`、`Routes`、`Storage` 和 `Resources`。 只需在 `paths` 对象上调用相应的方法来设置你所需的目录。
+你还可以自定义许多其他路径，例如 `Config`、`Database`、`Routes`、`Storage` 和 `Resources`。 AI generator paths can also be customized with `Agents` and `Tools`:
+
+```go
+func Boot() contractsfoundation.Application {
+    return foundation.Setup().
+        WithPaths(func(paths configuration.Paths) {
+            paths.Agents("internal/ai/agents")
+            paths.Tools("internal/ai/tools")
+        }).
+        WithConfig(config.Boot).
+        Create()
+}
+```
