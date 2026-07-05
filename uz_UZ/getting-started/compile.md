@@ -7,33 +7,33 @@
 Goravel loyihasini quyidagi buyruq orqali tuzish mumkin:
 
 ```shell
-# Select the system to compile
+# Tuzish uchun tizimni tanlash
 ./artisan build
 
-# Specify the system to compile
+# Tuzish uchun tizimni ko‘rsatish
 ./artisan build --os=linux
 ./artisan build -o=linux
 
-# Static compilation
+# Statik tuzish
 ./artisan build --static
 ./artisan build -s
 
-# Specify the output file name
+# Chiqish fayli nomini ko‘rsatish
 ./artisan build --name=goravel
 ./artisan build -n=goravel
 
-# Run go generate before building
+# Build dan oldin go generate ni ishga tushirish
 ./artisan build --generate
 ./artisan build -g
 ```
 
-The `--generate` flag runs `go generate ./...` before the build step. It is disabled by default and can be combined with other build options:
+`--generate` bayrog‘i build bosqichidan oldin `go generate ./...` ni ishga tushiradi. U sukut bo‘yicha o‘chirilgan va boshqa build variantlari bilan birlashtirilishi mumkin:
 
 ```shell
 ./artisan build --generate --os=linux --arch=amd64
 ```
 
-When `--generate` is combined with target options such as `--os` or `--arch`, the generate step uses the same build environment.
+`--generate` `--os` yoki `--arch` kabi maqsad variantlari bilan birlashtirilganda, generate bosqichi bir xil build muhitidan foydalanadi.
 
 ## Qo‘lda tuzish
 
