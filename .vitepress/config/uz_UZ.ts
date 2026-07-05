@@ -29,7 +29,11 @@ export const config = defineConfig({
       base: "/uz_UZ/digging-deeper/",
       items: sidebarAdvanced()
     }, {
-      text: "Xavfsizlik",
+      text: 'AI',
+      base: '/ai/',
+      items: sidebarAI()
+    }, {
+      text: 'Security',
       base: "/uz_UZ/security/",
       items: sidebarSecurity()
     }, {
@@ -133,11 +137,11 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "v1.16-dan v1.17-ga yangilash",
-    link: 'v1.17'
+    text: 'Upgrading To v1.18 From v1.17',
+    link: 'v1.18'
   }, {
-    text: "v1.15 dan v1.16 ga yangilash",
-    link: 'v1.16'
+    text: 'Upgrading To v1.17 From v1.16',
+    link: 'v1.17'
   }, {
     text: "Tarix",
     link: 'history'
@@ -229,7 +233,10 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     text: "Satrlar",
     link: 'strings'
   }, {
-    text: "Yordamchilar",
+    text: 'Collections',
+    link: 'collections'
+  }, {
+    text: 'Helpers',
     link: 'helpers'
   }, {
     text: "HTTP Klienti",
@@ -237,6 +244,15 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
   }, {
     text: "Ko‘plik shakllari",
     link: 'pluralization'
+  }, {
+    text: 'Telemetry',
+    link: 'telemetry'
+  }];
+}
+function sidebarAI(): DefaultTheme.SidebarItem[] {
+  return [{
+    text: 'AI SDK',
+    link: 'sdk'
   }];
 }
 function sidebarSecurity(): DefaultTheme.SidebarItem[] {
