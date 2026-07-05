@@ -593,7 +593,7 @@ convert.Pointer(1) // *int(1)
 import "github.com/goravel/framework/support/collect"
 ```
 
-The helpers below operate directly on slices or maps. For fluent eager and lazy collections, see [Collections](collections.md).
+下面的帮助函数直接操作切片或映射。 关于流畅的即时加载和延迟加载集合，请参见 [集合](collections.md)。
 
 ### `collect.Count()`
 
