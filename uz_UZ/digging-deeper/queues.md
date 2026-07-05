@@ -58,9 +58,9 @@ Maxsus haydovchini amalga oshirgandan so‘ng, konfiguratsiyani `config/queue.go
 },
 ```
 
-### Batch-Receive Drivers
+### Paketli qabul qilish drayverlari
 
-For high-throughput scenarios (e.g., Kafka, RabbitMQ with consumer channels), you can optionally implement the `DriverWithReceive` interface to enable batch message consumption with blocking semantics. When a driver implements this interface, the queue worker automatically uses `Receive` instead of `Pop`, reducing polling overhead and improving throughput:
+Yuqori o‘tkazuvchanlik stsenariylari uchun (masalan, Kafka, RabbitMQ consumer kanallari bilan), siz ixtiyoriy ravishda `DriverWithReceive` interfeysini amalga oshirishingiz mumkin, bu esa bloklovchi semantika bilan paketli xabarlarni iste’mol qilishni yoqadi. Drayver ushbu interfeysni amalga oshirganda, navbat ishchisi avtomatik ravishda `Pop` o‘rniga `Receive` dan foydalanadi, bu esa so‘rovlar sonini kamaytiradi va o‘tkazuvchanlikni oshiradi:
 
 ```go
 import (
@@ -70,26 +70,26 @@ import (
 
 type KafkaDriver struct{}
 
-// Implement the base Driver interface
+// Asosiy Driver interfeysini amalga oshirish
 func (d *KafkaDriver) Driver() string {
   return "kafka"
 }
 
 func (d *KafkaDriver) Push(task queue.Task, queue string) error {
-  // push job to Kafka
+  // ishni Kafka‘ga push qilish
 }
 
 func (d *KafkaDriver) Pop(queue string) (queue.ReservedJob, error) {
-  // standard single-job pop
+  // standart yagona ishni pop qilish
 }
 
-// Implement the optional DriverWithReceive for batch consumption
+// Paketli iste’mol uchun ixtiyoriy DriverWithReceive ni amalga oshirish
 func (d *KafkaDriver) Receive(ctx context.Context, queue string, count int) ([]queue.ReservedJob, error) {
-  // batch receive up to `count` jobs, blocking until at least one is available or ctx expires
+  // `count` gacha ishlarni paketli qabul qilish, kamida bittasi mavjud bo‘lguncha yoki ctx tugaguncha bloklash
 }
 ```
 
-When `Receive` is available, the worker runs a blocking batch loop with a 5-second per-call timeout and exponential backoff (100ms–3.2s) on errors or empty batches. The `context.Context` is canceled on worker shutdown, ensuring clean termination.
+`Receive` mavjud bo‘lganda, ishchi 5 soniyali chaqiruv taym-auti va xatolar yoki bo‘sh paketlarda eksponensial orqaga qaytish (100ms–3.2s) bilan bloklovchi paketli tsiklni ishga tushiradi. `context.Context` ishchi to‘xtatilganda bekor qilinadi, bu toza tugatishni ta’minlaydi.
 
 ## Ishlarni Yaratish
 
