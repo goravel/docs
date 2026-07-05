@@ -42,26 +42,27 @@ Marshrutlar ro‘yxatini ko‘rish uchun `route:list` buyrug‘idan foydalaning:
 
 ### Marshrutlash usullari
 
-| Usullar     | Harakat                                                   |
-| ----------- | --------------------------------------------------------- |
-| Guruh       | [Guruh marshrutlash](#guruh-marshrutlash)                 |
-| Prefiks     | [Marshrut prefiksi](#marshrut-prefiksi)                   |
-| ServeHTTP   | [Marshrutlarni testlash](#asosiy-marshrutlash)            |
-| Oling       | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
-| Post        | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
-| Put         | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
-| O‘chirish   | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
-| Patch       | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
-| Parametrlar | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
-| Any         | [Asosiy Marshrutlash](#asosiy-marshrutlash)               |
-| Resurs      | [Resurs marshrutlash](#resurs-marshrutlash)               |
-| Static      | [Fayl marshrutlash](#fayl-marshrutlash)                   |
-| StaticFile  | [Fayl marshrutlash](#fayl-marshrutlash)                   |
-| StaticFS    | [Fayl marshrutlash](#fayl-marshrutlash)                   |
-| Middleware  | [Middleware](#middleware)                                 |
-| GetRoutes   | [Barcha marshrutlarni olish](#barcha-marshrutlarni-olish) |
-| Name        | [Marshrut nomini belgilash](#marshrut-nomini-belgilash)   |
-| Info        | [Marshrut maʼlumotini olish](#marshrut-ma-lumotini-olish) |
+| Usullar           | Harakat                                                   |
+| ----------------- | --------------------------------------------------------- |
+| Guruh             | [Guruh marshrutlash](#guruh-marshrutlash)                 |
+| Prefiks           | [Marshrut prefiksi](#marshrut-prefiksi)                   |
+| ServeHTTP         | [Marshrutlarni testlash](#asosiy-marshrutlash)            |
+| Oling             | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
+| Post              | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
+| Put               | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
+| O‘chirish         | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
+| Patch             | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
+| Parametrlar       | [Asosiy marshrutlash](#asosiy-marshrutlash)               |
+| Any               | [Asosiy Marshrutlash](#asosiy-marshrutlash)               |
+| Resurs            | [Resurs marshrutlash](#resurs-marshrutlash)               |
+| Static            | [Fayl marshrutlash](#fayl-marshrutlash)                   |
+| StaticFile        | [Fayl marshrutlash](#fayl-marshrutlash)                   |
+| StaticFS          | [Fayl marshrutlash](#fayl-marshrutlash)                   |
+| Middleware        | [Middleware](#middleware)                                 |
+| WithoutMiddleware | [Without Middleware](#without-middleware)                 |
+| GetRoutes         | [Barcha marshrutlarni olish](#barcha-marshrutlarni-olish) |
+| Name              | [Marshrut nomini belgilash](#marshrut-nomini-belgilash)   |
+| Info              | [Marshrut maʼlumotini olish](#marshrut-ma-lumotini-olish) |
 
 ## Asosiy marshrutlash
 
@@ -150,6 +151,41 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 ```
 
 Batafsil [Middleware](./middleware.md)
+
+## Without Middleware
+
+The `WithoutMiddleware` method allows you to exclude specific middleware from routes that would otherwise be applied by parent groups. This is useful for webhook endpoints, public APIs, or any route that should bypass certain middleware (like authentication or rate limiting).
+
+### Route-Level Exclusion
+
+```go
+import "github.com/goravel/framework/http/middleware"
+
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  // This route has both middlewares
+  router.Get("/dashboard", dashboardController.Index)
+
+  // This route excludes the throttle middleware
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+### Group-Level Exclusion
+
+Exclude middleware for all routes within a group:
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    // All routes in this group bypass Auth middleware
+    router.Get("/public", publicController.Index)
+    router.Get("/public/{id}", publicController.Show)
+  })
+```
+
+> **Note**: Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
 
 ## Barcha marshrutlarni olish
 
