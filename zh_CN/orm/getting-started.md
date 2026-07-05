@@ -201,6 +201,37 @@ func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Q
 }
 ```
 
+You can access the context passed by `facades.Orm().WithContext(ctx)` from the query inside a global scope:
+
+```go
+import (
+  "context"
+
+  contractsorm "github.com/goravel/framework/contracts/database/orm"
+  "github.com/goravel/framework/database/orm"
+  "github.com/goravel/framework/facades"
+)
+
+type User struct {
+  orm.Model
+  Name string
+}
+
+func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query {
+  return map[string]func(contractsorm.Query) contractsorm.Query{
+    "tenant": func(query contractsorm.Query) contractsorm.Query {
+      tenantID, _ := query.Context().Value("tenant_id").(uint)
+
+      return query.Where("tenant_id", tenantID)
+    },
+  }
+}
+
+ctx := context.WithValue(context.Background(), "tenant_id", uint(1))
+var users []User
+err := facades.Orm().WithContext(ctx).Query().Find(&users)
+```
+
 如果要在查询中移除全局作用域，可以使用 `WithoutGlobalScopes` 函数：
 
 ```go
@@ -223,83 +254,84 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 
 ## facades.Orm().Query() 可用方法
 
-| 方法                          | 作用                            |
-| --------------------------- | ----------------------------- |
-| Avg                         | [聚合](#聚合)                     |
-| BeginTransaction            | [手动开始事务](#事务)                 |
-| Commit                      | [提交事务](#事务)                   |
-| Count                       | [计数](#计数)                     |
-| Create                      | [创建数据](#创建)                   |
-| Cursor                      | [游标](#游标)                     |
-| Delete                      | [删除数据](#删除)                   |
-| Distinct                    | [过滤重复](#过滤重复)                 |
-| Driver                      | [获取当前驱动](#获取当前驱动)             |
-| Exec                        | [执行原生更新 SQL](#执行原生更新-sql)     |
-| Exists                      | [数据是否存在](#数据是否存在)             |
-| Find                        | [查询一条或多条数据](#根据-id-查询单条或多条数据) |
-| FindOrFail                  | [未找到时抛出错误](#未找到时抛出错误)         |
-| First                       | [查询一条数据](#查询一条数据)             |
-| FirstOr                     | [查询或通过回调返回一条数据](#查询一条数据)      |
-| FirstOrCreate               | [查询或创建模型](#查询或创建模型)           |
-| FirstOrNew                  | [查询或实例化模型](#查询或创建模型)          |
-| FirstOrFail                 | [未找到时抛出错误](#未找到时抛出错误)         |
-| ForceDelete                 | [强制删除](#删除)                   |
-| Get                         | [查询多条数据](#查询多条数据)             |
-| Group                       | [Group 查询](#group-by-having)  |
-| Having                      | [Having 查询](#group-by-having) |
-| Join                        | [Join 查询](#join-查询)           |
-| Limit                       | [Limit 查询](#limit-查询)         |
-| LockForUpdate               | [悲观锁](#悲观锁)                   |
-| Max                         | [最大值](#聚合)                    |
-| Min                         | [最小值](#聚合)                    |
-| Model                       | [指定模型](#指定表查询)                |
-| Offset                      | [指定查询开始位置](#指定查询开始位置)         |
-| Order                       | [排序](#排序)                     |
-| OrderBy                     | [排序](#排序)                     |
-| OrderByDesc                 | [排序](#排序)                     |
-| InRandomOrder               | [排序](#排序)                     |
-| OrWhere                     | [查询条件](#where-条件)             |
-| OrWhereNotIn                | [查询条件](#where-条件)             |
-| OrWhereNull                 | [查询条件](#where-条件)             |
-| OrWhereIn                   | [查询条件](#where-条件)             |
-| OrWhereJsonContains         | [查询条件](#where-条件)             |
-| OrWhereJsonContainsKey      | [查询条件](#where-条件)             |
-| OrWhereJsonDoesntContain    | [查询条件](#where-条件)             |
-| OrWhereJsonDoesntContainKey | [查询条件](#where-条件)             |
-| OrWhereJsonLength           | [查询条件](#where-条件)             |
-| Paginate                    | [分页](#分页)                     |
-| Pluck                       | [查询单列](#查询单列)                 |
-| Raw                         | [执行原生查询 SQL](#执行原生查询-sql)     |
-| Restore                     | [恢复软删除](#恢复软删除)               |
-| Rollback                    | [手动回滚事务](#事务)                 |
-| Save                        | [保存修改](#在现有模型基础上进行更新)         |
-| SaveQuietly                 | [静默的保存单个模型](#静默的保存单个模型)       |
-| Scan                        | [将数据解析到 struct](#执行原生查询-sql)  |
-| Scopes                      | [Scopes](#scopes)             |
-| Select                      | [指定查询列](#指定查询列)               |
-| SharedLock                  | [悲观锁](#悲观锁)                   |
-| Sum                         | [求和](#聚合)                     |
-| Table                       | [指定表](#指定表查询)                 |
-| ToSql                       | [获取 SQL](#获取-sql)             |
-| ToRawSql                    | [获取 SQL](#获取-sql)             |
-| Update                      | [更新单个字段](#更新)                 |
-| UpdateOrCreate              | [更新或创建一条数据](#更新或创建一条数据)       |
-| Where                       | [查询条件](#where-条件)             |
-| WhereAll                    | [查询条件](#where-条件)             |
-| WhereAny                    | [查询条件](#where-条件)             |
-| WhereBetween                | [查询条件](#where-条件)             |
-| WhereNone                   | [查询条件](#where-条件)             |
-| WhereNotBetween             | [查询条件](#where-条件)             |
-| WhereNotIn                  | [查询条件](#where-条件)             |
-| WhereNull                   | [查询条件](#where-条件)             |
-| WhereIn                     | [查询条件](#where-条件)             |
-| WhereJsonContains           | [查询条件](#where-条件)             |
-| WhereJsonContainsKey        | [查询条件](#where-条件)             |
-| WhereJsonDoesntContain      | [查询条件](#where-条件)             |
-| WhereJsonDoesntContainKey   | [查询条件](#where-条件)             |
-| WhereJsonLength             | [查询条件](#where-条件)             |
-| WithoutEvents               | [静默事件](#静默事件)                 |
-| WithTrashed                 | [查询软删除](#查询软删除)               |
+| 方法                          | 作用                                |
+| --------------------------- | --------------------------------- |
+| Avg                         | [聚合](#聚合)                         |
+| BeginTransaction            | [手动开始事务](#事务)                     |
+| Commit                      | [提交事务](#事务)                       |
+| Context                     | [Inject Context](#inject-context) |
+| Count                       | [计数](#计数)                         |
+| Create                      | [创建数据](#创建)                       |
+| Cursor                      | [游标](#游标)                         |
+| Delete                      | [删除数据](#删除)                       |
+| Distinct                    | [过滤重复](#过滤重复)                     |
+| Driver                      | [获取当前驱动](#获取当前驱动)                 |
+| Exec                        | [执行原生更新 SQL](#执行原生更新-sql)         |
+| Exists                      | [数据是否存在](#数据是否存在)                 |
+| Find                        | [查询一条或多条数据](#根据-id-查询单条或多条数据)     |
+| FindOrFail                  | [未找到时抛出错误](#未找到时抛出错误)             |
+| First                       | [查询一条数据](#查询一条数据)                 |
+| FirstOr                     | [查询或通过回调返回一条数据](#查询一条数据)          |
+| FirstOrCreate               | [查询或创建模型](#查询或创建模型)               |
+| FirstOrNew                  | [查询或实例化模型](#查询或创建模型)              |
+| FirstOrFail                 | [未找到时抛出错误](#未找到时抛出错误)             |
+| ForceDelete                 | [强制删除](#删除)                       |
+| Get                         | [查询多条数据](#查询多条数据)                 |
+| Group                       | [Group 查询](#group-by-having)      |
+| Having                      | [Having 查询](#group-by-having)     |
+| Join                        | [Join 查询](#join-查询)               |
+| Limit                       | [Limit 查询](#limit-查询)             |
+| LockForUpdate               | [悲观锁](#悲观锁)                       |
+| Max                         | [最大值](#聚合)                        |
+| Min                         | [最小值](#聚合)                        |
+| Model                       | [指定模型](#指定表查询)                    |
+| Offset                      | [指定查询开始位置](#指定查询开始位置)             |
+| Order                       | [Order](#order)                   |
+| OrderBy                     | [Order](#order)                   |
+| OrderByDesc                 | [排序](#排序)                         |
+| InRandomOrder               | [排序](#排序)                         |
+| OrWhere                     | [查询条件](#where-条件)                 |
+| OrWhereNotIn                | [查询条件](#where-条件)                 |
+| OrWhereNull                 | [查询条件](#where-条件)                 |
+| OrWhereIn                   | [查询条件](#where-条件)                 |
+| OrWhereJsonContains         | [查询条件](#where-条件)                 |
+| OrWhereJsonContainsKey      | [查询条件](#where-条件)                 |
+| OrWhereJsonDoesntContain    | [查询条件](#where-条件)                 |
+| OrWhereJsonDoesntContainKey | [查询条件](#where-条件)                 |
+| OrWhereJsonLength           | [查询条件](#where-条件)                 |
+| Paginate                    | [分页](#分页)                         |
+| Pluck                       | [查询单列](#查询单列)                     |
+| Raw                         | [执行原生查询 SQL](#执行原生查询-sql)         |
+| Restore                     | [恢复软删除](#恢复软删除)                   |
+| Rollback                    | [手动回滚事务](#事务)                     |
+| Save                        | [保存修改](#在现有模型基础上进行更新)             |
+| SaveQuietly                 | [静默的保存单个模型](#静默的保存单个模型)           |
+| Scan                        | [将数据解析到 struct](#执行原生查询-sql)      |
+| Scopes                      | [Scopes](#scopes)                 |
+| Select                      | [指定查询列](#指定查询列)                   |
+| SharedLock                  | [悲观锁](#悲观锁)                       |
+| Sum                         | [求和](#聚合)                         |
+| Table                       | [指定表](#指定表查询)                     |
+| ToSql                       | [获取 SQL](#获取-sql)                 |
+| ToRawSql                    | [获取 SQL](#获取-sql)                 |
+| Update                      | [更新单个字段](#更新)                     |
+| UpdateOrCreate              | [更新或创建一条数据](#更新或创建一条数据)           |
+| Where                       | [查询条件](#where-条件)                 |
+| WhereAll                    | [查询条件](#where-条件)                 |
+| WhereAny                    | [查询条件](#where-条件)                 |
+| WhereBetween                | [查询条件](#where-条件)                 |
+| WhereNone                   | [查询条件](#where-条件)                 |
+| WhereNotBetween             | [查询条件](#where-条件)                 |
+| WhereNotIn                  | [查询条件](#where-条件)                 |
+| WhereNull                   | [查询条件](#where-条件)                 |
+| WhereIn                     | [查询条件](#where-条件)                 |
+| WhereJsonContains           | [查询条件](#where-条件)                 |
+| WhereJsonContainsKey        | [查询条件](#where-条件)                 |
+| WhereJsonDoesntContain      | [查询条件](#where-条件)                 |
+| WhereJsonDoesntContainKey   | [查询条件](#where-条件)                 |
+| WhereJsonLength             | [查询条件](#where-条件)                 |
+| WithoutEvents               | [静默事件](#静默事件)                     |
+| WithTrashed                 | [查询软删除](#查询软删除)                   |
 
 ## 查询构造器
 
