@@ -75,11 +75,11 @@ import "github.com/goravel/framework/http/middleware"
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
 
-### Excluding Middleware
+### 排除中间件
 
-The `WithoutMiddleware` method allows specific routes to bypass certain middleware that would otherwise be applied by parent groups. This is useful for public endpoints, webhook handlers, or routes that should skip authentication or rate limiting.
+`WithoutMiddleware` 方法允许特定路由绕过父组应应用的某些中间件。 这对于公共端点、webhook 处理器或应跳过身份验证或速率限制的路由非常有用。
 
-Use `WithoutMiddleware` on individual routes after `Middleware` is applied to a group:
+在将 `Middleware` 应用于组后，对单个路由使用 `WithoutMiddleware`：
 
 ```go
 facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
@@ -91,7 +91,7 @@ facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Gro
 })
 ```
 
-You can also exclude middleware for an entire group:
+你也可以为整个组排除中间件：
 
 ```go
 facades.Route().Middleware(middleware.Auth()).
@@ -101,7 +101,7 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **Note**: Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
+> **注意**：中间件排除使用 `Signature()` 方法来识别中间件。 确保每个中间件返回唯一的签名，以便 `WithoutMiddleware` 正常工作。 内置框架中间件已提供唯一签名。
 
 ## 中断请求
 
