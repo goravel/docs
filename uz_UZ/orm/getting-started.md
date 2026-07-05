@@ -201,7 +201,7 @@ func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Q
 }
 ```
 
-You can access the context passed by `facades.Orm().WithContext(ctx)` from the query inside a global scope:
+Siz global scopedagi so'rov ichida `facades.Orm().WithContext(ctx)` tomonidan uzatilgan kontekstga kirishingiz mumkin:
 
 ```go
 import (
@@ -259,7 +259,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Avg                         | [Avg](#o-rtacha)                                                                                            |
 | BeginTransaction            | [Tranzaksiyani boshlash](#tranzaksiya)                                                                      |
 | Commit                      | [Tranzaksiyani tasdiqlash](#tranzaksiya)                                                                    |
-| Kontekst                    | [Inject Context](#inject-context)                                                                           |
+| Kontekst                    | [Kontekstni kiritish](#kontekstni-kiritish)                                                                 |
 | Count                       | [Hisoblash](#count)                                                                                         |
 | Create                      | [Yaratish](#create)                                                                                         |
 | Cursor                      | [Kursor](#kursor)                                                                                           |
