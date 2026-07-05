@@ -895,10 +895,14 @@ type CustomProvider struct {
 }
 
 func (r *CustomProvider) Prompt(ctx context.Context, prompt ai.AgentPrompt) (ai.AgentResponse, error) {
+    // Use prompt.Attachments when calling providers that support documents or images.
+    // Use prompt.Tools when calling providers that support tool calling.
+    // Use prompt.ProviderState to keep provider-specific state across tool-call loops.
     return nil, nil
 }
 
 func (r *CustomProvider) Stream(ctx context.Context, prompt ai.AgentPrompt) (ai.StreamableAgentResponse, error) {
+    // Return tool calls on the final streamed response when the model requests tools.
     return nil, nil
 }
 ```
@@ -936,6 +940,7 @@ Rasm yaratishni qo'llab-quvvatlaydigan provayderlar `ImageProvider` ni amalga os
 
 ```go
 func (r *CustomProvider) Image(ctx context.Context, prompt ai.ImagePrompt) (ai.ImageResponse, error) {
+    // Use prompt.Prompt, prompt.Model, prompt.Size, prompt.Quality, prompt.Attachments, and prompt.Timeout.
     return nil, nil
 }
 ```
@@ -946,6 +951,7 @@ Audio yaratishni qo'llab-quvvatlaydigan provayderlar `AudioProvider` ni amalga o
 
 ```go
 func (r *CustomProvider) Audio(ctx context.Context, prompt ai.AudioPrompt) (ai.AudioResponse, error) {
+    // Use prompt.Prompt, prompt.Model, prompt.Voice, prompt.Instructions, and prompt.Timeout.
     return nil, nil
 }
 ```
@@ -956,6 +962,7 @@ Nutqdan-matnga o'tkazishni qo'llab-quvvatlaydigan provayderlar `TranscriptionPro
 
 ```go
 func (r *CustomProvider) Transcription(ctx context.Context, prompt ai.TranscriptionPrompt) (ai.TranscriptionResponse, error) {
+    // Use prompt.File, prompt.Model, prompt.Language, prompt.Diarize, and prompt.Timeout.
     return nil, nil
 }
 ```

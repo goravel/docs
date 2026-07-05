@@ -42,7 +42,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 {{ end }}
 
 ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
-  "Name": "Goravel",
+  "name": "Goravel",
 })
 ```
 

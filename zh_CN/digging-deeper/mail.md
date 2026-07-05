@@ -104,9 +104,9 @@ func NewOrderShipped() *OrderShipped {
 	return &OrderShipped{}
 }
 
-func (m *OrderShipped) Headers() map[string]string{
+func (m *OrderShipped) Headers() map[string]string {
 	return map[string]string{
-		"X-Mailer": "Goravel",
+		"X-Mailer": "goravel",
 	}
 }
 

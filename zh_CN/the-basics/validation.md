@@ -4,7 +4,7 @@
 
 ## 简介
 
-Goravel 提供了几种不同的方法来验证传入应用程序的数据。 最常见的做法是在所有传入的 HTTP 请求中使用 `Validate` 方法。Goravel 包含了各种方便的验证规则。 Goravel 包含了各种方便的验证规则。
+Goravel 提供了几种不同的方法来验证传入应用程序的数据。 最常见的做法是在所有传入的 HTTP 请求中使用 `Validate` 方法。Goravel 包含了各种方便的验证规则。
 
 ## 快速验证
 
@@ -349,15 +349,6 @@ fmt.Println(storePost.Name)
 ## 处理错误信息
 
 ### 检索特定字段的一个错误信息
-
-```go
-validator, err := ctx.Request().Validate(rules)
-validator, err := facades.Validation().Make(ctx, input, rules)
-
-message := validator.Errors().One("email")
-```
-
-### 检索特定字段的所有错误信息
 
 ```go
 validator, err := ctx.Request().Validate(rules)
