@@ -2,27 +2,27 @@
 
 [[toc]]
 
-## Introduction
+## 介绍
 
-The AI SDK provides a unified API for interacting with AI providers in Goravel applications. It introduces an `AI` facade, stateful conversations, agent classes, provider/model options, prompt attachments, streaming responses, image generation, audio generation, and transcription.
+AI SDK 提供了统一的 API，用于在 Goravel 应用程序中与 AI 提供商交互。 它引入了 `AI` 门面、有状态对话、代理类、提供商/模型选项、提示附件、流式响应、图像生成、音频生成和转录。
 
-The core AI module manages conversations and provider resolution. Provider implementations are installed separately, such as `goravel/openai`, `goravel/anthropic`, and `goravel/gemini`.
+核心 AI 模块管理对话和提供商解析。 提供商实现单独安装，例如 `goravel/openai`、`goravel/anthropic` 和 `goravel/gemini`。
 
-## Installation
+## 安装
 
-### Install AI Facade
+### 安装 AI 门面
 
-Install the AI facade and core service provider with the `package:install` command:
+使用 `package:install` 命令安装 AI 门面和核心服务提供商：
 
 ```shell
 ./artisan package:install ai
 ```
 
-This makes `facades.AI()` available and registers the `make:agent` and `make:tool` Artisan commands.
+这使得 `facades.AI()` 可用，并注册了 `make:agent` 和 `make:tool` Artisan 命令。
 
-### Install Providers
+### 安装 Providers
 
-Install at least one provider package before prompting an agent:
+在提示代理之前，至少安装一个提供商包：
 
 ```shell
 ./artisan package:install github.com/goravel/openai
@@ -30,11 +30,11 @@ Install at least one provider package before prompting an agent:
 ./artisan package:install github.com/goravel/gemini
 ```
 
-Each provider package registers its own service provider and updates `config/ai.go` so `ai.providers.<name>.via` resolves through the package facade.
+每个提供商包注册其自己的服务提供者并更新 `config/ai.go`，以便 `ai.providers.<name>.via` 通过包外观解析。
 
-### Provider Configuration
+### 提供商配置
 
-The provider installers update `config/ai.go` automatically. For example, `goravel/openai` adds an OpenAI provider similar to this:
+提供商安装程序自动更新 `config/ai.go`。 例如，`goravel/openai` 添加了一个类似以下的 OpenAI 提供商：
 
 ```go
 package config
@@ -83,29 +83,29 @@ func init() {
 }
 ```
 
-Then add the provider credentials to `.env`:
+然后将提供商凭证添加到 `.env`：
 
 ```ini
 OPENAI_API_KEY=
 OPENAI_BASE_URL=
 ```
 
-`OPENAI_BASE_URL` is optional. Use it when routing requests through a proxy or an OpenAI-compatible endpoint. If a model default is empty, the provider package uses its own default model. Set `models.text.max_tokens` to limit generated text tokens; leave it as `0` to use the provider default.
+`OPENAI_BASE_URL` 是可选的。 当通过代理或兼容 OpenAI 的端点路由请求时使用。 如果模型默认值为空，则提供商包使用自己的默认模型。 将 `models.text.max_tokens` 设置为限制生成的文本令牌；保留为 `0` 以使用提供商默认值。
 
-The `failover` map is optional. Provider packages may use it to map provider-specific error messages to failover reasons. Plain strings use substring matching, and slash-delimited strings use Go regular expressions.
+`failover` 映射是可选的。 提供商包可以使用它将特定于提供商的错误消息映射到故障转移原因。 普通字符串使用子字符串匹配，斜杠分隔的字符串使用 Go 正则表达式。
 
-## Creating Agents
+## 创建代理
 
-Agents define the system instructions and any initial conversation context that should be sent to the provider.
+代理定义系统指令以及应发送给提供商的任何初始对话上下文。
 
-You can generate an agent with Artisan:
+您可以使用 Artisan 生成代理：
 
 ```shell
 ./artisan make:agent SupportAgent
 ./artisan make:agent user/SupportAgent
 ```
 
-The generated file is placed under `app/ai/agents` and contains the required methods:
+生成的文件位于 `app/ai/agents` 目录下，并包含所需方法：
 
 ```go
 package agents
@@ -116,12 +116,12 @@ type SupportAgent struct {
 }
 
 func (r *SupportAgent) Instructions() string {
-    return "You are a concise support assistant for a Goravel application."
+    return "你是Goravel应用的简洁支持助手。"
 }
 
 func (r *SupportAgent) Messages() []ai.Message {
     return []ai.Message{
-        {Role: ai.RoleAssistant, Content: "Ask clarifying questions when needed."},
+        {Role: ai.RoleAssistant, Content: "必要时提出澄清问题。"},
     }
 }
 
@@ -134,11 +134,11 @@ func (r *SupportAgent) Tools() []ai.Tool {
 }
 ```
 
-`Instructions` becomes the system prompt. `Messages` returns the initial conversation history copied into each new conversation. `Middleware` returns the default prompt middleware applied to each new conversation. `Tools` returns the callable tools the model may invoke.
+`Instructions` 成为系统提示词。 `Messages` 返回初始对话历史，该历史被复制到每个新对话中。 `Middleware` 返回应用于每个新对话的默认提示中间件。 `Tools` 返回模型可以调用的可调用工具。
 
-## Prompting
+## 提示
 
-Use `facades.AI().Agent` to create a conversation for an agent, then call `Prompt`:
+使用 `facades.AI().Agent` 为代理创建对话，然后调用 `Prompt`：
 
 ```go
 conversation, err := facades.AI().Agent(&agents.SupportAgent{})
@@ -154,7 +154,7 @@ if err != nil {
 fmt.Println(response.Text())
 ```
 
-The response exposes generated text, usage metadata, and any tool calls returned by the provider:
+响应公开由提供商返回的生成文本、使用元数据和任何工具调用：
 
 ```go
 text := response.Text()
@@ -166,7 +166,7 @@ fmt.Println(usage.Input(), usage.Output(), usage.Total())
 fmt.Println(toolCalls)
 ```
 
-Use `Then` to run a callback after a response is resolved:
+使用 `Then` 在响应解析后运行回调：
 
 ```go
 import (
@@ -179,7 +179,7 @@ response.Then(func(response ai.AgentResponse) {
 })
 ```
 
-You can override the configured provider or model for a single conversation:
+您可以覆盖单次对话的配置提供商或模型：
 
 ```go
 conversation, err := facades.AI().Agent(
@@ -189,7 +189,7 @@ conversation, err := facades.AI().Agent(
 )
 ```
 
-Pass additional provider names to `WithProvider` to create an ordered failover chain. Goravel tries the next provider only when the current provider returns a failover error:
+将额外的提供商名称传递给 `WithProvider` 以创建有序的故障转移链。 Goravel 仅在当前提供程序返回故障转移错误时尝试下一个提供程序：
 
 ```go
 conversation, err := facades.AI().Agent(
@@ -198,15 +198,15 @@ conversation, err := facades.AI().Agent(
 )
 ```
 
-If the request should use a specific Go context, call `WithContext` before creating the conversation:
+如果请求应使用特定的 Go 上下文，请在创建对话之前调用 `WithContext`：
 
 ```go
 conversation, err := facades.AI().WithContext(ctx).Agent(&agents.SupportAgent{})
 ```
 
-## Conversation History
+## 对话历史
 
-A conversation stores runtime messages in memory. After a successful `Prompt`, Goravel appends the user input and assistant response to the conversation history:
+对话在内存中存储运行时消息。 在成功执行 `Prompt` 后，Goravel 会将用户输入和助手响应追加到对话历史中：
 
 ```go
 conversation, err := facades.AI().Agent(&agents.SupportAgent{})
@@ -222,17 +222,17 @@ if err != nil {
 messages := conversation.Messages()
 ```
 
-Use `Reset` to discard runtime messages and restore the initial messages returned by the agent:
+使用 `Reset` 丢弃运行时消息并恢复代理返回的初始消息：
 
 ```go
 conversation.Reset()
 ```
 
-## Attachments
+## 附件
 
-Attachments let you send request-scoped documents and images with a single `Prompt` or `Stream` call. Goravel resolves attachments lazily from common sources and does not persist the binary content in conversation history.
+附件允许您通过单个 `Prompt` 或 `Stream` 调用发送请求范围内的文档和图像。 Goravel 从常见源延迟解析附件，并且不会在对话历史中持久化二进制内容。
 
-The attachment examples use these imports:
+附件示例使用以下导入：
 
 ```go
 import (
@@ -244,7 +244,7 @@ import (
 )
 ```
 
-Attach files with `WithAttachments`:
+使用 `WithAttachments` 附加文件：
 
 ```go
 response, err := conversation.Prompt("Summarize these files", frameworkai.WithAttachments(
@@ -258,23 +258,23 @@ if err != nil {
 fmt.Println(response.Text())
 ```
 
-The helper packages are available from `github.com/goravel/framework/ai/document` and `github.com/goravel/framework/ai/image`. The same constructors are also available from the root `github.com/goravel/framework/ai` package as `DocumentFromPath`, `ImageFromPath`, and related helpers.
+辅助包来自 `github.com/goravel/framework/ai/document` 和 `github.com/goravel/framework/ai/image`。 相同的构造函数也可从根包 `github.com/goravel/framework/ai` 中获得，如 `DocumentFromPath`、`ImageFromPath` 及相关辅助函数。
 
-Supported attachment sources:
+支持的附件来源：
 
-| Source           | Document Helper        | Image Helper        |
-| ---------------- | ---------------------- | ------------------- |
-| Bytes            | `document.FromByte`    | `image.FromByte`    |
-| String           | `document.FromString`  | -                   |
-| Base64           | `document.FromBase64`  | `image.FromBase64`  |
-| Reader           | `document.FromReader`  | `image.FromReader`  |
-| Local path       | `document.FromPath`    | `image.FromPath`    |
-| Storage          | `document.FromStorage` | `image.FromStorage` |
-| URL              | `document.FromURL`     | `image.FromURL`     |
-| Uploaded file    | `document.FromUpload`  | `image.FromUpload`  |
-| Provider file ID | `document.FromID`      | `image.FromID`      |
+| 来源      | 文档助手                   | 图像助手                |
+| ------- | ---------------------- | ------------------- |
+| 字节      | `document.FromByte`    | `image.FromByte`    |
+| 字符串     | `document.FromString`  | -                   |
+| Base64  | `document.FromBase64`  | `image.FromBase64`  |
+| Reader  | `document.FromReader`  | `image.FromReader`  |
+| 本地路径    | `document.FromPath`    | `image.FromPath`    |
+| 存储      | `document.FromStorage` | `image.FromStorage` |
+| URL     | `document.FromURL`     | `image.FromURL`     |
+| 上传的文件   | `document.FromUpload`  | `image.FromUpload`  |
+| 提供者文件ID | `document.FromID`      | `image.FromID`      |
 
-Use `WithMimeType` to override the detected MIME type. Use `WithDisk` with `FromStorage` when the attachment should be read from a non-default filesystem disk:
+使用 `WithMimeType` 覆盖检测到的 MIME 类型。 当附件应从非默认文件系统磁盘读取时，将 `WithDisk` 与 `FromStorage` 结合使用：
 
 ```go
 attachment := document.FromStorage(
@@ -284,7 +284,7 @@ attachment := document.FromStorage(
 )
 ```
 
-Use `WithTitle` to set a display title for an attachment. This is especially useful when creating attachments from strings or byte slices, where there is no natural filename:
+使用 `WithTitle` 设置附件的显示标题。 从字符串或字节切片创建附件时，这尤其有用，因为此时没有自然文件名：
 
 ```go
 attachment := frameworkai.DocumentFromString(
@@ -294,9 +294,9 @@ attachment := frameworkai.DocumentFromString(
 )
 ```
 
-When an attachment resolves from a natural source (path, URL, storage, or upload), the resolved filename overrides the title. Use `WithTitle` on attachments where you want a descriptive label instead of an auto-detected name. The option is available on all attachment constructors, including `document.WithTitle` and `image.WithTitle`.
+当附件从自然来源（路径、URL、存储或上传）解析时，解析出的文件名会覆盖标题。 在附件上使用`WithTitle`，当你想要一个描述性标签而不是自动检测的名称时。 该选项适用于所有附件构造器，包括`document.WithTitle`和`image.WithTitle`。
 
-`Stream` accepts the same attachment option:
+`Stream`接受相同的附件选项：
 
 ```go
 stream, err := conversation.Stream("Describe this chart", frameworkai.WithAttachments(
@@ -304,9 +304,9 @@ stream, err := conversation.Stream("Describe this chart", frameworkai.WithAttach
 ))
 ```
 
-### Uploading Attachments
+### 上传附件
 
-If a provider supports file uploads, call `Put` on an attachment to upload it and receive a provider-managed file handle:
+如果提供商支持文件上传，则在附件上调用`Put`以上传它并获取提供商管理的文件句柄：
 
 ```go
 file, err := document.FromPath("storage/app/reports/quarterly.pdf").Put(
@@ -320,9 +320,9 @@ if err != nil {
 fmt.Println(file.ID())
 ```
 
-Providers that do not support uploads return an explicit error. The OpenAI provider supports uploads and uses the Responses API for prompts, streaming, tool calling, and attachments.
+不提供上传支持的提供商将返回一个明确的错误。 OpenAI 提供商支持上传，并使用 Responses API 进行提示、流式处理、工具调用和附件。
 
-You may attach a provider-managed file by ID without uploading it again:
+你可以通过 ID 附加提供商管理的文件，而无需再次上传：
 
 ```go
 file := document.FromID("file-abc123")
@@ -333,7 +333,7 @@ if err != nil {
 }
 ```
 
-Use `Get` to resolve file metadata or content from the provider, and `Delete` to remove the provider-managed file:
+使用 `Get` 从提供者获取文件元数据或内容，并使用 `Delete` 移除提供者管理的文件：
 
 ```go
 file := document.FromID("file-abc123")
@@ -353,11 +353,11 @@ fmt.Println(resolved.ID(), resolved.MimeType(), len(content))
 err = file.Delete(ctx, frameworkai.WithProvider("openai"))
 ```
 
-Use `image.FromID` for provider-managed image files.
+使用 `image.FromID` 处理提供者管理的图像文件。
 
-## Image Generation
+## 图像生成
 
-Use `facades.AI().Image` to generate images from a prompt:
+使用 `facades.AI().Image` 根据提示生成图像：
 
 ```go
 import (
@@ -383,7 +383,7 @@ if err != nil {
 fmt.Println(response.MimeType(), len(content))
 ```
 
-You may set the provider and model on the fluent image request:
+您可以在流畅的图像请求上设置提供程序和模型：
 
 ```go
 response, err := facades.AI().Image("A launch banner for Goravel v1.18").
@@ -393,7 +393,7 @@ response, err := facades.AI().Image("A launch banner for Goravel v1.18").
     Generate()
 ```
 
-Use image attachments when editing existing images:
+在编辑现有图像时使用图像附件：
 
 ```go
 import (
@@ -408,7 +408,7 @@ response, err := facades.AI().Image("Turn this chart into a watercolor illustrat
     Generate()
 ```
 
-The generated image response exposes bytes, MIME type, usage metadata, storage helpers, and a `Then` callback:
+生成的图像响应暴露了字节、MIME类型、使用元数据、存储帮助程序以及`Then`回调：
 
 ```go
 import (
@@ -421,7 +421,7 @@ response.Then(func(response ai.ImageResponse) {
 })
 ```
 
-Store generated images directly on the configured filesystem:
+直接将生成的图像存储到配置的文件系统中：
 
 ```go
 path, err := response.Store("public")
@@ -432,7 +432,7 @@ if err != nil {
 path, err = response.StoreAs("images/gopher.png", "public")
 ```
 
-You may also generate and store in one step:
+您还可以一步生成并存储：
 
 ```go
 path, err := facades.AI().Image("A Goravel mascot").
@@ -440,9 +440,9 @@ path, err := facades.AI().Image("A Goravel mascot").
     StoreAs("images/mascot.png", "public")
 ```
 
-## Audio Generation
+## 音频生成
 
-Use `facades.AI().Audio` to generate speech from text:
+使用 `facades.AI().Audio` 从文本生成语音：
 
 ```go
 import (
@@ -452,11 +452,11 @@ import (
     "goravel/app/facades"
 )
 
-response, err := facades.AI().Audio("Welcome to Goravel").
+response, err := facades.AI().Audio("欢迎使用 Goravel").
     Provider("openai").
     Model("gpt-4o-mini-tts").
     Male().
-    Instructions("Speak slowly and warmly.").
+    Instructions("请缓慢而温暖地说话。").
     Timeout(30 * time.Second).
     Generate()
 if err != nil {
@@ -471,15 +471,15 @@ if err != nil {
 fmt.Println(response.MimeType(), len(content))
 ```
 
-Use `Female` for the default female voice, `Male` for the default male voice, or `Voice` for a provider-specific voice:
+使用 `Female` 表示默认女声，`Male` 表示默认男声，或者 `Voice` 表示特定提供商的语音：
 
 ```go
-response, err := facades.AI().Audio("Your report is ready.").
+response, err := facades.AI().Audio("你的报告已准备好。").
     Voice("alloy").
     Generate()
 ```
 
-Audio responses expose bytes, MIME type, usage metadata, storage helpers, and a `Then` callback:
+音频响应暴露了字节、MIME 类型、使用元数据、存储助手和 `Then` 回调：
 
 ```go
 import (
@@ -492,7 +492,7 @@ response.Then(func(response ai.AudioResponse) {
 })
 ```
 
-Store generated audio directly on the configured filesystem:
+将生成的音频直接存储在配置的文件系统上：
 
 ```go
 path, err := response.Store("public")
@@ -503,7 +503,7 @@ if err != nil {
 path, err = response.StoreAs("audio/welcome.mp3", "public")
 ```
 
-You may also generate and store in one step:
+您也可以一步生成并存储：
 
 ```go
 path, err := facades.AI().Audio("Welcome to Goravel").
@@ -511,9 +511,9 @@ path, err := facades.AI().Audio("Welcome to Goravel").
     StoreAs("audio/welcome.mp3", "public")
 ```
 
-## Transcription
+## 转录
 
-Use `facades.AI().Transcription` to convert audio files to text. The input must implement `ai.StorableFile`, so you can reuse document attachments or any custom file type that exposes `FileName`, `MimeType`, and `Content`:
+使用 `facades.AI().Transcription` 将音频文件转换为文本。 输入必须实现 `ai.StorableFile`，以便您可以重复使用文档附件或任何公开 `FileName`、`MimeType` 和 `Content` 的自定义文件类型：
 
 ```go
 import (
@@ -538,7 +538,7 @@ if err != nil {
 fmt.Println(response.Text())
 ```
 
-Use `Segments` when the provider returns timestamps or speaker labels:
+当提供者返回时间戳或说话者标签时，使用 `Segments`：
 
 ```go
 for _, segment := range response.Segments() {
@@ -546,7 +546,7 @@ for _, segment := range response.Segments() {
 }
 ```
 
-Transcription responses expose transcript text, optional segments, usage metadata, and a `Then` callback:
+转录响应暴露转录文本、可选分段、使用元数据和 `Then` 回调：
 
 ```go
 import (
@@ -559,11 +559,11 @@ response.Then(func(response ai.TranscriptionResponse) {
 })
 ```
 
-## Middleware
+## HTTP 中间件
 
-Prompt middleware intercepts requests before they reach the provider. Middleware can mutate the prompt, call the next middleware/provider, short-circuit the provider call by returning a response directly, or register callbacks that run after the final response is available.
+提示中间件在请求到达提供者之前拦截它们。 中间件可以修改提示、调用下一个中间件/提供者、通过直接返回响应来短路提供者调用，或在最终响应可用后注册回调。
 
-The middleware examples use these imports:
+中间件示例使用这些导入：
 
 ```go
 import (
@@ -577,7 +577,7 @@ import (
 )
 ```
 
-Middleware implements the `ai.Middleware` contract:
+中间件实现了 `ai.Middleware` 契约：
 
 ```go
 type TrimPromptMiddleware struct {
@@ -590,7 +590,7 @@ func (r *TrimPromptMiddleware) Handle(ctx context.Context, prompt ai.AgentPrompt
 }
 ```
 
-You may also post-process the final response with `Then`:
+您还可以使用 `Then` 对最终响应进行后处理：
 
 ```go
 type LogResponseMiddleware struct {
@@ -608,7 +608,7 @@ func (r *LogResponseMiddleware) Handle(ctx context.Context, prompt ai.AgentPromp
 }
 ```
 
-Apply middleware to a single conversation with `WithMiddleware`:
+使用 `WithMiddleware` 将中间件应用于单个对话：
 
 ```go
 conversation, err := facades.AI().Agent(
@@ -617,7 +617,7 @@ conversation, err := facades.AI().Agent(
 )
 ```
 
-To apply middleware every time an agent is used, return it from the agent's `Middleware` method:
+要每次使用代理时都应用中间件，请从代理的 `Middleware` 方法中返回它：
 
 ```go
 func (r *SupportAgent) Middleware() []ai.Middleware {
@@ -628,20 +628,20 @@ func (r *SupportAgent) Middleware() []ai.Middleware {
 }
 ```
 
-Agent middleware runs before middleware passed with `WithMiddleware`. The same middleware pipeline is used by both `Prompt` and `Stream`, so cross-cutting behavior such as prompt enrichment, conversation memory, guards, and response logging can live in one place.
+Agent 中间件在通过 `WithMiddleware` 传递的中间件之前运行。 相同的中间件管道由 `Prompt` 和 `Stream` 使用，因此诸如提示增强、对话记忆、防护和响应日志记录等横切行为可以集中在一处。
 
-## Tools
+## 工具
 
-Tools allow an agent to expose callable capabilities to the model. A tool has a unique name, a description, a JSON Schema parameter definition, and an `Execute` method that returns the tool result as a string.
+工具允许智能体向模型公开可调用的能力。 工具具有唯一的名称、描述、JSON Schema 参数定义以及返回工具结果（字符串）的 `Execute` 方法。
 
-You can generate a tool with Artisan:
+您可以使用 Artisan 生成工具：
 
 ```shell
 ./artisan make:tool WeatherTool
 ./artisan make:tool user/WeatherTool
 ```
 
-The generated file is placed under `app/ai/tools`. Nested names create subdirectories, and `--force` or `-f` overwrites an existing tool file.
+生成的文件放置在 `app/ai/tools` 下。 嵌套名称会创建子目录，`--force` 或 `-f` 会覆盖现有工具文件。
 
 ```go
 package tools
@@ -656,7 +656,7 @@ func (r *WeatherTool) Name() string {
 }
 
 func (r *WeatherTool) Description() string {
-    return "A description of the tool."
+    return "工具的说明。"
 }
 
 func (r *WeatherTool) Parameters() map[string]any {
@@ -668,7 +668,7 @@ func (r *WeatherTool) Execute(ctx context.Context, args map[string]any) (string,
 }
 ```
 
-After generating the tool, update `Description`, `Parameters`, and `Execute` for the capability you want to expose:
+生成工具后，更新 `Description`、`Parameters` 和 `Execute` 以暴露所需的功能：
 
 ```go
 type WeatherTool struct {
@@ -679,7 +679,7 @@ func (r *WeatherTool) Name() string {
 }
 
 func (r *WeatherTool) Description() string {
-    return "Returns the current weather for a city."
+    return "返回指定城市的当前天气。"
 }
 
 func (r *WeatherTool) Parameters() map[string]any {
@@ -697,11 +697,11 @@ func (r *WeatherTool) Parameters() map[string]any {
 func (r *WeatherTool) Execute(ctx context.Context, args map[string]any) (string, error) {
     city, _ := args["city"].(string)
 
-    return fmt.Sprintf("Sunny, 25 C in %s", city), nil
+    return fmt.Sprintf("晴朗，25°C，%s", city), nil
 }
 ```
 
-Import your application's tools package, such as `goravel/app/ai/tools`, then return the tool from your agent's `Tools` method:
+导入你的应用的 tools 包，例如 `goravel/app/ai/tools`，然后在你的代理的 `Tools` 方法中返回该工具：
 
 ```go
 func (r *SupportAgent) Tools() []ai.Tool {
@@ -711,7 +711,7 @@ func (r *SupportAgent) Tools() []ai.Tool {
 }
 ```
 
-When the model requests a tool call during `Prompt`, Goravel executes the tool, appends the tool result to the conversation, and re-prompts the model until it returns a final text response:
+当模型在 `Prompt` 期间请求工具调用时，Goravel 执行该工具，将工具结果追加到对话中，并重新提示模型，直到模型返回最终文本响应：
 
 ```go
 conversation, err := facades.AI().Agent(&agents.SupportAgent{})
@@ -727,11 +727,11 @@ if err != nil {
 fmt.Println(response.Text())
 ```
 
-Goravel limits the tool-call loop to prevent a model from requesting tools indefinitely.
+Goravel 限制工具调用循环，以防止模型无限期请求工具。
 
-## Custom Generator Paths
+## 自定义生成器路径
 
-By default, `make:agent` writes to `app/ai/agents` and `make:tool` writes to `app/ai/tools`. You may customize those paths in `bootstrap/app.go` with `WithPaths`:
+默认情况下，`make:agent` 写入到 `app/ai/agents`，`make:tool` 写入到 `app/ai/tools`。 您可以使用 `WithPaths` 在 `bootstrap/app.go` 中自定义这些路径：
 
 ```go
 package bootstrap
@@ -749,9 +749,9 @@ var App = foundation.Setup().
     Create()
 ```
 
-## Streaming
+## 流式
 
-Use `Stream` when you want token deltas as they are produced by the provider:
+使用 `Stream` 来获取提供商生成的令牌增量：
 
 ```go
 stream, err := conversation.Stream("Write a short release note.")
@@ -779,11 +779,11 @@ err = stream.Each(func(event ai.StreamEvent) error {
 })
 ```
 
-Streaming supports the same conversation options, middleware pipeline, and tool-call loop as `Prompt`. When the model requests tools, the stream emits a `StreamEventTypeToolCall` event, Goravel executes the tools, and the stream continues with the final model response. The stream appends the user input, tool calls, tool results, and final assistant text to the conversation history only after the stream completes successfully.
+流式传输支持与 `Prompt` 相同的对话选项、中间件管道和工具调用循环。 当模型请求工具时，流会发出 `StreamEventTypeToolCall` 事件，Goravel 执行工具，然后流继续获取最终的模型响应。 流仅在成功完成后才将用户输入、工具调用、工具结果和最终助手文本追加到对话历史记录中。
 
-### Completion Callback
+### 完成回调
 
-Use `Then` to run logic after the stream has completed and the final response is available:
+使用 `Then` 在流完成且最终响应可用后运行逻辑：
 
 ```go
 stream.Then(func(response ai.AgentResponse) {
@@ -791,9 +791,9 @@ stream.Then(func(response ai.AgentResponse) {
 })
 ```
 
-### HTTP Streaming
+### HTTP 流式传输
 
-`HTTPResponse` converts a stream into a Server-Sent Events response. This is useful in controllers and routes:
+`HTTPResponse` 将流转换为服务器发送事件（SSE）响应。 这在控制器和路由中很有用：
 
 ```go
 func Chat(ctx http.Context) http.Response {
@@ -811,7 +811,7 @@ func Chat(ctx http.Context) http.Response {
 }
 ```
 
-By default, Goravel renders SSE events with `Content-Type: text/event-stream`. You may customize the status code or event renderer:
+默认情况下，Goravel 使用 `Content-Type: text/event-stream` 渲染 SSE 事件。 您可以自定义状态码或事件渲染器：
 
 ```go
 return stream.HTTPResponse(
@@ -827,27 +827,27 @@ return stream.HTTPResponse(
 )
 ```
 
-## Providers
+## 提供商
 
-### First-party Providers
+### 第一方提供商
 
-Goravel provides these first-party AI provider packages:
+Goravel 提供以下第一方 AI 提供商包：
 
-| Provider  | Package                                                   | Install Command                                          |
+| 提供商       | 包                                                         | 安装命令                                                     |
 | --------- | --------------------------------------------------------- | -------------------------------------------------------- |
 | OpenAI    | [goravel/openai](https://github.com/goravel/openai)       | `./artisan package:install github.com/goravel/openai`    |
 | Anthropic | [goravel/anthropic](https://github.com/goravel/anthropic) | `./artisan package:install github.com/goravel/anthropic` |
 | Gemini    | [goravel/gemini](https://github.com/goravel/gemini)       | `./artisan package:install github.com/goravel/gemini`    |
 
-Provider packages implement the AI provider contracts and may support different capabilities. Check the provider package README for supported features and configuration details.
+提供者包实现AI提供者契约，可能支持不同的功能。 请查看提供者包的README以了解支持的功能和配置详情。
 
-The OpenAI provider uses the Responses API for prompts, streaming, tool calling, and attachments. It also supports image generation, image edits, audio generation, transcription, media storage helpers, and provider-managed files.
+OpenAI提供者使用Responses API进行提示、流式传输、工具调用和附件处理。 它还支持图像生成、图像编辑、音频生成、转录、媒体存储助手和提供者管理的文件。
 
-### Provider Failover
+### 提供者故障转移
 
-When a provider chain is configured with `WithProvider("primary", "backup")`, Goravel retries the next provider only for errors that implement `ai.FailoverError`. If every provider in the chain fails with a failover error, the last error is returned. Streaming responses can fail over before output starts; after output starts, the stream returns the current provider error instead of switching providers.
+当使用 `WithProvider("primary", "backup")` 配置提供者链时，Goravel 仅对实现 `ai.FailoverError` 的错误重试下一个提供者。 如果链中的每个提供者都因故障转移错误而失败，则返回最后一个错误。 流式响应可以在输出开始前进行故障转移；输出开始后，流返回当前提供者错误而不是切换提供者。
 
-Configure `ai.providers.openai.failover` to add OpenAI-specific error message mappings:
+配置 `ai.providers.openai.failover` 以添加 OpenAI 特定的错误消息映射：
 
 ```go
 "openai": map[string]any{
@@ -864,13 +864,13 @@ Configure `ai.providers.openai.failover` to add OpenAI-specific error message ma
 },
 ```
 
-Each `failover` key is the reason returned by `FailoverError.Reason()`. Empty reasons or patterns are ignored. Invalid regular expressions return an error while resolving the provider.
+每个 `failover` 键是 `FailoverError.Reason()` 返回的原因。 空的原因或模式将被忽略。 无效的正则表达式在解析提供者时会返回错误。
 
-### Custom Providers
+### 自定义提供者
 
-You may build a custom provider by following the same structure as `goravel/openai`, `goravel/anthropic`, or `goravel/gemini`: implement the AI provider contracts, register a service provider, expose a facade that resolves the provider, then configure it in `config/ai.go`.
+您可以按照与 `goravel/openai`、`goravel/anthropic` 或 `goravel/gemini` 相同的结构构建自定义提供者：实现 AI 提供者合约，注册服务提供者，公开一个解析提供者的外观，然后在 `config/ai.go` 中进行配置。
 
-The provider resolver accepts either an `ai.Provider` instance or a `func() (ai.Provider, error)` in the provider's `via` configuration.
+提供者解析器接受一个 `ai.Provider` 实例或一个 `func() (ai.Provider, error)`，位于提供者的 `via` 配置中。
 
 ```go
 "providers": map[string]any{
@@ -882,7 +882,7 @@ The provider resolver accepts either an `ai.Provider` instance or a `func() (ai.
 },
 ```
 
-A provider must implement both `Prompt` and `Stream`:
+提供者必须同时实现 `Prompt` 和 `Stream`：
 
 ```go
 import (
@@ -895,21 +895,21 @@ type CustomProvider struct {
 }
 
 func (r *CustomProvider) Prompt(ctx context.Context, prompt ai.AgentPrompt) (ai.AgentResponse, error) {
-    // Use prompt.Attachments when calling providers that support documents or images.
-    // Use prompt.Tools when calling providers that support tool calling.
-    // Use prompt.ProviderState to keep provider-specific state across tool-call loops.
+    // 在调用支持文档或图像的提供程序时，使用 prompt.Attachments。
+    // 在调用支持工具调用的提供程序时，使用 prompt.Tools。
+    // 使用 prompt.ProviderState 在工具调用循环之间保持特定于提供程序的状态。
     return nil, nil
 }
 
 func (r *CustomProvider) Stream(ctx context.Context, prompt ai.AgentPrompt) (ai.StreamableAgentResponse, error) {
-    // Return tool calls on the final streamed response when the model requests tools.
+    // 当模型请求工具时，在最终的流式响应中返回工具调用。
     return nil, nil
 }
 ```
 
-The agent response implementation should expose generated text with `Text`, usage metadata with `Usage`, requested tool invocations with `ToolCalls`, and completion callbacks with `Then`. For streaming, populate `StreamEvent.ToolCalls` when emitting `StreamEventTypeToolCall` events.
+代理响应实现应使用 `Text` 公开生成的文本，使用 `Usage` 公开使用元数据，使用 `ToolCalls` 公开请求的工具调用，并使用 `Then` 公开完成回调。 对于流式处理，在发出 `StreamEventTypeToolCall` 事件时，填充 `StreamEvent.ToolCalls`。
 
-Custom providers can return `frameworkai.NewFailoverError` for provider-specific retryable errors:
+自定义提供程序可以返回 `frameworkai.NewFailoverError` 以处理提供程序特定的可重试错误：
 
 ```go
 import (
@@ -920,7 +920,7 @@ import (
 return nil, frameworkai.NewFailoverError("custom", ai.FailoverReason("rate_limited"), err)
 ```
 
-They can also compile configured `failover` rules with `frameworkai.NewFailoverRules` and wrap matching errors before returning them:
+它们还可以使用 `frameworkai.NewFailoverRules` 编译已配置的 `failover` 规则，并在返回之前包装匹配的错误：
 
 ```go
 rules, err := frameworkai.NewFailoverRules("custom", providerConfig.Failover)
@@ -936,40 +936,40 @@ if err != nil {
 return response, nil
 ```
 
-Providers that support image generation should implement `ImageProvider`:
+支持图像生成的提供程序应实现 `ImageProvider`：
 
 ```go
 func (r *CustomProvider) Image(ctx context.Context, prompt ai.ImagePrompt) (ai.ImageResponse, error) {
-    // Use prompt.Prompt, prompt.Model, prompt.Size, prompt.Quality, prompt.Attachments, and prompt.Timeout.
+    // 使用 prompt.Prompt、prompt.Model、prompt.Size、prompt.Quality、prompt.Attachments 和 prompt.Timeout。
     return nil, nil
 }
 ```
 
-An image response should expose generated bytes with `Content`, the MIME type with `MimeType`, usage metadata with `Usage`, storage helpers with `Store` / `StoreAs`, and completion callbacks with `Then`.
+图像响应应通过 `Content` 暴露生成的字节，通过 `MimeType` 暴露 MIME 类型，通过 `Usage` 暴露使用元数据，通过 `Store` / `StoreAs` 暴露存储辅助函数，并通过 `Then` 暴露完成回调。
 
-Providers that support audio generation should implement `AudioProvider`:
+支持音频生成的提供程序应实现 `AudioProvider`：
 
 ```go
 func (r *CustomProvider) Audio(ctx context.Context, prompt ai.AudioPrompt) (ai.AudioResponse, error) {
-    // Use prompt.Prompt, prompt.Model, prompt.Voice, prompt.Instructions, and prompt.Timeout.
+    // 使用 prompt.Prompt、prompt.Model、prompt.Voice、prompt.Instructions 和 prompt.Timeout。
     return nil, nil
 }
 ```
 
-An audio response should expose generated bytes with `Content`, the MIME type with `MimeType`, usage metadata with `Usage`, storage helpers with `Store` / `StoreAs`, and completion callbacks with `Then`.
+音频响应应通过 `Content` 暴露生成的字节，通过 `MimeType` 暴露 MIME 类型，通过 `Usage` 暴露使用元数据，通过 `Store` / `StoreAs` 暴露存储辅助函数，并通过 `Then` 暴露完成回调。
 
-Providers that support speech-to-text should implement `TranscriptionProvider`:
+支持语音转文本的提供者应实现 `TranscriptionProvider`：
 
 ```go
 func (r *CustomProvider) Transcription(ctx context.Context, prompt ai.TranscriptionPrompt) (ai.TranscriptionResponse, error) {
-    // Use prompt.File, prompt.Model, prompt.Language, prompt.Diarize, and prompt.Timeout.
+    // 使用 prompt.File、prompt.Model、prompt.Language、prompt.Diarize 和 prompt.Timeout。
     return nil, nil
 }
 ```
 
-A transcription response should expose transcript text with `Text`, optional timestamp or speaker segments with `Segments`, usage metadata with `Usage`, and completion callbacks with `Then`.
+转录响应应通过 `Text` 公开转录文本，通过 `Segments` 公开可选的时间戳或说话者片段，通过 `Usage` 公开使用元数据，以及通过 `Then` 公开完成回调。
 
-Providers that support attachment uploads should also implement `FileProvider`:
+支持附件上传的提供者还应实现 `FileProvider`：
 
 ```go
 import (
@@ -1000,7 +1000,7 @@ func (r *CustomProvider) DeleteFile(ctx context.Context, id string) error {
 }
 ```
 
-Then select it per conversation:
+然后按对话选择它：
 
 ```go
 conversation, err := facades.AI().Agent(
@@ -1009,19 +1009,19 @@ conversation, err := facades.AI().Agent(
 )
 ```
 
-## AI Agent Development Skill
+## AI 智能体开发技能
 
-The `goravel-lite` scaffold ships a `.agents/skills/goravel-development/SKILL.md` skill file that teaches AI coding agents (Cursor, Copilot, Codex, etc.) how to work with Goravel projects. The skill covers project structure, facades, routing, ORM, testing conventions, and Artisan scaffolding commands.
+`goravel-lite` 脚手架自带一个 `.agents/skills/goravel-development/SKILL.md` 技能文件，用于教会 AI 编码智能体（Cursor、Copilot、Codex 等） 如何与 Goravel 项目协作。 该技能涵盖项目结构、外观、路由、ORM、测试约定和 Artisan 脚手架命令。
 
-When an AI agent reads this skill, it already knows:
+当 AI 智能体读取此技能时，它已了解：
 
-- How to bootstrap a Goravel project and use `package:install` to add facades.
-- The facade pattern, testing with `testify` suites, and mock helpers.
-- Artisan `make:*` generators for controllers, middleware, models, migrations, and more.
-- Where to find contract interfaces, reference implementations, and docs.
+- 如何引导 Goravel 项目并使用 `package:install` 添加外观。
+- 外观模式、使用 `testify` 套件进行测试以及模拟辅助工具。
+- Artisan `make:*` 生成器，用于控制器、中间件、模型、迁移等。
+- 在哪里找到契约接口、参考实现和文档。
 
-### Customization
+### 自定义
 
-You can extend the built-in skill with project-specific rules by creating `.agents/skills/goravel-development/CUSTOM.md`. AI agents will read and apply both files automatically. Add conventions unique to your project, such as preferred import aliases, domain-specific naming, or custom directory layouts.
+你可以通过创建 `.agents/skills/goravel-development/CUSTOM.md` 来扩展内置技能，添加项目特定规则。 AI代理将自动读取并应用这两个文件。 添加项目特有的约定，例如首选的导入别名、领域特定的命名或自定义目录布局。
 
-The skill is versioned alongside the `goravel-lite` scaffold and is updated when you upgrade the framework. After upgrading, review the skill file for new conventions and merge your `CUSTOM.md` rules as needed.
+该技能与 `goravel-lite` 脚手架一起版本化，并在升级框架时更新。 升级后，审查技能文件以了解新约定，并根据需要合并你的 `CUSTOM.md` 规则。
