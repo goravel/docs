@@ -25,6 +25,17 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Send()
 ```
 
+To send raw plain-text body content, set the `Text` field. Goravel sends `Text` as the plain-text email part and does not render it as a template path:
+
+```go
+import "github.com/goravel/framework/mail"
+
+err := facades.Mail().To([]string{"example@example.com"}).
+  Subject("Subject").
+  Content(mail.Content{Text: "Hello Goravel"}).
+  Send()
+```
+
 ## Send Mail By Queue
 
 ```go
@@ -104,7 +115,10 @@ func (m *OrderShipped) Attachments() []string {
 }
 
 func (m *OrderShipped) Content() *mail.Content {
-	return &mail.Content{Html: "<h1>Hello Goravel</h1>"}
+	return &mail.Content{
+		Html: "<h1>Hello Goravel</h1>",
+		Text: "Hello Goravel",
+	}
 }
 
 func (m *OrderShipped) Envelope() *mail.Envelope {
@@ -162,16 +176,23 @@ Create your email templates in the specified views directory. For example:
 <p>Thank you for joining {{.AppName}}.</p>
 ```
 
+```text
+# resources/views/mail/welcome.txt
+Welcome {{.Name}}!
+Thank you for joining {{.AppName}}.
+```
+
 ### Sending Emails with Templates
 
-You can use the `Content` method to specify the template and pass dynamic data:
+You can use the `Content` method to specify the template and pass dynamic data. Use `HtmlView` for HTML templates and `TextView` for plain-text templates:
 
 ```go
 facades.Mail().
     To([]string{"user@example.com"}).
     Subject("Welcome").
     Content(mail.Content{
-        View: "welcome.tmpl",
+        HtmlView: "welcome.html",
+        TextView: "welcome.txt",
         With: map[string]any{
             "Name": "John",
             "AppName": "Goravel",
@@ -197,4 +218,3 @@ You can also register custom template engines in the configuration:
     },
 }
 ```
-

@@ -31,6 +31,22 @@ The `level` configuration controls the minimum log level. Logs below this level 
 facades.Log().WithContext(ctx)
 ```
 
+When `WithContext` is used, Goravel writes context key-value pairs to the log output. Framework-internal keys such as `GoravelAuthJwt` and `goravel_http_client_name` are excluded automatically to avoid leaking sensitive or noisy values.
+
+You can exclude additional context keys by adding `context.exclude` to `config/logging.go`:
+
+```go
+// config/logging.go
+"context": map[string]any{
+  "exclude": []any{
+    "access_token",
+    "secret_key",
+  },
+},
+```
+
+String entries match string context keys and typed string context keys by their displayed name. Comparable non-string entries match the exact context key value, which is useful for struct sentinel keys. Uncomparable entries, such as slices or maps, are ignored.
+
 ## Write log messages
 
 ```go

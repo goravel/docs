@@ -58,6 +58,39 @@ After implementing the custom driver, you can add the configuration to `config/q
 },
 ```
 
+### Batch-Receive Drivers
+
+For high-throughput scenarios (e.g., Kafka, RabbitMQ with consumer channels), you can optionally implement the `DriverWithReceive` interface to enable batch message consumption with blocking semantics. When a driver implements this interface, the queue worker automatically uses `Receive` instead of `Pop`, reducing polling overhead and improving throughput:
+
+```go
+import (
+  "context"
+  "github.com/goravel/framework/contracts/queue"
+)
+
+type KafkaDriver struct{}
+
+// Implement the base Driver interface
+func (d *KafkaDriver) Driver() string {
+  return "kafka"
+}
+
+func (d *KafkaDriver) Push(task queue.Task, queue string) error {
+  // push job to Kafka
+}
+
+func (d *KafkaDriver) Pop(queue string) (queue.ReservedJob, error) {
+  // standard single-job pop
+}
+
+// Implement the optional DriverWithReceive for batch consumption
+func (d *KafkaDriver) Receive(ctx context.Context, queue string, count int) ([]queue.ReservedJob, error) {
+  // batch receive up to `count` jobs, blocking until at least one is available or ctx expires
+}
+```
+
+When `Receive` is available, the worker runs a blocking batch loop with a 5-second per-call timeout and exponential backoff (100ms–3.2s) on errors or empty batches. The `context.Context` is canceled on worker shutdown, ensuring clean termination.
+
 ## Creating Jobs
 
 ### Generating Job Classes

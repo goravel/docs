@@ -21,7 +21,19 @@ The Goravel project can be compiled with the following command:
 # Specify the output file name
 ./artisan build --name=goravel
 ./artisan build -n=goravel
+
+# Run go generate before building
+./artisan build --generate
+./artisan build -g
 ```
+
+The `--generate` flag runs `go generate ./...` before the build step. It is disabled by default and can be combined with other build options:
+
+```shell
+./artisan build --generate --os=linux --arch=amd64
+```
+
+When `--generate` is combined with target options such as `--os` or `--arch`, the generate step uses the same build environment.
 
 ## Manual compilation
 

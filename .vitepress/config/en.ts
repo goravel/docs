@@ -38,6 +38,11 @@ export const config = defineConfig({
         items: sidebarAdvanced()
       },
       {
+        text: 'AI',
+        base: '/ai/',
+        items: sidebarAI()
+      },
+      {
         text: 'Security',
         base: '/security/',
         items: sidebarSecurity()
@@ -171,12 +176,12 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Upgrading To v1.17 From v1.16',
-      link: 'v1.17'
+      text: 'Upgrading To v1.18 From v1.17',
+      link: 'v1.18'
     },
     {
-      text: 'Upgrading To v1.16 From v1.15',
-      link: 'v1.16'
+      text: 'Upgrading To v1.17 From v1.16',
+      link: 'v1.17'
     },
     {
       text: 'History',
@@ -302,6 +307,10 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
       link: 'strings'
     },
     {
+      text: 'Collections',
+      link: 'collections'
+    },
+    {
       text: 'Helpers',
       link: 'helpers'
     },
@@ -312,6 +321,19 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     {
       text: 'Pluralization',
       link: 'pluralization'
+    },
+    {
+      text: 'Telemetry',
+      link: 'telemetry'
+    }
+  ]
+}
+
+function sidebarAI(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'AI SDK',
+      link: 'sdk'
     }
   ]
 }

@@ -31,7 +31,7 @@ Then you can simply run your commands like this:
 artisan make:controller DemoController
 ```
 
-You can also use `artisan` shell script like this:
+You can also use the `artisan` shell script to run built-in commands.
 
 ### Generating Commands
 
@@ -56,6 +56,43 @@ func Boot() contractsfoundation.Application {
 ```
 
 A new command created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the command manually if you create the command file by yourself.
+
+### Filtering Commands
+
+You may want to scope which built-in Artisan commands are registered in different environments — for example, hiding dev commands like `make:*`, `package:*`, and `vendor:publish` in production. The `WithCommandsFilter` method on `ApplicationBuilder` lets you return a positive list of command signatures to keep:
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithCommandsFilter(func() []string {
+			if facades.Config().GetString("app.env") == "production" {
+				return []string{
+					"up", "down", "key:generate", "about",
+					"schedule:*", // glob
+					"queue:*",    // glob
+				}
+			}
+			return nil // keep everything in other environments
+		}).
+		WithConfig(config.Boot).
+		Create()
+}
+```
+
+The callback runs once at build time and each entry is matched against `command.Signature()` in one of two ways:
+
+- **Exact match** (no wildcard) — the signature must match the entry exactly.
+- **Glob match** (entry contains `*`) — checked using `path.Match`. `*` matches any sequence of non-`/` characters.
+
+The return value determines the filtering behavior:
+
+- **Method not called** — all commands are kept (default).
+- **Return `nil`** — all commands are kept (no filter applied).
+- **Return `[]string{}`** — all commands are dropped.
+- **Return entries** — only commands whose signature matches an entry are kept.
+
+> Note: The filter applies to all commands including those added via `WithCommands`, so the user cannot bypass the filter by adding commands manually.
 
 ### Command Structure
 
@@ -450,6 +487,31 @@ ctx.NewLine()
 ctx.NewLine(2)
 ```
 
+#### Tables
+
+You may use the `Table` method to render structured data in a tabular format. The method accepts headers and rows, and writes the rendered table directly to the console:
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+    headers := []string{"ID", "Email", "Status"}
+    rows := [][]string{
+        {"1", "a@example.com", "Queued"},
+        {"2", "b@example.com", "Sent"},
+    }
+
+    ctx.Table(headers, rows)
+
+    return nil
+}
+```
+
+You can pass a `console.TableOption` as the third argument to customize borders, dimensions, and styles.
+```go
+ctx.Table(headers, rows, console.TableOption{
+    Width: 80,
+})
+```
+
 #### Progress Bars
 
 For long-running tasks, it is often helpful to provide the user with some indication of how much time the task will take. You may use the `WithProgressBar` method to display a progress bar.
@@ -503,6 +565,58 @@ To show terminal-width divider you may use `Divider` method.
 ctx.Divider()     // ----------
 ctx.Divider("=>") // =>=>=>=>=>
 ```
+
+## Graceful Shutdown
+
+By default, pressing `Ctrl+C` (or sending `SIGTERM`) cancels the `console.Context` passed to `Handle`. The framework runs `Handle` in a goroutine, so it returns `context.Canceled` as soon as the signal fires and the process exits. Commands that need to release resources — closing network listeners, draining queues, flushing buffers — can opt into a cleanup callback by implementing the optional `console.Shutdownable` interface.
+
+```go
+type Shutdownable interface {
+  Shutdown(ctx Context) error
+}
+```
+
+When a command implements `Shutdownable`, the framework races `Handle` against the signal context. If `Handle` returns first, the framework then calls `Shutdown` with a fresh `console.Context` (the original is already cancelled) and a 30s budget so the command can finish any cleanup. If the signal fires first, the framework calls `Shutdown` with the same fresh context and 30s budget, then returns; `Handle` is left to run on its own in the goroutine and the process exits.
+
+`console.Context` now embeds `context.Context`, so commands can use `<-ctx.Done()` directly, pass `ctx` to functions that expect a `context.Context`, and call `ctx.Deadline()` / `ctx.Err()` / `ctx.Value(key)` without an accessor.
+
+```go
+package commands
+
+import (
+  "errors"
+  "net/http"
+
+  "github.com/goravel/framework/contracts/console"
+  "github.com/goravel/framework/contracts/console/command"
+)
+
+type Serve struct {
+  server *http.Server
+}
+
+func (r *Serve) Signature() string   { return "serve" }
+func (r *Serve) Description() string { return "Start the HTTP server" }
+func (r *Serve) Extend() command.Extend {
+  return command.Extend{Category: "server"}
+}
+
+func (r *Serve) Handle(ctx console.Context) error {
+  if err := r.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+    return err
+  }
+  return nil
+}
+
+func (r *Serve) Shutdown(ctx console.Context) error {
+  ctx.Info("received signal, shutting down gracefully...")
+  return r.server.Shutdown(ctx)
+}
+```
+
+The built-in `schedule:run` command is a real example. Its `Handle` blocks on `schedule.Run()`, and on signal the framework calls `Shutdown`, which delegates to `schedule.Shutdown(ctx)` so scheduled tasks get a chance to finish their work.
+
+Commands that do not implement `Shutdownable` keep the original behavior — the process exits as soon as the signal is received.
 
 ## Category
 
