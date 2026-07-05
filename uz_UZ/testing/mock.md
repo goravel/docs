@@ -667,7 +667,7 @@ func TestSchedule(t *testing.T) {
 }
 ```
 
-## Mock facades.Route
+## Facades.Route soxtasini yaratish
 
 ```go
 import (
