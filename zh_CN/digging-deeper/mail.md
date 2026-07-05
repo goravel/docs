@@ -25,15 +25,10 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Send()
 ```
 
-To send raw plain-text body content, set the `Text` field. Goravel sends `Text` as the plain-text email part and does not render it as a template path:
+要发送纯文本正文内容，请设置 `Text` 字段。 Goravel 将 `Text` 作为纯文本电子邮件部分发送，并且不会将其渲染为模板路径：
 
 ```go
-import "github.com/goravel/framework/mail"
-
-err := facades.Mail().To([]string{"example@example.com"}).
-  Subject("Subject").
-  Content(mail.Content{Text: "Hello Goravel"}).
-  Send()
+import "github.com/goravel/framework/mail"\n\nerr := facades.Mail().To([]string{"example@example.com"}).\n  Subject("Subject").\n  Content(mail.Content{Text: "Hello Goravel"}).\n  Send()
 ```
 
 ## 以队列发送邮件
@@ -106,7 +101,7 @@ func NewOrderShipped() *OrderShipped {
 
 func (m *OrderShipped) Headers() map[string]string {
 	return map[string]string{
-		"X-Mailer": "goravel",
+		"X-Mailer": "Goravel",
 	}
 }
 
@@ -178,13 +173,13 @@ err := facades.Mail().Queue(mails.NewOrderShipped())
 
 ```text
 # resources/views/mail/welcome.txt
-Welcome {{.Name}}!
-Thank you for joining {{.AppName}}.
+欢迎 {{.Name}}！
+感谢您加入 {{.AppName}}。
 ```
 
 ### 使用模板发送电子邮件
 
-You can use the `Content` method to specify the template and pass dynamic data. Use `HtmlView` for HTML templates and `TextView` for plain-text templates:
+你可以使用 `Content` 方法来指定模板并传递动态数据。 使用 `HtmlView` 处理 HTML 模板，使用 `TextView` 处理纯文本模板：
 
 ```go
 facades.Mail().
