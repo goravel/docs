@@ -17,10 +17,14 @@ import (
   "github.com/goravel/framework/contracts/http"
 )
 
-func Auth() http.Middleware {
-  return func(ctx http.Context) {
-    ctx.Request().Next()
-  }
+type Auth struct{}
+
+func (a *Auth) Handle(ctx http.Context) {
+  ctx.Request().Next()
+}
+
+func (a *Auth) Signature() string {
+  return "auth"
 }
 ```
 
@@ -70,6 +74,34 @@ import "github.com/goravel/framework/http/middleware"
 
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
+
+### Excluding Middleware
+
+The `WithoutMiddleware` method allows specific routes to bypass certain middleware that would otherwise be applied by parent groups. This is useful for public endpoints, webhook handlers, or routes that should skip authentication or rate limiting.
+
+Use `WithoutMiddleware` on individual routes after `Middleware` is applied to a group:
+
+```go
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  router.Get("/dashboard", dashboardController.Index)
+
+  // This route excludes the throttle middleware
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+You can also exclude middleware for an entire group:
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    router.Get("/public", publicController.Index)
+  })
+```
+
+> **Note**: Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
 
 ## 中断请求
 
