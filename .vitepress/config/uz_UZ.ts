@@ -29,6 +29,10 @@ export const config = defineConfig({
       base: "/uz_UZ/digging-deeper/",
       items: sidebarAdvanced()
     }, {
+      text: "AI",
+      base: "/uz_UZ/ai/",
+      items: sidebarAI()
+    }, {
       text: "Xavfsizlik",
       base: "/uz_UZ/security/",
       items: sidebarSecurity()
@@ -133,11 +137,11 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [{
+    text: "v1.17-dan v1.18-ga yangilash",
+    link: 'v1.18'
+  }, {
     text: "v1.16-dan v1.17-ga yangilash",
     link: 'v1.17'
-  }, {
-    text: "v1.15 dan v1.16 ga yangilash",
-    link: 'v1.16'
   }, {
     text: "Tarix",
     link: 'history'
@@ -237,6 +241,18 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
   }, {
     text: "Ko‘plik shakllari",
     link: 'pluralization'
+  }, {
+    text: "To‘plamlar",
+    link: 'collections'
+  }, {
+    text: "Telemetriya",
+    link: 'telemetry'
+  }];
+}
+function sidebarAI(): DefaultTheme.SidebarItem[] {
+  return [{
+    text: "AI SDK",
+    link: 'sdk'
   }];
 }
 function sidebarSecurity(): DefaultTheme.SidebarItem[] {

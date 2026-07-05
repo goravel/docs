@@ -8,7 +8,76 @@ Grpc moduli `facades.Grpc()` orqali boshqarilishi mumkin. Goravel gRPC xizmatlar
 
 ## Konfiguratsiya
 
-`config/grpc.go` faylida Grpc modulini sozlashingiz mumkin, bu yerda `grpc.host` server domen nomini, `grpc.servers` esa mijoz ulanadigan serverlarni sozlaydi.
+`config/grpc.go` faylida Grpc modulini sozlashingiz mumkin, bu yerda `grpc.host` server domen nomini, `grpc.clients` esa gRPC xizmatlariga ulanadigan mijozlarni sozlaydi.
+
+## Transport Kredensiallari
+
+Sukut bo'yicha, gRPC mijozlari xavfsiz bo'lmagan transport kredensiallaridan foydalanadi va gRPC serveri TLSsiz tinglaydi. Xizmatlaringiz TLS yoki mTLS talab qilganda, ilovani ishga tushirish vaqtida `credentials.TransportCredentials` ni ro'yxatdan o'tkazishingiz mumkin.
+
+### Server Kredensiallari
+
+Server kredensiallarini gRPC serveri yaratilishidan oldin ro'yxatdan o'tkazing:
+
+```go
+import "google.golang.org/grpc/credentials"
+
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithGrpcServerCredentials(func() credentials.TransportCredentials {
+      creds, err := credentials.NewServerTLSFromFile(
+        "storage/certs/server.crt",
+        "storage/certs/server.key",
+      )
+      if err != nil {
+        panic(err)
+      }
+
+      return creds
+    }).
+    Create()
+}
+```
+
+### Mijoz Kredensiallari
+
+Mijoz kredensial guruhlarini `bootstrap/app.go` da ro'yxatdan o'tkazing, so'ngra guruh nomiga `config/grpc.go` da `grpc.clients.<name>.credentials` bilan murojaat qiling:
+
+```go
+import "google.golang.org/grpc/credentials"
+
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithGrpcClientCredentials(func() map[string]credentials.TransportCredentials {
+      userCreds, err := credentials.NewClientTLSFromFile(
+        "storage/certs/ca.crt",
+        "user.example.com",
+      )
+      if err != nil {
+        panic(err)
+      }
+
+      return map[string]credentials.TransportCredentials{
+        "user": userCreds,
+      }
+    }).
+    Create()
+}
+```
+
+```go
+// config/grpc.go
+"clients": map[string]any{
+  "user": map[string]any{
+    "host":           config.Env("GRPC_USER_HOST", ""),
+    "port":           config.Env("GRPC_USER_PORT", ""),
+    "credentials":    "user",
+    "interceptors":   []string{},
+    "stats_handlers": []string{},
+  },
+},
+```
+
+Agar mijozda `credentials` qiymati bo'lmasa, Goravel orqaga qarab muvofiqlik uchun xavfsiz bo'lmagan kredensiallardan foydalanadi. Agar sozlangan guruh ro'yxatdan o'tkazilmagan bo'lsa, Goravel ogohlantirish qayd qiladi va xavfsiz bo'lmagan kredensiallarga qaytadi. mTLS uchun talab qilinadigan mijoz sertifikatlari yoki ishonchli CA pullarini o'z ichiga olgan `tls.Config` bilan `credentials.NewTLS` yordamida yaratilgan kredensiallarni qaytaring.
 
 ## Kontrollerlar
 
@@ -163,9 +232,9 @@ func Boot() foundation.Application {
 }
 ```
 
-### Interceptorlarni Serverlarga qo'llash
+### Interceptorlarni Mijozlarga qo'llash
 
-Yuqoridagi misoldagi `default` - bu `grpc.servers.interceptors` konfiguratsiya bandiga qo'llanilishi mumkin bo'lgan guruh nomi. Shu tarzda, mijoz guruh ostidagi barcha interceptorlarga qo'llaniladi.
+Yuqoridagi misoldagi `default` - bu `grpc.clients.interceptors` konfiguratsiya bandiga qo'llanilishi mumkin bo'lgan guruh nomi. Shu tarzda, mijoz guruh ostidagi barcha interceptorlardan foydalanadi.
 
 ```go
 package config
@@ -180,7 +249,7 @@ func init() {
     "host": config.Env("GRPC_HOST", ""),
     "port": config.Env("GRPC_PORT", ""),
     
-    "servers": map[string]any{
+    "clients": map[string]any{
       "user": map[string]any{
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),
@@ -323,7 +392,7 @@ func init() {
     "host": config.Env("GRPC_HOST", ""),
     "port": config.Env("GRPC_PORT", ""),
     
-    "servers": map[string]any{
+    "clients": map[string]any{
       "user": map[string]any{
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),

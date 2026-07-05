@@ -6,6 +6,7 @@
 | --------------------------------------------------------------------------------------- | ------------------------------- | --------------------- |
 | [goravel/gin](https://github.com/goravel/gin)                                           | `facades.Route()` 模块 Gin 驱动     | 83.1% |
 | [goravel/fiber](https://github.com/goravel/fiber)                                       | `facades.Route()` 模块 Fiber 驱动   | 81.0% |
+| [goravel/openai](https://github.com/goravel/openai)                                     | `facades.AI()` 模块 OpenAI 驱动     | 80.4% |
 | [goravel/cos](https://github.com/goravel/cos)                                           | `facades.Storage()` 模块 Cos 驱动   | 80.2% |
 | [goravel/minio](https://github.com/goravel/minio)                                       | `facades.Storage()` 模块 Minio 驱动 | 79.6% |
 | [goravel/redis](https://github.com/goravel/redis)                                       | `facades.Cache()` 模块 Redis 驱动   | 79.1% |
@@ -13,9 +14,11 @@
 | [goravel/oss](https://github.com/goravel/oss)                                           | `facades.Storage()` 模块 Oss 驱动   | 76.5% |
 | [goravel/installer](https://github.com/goravel/installer)                               | Goravel 安装器                     | 76.2% |
 | [goravel/postgres](https://github.com/goravel/postgres)                                 | Postgres 数据库驱动                  | 73.7% |
+| [goravel/anthropic](https://github.com/goravel/anthropic)                               | `facades.AI()` 模块 Anthropic 驱动   | 73.3% |
 | [goravel/mysql](https://github.com/goravel/mysql)                                       | MySQL 数据库驱动                     | 73.3% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver)                               | Sqlserver 数据库驱动                 | 60.6% |
 | [goravel/sqlite](https://github.com/goravel/sqlite)                                     | Sqlite 数据库驱动                    | 45.2% |
+| [goravel/gemini](https://github.com/goravel/gemini)                                     | `facades.AI()` 模块 Gemini 驱动      | 51.8% |
 | [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | MongoDB 包                       | 16.9% |
 | [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli)         | Goravel Scaffold 命令行工具          | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow)       | 工作流                             | 4.4%  |

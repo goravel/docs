@@ -50,10 +50,10 @@ Endi biz `Store` usulini yangi blog postini tekshirish mantiqi bilan to'ldirishg
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
-  validator, err := ctx.Request().Validate(map[string]string{
-    "title": "required|max_len:255",
+  validator, err := ctx.Request().Validate(map[string]any{
+    "title": "required|max:255",
     "body": "required",
-    "code": "required|regex:^\d{4,6}$",
+    "code": "required|regex:^[0-9]{4,6}$",
   })
 }
 ```
@@ -63,8 +63,8 @@ func (r *PostController) Store(ctx http.Context) {
 Agar kiruvchi HTTP so'rovi "ichki" maydon ma'lumotlarini o'z ichiga olsa, siz ushbu maydonlarni tekshirish qoidalaringizda "nuqta" sintaksisidan foydalanib belgilashingiz mumkin:
 
 ```go
-validator, err := ctx.Request().Validate(map[string]string{
-  "title": "required|max_len:255",
+validator, err := ctx.Request().Validate(map[string]any{
+  "title": "required|max:255",
   "author.name": "required",
   "author.description": "required",
 })
@@ -75,9 +75,20 @@ validator, err := ctx.Request().Validate(map[string]string{
 Agar kiruvchi HTTP so'rovi "massiv" maydon ma'lumotlarini o'z ichiga olsa, siz ushbu maydonlarni tekshirish qoidalaringizda `*` sintaksisidan foydalanib belgilashingiz mumkin:
 
 ```go
-validator, err := ctx.Request().Validate(map[string]string{
+validator, err := ctx.Request().Validate(map[string]any{
   "tags.*": "required",
 })
+```
+
+Wildcard qoidalari tasdiqlangan ma'lumotlarda asl slice shaklini saqlaydi:
+
+```go
+validator, err := facades.Validation().Make(ctx,
+  map[string]any{"scores": []int{1, 2}},
+  map[string]any{"scores.*": "required|integer"},
+)
+
+scores := validator.Validated()["scores"].([]int) // []int{1, 2}
 ```
 
 ## Forma So'rovi Tekshiruvi
@@ -91,7 +102,7 @@ Murakkabroq tekshirish stsenariylari uchun siz "forma so'rovi" yaratishingiz mum
 ./artisan make:request user/StorePostRequest
 ```
 
-Yaratilgan forma so'rovi sinfi `app/http/requests` katalogiga joylashtiriladi. Agar bu katalog mavjud bo'lmasa, u siz `make:request` buyrug'ini ishga tushirganingizda yaratiladi. Goravel tomonidan yaratilgan har bir forma so'rovida oltita usul mavjud: `Authorize`, `Rules`. Bundan tashqari, qo'shimcha amallar uchun `Filters`, `Messages`, `Attributes` va `PrepareForValidation` usullarini sozlashingiz mumkin.
+Yaratilgan forma so'rovi sinfi `app/http/requests` katalogiga joylashtiriladi. Agar bu katalog mavjud bo'lmasa, u siz `make:request` buyrug'ini ishga tushirganingizda yaratiladi. Goravel tomonidan yaratilgan har bir forma so'rovida `Authorize` va `Rules` usullari mavjud. Shuningdek, qo'shimcha amallar uchun ixtiyoriy `Filters`, `Messages`, `Attributes` va `PrepareForValidation` usullarini sozlashingiz mumkin.
 
 `Authorize` usuli joriy autentifikatsiyadan o'tgan foydalanuvchi so'rov bilan ifodalangan harakatni bajarishga qodir yoki yo'qligini aniqlash uchun mas'ul, `Rules` usuli esa so'rov ma'lumotlariga qo'llanilishi kerak bo'lgan tekshirish qoidalarini qaytaradi:
 
@@ -102,7 +113,6 @@ import (
   "mime/multipart"
 
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/contracts/validation"
 )
 
 type StorePostRequest struct {
@@ -115,10 +125,10 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
   return nil
 }
 
-func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
-  return map[string]string{
+func (r *StorePostRequest) Rules(ctx http.Context) map[string]any {
+  return map[string]any{
     // Kalitlar kiruvchi kalitlar bilan mos keladi.
-    "name": "required|max_len:255",
+    "name": "required|max:255",
     "file": "required|file",
     "files": "required|array",
     "files.*": "required|file",
@@ -165,12 +175,13 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
 
 ### Kiruvchi Ma'lumotlarni Filtrlash
 
-Siz forma so'rovining `Filters` usulini takomillashtirish orqali kiruvchi ma'lumotlarni formatlashingiz mumkin. Ushbu usul `attribute/filter` xaritasini qaytarishi kerak:
+Siz forma so'rovining `Filters` usulini takomillashtirish orqali kiruvchi ma'lumotlarni formatlashingiz mumkin. Ushbu usul `attribute/filter` juftliklaridan iborat xaritani qaytarishi kerak. Filtr qiymatlari satr yoki `[]string` qiymatlari bo'lishi mumkin:
 
 ```go
-func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
-  return map[string]string{
+func (r *StorePostRequest) Filters(ctx http.Context) map[string]any {
+  return map[string]any{
     "name": "trim",
+    "age": []string{"trim", "to_int"},
   }
 }
 ```
@@ -215,7 +226,7 @@ func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validatio
 
 ## Validatorni Qo'lda Yaratish
 
-Agar siz so'rovdagi `Validate` usulidan foydalanmasangiz, `facades.Validator` yordamida validatori namunasi qo'lda yaratishingiz mumkin. Fasadning `Make` usuli yangi validatori namunasi yaratadi:
+Agar siz so'rovdagi `Validate` usulidan foydalanmasangiz, `facades.Validation()` yordamida validatori namunasi qo'lda yaratishingiz mumkin. Fasadning `Make` usuli yangi validatori namunasi yaratadi:
 
 ```go
 func (r *PostController) Store(ctx http.Context) http.Response {
@@ -224,8 +235,8 @@ func (r *PostController) Store(ctx http.Context) http.Response {
     map[string]any{
       "name": "Goravel",
     },
-    map[string]string{
-      "title": "required|max_len:255",
+    map[string]any{
+      "title": "required|max:255",
       "body":  "required",
     })
 
@@ -239,11 +250,11 @@ func (r *PostController) Store(ctx http.Context) http.Response {
 }
 ```
 
-`Make` usuliga uzatilgan birinchi argument tekshirilayotgan ma'lumot bo'lib, u `map[string]any` yoki `struct` bo'lishi mumkin. Ikkinchi argument ma'lumotga qo'llanilishi kerak bo'lgan tekshirish qoidalari massividir.
+`ctx` dan so'ng, `Make` usuliga uzatilgan ma'lumot argumenti `map[string]any`, `struct`, `url.Values`, `map[string][]string`, `*http.Request` yoki boshqa qo'llab-quvvatlanadigan so'rov ma'lumot manbai bo'lishi mumkin. Keyingi argument tekshirish qoidalarining `map[string]any` xaritasidir. Qoida qiymatlari satr yoki `[]string` qiymatlari bo'lishi mumkin.
 
 ### Xato Xabarlarini Sozlash
 
-Agar kerak bo'lsa, siz Goravel tomonidan taqdim etilgan sukut bo'yicha xato xabarlari o'rniga validatori namunasi ishlatishi kerak bo'lgan maxsus xato xabarlarini taqdim etishingiz mumkin. Siz maxsus xabarlarni `Make` usulining uchinchi argumenti sifatida o'tkazishingiz mumkin (`ctx.Request().Validate()` uchun ham qo'llaniladi):
+Agar kerak bo'lsa, siz Goravel tomonidan taqdim etilgan sukut bo'yicha xato xabarlari o'rniga validatori namunasi ishlatishi kerak bo'lgan maxsus xato xabarlarini taqdim etishingiz mumkin. Siz maxsus xabarlarni `validation.Messages` bilan o'tkazishingiz mumkin (`ctx.Request().Validate()` uchun ham qo'llaniladi):
 
 ```go
 validator, err := facades.Validation().Make(ctx, input, rules, validation.Messages(map[string]string{
@@ -261,9 +272,11 @@ validator, err := facades.Validation().Make(ctx, input, rules, validation.Messag
 }))
 ```
 
+Aniq xabar bekor qilishlari maxsus qoida standartlaridan ustunlikka ega. Goravel xabarlarni quyidagi tartibda hal qiladi: `field.rule` xabari, so'ngra `rule` xabari, so'ngra maxsus qoidaning `Message()` qaytarish qiymati.
+
 ### Maxsus Atribut Qiymatlarini Belgilash
 
-Goravelning ko'pgina o'rnatilgan xato xabarlarida `:attribute` belgisi mavjud bo'lib, u tekshirilayotgan maydon yoki atribut nomi bilan almashtiriladi. Ushbu belgilarni almashtirish uchun ishlatiladigan qiymatlarni maxsus maydonlar uchun sozlash uchun siz maxsus atributlar massivini `Make` metodining uchinchi argumenti sifatida o'tkazishingiz mumkin (shuningdek, `ctx.Request().Validate()` uchun ham qo'llaniladi):
+Goravelning ko'pgina o'rnatilgan xato xabarlarida `:attribute` belgisi mavjud bo'lib, u tekshirilayotgan maydon yoki atribut nomi bilan almashtiriladi. Ushbu belgilarni almashtirish uchun ishlatiladigan qiymatlarni maxsus maydonlar uchun sozlash uchun siz maxsus atributlarni `validation.Attributes` bilan o'tkazishingiz mumkin (shuningdek, `ctx.Request().Validate()` uchun ham qo'llaniladi):
 
 ```go
 validator, err := facades.Validation().Make(ctx, input, rules, validation.Attributes(map[string]string{
@@ -273,17 +286,19 @@ validator, err := facades.Validation().Make(ctx, input, rules, validation.Attrib
 
 ### Tekshirishdan Oldin Ma'lumotlarni Formatlash
 
-Ma'lumotlarni tekshirishdan oldin ularni formatlash orqali yanada moslashuvchan tekshirishni amalga oshirishingiz mumkin. Ma'lumotlarni formatlash metodini `Make` metodining uchinchi parametri sifatida o'tkazishingiz mumkin (shuningdek, `ctx.Request().Validate()` uchun ham qo'llaniladi):
+Ma'lumotlarni tekshirishdan oldin ularni formatlash orqali yanada moslashuvchan tekshirishni amalga oshirishingiz mumkin. Formatlash callback'ini `validation.PrepareForValidation` bilan o'tkazishingiz mumkin (shuningdek, `ctx.Request().Validate()` uchun ham qo'llaniladi):
 
 ```go
 import (
+  "context"
+
   validationcontract "github.com/goravel/framework/contracts/validation"
   "github.com/goravel/framework/validation"
 )
 
 func (r *PostController) Store(ctx http.Context) http.Response {
   validator, err := facades.Validation().Make(ctx, input, rules,
-    validation.PrepareForValidation(func(ctx http.Context, data validationcontract.Data) error {
+    validation.PrepareForValidation(func(ctx context.Context, data validationcontract.Data) error {
       if name, exist := data.Get("name"); exist {
         return data.Set("name", name)
       }
@@ -295,11 +310,23 @@ func (r *PostController) Store(ctx http.Context) http.Response {
 }
 ```
 
-## Tekshirilgan Kirish Ma'lumotlari bilan Ishlash
+## Tasdiqlangan Kirish Ma'lumotlari bilan Ishlash
 
-Forma so'rovlari yoki qo'lda yaratilgan tekshiruvchi namunalari yordamida kiruvchi so'rov ma'lumotlarini tekshirgandan so'ng, so'rov ma'lumotlarini `struct` ga bog'lashni istasangiz, buning ikki usuli mavjud:
+Forma so'rovlari yoki qo'lda yaratilgan validator namunalari yordamida kiruvchi so'rov ma'lumotlarini tekshirgandan so'ng, tasdiqlangan ma'lumotlarni olishingiz yoki so'rov ma'lumotlarini `struct` ga bog'lashingiz mumkin.
 
-1. `Bind` metodidan foydalaning, bu barcha kiruvchi ma'lumotlarni, shu jumladan tekshirilmagan ma'lumotlarni ham bog'laydi:
+1. Tekshiruv muvaffaqiyatli o'tgandan so'ng, faqat tekshirish qoidalari qamrab olgan maydonlarni olish uchun `Validated` metodidan foydalaning. Chetlashtirilgan maydonlar tushirib qoldiriladi va wildcard slice qoidalari asl slice shaklini saqlaydi:
+
+```go
+rules := map[string]any{
+  "name": "required|string",
+  "scores.*": "required|integer",
+}
+
+validator, err := ctx.Request().Validate(rules)
+validated := validator.Validated()
+```
+
+2. Tekshiruv muvaffaqiyatli o'tgandan so'ng ma'lumotlarni struct ga bog'lash uchun `Bind` metodidan foydalaning. `Bind` tasdiqlangan ma'lumotlarni asl so'rov ma'lumotlari ustiga birlashtiradi, shuning uchun qoidalarsiz maydonlar hali ham bog'lanishi mumkin:
 
 ```go
 validator, err := ctx.Request().Validate(rules)
@@ -311,7 +338,7 @@ var user models.User
 err := validator.Bind(&user)
 ```
 
-2. Tekshirish uchun so'rovdan foydalanganda kiruvchi ma'lumotlar avtomatik ravishda formaga bog'lanadi:
+3. So'rov tekshiruvi uchun forma so'rovidan foydalanganda kiruvchi ma'lumotlar avtomatik ravishda forma so'roviga bog'lanadi:
 
 ```go
 var storePost requests.StorePostRequest
@@ -321,7 +348,7 @@ fmt.Println(storePost.Name)
 
 ## Xato Xabarlari bilan Ishlash
 
-### Maydon Uchun Bitta Xato Xabarini Olish (Tasodifiy)
+### Maydon Uchun Bitta Xato Xabarini Olish
 
 ```go
 validator, err := ctx.Request().Validate(rules)
@@ -350,81 +377,111 @@ if validator.Errors().Has("email") {
 }
 ```
 
+## Tarjima & Mahalliylashtirish
+
+### Tekshiruv Xabarlari Uchun Tarjimadan Foydalanish
+
+Tekshiruv xato xabarlari endi freymvorkning [mahalliylashtirish](../digging-deeper/localization.md) tizimi orqali ishlaydi. Standart xabarlar freymvork ichiga o'rnatilgan va avtomatik ravishda ilovaning joriy tilidan foydalanadi. Xabarni qidirish quyidagi tartibda amalga oshiriladi:
+
+1. Forma so'rovi `Messages()` yoki aniq `validation.Messages()` bekor qilishlari (`field.rule`, keyin `rule`)
+2. Maxsus qoidaning `Message()` metodi
+3. `validation.*` kalitlari bilan tarjima faylini qidirish (masalan, `validation.required`, `validation.min.string`)
+4. O'rnatilgan standart xabarlar
+
+`min`, `max`, `between`, `size`, `gt`, `gte`, `lt` va `lte` kabi o'lchamga asoslangan qoidalar uchun tarjima kaliti atribut turi qo'shimchasini o'z ichiga oladi (masalan, `min.string`, `min.numeric`, `min.array`, `min.file`).
+
+### Tekshiruv Til Fayllarini Nashr Qilish
+
+Tekshiruv til fayllarini ilovangizning `lang` katalogiga nashr qilish uchun `lang:publish` Artisan buyrug'idan foydalaning:
+
+```shell
+go run . artisan lang:publish
+```
+
+Bu tekshiruv tarjima fayllarini freymvorkdan `lang/en/validation.json` ga nusxalaydi, u yerda siz standart xato xabarlarini sozlashingiz mumkin.
+
+Mavjud fayllarni qayta yozish uchun `--force` (yoki `-f`) bayrog'idan foydalaning:
+
+```shell
+go run . artisan lang:publish --force
+```
+
+### Standart Xabarlarni Sozlash
+
+Nashr qilingandan so'ng, istalgan tekshiruv xabarini sozlash uchun `lang/en/validation.json` faylini tahrirlang. Masalan:
+
+```json
+{
+    "required": "You forgot the :attribute field!",
+    "email": "The :attribute must be a valid email address."
+}
+```
+
+Ushbu maxsus xabarlar, forma so'rovi `Messages()` yoki aniq `validation.Messages()` tomonidan bekor qilinmasa, ilovangizdagi barcha validatorlar tomonidan ishlatiladi.
+
+### Boshqa Tillarga Tarjima Qilish
+
+Qo'shimcha tillarni qo'llab-quvvatlash uchun nashr qilingan `lang/en/validation.json` faylidan nusxa oling va uni mos til katalogiga (masalan, `lang/zh/validation.json`) joylashtiring va xabarlarni tarjima qiling. Freymvork `facades.App().SetLocale(ctx, "zh")` orqali o'rnatilgan joriy tilga asoslanib tegishli til faylidan foydalanadi.
+
+
 ## Mavjud Tekshirish Qoidalari
 
-Quyida barcha mavjud tekshirish qoidalari va ularning funktsiyalari ro'yxati keltirilgan:
+Tekshirish qoida nomlari endi sukut bo'yicha snake_case dan foydalanadi. Qoidalar va filtrlar `map[string]any` bilan belgilanadi; har bir qiymat pipe bilan ajratilgan `string` yoki qoida nomlarining `[]string` ko'rinishida bo'lishi kerak.
 
-| Nomi                   | Tavsifi                                                                                                                                                                                                                                                    |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `required`             | Qiymat talab qilinadi va nol qiymat bo'lishi mumkin emasligini tekshiradi. Misol uchun, maydon turi `bool` bo'lsa va o'tkazilgan qiymat `false` bo'lsa, u tekshiruvdan o'ta olmaydi.                                       |
-| `required_if`          | `required_if:anotherfield,value,...` Tekshirilayotgan maydon mavjud va bo'sh bo'lmasligi kerak, agar anotherField maydoni har qanday qiymatga teng bo'lsa.                                                                                 |
-| `required_unless`      | `required_unless:anotherfield,value,...` Tekshirilayotgan maydon mavjud va bo'sh bo'lmasligi kerak, agar anotherField maydoni har qanday qiymatga teng bo'lmasa.                                                                           |
-| `required_with`        | `required_with:foo,bar,...` Tekshirilayotgan maydon faqat boshqa ko'rsatilgan maydonlardan har qanday biri mavjud bo'lganda mavjud va bo'sh bo'lmasligi kerak.                                                                             |
-| `required_with_all`    | `required_with_all:foo,bar,...` Tekshirilayotgan maydon faqat boshqa ko'rsatilgan barcha maydonlar mavjud bo'lganda mavjud va bo'sh bo'lmasligi kerak.                                                                                     |
-| `required_without`     | `required_without:foo,bar,...` Tekshirilayotgan maydon faqat boshqa ko'rsatilgan maydonlardan har qanday biri mavjud bo'lmaganda mavjud va bo'sh bo'lmasligi kerak.                                                                        |
-| `required_without_all` | `required_without_all:foo,bar,...` Tekshirilayotgan maydon faqat boshqa ko'rsatilgan barcha maydonlar mavjud bo'lmaganda mavjud va bo'sh bo'lmasligi kerak.                                                                                |
-| `int`                  | Qiymat `intX` yoki `uintX` turida ekanligini tekshiradi va o'lcham tekshiruvini qo'llab-quvvatlaydi. masalan: `int` `int:2` `int:2,12`. Eslatma: [Qoidalardan foydalanish nuqtalari](#int) |
-| `uint`                 | Qiymat `uint(uintX)` turida ekanligini tekshiradi, `value >= 0`                                                                                                                                                                                            |
-| `bool`                 | Qiymat bool matni ekanligini tekshiradi (`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false").                                                                         |
-| `string`               | Qiymat matn turida ekanligini tekshiradi va o'lcham tekshiruvini qo'llab-quvvatlaydi. masalan:`string` `string:2` `string:2,12`                                                                                            |
-| `float`                | Qiymat `float(floatX)` turida ekanligini tekshiradi                                                                                                                                                                                                        |
-| `slice`                | Qiymat slice turida ekanligini tekshiradi(`[]intX` `[]uintX` `[]byte` `[]string`)                                                                                                                                                       |
-| `in`                   | `in:foo,bar,…` Qiymat berilgan ro'yxatda borligini tekshiradi                                                                                                                                                                                              |
-| `not_in`               | `not_in:foo,bar,…` Qiymat berilgan ro'yxatda yo'qligini tekshiradi                                                                                                                                                                                         |
-| `starts_with`          | `starts_with:foo` Kiruvchi matn qiymati berilgan pastki matn bilan boshlanishini tekshiradi                                                                                                                                                                |
-| `ends_with`            | `ends_with:foo` Kiruvchi matn qiymati berilgan pastki matn bilan tugashini tekshiradi                                                                                                                                                                      |
-| `between`              | `between:min,max` Qiymat raqam ekanligini va berilgan oralikda ekanligini tekshiradi                                                                                                                                                                       |
-| `max`                  | `max:value` Qiymat berilgan qiymatdan kichik yoki tengligini tekshiradi(`intX` `uintX` `floatX`)                                                                                                                                        |
-| `min`                  | `min:value` Qiymat berilgan qiymatdan katta yoki tengligini tekshiradi(`intX` `uintX` `floatX`)                                                                                                                                         |
-| `eq`                   | `eq:value` Kiruvchi qiymat berilgan qiymatga tengligini tekshiradi                                                                                                                                                                                         |
-| `ne`                   | `ne:value` Kiruvchi qiymat berilgan qiymatga teng emasligini tekshiradi                                                                                                                                                                                    |
-| `lt`                   | `lt:value` Qiymat berilgan qiymatdan kichikligini tekshiradi(`intX` `uintX` `floatX`)                                                                                                                                                   |
-| `gt`                   | `gt:value` Qiymat berilgan qiymatdan katta ekanligini tekshiradi(`intX` `uintX` `floatX`)                                                                                                                                               |
-| `len`                  | `len:value` Qiymat uzunligi berilgan o'lchamga tengligini tekshiradi(`string` `array` `slice` `map`)                                                                                                                                    |
-| `min_len`              | `min_len:value` Qiymatning minimal uzunligi berilgan o'lcham ekanligini tekshiradi(`string` `array` `slice` `map`)                                                                                                                      |
-| `max_len`              | `max_len:value` Qiymatning maksimal uzunligi berilgan o'lcham ekanligini tekshiradi(`string` `array` `slice` `map`)                                                                                                                     |
-| `email`                | Qiymat elektron pochta manzili satri ekanligini tekshirish                                                                                                                                                                                                 |
-| `array`                | Qiymat massiv, kesma turi ekanligini tekshirish                                                                                                                                                                                                            |
-| `map`                  | Qiymat MAP turi ekanligini tekshirish                                                                                                                                                                                                                      |
-| `eq_field`             | `eq_field:field` Maydon qiymati boshqa maydon qiymatiga teng ekanligini tekshirish                                                                                                                                                                         |
-| `ne_field`             | `ne_field:field` Maydon qiymati boshqa maydon qiymatiga teng emasligini tekshirish                                                                                                                                                                         |
-| `gt_field`             | `gt_field:field` Maydon qiymati boshqa maydon qiymatidan katta ekanligini tekshirish                                                                                                                                                                       |
-| `gte_field`            | `gte_field:field` Maydon qiymati boshqa maydon qiymatidan katta yoki unga teng ekanligini tekshirish                                                                                                                                                       |
-| `lt_field`             | `lt_field:field` Maydon qiymati boshqa maydon qiymatidan kichik ekanligini tekshirish                                                                                                                                                                      |
-| `lte_field`            | `lte_field:field` Maydon qiymati boshqa maydon qiymatidan kichik yoki unga teng ekanligini tekshirish                                                                                                                                                      |
-| `file`                 | Yuklangan fayl ekanligini tekshirish                                                                                                                                                                                                                       |
-| `image`                | Yuklangan rasm fayli ekanligini va kengaytmani tekshirishni qo‘llab-quvvatlashni tekshirish                                                                                                                                                                |
-| `date`                 | Maydon qiymati sana satri ekanligini tekshirish                                                                                                                                                                                                            |
-| `gt_date`              | `gt_date:value` Kirish qiymati berilgan sana satridan katta ekanligini tekshirish                                                                                                                                                                          |
-| `lt_date`              | `lt_date:value` Kirish qiymati berilgan sana satridan kichik ekanligini tekshirish                                                                                                                                                                         |
-| `gte_date`             | `gte_date:value` Kirish qiymati berilgan sana satridan katta yoki unga teng ekanligini tekshirish                                                                                                                                                          |
-| `lte_date`             | `lte_date:value` Kirish qiymati berilgan sana satridan kichik yoki unga teng ekanligini tekshirish                                                                                                                                                         |
-| `alpha`                | Qiymat faqat alifbo belgilaridan iborat ekanligini tekshirish                                                                                                                                                                                              |
-| `alpha_num`            | Faqat harflar va raqamlar kiritilganligini tekshirish                                                                                                                                                                                                      |
-| `alpha_dash`           | Faqat harflar, raqamlar, tire ( - ) va pastki chiziq ( \_ ) kiritilganligini tekshirish                                                                                                        |
-| `json`                 | Qiymat JSON satri ekanligini tekshirish                                                                                                                                                                                                                    |
-| `number`               | Qiymat raqamli satr `>= 0` ekanligini tekshirish                                                                                                                                                                                                           |
-| `full_url`             | Qiymat to‘liq URL satri ekanligini tekshirish (http,https bilan boshlanishi kerak)                                                                                                                                                      |
-| `ip`                   | Qiymat IP(v4 yoki v6) satri ekanligini tekshirish                                                                                                                                                                                       |
-| `ipv4`                 | Qiymat IPv4 satri ekanligini tekshirish                                                                                                                                                                                                                    |
-| `ipv6`                 | Qiymat IPv6 satri ekanligini tekshirish                                                                                                                                                                                                                    |
-| `regex`                | Qiymat muntazam tekshiruvdan o‘tishi mumkinligini tekshirish                                                                                                                                                                                               |
-| `uuid`                 | Qiymat UUID satri ekanligini tekshirish                                                                                                                                                                                                                    |
-| `uuid3`                | Qiymat UUID3 satri ekanligini tekshirish                                                                                                                                                                                                                   |
-| `uuid4`                | Qiymat UUID4 satri ekanligini tekshirish                                                                                                                                                                                                                   |
-| `uuid5`                | Qiymat UUID5 satri ekanligini tekshirish                                                                                                                                                                                                                   |
+```go
+rules := map[string]any{
+  "title": "required|string|max:255",
+  "slug": []string{"required", "regex:^(news|docs)-[a-z]+$", "string"},
+}
+```
 
-### Qoidalardan Foydalanish Bo‘yicha Ko‘rsatmalar
+`regex` yoki `not_regex` namunasi `|` belgisini o'z ichiga olgan va undan keyin qo'shimcha qoidalar qo'shish kerak bo'lganda `[]string` dan foydalaning.
 
-#### int
+| Kategoriya | Qoidalar |
+| --- | --- |
+| Majburiy | `required`, `required_if`, `required_unless`, `required_with`, `required_with_all`, `required_without`, `required_without_all`, `required_if_accepted`, `required_if_declined` |
+| Mavjudlik | `filled`, `present`, `present_if`, `present_unless`, `present_with`, `present_with_all`, `missing`, `missing_if`, `missing_unless`, `missing_with`, `missing_with_all` |
+| Qabul qilingan / Rad etilgan | `accepted`, `accepted_if`, `declined`, `declined_if` |
+| Taqiqlangan | `prohibited`, `prohibited_if`, `prohibited_unless`, `prohibited_if_accepted`, `prohibited_if_declined`, `prohibits` |
+| Tur | `string`, `integer`, `int`, `uint`, `numeric`, `boolean`, `bool`, `float`, `array`, `list`, `slice`, `map` |
+| O'lcham | `size`, `min`, `max`, `between`, `gt`, `gte`, `lt`, `lte` |
+| Raqamli | `digits`, `digits_between`, `decimal`, `multiple_of`, `min_digits`, `max_digits` |
+| Satr Formati | `alpha`, `alpha_num`, `alpha_dash`, `ascii`, `email`, `url`, `active_url`, `ip`, `ipv4`, `ipv6`, `mac_address`, `mac`, `json`, `uuid`, `uuid3`, `uuid4`, `uuid5`, `ulid`, `hex_color`, `regex`, `not_regex`, `lowercase`, `uppercase` |
+| Satr Mazmuni | `starts_with`, `doesnt_start_with`, `ends_with`, `doesnt_end_with`, `contains`, `doesnt_contain`, `confirmed` |
+| Taqqoslash | `same`, `different`, `eq`, `ne`, `in`, `not_in`, `in_array`, `in_array_keys` |
+| Sana | `date`, `date_format`, `date_equals`, `before`, `before_or_equal`, `after`, `after_or_equal`, `timezone` |
+| Chetlashtirish | `exclude`, `exclude_if`, `exclude_unless`, `exclude_with`, `exclude_without` |
+| Fayl | `file`, `image`, `mimes`, `mimetypes`, `extensions`, `dimensions`, `encoding` |
+| Boshqaruv | `bail`, `nullable`, `sometimes` |
+| Massiv / Ma'lumotlar bazasi | `distinct`, `required_array_keys`, `exists`, `unique` |
 
-`ctx.Request().Validate(rules)` yordamida tekshiruvni amalga oshirishda, kiruvchi `int` turidagi ma’lumotlar `json.Unmarshal` tomonidan `float64` turiga o‘tkaziladi, bu esa int qoidasi tekshiruvini muvaffaqiyatsiz yakunlanishiga olib keladi.
+`size`, `min`, `max`, `between`, `gt`, `gte`, `lt` va `lte` qoidalari turga sezgir. Ular raqamli maydonlar uchun raqamli qiymatlarni, satr maydonlar uchun satr uzunligini, massiv, slice va map uchun elementlar sonini, fayllar uchun fayl hajmini solishtiradi.
 
-**Yechimlar**
+`exists` qoidasi `exists:table,column1,column2,...` dan foydalanadi. `unique` qoidasi `unique:table,column,idColumn,except1,except2,...` dan foydalanadi. Ikkala qoida ham jadval parametri uchun `connection.table` sintaksisini qo'llab-quvvatlaydi.
 
-Variant 1: Ma’lumotlarni tekshirishdan oldin [`validation.PrepareForValidation`](#tekshirishdan-oldin-ma-lumotlarni-formatlash) qo‘shish, ma’lumotlarni formatlash;
+`active_url` qoidasi URL hosti uchun DNS qidiruvini amalga oshiradi. DNS rezolyutsiyasi kechikish qo'shishi mumkinligi sababli uni so'rovning issiq yo'llarida ehtiyotkorlik bilan ishlating.
 
-Variant 2: Qoidalarni tekshirish uchun `facades.Validation().Make()` dan foydalanish;
+### Eskirgan Qoida Taxalluslari
+
+Quyidagi taxalluslar orqaga qarab muvofiqlikni saqlaydi, ammo keyingi asosiy versiyada olib tashlanadi. Yangi snake_case nomlarini afzal ko'ring:
+
+| Eskirgan | O'rniga Ishlating |
+| --- | --- |
+| `len` | `size` |
+| `min_len` | `min` |
+| `max_len` | `max` |
+| `eq_field` | `same` |
+| `ne_field` | `different` |
+| `gt_field` | `gt` |
+| `gte_field` | `gte` |
+| `lt_field` | `lt` |
+| `lte_field` | `lte` |
+| `gt_date` | `after` |
+| `lt_date` | `before` |
+| `gte_date` | `after_or_equal` |
+| `lte_date` | `before_or_equal` |
+| `number` | `numeric` |
+| `full_url` | `url` |
 
 ## Maxsus Tekshiruv Qoidalari
 
@@ -447,6 +504,7 @@ Qoidani yaratgandan so‘ng, uning xatti-harakatlarini aniqlashimiz kerak. Qoida
 package rules
 
 import (
+  "context"
   "strings"
 
   "github.com/goravel/framework/contracts/validation"
@@ -471,6 +529,21 @@ func (receiver *Uppercase) Message(ctx context.Context) string {
 }
 ```
 
+Maxsus qoida xabarlari quyidagi joy egalarini qo'llab-quvvatlaydi:
+
+| Joy egasi | Tavsif |
+| --- | --- |
+| `:attribute` | Maydon nomi yoki maxsus atribut |
+| `:value` | Tekshirilayotgan maydon qiymati |
+| `:option0`, `:option1`, ... | `Passes()` ga uzatilgan qoida parametrlari |
+
+```go
+// Barcha joy egalari bilan misol
+func (receiver *Between) Message(ctx context.Context) string {
+  return ":attribute qiymati :value :option0 va :option1 orasida bo'lishi kerak."
+}
+```
+
 ### Maxsus Qoidalarni Ro‘yxatdan O‘tkazish
 
 `make:rule` tomonidan yaratilgan yangi qoida `bootstrap/rules.go::Rules()` funksiyasida avtomatik ro‘yxatdan o‘tkaziladi va funksiya `WithRules` tomonidan chaqiriladi. Agar siz qoida faylini o‘zingiz yaratsangiz, qoidani qo‘lda ro‘yxatdan o‘tkazishingiz kerak.
@@ -486,37 +559,63 @@ func Boot() contractsfoundation.Application {
 
 ## Mavjud Tekshiruv Filtrlari
 
-| Nomi                           | Tavsifi                                                                                                                                                                     |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `int/toInt`                    | Qiymatni(string/intX/floatX) `int` turiga o‘tkazish `v.FilterRule("id", "int")`                                                                          |
-| `uint/toUint`                  | Qiymatni(string/intX/floatX) `uint` turiga o‘tkazish `v.FilterRule("id", "uint")`                                                                        |
-| `int64/toInt64`                | Qiymatni (string/intX/floatX) `int64` turiga o‘tkazish `v.FilterRule("id", "int64")`                                                                     |
-| `float/toFloat`                | Qiymatni (string/intX/floatX) `float` turiga o‘tkazish                                                                                                   |
-| `bool/toBool`                  | Satr qiymatini bool ga o‘tkazish. (`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false") |
-| `trim/trimSpace`               | Satrning ikkala tomonidagi bo‘sh joy belgilarini tozalash                                                                                                                   |
-| `ltrim/trimLeft`               | Satrning chap tomonidagi bo‘sh joy belgilarini tozalash                                                                                                                     |
-| `rtrim/trimRight`              | Satrning o‘ng tomonidagi bo‘sh joy belgilarini tozalash                                                                                                                     |
-| `int/integer`                  | Qiymatni (string/intX/floatX) `int` turiga o‘tkazish `v.FilterRule("id", "int")`                                                                         |
-| `lower/lowercase`              | Satrni kichik harflarga o‘tkazish                                                                                                                                           |
-| `upper/uppercase`              | Satrni katta harflarga o‘tkazish                                                                                                                                            |
-| `lcFirst/lowerFirst`           | Satrning birinchi belgisini kichik harfga o‘tkazish                                                                                                                         |
-| `ucFirst/upperFirst`           | Satrning birinchi belgisini katta harfga o‘tkazish                                                                                                                          |
-| `ucWord/upperWord`             | Har bir so‘zning birinchi belgisini katta harfga o‘tkazish                                                                                                                  |
-| `camel/camelCase`              | Satrni camel nomlash uslubiga o‘tkazish                                                                                                                                     |
-| `snake/snakeCase`              | Satrni snake nomlash uslubiga o‘tkazish                                                                                                                                     |
-| `escapeJs/escapeJS`            | JS satrini ekranlash.                                                                                                                                       |
-| `escapeHtml/escapeHTML`        | HTML satrini ekranlash.                                                                                                                                     |
-| `str2ints/strToInts`           | Satrni int kesimiga `[]int` o‘tkazish                                                                                                                                       |
-| `str2time/strToTime`           | Sana satrini `time.Time` ga o‘tkazish.                                                                                                                      |
-| `str2arr/str2array/strToArray` | Satrni string kesimiga `[]string` o‘tkazish                                                                                                                                 |
+Tekshiruv filtrlari sukut bo'yicha snake_case nomlaridan foydalanadi. Filtrlar tekshiruvdan oldin ishlaydi va forma so'rovlarida yoki validatorlarni qo'lda yaratishda `validation.Filters` bilan e'lon qilinishi mumkin.
 
-## Maxsus filtr
+| Kategoriya | Filtrlar |
+| --- | --- |
+| Satr Tozalash | `trim`, `ltrim`, `rtrim` |
+| Harf O'zgartirish | `lower`, `upper`, `title`, `ucfirst`, `lcfirst` |
+| Nomlash Uslubi | `camel`, `snake` |
+| Tur O'zgartirish | `to_int`, `to_int64`, `to_uint`, `to_float`, `to_bool`, `to_string`, `to_time` |
+| Qisqa Tur Taxalluslari | `int`, `int64`, `uint`, `float`, `bool` |
+| Ekranlash / Kodlash | `strip_tags`, `escape_js`, `escape_html`, `url_encode`, `url_decode` |
+| Satr Bo'lish | `str_to_ints`, `str_to_array`, `str_to_time` |
+
+```go
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Filters(map[string]any{
+  "name": "trim",
+  "age": []string{"trim", "to_int"},
+}))
+```
+
+### Eskirgan Filtr Taxalluslari
+
+Quyidagi taxalluslar orqaga qarab muvofiqlikni saqlaydi, ammo keyingi asosiy versiyada olib tashlanadi. Yangi snake_case nomlarini afzal ko'ring:
+
+| Eskirgan | O'rniga Ishlating |
+| --- | --- |
+| `trimSpace` | `trim` |
+| `trimLeft` | `ltrim` |
+| `trimRight` | `rtrim` |
+| `lowercase` | `lower` |
+| `uppercase` | `upper` |
+| `lcFirst`, `lowerFirst` | `lcfirst` |
+| `ucFirst`, `upperFirst` | `ucfirst` |
+| `ucWord`, `upperWord` | `title` |
+| `camelCase` | `camel` |
+| `snakeCase` | `snake` |
+| `toInt`, `integer` | `to_int` |
+| `toUint` | `to_uint` |
+| `toInt64` | `to_int64` |
+| `toFloat` | `to_float` |
+| `toBool` | `to_bool` |
+| `toString` | `to_string` |
+| `toTime`, `str2time`, `strToTime` | `to_time` yoki `str_to_time` |
+| `escapeJs`, `escapeJS` | `escape_js` |
+| `escapeHtml`, `escapeHTML` | `escape_html` |
+| `urlEncode` | `url_encode` |
+| `urlDecode` | `url_decode` |
+| `stripTags` | `strip_tags` |
+| `str2ints`, `strToInts` | `str_to_ints` |
+| `str2arr`, `str2array`, `strToArray` | `str_to_array` |
+
+## Maxsus Filtrlar
 
 Goravel foydali filtrlarning keng assortimentini taqdim etadi, ammo siz o‘zingizning ba’zilaringizni belgilashni xohlashingiz mumkin.
 
 ### Maxsus Filtrlarni Yaratish
 
-Yangi qoida obyektini yaratish uchun siz oddiygina `make:filter` Artisan buyrug‘idan foydalanishingiz mumkin. Keling, satrni butun songa o‘tkazadigan qoidani yaratish uchun ushbu buyruqdan foydalanaylik. Bu qoida allaqachon freymvorkga kiritilgan, biz uni faqat misol sifatida yaratamiz. Goravel ushbu yangi filtri `app/filters` katalogiga saqlaydi. Agar bu katalog mavjud bo‘lmasa, Goravel qoidani yaratish uchun Artisan buyrug‘ini ishga tushirganingizda uni yaratadi:
+Yangi filtr obyektini yaratish uchun siz oddiygina `make:filter` Artisan buyrug‘idan foydalanishingiz mumkin. Keling, satrni butun songa o‘tkazadigan filtrni yaratish uchun ushbu buyruqdan foydalanaylik. Bu filtr allaqachon freymvorkga kiritilgan, biz uni faqat misol sifatida yaratamiz. Goravel ushbu yangi filtri `app/filters` katalogiga saqlaydi. Agar bu katalog mavjud bo‘lmasa, Goravel filtrni yaratish uchun Artisan buyrug‘ini ishga tushirganingizda uni yaratadi:
 
 ```go
 ./artisan make:filter ToInt
@@ -531,10 +630,9 @@ Bitta filtr ikkita usulni o‘z ichiga oladi: `Signature` va `Handle`. `Signatur
 package filters
 
 import (
-  "strings"
+  "context"
 
   "github.com/spf13/cast"
-  "github.com/goravel/framework/contracts/validation"
 )
 
 type ToInt struct {
@@ -542,20 +640,20 @@ type ToInt struct {
 
 // Signature The signature of the filter.
 func (receiver *ToInt) Signature() string {
-  return "ToInt"
+  return "to_int_custom"
 }
 
 // Handle defines the filter function to apply.
 func (receiver *ToInt) Handle(ctx context.Context) any {
   return func (val any) int {
-    return cast.ToString(val)
+    return cast.ToInt(val)
   }
 }
 ```
 
 ### Maxsus Filtrlarni Ro‘yxatdan O‘tkazish
 
-`make:filter` tomonidan yaratilgan yangi qoida `bootstrap/filters.go::Filters()` funksiyasida avtomatik ro‘yxatdan o‘tkaziladi va funksiya `WithFilters` tomonidan chaqiriladi. Agar siz qoida faylini o‘zingiz yaratsangiz, qoidani qo‘lda ro‘yxatdan o‘tkazishingiz kerak.
+`make:filter` tomonidan yaratilgan yangi filtr `bootstrap/filters.go::Filters()` funksiyasida avtomatik ro‘yxatdan o‘tkaziladi va funksiya `WithFilters` tomonidan chaqiriladi. Agar siz filtr faylini o‘zingiz yaratsangiz, filtrni qo‘lda ro‘yxatdan o‘tkazishingiz kerak.
 
 ```go
 func Boot() contractsfoundation.Application {

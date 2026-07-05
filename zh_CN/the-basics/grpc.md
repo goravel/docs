@@ -8,7 +8,76 @@ Grpc 模块可以使用 `facades.Grpc()` 进行操作。 Goravel 提供了一种
 
 ## 配置
 
-在 `config/grpc.go` 文件中，你可以配置 Grpc 模块，其中 `grpc.host` 配置服务器的域名，`grpc.servers` 配置客户端将连接到的服务器。
+在 `config/grpc.go` 文件中，你可以配置 Grpc 模块，其中 `grpc.host` 配置服务器的域名，`grpc.clients` 配置将连接到 gRPC 服务的客户端。
+
+## 传输凭证
+
+默认情况下，gRPC 客户端使用不安全的传输凭证，gRPC 服务器在不使用 TLS 的情况下监听。当你的服务需要 TLS 或 mTLS 时，可以在应用程序引导期间注册 `credentials.TransportCredentials`。
+
+### 服务端凭证
+
+在 gRPC 服务器创建之前注册服务端凭证：
+
+```go
+import "google.golang.org/grpc/credentials"
+
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithGrpcServerCredentials(func() credentials.TransportCredentials {
+      creds, err := credentials.NewServerTLSFromFile(
+        "storage/certs/server.crt",
+        "storage/certs/server.key",
+      )
+      if err != nil {
+        panic(err)
+      }
+
+      return creds
+    }).
+    Create()
+}
+```
+
+### 客户端凭证
+
+在 `bootstrap/app.go` 中注册客户端凭证分组，然后在 `config/grpc.go` 中使用 `grpc.clients.<name>.credentials` 引用分组名称：
+
+```go
+import "google.golang.org/grpc/credentials"
+
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithGrpcClientCredentials(func() map[string]credentials.TransportCredentials {
+      userCreds, err := credentials.NewClientTLSFromFile(
+        "storage/certs/ca.crt",
+        "user.example.com",
+      )
+      if err != nil {
+        panic(err)
+      }
+
+      return map[string]credentials.TransportCredentials{
+        "user": userCreds,
+      }
+    }).
+    Create()
+}
+```
+
+```go
+// config/grpc.go
+"clients": map[string]any{
+  "user": map[string]any{
+    "host":           config.Env("GRPC_USER_HOST", ""),
+    "port":           config.Env("GRPC_USER_PORT", ""),
+    "credentials":    "user",
+    "interceptors":   []string{},
+    "stats_handlers": []string{},
+  },
+},
+```
+
+如果客户端没有配置 `credentials` 值，Goravel 会使用不安全的凭证以保持向后兼容。如果配置的分组未注册，Goravel 会记录警告并回退到不安全的凭证。对于 mTLS，请返回使用 `credentials.NewTLS` 创建的凭证，并附带包含所需客户端证书或受信任 CA 池的 `tls.Config`。
 
 ## 控制器
 
@@ -163,9 +232,9 @@ func Boot() foundation.Application {
 }
 ```
 
-### 将拦截器应用于服务
+### 将拦截器应用于客户端
 
-上面示例中的 `default` 是一个组名，可以应用于配置项 `grpc.servers.interceptors`。 这样，客户端将应用该组下的所有拦截器。
+上面示例中的 `default` 是一个组名，可以应用于配置项 `grpc.clients.interceptors`。 这样，客户端将使用该组下的所有拦截器。
 
 ```go
 package config
@@ -180,7 +249,7 @@ func init() {
     "host": config.Env("GRPC_HOST", ""),
     "port": config.Env("GRPC_PORT", ""),
     
-    "servers": map[string]any{
+    "clients": map[string]any{
       "user": map[string]any{
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),
@@ -323,7 +392,7 @@ func init() {
     "host": config.Env("GRPC_HOST", ""),
     "port": config.Env("GRPC_PORT", ""),
     
-    "servers": map[string]any{
+    "clients": map[string]any{
       "user": map[string]any{
         "host":           config.Env("GRPC_USER_HOST", ""),
         "port":           config.Env("GRPC_USER_PORT", ""),

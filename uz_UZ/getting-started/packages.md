@@ -6,6 +6,7 @@ Bu yerda Goravel uchun kengaytirilgan paketlarni topishingiz mumkin, shuningdek,
 | --------------------------------------------------------------------------------------- | ------------------------------------------------ | --------------------- |
 | [goravel/gin](https://github.com/goravel/gin)                                           | `facades.Route()` uchun Gin haydovchisi          | 83.1% |
 | [goravel/fiber](https://github.com/goravel/fiber)                                       | `facades.Route()` uchun Fiber haydovchisi        | 81.0% |
+| [goravel/openai](https://github.com/goravel/openai)                                     | `facades.AI()` uchun OpenAI haydovchisi          | 80.4% |
 | [goravel/cos](https://github.com/goravel/cos)                                           | `facades.Storage()` uchun COS disk haydovchisi   | 80.2% |
 | [goravel/minio](https://github.com/goravel/minio)                                       | `facades.Storage()` uchun Minio disk haydovchisi | 79.6% |
 | [goravel/redis](https://github.com/goravel/redis)                                       | `facades.Cache()` uchun Redis disk haydovchisi   | 79.1% |
@@ -13,9 +14,11 @@ Bu yerda Goravel uchun kengaytirilgan paketlarni topishingiz mumkin, shuningdek,
 | [goravel/oss](https://github.com/goravel/oss)                                           | `facades.Storage()` uchun OSS disk haydovchisi   | 76.5% |
 | [goravel/installer](https://github.com/goravel/installer)                               | Goravel o'rnatuvchisi                            | 76.2% |
 | [goravel/postgres](https://github.com/goravel/postgres)                                 | Postgres ma'lumotlar bazasi haydovchisi          | 73.7% |
+| [goravel/anthropic](https://github.com/goravel/anthropic)                               | `facades.AI()` uchun Anthropic haydovchisi       | 73.3% |
 | [goravel/mysql](https://github.com/goravel/mysql)                                       | MySQL ma'lumotlar bazasi haydovchisi             | 73.3% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver)                               | SQL Server ma'lumotlar bazasi haydovchisi        | 60.6% |
 | [goravel/sqlite](https://github.com/goravel/sqlite)                                     | SQLite ma'lumotlar bazasi haydovchisi            | 45.2% |
+| [goravel/gemini](https://github.com/goravel/gemini)                                     | `facades.AI()` uchun Gemini haydovchisi          | 51.8% |
 | [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | MongoDB paketi                                   | 16.9% |
 | [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli)         | Goravel qolip buyruq qatori vositasi             | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow)       | Ish jarayoni paketi                              | 4.4%  |

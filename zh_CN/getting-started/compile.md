@@ -21,7 +21,19 @@ Goravel 项目可以通过以下命令编译：
 # 指定输出文件名
 ./artisan build --name=goravel
 ./artisan build -n=goravel
+
+# 构建前运行 go generate
+./artisan build --generate
+./artisan build -g
 ```
+
+`--generate` 标志会在构建步骤之前运行 `go generate ./...`。该功能默认禁用，可以与其他构建选项组合使用：
+
+```shell
+./artisan build --generate --os=linux --arch=amd64
+```
+
+当 `--generate` 与 `--os` 或 `--arch` 等目标选项组合使用时，generate 步骤会使用相同的构建环境。
 
 ## 手动编译
 

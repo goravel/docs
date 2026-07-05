@@ -77,7 +77,39 @@ func main() {
 		modify.UnregisterProvider(moduleImport, serviceProvider),
 	).Execute()
 }
+
+Agar paketning import yo'li uzun bo'lsa yoki uning standart paket nomi qulay bo'lmasa, sozlash yordamchilari `"<alias> <import-path>"` formatidagi import taxallusini qo'llab-quvvatlaydi. O'rnatish va o'chirishda bir xil taxallusli import satridan foydalaning:
+
+```go
+func main() {
+	setup := packages.Setup(os.Args)
+
+	serviceProvider := "&admin.ServiceProvider{}"
+	moduleImport := "admin " + setup.Paths().Module().Import()
+
+	setup.Install(
+		modify.RegisterProvider(moduleImport, serviceProvider),
+	).Uninstall(
+		modify.UnregisterProvider(moduleImport, serviceProvider),
+	).Execute()
+}
 ```
+
+O'rnatishdan so'ng, yaratilgan import taxallusdan foydalanadi va ro'yxatdan o'tgan element ushbu taxallusga murojaat qilishi mumkin:
+
+```go
+import (
+	admin "github.com/example/goravel-admin"
+)
+
+func Providers() []foundation.ServiceProvider {
+	return []foundation.ServiceProvider{
+		&admin.ServiceProvider{},
+	}
+}
+```
+
+Import taxallus satrlari marshrutlar, middleware, buyruqlar, ishlar, migratsiyalar, qoidalar, filtrlar, seederlar va xizmat ko'rsatuvchi provayderlarni qo'shadigan va olib tashlaydigan sozlash yordamchilari tomonidan ham qo'llab-quvvatlanadi.
 
 ## Resurslar
 
@@ -127,6 +159,18 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
   })
 }
 ```
+
+### Ko‘rinishlar
+
+Agar paketingiz standart [ko‘rinishlarni](../the-basics/views.md) taqdim qilsa, xizmat ko‘rsatuvchi provayderingizning `Boot` metodida `LoadViewsFrom` yordamida ularning katalogini ro‘yxatdan o‘tkazing:
+
+```go
+func (receiver *ServiceProvider) Boot(app foundation.Application) {
+    facades.View().LoadViewsFrom("/path/to/package/views")
+}
+```
+
+Ilovaning `resources/views` katalogi ro‘yxatdan o‘tgan paket ko‘rinishlaridan ustunlikka ega, shuning uchun foydalanuvchilar bir xil nomdagi fayl yaratish orqali istalgan paket ko‘rinishini bekor qilishlari mumkin.
 
 ## Buyruqlar
 

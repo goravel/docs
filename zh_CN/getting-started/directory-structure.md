@@ -11,6 +11,9 @@
 ```
 goravel/
 ├── app/                        # 核心应用逻辑
+│   ├── ai/                     # AI 代理和工具
+│   │   ├── agents/             # AI 代理类
+│   │   └── tools/              # AI 工具类
 │   ├── console/                # Artisan 控制台命令
 │   ├── grpc/                   # gRPC 控制器和中间件
 │   ├── http/                   # HTTP 控制器和中间件
@@ -39,7 +42,7 @@ goravel/
 
 ## 自定义目录结构
 
-你可以通过在 `bootstrap/app.go` 文件中调用 `WithPath()` 函数来自定义目录结构。 例如，如果你想将默认的 `app` 目录更改为 `src`，可以按如下方式修改 `bootstrap/app.go` 文件：
+你可以通过在 `bootstrap/app.go` 文件中调用 `WithPaths()` 函数来自定义目录结构。 例如，如果你想将默认的 `app` 目录更改为 `src`，可以按如下方式修改 `bootstrap/app.go` 文件：
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -52,4 +55,16 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-你还可以自定义许多其他路径，例如 `Config`、`Database`、`Routes`、`Storage` 和 `Resources`。 只需在 `paths` 对象上调用相应的方法来设置你所需的目录。
+你还可以自定义许多其他路径，例如 `Config`、`Database`、`Routes`、`Storage` 和 `Resources`。AI 生成器路径也可以通过 `Agents` 和 `Tools` 进行自定义：
+
+```go
+func Boot() contractsfoundation.Application {
+    return foundation.Setup().
+        WithPaths(func(paths configuration.Paths) {
+            paths.Agents("internal/ai/agents")
+            paths.Tools("internal/ai/tools")
+        }).
+        WithConfig(config.Boot).
+        Create()
+}
+```

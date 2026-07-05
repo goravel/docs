@@ -1,5 +1,6 @@
 # Yangilash tarixi
 
+- [v1.15 dan v1.16 ga yangilash](v1.16.md)
 - [v1.14 dan v1.15 ga yangilash](v1.15.md)
 - [v1.13 dan v1.14 ga yangilash](v1.14.md)
 - [v1.12 dan v1.13 ga yangilash](v1.13.md)

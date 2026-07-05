@@ -111,10 +111,21 @@ err := facades.Auth(ctx).Logout()
 ```go
 token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
 err := facades.Auth(ctx).Guard("admin").Parse(token)
-token, err := facades.Auth(ctx).Guard("admin").User(&user)
+err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
 > 当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。
+
+JWT Token 与其生成时所使用的守卫绑定。如果你使用不同的守卫解析 Token，Goravel 会返回 `auth.ErrorGuardMismatch`：
+
+```go
+token, err := facades.Auth(ctx).Guard("user").LoginUsingID(1)
+payload, err := facades.Auth(ctx).Guard("admin").Parse(token)
+
+if errors.Is(err, auth.ErrorGuardMismatch) {
+  // Token 由其他守卫签发。
+}
+```
 
 ## 自定义驱动
 

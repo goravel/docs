@@ -31,6 +31,22 @@ Turli log kanallarini sozlash uchun `config/logging.go` faylida maxsus konfigura
 facades.Log().WithContext(ctx)
 ```
 
+`WithContext` ishlatilganda, Goravel kontekst kalit-qiymat juftliklarini log chiqishiga yozadi. `GoravelAuthJwt` va `goravel_http_client_name` kabi framework ichki kalitlari maxfiy yoki shovqinli qiymatlarni sizishning oldini olish uchun avtomatik ravishda chiqarib tashlanadi.
+
+`config/logging.go` fayliga `context.exclude` qo‘shish orqali qo‘shimcha kontekst kalitlarini chiqarib tashlashingiz mumkin:
+
+```go
+// config/logging.go
+"context": map[string]any{
+  "exclude": []any{
+    "access_token",
+    "secret_key",
+  },
+},
+```
+
+String yozuvlar string kontekst kalitlariga va ko‘rsatilgan nomi bo‘yicha tiplangan string kontekst kalitlariga mos keladi. Taqqoslanadigan string bo‘lmagan yozuvlar aniq kontekst kalit qiymatiga mos keladi, bu struct sentinel kalitlari uchun foydalidir. Slice yoki map kabi taqqoslab bo‘lmaydigan yozuvlar e'tiborga olinmaydi.
+
 ## Log xabarlarini yozish
 
 ```go

@@ -17,10 +17,14 @@ import (
   "github.com/goravel/framework/contracts/http"
 )
 
-func Auth() http.Middleware {
-  return func(ctx http.Context) {
-    ctx.Request().Next()
-  }
+type Auth struct{}
+
+func (a *Auth) Handle(ctx http.Context) {
+  ctx.Request().Next()
+}
+
+func (a *Auth) Signature() string {
+  return "auth"
 }
 ```
 
@@ -70,6 +74,34 @@ import "github.com/goravel/framework/http/middleware"
 
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
+
+### Middleware'ni Chiqarib Tashlash
+
+`WithoutMiddleware` metodi ma'lum marshrutlarga ota guruhlar tomonidan qo'llaniladigan middleware'ni chetlab o'tish imkonini beradi. Bu ochiq endpointlar, webhook ishlov beruvchilari yoki autentifikatsiya yoki tezlik cheklovini o'tkazib yuborishi kerak bo'lgan marshrutlar uchun foydalidir.
+
+Middleware guruhga qo'llanilgandan so'ng, alohida marshrutlarda `WithoutMiddleware` dan foydalaning:
+
+```go
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  router.Get("/dashboard", dashboardController.Index)
+
+  // Bu marshrut throttle middleware'ni chiqarib tashlaydi
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+Shuningdek, butun guruh uchun middleware'ni chiqarib tashlashingiz mumkin:
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    router.Get("/public", publicController.Index)
+  })
+```
+
+> **Eslatma**: Middleware'ni chiqarib tashlash middleware'larni aniqlash uchun `Signature()` metodidan foydalanadi. `WithoutMiddleware` to'g'ri ishlashi uchun har bir middleware noyob imzo qaytarishiga ishonch hosil qiling. O'rnatilgan freymvork middleware'lari allaqachon noyob imzolarni taqdim etadi.
 
 ## So‘rovni to‘xtatish
 

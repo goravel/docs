@@ -201,6 +201,37 @@ func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Q
 }
 ```
 
+你可以在全局作用域中通过查询访问 `facades.Orm().WithContext(ctx)` 传入的 context：
+
+```go
+import (
+  "context"
+
+  contractsorm "github.com/goravel/framework/contracts/database/orm"
+  "github.com/goravel/framework/database/orm"
+  "github.com/goravel/framework/facades"
+)
+
+type User struct {
+  orm.Model
+  Name string
+}
+
+func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query {
+  return map[string]func(contractsorm.Query) contractsorm.Query{
+    "tenant": func(query contractsorm.Query) contractsorm.Query {
+      tenantID, _ := query.Context().Value("tenant_id").(uint)
+
+      return query.Where("tenant_id", tenantID)
+    },
+  }
+}
+
+ctx := context.WithValue(context.Background(), "tenant_id", uint(1))
+var users []User
+err := facades.Orm().WithContext(ctx).Query().Find(&users)
+```
+
 如果要在查询中移除全局作用域，可以使用 `WithoutGlobalScopes` 函数：
 
 ```go
@@ -228,6 +259,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Avg                         | [聚合](#聚合)                     |
 | BeginTransaction            | [手动开始事务](#事务)                 |
 | Commit                      | [提交事务](#事务)                   |
+| Context                     | [注入 Context](#注入-Context)     |
 | Count                       | [计数](#计数)                     |
 | Create                      | [创建数据](#创建)                   |
 | Cursor                      | [游标](#游标)                     |

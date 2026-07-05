@@ -79,6 +79,39 @@ func main() {
 }
 ```
 
+如果包的导入路径较长或默认包名不方便使用，安装辅助函数支持 `"<别名> <导入路径>"` 格式的导入别名。安装和卸载时请使用相同的别名导入字符串：
+
+```go
+func main() {
+	setup := packages.Setup(os.Args)
+
+	serviceProvider := "&admin.ServiceProvider{}"
+	moduleImport := "admin " + setup.Paths().Module().Import()
+
+	setup.Install(
+		modify.RegisterProvider(moduleImport, serviceProvider),
+	).Uninstall(
+		modify.UnregisterProvider(moduleImport, serviceProvider),
+	).Execute()
+}
+```
+
+安装后，生成的导入将使用别名，注册项可以引用该别名：
+
+```go
+import (
+	admin "github.com/example/goravel-admin"
+)
+
+func Providers() []foundation.ServiceProvider {
+	return []foundation.ServiceProvider{
+		&admin.ServiceProvider{},
+	}
+}
+```
+
+别名导入字符串也适用于添加和删除路由、中间件、命令、任务、迁移、规则、过滤器、种子数据和服务提供者的安装辅助函数。
+
 ## 资源
 
 ### 配置
@@ -103,6 +136,18 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 	route.Get("sms", ***)
 }
 ```
+
+### 视图
+
+如果你的包提供了默认的[视图](../the-basics/views.md)，可以在服务提供者的 `Boot` 方法中使用 `LoadViewsFrom` 注册它们的目录：
+
+```go
+func (receiver *ServiceProvider) Boot(app foundation.Application) {
+    facades.View().LoadViewsFrom("/path/to/package/views")
+}
+```
+
+应用程序的 `resources/views` 目录优先级高于注册的包视图，因此用户可以通过创建同名文件来覆盖任何包视图。
 
 ### 迁移
 

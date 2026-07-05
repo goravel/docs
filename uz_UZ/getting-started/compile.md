@@ -21,7 +21,19 @@ Goravel loyihasini quyidagi buyruq orqali tuzish mumkin:
 # Chiqish fayli nomini ko‘rsatish
 ./artisan build --name=goravel
 ./artisan build -n=goravel
+
+# Tuzishdan oldin go generate ishga tushirish
+./artisan build --generate
+./artisan build -g
 ```
+
+`--generate` bayrog‘i tuzish bosqichidan oldin `go generate ./...` ishga tushiradi. U sukut bo‘yicha o‘chirilgan va boshqa tuzish opsiyalari bilan birgalikda ishlatilishi mumkin:
+
+```shell
+./artisan build --generate --os=linux --arch=amd64
+```
+
+`--generate` `--os` yoki `--arch` kabi maqsadli opsiyalar bilan birgalikda ishlatilsa, generate bosqichi xuddi shu tuzish muhitidan foydalanadi.
 
 ## Qo‘lda tuzish
 

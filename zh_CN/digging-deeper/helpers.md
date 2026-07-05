@@ -593,6 +593,8 @@ convert.Pointer(1) // *int(1)
 import "github.com/goravel/framework/support/collect"
 ```
 
+以下辅助函数直接操作切片或映射。有关流式急切和惰性集合，请参阅 [集合](collections.md)。
+
 ### `collect.Count()`
 
 `collect.Count()` 函数返回给定集合中的项目数：

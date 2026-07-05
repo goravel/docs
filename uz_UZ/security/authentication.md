@@ -111,10 +111,21 @@ err := facades.Auth(ctx).Logout()
 ```go
 token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
 err := facades.Auth(ctx).Guard("admin").Parse(token)
-token, err := facades.Auth(ctx).Guard("admin").User(&user)
+err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
 > Standart guard ishlatilmaganda, yuqoridagi metodlarni chaqirishdan oldin `Guard` metodini chaqirish shart.
+
+JWT tokenlari ularni yaratgan guardga bog‘langan. Agar siz tokenni boshqa guard bilan tahlil qilsangiz, Goravel `auth.ErrorGuardMismatch` qaytaradi:
+
+```go
+token, err := facades.Auth(ctx).Guard("user").LoginUsingID(1)
+payload, err := facades.Auth(ctx).Guard("admin").Parse(token)
+
+if errors.Is(err, auth.ErrorGuardMismatch) {
+  // Token boshqa guard tomonidan chiqarilgan.
+}
+```
 
 ## Maxsus Drayver
 

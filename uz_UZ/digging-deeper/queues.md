@@ -58,6 +58,39 @@ Maxsus haydovchini amalga oshirgandan so‘ng, konfiguratsiyani `config/queue.go
 },
 ```
 
+### To‘plamli qabul qiluvchi drayverlar
+
+Yuqori o‘tkazish qobiliyatli stsenariylar uchun (masalan, Kafka, iste‘molchi kanalli RabbitMQ), siz bloklovchi semantika bilan to‘plamli xabar iste‘molini yoqish uchun ixtiyoriy `DriverWithReceive` interfeysini amalga oshirishingiz mumkin. Drayver ushbu interfeysni amalga oshirganda, navbat ishchisi avtomatik ravishda `Pop` o‘rniga `Receive` dan foydalanadi, bu esa so‘rov qo‘shimcha xarajatlarini kamaytiradi va o‘tkazish qobiliyatini oshiradi:
+
+```go
+import (
+  "context"
+  "github.com/goravel/framework/contracts/queue"
+)
+
+type KafkaDriver struct{}
+
+// Implement the base Driver interface
+func (d *KafkaDriver) Driver() string {
+  return "kafka"
+}
+
+func (d *KafkaDriver) Push(task queue.Task, queue string) error {
+  // push job to Kafka
+}
+
+func (d *KafkaDriver) Pop(queue string) (queue.ReservedJob, error) {
+  // standard single-job pop
+}
+
+// Implement the optional DriverWithReceive for batch consumption
+func (d *KafkaDriver) Receive(ctx context.Context, queue string, count int) ([]queue.ReservedJob, error) {
+  // batch receive up to `count` jobs, blocking until at least one is available or ctx expires
+}
+```
+
+`Receive` mavjud bo‘lganda, ishchi har bir chaqiruv uchun 5 soniyalik taym-aut va xatolar yoki bo‘sh to‘plamlarda eksponensial kechikish (100ms–3.2s) bilan bloklovchi to‘plam sikli ishlaydi. `context.Context` ishchi to‘xtatilganda bekor qilinadi, bu toza tugatishni ta‘minlaydi.
+
 ## Ishlarni Yaratish
 
 ### Ish Klasslarini Yaratish
