@@ -58,9 +58,9 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 },
 ```
 
-### Batch-Receive Drivers
+### 批量接收驱动程序
 
-For high-throughput scenarios (e.g., Kafka, RabbitMQ with consumer channels), you can optionally implement the `DriverWithReceive` interface to enable batch message consumption with blocking semantics. When a driver implements this interface, the queue worker automatically uses `Receive` instead of `Pop`, reducing polling overhead and improving throughput:
+对于高吞吐量场景（例如，带消费者通道的 Kafka、RabbitMQ），你可以选择实现 `DriverWithReceive` 接口以启用具有阻塞语义的批量消息消费。 当驱动程序实现此接口时，队列工作器会自动使用 `Receive` 而不是 `Pop`，从而减少轮询开销并提高吞吐量：
 
 ```go
 import (
@@ -70,26 +70,26 @@ import (
 
 type KafkaDriver struct{}
 
-// Implement the base Driver interface
+// 实现基础 Driver 接口
 func (d *KafkaDriver) Driver() string {
   return "kafka"
 }
 
 func (d *KafkaDriver) Push(task queue.Task, queue string) error {
-  // push job to Kafka
+  // 将任务推送到 Kafka
 }
 
 func (d *KafkaDriver) Pop(queue string) (queue.ReservedJob, error) {
-  // standard single-job pop
+  // 标准单任务弹出
 }
 
-// Implement the optional DriverWithReceive for batch consumption
+// 实现可选的 DriverWithReceive 以进行批量消费
 func (d *KafkaDriver) Receive(ctx context.Context, queue string, count int) ([]queue.ReservedJob, error) {
-  // batch receive up to `count` jobs, blocking until at least one is available or ctx expires
+  // 批量接收最多 `count` 个任务，阻塞直到至少一个任务可用或 ctx 过期
 }
 ```
 
-When `Receive` is available, the worker runs a blocking batch loop with a 5-second per-call timeout and exponential backoff (100ms–3.2s) on errors or empty batches. The `context.Context` is canceled on worker shutdown, ensuring clean termination.
+当 `Receive` 可用时，工作器会运行一个阻塞的批量循环，每次调用超时时间为 5 秒，并在发生错误或批次为空时使用指数退避（100 毫秒–3.2 秒）。 `context.Context` 在工作器关闭时被取消，确保干净地终止。
 
 ## 创建任务
 
