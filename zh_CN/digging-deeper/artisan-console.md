@@ -31,7 +31,7 @@ echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
 artisan make:controller DemoController
 ```
 
-You can also use the `artisan` shell script to run built-in commands.
+你也可以使用 `artisan` shell 脚本运行内置命令。
 
 ### 生成命令
 
@@ -57,9 +57,9 @@ func Boot() contractsfoundation.Application {
 
 通过 `make:command` 创建的新命令将自动注册到 `bootstrap/commands.go::Commands()` 函数中，并且该函数将由 `WithCommands` 调用。 如果你自行创建命令文件，则需要手动注册。
 
-### Filtering Commands
+### 过滤命令
 
-You may want to scope which built-in Artisan commands are registered in different environments — for example, hiding dev commands like `make:*`, `package:*`, and `vendor:publish` in production. The `WithCommandsFilter` method on `ApplicationBuilder` lets you return a positive list of command signatures to keep:
+可能需要在不同环境中限定内置 Artisan 命令的注册范围——例如，在生产环境中隐藏 `make:*`、`package:*` 和 `vendor:publish` 等开发命令。 `ApplicationBuilder` 上的 `WithCommandsFilter` 方法允许您返回一个需要保留的命令签名白名单：
 
 ```go
 func Boot() contractsfoundation.Application {
@@ -80,19 +80,19 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-The callback runs once at build time and each entry is matched against `command.Signature()` in one of two ways:
+回调在构建时运行一次，每个条目通过以下两种方式之一与 `command.Signature()` 进行匹配：
 
-- **Exact match** (no wildcard) — the signature must match the entry exactly.
-- **Glob match** (entry contains `*`) — checked using `path.Match`. `*` matches any sequence of non-`/` characters.
+- **精确匹配**（无通配符）——签名必须与条目完全匹配。
+- **Glob 匹配**（条目包含 `*`）—— 使用 `path.Match` 检查。 `*` 匹配任何非 `/` 字符序列。
 
-The return value determines the filtering behavior:
+返回值决定过滤行为：
 
-- **Method not called** — all commands are kept (default).
-- **Return `nil`** — all commands are kept (no filter applied).
-- **Return `[]string{}`** — all commands are dropped.
-- **Return entries** — only commands whose signature matches an entry are kept.
+- **方法未调用**——保留所有命令（默认）。
+- **返回 `nil`**——保留所有命令（不应用过滤）。
+- **返回 `[]string{}`**——丢弃所有命令。
+- **返回条目**——仅保留签名匹配条目的命令。
 
-> Note: The filter applies to all commands including those added via `WithCommands`, so the user cannot bypass the filter by adding commands manually.
+> 注意：过滤器适用于所有命令，包括通过 `WithCommands` 添加的命令，因此用户无法通过手动添加命令来绕过过滤器。
 
 ### 命令结构
 
@@ -485,9 +485,9 @@ ctx.NewLine()
 ctx.NewLine(2)
 ```
 
-#### Tables
+#### 表格
 
-You may use the `Table` method to render structured data in a tabular format. The method accepts headers and rows, and writes the rendered table directly to the console:
+您可以使用 `Table` 方法以表格形式渲染结构化数据。 该方法接受表头和行，并将渲染后的表格直接写入控制台：
 
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
@@ -503,7 +503,7 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
-You can pass a `console.TableOption` as the third argument to customize borders, dimensions, and styles.
+你可以将 `console.TableOption` 作为第三个参数传递，以自定义边框、尺寸和样式。
 
 ```go
 ctx.Table(headers, rows, console.TableOption{
@@ -565,9 +565,9 @@ ctx.Divider()     // ----------
 ctx.Divider("=>") // =>=>=>=>=>
 ```
 
-## Graceful Shutdown
+## 优雅关闭
 
-By default, pressing `Ctrl+C` (or sending `SIGTERM`) cancels the `console.Context` passed to `Handle`. The framework runs `Handle` in a goroutine, so it returns `context.Canceled` as soon as the signal fires and the process exits. Commands that need to release resources — closing network listeners, draining queues, flushing buffers — can opt into a cleanup callback by implementing the optional `console.Shutdownable` interface.
+默认情况下，按 `Ctrl+C`（或发送 `SIGTERM`）会取消传递给 `Handle` 的 `console.Context`。 框架在 goroutine 中运行 `Handle`，因此一旦信号触发且进程退出，它会返回 `context.Canceled`。 需要释放资源的命令——关闭网络监听器、排空队列、刷新缓冲区——可以通过实现可选的 `console.Shutdownable` 接口来选择清理回调。
 
 ```go
 type Shutdownable interface {
@@ -575,9 +575,9 @@ type Shutdownable interface {
 }
 ```
 
-When a command implements `Shutdownable`, the framework races `Handle` against the signal context. If `Handle` returns first, the framework then calls `Shutdown` with a fresh `console.Context` (the original is already cancelled) and a 30s budget so the command can finish any cleanup. If the signal fires first, the framework calls `Shutdown` with the same fresh context and 30s budget, then returns; `Handle` is left to run on its own in the goroutine and the process exits.
+当命令实现了 `Shutdownable`，框架会让 `Handle` 与信号上下文进行竞争。 如果 `Handle` 先返回，框架随后会使用一个新的 `console.Context`（原上下文已被取消）和 30 秒的预算调用 `Shutdown`，以便命令完成任何清理工作。 如果信号先触发，框架会使用相同的新建上下文和 30 秒的预算调用 `Shutdown`，然后返回；`Handle` 将留在自己的 goroutine 中继续运行，进程随后退出。
 
-`console.Context` now embeds `context.Context`, so commands can use `<-ctx.Done()` directly, pass `ctx` to functions that expect a `context.Context`, and call `ctx.Deadline()` / `ctx.Err()` / `ctx.Value(key)` without an accessor.
+`console.Context` 现在嵌入了 `context.Context`，因此命令可以直接使用 `<-ctx.Done()`，将 `ctx` 传递给期望 `context.Context` 的函数，并调用 `ctx.Deadline()` / `ctx.Err()` / `ctx.Value(key)` 而无需访问器。
 
 ```go
 package commands
@@ -595,7 +595,7 @@ type Serve struct {
 }
 
 func (r *Serve) Signature() string   { return "serve" }
-func (r *Serve) Description() string { return "Start the HTTP server" }
+func (r *Serve) Description() string { return "启动HTTP服务器" }
 func (r *Serve) Extend() command.Extend {
   return command.Extend{Category: "server"}
 }
@@ -608,14 +608,14 @@ func (r *Serve) Handle(ctx console.Context) error {
 }
 
 func (r *Serve) Shutdown(ctx console.Context) error {
-  ctx.Info("received signal, shutting down gracefully...")
+  ctx.Info("收到信号，正在优雅关闭...")
   return r.server.Shutdown(ctx)
 }
 ```
 
-The built-in `schedule:run` command is a real example. Its `Handle` blocks on `schedule.Run()`, and on signal the framework calls `Shutdown`, which delegates to `schedule.Shutdown(ctx)` so scheduled tasks get a chance to finish their work.
+内置的 `schedule:run` 命令是一个实际例子。 它的 `Handle` 在 `schedule.Run()` 上阻塞，当收到信号时框架调用 `Shutdown`，后者委托给 `schedule.Shutdown(ctx)`，以便计划任务有机会完成其工作。
 
-Commands that do not implement `Shutdownable` keep the original behavior — the process exits as soon as the signal is received.
+未实现 `Shutdownable` 的命令保持原始行为——一旦收到信号，进程立即退出。
 
 ## 分类
 
