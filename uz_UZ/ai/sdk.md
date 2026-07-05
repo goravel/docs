@@ -15,7 +15,7 @@ Asosiy AI moduli suhbatlar va provayderlarni aniqlashni boshqaradi. Provayder im
 AI fasadini va asosiy xizmat provayderini `package:install` buyrug'i bilan o'rnating:
 
 ```shell
-./artisan package:install ai
+./artisan package:install AI
 ```
 
 Bu `facades.AI()` ni mavjud qiladi va `make:agent` va `make:tool` Artisan buyruqlarini ro'yxatdan o'tkazadi.
@@ -506,7 +506,7 @@ path, err = response.StoreAs("audio/welcome.mp3", "public")
 Siz shuningdek, bir bosqichda yaratishingiz va saqlashingiz mumkin:
 
 ```go
-path, err := facades.AI().Audio("Welcome to Goravel").
+path, err := facades.AI().Audio("Goravelga xush kelibsiz").
     Female().
     StoreAs("audio/welcome.mp3", "public")
 ```
