@@ -91,11 +91,14 @@ function nav(): DefaultTheme.NavItem[] {
   }, {
     text: "版本",
     items: [{
-      text: "v1.17 (最新)",
+      text: "v1.18 (最新)",
       link: 'https://www.goravel.dev/'
     }, {
+      text: "v1.17",
+      link: 'https://www.goravel.dev/versions/v117'
+    }, {
       text: 'v1.16',
-      link: 'https://v116.goravel.dev/'
+      link: 'https://www.goravel.dev/versions/v116'
     }]
   }, {
     text: "翻译",

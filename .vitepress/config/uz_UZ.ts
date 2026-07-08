@@ -91,11 +91,14 @@ function nav(): DefaultTheme.NavItem[] {
   }, {
     text: "Versiyalar",
     items: [{
-      text: "v1.17 (Eng so'nggi)",
+      text: "v1.18 (Eng so'nggi)",
       link: 'https://www.goravel.dev/'
     }, {
+      text: "v1.17",
+      link: 'https://www.goravel.dev/versions/v117'
+    }, {
       text: 'v1.16',
-      link: 'https://v116.goravel.dev/'
+      link: 'https://www.goravel.dev/versions/v116'
     }]
   }, {
     text: "Tarjima qilish",
