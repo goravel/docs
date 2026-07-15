@@ -81,11 +81,11 @@ Siz Goravel framework omborining [GitHub muhokama doskasida](https://github.com/
 
 ## Yangi Til Qo‘shish
 
-Goravel hujjatlariga yangi til qo‘shishga xush kelibsiz, siz `[Til] Tilini Qo‘shish` sarlavhasi va [Crowdin](https://crowdin.com/) hisobingiz bilan muammoni [goravel/goravel](https://github.com/goravel/goravel/issues/new) ga yuborishingiz mumkin. Biz sizni Crowdin loyihasiga taklif qilamiz.
+Goravel hujjatlariga yangi til qoʻshishga xush kelibsiz, siz `[Til] Tilini Qoʻshish` sarlavhasi bilan [goravel/goravel](https://github.com/goravel/goravel/issues/new) ga muammo yuborishingiz mumkin. Biz sizning soʻrovingizni tasdiqlaymiz.
 
 ## Mavjud Tillarni O‘zgartirish
 
-Goravel hujjatlari i18n-ni qo‘llab-quvvatlaydi, faqat ingliz tilini PR orqali o‘zgartirish mumkin; boshqa tillar [Crowdin](https://crowdin.com/) orqali o‘zgartirilishi kerak. Siz `[Til] Tilini O‘zgartirish` sarlavhasi va [Crowdin](https://crowdin.com/) hisobingiz bilan muammoni [goravel/goravel](https://github.com/goravel/goravel/issues/new) ga yuborishingiz mumkin. Biz sizni Crowdin loyihasiga taklif qilamiz.
+Agar maʼlum bir tilda matn terish xatosi boʻlsa, siz toʻgʻridan-toʻgʻri [goravel/docs](https://github.com/goravel/docs) dagi mos til fayliga PR yuborishingiz mumkin. Va iltimos, bu xato boshqa tillarda mavjudligini tekshiring, agar mavjud boʻlsa, bir vaqtning oʻzida tuzating. Buni AI agentingiz orqali amalga oshirish juda oson. Agar ishonchingiz komil boʻlmasa, [goravel/goravel](https://github.com/goravel/goravel/issues/new) ga muammo yuborishingiz mumkin.
 
 ## Hissa qo‘shish
 
