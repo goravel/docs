@@ -144,7 +144,7 @@ Goravel provides agent skills for AI coding assistants (Claude Code, OpenCode, e
 First, install the `goravel` CLI if you haven't already:
 
 ```shell
-go install github.com/goravel/goravel@latest
+go install github.com/goravel/installer/goravel@latest
 ```
 
 ### List Available Skills

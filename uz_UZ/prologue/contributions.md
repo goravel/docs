@@ -142,7 +142,7 @@ Goravel AI kodlash yordamchilari (Claude Code, OpenCode va h.k.) uchun agent ko�
 Avval, agar hali o‘rnatmagan bo‘lsangiz, `goravel` CLI-ni o‘rnating:
 
 ```shell
-go install github.com/goravel/goravel@latest
+go install github.com/goravel/installer/goravel@latest
 ```
 
 ### Mavjud ko‘nikmalarni ko‘rish
