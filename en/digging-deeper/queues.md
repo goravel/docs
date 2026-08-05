@@ -36,13 +36,39 @@ The sync driver is the default driver, it will not push tasks to the queue, but 
 
 To use the `database` driver, you need to create a database table to store tasks first: [20210101000002_create_jobs_table.go](https://github.com/goravel/goravel/blob/master/database/migrations/20210101000002_create_jobs_table.go). The migration file is located in the `database/migrations` directory by default.
 
+Configure the connection in `config/queue.go`. The `retry_after` option is the crashed-worker reservation-expiry window in seconds: if a worker crashes while holding a job, its reservation expires after `retry_after` seconds and the job is recovered by other workers. It must exceed the maximum job runtime to avoid double-processing long-running jobs:
+
+```go
+"database": map[string]any{
+  "driver":     "database",
+  "connection": "sqlite",
+  "queue":      "default",
+  "concurrent": 5,
+  // Reservation expiry for crashed workers; must exceed the maximum job runtime
+  "retry_after": 60,
+},
+```
+
+The `jobs` table migration stores the `reserved_at`, `available_at`, and `created_at` timestamps with millisecond precision, so sub-second delays and retries survive round trips to the database:
+
+```go
+table.DateTimeTz("reserved_at", 3).Nullable()
+table.DateTimeTz("available_at", 3)
+table.DateTimeTz("created_at", 3).UseCurrent()
+```
+
 ### Custom Driver
 
 If the current driver cannot meet your needs, you can customize the driver. You need to implement the [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) interface in `contracts/queue/driver.go`.
 
 The official implementation of the `Redis` driver, you can refer to [Redis Driver](https://github.com/goravel/redis) to implement your own custom driver.
 
-After implementing the custom driver, you can add the configuration to `config/queue.go`:
+Your driver's `Pop` (or `Receive`) must return a `queue.ReservedJob`. Besides `Delete() error` and `Task() Task`, the `ReservedJob` contract now requires:
+
+- `Attempts() int` — the number of times the job has been attempted so far, persisted with the reservation so retry decisions survive worker restarts.
+- `Release(delay time.Duration) error` — make the job available again after the given delay so it can be retried, incrementing attempts on the next pop.
+
+After implementing the custom driver, you can add the configuration to `config/queue.go`. Add `retry_after` to each custom connection so crashed-worker reservations are recovered (same semantics as the [database driver](#database-driver)):
 
 ```
 ...
@@ -51,6 +77,8 @@ After implementing the custom driver, you can add the configuration to `config/q
     "driver": "custom",
     "connection": "default",
     "queue": "default",
+    "concurrent": 5,
+    "retry_after": 60,
     "via": func() (queue.Driver, error) {
         return redisfacades.Queue("redis") // The redis value is the key of connections
     },
@@ -138,7 +166,10 @@ func (r *ProcessPodcast) Handle(args ...any) error {
 
 #### Job Retry
 
-Job classes support an optional `ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration)` method, which is used to control job retry.
+Job classes support an optional `ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration)` method, which is used to control job retry. When a job implementing it fails, the queue worker **releases** the job back to the queue instead of immediately retrying it in-memory. The attempt count is persisted with the reservation, so retries survive worker restarts, respect the release delay, and can be picked up by any worker.
+
+- `retryable = true` — the job is released back to the queue and runs again after `delay`, with its attempt count preserved.
+- `retryable = false` — the job is marked as failed and recorded in the `failed_jobs` table.
 
 ```go
 // ShouldRetry determines if the job should be retried based on the error.
@@ -146,6 +177,30 @@ func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, de
   return true, 10 * time.Second
 }
 ```
+
+For example, the following job fails on its first two attempts and succeeds on the third:
+
+```go
+func (r *TestRetryable) Handle(args ...any) error {
+  if len(TestRetryableResult) <= 2 {
+    return errors.New("test retryable error")
+  }
+
+  return nil
+}
+
+// ShouldRetry retries while the attempt count is within the failure window,
+// then gives up and lets the job land in failed_jobs.
+func (r *TestRetryable) ShouldRetry(err error, attempt int) (bool, time.Duration) {
+  if attempt <= 2 {
+    return true, 100 * time.Millisecond
+  }
+
+  return false, 0
+}
+```
+
+When the queue worker uses a `database` or `redis` connection, the released job is stored with its attempt count in the driver's reservation, so a retry survives a worker restart and is executed by the next available worker.
 
 ## Start Queue Server
 
