@@ -35,6 +35,6 @@ Goravel is heavily inspired by the Laravel framework, aiming to bring similar el
 | [Validation](https://www.goravel.dev/the-basics/validation.html) | ✅ | ✅ | ctx.Request().ValidateRequest() <br> $request->validate() |
 | [View](https://www.goravel.dev/the-basics/views.html) | ✅ | ✅ | ctx.Response().View().Make("welcome.tmpl") <br> view('welcome') |
 | [Grpc](https://www.goravel.dev/the-basics/grpc.html) | ✅ | 🚧 | |
-| Notifications | 🚧 | ✅ | |
-| Broadcasting | 🚧 | ✅ | |
-| Livewire | 🚧 | ✅ | |
+| Notifications | ✅ | ✅ | |
+| [Broadcasting](https://www.goravel.dev/digging-deeper/broadcasting.html) | ✅ | ✅ | facades.Broadcast().Channel("channel", ...) <br> Broadcast::channel('channel', ...) |
+| Inertia | ✅ | ✅ | |
