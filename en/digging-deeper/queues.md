@@ -36,32 +36,11 @@ The sync driver is the default driver, it will not push tasks to the queue, but 
 
 To use the `database` driver, you need to create a database table to store tasks first: [20210101000002_create_jobs_table.go](https://github.com/goravel/goravel/blob/master/database/migrations/20210101000002_create_jobs_table.go). The migration file is located in the `database/migrations` directory by default.
 
-Configure the connection in `config/queue.go`:
-
-```go
-"database": map[string]any{
-  "driver":     "database",
-  "connection": "sqlite",
-  "queue":      "default",
-  "concurrent": 5,
-},
-```
-
-The `jobs` table migration stores the `reserved_at`, `available_at`, and `created_at` timestamps with millisecond precision, so sub-second delays and retries survive round trips to the database:
-
-```go
-table.DateTimeTz("reserved_at", 3).Nullable()
-table.DateTimeTz("available_at", 3)
-table.DateTimeTz("created_at", 3).UseCurrent()
-```
-
 ### Custom Driver
 
 If the current driver cannot meet your needs, you can customize the driver. You need to implement the [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) interface in `contracts/queue/driver.go`.
 
 The official implementation of the `Redis` driver, you can refer to [Redis Driver](https://github.com/goravel/redis) to implement your own custom driver.
-
-Your driver's `Pop` (or `Receive`) must return a `queue.ReservedJob` implementing `Delete`, `Task`, `Attempts`, and `Release`. See the [ReservedJob interface](https://github.com/goravel/framework/blob/master/contracts/queue/job.go) for details.
 
 After implementing the custom driver, you can add the configuration to `config/queue.go`:
 

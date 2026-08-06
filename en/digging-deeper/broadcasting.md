@@ -26,30 +26,19 @@ This creates `config/broadcasting.go` and registers the `broadcasting.ServicePro
 | `log`    | Writes broadcasts to the log, useful for local development                                                                     |
 | `null`   | Discards all broadcasts, useful for testing                                                                                    |
 
-## Configuration
-
-The default connection is set by the `BROADCAST_CONNECTION` environment variable:
-
-```go
-"default": config.Env("BROADCAST_CONNECTION", "log"),
-```
-
-To use the `pusher` driver, configure your credentials in the `.env` file:
-
-```ini
-BROADCAST_CONNECTION=pusher
-PUSHER_APP_ID="your-pusher-app-id"
-PUSHER_APP_KEY="your-pusher-app-key"
-PUSHER_APP_SECRET="your-pusher-secret"
-PUSHER_HOST=
-PUSHER_PORT=443
-PUSHER_SCHEME="https"
-PUSHER_APP_CLUSTER="mt1"
-```
-
 ## Defining Broadcast Events
 
-Implement the `ShouldBroadcast` contract from `contracts/broadcasting` on your event struct. It requires four methods:
+Use the `make:event` Artisan command with the `--broadcast` flag to scaffold an event that implements the `ShouldBroadcast` contract:
+
+```shell
+./artisan make:event OrderShipped --broadcast
+./artisan make:event OrderShipped --broadcast --now
+```
+
+- `--broadcast` scaffolds an event with `BroadcastOn`, `BroadcastAs`, `BroadcastWith`, and `BroadcastWhen` methods, including a `var _ broadcasting.ShouldBroadcast = (*OrderShipped)(nil)` compile-time assertion.
+- Adding `--now` also scaffolds a `BroadcastNow() bool` method returning `true`, so the event broadcasts synchronously instead of through the queue.
+
+Broadcast Events implement the `ShouldBroadcast` contract from `contracts/broadcasting`. It requires four methods:
 
 - `BroadcastOn() []string` — the channel names to broadcast on.
 - `BroadcastAs() string` — the event name.
@@ -132,18 +121,6 @@ func (e *OrderShipped) BroadcastBackoff() []time.Duration {
 ```
 
 By default, broadcasts are dispatched as [queued jobs](queues.md), so make sure a queue worker is running. Implementing `ShouldBroadcastNow` skips the queue.
-
-### Generating Broadcast Events
-
-Use the `make:event` Artisan command with the `--broadcast` flag to scaffold an event that implements the `ShouldBroadcast` contract:
-
-```shell
-./artisan make:event OrderShipped --broadcast
-./artisan make:event OrderShipped --broadcast --now
-```
-
-- `--broadcast` scaffolds an event with `BroadcastOn`, `BroadcastAs`, `BroadcastWith`, and `BroadcastWhen` methods, including a `var _ broadcasting.ShouldBroadcast = (*OrderShipped)(nil)` compile-time assertion.
-- Adding `--now` also scaffolds a `BroadcastNow() bool` method returning `true`, so the event broadcasts synchronously instead of through the queue.
 
 ## Authorizing Channels
 

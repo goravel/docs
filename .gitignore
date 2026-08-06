@@ -4,5 +4,4 @@ node_modules
 .idea
 .vscode
 .DS_Store
-crowdin.yml.bak
 .opencode
