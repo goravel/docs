@@ -1,11 +1,11 @@
 ---
 name: add-contributor
-description: "Use when adding a new contributor to the Goravel docs. Fetches GitHub avatar and adds contributor links to en/prologue/contributions.md and en/index.md"
+description: "Use when adding a new contributor to the Goravel docs. Fetches GitHub avatar and adds contributor links to all language versions of prologue/contributions.md and index.md"
 ---
 
 # Add Contributor Skill
 
-This skill automates adding a new contributor to the Goravel documentation contributor lists in `en/prologue/contributions.md` and `en/index.md`.
+This skill automates adding a new contributor to the Goravel documentation contributor lists across all language versions (`en/`, `zh_CN/`, `uz_UZ/`, and any future language directories) of `prologue/contributions.md` and `index.md`.
 
 ## Workflow
 
@@ -36,20 +36,24 @@ Create an HTML anchor tag with the avatar image:
 
 ### 5. Add to Contribution Sections
 
-Locate the appropriate sections:
-- `en/prologue/contributions.md`
-- **Contributors** section: Add to the Contributors `<div>` block
-- **Core Developers** section: Add to the Core Developers `<div>` block (if applicable)
-- `en/index.md`
-- **Contributors** section: Add to the contributors avatar list under `## Contributors`
+Use glob patterns to discover all language directories containing the target files:
+- `*/prologue/contributions.md`
+- `*/index.md`
 
-Insert the HTML snippet as a new line in both files:
-- In `en/prologue/contributions.md`, insert before the closing `</div>` tag of the target list.
-- In `en/index.md`, insert in the contributors avatar list before the closing `</div>` of the contributors block.
+For each matching file across all languages, insert the HTML snippet into the appropriate section. The HTML snippet is language-agnostic (GitHub URLs and avatars), so the same snippet works in every language.
+
+**`{lang}/prologue/contributions.md`:**
+- **Core Developers** section: Insert the new `<a>` tag before the closing `</div>` of the Core Developers block.
+- **Contributors** section: Insert the new `<a>` tag before the closing `</div>` of the Contributors block.
+
+**`{lang}/index.md`:**
+- **Contributors** section: Insert the new `<a>` tag before the closing `</div>` of the contributors block.
+
+All contributor `<div>` blocks share the `:class="$style.contributors"` attribute, making them easy to locate across languages regardless of heading text.
 
 ### 6. Update Documentation
 
-Update both files and verify the contributor appears correctly in the rendered documentation.
+Update all matching files across every language directory and verify the contributor appears correctly in the rendered documentation for each language.
 
 ## Implementation Steps
 
@@ -57,9 +61,9 @@ Update both files and verify the contributor appears correctly in the rendered d
 2. Extract the username from the URL
 3. Fetch user data from GitHub API to get the avatar URL
 4. Create the HTML contributor entry
-5. Insert into the appropriate section of `en/prologue/contributions.md`
-6. Insert into the `## Contributors` list in `en/index.md`
-7. Confirm addition in both files
+5. Use glob `*/prologue/contributions.md` to find all language versions, then insert the entry into the appropriate section (Core Developers or Contributors) of each file
+6. Use glob `*/index.md` to find all language versions, then insert the entry into the Contributors list of each file
+7. Confirm addition in all files across all language directories
 
 ## Example
 
@@ -73,5 +77,5 @@ Update both files and verify the contributor appears correctly in the rendered d
 ```
 
 **Location in Files:**
-- `en/prologue/contributions.md`: Added to Contributors section before `</div>` closing tag
-- `en/index.md`: Added to Contributors section before the closing `</div>`
+- `{lang}/prologue/contributions.md`: Added to the target section before `</div>` closing tag (all language directories)
+- `{lang}/index.md`: Added to Contributors section before the closing `</div>` (all language directories)

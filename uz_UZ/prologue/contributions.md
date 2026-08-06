@@ -60,6 +60,8 @@ Keling, Goravelni birgalikda yanada samaraliroq qilaylik!
 <a href="https://github.com/wyicwx" target="_blank"><img src="https://avatars.githubusercontent.com/u/1241187?v=4" width="48" height="48"></a>
 <a href="https://github.com/LinboLen" target="_blank"><img src="https://avatars.githubusercontent.com/u/5467712?v=4" width="48" height="48"></a>
 <a href="https://github.com/president-tuychiyev" target="_blank"><img src="https://avatars.githubusercontent.com/u/68532523?v=4" width="48" height="48"></a>
+<a href="https://github.com/eddyjj92" target="_blank"><img src="https://avatars.githubusercontent.com/u/96251056?v=4" width="48" height="48"></a>
+<a href="https://github.com/codedsultan" target="_blank"><img src="https://avatars.githubusercontent.com/u/86793301?v=4" width="48" height="48"></a>
 
 </div>
 
