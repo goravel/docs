@@ -39,42 +39,6 @@ You can use the `make:event` and `make:listener` Artisan commands to generate in
 ./artisan make:listener user/SendPodcastNotification
 ```
 
-Pass the `--broadcast` flag to scaffold a [broadcast event](broadcasting.md) that implements the `ShouldBroadcast` contract (`BroadcastOn`, `BroadcastAs`, `BroadcastWith`, and `BroadcastWhen`). Adding the `--now` flag also scaffolds a `BroadcastNow` method returning `true`, so the event broadcasts synchronously instead of through the queue:
-
-```shell
-./artisan make:event --broadcast OrderShipped
-./artisan make:event --broadcast --now OrderShipped
-```
-
-The scaffolded event looks like this (the `--now` variant additionally contains `BroadcastNow`):
-
-```go
-package events
-
-import "github.com/goravel/framework/contracts/broadcasting"
-
-var _ broadcasting.ShouldBroadcast = (*OrderShipped)(nil)
-
-type OrderShipped struct {
-}
-
-func (receiver *OrderShipped) BroadcastOn() []string {
-  return []string{}
-}
-
-func (receiver *OrderShipped) BroadcastAs() string {
-  return ""
-}
-
-func (receiver *OrderShipped) BroadcastWith() map[string]any {
-  return map[string]any{}
-}
-
-func (receiver *OrderShipped) BroadcastWhen() bool {
-  return true
-}
-```
-
 ## Defining Events
 
 An event class is essentially a data container that holds the information related to the event, the `Handle` method of `event` passes in and returns the `[]event.Arg` structure, which can be used to process data. The processed data will then be passed on to all associated `listeners`. For example, let's assume an `app\events\OrderShipped` event:

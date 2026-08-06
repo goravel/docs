@@ -133,6 +133,18 @@ func (e *OrderShipped) BroadcastBackoff() []time.Duration {
 
 By default, broadcasts are dispatched as [queued jobs](queues.md), so make sure a queue worker is running. Implementing `ShouldBroadcastNow` skips the queue.
 
+### Generating Broadcast Events
+
+Use the `make:event` Artisan command with the `--broadcast` flag to scaffold an event that implements the `ShouldBroadcast` contract:
+
+```shell
+./artisan make:event OrderShipped --broadcast
+./artisan make:event OrderShipped --broadcast --now
+```
+
+- `--broadcast` scaffolds an event with `BroadcastOn`, `BroadcastAs`, `BroadcastWith`, and `BroadcastWhen` methods, including a `var _ broadcasting.ShouldBroadcast = (*OrderShipped)(nil)` compile-time assertion.
+- Adding `--now` also scaffolds a `BroadcastNow() bool` method returning `true`, so the event broadcasts synchronously instead of through the queue.
+
 ## Authorizing Channels
 
 Private and presence channels require authorization. Goravel automatically registers the `/broadcasting/auth` route (configured in the `auth` section of `config/broadcasting.go`) to handle authorization requests.
