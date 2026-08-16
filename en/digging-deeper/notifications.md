@@ -6,8 +6,6 @@
 
 Goravel's notification system lets you inform users about what's happening in your application — an order shipped, a payment received, a new message waiting. Instead of wiring each of these to a specific delivery mechanism, you write one notification class per message and let Goravel route it through the channels you pick: `mail`, `database`, or a custom channel of your own.
 
-The built-in channel names are available as the `notification.ChannelMail` and `notification.ChannelDatabase` constants, so a typo fails at compile time instead of silently dropping a route.
-
 A notification describes the message itself. The notifiable (usually one of your models) tells Goravel *where* to deliver it. `facades.Notification()` is the entry point for sending.
 
 ## Installation
@@ -112,8 +110,6 @@ Implement these optional contracts to customize how notifications are sent:
 | `NotificationWithAfterSending` | `AfterSending(notifiable notification.Notifiable, channel string) error` | Run a hook after a successful channel delivery                      |
 | `NotificationWithDatabaseConnection` | `DatabaseConnection() string`                               | The database connection the notification row should be stored on; `""` for the default |
 | `ShouldQueue`               | `OnQueue() string`, `OnConnection() string`                 | Queue the notification instead of sending it synchronously                            |
-
-> **Note:** `NotificationWithDatabaseConnection` was previously named `DatabaseRoutable`. The name `DatabaseRoutable` now refers to the notifiable-side typed database route (`RouteNotificationForDatabase`) described in [Routing Database Notifications](#routing-database-notifications).
 
 ```go
 // A custom ID used as the notifications table primary key.
