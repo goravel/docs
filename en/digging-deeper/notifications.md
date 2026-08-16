@@ -6,6 +6,8 @@
 
 Goravel's notification system lets you inform users about what's happening in your application — an order shipped, a payment received, a new message waiting. Instead of wiring each of these to a specific delivery mechanism, you write one notification class per message and let Goravel route it through the channels you pick: `mail`, `database`, or a custom channel of your own.
 
+The built-in channel names are available as the `notification.ChannelMail` and `notification.ChannelDatabase` constants, so a typo fails at compile time instead of silently dropping a route.
+
 A notification describes the message itself. The notifiable (usually one of your models) tells Goravel *where* to deliver it. `facades.Notification()` is the entry point for sending.
 
 ## Installation
@@ -58,7 +60,7 @@ func NewOrderShipped(orderID string) *OrderShipped {
 }
 
 func (r *OrderShipped) Via(notifiable notification.Notifiable) []string {
-  return []string{"mail"}
+  return []string{notification.ChannelMail}
 }
 
 func (r *OrderShipped) ToMail(notifiable notification.Notifiable) notification.MailMessage {
@@ -80,8 +82,14 @@ go run . artisan make:notification OrderProcessed --database
 A notification is a struct that carries the data needed to build the message. The only required method is `Via`, which returns the list of channels the notification should be delivered through:
 
 ```go
+package notifications
+
+import (
+  "github.com/goravel/framework/contracts/notification"
+)
+
 func (r *OrderShipped) Via(notifiable notification.Notifiable) []string {
-  return []string{"mail", "database"}
+  return []string{notification.ChannelMail, notification.ChannelDatabase}
 }
 ```
 
@@ -102,8 +110,10 @@ Implement these optional contracts to customize how notifications are sent:
 | `NotificationWithID`        | `ID() string`                                               | A custom ID for the notification (used by the database channel); defaults to a UUID |
 | `NotificationWithShouldSend`| `ShouldSend(notifiable notification.Notifiable, channel string) bool` | Skip delivery for a given channel when returning `false`            |
 | `NotificationWithAfterSending` | `AfterSending(notifiable notification.Notifiable, channel string) error` | Run a hook after a successful channel delivery                      |
-| `DatabaseRoutable`          | `DatabaseConnection() string`                               | The database connection the notification row should be stored on; `""` for the default |
+| `NotificationWithDatabaseConnection` | `DatabaseConnection() string`                               | The database connection the notification row should be stored on; `""` for the default |
 | `ShouldQueue`               | `OnQueue() string`, `OnConnection() string`                 | Queue the notification instead of sending it synchronously                            |
+
+> **Note:** `NotificationWithDatabaseConnection` was previously named `DatabaseRoutable`. The name `DatabaseRoutable` now refers to the notifiable-side typed database route (`RouteNotificationForDatabase`) described in [Routing Database Notifications](#routing-database-notifications).
 
 ```go
 // A custom ID used as the notifications table primary key.
@@ -131,26 +141,40 @@ func (r *OrderProcessed) DatabaseConnection() string {
 
 ### Using The Notifiable Contract
 
-Every notification is addressed to a *notifiable* — typically one of your models. To make a model notifiable, implement the `Notifiable` contract and add a `RouteNotificationFor` method that resolves the delivery address for each channel:
+Every notification is addressed to a *notifiable* — typically one of your models. To make a model notifiable, implement the `Notifiable` contract. For the built-in channels, implement the typed routing contracts — `MailRoutable` with `RouteNotificationForMail` and `DatabaseRoutable` with `RouteNotificationForDatabase` — which take precedence over the generic `RouteNotificationFor` method. `RouteNotificationFor` remains the fallback and is still how custom channels resolve their addresses:
 
 ```go
 package models
 
+import (
+  "strconv"
+
+  "github.com/goravel/framework/contracts/notification"
+)
+
 type User struct {
   ID   uint
   Mail string
+  Name string
 }
 
-// RouteNotificationFor resolves the delivery address per channel.
+// RouteNotificationForMail implements contracts/notification.MailRoutable:
+// the type-safe mail delivery route, preferred over RouteNotificationFor.
+func (r *User) RouteNotificationForMail(notification notification.Notification) map[string]string {
+  return map[string]string{r.Mail: r.Name}
+}
+
+// RouteNotificationForDatabase implements contracts/notification.DatabaseRoutable:
+// the type-safe database delivery route, preferred over RouteNotificationFor.
+func (r *User) RouteNotificationForDatabase() string {
+  return strconv.FormatUint(uint64(r.ID), 10)
+}
+
+// RouteNotificationFor resolves the delivery address per channel. The built-in
+// mail and database channels resolve via the typed interfaces above, so no
+// route is left to match on the channel name here.
 func (r *User) RouteNotificationFor(channel string) any {
-  switch channel {
-  case "mail":
-    return r.Mail
-  case "database":
-    return r.ID
-  default:
-    return nil
-  }
+  return nil
 }
 ```
 
@@ -161,6 +185,8 @@ The address type is channel-specific:
 | `mail`     | `string` (single address), `[]string` (multiple addresses), `map[string]string` (address → name) |
 | `database` | `string` (model primary key; numeric IDs are auto-converted)         |
 | custom     | Any type your [custom channel](#custom-channels) understands         |
+
+`RouteNotificationForMail` returns the `map[string]string` address → name mapping directly, and `RouteNotificationForDatabase` returns the primary key as a `string`, so the typed routes never leave the address shape to chance.
 
 Then send the notification with `facades.Notification().Send()`:
 
@@ -195,13 +221,27 @@ func (c *OrderController) Ship(ctx http.Context) http.Response {
 When the recipient isn't one of your models — a bare email address or an ID is all you have — skip the notifiable and pass the delivery address inline with `Route`. It returns an on-demand notifiable you can chain additional routes onto, then send with `Notify`:
 
 ```go
-err := facades.Notification().Route("mail", "example@example.com").Notify(notifications.NewWelcome("Bowen"))
+package controllers
 
-// Chain routes for multiple channels.
-err := facades.Notification().
-  Route("database", "123").
-  Route("mail", "example@example.com").
-  Notify(notifications.NewWelcome("Bowen"))
+import (
+  "github.com/goravel/framework/contracts/notification"
+
+  "goravel/app/facades"
+  "goravel/app/notifications"
+)
+
+func SendWelcome() error {
+  err := facades.Notification().Route(notification.ChannelMail, "example@example.com").Notify(notifications.NewWelcome("Bowen"))
+  if err != nil {
+    return err
+  }
+
+  // Chain routes for multiple channels.
+  return facades.Notification().
+    Route(notification.ChannelDatabase, "123").
+    Route(notification.ChannelMail, "example@example.com").
+    Notify(notifications.NewWelcome("Bowen"))
+}
 ```
 
 ### Send vs. SendNow
@@ -209,14 +249,32 @@ err := facades.Notification().
 `Send` delivers through the channels returned by `Via`. If the notification implements `ShouldQueue`, the delivery is dispatched as a queued job instead of running inline; otherwise it runs synchronously in the current request. `SendNow` always delivers synchronously, bypassing the queue even for `ShouldQueue` notifications:
 
 ```go
-// Runs inline (or via the queue if OrderProcessed implements ShouldQueue).
-err := facades.Notification().Send(user, notifications.NewOrderProcessed("12345"))
+package controllers
 
-// Always delivers synchronously, never queued.
-err := facades.Notification().SendNow(user, notifications.NewOrderProcessed("12345"))
+import (
+  "github.com/goravel/framework/contracts/notification"
 
-// On-demand equivalents.
-err := facades.Notification().Route("database", "123").NotifyNow(notifications.NewWelcome("Bowen"))
+  "goravel/app/facades"
+  "goravel/app/models"
+  "goravel/app/notifications"
+)
+
+func Deliver() error {
+  var user models.User
+
+  // Runs inline (or via the queue if OrderProcessed implements ShouldQueue).
+  if err := facades.Notification().Send(user, notifications.NewOrderProcessed("12345")); err != nil {
+    return err
+  }
+
+  // Always delivers synchronously, never queued.
+  if err := facades.Notification().SendNow(user, notifications.NewOrderProcessed("12345")); err != nil {
+    return err
+  }
+
+  // On-demand equivalents.
+  return facades.Notification().Route(notification.ChannelDatabase, "123").NotifyNow(notifications.NewWelcome("Bowen"))
+}
 ```
 
 ## Mail Notifications
@@ -245,7 +303,7 @@ The builder supports the following methods:
 | Method                         | Description                                             |
 | ------------------------------ | ------------------------------------------------------- |
 | `Subject(subject string)`      | The email subject; defaults to the notification type name |
-| `To(addresses ...string)`      | Override the recipient(s); empty uses `RouteNotificationFor("mail")` |
+| `To(addresses ...string)`      | Override the recipient(s); when unset, recipients resolve from `MailRoutable.RouteNotificationForMail` (falling back to `RouteNotificationFor`), preserving the address → name mapping |
 | `From(address string)`         | Override the sender; empty uses the global `mail.from` config |
 | `ReplyTo(address string)`      | Sets the `Reply-To` header                              |
 | `Html(html string)`            | Sets the HTML body                                      |
@@ -258,21 +316,17 @@ The builder supports the following methods:
 
 ### Routing Mail Notifications
 
-The mail channel resolves recipients from `RouteNotificationFor("mail")`, which accepts a single `string` address, multiple `[]string` addresses, or a `map[string]string` of address → name pairs:
+Prefer implementing the `MailRoutable` contract on the notifiable. Its `RouteNotificationForMail` returns a `map[string]string` of address → name pairs and takes precedence over `RouteNotificationFor`:
 
 ```go
-func (r *User) RouteNotificationFor(channel string) any {
-  if channel == "mail" {
-    return map[string]string{"example@example.com": "Bowen"}
-  }
+package models
 
-  return nil
-}
-```
+import (
+  "github.com/goravel/framework/contracts/notification"
 
-For per-notification recipient control, implement the `MailRoutable` contract on the notifiable. Its `RouteNotificationForMail` takes precedence over `RouteNotificationFor("mail")`:
+  "goravel/app/notifications"
+)
 
-```go
 func (r *User) RouteNotificationForMail(notification notification.Notification) map[string]string {
   if _, ok := notification.(*notifications.OrderShipped); ok {
     return map[string]string{"shipments@example.com": "Shipments"}
@@ -281,6 +335,26 @@ func (r *User) RouteNotificationForMail(notification notification.Notification) 
   return map[string]string{r.Mail: r.Name}
 }
 ```
+
+An empty result from `RouteNotificationForMail` is not an error by itself: the mail channel falls back to `RouteNotificationFor(notification.ChannelMail)`, which accepts a single `string` address, multiple `[]string` addresses, or a `map[string]string` of address → name pairs:
+
+```go
+package models
+
+import (
+  "github.com/goravel/framework/contracts/notification"
+)
+
+func (r *User) RouteNotificationFor(channel string) any {
+  if channel == notification.ChannelMail {
+    return map[string]string{"example@example.com": "Bowen"}
+  }
+
+  return nil
+}
+```
+
+If both return empty, sending fails with a `NotificationMailEmptyRoute` error.
 
 ## Database Notifications
 
@@ -301,10 +375,50 @@ The `notifications` table has the following columns:
 | `id`              | `string(36)`| Primary key; a UUID by default, or `ID()` when implemented |
 | `type`            | `string`    | The notification's type name                        |
 | `notifiable_type` | `string`    | The notifiable's type name                          |
-| `notifiable_id`   | `string`    | The delivery address returned by `RouteNotificationFor("database")` |
+| `notifiable_id`   | `string`    | The delivery address returned by `RouteNotificationForDatabase` (falling back to `RouteNotificationFor`) |
 | `data`            | `text`      | The JSON-encoded data returned by `ToDatabase`      |
 | `read_at`         | `timestamp` | Nullable; marks the notification as read            |
 | `created_at` / `updated_at` | `timestamp` | Timestamps                                  |
+
+### Routing Database Notifications
+
+Prefer implementing the `DatabaseRoutable` contract on the notifiable. Its `RouteNotificationForDatabase` takes precedence over `RouteNotificationFor` and returns the notifiable's primary key as a `string`:
+
+```go
+package models
+
+import (
+  "strconv"
+
+  "github.com/goravel/framework/contracts/notification"
+)
+
+// RouteNotificationForDatabase implements contracts/notification.DatabaseRoutable:
+// the type-safe database delivery route, preferred over RouteNotificationFor.
+func (r *User) RouteNotificationForDatabase() string {
+  return strconv.FormatUint(uint64(r.ID), 10)
+}
+```
+
+An empty result from `RouteNotificationForDatabase` is not an error by itself: the database channel falls back to `RouteNotificationFor(notification.ChannelDatabase)`, which accepts the primary key as a `string` (numeric IDs are auto-converted):
+
+```go
+package models
+
+import (
+  "github.com/goravel/framework/contracts/notification"
+)
+
+func (r *User) RouteNotificationFor(channel string) any {
+  if channel == notification.ChannelDatabase {
+    return r.ID
+  }
+
+  return nil
+}
+```
+
+If both return empty, sending fails with a `NotificationDatabaseEmptyRoute` error.
 
 ### Retrieving Notifications
 
@@ -354,13 +468,19 @@ func (c *UserController) Notifications(ctx http.Context) http.Response {
 `Send` runs the delivery inline in the current request unless the notification opts into the queue. To make a notification queued, implement the `ShouldQueue` contract on it with `OnQueue` and `OnConnection` methods. Returning `""` for either falls back to the default queue and connection:
 
 ```go
+package notifications
+
+import (
+  "github.com/goravel/framework/contracts/notification"
+)
+
 type OrderProcessed struct {
   OrderID string
 }
 
 // Via returns the channels this notification should be sent through.
 func (r *OrderProcessed) Via(notifiable notification.Notifiable) []string {
-  return []string{"database"}
+  return []string{notification.ChannelDatabase}
 }
 
 func (r *OrderProcessed) ToDatabase(notifiable notification.Notifiable) map[string]any {
