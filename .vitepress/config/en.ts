@@ -291,6 +291,10 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
       link: 'mail'
     },
     {
+      text: 'Notifications',
+      link: 'notifications'
+    },
+    {
       text: 'Queues',
       link: 'queues'
     },
