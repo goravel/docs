@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
 @import 'tailwindcss';
 
+/* =====================
+   Root Variables
+   ===================== */
 :root {
   --vp-nav-logo-height: 36px;
   --vp-home-hero-name-color: transparent;
@@ -9,11 +12,82 @@
     #bd34fe 10%,
     #00a0e5
   );
-  /* --vp-home-hero-image-background-image: linear-gradient(135deg, #bbe2fe 10%, #bfe2fc 100%);
-    --vp-home-hero-image-filter: blur(50px); */
   --vp-button-brand-bg: #00a0e5;
+  --vp-button-brand-hover-bg: #0090cc;
+
+  /* Brand colors */
+  --vp-c-brand-1: #00a0e5;
+  --vp-c-brand-2: #0090cc;
+  --vp-c-brand-3: #007bb0;
+
+  /* Custom shadows */
+  --vp-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --vp-shadow-2: 0 3px 12px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --vp-shadow-3: 0 12px 32px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.06);
+
+  /* Home features */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-image-background-image: linear-gradient(
+    135deg,
+    #e0f4ff 10%,
+    #d0e8ff 100%
+  );
+  --vp-home-hero-image-filter: blur(44px);
+
+  /* Full-width layout: remove max-width constraint so sidebars hug screen edges */
+  --vp-layout-max-width: 100%;
+
+  /* Animated gradient for hero logo */
+  --gradient-1: #00a0e5;
+  --gradient-2: #bd34fe;
+  --gradient-3: #00d4aa;
+  --gradient-4: #ff6b6b;
+  --gradient-5: #fbbf24;
 }
 
+@keyframes gradient-shift {
+  0% {
+    background: linear-gradient(120deg, var(--gradient-1), var(--gradient-2));
+  }
+  20% {
+    background: linear-gradient(120deg, var(--gradient-2), var(--gradient-3));
+  }
+  40% {
+    background: linear-gradient(120deg, var(--gradient-3), var(--gradient-4));
+  }
+  60% {
+    background: linear-gradient(120deg, var(--gradient-4), var(--gradient-5));
+  }
+  80% {
+    background: linear-gradient(120deg, var(--gradient-5), var(--gradient-1));
+  }
+  100% {
+    background: linear-gradient(120deg, var(--gradient-1), var(--gradient-2));
+  }
+}
+
+@keyframes gradient-move {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-hue {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.dark {
+  --vp-home-hero-image-background-image: linear-gradient(
+    135deg,
+    #1a3a52 10%,
+    #0d2438 100%
+  );
+}
+
+/* =====================
+   Hero Section (GoFrame-style centered layout)
+   ===================== */
 .VPHero .VPImage {
   filter: drop-shadow(-2px 4px 6px rgba(0, 0, 0, 0.2));
   padding: 18px;
@@ -21,24 +95,52 @@
 
 .VPHome .heading {
   align-items: center;
+  text-align: center;
 }
 
 .VPHome .heading .name {
   max-width: 100%;
   margin-bottom: 20px;
   font-size: 70px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  background: linear-gradient(
+    90deg,
+    #00a0e5,
+    #bd34fe,
+    #00d4aa,
+    #ff6b6b,
+    #fbbf24,
+    #00a0e5
+  ) !important;
+  background-size: 300% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: gradient-hue 5s linear infinite !important;
 }
 
 .VPHome .heading .text {
-  max-width: 100%;
-  font-size: 45px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: 40px;
   text-align: center;
+  font-weight: 700;
+  letter-spacing: -1px;
 }
 
 .VPHome .tagline {
   text-align: center;
   align-items: center;
-  max-width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--vp-c-text-2);
+}
+
+.VPHome .actions {
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
@@ -47,7 +149,7 @@
   }
 
   .VPHome .heading .text {
-    font-size: 30px;
+    font-size: 28px;
   }
 
   .VPHome .tagline {
@@ -55,12 +157,827 @@
   }
 }
 
-.VPHome .actions {
+/* =====================
+   Feature Cards (GoFrame-style: 3-column grid, centered, text-only cards)
+   Override VitePress scoped styles with !important
+   ===================== */
+
+/* Remove VPFeatures outer padding */
+.VPFeatures {
+  padding: 0 20px !important;
+}
+
+/* Container: centered, fixed max-width */
+.VPFeatures .container {
+  max-width: 1140px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+/* Items: grid layout, not flex */
+.VPFeatures .items {
+  display: grid !important;
+  flex-wrap: nowrap !important;
+  margin: 0 !important;
+  gap: 20px !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+/* Each item: full width cell, no padding */
+.VPFeatures .item {
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+.VPFeatures .VPLink {
+  width: 100%;
+}
+
+.VPFeatures .VPLink .VPFeature {
+  width: 100%;
+  height: 100%;
+  padding: 32px !important;
+  border-radius: 12px;
+  border: none !important;
+  background: var(--vp-c-bg-soft) !important;
+  box-shadow: none !important;
+  transition: background-color 0.25s;
+}
+
+.VPFeatures .VPLink:hover .VPFeature {
+  background: var(--vp-c-bg-mute) !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+.VPFeatures .VPFeature .title {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: var(--vp-c-text-1);
+}
+
+.VPFeatures .VPFeature .details {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--vp-c-text-2);
+}
+
+/* Hide icons - GoFrame style is text-only */
+.VPFeatures .VPFeature .icon {
+  display: none !important;
+}
+
+@media (max-width: 960px) {
+  .VPFeatures .items {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .VPFeatures .items {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* =====================
+   Navigation Bar
+   ===================== */
+.VPNav .VPNavBar {
+  backdrop-filter: saturate(180%) blur(8px);
+}
+
+.VPNav .VPNavBar:not(.home) {
+  border-bottom: 1px solid var(--vp-c-gutter);
+}
+
+/* Override VitePress scoped styles: remove wrapper padding */
+.VPNavBar .wrapper {
+  padding: 0 !important;
+}
+
+/* Container: full width, consistent padding on home and doc pages */
+.VPNavBar .container {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 0 16px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center;
+}
+
+/* Title (logo): keep in flex flow, no absolute positioning on doc pages */
+.VPNavBar .container > .title {
+  position: static !important;
+  padding: 0 !important;
+  width: auto !important;
+  flex-shrink: 0;
+  background-color: transparent !important;
+}
+
+/* Content: remove sidebar padding, use flex to push right */
+.VPNavBar .container > .content {
+  position: static !important;
+  padding: 0 !important;
+  flex: 1;
+}
+
+.VPNavBar .content-body {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  height: var(--vp-nav-height);
+  background-color: transparent !important;
+}
+
+/* Divider: full width */
+.VPNavBar .divider {
+  padding-left: 0 !important;
+}
+
+.VPNavBarMenuLink {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.VPNavBarMenuLink:hover {
+  color: var(--vp-c-brand-1);
+}
+
+/* Search box: compact, stay close to menu links */
+.VPNavBarSearch {
+  flex-grow: 0;
+  max-width: 400px;
+}
+
+.VPNavBarSearch .DocSearch-Button {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+}
+
+/* Nav actions (social links etc.) flush right */
+.VPNavBar .VPNavBarRightGroup {
+  flex-shrink: 0;
+}
+
+/* Hero section: center all content */
+.VPHome .VPHero {
+  text-align: center;
   justify-content: center;
 }
 
+.VPHome .VPHero .container {
+  max-width: 1140px !important;
+  margin: 0 auto !important;
+  padding: 0 20px !important;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Home page: nav bar should NOT have sidebar padding */
+.VPNavBar.home .container {
+  padding: 0 20px !important;
+}
+
+/* =====================
+   Full-Width Layout (WooCommerce-style)
+   Left sidebar flush left, right outline flush right,
+   content area maximized in the middle.
+   ===================== */
+
+/* Doc container: full width so aside reaches right edge */
+.VPDoc .container {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  display: flex !important;
+  align-items: flex-start;
+}
+
+/* .content is the actual flex child of .container - make it grow */
+.VPDoc .content {
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Doc content wrapper: remove VitePress default max-width */
+.VPDoc.has-aside .content-container {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Content column: fill all space between sidebars */
+.VPDoc .content-container {
+  flex: 1 1 0%;
+  min-width: 0;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 48px;
+}
+
+/* =====================
+   Left Sidebar (GoFrame Docusaurus-style collapsible tree menu)
+   ===================== */
+.VPSidebar {
+  width: 290px !important;
+  padding: 0 !important;
+  border-right: 1px solid var(--vp-c-gutter);
+  background-color: var(--vp-c-bg) !important;
+  top: var(--vp-nav-height) !important;
+}
+
+/* Mobile/responsive: sidebar drawer starts from top of screen */
+@media (max-width: 959px) {
+  .VPSidebar {
+    top: 0 !important;
+  }
+}
+
+/* Sidebar nav: full width, no padding */
+.VPSidebar .nav {
+  width: 100% !important;
+  padding: 0 !important;
+}
+
+/* Override VPSidebarGroup: force full width instead of sidebar-width - 64px */
+.VPSidebar .group {
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Remove default level-0 bottom padding */
+.VPSidebarItem.level-0 {
+  padding-bottom: 8px !important;
+}
+
+.VPSidebarItem.collapsed.level-0 {
+  padding-bottom: 4px !important;
+}
+
+/* Item row: full width of sidebar, no border-radius for active state */
+.VPSidebarItem {
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.VPSidebarItem .item {
+  padding: 6px 16px !important;
+  border-radius: 0;
+  transition: background-color 0.2s;
+  width: 100% !important;
+  margin-left: 0 !important;
+}
+
+/* Level-0 items: no negative offset */
+.VPSidebarItem.level-0 > .item {
+  margin-left: 0 !important;
+  padding-left: 16px !important;
+}
+
+/* Hover: light background like GoFrame */
+.VPSidebarItem .item:hover {
+  background-color: var(--vp-c-bg-soft) !important;
+}
+
+/* Remove the indicator bar (GoFrame uses background, not a bar) */
+.VPSidebarItem .indicator {
+  display: none !important;
+}
+
+/* Text: GoFrame font size and weight */
+.VPSidebarItem .text {
+  font-size: 14px !important;
+  line-height: 24px !important;
+  padding: 3px 0 !important;
+}
+
+/* Level-0 (category headers): bold, dark */
+.VPSidebarItem.level-0 .text {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: var(--vp-c-text-1) !important;
+}
+
+/* Level 1+ items: medium weight, gray */
+.VPSidebarItem.level-1 .text,
+.VPSidebarItem.level-2 .text,
+.VPSidebarItem.level-3 .text,
+.VPSidebarItem.level-4 .text,
+.VPSidebarItem.level-5 .text {
+  font-weight: 500 !important;
+  color: var(--vp-c-text-2) !important;
+}
+
+/* Active item: blue text + full-width light background */
+.VPSidebarItem.is-active > .item {
+  background-color: var(--vp-c-bg-soft) !important;
+  border-radius: 0;
+  width: 100%;
+}
+
+/* Hover: full-width background */
+.VPSidebarItem .item:hover {
+  border-radius: 0;
+}
+
+.VPSidebarItem.level-0.is-active > .item .link > .text,
+.VPSidebarItem.level-1.is-active > .item .link > .text,
+.VPSidebarItem.level-2.is-active > .item .link > .text,
+.VPSidebarItem.level-3.is-active > .item .link > .text,
+.VPSidebarItem.level-4.is-active > .item .link > .text,
+.VPSidebarItem.level-5.is-active > .item .link > .text {
+  color: var(--vp-c-brand-1) !important;
+  font-weight: 600 !important;
+}
+
+/* Has-active: parent items show darker text */
+.VPSidebarItem.level-0.has-active > .item > .text,
+.VPSidebarItem.level-1.has-active > .item > .text,
+.VPSidebarItem.level-0.has-active > .item > .link > .text,
+.VPSidebarItem.level-1.has-active > .item > .link > .text {
+  color: var(--vp-c-text-1) !important;
+}
+
+/* Hover: blue text */
+.VPSidebarItem.level-0.is-link > .item > .link:hover .text,
+.VPSidebarItem.level-1.is-link > .item > .link:hover .text,
+.VPSidebarItem.level-2.is-link > .item > .link:hover .text,
+.VPSidebarItem.level-3.is-link > .item > .link:hover .text {
+  color: var(--vp-c-brand-1) !important;
+}
+
+/* Remove border-left on nested items (GoFrame doesn't use it) */
+.VPSidebarItem.level-1 .items,
+.VPSidebarItem.level-2 .items,
+.VPSidebarItem.level-3 .items,
+.VPSidebarItem.level-4 .items,
+.VPSidebarItem.level-5 .items {
+  border-left: none !important;
+  padding-left: 0 !important;
+  width: 100% !important;
+}
+
+/* Child items: indent via padding-left, background fills remaining width */
+.VPSidebarItem.level-1 > .item {
+  padding-left: 24px !important;
+}
+
+.VPSidebarItem.level-2 > .item {
+  padding-left: 36px !important;
+}
+
+.VPSidebarItem.level-3 > .item {
+  padding-left: 48px !important;
+}
+
+.VPSidebarItem.level-4 > .item {
+  padding-left: 60px !important;
+}
+
+.VPSidebarItem.level-5 > .item {
+  padding-left: 72px !important;
+}
+
+/* Caret: style like GoFrame */
+.VPSidebarItem .caret {
+  width: 28px !important;
+  height: 28px !important;
+  margin-right: -4px !important;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.VPSidebarItem .item:hover .caret {
+  background-color: transparent;
+}
+
+.VPSidebarItem .caret-icon {
+  font-size: 16px !important;
+}
+
+/* Collapsed state: arrow points right */
+.VPSidebarItem.collapsed .caret-icon {
+  transform: rotate(0) !important;
+}
+
+/* Expanded state: arrow points down */
+.VPSidebarItem:not(.collapsed) .caret-icon {
+  transform: rotate(90deg) !important;
+}
+
+/* VPContent offsets for the left sidebar (doc pages only, not home) */
+.VPContent {
+  padding-left: 290px !important;
+}
+
+/* Home page: NO sidebar padding, content centered */
+.VPContent.is-home {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  max-width: 1140px !important;
+  margin: 0 auto !important;
+}
+
+/* Right aside (outline): flush to right edge with padding */
+.VPDoc .aside {
+  padding-right: 24px;
+  width: 260px;
+  background-color: var(--vp-c-bg) !important;
+}
+
+.VPDocAside {
+  background-color: var(--vp-c-bg) !important;
+}
+
+.VPDocAsideOutline {
+  background-color: var(--vp-c-bg) !important;
+}
+
+/* =====================
+   Right Sidebar - Page Navigation (GoFrame Docusaurus-style TOC)
+   Collapsible tree with left border, indented nesting, blue active highlight
+   ===================== */
+
+/* TOC container: sticky, with left border like GoFrame */
+.VPDocAsideOutline .content {
+  border-left: 2px solid var(--vp-c-divider) !important;
+  padding-left: 16px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+/* Hide the default marker bar */
+.VPDocAsideOutline .outline-marker {
+  display: none !important;
+}
+
+/* TOC title */
+.VPDocAsideOutline .outline-title {
+  line-height: 32px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  margin-bottom: 4px;
+}
+
+/* Root list */
+.VPDocAsideOutline .VPDocOutlineItem.root {
+  position: relative;
+  z-index: 1;
+}
+
+/* All outline links */
+.VPDocAsideOutline .outline-link {
+  display: block;
+  line-height: 30px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--vp-c-text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.25s;
+}
+
+/* Hover state */
+.VPDocAsideOutline .outline-link:hover {
+  color: var(--vp-c-brand-1);
+  transition: color 0.25s;
+}
+
+/* Active state: blue text + bold */
+.VPDocAsideOutline .outline-link.active {
+  color: var(--vp-c-brand-1) !important;
+  font-weight: 600 !important;
+}
+
+/* Nested items: indented with left border */
+.VPDocAsideOutline .VPDocOutlineItem.nested {
+  padding-left: 12px !important;
+  padding-right: 0 !important;
+  border-left: 1px solid var(--vp-c-divider);
+  margin-left: 4px;
+}
+
+/* Nested links */
+.VPDocAsideOutline .outline-link.nested {
+  padding-left: 8px !important;
+}
+
+/* Scrollbar styling */
+.VPDocAsideOutline .content {
+  max-height: calc(100vh - (var(--vp-nav-height) + 2rem));
+  overflow-y: auto;
+  position: sticky;
+  top: calc(var(--vp-nav-height) + 1rem);
+}
+
+/* Thin scrollbar */
+.VPDocAsideOutline .content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.VPDocAsideOutline .content::-webkit-scrollbar-thumb {
+  background-color: var(--vp-c-divider);
+  border-radius: 4px;
+}
+
+.VPDocAsideOutline .content::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Footer: full width */
+.VPFooter {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* On medium screens, reduce content padding */
+@media (max-width: 1280px) {
+  .VPDoc .content-container {
+    padding: 0 32px;
+  }
+
+  .VPDoc .aside {
+    padding-right: 16px;
+    width: 240px;
+  }
+
+  .home-section {
+    padding: 32px 32px;
+  }
+}
+
+/* On tablet/mobile, sidebar becomes overlay - reset padding */
+@media (max-width: 960px) {
+  .VPContent {
+    padding-left: 0 !important;
+  }
+
+  .VPNavBar .container {
+    padding: 0 16px !important;
+  }
+
+  .VPDoc .container {
+    padding: 0 24px;
+  }
+
+  .VPDoc .content-container {
+    padding: 0 8px;
+    max-width: 100%;
+  }
+
+  .VPDoc .aside {
+    display: none;
+  }
+}
+
+/* =====================
+   Sidebar Styling (legacy overrides removed - using GoFrame style above)
+   ===================== */
+
+/* =====================
+   Content / Doc
+   ===================== */
+.VPDoc .VPDocOutline {
+  font-size: 13px;
+}
+
+/* Right outline heading */
+.VPDoc .aside .outline-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--vp-c-text-2);
+  margin-bottom: 12px;
+}
+
+/* Right outline links */
+.VPDoc .aside .VPDocOutlineItem {
+  font-size: 13px;
+  line-height: 2;
+}
+
+.VPDoc .aside .VPDocOutlineItem a {
+  transition: color 0.2s;
+}
+
+.VPDoc .aside .VPDocOutlineItem a:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.vp-doc h1 {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 36px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--vp-c-gutter);
+}
+
+.vp-doc h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 28px;
+}
+
+.vp-doc p {
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+.vp-doc a {
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.vp-doc a:hover {
+  text-decoration: underline;
+}
+
+/* =====================
+   Code Blocks
+   ===================== */
+.vp-doc div[class*='language-'] {
+  border-radius: 10px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.vp-doc div[class*='language-'] .language-name {
+  display: none;
+}
+
+.vp-doc :not(pre) > code {
+  font-size: 0.875em;
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+/* =====================
+   Custom Sections (Contributors, Community, Sponsor)
+   GoFrame-style: centered container, card-style sections
+   ===================== */
+.home-section {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+.home-section-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.home-section-subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: var(--vp-c-text-2);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* Contributor grid: centered flex-wrap like GoFrame */
+.contributor-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.contributor-grid a {
+  display: block;
+  transition: transform 0.2s ease;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.contributor-grid a:hover {
+  transform: scale(1.15);
+}
+
+.contributor-grid img {
+  border-radius: 50%;
+  border: 2px solid var(--vp-c-divider);
+  transition: border-color 0.2s;
+}
+
+.contributor-grid a:hover img {
+  border-color: var(--vp-c-brand-1);
+}
+
+/* Card layout for community/sponsor: centered row */
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 0;
+}
+
+.card-item {
+  text-align: center;
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  transition: all 0.3s ease;
+  box-shadow: var(--vp-shadow-1);
+  width: 280px;
+  max-width: 100%;
+}
+
+.card-item:hover {
+  box-shadow: var(--vp-shadow-2);
+  transform: translateY(-2px);
+  border-color: var(--vp-c-brand-1);
+}
+
+.card-item img {
+  border-radius: 12px;
+}
+
+.card-item .card-text {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+  width: 100%;
+  font-weight: 500;
+}
+
+.card-item .card-text a {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+}
+
+/* =====================
+   Footer
+   ===================== */
+.VPFooter {
+  border-top: 1px solid var(--vp-c-gutter);
+  padding: 24px 24px;
+}
+
+.VPFooter .copyright {
+  font-size: 13px;
+}
+
+/* =====================
+   Back to Top
+   ===================== */
+.VPBackToTop {
+  border-radius: 50%;
+  box-shadow: var(--vp-shadow-2);
+}
+
+/* =====================
+   Misc
+   ===================== */
 .icon {
   font-family:
     'Noto Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Apple Color Emoji', emoji;
+}
+
+/* Doc footer prev/next */
+.VPDocFooter .pager-link {
+  border-radius: 10px;
+  border: 1px solid var(--vp-c-divider);
+  transition: all 0.2s ease;
+}
+
+.VPDocFooter .pager-link:hover {
+  border-color: var(--vp-c-brand-1);
+  box-shadow: var(--vp-shadow-1);
+}
+
+/* Edit link */
+.VPDocFooter .edit-link a {
+  font-size: 13px;
+  font-weight: 500;
 }
