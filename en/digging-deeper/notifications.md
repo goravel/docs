@@ -110,6 +110,8 @@ Implement these optional contracts to customize how notifications are sent:
 | `NotificationWithAfterSending` | `AfterSending(notifiable notification.Notifiable, channel string) error` | Run a hook after a successful channel delivery                      |
 | `NotificationWithDatabaseConnection` | `DatabaseConnection() string`                               | The database connection the notification row should be stored on; `""` for the default |
 | `ShouldQueue`               | `OnQueue() string`, `OnConnection() string`                 | Queue the notification instead of sending it synchronously                            |
+| `NotificationWithTries`     | `Tries(channel string) int`                                 | The maximum number of attempts for the given channel; `0` (or not implementing) means no retry policy is declared and the queue worker's `Tries` config applies |
+| `NotificationWithBackoff`   | `Backoff(channel string) []time.Duration`                   | The delay before each retry attempt on channel, in order; the last value repeats. Applies to every retry, whether capped by the notification's own `Tries` or the queue worker's `Tries` |
 
 ```go
 // A custom ID used as the notifications table primary key.
@@ -130,6 +132,16 @@ func (r *OrderShipped) AfterSending(notifiable notification.Notifiable, channel 
 // Store the notification on a non-default connection.
 func (r *OrderProcessed) DatabaseConnection() string {
   return "reporting"
+}
+
+// Cap queued delivery attempts for the channel at 3.
+func (r *OrderProcessed) Tries(channel string) int {
+  return 3
+}
+
+// Wait 10s then 30s between attempts; the last value repeats.
+func (r *OrderProcessed) Backoff(channel string) []time.Duration {
+  return []time.Duration{10 * time.Second, 30 * time.Second}
 }
 ```
 
@@ -497,6 +509,8 @@ err := facades.Notification().Send(user, notifications.NewOrderProcessed("12345"
 // Synchronous: delivered immediately, even for ShouldQueue notifications.
 err := facades.Notification().SendNow(user, notifications.NewOrderProcessed("12345"))
 ```
+
+A queued notification that declares no retry policy (no `Tries`, or `Tries` returning `0`) is no longer single-shot: it falls back to the queue worker's `Tries` config (`facades.Queue().Worker(queue.Args{Tries: ...})`), so the worker determines how many attempts are made. A declared `Backoff` is honored on every retry — including worker-driven ones — with the last value repeating. A notification-declared `Tries` still overrides the worker's.
 
 ## Custom Channels
 

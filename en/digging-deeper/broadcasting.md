@@ -97,8 +97,8 @@ Implement these optional contracts to customize how events are broadcast:
 | `ShouldBroadcastWithConnections`     | `BroadcastConnections() []string`    | The broadcast connections to use                                                                                     |
 | `ShouldBroadcastWithDelay`           | `BroadcastDelay() time.Time`         | Delay the broadcast until a given time                                                                               |
 | `ShouldBroadcastWithTimeout`         | `BroadcastTimeout() time.Duration`   | Bound how long a broadcast may take                                                                                  |
-| `ShouldBroadcastWithTries`           | `BroadcastTries() int`               | The maximum number of attempts for the queued broadcast; `0` (or not implementing the contract) means single-shot    |
-| `ShouldBroadcastWithBackoff`         | `BroadcastBackoff() []time.Duration` | The delay before each retry attempt, in order; the last value repeats. Only effective together with `BroadcastTries` |
+| `ShouldBroadcastWithTries`           | `BroadcastTries() int`               | The maximum number of attempts for the queued broadcast; `0` (or not implementing the contract) means no retry policy is declared and the queue worker's `Tries` config applies    |
+| `ShouldBroadcastWithBackoff`         | `BroadcastBackoff() []time.Duration` | The delay before each retry attempt, in order; the last value repeats. Applies to every retry, whether capped by the event's own `BroadcastTries` or the queue worker's `Tries` |
 
 ```go
 func (e *OrderShipped) BroadcastNow() bool {

@@ -157,24 +157,25 @@ func (r *ProcessPodcast) Handle(args ...any) error {
 
 #### Job Retry
 
-Job classes support an optional `ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration)` method, which is used to control job retry. When a job implementing it fails, the queue worker **releases** the job back to the queue instead of immediately retrying it in-memory. The attempt count is persisted with the reservation, so retries survive worker restarts, respect the release delay, and can be picked up by any worker.
+Job classes support an optional `ShouldRetry(err error, attempt, maxTries int) (retryable bool, delay time.Duration)` method, which is used to control job retry. When a job implementing it fails, the queue worker **releases** the job back to the queue instead of immediately retrying it in-memory. The attempt count is persisted with the reservation, so retries survive worker restarts, respect the release delay, and can be picked up by any worker.
 
 - `retryable = true` — the job is released back to the queue and runs again after `delay`, with its attempt count preserved.
 - `retryable = false` — the job is marked as failed and recorded in the `failed_jobs` table.
+- `maxTries` — the queue worker's configured `Tries` (`queue.Args.Tries` for `Worker(args)`, or `1` for the no-argument `Worker()`). Jobs without their own retry policy fall back to it; jobs with their own policy typically ignore it.
 
 ```go
 // ShouldRetry determines if the job should be retried based on the error.
-func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, delay time.Duration) {
+func (r *ProcessPodcast) ShouldRetry(err error, attempt, maxTries int) (retryable bool, delay time.Duration) {
   return true, 10 * time.Second
 }
 ```
 
-For example, the following job fails on its first two attempts and succeeds on the third:
+For example, the following job fails on its first two attempts and succeeds on the third. It ignores `maxTries` because it declares its own retry policy:
 
 ```go
 // ShouldRetry retries while the attempt count is within the failure window,
 // then gives up and lets the job land in failed_jobs.
-func (r *TestRetryable) ShouldRetry(err error, attempt int) (bool, time.Duration) {
+func (r *TestRetryable) ShouldRetry(err error, attempt, maxTries int) (bool, time.Duration) {
   if attempt <= 2 {
     return true, 100 * time.Millisecond
   }
