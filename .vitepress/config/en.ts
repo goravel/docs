@@ -121,7 +121,7 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: 'v1.16',
           link: 'https://v116.goravel.dev/'
-        },
+        }
       ]
     },
     {
@@ -179,6 +179,10 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
 
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [
+    {
+      text: 'Upgrading To v1.19 From v1.18',
+      link: 'v1.19'
+    },
     {
       text: 'Upgrading To v1.18 From v1.17',
       link: 'v1.18'
@@ -275,12 +279,20 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
       link: 'event'
     },
     {
+      text: 'Broadcasting',
+      link: 'broadcasting'
+    },
+    {
       text: 'File Storage',
       link: 'filesystem'
     },
     {
       text: 'Mail',
       link: 'mail'
+    },
+    {
+      text: 'Notifications',
+      link: 'notifications'
     },
     {
       text: 'Queues',
