@@ -91,7 +91,7 @@ function nav(): DefaultTheme.NavItem[] {
       text: "Bowen's Channel",
       link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
     }, {
-      text: 'DevChalk',
+      text: '<img src="https://devchalk.com/favicon.ico" alt="DevChalk" style="width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;" />DevChalk',
       link: 'https://devchalk.com/goravel'
     }]
   }, {
