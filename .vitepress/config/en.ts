@@ -107,7 +107,7 @@ function nav(): DefaultTheme.NavItem[] {
       text: 'Video Tutorials',
       items: [
         {
-          text: 'YouTube Playlist',
+          text: 'Bowen',
           link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
         },
         {

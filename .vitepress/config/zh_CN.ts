@@ -88,7 +88,7 @@ function nav(): DefaultTheme.NavItem[] {
   }, {
     text: "视频教程",
     items: [{
-      text: "Bilibili 频道",
+      text: "Bowen",
       link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
     }, {
       text: '<img src="https://devchalk.com/favicon.ico" alt="DevChalk" style="width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;" />DevChalk',
