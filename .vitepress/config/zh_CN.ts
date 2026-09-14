@@ -87,7 +87,13 @@ function nav(): DefaultTheme.NavItem[] {
     activeMatch: "/zh_CN/getting-started/"
   }, {
     text: "视频教程",
-    link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
+    items: [{
+      text: "Bowen 频道",
+      link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
+    }, {
+      text: 'DevChalk',
+      link: 'https://devchalk.com/goravel'
+    }]
   }, {
     text: "版本",
     items: [{

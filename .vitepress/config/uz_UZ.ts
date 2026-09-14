@@ -87,7 +87,13 @@ function nav(): DefaultTheme.NavItem[] {
     activeMatch: "/uz_UZ/getting-started/"
   }, {
     text: "Video darsliklar",
-    link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
+    items: [{
+      text: "Bowen's Channel",
+      link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
+    }, {
+      text: 'DevChalk',
+      link: 'https://devchalk.com/goravel'
+    }]
   }, {
     text: "Versiyalar",
     items: [{
