@@ -91,7 +91,7 @@ function nav(): DefaultTheme.NavItem[] {
       text: "YouTube",
       link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
     }, {
-      text: '<img src="https://devchalk.com/favicon.ico" alt="DevChalk" style="width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;" />DevChalk',
+      text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/meta.png" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
       link: 'https://devchalk.com/goravel'
     }]
   }, {
