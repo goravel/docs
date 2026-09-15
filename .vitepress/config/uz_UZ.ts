@@ -87,7 +87,13 @@ function nav(): DefaultTheme.NavItem[] {
     activeMatch: "/uz_UZ/getting-started/"
   }, {
     text: "Video darsliklar",
-    link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
+    items: [{
+      text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>YouTube</span></span>',
+      link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
+    }, {
+      text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
+      link: 'https://devchalk.com/goravel'
+    }]
   }, {
     text: "Versiyalar",
     items: [{
