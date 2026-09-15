@@ -88,7 +88,7 @@ function nav(): DefaultTheme.NavItem[] {
   }, {
     text: "视频教程",
     items: [{
-      text: "YouTube",
+      text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>YouTube</span></span>',
       link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
     }, {
       text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
