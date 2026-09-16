@@ -40,11 +40,22 @@ export const ICON_SUPPORT = wrap(
   '<path d="M12 20.1S4.6 15.6 4.6 10.6a4.2 4.2 0 0 1 7.4-2.7 4.2 4.2 0 0 1 7.4 2.7c0 5-7.4 9.5-7.4 9.5Z"/>'
 )
 
-export const ICON_YOUTUBE =
-  '<img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" class="g-menu-icon" />'
+/**
+ * The video series and the written guides.
+ *
+ * These were two favicons fetched from youtube.com and devchalk.com every time the bar rendered:
+ * a third party request from the navigation, a raster mark that cannot take the row's colour, and
+ * a weight that did not match the icons beside it. They are drawn here instead. The play mark is
+ * deliberately generic, because this row points at YouTube in English and Uzbek and at Bilibili in
+ * Chinese, and a YouTube mark would be wrong on one of them.
+ */
+export const ICON_VIDEO = wrap(
+  '<rect x="2.5" y="4.8" width="19" height="14.4" rx="3"/><path d="M10.2 9.2v5.6l4.8-2.8z"/>'
+)
 
-export const ICON_DEVCHALK =
-  '<img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" class="g-menu-icon" />'
+export const ICON_GUIDE = wrap(
+  '<path d="M5 4.2h9.5L19 8.7v11.1H5z"/><path d="M14.2 4.2v4.6H19M8.2 12.4h7.6M8.2 16h5"/>'
+)
 
 /** One row of a nav menu: an icon, then what the destination is called. */
 export function menuRow(title: string, icon = ''): string {

@@ -1,13 +1,13 @@
 import { defineConfig, type DefaultTheme } from 'vitepress'
 import {
   ICON_CONTRIBUTE,
-  ICON_DEVCHALK,
   ICON_DISCORD,
   ICON_GITHUB,
+  ICON_GUIDE,
   ICON_SUPPORT,
   ICON_TRANSLATE,
+  ICON_VIDEO,
   ICON_X,
-  ICON_YOUTUBE,
   menuRow
 } from './nav-icons'
 
@@ -139,8 +139,8 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: 'Learn',
           items: [
-            { text: menuRow('Video Tutorials', ICON_YOUTUBE), link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf' },
-            { text: menuRow('DevChalk', ICON_DEVCHALK), link: 'https://devchalk.com/goravel' }
+            { text: menuRow('Video Tutorials', ICON_VIDEO), link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf' },
+            { text: menuRow('DevChalk', ICON_GUIDE), link: 'https://devchalk.com/goravel' }
           ]
         },
         {
@@ -156,10 +156,6 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-const ICON_YOUTUBE =
-  '<img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" class="g-menu-icon" />'
-const ICON_DEVCHALK =
-  '<img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" class="g-menu-icon" />'
 
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [

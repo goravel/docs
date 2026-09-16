@@ -91,15 +91,13 @@ Install [air-verse/air](https://github.com/air-verse/air), Goravel has a built-i
 air
 ```
 
-#### 🧰 After Installing Air
+#### After Installing Air
 
 Once you have successfully installed Air, you need to make sure it can be executed properly within your environment.  
 Depending on your setup, Air might not be automatically available as a command.  
 Here are two simple ways to ensure it runs correctly:
 
----
-
-#### 🪄 Option 1: Using a Helper Script (`air.sh`)
+#### Option 1: Using a Helper Script (`air.sh`)
 
 If Air is installed but not recognized as a terminal command, you can create a small helper script that locates and runs it automatically.
 
@@ -134,7 +132,7 @@ $GO_BIN
 
 This ensures Air runs even if your `$PATH` does not include Go binaries.
 
-#### 💡 Option 2: Add Go Bin To PATH (Mac/Linux)
+#### Option 2: Add Go Bin To PATH (Mac/Linux)
 
 If you prefer to run Air directly without a script, you can add Go bin directory to your PATH.
 
@@ -151,8 +149,7 @@ After this setup, you can start your project simply by running:
 air
 ```
 
-#### ✅ Tip
-
+:::tip
 To verify that Air is installed and accessible, run:
 
 ```bash
@@ -160,6 +157,7 @@ which air
 ```
 
 If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the helper script or the path hasn't been configured yet.
+:::
 
 ## Configuration
 

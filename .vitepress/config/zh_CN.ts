@@ -1,13 +1,13 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
 import {
   ICON_CONTRIBUTE,
-  ICON_DEVCHALK,
   ICON_DISCORD,
   ICON_GITHUB,
+  ICON_GUIDE,
   ICON_SUPPORT,
   ICON_TRANSLATE,
+  ICON_VIDEO,
   ICON_X,
-  ICON_YOUTUBE,
   menuRow
 } from './nav-icons'
 export const config = defineConfig({
@@ -135,8 +135,8 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: '学习',
           items: [
-            { text: menuRow('视频教程', ICON_YOUTUBE), link: 'https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0' },
-            { text: menuRow('DevChalk', ICON_DEVCHALK), link: 'https://devchalk.com/goravel' }
+            { text: menuRow('视频教程', ICON_VIDEO), link: 'https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0' },
+            { text: menuRow('DevChalk', ICON_GUIDE), link: 'https://devchalk.com/goravel' }
           ]
         },
         {
@@ -152,10 +152,6 @@ function nav(): DefaultTheme.NavItem[] {
   ]
 }
 
-const ICON_YOUTUBE =
-  '<img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" class="g-menu-icon" />'
-const ICON_DEVCHALK =
-  '<img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" class="g-menu-icon" />'
 
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{
