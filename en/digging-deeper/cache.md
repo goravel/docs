@@ -1,7 +1,5 @@
 # Cache
 
-[[toc]]
-
 ## Introduction
 
 Goravel provides an expandable cache module that can be operated using `facades.Cache()`. Goravel comes with a `memory` driver, for other drivers, please check the corresponding independent extension packages:

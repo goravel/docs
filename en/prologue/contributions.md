@@ -1,7 +1,5 @@
 # Contribution Guide
 
-[[toc]]
-
 Goravel welcomes rich and diverse contributions from different talents, such as coding, translations, articles, tutorials, etc. After completing two features(5 `Good First Issue` == 1 `Feature`), you will be recognized as a core contributor. By completing one feature every three months, you can maintain this status.
 
 Let's make Goravel more efficient together!
@@ -186,7 +184,9 @@ Overwrite existing skills with `--force`:
 goravel skill:install --force goravel-testing
 ```
 
-> **Note**: Existing skills are preserved unless `--force` is used.
+::: info
+Existing skills are preserved unless `--force` is used.
+:::
 
 ## Code of Conduct
 

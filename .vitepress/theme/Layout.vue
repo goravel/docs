@@ -6,6 +6,8 @@ import DocMeta from './components/DocMeta.vue'
 import MethodIndex from './components/MethodIndex.vue'
 import NotFound from './components/NotFound.vue'
 import VersionSelect from './components/VersionSelect.vue'
+import DocsFooterLinks from './components/DocsFooterLinks.vue'
+import LanguageSelect from './components/LanguageSelect.vue'
 
 const { Layout } = DefaultTheme
 const route = useRoute()
@@ -35,9 +37,10 @@ watch(() => route.path, () => nextTick(drawCoverage))
 
 <template>
   <Layout>
-    <template #sidebar-nav-before><VersionSelect /></template>
+    <template #nav-bar-content-after><VersionSelect /><LanguageSelect /></template>
     <template #doc-before><DocMeta /></template>
     <template #aside-outline-after><MethodIndex /></template>
     <template #not-found><NotFound /></template>
+    <template #layout-bottom><DocsFooterLinks /></template>
   </Layout>
 </template>

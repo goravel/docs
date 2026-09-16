@@ -1,7 +1,5 @@
 # Artisan Console
 
-[[toc]]
-
 ## Introduction
 
 Artisan is the CLI tool that comes with Goravel for interacting with the command line. You can access it using `facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
@@ -92,7 +90,9 @@ The return value determines the filtering behavior:
 - **Return `[]string{}`** — all commands are dropped.
 - **Return entries** — only commands whose signature matches an entry are kept.
 
-> Note: The filter applies to all commands including those added via `WithCommands`, so the user cannot bypass the filter by adding commands manually.
+::: info
+The filter applies to all commands including those added via `WithCommands`, so the user cannot bypass the filter by adding commands manually.
+:::
 
 ### Command Structure
 

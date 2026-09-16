@@ -1,7 +1,5 @@
 # Installation
 
-[[toc]]
-
 ## Server Requirements
 
 - Golang >= 1.23

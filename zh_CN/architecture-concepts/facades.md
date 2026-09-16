@@ -1,7 +1,5 @@
 # Facades
 
-[[toc]]
-
 ## 简介
 
 `facades` 为应用的核心功能提供一个「静态」接口，能够提供更加灵活、更加优雅、易于测试的语法。 Goravel 的所有 `facades` 都定义在 `app/facades` 文件夹下：

@@ -1,7 +1,5 @@
 # Relationships
 
-[[toc]]
-
 ## Introduction
 
 It's common for database tables to be interconnected. For instance, a blog post may have many comments, or an order may be linked to the user who placed it. `Orm` simplifies managing and dealing with such relationships, and it can handle various common relationships:

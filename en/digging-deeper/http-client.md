@@ -1,7 +1,5 @@
 # HTTP Client
 
-[[toc]]
-
 ## Introduction
 
 In software development, there are many instances when you need to call an API to fetch data—

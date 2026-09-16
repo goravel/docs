@@ -1,7 +1,5 @@
 # Grpc
 
-[[toc]]
-
 ## Kirish
 
 Grpc moduli `facades.Grpc()` orqali boshqarilishi mumkin. Goravel gRPC xizmatlarini yaratish va ulardan foydalanishning nafis usulini taqdim etadi, ham server, ham mijoz tomonlarini qo'llab-quvvatlaydi.

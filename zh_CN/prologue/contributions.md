@@ -1,7 +1,5 @@
 # 贡献指南
 
-[[toc]]
-
 Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、文章、教程等。 完成两个 `Feature`（5 个 `Good First Issue` == 1 个 `Feature`）后，你将成为核心开发者。 之后每三个月至少完成一个 `Feature`，可以保持这个头衔。
 
 让我们一起将 Goravel 变得更高效！
@@ -184,7 +182,9 @@ goravel skill:install --path ~/goravel-skills
 goravel skill:install --force goravel-testing
 ```
 
-> **注意**：除非使用 `--force`，否则已有技能将被保留。
+::: info
+除非使用 `--force`，否则已有技能将被保留。
+:::
 
 ## 行为准则
 

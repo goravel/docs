@@ -1,7 +1,5 @@
 # Ko‘rishlar
 
-[[toc]]
-
 ## Kirish
 
 Albatta, marshrutlaringiz va kontrollerlaringizdan to‘liq HTML hujjatlarini to‘g‘ridan-to‘g‘ri qaytarish amaliy emas. Yaxshiyamki, ko‘rishlar barcha HTML kodimizni alohida fayllarga joylashtirishning qulay usulini taqdim etadi. Ko‘rishlar kontroller/dastur mantiqini taqdimot mantiqidan ajratadi va ular `resources/views` katalogida saqlanadi.

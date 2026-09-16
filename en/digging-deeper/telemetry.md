@@ -1,7 +1,5 @@
 # Telemetry
 
-[[toc]]
-
 ## Introduction
 
 Goravel provides an observability module built on top of [OpenTelemetry](https://opentelemetry.io) that can be operated using `facades.Telemetry()`. It allows you to collect traces, metrics, and logs from your application and export them to any OTLP-compatible backend, such as Jaeger, Prometheus, Grafana, or Datadog.

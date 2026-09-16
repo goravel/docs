@@ -1,12 +1,12 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
 import {
+  ICON_BILIBILI,
   ICON_CONTRIBUTE,
+  ICON_DEVCHALK,
   ICON_DISCORD,
   ICON_GITHUB,
-  ICON_GUIDE,
   ICON_SUPPORT,
   ICON_TRANSLATE,
-  ICON_VIDEO,
   ICON_X,
   menuRow
 } from './nav-icons'
@@ -107,7 +107,9 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-      text: '文档',
+      // On a docs page the wordmark already reads Goravel / Docs, so the shell hides this
+      // row there. It exists for the homepage, which has no such lockup.
+      text: "文档",
       link: '/zh_CN/getting-started/installation',
       activeMatch: '/zh_CN/getting-started/'
     },
@@ -127,7 +129,6 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: '联系',
           items: [
-            { text: menuRow('GitHub', ICON_GITHUB), link: 'https://github.com/goravel/goravel' },
             { text: menuRow('Discord', ICON_DISCORD), link: 'https://discord.gg/cFc5csczzS' },
             { text: menuRow('X', ICON_X), link: 'https://x.com/goravel_dev' }
           ]
@@ -135,8 +136,8 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: '学习',
           items: [
-            { text: menuRow('视频教程', ICON_VIDEO), link: 'https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0' },
-            { text: menuRow('DevChalk', ICON_GUIDE), link: 'https://devchalk.com/goravel' }
+            { text: menuRow('视频教程', ICON_BILIBILI), link: 'https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0' },
+            { text: menuRow('DevChalk', ICON_DEVCHALK), link: 'https://devchalk.com/goravel' }
           ]
         },
         {

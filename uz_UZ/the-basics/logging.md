@@ -1,7 +1,5 @@
 # Loglash
 
-[[toc]]
-
 ## Kirish
 
 Ilovaning ishlash holatini tushunish uchun Goravel kuchli log xizmatini taqdim etadi, u log xabarlari va tizim xatolarini `facades.Log()` orqali fayl yoki boshqa kanallarga yozishi mumkin.

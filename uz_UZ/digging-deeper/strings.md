@@ -1,7 +1,5 @@
 # Matnllar
 
-[[toc]]
-
 ## Kirish
 
 Goravel sizga satrlarni osongina boshqarish imkonini beruvchi ravon satrlarni boshqarish kutubxonasini taqdim etadi. Ravon Strings sizga bir nechta satr operatsiyalarini usul zanjiri orqali birlashtirish imkonini beradi, bu yerda usullarning aksariyati qo'shimcha usullarni zanjirlash imkonini beruvchi `support/str.String` misolini qaytaradi. Zanjirli operatsiyalarni qo'llagandan so'ng, oxirgi satr qiymatini olish uchun siz asosiy "satr" qiymatini qaytaradigan "String" usulini chaqirishingiz mumkin.

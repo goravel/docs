@@ -1,7 +1,5 @@
 # Marshrutlash
 
-[[toc]]
-
 ## Kirish
 
 Goravel marshrutlash moduli `facades.Route()` orqali boshqarilishi mumkin.
@@ -185,7 +183,9 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **Eslatma**: Middleware'ni chiqarib tashlash middleware'larni aniqlash uchun `Signature()` metodidan foydalanadi. `WithoutMiddleware` to'g'ri ishlashi uchun har bir middleware noyob imzo qaytarishiga ishonch hosil qiling. O'rnatilgan freymvork middleware'lari allaqachon noyob imzolarni taqdim etadi.
+::: warning
+Middleware'ni chiqarib tashlash middleware'larni aniqlash uchun `Signature()` metodidan foydalanadi. `WithoutMiddleware` to'g'ri ishlashi uchun har bir middleware noyob imzo qaytarishiga ishonch hosil qiling. O'rnatilgan freymvork middleware'lari allaqachon noyob imzolarni taqdim etadi.
+:::
 
 ## Barcha marshrutlarni olish
 

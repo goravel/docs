@@ -1,7 +1,5 @@
 # AI SDK
 
-[[toc]]
-
 ## Introduction
 
 The AI SDK provides a unified API for interacting with AI providers in Goravel applications. It introduces an `AI` facade, stateful conversations, agent classes, provider/model options, prompt attachments, streaming responses, image generation, audio generation, and transcription.

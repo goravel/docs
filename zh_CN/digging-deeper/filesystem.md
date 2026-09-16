@@ -1,7 +1,5 @@
 # 文件存储
 
-[[toc]]
-
 ## 简介
 
 Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Minio 和 Cloudinary 提供了简单易用的驱动程序。 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。 框架自带 `local` 驱动，如需其他驱动，请查看对应的独立扩展包：

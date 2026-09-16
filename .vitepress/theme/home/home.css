@@ -24,25 +24,29 @@
   box-sizing: border-box;
 }
 
-/* ------------------------------------------------------------------ type */
+/* ------------------------------------------------------------------ type
+   Display sizes take a wide cut of Mona Sans; the docs stay at normal width. Width is what
+   separates the two voices, so no second typeface is needed to do it. */
 .g-home .g-display {
   font-size: 84px;
   line-height: 82px;
   font-weight: 700;
-  letter-spacing: -0.04em;
+  font-stretch: 112%;
+  letter-spacing: -0.045em;
   margin: 0;
   text-wrap: balance;
 }
 
 .g-home .g-display .light {
-  font-weight: 500;
+  font-weight: 450;
 }
 
 .g-home .g-h2 {
   font-size: 48px;
   line-height: 52px;
-  font-weight: 600;
-  letter-spacing: -0.035em;
+  font-weight: 700;
+  font-stretch: 108%;
+  letter-spacing: -0.04em;
   margin: 0;
   text-wrap: balance;
 }
@@ -50,7 +54,7 @@
 .g-home .g-h3 {
   font-size: 28px;
   line-height: 34px;
-  font-weight: 600;
+  font-weight: 650;
   letter-spacing: -0.025em;
   margin: 0;
 }
@@ -121,7 +125,9 @@
   border: 1px solid transparent;
   border-radius: 3px;
   background: var(--g-cyan);
-  color: var(--g-white);
+  /* Ink, not white. White on #009FE8 measures 2.95:1, under the 4.5:1 a label needs; ink on the
+     same cyan measures 6.9:1. The token already said ink, this rule was overriding it. */
+  color: var(--g-ink);
   font-size: 16px;
   font-weight: 600;
   text-decoration: none;
@@ -130,6 +136,7 @@
 
 .g-home .g-button:hover {
   background: var(--g-cyan-text);
+  color: var(--g-white);
 }
 
 .g-home .g-button.is-outline {
@@ -258,17 +265,6 @@
   padding: 0;
   background: var(--g-line);
 }
-
-.g-proof-join svg {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 0 10px;
-  background: var(--g-white);
-  box-sizing: content-box;
-}
-
 .g-proof-pane .g-code {
   padding-top: 16px;
   font-size: 13.5px;
@@ -285,6 +281,13 @@
 }
 
 .g-proof-join svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0 10px;
+  background: var(--g-white);
+  box-sizing: content-box;
   fill: var(--g-cyan);
 }
 
@@ -409,8 +412,6 @@
   align-items: center;
 }
 
-
-
 .g-panel.is-layers {
   grid-template-columns: 460px minmax(0, 1fr);
 }
@@ -456,11 +457,6 @@
 .g-code .ln.is-pair {
   background: var(--g-cyan-tint);
   color: var(--g-ink);
-}
-
-.g-code.is-plain .ln {
-  padding: 0 14px;
-  margin: 0 -14px;
 }
 
 .g-code .ln.is-pair::before {
@@ -1179,20 +1175,19 @@
   border-bottom: 1px solid var(--g-line) !important;
 }
 
-/* the drop panel stands on the homepage's grid, the same as the bar above it */
-.Layout:has(.g-home) {
-  --g-menu-inset: var(--g-home-margin, 96px);
-}
-
 .Layout:has(.g-home) .VPNavBar .wrapper {
   padding: 0 !important;
 }
 
+/* The bar is one object across the whole site, so it keeps the shell's inset here too. It used
+   to take the homepage's 96px content margin, which meant the wordmark and the whole utility
+   cluster jumped 56px the moment a reader went from the homepage into the docs. The hero keeps
+   its own margin: the hero is content, the bar is shell. */
 .Layout:has(.g-home) .VPNavBar .container {
   width: 100% !important;
-  max-width: 1440px !important;
-  margin: 0 auto !important;
-  padding: 0 var(--g-home-margin, 96px) !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 var(--g-shell-inset) !important;
   box-sizing: border-box !important;
 }
 
@@ -1312,7 +1307,6 @@
   padding-right: var(--g-margin);
 }
 
-
 .g-count {
   padding-top: 24px;
   border-top: 1px solid var(--g-line);
@@ -1342,20 +1336,9 @@ html.g-home-snap {
   }
 }
 
-/* the bar's search is the same outlined control as the secondary button */
-@media (min-width: 961px) {
-  .Layout:has(.g-home) .VPNavBarSearch .DocSearch-Button {
-    height: 38px !important;
-    border: 1px solid var(--g-line) !important;
-    border-radius: 3px !important;
-    background: var(--g-white) !important;
-  }
-
-  .Layout:has(.g-home) .VPNavBarSearch .DocSearch-Button:hover {
-    border-color: var(--g-grey) !important;
-    background: var(--g-white) !important;
-  }
-}
+/* The homepage used to give the bar's search an outlined white treatment of its own, so the
+   same control looked like two different things depending on which page you were on. The bar
+   is one object across the site; its search is styled once, in the shell. */
 
 /* the page carries its own footer, so the theme's is a second copy of the same line */
 .Layout:has(.g-home) .VPFooter {

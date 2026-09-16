@@ -1,7 +1,5 @@
 # Task Scheduling
 
-[[toc]]
-
 ## Introduction
 
 In the past, you might need to create a cron configuration entry for each task that needed scheduling on your server. However, this approach can quickly become a pain as your task schedule is not in source control, and you have to SSH into your server to view or add/edit cron entries.

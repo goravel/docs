@@ -1,7 +1,5 @@
 # Tuzish
 
-[[toc]]
-
 ## Tuzish buyrug‘i
 
 Goravel loyihasini quyidagi buyruq orqali tuzish mumkin:
@@ -126,7 +124,9 @@ docker-compose build
 docker-compose up
 ```
 
-> Eslatma: Agar tashqi kirish kerak bo‘lsa, APP_HOST ni 0.0.0.0 ga o‘zgartirishingiz kerak
+::: tip
+Agar tashqi kirish kerak bo‘lsa, APP_HOST ni 0.0.0.0 ga o‘zgartirishingiz kerak
+:::
 
 ## Vaqt mintaqasini o‘rnatish
 

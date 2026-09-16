@@ -1,7 +1,5 @@
 # Telemetry
 
-[[toc]]
-
 ## 简介
 
 Goravel 提供了基于 [OpenTelemetry](https://opentelemetry.io) 构建的可观测性模块，可通过 `facades.Telemetry()` 操作。它允许你从应用程序中收集追踪、指标和日志，并将其导出到任何兼容 OTLP 的后端，如 Jaeger、Prometheus、Grafana 或 Datadog。

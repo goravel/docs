@@ -1,7 +1,5 @@
 # Getting Started
 
-[[toc]]
-
 ## Introduction
 
 Goravel provides a very simple and easy-to-use database interaction, developers can use `facades.Orm()` to operate. Please refer to [Configure Database](../database/getting-started) before starting.
@@ -1057,7 +1055,9 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 }
 ```
 
-> Note: Just register the events you need. Model events are not dispatched when doing batch operations through Orm.
+::: warning
+Just register the events you need. Model events are not dispatched when doing batch operations through Orm.
+:::
 
 ### Observers
 
@@ -1115,7 +1115,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-> Note: If you set `DispatchesEvents` and `Observer` at the same time, only `DispatchesEvents` will be applied.
+::: warning
+If you set `DispatchesEvents` and `Observer` at the same time, only `DispatchesEvents` will be applied.
+:::
 
 #### Parameter in Observer
 

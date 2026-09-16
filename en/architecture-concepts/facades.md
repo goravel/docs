@@ -1,7 +1,5 @@
 # Facades
 
-[[toc]]
-
 ## Introduction
 
 `facades` provide a "static" interface for the core functionality of the application and provide a more flexible, more elegant, and easy-to-test syntax. All `facades` of Goravel are defined under the `app/facades` folder:

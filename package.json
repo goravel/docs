@@ -16,8 +16,14 @@
   "devDependencies": {
     "@nolebase/vitepress-plugin-enhanced-mark": "^2.15.1",
     "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.15.1",
+    "@shikijs/transformers": "^4.4.3",
     "@shikijs/vitepress-twoslash": "^3.2.1",
     "@types/node": "^22.14.0",
+    "markdown-it-deflist": "^4.0.0",
+    "markdown-it-footnote": "^4.0.0",
+    "markdown-it-sub": "^2.0.0",
+    "markdown-it-sup": "^2.0.0",
+    "markdown-it-task-lists": "^2.1.1",
     "prettier": "^3.6.2",
     "sass": "^1.89.2",
     "vitepress": "2.0.0-alpha.4"

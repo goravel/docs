@@ -1,7 +1,5 @@
 # Bog'lanishlar
 
-[[toc]]
-
 ## Kirish
 
 Ma'lumotlar bazasi jadvallari o'zaro bog'langan bo'lishi odatiy holdir. Masalan, blog postida ko'p sharhlar bo'lishi mumkin yoki buyurtma uni joylagan foydalanuvchiga bog'langan bo'lishi mumkin. `Orm` bunday bog'lanishlarni boshqarish va ular bilan ishlashni osonlashtiradi va u turli keng tarqalgan bog'lanish turlarini qo'llab-quvvatlaydi:

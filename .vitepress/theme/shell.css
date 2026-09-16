@@ -138,7 +138,9 @@
     padding: 0 !important;
   }
 
-  /* the wordmark column is the sidebar column: one rule, full height */
+  /* The wordmark column is the sidebar column: one rule, full height. Its left inset is the
+     shell's, and it is the same on every page: the bar is a fixed part of the shell, so the
+     wordmark must not move when the reader goes from the homepage into the docs. */
   .VPNavBar.has-sidebar .container > .title {
     width: var(--vp-sidebar-width) !important;
     padding: 0 24px 0 var(--g-shell-inset) !important;
@@ -169,11 +171,14 @@
     width: auto !important;
   }
 
-  /* the section the reader is in, said quietly. The homepage is not in a section. */
+  /* The section the reader is in, read as one lockup with the wordmark: Goravel / Docs. It used
+     to float at the far right of the title area, which made it a second badge rather than part
+     of the name, and the bar then repeated the word in its first nav item. The homepage is not
+     in a section and gets the wordmark alone. */
   .VPNavBar.has-sidebar .container > .title .VPNavBarTitle::after {
-    content: 'Docs';
-    margin-left: auto;
-    padding-left: 16px;
+    content: '/ Docs';
+    margin-left: 14px;
+    padding-left: 0;
     font-family: var(--vp-font-family-mono);
     font-size: 11px;
     font-weight: 500;
@@ -204,15 +209,10 @@
   .VPNavBar:not(.has-sidebar) .content-body {
     align-items: center !important;
     background: var(--g-white) !important;
-    padding: 0 var(--g-shell-inset) 0 0 !important;
+    padding: 0 !important;
     box-sizing: border-box;
     height: calc(100% - 1px);
   }
-
-  .VPNavBar:not(.has-sidebar) .container > .title {
-    height: calc(100% - 1px);
-  }
-
   .VPNavBar:not(.has-sidebar) {
     border-bottom: 1px solid var(--g-line);
   }
@@ -271,10 +271,11 @@
     transition: color 0.15s ease, transform 0.2s ease;
   }
 
-  /* the chevron answers when its menu is open, and only then */
+  /* The chevron answers by darkening, not by turning cyan. It is a state marker; when it took
+     the accent it drew more attention than the label it belongs to. */
   .VPNavBarMenuGroup:hover .vpi-chevron-down,
   .VPNavBarTranslations:hover .vpi-chevron-down {
-    color: var(--g-cyan-text);
+    color: var(--g-ink);
   }
 
   /* search first, utilities after it, both hard against the page's right inset */
@@ -290,19 +291,71 @@
     padding: 0 !important;
   }
 
-  .VPNavBarTranslations,
+  /* On a docs page the bar carries no destinations, which left roughly 700px of nothing
+     between the wordmark and the search. Search is the one thing a reader reaches for while
+     reading, so it starts where the article's text starts and runs to the utilities: the gap
+     is filled by the control that earns it, and its left edge lands on the page's grid. */
+  .VPNavBar.has-sidebar .VPNavBarSearch {
+    flex: 0 1 var(--g-measure) !important;
+    width: auto !important;
+    max-width: none !important;
+    /* the gutter from the sidebar rule, so the box starts on the same line as the article's
+       first character, and it is exactly as wide as the column of text it searches */
+    margin-left: var(--g-gutter) !important;
+    /* the row is packed to its end, so this takes the slack and sends the utilities right */
+    margin-right: auto !important;
+  }
+
+  /* Every page puts the wordmark at the shell inset, sidebar or not. The 404 was reaching it
+     through a wrapper inset plus a title inset and landing at neither page's value. */
+  .VPNavBar:not(.has-sidebar) .wrapper {
+    padding: 0 !important;
+  }
+
+  .VPNavBar:not(.has-sidebar) .container {
+    padding: 0 var(--g-shell-inset) !important;
+  }
+
+  .VPNavBar:not(.has-sidebar) .container > .title {
+    height: calc(100% - 1px);
+    padding-left: 0 !important;
+  
+}
+
+  /* On a documentation page the sidebar IS the navigation, so the bar carries none of the
+     site's destinations. It carries only what a reader needs while reading: where they are,
+     a way to search, which release this is, a language, and the source. Repeating
+     Docs / Guides / Framework / Community above a sidebar that already lists every page was
+     the bar describing itself twice. The wordmark goes home. */
+  .VPNavBar.has-sidebar .VPNavBarMenu {
+    display: none !important;
+  }
+
+  .VPNavBar .goravel-lang {
+    order: 3;
+    margin: 0 0 0 4px !important;
+  }
+
+  /* The version sits with the utilities, not with the destinations: it qualifies what you are
+     reading, it is not somewhere to go. Reading order right of the search is
+     version, language, project. */
+  .VPNavBar .goravel-version {
+    order: 3;
+    margin: 0 0 0 18px !important;
+  }
+
   .VPNavBarSocialLinks,
   .VPNavBarExtra,
   .VPNavBar .VPSocialLinks {
-    order: 3;
+    order: 4;
   }
 
-  /* three groups, three distances: the search, then the language, then the project.
-     Nothing is divided by a line; the gaps do the grouping. */
+  /* four groups, three distances: the search, then the version, then the language, then the
+     project. Nothing is divided by a line; the gaps do the grouping. */
+  /* The language is drawn by LanguageSelect, built the same way as the version chooser, so the
+     default theme's glyph control is retired rather than restyled. */
   .VPNavBarTranslations {
-    display: flex !important;
-    align-items: center;
-    margin: 0 0 0 20px !important;
+    display: none !important;
   }
 
   .VPNavBar .VPNavBarSocialLinks {
@@ -330,8 +383,6 @@
 /* the utilities are 34px targets. They sit at one weight, in one grey, and take the page's
    accent when reached for, the same as every link in the bar. */
 .VPNavBar .VPSocialLink,
-.VPNavBar .VPNavBarTranslations .button,
-.VPNavBar .VPNavBarTranslations .button .text,
 .VPNavBar .VPNavBarExtra .button {
   width: var(--g-control) !important;
   height: var(--g-control) !important;
@@ -340,23 +391,10 @@
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.VPNavBar .VPNavBarTranslations .button .text {
-  width: auto !important;
-  height: auto !important;
-  display: flex;
-  align-items: center;
-}
-
 .VPNavBar .VPSocialLink:hover,
-.VPNavBar .VPNavBarTranslations:hover .button,
-.VPNavBar .VPNavBarTranslations:hover .button .text,
 .VPNavBar .VPNavBarExtra:hover .button {
-  background: var(--g-soft);
-  color: var(--g-cyan-text) !important;
-}
-
-.VPNavBar .VPNavBarTranslations:hover .button .text {
-  background: none;
+  background: var(--g-hover);
+  color: var(--g-ink) !important;
 }
 
 .VPNavBar .VPSocialLink > svg,
@@ -503,32 +541,7 @@
   text-transform: uppercase;
   color: var(--g-grey) !important;
   background: var(--g-white) !important;
-}
-
-.DocSearch-Hit a {
-  border-radius: 0 !important;
-  padding: 0 20px !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
-
-.DocSearch-Hit[aria-selected='true'] a {
-  background: var(--g-soft) !important;
-}
-
-.DocSearch-Hit-title {
-  font-size: 14px;
-}
-
-.DocSearch-Hit-path {
-  font-size: 12px;
-  color: var(--g-grey);
-}
-
-.DocSearch-Hit-icon,
-.DocSearch-Hit-action {
-  color: var(--g-grey);
-}
+}.DocSearch-Hit-icon,
 
 .DocSearch-Footer {
   height: 48px;
@@ -673,22 +686,25 @@
 }
 
 /* ------------------------------------------------------------------ 5. the version control */
+/* The version now sits in the bar, where it applies to the whole site rather than to the
+   sidebar it happened to be parked above. It is a control, not a badge: no fill at rest, so it
+   does not read as a card in a shell that has no cards. */
 .goravel-version {
   position: relative;
   display: flex;
-  margin: 0 0 24px;
+  margin: 0;
 }
 
 .goravel-version .trigger {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   width: auto;
-  height: 30px;
-  padding: 0 9px 0 10px;
+  height: var(--g-control);
+  padding: 0 8px;
   border: 0;
   border-radius: 2px;
-  background: var(--g-soft);
+  background: transparent;
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
@@ -707,10 +723,10 @@
 
 .goravel-version .note {
   font-family: var(--vp-font-family-mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
+  font-size: 10px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--g-cyan-text);
+  color: var(--g-grey);
 }
 
 .goravel-version .caret {
@@ -730,22 +746,23 @@
 
 .goravel-version .menu {
   position: absolute;
-  left: 0;
-  top: 36px;
+  right: 0;
+  left: auto;
+  top: calc(var(--g-control) + 8px);
   z-index: 40;
-  min-width: 208px;
+  min-width: 168px;
   padding: 4px;
   border: 1px solid var(--g-line);
   border-radius: 2px;
   background: var(--g-white);
-  box-shadow: 0 10px 28px rgba(16, 24, 32, 0.1);
+  box-shadow: 0 4px 12px rgba(16, 24, 32, 0.06);
 }
 
 .goravel-version .option {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 10px;
+  padding: 7px 10px 7px 8px;
   border: 0;
   border-radius: 2px;
   font-family: var(--vp-font-family-mono);
@@ -764,8 +781,22 @@
   background: var(--g-soft);
 }
 
+/* the lattice cell marks the version you are on; nothing else showed it */
+.goravel-version .option::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  transform: rotate(45deg);
+  background: transparent;
+}
+
 .goravel-version .option.selected {
   color: var(--g-cyan-text);
+}
+
+.goravel-version .option.selected::before {
+  background: var(--g-cyan);
 }
 
 /* ------------------------------------------------------------------ 6. the outline rail */
@@ -823,7 +854,7 @@
 }
 
 .VPDocAsideOutline .outline-title {
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .VPDocOutlineItem .outline-link {
@@ -869,7 +900,7 @@
 .goravel-methods .head {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .goravel-methods .filter {
@@ -930,12 +961,11 @@
   background: var(--g-cyan);
 }
 
-/* the outline carries the page's headings at every width that has room for it, so the
-   article does not print them a second time */
-@media (min-width: 960px) {
-  .VPDoc.has-aside .table-of-contents {
-    display: none;
-  }
+/* The page's headings are already reachable at every width: the outline carries them beside
+   the article on a wide screen, and the local nav bar's "On this page" carries them on a
+   phone. A [[toc]] in the markdown would be a third copy, so it never renders. */
+.vp-doc .table-of-contents {
+  display: none;
 }
 
 /* on a phone it is the page's own index: quiet type, not a wall of links */
@@ -1014,11 +1044,23 @@
   transform: rotate(45deg);
 }
 
+/* The outline was the one region of the page carrying no horizontal rule, so its label floated
+   with nothing under it. The label now sits on a rule that runs from the column rule on its left
+   to the edge of the screen on its right, the same way the sidebar's group rules run from the
+   screen edge to the sidebar rule. */
 .VPDocAsideOutline .outline-title,
 .goravel-methods .label {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.VPDocAsideOutline .outline-title,
+.goravel-methods .head {
+  margin-left: calc(var(--g-rail) * -1);
+  margin-right: calc(var(--g-shell-inset) * -1);
+  padding: 0 var(--g-shell-inset) 12px var(--g-rail);
+  border-bottom: 1px solid var(--g-line);
 }
 
 .VPDocAsideOutline .outline-title::before,
@@ -1105,8 +1147,29 @@
     border-bottom: 1px solid var(--g-line);
   }
 
+  /* One inset, carried by the container. The wrapper was adding 24px on the left and 8px on
+     the right on top of it, so the bar sat at 44/28 on a docs page and 24/24 on the homepage. */
+  .VPNavBar .wrapper {
+    padding: 0 !important;
+  }
+
+  /* On a phone only the version stays in the bar: the language is reachable from the menu, and
+     two choosers plus two icons crowded a 390px row. */
+  .VPNavBar .goravel-lang {
+    display: none !important;
+  }
+
+  .VPNavBar .goravel-version {
+    margin-left: auto !important;
+    margin-right: 4px !important;
+  }
+
+  .VPNavBar .goravel-version .trigger {
+    padding: 0 6px;
+  }
+
   .VPNavBar .container {
-    padding: 0 20px !important;
+    padding: 0 24px !important;
   }
 
   .VPNavBar .container > .title {
@@ -1487,12 +1550,26 @@
   color: var(--g-cyan-text) !important;
 }
 
-/* an icon a row may carry sits back with the type */
+/* An icon a row may carry sits back with the type. A brand mark gets a hair more room and an
+   avatar more again, because a painted mark needs size to read at all. This rule used to pin
+   every mark to 16px with !important, which silently flattened those two cases. */
 .VPNavBar .VPMenu .link img,
 .VPNavBar .VPMenu .link svg {
-  width: 16px !important;
-  height: 16px !important;
+  width: 16px;
+  height: 16px;
   border-radius: 2px;
+}
+
+.VPNavBar .VPMenu .link svg.is-brand {
+  width: 17px;
+  height: 17px;
+  border-radius: 0;
+}
+
+.VPNavBar .VPMenu .link img.is-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
 }
 
 /* The icon's own direction is right, and the theme turns it a quarter to point down. Both
@@ -1504,7 +1581,7 @@
 .VPNavBar .VPNavBarMenuGroup:hover .vpi-chevron-down,
 .VPNavBar .VPNavBarTranslations:hover .vpi-chevron-down {
   transform: rotate(270deg) !important;
-  color: var(--g-cyan-text);
+  color: var(--g-ink);
 }
 
 /* a little more air between the links than the default */
@@ -1584,6 +1661,8 @@
 }
 
 .DocSearch-Hit a {
+  border-radius: 0 !important;
+  box-shadow: none !important;
   background: var(--g-white) !important;
   padding: 0 20px !important;
 }
@@ -1598,6 +1677,7 @@
 }
 
 .DocSearch-Hit-path {
+  color: var(--g-grey);
   font-size: 12.5px;
 }
 
@@ -1722,11 +1802,16 @@
   .VPNavBar .VPNavBarMenuGroup .VPMenu .items {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(184px, max-content);
-    justify-content: start;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 var(--g-menu-inset, var(--g-shell-inset));
+    /* Equal columns across the grid. They used to be sized to their content and pushed to the
+       left, which left most of a 1440px panel empty and made the drop read as an unfinished
+       section of the page rather than a menu. */
+    grid-auto-columns: minmax(0, 1fr);
+    /* The panel stands on the bar's own edges: its first column starts where the wordmark
+       starts and its last ends where the project mark ends. Centred inside a narrower box it
+       lined up with nothing in the bar above it. */
+    max-width: none;
+    margin: 0;
+    padding: 0 var(--g-shell-inset);
     box-sizing: border-box;
     align-items: stretch;
   }
@@ -1734,7 +1819,7 @@
   /* the padding lives on the columns, so each divider runs from the bar's rule at the
      top of the panel to the panel's own rule at the bottom. Nothing stops in mid air. */
   .VPNavBar .VPNavBarMenuGroup .VPMenu .VPMenuGroup {
-    padding: 36px 32px 40px !important;
+    padding: 28px 32px 32px !important;
     margin: 0 !important;
     border: 0 !important;
     border-left: 1px solid var(--g-line) !important;
@@ -1798,18 +1883,52 @@
 }
 
 /* the icon sits back in grey and follows the label to the accent */
+/* A mark that belongs to Goravel: the shell's grey, answering to the row. */
 .g-menu-icon {
   width: 16px;
   height: 16px;
-  border-radius: 3px;
   flex-shrink: 0;
   display: block;
   color: var(--g-grey);
-  transition: color 0.12s ease;
+  transition: color 0.12s ease, opacity 0.12s ease;
 }
 
 .VPNavBar .VPMenu .link:hover .g-menu-icon {
   color: var(--g-cyan-text);
+}
+
+/* A mark that belongs to somebody else keeps their colour, set inline on the svg, so neither
+   the rule above nor the hover rule can reach it. It sits a shade back until the row is
+   reached for, so a menu of brand colours does not shout. */
+.g-menu-icon.is-brand {
+  width: 17px;
+  height: 17px;
+  opacity: 0.82;
+}
+
+.VPNavBar .VPMenu .link:hover .g-menu-icon.is-brand {
+  opacity: 1;
+}
+
+/* DevChalk's mark is a painting, not a glyph: it reads as an avatar at this size. */
+.g-menu-icon.is-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  object-fit: cover;
+  opacity: 0.92;
+}
+
+.VPNavBar .VPMenu .link:hover .g-menu-icon.is-avatar {
+  opacity: 1;
+}
+
+/* the row keeps one optical line whatever size the mark is */
+.g-menu-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 20px;
 }
 
 .g-menu-title {
@@ -1823,6 +1942,8 @@
 
 /* the locale switch keeps the small sheet: it is a control, not a section */
 .VPNavBar .VPNavBarTranslations .VPMenu {
+  right: 0;
+  left: auto;
   min-width: 184px;
   padding: 8px !important;
   border: 1px solid var(--g-line) !important;
@@ -1837,4 +1958,95 @@
 
 .VPNavBar .VPNavBarTranslations .VPMenu .link:hover {
   background: var(--g-soft) !important;
+}
+
+/* ==================================================================
+   the documentation footer
+   The bar on a docs page carries no destinations, so the community
+   lives here. Its columns stand on the article's grid and its rules
+   run from the screen's edge to the screen's edge.
+   ================================================================== */
+.g-docs-foot {
+  border-top: 1px solid var(--g-line);
+  background: var(--g-white);
+}
+
+.g-docs-foot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 0 var(--g-shell-inset);
+}
+
+/* the sidebar keeps its column all the way down the page, so the footer starts where the
+   article starts rather than underneath it */
+@media (min-width: 960px) {
+  .g-docs-foot-grid {
+    padding-left: var(--g-gutter);
+  }
+
+  .g-docs-foot {
+    margin-left: var(--vp-sidebar-width);
+    border-left: 1px solid var(--g-line);
+  }
+}
+
+.g-docs-foot-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 40px 0 48px 32px;
+  border-left: 1px solid var(--g-line);
+}
+
+.g-docs-foot-col:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.g-docs-foot .label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 6px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-grey);
+}
+
+.g-docs-foot .label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  transform: rotate(45deg);
+  background: var(--g-construct);
+}
+
+.g-docs-foot a {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--g-grey);
+  text-decoration: none;
+  width: fit-content;
+  transition: color 0.15s ease;
+}
+
+.g-docs-foot a:hover {
+  color: var(--g-ink);
+}
+
+@media (max-width: 767px) {
+  .g-docs-foot-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 32px 24px 36px;
+  }
+
+  .g-docs-foot-col {
+    padding: 0;
+    border-left: 0;
+  }
 }

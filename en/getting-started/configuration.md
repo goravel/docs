@@ -1,7 +1,5 @@
 # Configuration
 
-[[toc]]
-
 ## Introduction
 
 All configuration files of the Goravel framework are stored in the `config` directory. You can view specific instructions and configure them flexibly according to project needs.

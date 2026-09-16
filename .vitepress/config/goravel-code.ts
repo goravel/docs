@@ -124,7 +124,7 @@ export const goravelLight = theme('goravel-light', 'light', {
   punctuation: '#68747d',
   variable: '#101820',
   inserted: '#0077b3',
-  deleted: '#68747d'
+  deleted: '#b02b2b'
 })
 
 export const goravelDark = theme('goravel-dark', 'dark', {

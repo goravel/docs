@@ -1,7 +1,5 @@
 # Paketlarni ishlab chiqish
 
-[[toc]]
-
 ## Kirish
 
 Paketlar Goravelga funksiyalarni qo'shishning asosiy usuli hisoblanadi. Ushbu paketlar Goravel dasturini takomillashtirish uchun maxsus ishlab chiqilgan marshrutlar, kontrollerlar va konfiguratsiyalarni o'z ichiga olishi mumkin. Ushbu qo'llanma Goravelga xos paketlarni ishlab chiqishga qaratilgan.

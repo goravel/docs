@@ -6,12 +6,13 @@
  *
  * Rules of the system:
  *   - four colours: white, ink, grey, Goravel cyan, plus tints of those four
- *   - two faces: IBM Plex Sans for text, IBM Plex Mono for labels, paths and code
+ *   - two faces: Mona Sans for text and headings, IBM Plex Mono for labels, paths and code
+ *     Mona Sans is variable on width as well as weight, so width carries the display voice
  *   - every rule ends on another line: it runs to a vertical rule or to the edge of the screen
  *   - no cards: borders separate rows, they never draw a box around content
  */
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Mona+Sans:wdth,wght@75..125,200..900&display=swap');
 
 /* ------------------------------------------------------------------ tokens */
 :root {
@@ -25,15 +26,28 @@
   --g-cyan-tint: #ebf7fd;
   --g-construct: rgba(104, 116, 125, 0.4);
 
+  /* Severity. Cyan is the brand; these two are not. They say "take care" and "stop", they are
+     built the same way cyan is (a rule, a darker text, a near-white tint), and they appear
+     nowhere on the site except inside a warning or a danger callout. */
+  --g-amber: #e08700;
+  --g-amber-text: #8f5a00;
+  --g-amber-tint: #fdf6eb;
+  --g-red: #dc3a3a;
+  --g-red-text: #b02b2b;
+  --g-red-tint: #fdeeee;
+
   --g-gutter: 64px;          /* from the sidebar rule to the first character */
-  --g-measure: 704px;        /* about 70 characters at 16px */
+  --g-measure: 704px;        /* measured: median 68 characters at 17px Mona Sans */
   --g-rail: 32px;            /* from the column rule to the outline */
   --g-sidebar: 272px;        /* the sidebar rule */
   --g-aside: 368px;          /* outline 240 + rail 32 + margin 96 */
   --g-col: calc(var(--g-measure) + var(--g-gutter) + var(--g-rail));   /* sidebar rule to column rule */
 
   /* type */
-  --vp-font-family-base: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Mona Sans covers latin, latin-ext and vietnamese. The Chinese docs fall through to a CJK
+     face, so name one per platform rather than leaving it to whatever the OS picks. */
+  --vp-font-family-base: 'Mona Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
   --vp-font-family-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
   /* colour */
@@ -77,13 +91,13 @@
   --vp-custom-block-tip-border: var(--g-cyan);
   --vp-custom-block-tip-text: var(--g-ink);
   --vp-custom-block-tip-bg: transparent;
-  --vp-custom-block-warning-border: var(--g-ink);
+  --vp-custom-block-warning-border: var(--g-amber);
   --vp-custom-block-warning-text: var(--g-ink);
   --vp-custom-block-warning-bg: transparent;
   --vp-custom-block-info-border: var(--g-line);
   --vp-custom-block-info-text: var(--g-ink);
   --vp-custom-block-info-bg: transparent;
-  --vp-custom-block-danger-border: var(--g-ink);
+  --vp-custom-block-danger-border: var(--g-red);
   --vp-custom-block-danger-text: var(--g-ink);
   --vp-custom-block-danger-bg: transparent;
 
@@ -114,6 +128,9 @@ html {
 
 body {
   -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-optical-sizing: auto;
 }
 
 /* ------------------------------------------------------------------ header
@@ -121,54 +138,19 @@ body {
    through it from the top of the screen, so the header reads as the first row of the
    grid instead of a band sitting on top of it. */
 
-
 /* the default theme parks two 72px stubs under the bar: the sidebar's own rule already
    runs the full height, so they are two lines that end in mid air */
 
-
-
-
-
-
-
-
-
-
 /* the title divider runs the full height of the bar, so it ends on two lines */
-
 
 /* the wordmark link owns nothing but the wordmark: no width, no rule, no label */
 
-
-
-
 /* ------------------------------------------------------------------ sidebar */
-
-
-
-
-
-
-
 
 /* group rules run from the edge of the screen to the sidebar rule */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ------------------------------------------------------------------ doc layout and the column rule */
 /* the default theme scopes these with a data attribute, so the overrides need !important */
-
 
 /* rules inside the article run from the sidebar rule to the column rule */
 .vp-doc h2,
@@ -197,19 +179,21 @@ body {
   }
 }
 
-
-/* ------------------------------------------------------------------ article typography */
+/* ------------------------------------------------------------------ article typography
+   Weight and width do the work here, not a second typeface. The page title is the only thing
+   that leaves normal width. */
 .vp-doc h1 {
   font-size: 48px;
   line-height: 52px;
-  font-weight: 600;
+  font-weight: 700;
+  font-stretch: 108%;
   letter-spacing: -0.035em;
   margin-bottom: 12px;
 }
 
 .vp-doc h1 + p {
-  font-size: 18px;
-  line-height: 30px;
+  font-size: 19px;
+  line-height: 31px;
   color: var(--g-grey);
 }
 
@@ -219,22 +203,22 @@ body {
   border-top: 1px solid var(--g-line);
   font-size: 28px;
   line-height: 36px;
-  font-weight: 600;
+  font-weight: 650;
   letter-spacing: -0.02em;
 }
 
 .vp-doc h3 {
   margin-top: 40px;
-  font-size: 19px;
-  line-height: 28px;
-  font-weight: 600;
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 650;
   letter-spacing: -0.01em;
 }
 
 .vp-doc h4 {
   margin-top: 28px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 650;
 }
 
 .vp-doc h2 .header-anchor,
@@ -245,15 +229,17 @@ body {
 
 .vp-doc p,
 .vp-doc li {
-  font-size: 16px;
-  line-height: 28px;
+  font-size: 17px;
+  line-height: 29px;
 }
 
 .vp-doc a {
   color: var(--g-cyan-text);
   font-weight: 400;
   text-decoration: underline;
-  text-decoration-color: rgba(0, 119, 179, 0.3);
+  text-decoration-color: rgba(0, 119, 179, 0.32);
+  /* the face's own underline is heavy at this size; one pixel is enough to mark a link */
+  text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 
@@ -270,7 +256,7 @@ body {
 }
 
 .vp-doc strong {
-  font-weight: 600;
+  font-weight: 650;
 }
 
 /* reference pages write method names as a bold paragraph of their own: make it an entry */
@@ -288,11 +274,24 @@ body {
 }
 
 /* ------------------------------------------------------------------ code */
-.vp-doc div[class*='language-'],
-.vp-code-group .blocks {
+.vp-doc div[class*='language-'] {
   border-radius: 0;
   background: var(--g-soft);
   margin: 20px 0;
+}
+
+/* A group is one object: the tab strip labels the code directly under it. The wrapper and the
+   block inside it both took the standalone block's 20px margin, which opened a gap between the
+   tabs and the code they name. The group carries the spacing instead. */
+.vp-code-group {
+  margin: 20px 0;
+}
+
+.vp-code-group .blocks,
+.vp-doc .vp-code-group .blocks div[class*='language-'] {
+  margin: 0;
+  border-radius: 0;
+  background: var(--g-soft);
 }
 
 .vp-doc [class*='language-'] > span.lang,
@@ -317,9 +316,41 @@ body {
   color: var(--g-cyan-text);
 }
 
+/* A block that marks additions and removals needs room for the marks. They sit at left: 10px
+   while the code started at 24px, so a "+" ended about six pixels from the word after it and
+   read as part of it. Only blocks that actually carry diffs are indented. */
+.vp-doc [class*='language-'] pre:has(.line.diff) code {
+  padding-left: 36px;
+}
+
+.vp-doc [class*='language-'] .line.diff::before {
+  left: 12px;
+  font-weight: 600;
+}
+
 .vp-doc [class*='language-'] .line.diff.remove {
-  background: transparent;
-  opacity: 0.55;
+  background: var(--g-red-tint);
+  opacity: 0.7;
+}
+
+.vp-doc [class*='language-'] .line.diff.remove::before {
+  color: var(--g-red-text);
+}
+
+/* the two states Shiki marks, in the same two hues the callouts use */
+.vp-doc [class*='language-'] .line.error {
+  background: var(--g-red-tint);
+}
+
+.vp-doc [class*='language-'] .line.warning {
+  background: var(--g-amber-tint);
+}
+
+/* the word a block asks you to look at */
+.vp-doc [class*='language-'] .highlighted-word {
+  padding: 1px 2px;
+  border-bottom: 1px solid var(--g-cyan);
+  background: var(--g-cyan-tint);
 }
 
 .vp-code-group .tabs {
@@ -334,7 +365,8 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* ------------------------------------------------------------------ callouts: a band, not a box */
+/* ------------------------------------------------------------------ callouts: a band, not a box
+   Shape only. What each kind looks like is in the callouts section further down. */
 .vp-doc .custom-block {
   position: relative;
   margin: 28px calc(var(--g-rail) * -1) 28px calc(var(--g-gutter) * -1);
@@ -346,15 +378,6 @@ body {
   background: transparent;
   font-size: 16px;
   line-height: 28px;
-}
-
-.vp-doc .custom-block.tip {
-  border-top-color: var(--g-cyan);
-}
-
-.vp-doc .custom-block.warning,
-.vp-doc .custom-block.danger {
-  border-top: 2px solid var(--g-ink);
 }
 
 .vp-doc .custom-block .custom-block-title {
@@ -369,15 +392,6 @@ body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--g-grey);
-}
-
-.vp-doc .custom-block.tip .custom-block-title {
-  color: var(--g-cyan-text);
-}
-
-.vp-doc .custom-block.warning .custom-block-title,
-.vp-doc .custom-block.danger .custom-block-title {
-  color: var(--g-ink);
 }
 
 .vp-doc .custom-block p {
@@ -404,16 +418,25 @@ body {
 
 .vp-doc blockquote > p {
   margin: 0;
-  font-size: 16px;
-  line-height: 28px;
+  font-size: 17px;
+  line-height: 29px;
 }
 
-.vp-doc blockquote > p:first-child > strong:first-child {
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.vp-doc blockquote > p + p {
+  margin-top: 10px;
+}
+
+/* A quotation inside a quotation is set in, with a rule on the side it is indented from. It
+   used to repeat the outer band exactly, so a nested quote read as a second, unrelated one. */
+.vp-doc blockquote blockquote {
+  margin: 12px 0 0;
+  padding: 0 0 0 18px;
+  border: 0;
+  border-left: 2px solid var(--g-line);
+  background: transparent;
+}
+
+.vp-doc blockquote blockquote > p {
   color: var(--g-grey);
 }
 
@@ -446,47 +469,18 @@ body {
   border: 0;
   border-top: 1px solid var(--g-line);
 }
-
-.vp-doc tr {
-  background: transparent;
-  border: 0;
-}
-
 .vp-doc tr:nth-child(2n) {
   background: transparent;
 }
 
 /* ------------------------------------------------------------------ outline */
 
-
-
-
 /* the active row is marked by its own node, so the floating marker goes */
-
-
-
-
-
-
-
-
-
 
 /* ------------------------------------------------------------------ page footer */
 .VPDocFooter {
   margin-top: 56px;
 }
-
-.VPDocFooter .edit-info {
-  padding-bottom: 20px;
-  border-top: 1px solid var(--g-line);
-  padding-top: 20px;
-  margin-left: calc(var(--g-gutter) * -1);
-  margin-right: calc(var(--g-rail) * -1);
-  padding-left: var(--g-gutter);
-  padding-right: var(--g-rail);
-}
-
 .VPDocFooter .edit-link-button {
   font-size: 15px;
   font-weight: 500;
@@ -508,22 +502,7 @@ body {
 .VPDocFooter .prev-next {
   border-top: 0;
   gap: 24px;
-}
-
-.VPDocFooter .pager-link {
-  border: 0;
-  border-radius: 0;
-  border-top: 1px solid var(--g-line);
-  padding: 20px 0 0;
-  background: transparent;
-}
-
-.VPDocFooter .pager-link.next {
-  border-top: 2px solid var(--g-cyan);
-  text-align: right;
-}
-
-.VPDocFooter .pager-link .desc {
+}.VPDocFooter .pager-link .desc {
   font-family: var(--vp-font-family-mono);
   font-size: 12px;
   letter-spacing: 0.02em;
@@ -552,19 +531,6 @@ body {
 
 /* ------------------------------------------------------------------ search */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ------------------------------------------------------------------ home page: keep it quiet until stage 3 */
 :root {
   --vp-home-hero-name-color: var(--g-ink);
@@ -577,13 +543,6 @@ body {
 }
 
 /* ------------------------------------------------------------------ not found */
-
-
-
-
-
-
-
 
 /* ------------------------------------------------------------------ the [[toc]] list every page starts with */
 .vp-doc .table-of-contents {
@@ -600,7 +559,6 @@ body {
   }
 }
 
-
 .vp-doc .table-of-contents li {
   list-style: none;
   break-inside: avoid;
@@ -613,44 +571,13 @@ body {
   padding-left: 16px;
 }
 
-
-
 /* ------------------------------------------------------------------ stage 2: the small components */
 
 /* where the page sits, and the layer it belongs to */
 
-
-
-
-
-
-
-
 /* on a phone the trail is just the page and its layer */
 
-
-
-
-
-
 /* the method index on reference pages */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* test coverage on the packages page */
 .goravel-coverage {
@@ -676,67 +603,17 @@ body {
 /* the block an upgrade guide hands to an AI agent */
 .vp-doc div[class*='language-markdown'] {
   position: relative;
-  padding-top: 12px;
+  /* The header sits in this reserved band. The <pre> below scrolls inside what is left, so its
+     content can never travel up behind the label: before, the pre's box started at 12px while
+     the label sat at 14px, and scrolled code passed straight through the words. */
+  padding-top: 44px;
   border-top: 2px solid var(--g-ink);
 }
-
-.vp-doc div[class*='language-markdown'] > span.lang {
-  top: 14px;
-  left: 24px;
-  right: auto;
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--g-ink);
-  opacity: 1;
-}
-
-.vp-doc div[class*='language-markdown'] > span.lang::after {
-  content: ' guide for your AI agent';
-}
-
 .vp-doc div[class*='language-markdown'] > button.copy {
   top: 8px;
 }
-
-.vp-doc div[class*='language-markdown'] pre {
-  padding-top: 40px;
-}
-
 /* not found: two columns split by a rule that runs the height of the page,
    so every rule in it ends on that split or on the screen edge */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* the AI guide is long: cap it, and let the copy button take the whole thing */
-.vp-doc div[class*='language-markdown'] > span.lang {
-  font-size: 0;
-}
 
 .vp-doc div[class*='language-markdown'] > span.lang::after {
   content: 'Guide for your AI agent';
@@ -744,8 +621,34 @@ body {
 }
 
 .vp-doc div[class*='language-markdown'] pre {
-  max-height: 420px;
-  overflow: auto;
+  padding-top: 0;
+  /* eighteen lines of 24px: a multiple of the line height, so the cut falls between two lines
+     instead of slicing one in half */
+  max-height: 432px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* This block is prose-and-code meant to be copied whole, not code to be read column by column.
+   Its content ran 2610px wide inside a 767px box, so every long line was sliced mid-token and
+   could only be reached by scrolling sideways. It wraps instead: the copy button still hands
+   over the original text, line breaks and all. */
+.vp-doc div[class*='language-markdown'] pre code,
+.vp-doc div[class*='language-markdown'] pre .line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* the label is opaque and above the scroll box, so nothing can show through it */
+/* the rule that closes the header band, drawn across the whole block */
+.vp-doc div[class*='language-markdown']::after {
+  content: '';
+  position: absolute;
+  top: 43px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  border-top: 1px solid var(--g-line);
 }
 
 /* coverage sits on one line with its number; every other cell wraps */
@@ -779,6 +682,18 @@ body {
   opacity: 1;
 }
 
+/* The default theme fades the language label out on hover so the copy button can occupy its
+   slot. Here the label sits at the left of the header band and the copy button at the right, so
+   they never collide and the fade only takes information away. The selector has to match the
+   theme's own shape -- :hover > button.copy + span.lang -- because the adjacent combinator and
+   the second type selector make it more specific than the obvious :hover > span.lang. */
+.vp-doc [class*='language-']:hover > button.copy + span.lang,
+.vp-doc [class*='language-'] > button.copy:focus + span.lang,
+.vp-doc [class*='language-']:hover > span.lang,
+.vp-doc [class*='language-']:focus-within > span.lang {
+  opacity: 1;
+}
+
 .vp-doc [class*='language-'] > button.copy {
   top: 6px;
   right: 12px;
@@ -797,93 +712,55 @@ body {
 .vp-doc [class*='language-'] .line-numbers-wrapper {
   font-family: var(--vp-font-family-mono);
   font-size: 12px;
+  /* The gutter must step exactly as the code steps. It had no line-height of its own, so it
+     inherited the body's 1.7 (20.4px) against the code's 24px, and every number drifted 4px
+     further from its line: by line 20 the gutter was 80px out. */
+  line-height: 24px;
   color: var(--g-grey);
-}
-
-.vp-doc [class*='language-'] .line-numbers-wrapper {
-  padding-top: 16px;
+  /* the same padding the <pre> uses, so line one starts on line one */
+  padding-top: 20px;
 }
 
 /* the outline is a route: a node per section, cyan for the one in view */
 
-
-
-
-
-
-
-
 /* the sidebar's version selector */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* the header: the wordmark, then Docs, then a search field over the article column */
-
 
 /* ------------------------------------------------------------------ corrections */
 
 /* line numbers sit with the code, below the header band */
 .vp-doc [class*='language-'] > .line-numbers-wrapper {
   top: 44px;
-  padding-top: 16px;
+  padding-top: 20px;
+  line-height: 24px;
   border-right: 1px solid var(--g-line);
   width: 40px;
   text-align: center;
 }
 
-.vp-doc div[class*='language-'] > pre {
-  padding-left: 0;
+/* The AI guide is the one block that scrolls inside itself. VitePress positions the gutter
+   absolutely against the block, not against the scrolling <pre>, so the code moved and the
+   numbers did not: at any scroll position they named the wrong lines. They are dropped here
+   rather than synced, because this block is a blob to copy whole, not code to cite by line. */
+.vp-doc div[class*='language-markdown'] > .line-numbers-wrapper {
+  display: none;
 }
 
+.vp-doc div[class*='language-markdown'].line-numbers-mode > pre .shiki code {
+  padding-left: 0;
+}
 .vp-doc div[class*='language-'].line-numbers-mode > pre .shiki code {
   padding-left: 12px;
 }
 
 /* sidebar rows keep the rhythm of the drawing */
 
-
-
-
-
-
-
-
-
-
 /* the nav has to hold four menus and three icons beside the search */
-
-
-
 
 /* ------------------------------------------------------------------ closing the gap with the drawing */
 
 /* sidebar rows keep a 44px pitch: the caret is what was stretching them */
-
-
-
-
-
-
-
 
 /* the opening paragraph of a page reads as the lead, wherever the markdown puts it */
 .vp-doc h1 + p,
@@ -894,7 +771,6 @@ body {
 }
 
 /* the method index comes first on a reference page, and its entries carry an anchor */
-
 
 .vp-doc p:has(> strong:only-child) > strong::after {
   content: '#';
@@ -912,9 +788,6 @@ body {
 
 /* the sidebar's group wrapper adds its own gap; the rule is what separates groups */
 
-
-
-
 /* ==================================================================
    Every rule ends on a line. Nothing floats.
    The page has four verticals: the screen edges (0, 100%), the sidebar
@@ -924,36 +797,21 @@ body {
 
 /* sidebar rows: from the screen edge to the sidebar rule */
 
-
 /* the version selector is a band, not a box */
-
-
-
 
 /* the first section's rule is the one under the version, so there is only ever one */
 
-
-
-
-
-
 /* the rail column: every block fills it, and insets its text with padding, so the rules
    land on the column rule and on the screen edge at every width */
-
-
-
 
 /* The header runs on the same grid as the page. Four cells divided by full height
    rules: the wordmark, the menu, the utilities, and the search. Every rule in the bar
    runs from the top of the bar to the line under it. */
 
-
 /* the utilities tighten before the menu does, so the links keep the article's edge */
-
 
 /* under 1280 there is no outline column: the search takes only what it needs, the
    project links move into the overflow menu, and the menu keeps every item readable */
-
 
 /* code stays inside its column at every width */
 .vp-doc div[class*='language-'] {
@@ -962,6 +820,7 @@ body {
 }
 
 .vp-doc div[class*='language-'] > pre {
+  padding-left: 0;
   overflow-x: auto;
   max-width: 100%;
 }
@@ -989,12 +848,16 @@ body {
     left: 24px;
   }
 
+  /* a diff block keeps room for its markers on a phone too */
+  .vp-doc [class*='language-'] pre:has(.line.diff) code {
+    padding-left: 34px !important;
+  }
+
   .vp-doc div[class*='language-'] code {
     padding-left: 24px !important;
     padding-right: 24px !important;
   }
 }
-
 
 /* the pager is one rule across the column: grey for the page behind, cyan for the page ahead */
 .VPDocFooter .prev-next {
@@ -1003,17 +866,10 @@ body {
   margin-right: calc(var(--g-rail) * -1);
   padding-left: var(--g-gutter);
   padding-right: var(--g-rail);
-}
-
-.VPDocFooter .pager-link.prev {
-  padding-right: 24px;
-}
-
-.VPDocFooter .pager-link.next {
-  padding-left: 24px;
-}
-
-.VPDocFooter .edit-info {
+}.VPDocFooter .edit-info {
+  padding-bottom: 20px;
+  border-top: 1px solid var(--g-line);
+  padding-top: 20px;
   margin-left: calc(var(--g-gutter) * -1) !important;
   margin-right: calc(var(--g-rail) * -1) !important;
   padding-left: var(--g-gutter) !important;
@@ -1021,7 +877,6 @@ body {
 }
 
 /* dropdowns are bands too, not boxes */
-
 
 /* narrow screens: the article keeps a 24px gutter and code scrolls inside it */
 @media (max-width: 959px) {
@@ -1058,7 +913,6 @@ body {
   }
 }
 
-
 /* the pager's outer ends land on the two verticals */
 .VPDocFooter .prev-next {
   margin: 0 !important;
@@ -1066,11 +920,15 @@ body {
 }
 
 .VPDocFooter .pager-link.prev {
+  padding-right: 24px;
   margin-left: calc(var(--g-gutter) * -1);
   padding-left: var(--g-gutter);
 }
 
 .VPDocFooter .pager-link.next {
+  border-top: 2px solid var(--g-cyan);
+  text-align: right;
+  padding-left: 24px;
   margin-right: calc(var(--g-rail) * -1);
   padding-right: var(--g-rail);
 }
@@ -1094,7 +952,6 @@ body {
   }
 }
 
-
 /* table rules run the whole band: the rule belongs to the row, the inset to the cells */
 .vp-doc table {
   margin-left: calc(var(--g-gutter) * -1) !important;
@@ -1105,6 +962,8 @@ body {
 }
 
 .vp-doc tr {
+  background: transparent;
+  border: 0;
   border-top: 1px solid var(--g-line);
 }
 
@@ -1162,8 +1021,12 @@ body {
   }
 }
 
-
 .VPDocFooter .pager-link {
+  border: 0;
+  border-radius: 0;
+  border-top: 1px solid var(--g-line);
+  padding: 20px 0 0;
+  background: transparent;
   width: auto !important;
   display: block;
 }
@@ -1175,8 +1038,24 @@ body {
   width: calc(100% + var(--g-gutter) + var(--g-rail)) !important;
 }
 
+/* One rule for this label. It was declared in three places that disagreed about font-size, so
+   the `font-size: 0` meant to hide the raw word "markdown" lost to a later 12px and the header
+   read "MARKDOWNGUIDE FOR YOUR AI AGENT". The span hides its own text; the ::after carries the
+   words and the size. */
 .vp-doc div[class*='language-markdown'] > span.lang {
+  top: 14px;
+  right: auto;
   left: var(--g-gutter);
+  z-index: 2;
+  padding: 4px 0;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--g-ink);
+  opacity: 1;
+  background: var(--g-soft);
 }
 
 @media (max-width: 959px) {
@@ -1190,16 +1069,13 @@ body {
   }
 }
 
-
 .vp-doc div[class*='language-markdown'] {
   max-width: none !important;
 }
 
 /* nav dropdowns: a surface with no floating rule */
 
-
 /* narrow screens: the article fills the width so its rules reach both edges */
-
 
 @media (max-width: 959px) {
   .VPDocFooter .pager-link.prev {
@@ -1217,7 +1093,6 @@ body {
   }
 }
 
-
 @media (max-width: 959px) {
   /* tables fill the width and wrap, instead of shrinking to their content */
   .vp-doc table {
@@ -1234,41 +1109,42 @@ body {
   }
 }
 
-
 /* the nav's white curtain was covering the top of the sidebar */
 
-
-
-
 /* any divider inside the header runs its full height, so it ends on two rules */
-
 
 /* ------------------------------------------------------------------ responsive column
    The column rule is always at sidebar + column width. Between 1280 and 1440 the column
    gives its slack to the outline; below 1280 the outline is gone, so the column runs to
    the edge of the screen and the header's last cell goes with it. */
 
-
-
-
 /* the outline never sets the width of the column: it takes what the grid gives it */
-
-
-
 
 /* the nav always has a ground of its own, at every width */
 
-
 /* the nav must never grow past the screen: the menu is what gives way */
 
+/* ------------------------------------------------------------------ callouts
+   Four levels, told apart the way the mark tells its pieces apart: by ground, by the
+   weight of the rule above them, and by whether the cell marker is filled or hollow.
+   No new colour enters the palette to do it.
 
-/* ------------------------------------------------------------------ callouts that carry
-   A callout is a band across the column with a ground of its own, a mark from the lattice
-   and a label. Tip is cyan, note is quiet, warning is ink. */
+     note / info   white ground, hairline rule, hollow marker   context
+     tip           cyan ground, cyan rule, filled marker        help
+     warning       soft ground, ink rule, filled marker         take care
+     danger        ink ground, white marker                     stop
+*/
 .vp-doc .custom-block {
-  background: var(--g-soft);
+  background: var(--g-white);
   padding-top: 16px;
   padding-bottom: 18px;
+  border-top: 1px solid var(--g-line);
+  border-bottom: 1px solid var(--g-line);
+}
+
+.vp-doc .custom-block.info,
+.vp-doc .custom-block.note {
+  background: var(--g-white);
 }
 
 .vp-doc .custom-block.tip {
@@ -1277,18 +1153,26 @@ body {
   border-bottom-color: var(--g-cyan);
 }
 
-.vp-doc .custom-block.info,
-.vp-doc .custom-block.note {
-  background: var(--g-soft);
+.vp-doc .custom-block.important {
+  background: var(--g-cyan-tint);
+  border-top: 2px solid var(--g-cyan-text);
+  border-bottom-color: var(--g-cyan-text);
 }
 
 .vp-doc .custom-block.warning,
-.vp-doc .custom-block.danger {
-  background: var(--g-soft);
-  border-top: 2px solid var(--g-ink);
-  border-bottom-color: var(--g-ink);
+.vp-doc .custom-block.caution {
+  background: var(--g-amber-tint);
+  border-top: 2px solid var(--g-amber);
+  border-bottom-color: var(--g-amber);
 }
 
+.vp-doc .custom-block.danger {
+  background: var(--g-red-tint);
+  border-top: 2px solid var(--g-red);
+  border-bottom-color: var(--g-red);
+}
+
+/* the label */
 .vp-doc .custom-block .custom-block-title {
   position: static;
   width: auto;
@@ -1296,43 +1180,232 @@ body {
   align-items: center;
   gap: 10px;
   margin-bottom: 8px;
-  font-size: 12px;
-  letter-spacing: 0.12em;
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--g-grey);
 }
 
 .vp-doc .custom-block .custom-block-title::before {
   content: '';
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   transform: rotate(45deg);
-  background: currentColor;
   flex-shrink: 0;
+  background: currentColor;
+}
+
+/* context is hollow, everything louder is filled */
+.vp-doc .custom-block.note .custom-block-title::before,
+.vp-doc .custom-block.info .custom-block-title::before {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.25px currentColor;
+}
+
+.vp-doc .custom-block.tip .custom-block-title,
+.vp-doc .custom-block.important .custom-block-title {
+  color: var(--g-cyan-text);
 }
 
 .vp-doc .custom-block.warning .custom-block-title,
-.vp-doc .custom-block.danger .custom-block-title {
-  color: var(--g-ink);
+.vp-doc .custom-block.caution .custom-block-title {
+  color: var(--g-amber-text);
 }
 
-.vp-doc .custom-block.tip .custom-block-title {
-  color: var(--g-cyan-text);
+.vp-doc .custom-block.danger .custom-block-title {
+  color: var(--g-red-text);
+}
+
+/* A title the author typed is a sentence, not a type name: it is set as text, at reading size,
+   in the block's own colour. The diamond stays, so the block still reads as one of the family. */
+.vp-doc .custom-block.has-custom-title .custom-block-title {
+  font-family: var(--vp-font-family-base);
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  text-transform: none;
+  margin-bottom: 6px;
+}
+
+.vp-doc .custom-block.has-custom-title .custom-block-title::before {
+  width: 9px;
+  height: 9px;
 }
 
 .vp-doc .custom-block code {
   background: rgba(255, 255, 255, 0.72);
 }
 
-/* a blockquote note gets the same ground and mark */
-.vp-doc blockquote {
+.vp-doc .custom-block.note code,
+.vp-doc .custom-block.info code {
   background: var(--g-soft);
-  padding-top: 16px;
-  padding-bottom: 18px;
+}
+
+/* ------------------------------------------------------------------ code inside a callout
+   One place decides this. It is the same code block as anywhere else -- same header, language
+   chip, copy button and line numbers -- with two differences:
+
+     - its ground is white at low opacity, not --g-soft, because a grey card on a tinted band
+       reads as a card dropped into it. Low-opacity white lightens whichever hue the callout
+       carries, so one value serves all four kinds.
+     - that ground runs to the callout's own edges instead of stopping at the callout's text
+       inset, so it is a band inside a band rather than a rectangle floating with air either
+       side. The padding puts the code back in line with the prose above it.
+
+   Every margin below is written long-hand: a `margin` shorthand here silently resets the two
+   bleed margins to zero, which is what broke this three times. */
+
+/* the ground */
+.vp-doc .custom-block div[class*='language-'],
+.vp-doc .custom-block .vp-code-group .blocks div[class*='language-'] {
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.vp-doc .custom-block .vp-code-group .blocks,
+.vp-doc .custom-block pre,
+.vp-doc .custom-block div[class*='language-'] code {
+  background: transparent;
+}
+
+/* The bleed is painted, not laid out. Widening the box with negative margins dragged the
+   line-number gutter out to the new edge while the text stayed put, so the two came apart.
+   Two box-shadows extend the ground left and right instead: the element's geometry is exactly
+   a normal block's, so the gutter, the header rule and the text all sit where they always do. */
+.vp-doc .custom-block div[class*='language-'],
+.vp-doc .custom-block .vp-code-group {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  box-shadow:
+    calc(var(--g-gutter) * -1) 0 0 0 rgba(255, 255, 255, 0.66),
+    var(--g-rail) 0 0 0 rgba(255, 255, 255, 0.66);
+}
+
+/* the group paints it; the block inside must not paint it a second time */
+.vp-doc .custom-block .vp-code-group div[class*='language-'] {
+  margin-top: 0;
+  margin-bottom: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 959px) {
+  .vp-doc .custom-block div[class*='language-'],
+  .vp-doc .custom-block .vp-code-group {
+    box-shadow:
+      -24px 0 0 0 rgba(255, 255, 255, 0.66),
+      24px 0 0 0 rgba(255, 255, 255, 0.66);
+  }
+
+  .vp-doc .custom-block .vp-code-group div[class*='language-'] {
+    box-shadow: none;
+  }
+}
+
+/* the header rule and the gutter rule read against the lighter ground */
+.vp-doc .custom-block div[class*='language-']::after,
+.vp-doc .custom-block [class*='language-'] > .line-numbers-wrapper {
+  border-color: var(--g-line);
+}
+
+.vp-doc .custom-block [class*='language-'] > button.copy:hover {
+  background: var(--g-white);
+}
+
+.vp-doc .custom-block .vp-code-group .tabs {
+  background: transparent;
+  border-bottom: 1px solid var(--g-line);
+}
+
+/* the folded block: a summary row that reads like a label, and the same ground as info */
+.vp-doc .custom-block.details {
+  background: var(--g-white);
+  padding-top: 14px;
+  padding-bottom: 16px;
+}
+
+.vp-doc .custom-block.details summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 0;
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 500;
+  color: var(--g-ink);
+  cursor: pointer;
+  list-style: none;
+}
+
+.vp-doc .custom-block.details summary::-webkit-details-marker { display: none; }
+
+/* The row carries both marks the system already uses: the lattice diamond leads, the way it
+   does on every other callout, and the sidebar's chevron closes the row on the right so the
+   whole band reads as a control. The diamond fills when the block is open, the way an active
+   cell does everywhere else. */
+.vp-doc .custom-block.details summary::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  transform: rotate(45deg);
+  background: transparent;
+  color: var(--g-grey);
+  box-shadow: inset 0 0 0 1.25px currentColor;
+  transition: background 0.15s ease;
+}
+
+.vp-doc .custom-block.details[open] summary::before {
+  background: currentColor;
+}
+
+.vp-doc .custom-block.details summary::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  margin-left: auto;
+  margin-right: 2px;
+  flex-shrink: 0;
+  color: var(--g-grey);
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.2s ease;
+}
+
+.vp-doc .custom-block.details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.vp-doc .custom-block.details[open] summary {
+  margin-bottom: 10px;
+  color: var(--g-ink);
+}
+
+.vp-doc .custom-block.details summary:hover::before,
+.vp-doc .custom-block.details summary:hover::after {
+  color: var(--g-ink);
+}
+
+/* No underline on hover: the summary is a full-width flex row, so text-decoration paints across
+   the whole line box out to the chevron rather than under the words. The chevron, the pointer
+   and the colour shift are the affordance. */
+
+@media (prefers-reduced-motion: reduce) {
+  .vp-doc .custom-block.details summary::before,
+  .vp-doc .custom-block.details summary::after {
+    transition: none;
+  }
+}
+
+/* A blockquote is a band like a callout, with no mark and no label: the docs reach for one when
+   they mean an aside. Its shape is set once, further up this file. */
+.vp-doc blockquote {
+  background: var(--g-white);
 }
 
 /* ------------------------------------------------------------------ the rail at any width */
-
-
-
 
 /* tables never run past their column */
 .vp-doc td,
@@ -1348,63 +1421,153 @@ body {
 /* the outline follows the layout instead of being pinned to absolute pixels, so it lands on
    the column rule and the screen edge at every width */
 
-
 /* ------------------------------------------------------------------ buttons
    A button is a filled block, not an outlined box: fill and weight carry the
    emphasis so nothing draws a rule that ends in mid air. */
 
-
-
-
-
-
-
-
-
-
-
-
 /* ------------------------------------------------------------------ the bar on phones
    Two icon buttons, no boxes: the bar keeps the same flat vocabulary as the page. */
-
 
 /* ------------------------------------------------------------------ the bar, up close
    Everything in the bar is flat text at one weight: the links carry the emphasis, the
    utilities sit back, and nothing in it draws a box. */
 
-
-
-
 /* the chevrons are a hint, not a mark */
-
 
 /* the utilities are grey until you reach for them */
 
-
-
-
-
-
-
-
-
-
 /* the search reads as a field, not as a button with a chip in it */
-
-
-
 
 /* DocSearch nests the button two divs deep: the cell only reads as a field if every
    one of them fills it */
 
-
 /* the shortcut sits at the far end of the cell, on the page's right inset */
-
-
-
 
 /* the wordmark is a mark in a 64px bar, not a headline */
 
-
 /* the two halves of the shortcut are rendered differently by DocSearch: make them one */
 
+
+/* ------------------------------------------------------------------ footnotes, tasks, terms
+   Three kinds of markup VitePress does not ship, added as plugins. Each is given the shape the
+   rest of the page already uses: a bleeding rule, a mono label, the lattice cell as a marker. */
+
+/* the separator the plugin emits is replaced by the section's own labelled rule */
+.vp-doc .footnotes-sep {
+  display: none;
+}
+
+.vp-doc .footnotes {
+  margin: 48px calc(var(--g-rail) * -1) 0 calc(var(--g-gutter) * -1);
+  padding: 22px var(--g-rail) 0 var(--g-gutter);
+  border-top: 1px solid var(--g-line);
+}
+
+.vp-doc .footnotes::before {
+  content: 'Notes';
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-grey);
+}
+
+.vp-doc .footnotes ol {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.vp-doc .footnotes li,
+.vp-doc .footnotes p {
+  font-size: 15px;
+  line-height: 25px;
+  color: var(--g-grey);
+}
+
+.vp-doc .footnotes li + li {
+  margin-top: 6px;
+}
+
+.vp-doc .footnotes .footnote-backref {
+  margin-left: 6px;
+  text-decoration: none;
+  color: var(--g-cyan-text);
+}
+
+/* the reference in the running text is a small raised number, not a link-looking thing */
+.vp-doc .footnote-ref a {
+  padding: 0 1px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.vp-doc .footnote-ref a:hover {
+  text-decoration: underline;
+}
+
+/* a task list keeps the page's marker shape instead of the browser's checkbox */
+.vp-doc .contains-task-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.vp-doc .task-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.vp-doc .contains-task-list .task-list-item + .task-list-item {
+  margin-top: 6px;
+}
+
+.vp-doc .task-list-item input[type='checkbox'] {
+  appearance: none;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  /* centred on the first line of the label: (line-height 29 - box 15) / 2 */
+  margin: 7px 0 0;
+  border: 1.5px solid var(--g-line);
+  border-radius: 2px;
+  background: var(--g-white);
+  cursor: default;
+}
+
+/* a real tick, not a white square inset into a filled one */
+.vp-doc .task-list-item input[type='checkbox']:checked {
+  border-color: var(--g-cyan);
+  background-color: var(--g-cyan);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.5l3 3 6-6'/%3E%3C/svg%3E");
+  background-size: 11px 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.vp-doc .task-list-item label {
+  cursor: default;
+}
+
+/* a definition list: the term leads, the definition is set in behind a rule */
+.vp-doc dl {
+  margin: 20px 0;
+}
+
+.vp-doc dt {
+  margin-top: 16px;
+  font-weight: 650;
+  color: var(--g-ink);
+}
+
+.vp-doc dd {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  border-left: 2px solid var(--g-line);
+  color: var(--g-grey);
+}

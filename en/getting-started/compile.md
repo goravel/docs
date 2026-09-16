@@ -1,7 +1,5 @@
 # Compile
 
-[[toc]]
-
 ## Compile command
 
 The Goravel project can be compiled with the following command:
@@ -126,7 +124,9 @@ docker-compose build
 docker-compose up
 ```
 
-> Note: If you need external access, you need to change APP_HOST to 0.0.0.0
+::: tip
+If you need external access, you need to change APP_HOST to 0.0.0.0
+:::
 
 ## Set timezone
 

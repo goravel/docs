@@ -1,7 +1,5 @@
 # Tadbirlar
 
-[[toc]]
-
 ## Kirish
 
 Goravel hodisalari oddiy kuzatuvchi naqshini amalga oshiradi, ilovangiz ichida sodir bo'ladigan turli xil hodisalarga obuna bo'lish va tinglash imkonini beradi. Tadbir sinflari odatda `app/events` katalogida saqlanadi, ularning tinglovchilari esa `app/listeners` katalogida saqlanadi. Agar ilovangizda bu kataloglarni ko'rmasangiz, xavotirlanmang, chunki ular siz Artisan konsol buyruqlari yordamida hodisalar va tinglovchilarni yaratayotganda siz uchun yaratiladi.

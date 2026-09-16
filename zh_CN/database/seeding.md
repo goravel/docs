@@ -1,7 +1,5 @@
 # 数据填充
 
-[[toc]]
-
 ## 简介
 
 Goravel 内置了一个可为你的数据库填充测试数据的 struct。 所有的填充 struct 都放在 `database/seeds` 目录下。 Goravel 默认定义了一个 `DatabaseSeeder` struct。

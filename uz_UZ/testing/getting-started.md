@@ -1,7 +1,5 @@
 # Boshlash
 
-[[toc]]
-
 ## Kirish
 
 Goravelning testlash funksiyasi Golangning rasmiy test komponentiga tayanadi, birlik testlarini kengaytirib, integratsion testlarni qo‘llab-quvvatlaydi va ilova mustahkamligini oshiradi.

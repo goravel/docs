@@ -37,7 +37,7 @@ const COLUMNS = [
   <footer class="g-footer">
     <div class="g-footer-cols">
       <div class="g-footer-brand">
-        <img src="/logo.png" alt="Goravel" height="24" />
+        <img src="/logo@2x.png" alt="Goravel" height="24" />
         <p class="g-small muted">A Go framework with the structure of Laravel.</p>
       </div>
       <div v-for="c in COLUMNS" :key="c.title" class="g-footer-col">

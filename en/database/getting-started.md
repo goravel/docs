@@ -1,7 +1,5 @@
 # Getting Started
 
-[[toc]]
-
 ## Introduction
 
 Almost all applications need to interact with databases, so Goravel provides a very simple and easy-to-use database interaction. Developers can use native SQL, query builder, and [Orm](../orm/getting-started) to interact with databases. Currently, Goravel provides official support for the following four databases:
@@ -75,7 +73,9 @@ var product Product
 err := facades.DB().Select(&product, "SELECT * FROM products WHERE id = ?", 1)
 ```
 
-> Note: Different database drivers require different placeholders. For example, the `?` placeholder is used for MySQL, while the `@` placeholder is used for PostgreSQL.
+::: warning
+Different database drivers require different placeholders. For example, the `?` placeholder is used for MySQL, while the `@` placeholder is used for PostgreSQL.
+:::
 
 ### Insert
 

@@ -1,7 +1,5 @@
 # 编译
 
-[[toc]]
-
 ## 编译命令
 
 Goravel 项目可以通过以下命令编译：
@@ -126,7 +124,9 @@ docker-compose build
 docker-compose up
 ```
 
-> 注意：如需外部访问，需要将 APP_HOST 改为 0.0.0.0
+::: tip
+如需外部访问，需要将 APP_HOST 改为 0.0.0.0
+:::
 
 ## 设置时区
 

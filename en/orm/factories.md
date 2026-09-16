@@ -1,7 +1,5 @@
 # Factories
 
-[[toc]]
-
 ## Introduction
 
 When testing your application or seeding your database, it might be necessary to insert a few records into your database beforehand. Instead of manually inputting values for each column, Goravel allows you to define a set of default attributes for each of your models by creating model factories.

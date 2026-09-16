@@ -1,7 +1,5 @@
 # Hissa qo‘shish bo‘yicha qo‘llanma
 
-[[toc]]
-
 Goravel turli isteʼdodlardan, masalan, kodlash, tarjima, maqola, o‘quv qo‘llanmalari va boshqalardan boy va xilma-xil hissalarni kutib oladi. Ikki xususiyatni (5 ta "Yaxshi birinchi muammo" == 1 ta "Xususiyat") bajarganingizdan so‘ng, siz asosiy hissa qo‘shuvchi sifatida tan olinasiz. Har uch oyda bitta xususiyatni bajarish orqali siz bu maqomni saqlab turishingiz mumkin.
 
 Keling, Goravelni birgalikda yanada samaraliroq qilaylik!
@@ -184,7 +182,9 @@ Mavjud ko‘nikmalarni `--force` bilan qayta yozish:
 goravel skill:install --force goravel-testing
 ```
 
-> **Eslatma**: Mavjud ko‘nikmalar `--force` ishlatilmaguncha saqlanadi.
+::: info
+Mavjud ko‘nikmalar `--force` ishlatilmaguncha saqlanadi.
+:::
 
 ## Xulq qoidalari
 

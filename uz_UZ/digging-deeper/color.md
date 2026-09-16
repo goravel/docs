@@ -1,7 +1,5 @@
 # Rang
 
-[[toc]]
-
 ## Kirish
 
 `color` paketi [PTerm](https://github.com/pterm/pterm) kutubxonasi yordamida terminal chiqishini ranglash uchun funksiyalar to'plamini taqdim etadi.

@@ -1,13 +1,13 @@
 import { defineConfig, type DefaultTheme } from 'vitepress'
 import {
   ICON_CONTRIBUTE,
+  ICON_DEVCHALK,
   ICON_DISCORD,
   ICON_GITHUB,
-  ICON_GUIDE,
   ICON_SUPPORT,
   ICON_TRANSLATE,
-  ICON_VIDEO,
   ICON_X,
+  ICON_YOUTUBE,
   menuRow
 } from './nav-icons'
 
@@ -111,6 +111,8 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
+      // On a docs page the wordmark already reads Goravel / Docs, so the shell hides this
+      // row there. It exists for the homepage, which has no such lockup.
       text: 'Docs',
       link: '/getting-started/installation',
       activeMatch: '/getting-started/'
@@ -131,7 +133,6 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: 'Connect',
           items: [
-            { text: menuRow('GitHub', ICON_GITHUB), link: 'https://github.com/goravel/goravel' },
             { text: menuRow('Discord', ICON_DISCORD), link: 'https://discord.gg/cFc5csczzS' },
             { text: menuRow('X', ICON_X), link: 'https://x.com/goravel_dev' }
           ]
@@ -139,8 +140,8 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: 'Learn',
           items: [
-            { text: menuRow('Video Tutorials', ICON_VIDEO), link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf' },
-            { text: menuRow('DevChalk', ICON_GUIDE), link: 'https://devchalk.com/goravel' }
+            { text: menuRow('Video Tutorials', ICON_YOUTUBE), link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf' },
+            { text: menuRow('DevChalk', ICON_DEVCHALK), link: 'https://devchalk.com/goravel' }
           ]
         },
         {

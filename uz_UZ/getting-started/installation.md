@@ -1,7 +1,5 @@
 # O'rnatish
 
-[[toc]]
-
 ## Server Talablari
 
 - Golang >= 1.23

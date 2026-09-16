@@ -1,7 +1,5 @@
 # HTTP 中间件
 
-[[toc]]
-
 ## 简介
 
 中间件可以过滤进入应用程序的 HTTP 请求。
@@ -101,7 +99,9 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **注意**：中间件排除使用 `Signature()` 方法来识别中间件。请确保每个中间件返回唯一的签名，以便 `WithoutMiddleware` 正常工作。框架内置的中间件已经提供了唯一的签名。
+::: warning
+中间件排除使用 `Signature()` 方法来识别中间件。请确保每个中间件返回唯一的签名，以便 `WithoutMiddleware` 正常工作。框架内置的中间件已经提供了唯一的签名。
+:::
 
 ## 中断请求
 

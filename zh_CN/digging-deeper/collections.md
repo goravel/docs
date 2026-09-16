@@ -1,7 +1,5 @@
 # 集合
 
-[[toc]]
-
 ## 简介
 
 Goravel 通过 `github.com/goravel/framework/support/collect` 包提供了流畅的集合 API。集合可以方便地使用链式方法来过滤、转换、聚合和检查切片数据。

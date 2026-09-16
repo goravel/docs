@@ -1,7 +1,5 @@
 # Artisan Konsoli
 
-[[toc]]
-
 ## Kirish
 
 Artisan - Goravel bilan birga keladigan, buyruq qatori bilan ishlash uchun CLI vositasidir. Siz uni `facades.Artisan()` yordamida ochishingiz mumkin. Ushbu vosita sizning ilovangizni rivojlantirishda yordam beradigan bir nechta foydali buyruqlarga ega. Barcha mavjud buyruqlarni ko'rish uchun quyidagi buyruqdan foydalaning.
@@ -92,7 +90,9 @@ Qaytarilgan qiymat filtrlash xatti-harakatini belgilaydi:
 - **`[]string{}` qaytarilsa** — barcha buyruqlar olib tashlanadi.
 - **Yozuvlar qaytarilsa** — faqat imzosi yozuvga mos keladigan buyruqlar saqlanadi.
 
-> Eslatma: Filtr `WithCommands` orqali qo'shilgan barcha buyruqlarga, shu jumladan foydalanuvchi tomonidan qo'lda qo'shilgan buyruqlarga ham qo'llaniladi, shuning uchun foydalanuvchi filtrni chetlab o'ta olmaydi.
+::: info
+Filtr `WithCommands` orqali qo'shilgan barcha buyruqlarga, shu jumladan foydalanuvchi tomonidan qo'lda qo'shilgan buyruqlarga ham qo'llaniladi, shuning uchun foydalanuvchi filtrni chetlab o'ta olmaydi.
+:::
 
 ### Buyruq tuzilmasi
 

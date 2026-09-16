@@ -1,7 +1,5 @@
 # 快速入门
 
-[[toc]]
-
 ## 简介
 
 Goravel 提供了一套非常简单易用的数据库交互方式，开发者可以使用 `facades.Orm()` 进行操作。 在开始之前请先[配置数据库](../database/getting-started)。
@@ -1056,7 +1054,9 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 }
 ```
 
-> 注意：仅注册用到的事件即可。 通过 Orm 进行批量操作时，不会调度模型事件。
+::: warning
+仅注册用到的事件即可。 通过 Orm 进行批量操作时，不会调度模型事件。
+:::
 
 ### 观察者
 
@@ -1114,7 +1114,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-> 注意：如果同时使用了 `DispatchesEvents` 与 `Observer`，将只应用 `DispatchesEvents`。
+::: warning
+如果同时使用了 `DispatchesEvents` 与 `Observer`，将只应用 `DispatchesEvents`。
+:::
 
 #### 观察者传参
 

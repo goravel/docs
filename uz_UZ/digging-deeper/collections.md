@@ -1,7 +1,5 @@
 # To'plamlar
 
-[[toc]]
-
 ## Kirish
 
 Goravel `github.com/goravel/framework/support/collect` paketi orqali fluent to'plam API sini taqdim etadi. To'plamlar kesim ma'lumotlarini zanjirlanadigan metodlar bilan filtrlash, o'zgartirish, yig'ish va tekshirishni qulay qiladi.
