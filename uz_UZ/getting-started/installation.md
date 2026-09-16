@@ -91,13 +91,13 @@ APP_ENV=production APP_DEBUG=true go run .
 air
 ```
 
-#### Air O'rnatilgandan So'ng
+#### 🧰 Air O'rnatilgandan So'ng
 
 Air muvaffaqiyatli o'rnatilgandan so'ng, u muhitingizda to'g'ri bajarilishiga ishonch hosil qilishingiz kerak.  
 Sozlashingizga qarab, Air avtomatik ravishda buyruq sifatida mavjud bo'lmasligi mumkin.  
 Uning to'g'ri ishlashini ta'minlashning ikkita oddiy usuli:
 
-#### Variant 1: Yordamchi Skriptdan (`air.sh`) Foydalanish
+#### 🪄 Variant 1: Yordamchi Skriptdan (`air.sh`) Foydalanish
 
 Agar Air o'rnatilgan bo'lsa, lekin terminal buyrug'i sifatida tan olinmasa, uni avtomatik ravishda topadigan va ishga tushiradigan kichik yordamchi skript yaratishingiz mumkin.
 
@@ -133,7 +133,7 @@ $GO_BIN
 
 Bu, `$PATH` Go binary fayllarini o'z ichiga olmasa ham, Air ishlashini ta'minlaydi.
 
-#### Variant 2: Go Bin Papkasini PATH ga Qo'shish (Mac/Linux)
+#### 💡 Variant 2: Go Bin Papkasini PATH ga Qo'shish (Mac/Linux)
 
 Agar siz skriptsiz Air-ni to'g'ridan-to'g'ri ishga tushirishni afzal ko'rsangiz, Go bin papkasini PATH ga qo'shishingiz mumkin.
 
