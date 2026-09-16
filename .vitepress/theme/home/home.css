@@ -1179,6 +1179,11 @@
   border-bottom: 1px solid var(--g-line) !important;
 }
 
+/* the drop panel stands on the homepage's grid, the same as the bar above it */
+.Layout:has(.g-home) {
+  --g-menu-inset: var(--g-home-margin, 96px);
+}
+
 .Layout:has(.g-home) .VPNavBar .wrapper {
   padding: 0 !important;
 }

@@ -1687,46 +1687,79 @@
   }
 }
 
-/* ------------------------------------------------------------------ grouped menus
-   A menu with sections lays them side by side, the way a reader scans them, rather
-   than stacking one list under another. */
-.VPNavBar .VPMenu:has(.VPMenuGroup) {
-  min-width: 0;
-  padding: 10px !important;
+/* ==================================================================
+   Nav menus
+   ------------------------------------------------------------------
+   A menu is not a card that floats over the page. It is a panel that
+   drops out of the bar: its top edge is the bar's own rule, its columns
+   are divided by verticals that run its full height, and it closes with
+   a rule that bleeds the width of the screen. Its content stands on the
+   same grid as the bar above it.
+   ================================================================== */
+@media (min-width: 960px) {
+  .VPNavBar .VPNavBarMenuGroup .menu {
+    position: fixed !important;
+    top: var(--vp-nav-height) !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    transform-origin: top center;
+  }
+
+  .VPNavBar .VPNavBarMenuGroup .VPMenu {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--g-line) !important;
+    border-radius: 0 !important;
+    background: var(--g-white) !important;
+    box-shadow: 0 24px 40px -24px rgba(16, 24, 32, 0.12) !important;
+  }
+
+  /* the panel's content stands on the page's grid, like the bar's */
+  .VPNavBar .VPNavBarMenuGroup .VPMenu .items {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(184px, max-content);
+    justify-content: start;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 var(--g-menu-inset, var(--g-shell-inset));
+    box-sizing: border-box;
+    align-items: stretch;
+  }
+
+  /* the padding lives on the columns, so each divider runs from the bar's rule at the
+     top of the panel to the panel's own rule at the bottom. Nothing stops in mid air. */
+  .VPNavBar .VPNavBarMenuGroup .VPMenu .VPMenuGroup {
+    padding: 36px 32px 40px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-left: 1px solid var(--g-line) !important;
+  }
+
+  .VPNavBar .VPNavBarMenuGroup .VPMenu .VPMenuGroup:first-child {
+    padding-left: 0 !important;
+    border-left: 0 !important;
+  }
 }
 
-.VPNavBar .VPMenu:has(.VPMenuGroup) .items {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(150px, max-content);
-  gap: 0 8px;
-  align-items: start;
-}
-
-.VPNavBar .VPMenu .VPMenuGroup {
-  padding: 0 !important;
-  margin: 0 !important;
-  border: 0 !important;
-}
-
-.VPNavBar .VPMenu .VPMenuGroup + .VPMenuGroup {
-  border-left: 1px solid var(--g-line) !important;
-  padding-left: 8px !important;
-}
-
+/* the section title takes the accent, the way the page's labels do */
 .VPNavBar .VPMenu .VPMenuGroup .title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0 !important;
-  padding: 6px 12px 10px !important;
+  gap: 9px;
+  margin: 0 0 14px !important;
+  padding: 0 !important;
   border: 0 !important;
   font-family: var(--vp-font-family-mono);
   font-size: 11px !important;
   font-weight: 500 !important;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--g-grey) !important;
+  color: var(--g-cyan-text) !important;
 }
 
 .VPNavBar .VPMenu .VPMenuGroup .title::before {
@@ -1734,6 +1767,74 @@
   width: 5px;
   height: 5px;
   flex-shrink: 0;
-  background: var(--g-construct);
+  background: var(--g-cyan);
   transform: rotate(45deg);
+}
+
+/* the row: label, and the external mark beside it rather than under it */
+.VPNavBar .VPMenu .link {
+  display: flex !important;
+  align-items: center;
+  padding: 7px 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  line-height: 24px !important;
+  color: var(--g-ink) !important;
+  transition: color 0.12s ease;
+}
+
+.VPNavBar .VPMenu .link:hover,
+.VPNavBar .VPMenu .link.active {
+  background: none !important;
+  color: var(--g-cyan-text) !important;
+}
+
+.g-menu-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* the icon sits back in grey and follows the label to the accent */
+.g-menu-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  display: block;
+  color: var(--g-grey);
+  transition: color 0.12s ease;
+}
+
+.VPNavBar .VPMenu .link:hover .g-menu-icon {
+  color: var(--g-cyan-text);
+}
+
+.g-menu-title {
+  white-space: nowrap;
+}
+
+/* the icon already says where a row goes, so the theme's external arrow is one mark too many */
+.VPNavBar .VPNavBarMenuGroup .VPMenu .link.vp-external-link-icon::after {
+  display: none !important;
+}
+
+/* the locale switch keeps the small sheet: it is a control, not a section */
+.VPNavBar .VPNavBarTranslations .VPMenu {
+  min-width: 184px;
+  padding: 8px !important;
+  border: 1px solid var(--g-line) !important;
+  border-radius: 3px !important;
+  box-shadow: 0 10px 28px rgba(16, 24, 32, 0.1) !important;
+}
+
+.VPNavBar .VPNavBarTranslations .VPMenu .link {
+  padding: 7px 12px !important;
+  border-radius: 2px !important;
+}
+
+.VPNavBar .VPNavBarTranslations .VPMenu .link:hover {
+  background: var(--g-soft) !important;
 }

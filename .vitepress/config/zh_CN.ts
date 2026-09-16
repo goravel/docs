@@ -1,4 +1,15 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
+import {
+  ICON_CONTRIBUTE,
+  ICON_DEVCHALK,
+  ICON_DISCORD,
+  ICON_GITHUB,
+  ICON_SUPPORT,
+  ICON_TRANSLATE,
+  ICON_X,
+  ICON_YOUTUBE,
+  menuRow
+} from './nav-icons'
 export const config = defineConfig({
   lang: "zh-CN",
   description: "Goravel 是一个功能完整且可扩展性极强的 Web 应用程序框架。作为一个起始脚手架，帮助 Gopher 快速构建自己的应用程序。",
@@ -116,36 +127,35 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: '联系',
           items: [
-            { text: 'GitHub', link: 'https://github.com/goravel/goravel' },
-            { text: 'Discord', link: 'https://discord.gg/cFc5csczzS' },
-            { text: 'X', link: 'https://x.com/goravel_dev' }
+            { text: menuRow('GitHub', ICON_GITHUB), link: 'https://github.com/goravel/goravel' },
+            { text: menuRow('Discord', ICON_DISCORD), link: 'https://discord.gg/cFc5csczzS' },
+            { text: menuRow('X', ICON_X), link: 'https://x.com/goravel_dev' }
           ]
         },
         {
           text: '学习',
           items: [
-            {
-              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>视频教程</span></span>',
-              link: 'https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0'
-            },
-            {
-              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
-              link: 'https://devchalk.com/goravel'
-            }
+            { text: menuRow('视频教程', ICON_YOUTUBE), link: 'https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0' },
+            { text: menuRow('DevChalk', ICON_DEVCHALK), link: 'https://devchalk.com/goravel' }
           ]
         },
         {
           text: '参与贡献',
           items: [
-            { text: '贡献指南', link: '/zh_CN/prologue/contributions' },
-            { text: '新增语言', link: '/zh_CN/prologue/contributions#新增语言' },
-            { text: 'Open Collective', link: 'https://opencollective.com/goravel' }
+            { text: menuRow('贡献指南', ICON_CONTRIBUTE), link: '/zh_CN/prologue/contributions' },
+            { text: menuRow('新增语言', ICON_TRANSLATE), link: '/zh_CN/prologue/contributions#新增语言' },
+            { text: menuRow('Open Collective', ICON_SUPPORT), link: 'https://opencollective.com/goravel' }
           ]
         }
       ]
     }
   ]
 }
+
+const ICON_YOUTUBE =
+  '<img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" class="g-menu-icon" />'
+const ICON_DEVCHALK =
+  '<img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" class="g-menu-icon" />'
 
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{

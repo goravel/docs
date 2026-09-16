@@ -1,4 +1,15 @@
 import { defineConfig, type DefaultTheme } from 'vitepress'
+import {
+  ICON_CONTRIBUTE,
+  ICON_DEVCHALK,
+  ICON_DISCORD,
+  ICON_GITHUB,
+  ICON_SUPPORT,
+  ICON_TRANSLATE,
+  ICON_X,
+  ICON_YOUTUBE,
+  menuRow
+} from './nav-icons'
 
 export const config = defineConfig({
   lang: 'en-US',
@@ -120,36 +131,35 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: 'Connect',
           items: [
-            { text: 'GitHub', link: 'https://github.com/goravel/goravel' },
-            { text: 'Discord', link: 'https://discord.gg/cFc5csczzS' },
-            { text: 'X', link: 'https://x.com/goravel_dev' }
+            { text: menuRow('GitHub', ICON_GITHUB), link: 'https://github.com/goravel/goravel' },
+            { text: menuRow('Discord', ICON_DISCORD), link: 'https://discord.gg/cFc5csczzS' },
+            { text: menuRow('X', ICON_X), link: 'https://x.com/goravel_dev' }
           ]
         },
         {
           text: 'Learn',
           items: [
-            {
-              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>Video Tutorials</span></span>',
-              link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
-            },
-            {
-              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
-              link: 'https://devchalk.com/goravel'
-            }
+            { text: menuRow('Video Tutorials', ICON_YOUTUBE), link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf' },
+            { text: menuRow('DevChalk', ICON_DEVCHALK), link: 'https://devchalk.com/goravel' }
           ]
         },
         {
           text: 'Contribute',
           items: [
-            { text: 'Contribution Guide', link: '/prologue/contributions' },
-            { text: 'Add a Language', link: '/prologue/contributions#add-a-new-language' },
-            { text: 'Open Collective', link: 'https://opencollective.com/goravel' }
+            { text: menuRow('Contribution Guide', ICON_CONTRIBUTE), link: '/prologue/contributions' },
+            { text: menuRow('Add a Language', ICON_TRANSLATE), link: '/prologue/contributions#add-a-new-language' },
+            { text: menuRow('Open Collective', ICON_SUPPORT), link: 'https://opencollective.com/goravel' }
           ]
         }
       ]
     }
   ]
 }
+
+const ICON_YOUTUBE =
+  '<img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" class="g-menu-icon" />'
+const ICON_DEVCHALK =
+  '<img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" class="g-menu-icon" />'
 
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [

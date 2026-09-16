@@ -1,4 +1,15 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
+import {
+  ICON_CONTRIBUTE,
+  ICON_DEVCHALK,
+  ICON_DISCORD,
+  ICON_GITHUB,
+  ICON_SUPPORT,
+  ICON_TRANSLATE,
+  ICON_X,
+  ICON_YOUTUBE,
+  menuRow
+} from './nav-icons'
 export const config = defineConfig({
   lang: "uz-UZ",
   description: "Goravel — bu to‘liq funksiyalarga ega va yuqori darajada kengaytiriladigan web-ilovalar frameworki hisoblanadi. U Go dasturchilari (gopherlar) uchun boshlang‘ich platforma (scaffolding) sifatida xizmat qiladi va ularga o‘z ilovalarini tez, tartibli va professional tarzda yaratishga yordam beradi.",
@@ -116,36 +127,35 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: 'Aloqa',
           items: [
-            { text: 'GitHub', link: 'https://github.com/goravel/goravel' },
-            { text: 'Discord', link: 'https://discord.gg/cFc5csczzS' },
-            { text: 'X', link: 'https://x.com/goravel_dev' }
+            { text: menuRow('GitHub', ICON_GITHUB), link: 'https://github.com/goravel/goravel' },
+            { text: menuRow('Discord', ICON_DISCORD), link: 'https://discord.gg/cFc5csczzS' },
+            { text: menuRow('X', ICON_X), link: 'https://x.com/goravel_dev' }
           ]
         },
         {
           text: "O'rganish",
           items: [
-            {
-              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>Video darsliklar</span></span>',
-              link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
-            },
-            {
-              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
-              link: 'https://devchalk.com/goravel'
-            }
+            { text: menuRow('Video darsliklar', ICON_YOUTUBE), link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf' },
+            { text: menuRow('DevChalk', ICON_DEVCHALK), link: 'https://devchalk.com/goravel' }
           ]
         },
         {
           text: "Hissa qo'shish",
           items: [
-            { text: "Hissa qo'shish bo'yicha qo'llanma", link: '/uz_UZ/prologue/contributions' },
-            { text: "Til qo'shish", link: '/uz_UZ/prologue/contributions#add-a-new-language' },
-            { text: 'Open Collective', link: 'https://opencollective.com/goravel' }
+            { text: menuRow("Hissa qo'shish bo'yicha qo'llanma", ICON_CONTRIBUTE), link: '/uz_UZ/prologue/contributions' },
+            { text: menuRow("Til qo'shish", ICON_TRANSLATE), link: '/uz_UZ/prologue/contributions#add-a-new-language' },
+            { text: menuRow('Open Collective', ICON_SUPPORT), link: 'https://opencollective.com/goravel' }
           ]
         }
       ]
     }
   ]
 }
+
+const ICON_YOUTUBE =
+  '<img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" class="g-menu-icon" />'
+const ICON_DEVCHALK =
+  '<img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" class="g-menu-icon" />'
 
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{
