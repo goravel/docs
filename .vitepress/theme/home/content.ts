@@ -179,6 +179,7 @@ export const LITE_STEPS = [
   { title: 'Add routing', cmd: './artisan package:install Route', add: ['Route'], desc: 'The Route facade joins the HTTP layer, and the piece appears.' },
   { title: 'Add the ORM', cmd: './artisan package:install Orm', add: ['Orm'], desc: 'The Orm facade joins the Data layer.' },
   { title: 'Add queues', cmd: './artisan package:install Queue', add: ['Queue'], desc: 'The Queue facade joins the Async layer.' },
+  { title: 'Add validation', cmd: './artisan package:install Validation', add: ['Validation'], desc: 'The Validation facade joins the Application layer. All five pieces are now in place.' },
   { title: 'Install everything', cmd: './artisan package:install --all', add: ['*'], desc: 'All 30 facades, the same set as a full Goravel project. The mark is whole.' }
 ]
 

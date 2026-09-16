@@ -114,28 +114,33 @@ function nav(): DefaultTheme.NavItem[] {
       text: '社区',
       items: [
         {
-          text: 'GitHub',
-          link: 'https://github.com/goravel/goravel'
+          text: '联系',
+          items: [
+            { text: 'GitHub', link: 'https://github.com/goravel/goravel' },
+            { text: 'Discord', link: 'https://discord.gg/cFc5csczzS' },
+            { text: 'X', link: 'https://x.com/goravel_dev' }
+          ]
         },
         {
-          text: 'Discord',
-          link: 'https://discord.gg/cFc5csczzS'
+          text: '学习',
+          items: [
+            {
+              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>视频教程</span></span>',
+              link: 'https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0'
+            },
+            {
+              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
+              link: 'https://devchalk.com/goravel'
+            }
+          ]
         },
         {
-          text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>视频教程</span></span>',
-          link: 'https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0'
-        },
-        {
-          text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
-          link: 'https://devchalk.com/goravel'
-        },
-        {
-          text: '贡献指南',
-          link: '/zh_CN/prologue/contributions'
-        },
-        {
-          text: '新增语言',
-          link: '/zh_CN/prologue/contributions#新增语言'
+          text: '参与贡献',
+          items: [
+            { text: '贡献指南', link: '/zh_CN/prologue/contributions' },
+            { text: '新增语言', link: '/zh_CN/prologue/contributions#新增语言' },
+            { text: 'Open Collective', link: 'https://opencollective.com/goravel' }
+          ]
         }
       ]
     }

@@ -118,28 +118,33 @@ function nav(): DefaultTheme.NavItem[] {
       text: 'Community',
       items: [
         {
-          text: 'GitHub',
-          link: 'https://github.com/goravel/goravel'
+          text: 'Connect',
+          items: [
+            { text: 'GitHub', link: 'https://github.com/goravel/goravel' },
+            { text: 'Discord', link: 'https://discord.gg/cFc5csczzS' },
+            { text: 'X', link: 'https://x.com/goravel_dev' }
+          ]
         },
         {
-          text: 'Discord',
-          link: 'https://discord.gg/cFc5csczzS'
+          text: 'Learn',
+          items: [
+            {
+              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>Video Tutorials</span></span>',
+              link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
+            },
+            {
+              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
+              link: 'https://devchalk.com/goravel'
+            }
+          ]
         },
         {
-          text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>Video Tutorials</span></span>',
-          link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
-        },
-        {
-          text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
-          link: 'https://devchalk.com/goravel'
-        },
-        {
-          text: 'Contribution Guide',
-          link: '/prologue/contributions'
-        },
-        {
-          text: 'Add a Language',
-          link: '/prologue/contributions#add-a-new-language'
+          text: 'Contribute',
+          items: [
+            { text: 'Contribution Guide', link: '/prologue/contributions' },
+            { text: 'Add a Language', link: '/prologue/contributions#add-a-new-language' },
+            { text: 'Open Collective', link: 'https://opencollective.com/goravel' }
+          ]
         }
       ]
     }

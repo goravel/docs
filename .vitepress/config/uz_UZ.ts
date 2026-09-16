@@ -114,28 +114,33 @@ function nav(): DefaultTheme.NavItem[] {
       text: 'Hamjamiyat',
       items: [
         {
-          text: 'GitHub',
-          link: 'https://github.com/goravel/goravel'
+          text: 'Aloqa',
+          items: [
+            { text: 'GitHub', link: 'https://github.com/goravel/goravel' },
+            { text: 'Discord', link: 'https://discord.gg/cFc5csczzS' },
+            { text: 'X', link: 'https://x.com/goravel_dev' }
+          ]
         },
         {
-          text: 'Discord',
-          link: 'https://discord.gg/cFc5csczzS'
-        },
-        {
-          text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>Video darsliklar</span></span>',
-          link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
-        },
-        {
-          text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
-          link: 'https://devchalk.com/goravel'
+          text: "O'rganish",
+          items: [
+            {
+              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>Video darsliklar</span></span>',
+              link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
+            },
+            {
+              text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
+              link: 'https://devchalk.com/goravel'
+            }
+          ]
         },
         {
           text: "Hissa qo'shish",
-          link: '/uz_UZ/prologue/contributions'
-        },
-        {
-          text: "Til qo'shish",
-          link: '/uz_UZ/prologue/contributions#add-a-new-language'
+          items: [
+            { text: "Hissa qo'shish bo'yicha qo'llanma", link: '/uz_UZ/prologue/contributions' },
+            { text: "Til qo'shish", link: '/uz_UZ/prologue/contributions#add-a-new-language' },
+            { text: 'Open Collective', link: 'https://opencollective.com/goravel' }
+          ]
         }
       ]
     }

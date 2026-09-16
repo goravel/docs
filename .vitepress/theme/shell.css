@@ -1686,3 +1686,54 @@
     content: none;
   }
 }
+
+/* ------------------------------------------------------------------ grouped menus
+   A menu with sections lays them side by side, the way a reader scans them, rather
+   than stacking one list under another. */
+.VPNavBar .VPMenu:has(.VPMenuGroup) {
+  min-width: 0;
+  padding: 10px !important;
+}
+
+.VPNavBar .VPMenu:has(.VPMenuGroup) .items {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(150px, max-content);
+  gap: 0 8px;
+  align-items: start;
+}
+
+.VPNavBar .VPMenu .VPMenuGroup {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+.VPNavBar .VPMenu .VPMenuGroup + .VPMenuGroup {
+  border-left: 1px solid var(--g-line) !important;
+  padding-left: 8px !important;
+}
+
+.VPNavBar .VPMenu .VPMenuGroup .title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 !important;
+  padding: 6px 12px 10px !important;
+  border: 0 !important;
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-grey) !important;
+}
+
+.VPNavBar .VPMenu .VPMenuGroup .title::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  background: var(--g-construct);
+  transform: rotate(45deg);
+}

@@ -117,6 +117,40 @@ export const LAYER_OF: Record<string, LayerKey> = Object.fromEntries(
 )
 export const LITE = ['App', 'Artisan', 'Config', 'Process']
 
+/** Where each facade is documented, so the list on the homepage goes somewhere. */
+export const FACADE_LINK: Record<string, string> = {
+  Route: '/the-basics/routing.html',
+  Http: '/digging-deeper/http-client.html',
+  Session: '/the-basics/session.html',
+  Grpc: '/the-basics/grpc.html',
+  RateLimiter: '/the-basics/routing.html#rate-limiting',
+  View: '/the-basics/views.html',
+  Validation: '/the-basics/validation.html',
+  Auth: '/security/authentication.html',
+  Gate: '/security/authorization.html',
+  Hash: '/security/hashing.html',
+  Crypt: '/security/encryption.html',
+  Lang: '/digging-deeper/localization.html',
+  AI: '/ai/sdk.html',
+  App: '/architecture-concepts/service-container.html',
+  Artisan: '/digging-deeper/artisan-console.html',
+  Config: '/getting-started/configuration.html',
+  Process: '/digging-deeper/processes.html',
+  Log: '/the-basics/logging.html',
+  Testing: '/testing/getting-started.html',
+  Orm: '/orm/getting-started.html',
+  DB: '/database/queries.html',
+  Schema: '/database/migrations.html',
+  Seeder: '/database/seeding.html',
+  Cache: '/digging-deeper/cache.html',
+  Storage: '/digging-deeper/filesystem.html',
+  Queue: '/digging-deeper/queues.html',
+  Event: '/digging-deeper/event.html',
+  Schedule: '/digging-deeper/task-scheduling.html',
+  Mail: '/digging-deeper/mail.html',
+  Telemetry: '/digging-deeper/telemetry.html'
+}
+
 export const FACADE_INFO: Record<string, string> = {
   Route: 'Routes, groups and middleware',
   Http: 'HTTP client for outgoing requests',

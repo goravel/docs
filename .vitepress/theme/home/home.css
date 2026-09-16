@@ -1395,3 +1395,17 @@ html.g-home-snap {
     row-gap: 32px;
   }
 }
+
+/* a facade is a destination: the list is the quickest way into the reference */
+.g-facades li a {
+  color: var(--g-ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.g-facades li a:hover {
+  color: var(--g-cyan-text);
+  border-bottom-color: var(--g-cyan);
+}

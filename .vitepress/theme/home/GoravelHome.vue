@@ -12,7 +12,7 @@ import Stage from './Stage.vue'
 import CommunitySection from './CommunitySection.vue'
 import HomeFooter from './HomeFooter.vue'
 import { CONCEPTS, FILES, LAYER_CODE, LITE_STEPS, MOVES, STOPS, tokenize, type View } from './content'
-import { LAYERS, LAYER_ORDER, LITE, type LayerKey, type PieceState } from './geometry'
+import { FACADE_INFO, FACADE_LINK, LAYERS, LAYER_ORDER, LITE, type LayerKey, type PieceState } from './geometry'
 
 /* The snap is on the document, so it has to be put on and taken off with the page. */
 onMounted(() => document.documentElement.classList.add('g-home-snap'))
@@ -261,7 +261,9 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
           </div>
           <div class="g-panel-body">
             <ul :key="layerIndex" class="g-facades g-swap">
-              <li v-for="f in layer.facades" :key="f">{{ f }}</li>
+              <li v-for="f in layer.facades" :key="f">
+                <a :href="FACADE_LINK[f]" :title="FACADE_INFO[f]">{{ f }}</a>
+              </li>
             </ul>
             <pre class="g-code is-plain g-layer-code"><code><span
               v-for="(ln, n) in tokenize(LAYER_CODE[layerKey])" :key="n" class="ln"><span
