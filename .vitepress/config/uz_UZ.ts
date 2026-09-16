@@ -94,36 +94,54 @@ export const config = defineConfig({
   }
 });
 function nav(): DefaultTheme.NavItem[] {
-  return [{
-    text: "Tez boshlash",
-    link: "/uz_UZ/getting-started/installation",
-    activeMatch: "/uz_UZ/getting-started/"
-  }, {
-    text: "Video darsliklar",
-    items: [{
-      text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>YouTube</span></span>',
-      link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
-    }, {
-      text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
-      link: 'https://devchalk.com/goravel'
-    }]
-  }, {
-    text: "Versiyalar",
-    items: [{
-      text: "v1.18 (Eng so'nggi)",
-      link: 'https://www.goravel.dev/'
-    }, {
-      text: "v1.17",
-      link: 'https://v117.goravel.dev/'
-    }, {
-      text: 'v1.16',
-      link: 'https://v116.goravel.dev/'
-    }]
-  }, {
-    text: "Tarjima qilish",
-    link: "/uz_UZ/prologue/contributions#add-a-new-language"
-  }];
+  return [
+    {
+      text: 'Hujjatlar',
+      link: '/uz_UZ/getting-started/installation',
+      activeMatch: '/uz_UZ/getting-started/'
+    },
+    {
+      text: "Qo'llanmalar",
+      link: '/uz_UZ/the-basics/routing',
+      activeMatch: '/uz_UZ/(the-basics|digging-deeper|database|orm|testing|security|ai)/'
+    },
+    {
+      text: 'Freymvork',
+      link: '/uz_UZ/architecture-concepts/request-lifecycle',
+      activeMatch: '/uz_UZ/architecture-concepts/'
+    },
+    {
+      text: 'Hamjamiyat',
+      items: [
+        {
+          text: 'GitHub',
+          link: 'https://github.com/goravel/goravel'
+        },
+        {
+          text: 'Discord',
+          link: 'https://discord.gg/cFc5csczzS'
+        },
+        {
+          text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>Video darsliklar</span></span>',
+          link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
+        },
+        {
+          text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
+          link: 'https://devchalk.com/goravel'
+        },
+        {
+          text: "Hissa qo'shish",
+          link: '/uz_UZ/prologue/contributions'
+        },
+        {
+          text: "Til qo'shish",
+          link: '/uz_UZ/prologue/contributions#add-a-new-language'
+        }
+      ]
+    }
+  ]
 }
+
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{
     text: "O'rnatish",
