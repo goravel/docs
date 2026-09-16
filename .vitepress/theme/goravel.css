@@ -208,11 +208,28 @@ body {
 }
 
 .vp-doc h3 {
-  margin-top: 40px;
+  margin-top: 44px;
+  margin-bottom: 10px;
   font-size: 20px;
   line-height: 30px;
   font-weight: 650;
   letter-spacing: -0.01em;
+}
+
+/* A heading belongs to the text under it, so the space above a section is large and the space
+   between a heading and its own first paragraph is small. On a long page that pairing is what
+   makes the sections read as chapters while scrolling. */
+.vp-doc h2 + p,
+.vp-doc h3 + p,
+.vp-doc h4 + p {
+  margin-top: 10px;
+}
+
+.vp-doc h2 + div[class*='language-'],
+.vp-doc h3 + div[class*='language-'],
+.vp-doc h2 + .vp-code-group,
+.vp-doc h3 + .vp-code-group {
+  margin-top: 14px;
 }
 
 .vp-doc h4 {
@@ -1181,9 +1198,9 @@ body {
   gap: 10px;
   margin-bottom: 8px;
   font-family: var(--vp-font-family-mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.13em;
   color: var(--g-grey);
 }
 
@@ -1302,19 +1319,52 @@ body {
   }
 }
 
-/* the header rule and the gutter rule read against the lighter ground */
-.vp-doc .custom-block div[class*='language-']::after,
+/* The rule that closes the header band has to reach the same edges the ground was painted to.
+   The block clips its own overflow, which does not touch the box-shadow (the element paints
+   that itself) but did cut this pseudo-element back to the inset box. The horizontal scroll
+   lives on the <pre>, so the block has nothing to clip. */
+.vp-doc .custom-block div[class*='language-'] {
+  overflow: visible;
+}
+
+.vp-doc .custom-block div[class*='language-']::after {
+  left: calc(var(--g-gutter) * -1);
+  right: calc(var(--g-rail) * -1);
+  border-color: var(--g-line);
+}
+
+.vp-doc .custom-block .vp-code-group .tabs {
+  margin-left: calc(var(--g-gutter) * -1);
+  margin-right: calc(var(--g-rail) * -1);
+  padding-left: var(--g-gutter);
+  padding-right: var(--g-rail);
+  background: transparent;
+  border-bottom: 1px solid var(--g-line);
+}
+
 .vp-doc .custom-block [class*='language-'] > .line-numbers-wrapper {
   border-color: var(--g-line);
 }
 
-.vp-doc .custom-block [class*='language-'] > button.copy:hover {
-  background: var(--g-white);
+@media (max-width: 959px) {
+  /* At this width the default theme already bleeds a code block by -24px, so the block's own
+     box is the callout's width: the rule needs no offset, and adding one pushed the page
+     sideways by exactly that amount. */
+  .vp-doc .custom-block div[class*='language-']::after {
+    left: 0;
+    right: 0;
+  }
+
+  .vp-doc .custom-block .vp-code-group .tabs {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
-.vp-doc .custom-block .vp-code-group .tabs {
-  background: transparent;
-  border-bottom: 1px solid var(--g-line);
+.vp-doc .custom-block [class*='language-'] > button.copy:hover {
+  background: var(--g-white);
 }
 
 /* the folded block: a summary row that reads like a label, and the same ground as info */
@@ -1470,9 +1520,9 @@ body {
   gap: 9px;
   margin-bottom: 12px;
   font-family: var(--vp-font-family-mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--g-grey);
 }

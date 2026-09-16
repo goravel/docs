@@ -671,18 +671,18 @@
   font-weight: 500;
 }
 
+/* the page you are on: cyan, and the lattice cell. The vertical bar was a third signal. */
 .VPSidebarItem.level-1.is-active > .item::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
+  /* the row runs from the screen edge, so the mark is placed against the label, not the row:
+     the label starts at the shell inset, and the mark sits just before it */
+  left: calc(var(--g-shell-inset) - 17px);
+  top: 13px;
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
   background: var(--g-cyan);
-}
-
-.VPSidebarItem.is-active > .item .link {
-  background: transparent;
 }
 
 /* ------------------------------------------------------------------ 5. the version control */
@@ -824,7 +824,7 @@
 .VPDocAsideOutline .outline-title,
 .goravel-methods .label {
   font-family: var(--vp-font-family-mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -872,8 +872,10 @@
   color: var(--g-ink);
 }
 
+/* One treatment, not three. The section you are in goes to ink, and the lattice cell marks it.
+   A rule, a colour and a weight all at once made the outline shout louder than the article. */
 .VPDocOutlineItem .outline-link.active {
-  color: var(--g-cyan-text);
+  color: var(--g-ink);
   font-weight: 500;
 }
 
@@ -881,9 +883,10 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 6px;
-  bottom: 6px;
-  width: 2px;
+  top: 11px;
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
   background: var(--g-cyan);
 }
 
@@ -1962,67 +1965,27 @@
 
 /* ==================================================================
    the documentation footer
-   The bar on a docs page carries no destinations, so the community
-   lives here. Its columns stand on the article's grid and its rules
-   run from the screen's edge to the screen's edge.
+   One row: the project, then the few places a reader might go next.
+   The fuller ecosystem footer belongs to the homepage.
    ================================================================== */
 .g-docs-foot {
   border-top: 1px solid var(--g-line);
   background: var(--g-white);
 }
 
-.g-docs-foot-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  padding: 0 var(--g-shell-inset);
-}
-
-/* the sidebar keeps its column all the way down the page, so the footer starts where the
-   article starts rather than underneath it */
-@media (min-width: 960px) {
-  .g-docs-foot-grid {
-    padding-left: var(--g-gutter);
-  }
-
-  .g-docs-foot {
-    margin-left: var(--vp-sidebar-width);
-    border-left: 1px solid var(--g-line);
-  }
-}
-
-.g-docs-foot-col {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 40px 0 48px 32px;
-  border-left: 1px solid var(--g-line);
-}
-
-.g-docs-foot-col:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-
-.g-docs-foot .label {
+.g-docs-foot-row {
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin: 0 0 6px;
-  font-family: var(--vp-font-family-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--g-grey);
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  padding: 20px var(--g-shell-inset);
 }
 
-.g-docs-foot .label::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  flex-shrink: 0;
-  transform: rotate(45deg);
-  background: var(--g-construct);
+.g-docs-foot .mark {
+  font-weight: 650;
+  font-size: 14px;
+  color: var(--g-ink);
+  margin-right: 6px;
 }
 
 .g-docs-foot a {
@@ -2030,7 +1993,6 @@
   line-height: 22px;
   color: var(--g-grey);
   text-decoration: none;
-  width: fit-content;
   transition: color 0.15s ease;
 }
 
@@ -2038,15 +2000,20 @@
   color: var(--g-ink);
 }
 
-@media (max-width: 767px) {
-  .g-docs-foot-grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 32px 24px 36px;
+@media (min-width: 960px) {
+  .g-docs-foot {
+    margin-left: var(--vp-sidebar-width);
+    border-left: 1px solid var(--g-line);
   }
 
-  .g-docs-foot-col {
-    padding: 0;
-    border-left: 0;
+  .g-docs-foot-row {
+    padding-left: var(--g-gutter);
+  }
+}
+
+@media (max-width: 959px) {
+  .g-docs-foot-row {
+    padding: 18px 24px;
+    gap: 8px 20px;
   }
 }

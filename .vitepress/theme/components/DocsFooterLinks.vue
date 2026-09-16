@@ -15,41 +15,24 @@ const isDocs = computed(
   () => frontmatter.value.layout !== 'goravel-home' && frontmatter.value.sidebar !== false
 )
 
-const groups = [
-  {
-    label: 'Project',
-    links: [
-      { text: 'GitHub', href: 'https://github.com/goravel/goravel' },
-      { text: 'Release notes', href: '/prologue/releases' },
-      { text: 'Compare with Laravel', href: '/prologue/compare-with-laravel' }
-    ]
-  },
-  {
-    label: 'Community',
-    links: [
-      { text: 'Discord', href: 'https://discord.gg/cFc5csczzS' },
-      { text: 'X', href: 'https://x.com/goravel_dev' },
-      { text: 'Video tutorials', href: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf' }
-    ]
-  },
-  {
-    label: 'Contribute',
-    links: [
-      { text: 'Contribution guide', href: '/prologue/contributions' },
-      { text: 'Add a language', href: '/prologue/contributions#add-a-new-language' },
-      { text: 'Open Collective', href: 'https://opencollective.com/goravel' }
-    ]
-  }
+/**
+ * One row, not a second site. A reader at the foot of a twenty-minute page wants the few
+ * places they might go next, not the whole ecosystem again; the homepage carries that.
+ */
+const links = [
+  { text: 'Documentation', href: '/getting-started/installation' },
+  { text: 'Release notes', href: '/prologue/releases' },
+  { text: 'GitHub', href: 'https://github.com/goravel/goravel' },
+  { text: 'Discord', href: 'https://discord.gg/cFc5csczzS' },
+  { text: 'Contribute', href: '/prologue/contributions' }
 ]
 </script>
 
 <template>
   <div v-if="isDocs" class="g-docs-foot">
-    <div class="g-docs-foot-grid">
-      <section v-for="g in groups" :key="g.label" class="g-docs-foot-col">
-        <p class="label">{{ g.label }}</p>
-        <a v-for="l in g.links" :key="l.text" :href="l.href">{{ l.text }}</a>
-      </section>
-    </div>
+    <nav class="g-docs-foot-row" aria-label="Goravel">
+      <span class="mark">Goravel</span>
+      <a v-for="l in links" :key="l.text" :href="l.href">{{ l.text }}</a>
+    </nav>
   </div>
 </template>
