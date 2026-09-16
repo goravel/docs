@@ -1,5 +1,4 @@
 ---
-layout: home
 title: Goravel - Full-featured Golang Development Framework
 
 head:
@@ -46,32 +45,9 @@ head:
     ]
   - ['meta', { name: twitter:image, content: https://www.goravel.dev/meta.png }]
 
-hero:
-  name: Goravel
-  text: Full-featured Golang Development Framework
-  tagline: Componentization, High-performance, easy-to-extend, PHPers' first choice.
-  # image: /logo.svg
-  actions:
-    - theme: brand
-      text: Quick Start
-      link: /getting-started/installation
-    - theme: alt
-      text: 🌟 Github Star
-      link: https://github.com/goravel/goravel
-      target: _blank
-features:
-  - title: 🧰 Lite Or Full-featured
-    details: You can choose between a lightweight version with essential features or a full-featured version that includes ORM, HTTP, logging, caching, and other basic tools for all development.
-  - title: 💻 Componentization
-    details: Modular design, each module is independent and can be used separately, making development and maintenance more convenient.
-  - title: 🚀 High-performance
-    details: Built with Golang, integrating multiple excellent extensions to create fast and responsive applications.
-  - title: 📈 Easy-to-extend
-    details: The module provides multiple drivers, and can develop extension packages according to needs, suitable for applications of any scale, from small projects to large systems.
-  - title: 👥 Active community
-    details: Supported by an active community, they contribute to its development, documentation, and continuous support.
-  - title: 🔄 PHPers' first choice
-    details: The framework style is consistent with Laravel, allowing PHPer to create powerful Golang applications without learning a new framework. Tribute to Laravel!
+layout: goravel-home
+sidebar: false
+aside: false
 ---
 
 <div class="text-center mt-10 text-3xl font-bold">Contributors</div>

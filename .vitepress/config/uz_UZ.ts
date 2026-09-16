@@ -4,51 +4,64 @@ export const config = defineConfig({
   description: "Goravel — bu to‘liq funksiyalarga ega va yuqori darajada kengaytiriladigan web-ilovalar frameworki hisoblanadi. U Go dasturchilari (gopherlar) uchun boshlang‘ich platforma (scaffolding) sifatida xizmat qiladi va ularga o‘z ilovalarini tez, tartibli va professional tarzda yaratishga yordam beradi.",
   themeConfig: {
     nav: nav(),
-    sidebar: [{
-      text: "Kirish",
-      base: "/uz_UZ/prologue/",
-      items: sidebarPrologue()
-    }, {
-      text: "Yangilash",
-      base: "/uz_UZ/upgrade/",
-      items: sidebarUpgrade()
-    }, {
+    sidebar: [
+      {
       text: "Boshlash",
       base: "/uz_UZ/getting-started/",
-      items: sidebarGettingStarted()
-    }, {
+      collapsed: true,
+        items: sidebarGettingStarted()
+      }, {
       text: "Arxitektura tushunchalari",
       base: "/uz_UZ/architecture-concepts/",
-      items: sidebarFoundation()
-    }, {
+      collapsed: true,
+        items: sidebarFoundation()
+      }, {
       text: "Asosiy tushunchalar",
       base: "/uz_UZ/the-basics/",
-      items: sidebarBasic()
-    }, {
+      collapsed: true,
+        items: sidebarBasic()
+      }, {
       text: "Chuqurroq o'rganish",
       base: "/uz_UZ/digging-deeper/",
-      items: sidebarAdvanced()
-    }, {
+      collapsed: true,
+        items: sidebarAdvanced()
+      }, {
       text: "AI",
       base: "/uz_UZ/ai/",
-      items: sidebarAI()
-    }, {
+      collapsed: true,
+        items: sidebarAI()
+      }, {
       text: "Xavfsizlik",
       base: "/uz_UZ/security/",
-      items: sidebarSecurity()
-    }, {
+      collapsed: true,
+        items: sidebarSecurity()
+      }, {
       text: "Ma'lumotlar bazasi",
       base: "/uz_UZ/database/",
-      items: sidebarDatabase()
-    }, {
+      collapsed: true,
+        items: sidebarDatabase()
+      }, {
       text: 'ORM',
       base: "/uz_UZ/orm/",
-      items: sidebarOrm()
-    }, {
+      collapsed: true,
+        items: sidebarOrm()
+      }, {
       text: "Testlash",
       base: "/uz_UZ/testing/",
-      items: sidebarTesting()
-    }],
+      collapsed: true,
+        items: sidebarTesting()
+      }, {
+      text: "Yangilash",
+      base: "/uz_UZ/upgrade/",
+      collapsed: true,
+        items: sidebarUpgrade()
+      }, {
+      text: "Kirish",
+      base: "/uz_UZ/prologue/",
+      collapsed: true,
+        items: sidebarPrologue()
+      }
+    ],
     editLink: {
       pattern: 'https://github.com/goravel/docs/edit/master/:path',
       text: "Ushbu sahifani GitHub-da tahrirlash"

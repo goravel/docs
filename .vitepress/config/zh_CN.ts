@@ -4,51 +4,64 @@ export const config = defineConfig({
   description: "Goravel 是一个功能完整且可扩展性极强的 Web 应用程序框架。作为一个起始脚手架，帮助 Gopher 快速构建自己的应用程序。",
   themeConfig: {
     nav: nav(),
-    sidebar: [{
-      text: "序言",
-      base: "/zh_CN/prologue/",
-      items: sidebarPrologue()
-    }, {
-      text: "升级",
-      base: "/zh_CN/upgrade/",
-      items: sidebarUpgrade()
-    }, {
+    sidebar: [
+      {
       text: "快速开始",
       base: "/zh_CN/getting-started/",
-      items: sidebarGettingStarted()
-    }, {
+      collapsed: true,
+        items: sidebarGettingStarted()
+      }, {
       text: "核心架构",
       base: "/zh_CN/architecture-concepts/",
-      items: sidebarFoundation()
-    }, {
+      collapsed: true,
+        items: sidebarFoundation()
+      }, {
       text: "基础功能",
       base: "/zh_CN/the-basics/",
-      items: sidebarBasic()
-    }, {
+      collapsed: true,
+        items: sidebarBasic()
+      }, {
       text: "高级功能",
       base: "/zh_CN/digging-deeper/",
-      items: sidebarAdvanced()
-    }, {
+      collapsed: true,
+        items: sidebarAdvanced()
+      }, {
       text: "安全",
       base: "/zh_CN/security/",
-      items: sidebarSecurity()
-    }, {
+      collapsed: true,
+        items: sidebarSecurity()
+      }, {
       text: 'AI',
       base: '/zh_CN/ai/',
-      items: sidebarAI()
-    }, {
+      collapsed: true,
+        items: sidebarAI()
+      }, {
       text: "数据库",
       base: "/zh_CN/database/",
-      items: sidebarDatabase()
-    }, {
+      collapsed: true,
+        items: sidebarDatabase()
+      }, {
       text: 'ORM',
       base: "/zh_CN/orm/",
-      items: sidebarOrm()
-    }, {
+      collapsed: true,
+        items: sidebarOrm()
+      }, {
       text: "测试",
       base: "/zh_CN/testing/",
-      items: sidebarTesting()
-    }],
+      collapsed: true,
+        items: sidebarTesting()
+      }, {
+      text: "升级",
+      base: "/zh_CN/upgrade/",
+      collapsed: true,
+        items: sidebarUpgrade()
+      }, {
+      text: "序言",
+      base: "/zh_CN/prologue/",
+      collapsed: true,
+        items: sidebarPrologue()
+      }
+    ],
     editLink: {
       pattern: 'https://github.com/goravel/docs/edit/master/:path',
       text: "在 GitHub 上编辑此页面"

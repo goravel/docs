@@ -3,6 +3,7 @@ import { createFileSystemTypesCache } from '@shikijs/vitepress-twoslash/cache-fs
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
 import timeline from 'vitepress-markdown-timeline'
+import { goravelDark, goravelLight } from './goravel-code'
 import {
   groupIconMdPlugin,
   groupIconVitePlugin
@@ -37,6 +38,8 @@ export const shared = defineConfig({
   ],
 
   markdown: {
+    theme: { light: goravelLight, dark: goravelDark },
+    lineNumbers: true,
     codeTransformers: [
       transformerTwoslash({
         typesCache: createFileSystemTypesCache()
@@ -65,10 +68,10 @@ export const shared = defineConfig({
         indexName: 'goravel',
         locales: {
           root: {
-            placeholder: 'Search Documentation',
+            placeholder: 'Search documentation',
             translations: {
               button: {
-                buttonText: 'Search'
+                buttonText: 'Search documentation'
               }
             }
           },

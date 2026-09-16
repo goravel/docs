@@ -1,0 +1,1653 @@
+/* ==================================================================
+   The Goravel documentation shell
+   ------------------------------------------------------------------
+   Three columns and one rule per column edge. The sidebar column runs
+   unbroken from the top of the screen; everything to its right is
+   capped by a single hairline under the header. Inside the columns
+   there are no rules at all: spacing, weight and one accent do the
+   work. Three controls share one vocabulary (version, search, filter):
+   a soft surface, a 2px radius, an inset glyph.
+   ================================================================== */
+
+:root {
+  --g-hover: #eef2f5;           /* one step past --g-soft, for control hover */
+  --g-shell-inset: 40px;        /* the page's outer inset, left and right */
+  --g-control: 34px;            /* the height every shell control shares */
+}
+
+/* ------------------------------------------------------------------ 1. the frame */
+@media (min-width: 960px) {
+  .VPContent.has-sidebar {
+    padding-left: var(--g-sidebar) !important;
+    padding-right: 0 !important;
+  }
+
+  .VPDoc {
+    padding: 0 !important;
+  }
+
+  .VPDoc .container {
+    max-width: none !important;
+    margin: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+  .VPDoc .container > .content {
+    order: 1;
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: var(--g-col) !important;
+    max-width: none !important;
+    padding: 0 var(--g-rail) 0 var(--g-gutter) !important;
+    border-right: 1px solid var(--g-line);
+  }
+
+  .VPDoc .container > .content > .content-container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 36px 0 72px !important;
+  }
+
+  .VPDoc .container > .aside {
+    order: 2;
+    flex-grow: 0;
+    flex-shrink: 0;
+    min-width: 0 !important;
+    max-width: none !important;
+    width: calc(100% - var(--g-col)) !important;
+    padding: 0 !important;
+  }
+
+  .VPDoc .aside-curtain {
+    display: none !important;
+  }
+}
+
+/* the column the article lives in never changes width; the outline takes the slack */
+@media (min-width: 1600px) {
+  .VPDoc .container > .content {
+    width: var(--g-col) !important;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1599px) {
+  .VPDoc .container > .content {
+    width: calc(100% - var(--g-aside)) !important;
+  }
+
+  .VPDoc .container > .aside {
+    width: var(--g-aside) !important;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .VPDoc .container > .content {
+    width: 100% !important;
+    border-right: 0;
+  }
+
+  .VPDoc .container > .aside {
+    display: none !important;
+  }
+}
+
+@media (max-width: 959px) {
+  .VPDoc .container,
+  .VPDoc .container > .content {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .VPDoc .container > .content > .content-container,
+  .VPDoc.has-aside .content-container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 24px 0 64px !important;
+  }
+}
+
+/* ------------------------------------------------------------------ 2. the header */
+.VPNav,
+.VPNavBar {
+  background: var(--g-white);
+}
+
+.VPNav {
+  border-bottom: 0;
+}
+
+.VPNavBar,
+.VPNavBar .divider,
+.VPNavBar .divider-line,
+.VPNav .divider,
+.VPNav .divider-line {
+  border: 0;
+}
+
+.VPNav .divider,
+.VPNav .divider-line,
+.VPNavBar .curtain,
+.VPNav .curtain {
+  display: none !important;
+}
+
+@media (min-width: 960px) {
+  .VPNavBar .container {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  /* the wordmark column is the sidebar column: one rule, full height */
+  .VPNavBar.has-sidebar .container > .title {
+    width: var(--vp-sidebar-width) !important;
+    padding: 0 24px 0 var(--g-shell-inset) !important;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid var(--g-line);
+    border-bottom: 0 !important;
+  }
+
+  .VPNavBar .container > .title .VPNavBarTitle {
+    display: flex !important;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    border: 0 !important;
+  }
+
+  .VPNavBarTitle > .title {
+    width: auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  .VPNavBar .VPNavBarTitle .logo,
+  .VPNavBar .VPNavBarTitle img {
+    height: 26px !important;
+    width: auto !important;
+  }
+
+  /* the section the reader is in, said quietly. The homepage is not in a section. */
+  .VPNavBar.has-sidebar .container > .title .VPNavBarTitle::after {
+    content: 'Docs';
+    margin-left: auto;
+    padding-left: 16px;
+    font-family: var(--vp-font-family-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--g-grey);
+    white-space: nowrap;
+  }
+
+  /* everything right of the sidebar rule is one row, closed by one hairline */
+  .VPNavBar.has-sidebar .content {
+    padding-left: var(--vp-sidebar-width) !important;
+    padding-right: 0 !important;
+  }
+
+  .VPNavBar.has-sidebar .content-body {
+    align-items: center !important;
+    background: var(--g-white) !important;
+    padding: 0 var(--g-shell-inset) 0 0 !important;
+    border-bottom: 1px solid var(--g-line);
+    box-sizing: border-box;
+    height: 100%;
+  }
+
+  /* A page with no sidebar has no column to start from, so the hairline runs the width.
+     The body and the title stop one pixel short of it, or their white ground paints over
+     the bar's own rule and the verticals below have nothing to meet. */
+  .VPNavBar:not(.has-sidebar) .content-body {
+    align-items: center !important;
+    background: var(--g-white) !important;
+    padding: 0 var(--g-shell-inset) 0 0 !important;
+    box-sizing: border-box;
+    height: calc(100% - 1px);
+  }
+
+  .VPNavBar:not(.has-sidebar) .container > .title {
+    height: calc(100% - 1px);
+  }
+
+  .VPNavBar:not(.has-sidebar) {
+    border-bottom: 1px solid var(--g-line);
+  }
+
+  /* the default theme underlines the wordmark cell; the bar's own rule does that job */
+  .VPNavBar:not(.has-sidebar) .container > .title,
+  .VPNavBarTitle .title {
+    border-bottom: 0 !important;
+  }
+
+  /* the first link stands on the same vertical as the article's first character */
+  .VPNavBarMenu {
+    order: 1;
+    display: flex !important;
+    align-items: center;
+    min-width: 0;
+    padding: 0 0 0 var(--g-gutter) !important;
+  }
+
+  .VPNavBarMenuLink,
+  .VPNavBarMenuGroup .VPFlyout .button {
+    height: auto !important;
+    padding: 0 14px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    line-height: 20px !important;
+    color: var(--g-ink) !important;
+    transition: color 0.15s ease;
+  }
+
+  .VPNavBarMenu > *:first-child .VPNavBarMenuLink,
+  .VPNavBarMenu > *:first-child .button {
+    padding-left: 0 !important;
+  }
+
+  .VPNavBarMenuLink:hover,
+  .VPNavBarMenuGroup .VPFlyout:hover .button,
+  .VPNavBarMenuLink.active {
+    color: var(--g-cyan-text) !important;
+  }
+
+  /* the label and its chevron are one object, centred on the same baseline */
+  .VPNavBarMenuLink,
+  .VPNavBarMenuGroup .VPFlyout .button,
+  .VPNavBar .VPFlyout .button .text {
+    display: inline-flex !important;
+    align-items: center;
+  }
+
+  .VPNavBar .vpi-chevron-down {
+    width: 14px !important;
+    height: 14px !important;
+    margin: 1px 0 0 5px;
+    color: var(--g-grey);
+    opacity: 1;
+    transition: color 0.15s ease, transform 0.2s ease;
+  }
+
+  /* the chevron answers when its menu is open, and only then */
+  .VPNavBarMenuGroup:hover .vpi-chevron-down,
+  .VPNavBarTranslations:hover .vpi-chevron-down {
+    color: var(--g-cyan-text);
+  }
+
+  /* search first, utilities after it, both hard against the page's right inset */
+  .VPNavBarSearch {
+    order: 2;
+    display: flex !important;
+    align-items: center;
+    flex-grow: 0 !important;
+    flex-shrink: 1 !important;
+    width: 280px !important;
+    min-width: 0;
+    margin-left: auto !important;
+    padding: 0 !important;
+  }
+
+  .VPNavBarTranslations,
+  .VPNavBarSocialLinks,
+  .VPNavBarExtra,
+  .VPNavBar .VPSocialLinks {
+    order: 3;
+  }
+
+  /* three groups, three distances: the search, then the language, then the project.
+     Nothing is divided by a line; the gaps do the grouping. */
+  .VPNavBarTranslations {
+    display: flex !important;
+    align-items: center;
+    margin: 0 0 0 20px !important;
+  }
+
+  .VPNavBar .VPNavBarSocialLinks {
+    display: flex !important;
+    align-items: center;
+    gap: 2px;
+    margin: 0 0 0 20px !important;
+  }
+
+  /* one theme is designed, so the switch has nothing to offer yet */
+  .VPNavBarAppearance,
+  .VPNavBar .VPSwitchAppearance {
+    display: none !important;
+  }
+
+  /* the default theme marks its groups off with short pipes */
+  .VPNav .VPNavBarTranslations::before,
+  .VPNav .VPSocialLinks::before,
+  .VPNav .VPNavBarExtra::before,
+  .VPNav .VPNavBarHamburger::before {
+    content: none !important;
+  }
+}
+
+/* the utilities are 34px targets. They sit at one weight, in one grey, and take the page's
+   accent when reached for, the same as every link in the bar. */
+.VPNavBar .VPSocialLink,
+.VPNavBar .VPNavBarTranslations .button,
+.VPNavBar .VPNavBarTranslations .button .text,
+.VPNavBar .VPNavBarExtra .button {
+  width: var(--g-control) !important;
+  height: var(--g-control) !important;
+  border-radius: 2px;
+  color: var(--g-grey) !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.VPNavBar .VPNavBarTranslations .button .text {
+  width: auto !important;
+  height: auto !important;
+  display: flex;
+  align-items: center;
+}
+
+.VPNavBar .VPSocialLink:hover,
+.VPNavBar .VPNavBarTranslations:hover .button,
+.VPNavBar .VPNavBarTranslations:hover .button .text,
+.VPNavBar .VPNavBarExtra:hover .button {
+  background: var(--g-soft);
+  color: var(--g-cyan-text) !important;
+}
+
+.VPNavBar .VPNavBarTranslations:hover .button .text {
+  background: none;
+}
+
+.VPNavBar .VPSocialLink > svg,
+.VPNavBar .VPSocialLink > [class*='vpi-social'],
+.VPNavBar .VPNavBarTranslations .vpi-languages {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+/* ------------------------------------------------------------------ 3. search */
+.VPNavBarSearch > #docsearch,
+.VPNavBarSearch > div {
+  width: 100% !important;
+}
+
+.VPNavBarSearch .DocSearch-Button {
+  width: 100% !important;
+  height: var(--g-control) !important;
+  margin: 0 !important;
+  padding: 0 10px 0 11px !important;
+  border: 0 !important;
+  border-radius: 2px !important;
+  background: var(--g-soft) !important;
+  justify-content: flex-start;
+  gap: 9px;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.VPNavBarSearch .DocSearch-Button:hover {
+  background: var(--g-hover) !important;
+  box-shadow: none !important;
+}
+
+.VPNavBarSearch .DocSearch-Button:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--g-cyan) !important;
+}
+
+.VPNavBarSearch .DocSearch-Button-Container {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.VPNavBarSearch .DocSearch-Search-Icon {
+  width: 15px;
+  height: 15px;
+  color: var(--g-grey);
+}
+
+.VPNavBarSearch .DocSearch-Button-Placeholder {
+  padding: 0;
+  font-size: 14px;
+  font-weight: 400 !important;
+  color: var(--g-grey) !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.VPNavBarSearch .DocSearch-Button-Keys {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  min-width: 0;
+  margin-left: auto !important;
+  padding-left: 8px;
+}
+
+.VPNavBarSearch .DocSearch-Button-Key,
+.VPNavBarSearch .DocSearch-Button-Key * {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  font-family: var(--vp-font-family-mono) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 16px !important;
+  color: var(--g-grey) !important;
+}
+
+/* the modal: a sheet, not a card */
+.DocSearch-Container {
+  background: rgba(16, 24, 32, 0.32) !important;
+}
+
+.DocSearch-Modal {
+  margin-top: 88px !important;
+  border-radius: 2px !important;
+  border: 1px solid var(--g-line) !important;
+  box-shadow: 0 16px 48px rgba(16, 24, 32, 0.12) !important;
+}
+
+.DocSearch-SearchBar {
+  padding: 0 !important;
+  border-bottom: 1px solid var(--g-line);
+}
+
+.DocSearch-Form {
+  height: 60px;
+  padding: 0 20px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: var(--g-white) !important;
+}
+
+.DocSearch-MagnifierLabel {
+  color: var(--g-grey);
+}
+
+.DocSearch-Input {
+  font-size: 17px !important;
+  font-weight: 400 !important;
+  padding: 0 0 0 12px !important;
+}
+
+.DocSearch-Reset {
+  border-radius: 2px;
+}
+
+.DocSearch-Cancel {
+  font-size: 13px;
+  color: var(--g-grey);
+}
+
+.DocSearch-Dropdown {
+  padding: 8px 0 !important;
+}
+
+.DocSearch-Hit-source {
+  padding: 12px 20px 6px !important;
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-grey) !important;
+  background: var(--g-white) !important;
+}
+
+.DocSearch-Hit a {
+  border-radius: 0 !important;
+  padding: 0 20px !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.DocSearch-Hit[aria-selected='true'] a {
+  background: var(--g-soft) !important;
+}
+
+.DocSearch-Hit-title {
+  font-size: 14px;
+}
+
+.DocSearch-Hit-path {
+  font-size: 12px;
+  color: var(--g-grey);
+}
+
+.DocSearch-Hit-icon,
+.DocSearch-Hit-action {
+  color: var(--g-grey);
+}
+
+.DocSearch-Footer {
+  height: 48px;
+  border-radius: 0 !important;
+  box-shadow: inset 0 1px 0 var(--g-line) !important;
+}
+
+.DocSearch-Commands,
+.DocSearch-Logo {
+  opacity: 0.7;
+}
+
+/* ------------------------------------------------------------------ 4. the sidebar */
+@media (min-width: 960px) {
+  .VPSidebar {
+    width: var(--vp-sidebar-width) !important;
+    padding: calc(var(--vp-nav-height) + 28px) 24px 96px var(--g-shell-inset) !important;
+    background: var(--g-white) !important;
+    border-right: 1px solid var(--g-line);
+  }
+}
+
+.VPSidebar > .curtain {
+  display: none !important;
+}
+
+.VPSidebar .group {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-top: 0 !important;
+}
+
+.VPSidebar .group + .group {
+  margin-top: 4px;
+}
+
+/* a section: no rule, no fill, just weight and a caret that answers */
+.VPSidebarItem.level-0 {
+  padding-bottom: 0 !important;
+}
+
+.VPSidebarItem.level-0 > .item {
+  width: auto !important;
+  margin: 0 -24px 0 calc(var(--g-shell-inset) * -1) !important;
+  padding: 8px 24px 8px var(--g-shell-inset) !important;
+  border: 0 !important;
+  border-radius: 0;
+  line-height: 20px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.VPSidebarItem.level-0 > .item:hover {
+  background: var(--g-soft);
+}
+
+.VPSidebarItem.level-0 > .item > .indicator {
+  display: none !important;
+}
+
+.VPSidebarItem.level-0 .text {
+  padding: 0 !important;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--g-ink);
+}
+
+.VPSidebarItem .caret {
+  width: 20px !important;
+  height: 20px !important;
+  margin-right: -4px;
+  color: var(--g-grey);
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+
+.VPSidebarItem.level-0 > .item:hover .caret {
+  opacity: 1;
+}
+
+.VPSidebarItem .caret-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+/* the pages inside a section */
+.VPSidebarItem.level-1 .items,
+.VPSidebarItem.level-0 > .items {
+  border-left: 0 !important;
+  padding-left: 0 !important;
+  margin: 2px 0 12px !important;
+}
+
+.VPSidebarItem.level-1 > .item {
+  position: relative;
+  width: auto !important;
+  margin: 0 -24px 0 calc(var(--g-shell-inset) * -1) !important;
+  padding: 6px 24px 6px var(--g-shell-inset) !important;
+  border: 0 !important;
+  transition: background-color 0.15s ease;
+}
+
+.VPSidebarItem.level-1 > .item:hover {
+  background: var(--g-soft);
+}
+
+.VPSidebarItem.level-1 .link .text,
+.VPSidebarItem.level-1 .text {
+  padding: 0 !important;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--g-grey);
+  transition: color 0.15s ease;
+}
+
+.VPSidebarItem.level-1 > .item:hover .text {
+  color: var(--g-ink);
+}
+
+/* you are here: the accent is a 2px mark on the column edge, never a fill */
+.VPSidebarItem.is-active > .item .text,
+.VPSidebarItem.is-link.is-active .text {
+  color: var(--g-cyan-text) !important;
+  font-weight: 500;
+}
+
+.VPSidebarItem.level-1.is-active > .item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--g-cyan);
+}
+
+.VPSidebarItem.is-active > .item .link {
+  background: transparent;
+}
+
+/* ------------------------------------------------------------------ 5. the version control */
+.goravel-version {
+  position: relative;
+  display: flex;
+  margin: 0 0 24px;
+}
+
+.goravel-version .trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: auto;
+  height: 30px;
+  padding: 0 9px 0 10px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--g-soft);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.goravel-version.open .trigger,
+.goravel-version .trigger:hover {
+  background: var(--g-hover);
+}
+
+.goravel-version .v {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--g-ink);
+}
+
+.goravel-version .note {
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--g-cyan-text);
+}
+
+.goravel-version .caret {
+  width: 7px;
+  height: 7px;
+  margin: -2px 0 0 1px;
+  border-right: 1.3px solid var(--g-grey);
+  border-bottom: 1.3px solid var(--g-grey);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.goravel-version.open .caret {
+  transform: rotate(-135deg);
+  margin-top: 2px;
+}
+
+.goravel-version .menu {
+  position: absolute;
+  left: 0;
+  top: 36px;
+  z-index: 40;
+  min-width: 208px;
+  padding: 4px;
+  border: 1px solid var(--g-line);
+  border-radius: 2px;
+  background: var(--g-white);
+  box-shadow: 0 10px 28px rgba(16, 24, 32, 0.1);
+}
+
+.goravel-version .option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 2px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  color: var(--g-ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.goravel-version .option .host {
+  margin-left: auto;
+  color: var(--g-grey);
+}
+
+.goravel-version .option:hover {
+  background: var(--g-soft);
+}
+
+.goravel-version .option.selected {
+  color: var(--g-cyan-text);
+}
+
+/* ------------------------------------------------------------------ 6. the outline rail */
+@media (min-width: 1280px) {
+  .VPDoc .aside-container {
+    position: sticky !important;
+    top: calc(var(--vp-nav-height) + 36px) !important;
+    left: auto !important;
+    right: auto !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: calc(100vh - var(--vp-nav-height) - 64px);
+    padding: 0 !important;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .VPDoc .aside-content {
+    min-height: 0;
+    padding-bottom: 24px;
+  }
+}
+
+/* a label in the shell's quiet voice */
+.VPDocAsideOutline .outline-title,
+.goravel-methods .label {
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-grey);
+}
+
+.VPDocAsideOutline,
+.goravel-methods {
+  margin: 0 0 28px !important;
+  padding: 0 var(--g-shell-inset) 0 var(--g-rail) !important;
+  border: 0 !important;
+}
+
+.VPDocAsideOutline .content {
+  border-left: 0;
+  padding-left: 0;
+  position: relative;
+}
+
+.VPDocAsideOutline .outline-marker {
+  display: none;
+}
+
+.VPDocAsideOutline .outline-title {
+  margin-bottom: 8px;
+}
+
+.VPDocOutlineItem .outline-link {
+  position: relative;
+  display: block;
+  padding: 5px 0 5px 12px;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--g-grey);
+  transition: color 0.15s ease;
+}
+
+.VPDocOutlineItem .outline-link:hover {
+  color: var(--g-ink);
+}
+
+.VPDocOutlineItem .outline-link.active {
+  color: var(--g-cyan-text);
+  font-weight: 500;
+}
+
+.VPDocOutlineItem .outline-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--g-cyan);
+}
+
+.VPDocOutlineItem.nested {
+  padding-left: 12px;
+}
+
+/* the method index: secondary to the outline, so it is quieter still */
+.goravel-methods {
+  display: flex;
+  flex-direction: column;
+}
+
+.goravel-methods .head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.goravel-methods .filter {
+  width: 100%;
+  height: 30px;
+  margin: 0 0 6px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--g-soft);
+  font-family: var(--vp-font-family-base);
+  font-size: 13px;
+  color: var(--g-ink);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.goravel-methods .filter::placeholder {
+  color: var(--g-grey);
+}
+
+.goravel-methods .filter:hover {
+  background: var(--g-hover);
+}
+
+.goravel-methods .filter:focus {
+  outline: none;
+  background: var(--g-white);
+  box-shadow: inset 0 0 0 1px var(--g-cyan);
+}
+
+.goravel-methods .method {
+  position: relative;
+  padding: 3px 0 3px 12px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--g-grey);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color 0.15s ease;
+}
+
+.goravel-methods .method:hover {
+  color: var(--g-ink);
+}
+
+.goravel-methods .method.active {
+  color: var(--g-cyan-text);
+}
+
+.goravel-methods .method.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 2px;
+  background: var(--g-cyan);
+}
+
+/* the outline carries the page's headings at every width that has room for it, so the
+   article does not print them a second time */
+@media (min-width: 960px) {
+  .VPDoc.has-aside .table-of-contents {
+    display: none;
+  }
+}
+
+/* on a phone it is the page's own index: quiet type, not a wall of links */
+@media (max-width: 959px) {
+  .vp-doc .table-of-contents a {
+    color: var(--g-ink);
+    text-decoration: none;
+    border-bottom: 0;
+    font-weight: 500;
+  }
+
+  .vp-doc .table-of-contents ul a {
+    color: var(--g-grey);
+    font-weight: 400;
+  }
+
+  .vp-doc .table-of-contents a:hover {
+    color: var(--g-cyan-text);
+  }
+}
+
+/* ------------------------------------------------------------------ 7. the breadcrumb */
+.goravel-doc-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 20px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  color: var(--g-grey);
+}
+
+.goravel-doc-meta .crumbs {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+
+.goravel-doc-meta .crumbs > span {
+  white-space: nowrap;
+}
+
+.goravel-doc-meta .current {
+  color: var(--g-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.goravel-doc-meta .sep {
+  opacity: 0.55;
+}
+
+.goravel-doc-meta .layer {
+  margin-left: auto;
+  color: var(--g-cyan-text);
+  white-space: nowrap;
+}
+
+@media (max-width: 599px) {
+  .goravel-doc-meta .crumbs > span:not(.current) {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ 8. tablet: 960 to 1279 */
+@media (min-width: 960px) and (max-width: 1279px) {
+  .VPNavBarMenu {
+    padding-left: 32px !important;
+  }
+
+  .VPNavBarMenuLink,
+  .VPNavBarMenuGroup .VPFlyout .button {
+    padding: 0 10px !important;
+    font-size: 14px !important;
+  }
+
+  /* search keeps its prominence; the project links fold into the overflow menu */
+  .VPNavBarSearch {
+    width: 216px !important;
+  }
+
+  .VPNavBar .VPNavBarSocialLinks {
+    display: none !important;
+  }
+
+  .VPNavBarSearch .DocSearch-Button-Keys {
+    display: none !important;
+  }
+}
+
+/* the narrowest desktop: the language picker folds into the overflow menu too */
+@media (min-width: 960px) and (max-width: 1099px) {
+  .VPNavBarMenu {
+    padding-left: 24px !important;
+  }
+
+  .VPNavBar .VPNavBarTranslations {
+    display: none !important;
+  }
+
+  .VPNavBarSearch {
+    width: 180px !important;
+  }
+}
+
+/* the local outline bar only exists where the rail does not */
+.VPLocalNav {
+  background: var(--g-white) !important;
+  border-top: 0 !important;
+  border-bottom: 1px solid var(--g-line) !important;
+}
+
+@media (min-width: 960px) {
+  .VPLocalNav {
+    padding-left: calc(var(--vp-sidebar-width) + var(--g-gutter)) !important;
+  }
+}
+
+.VPLocalNav .menu,
+.VPLocalNav .VPLocalNavOutlineDropdown button {
+  font-size: 13px;
+  color: var(--g-grey);
+}
+
+.VPLocalNavOutlineDropdown .items {
+  border-radius: 2px !important;
+  border: 1px solid var(--g-line) !important;
+  box-shadow: 0 10px 28px rgba(16, 24, 32, 0.1) !important;
+}
+
+/* ------------------------------------------------------------------ 9. phones */
+@media (max-width: 959px) {
+  /* the hairline belongs to the whole bar here, not to the right of the wordmark */
+  .VPNav {
+    border-bottom: 1px solid var(--g-line);
+  }
+
+  .VPNavBar .container {
+    padding: 0 20px !important;
+  }
+
+  .VPNavBar .container > .title {
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  .VPNavBar .content-body {
+    padding: 0 !important;
+    border-bottom: 0;
+    background: var(--g-white) !important;
+  }
+
+  .VPNavBar .VPNavBarTitle .logo,
+  .VPNavBar .VPNavBarTitle img {
+    height: 24px !important;
+    width: auto !important;
+  }
+
+  /* the bar carries what a phone needs: the mark, search, and the way in */
+  .VPNavBarSearch {
+    order: 1;
+    margin-left: auto;
+  }
+
+  .VPNavBarSearch .DocSearch-Button {
+    width: var(--g-control) !important;
+    height: var(--g-control) !important;
+    padding: 0 !important;
+    background: transparent !important;
+    justify-content: center;
+  }
+
+  .VPNavBarSearch .DocSearch-Button:hover {
+    background: var(--g-soft) !important;
+  }
+
+  .VPNavBarSearch .DocSearch-Button-Placeholder,
+  .VPNavBarSearch .DocSearch-Button-Keys {
+    display: none !important;
+  }
+
+  /* the default theme slides the middle bar aside to make the cross; with a square
+     target it has nowhere to slide to, so it leaves instead */
+  .VPNavBarHamburger.active .middle {
+    opacity: 0;
+  }
+
+  .VPNav {
+    border-bottom: 1px solid var(--g-line);
+  }
+
+  .VPNavBar {
+    border-bottom: 0 !important;
+  }
+
+  /* search then the way in, both at the right edge */
+  .VPNavBarHamburger {
+    order: 2;
+    width: var(--g-control) !important;
+    height: var(--g-control) !important;
+    margin-left: 2px;
+    border-radius: 2px;
+  }
+
+  .VPNavBarHamburger:hover {
+    background: var(--g-soft);
+  }
+
+  .VPSidebar {
+    padding: 24px 20px 96px !important;
+    background: var(--g-white) !important;
+    border-right: 1px solid var(--g-line);
+  }
+
+  .VPSidebarItem.level-0 > .item,
+  .VPSidebarItem.level-1 > .item {
+    margin-left: -20px !important;
+    margin-right: -20px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .DocSearch-Modal {
+    margin-top: 0 !important;
+    border: 0 !important;
+  }
+}
+
+/* ------------------------------------------------------------------ 10. buttons */
+.VPButton {
+  border: 0 !important;
+  border-radius: 2px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.VPButton.brand {
+  background: var(--g-cyan) !important;
+  color: var(--g-white) !important;
+}
+
+.VPButton.brand:hover {
+  background: var(--g-cyan-text) !important;
+}
+
+.VPButton.alt {
+  background: var(--g-soft) !important;
+  color: var(--g-ink) !important;
+}
+
+.VPButton.alt:hover {
+  background: var(--g-hover) !important;
+}
+
+.VPButton.medium {
+  height: 46px;
+  line-height: 46px;
+  padding: 0 22px;
+}
+
+/* ------------------------------------------------------------------ 11. not found */
+.goravel-404 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  min-height: calc(100vh - var(--vp-nav-height));
+  margin: 0;
+  padding: 0;
+}
+
+.goravel-404 .left {
+  padding: 112px var(--g-gutter) 160px;
+  border-right: 1px solid var(--g-line);
+}
+
+.goravel-404 .code {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--g-grey);
+}
+
+.goravel-404 .title {
+  margin-top: 18px;
+  font-size: 40px;
+  line-height: 46px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.goravel-404 .lead {
+  margin-top: 14px;
+  max-width: 540px;
+  font-size: 17px;
+  line-height: 28px;
+  color: var(--g-grey);
+}
+
+.goravel-404 .home {
+  display: inline-flex;
+  align-items: center;
+  height: 46px;
+  margin-top: 28px;
+  padding: 0 22px;
+  border-radius: 2px;
+  background: var(--g-cyan);
+  color: var(--g-white);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.goravel-404 .home:hover {
+  background: var(--g-cyan-text);
+}
+
+.goravel-404 .right {
+  display: flex;
+  flex-direction: column;
+  padding: 112px var(--g-shell-inset) 0 var(--g-rail);
+}
+
+.goravel-404 .label {
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-grey);
+  margin-bottom: 10px;
+}
+
+.goravel-404 .suggestion {
+  position: relative;
+  padding: 8px 0 8px 12px;
+  border: 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--g-grey);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.goravel-404 .suggestion:hover {
+  color: var(--g-cyan-text);
+}
+
+.goravel-404 .suggestion:hover::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--g-cyan);
+}
+
+@media (max-width: 959px) {
+  .goravel-404 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .goravel-404 .left {
+    padding: 56px 24px 64px;
+    border-right: 0;
+  }
+
+  .goravel-404 .title {
+    font-size: 32px;
+    line-height: 38px;
+  }
+
+  .goravel-404 .right {
+    padding: 40px 24px 72px;
+  }
+}
+
+/* ------------------------------------------------------------------ 12. the phone menu
+   The drawer follows the sidebar's rules: no separators, weight and spacing instead. */
+.VPNavScreen {
+  background: var(--g-white) !important;
+  border-top: 0;
+}
+
+.VPNavScreen {
+  padding: 0 !important;
+}
+
+.VPNavScreen .container {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 24px 24px 96px !important;
+}
+
+/* the rows start on the same vertical as the wordmark above them */
+.VPNavScreenMenu,
+.VPNavScreenTranslations,
+.VPNavScreen .VPSocialLinks {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.VPNavScreenMenuLink,
+.VPNavScreenMenuGroupLink {
+  padding: 10px 0 !important;
+  border-bottom: 0 !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: var(--g-ink) !important;
+}
+
+.VPNavScreenMenuGroup {
+  border-bottom: 0 !important;
+}
+
+.VPNavScreenMenuGroupSection .title,
+.VPNavScreenMenuGroup .button {
+  padding: 10px 0 !important;
+  border-bottom: 0 !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: var(--g-ink) !important;
+}
+
+.VPNavScreenMenuGroup .button-icon {
+  color: var(--g-grey);
+}
+
+.VPNavScreenMenuGroup .items {
+  padding-left: 14px;
+}
+
+/* one theme is designed, so the switch has nothing to offer yet */
+.VPNavScreenAppearance {
+  display: none !important;
+}
+
+/* the locale switch is a fixed height collapsible: it takes margin, never padding */
+.VPNavScreenTranslations {
+  margin-top: 28px !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.VPNavScreenTranslations .title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--g-ink);
+}
+
+.VPNavScreenTranslations .icon.lang {
+  color: var(--g-grey);
+}
+
+.VPNavScreenTranslations-link {
+  font-size: 15px;
+  color: var(--g-grey);
+}
+
+.VPNavScreen .VPSocialLinks {
+  margin-top: 28px;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.VPNavScreen .VPSocialLink {
+  width: var(--g-control) !important;
+  height: var(--g-control) !important;
+  border-radius: 2px;
+  color: var(--g-grey) !important;
+}
+
+.VPNavScreen .VPSocialLink:hover {
+  background: var(--g-soft);
+  color: var(--g-ink) !important;
+}
+
+/* a page with no headings has nothing for the local outline bar to say */
+.VPLocalNav.empty {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------------ nav dropdowns
+   A sheet, not a floating card: the same 3px corner and hairline as every other control,
+   one soft shadow, and rows that highlight the way the sidebar's rows do. */
+.VPNavBar .VPMenu {
+  min-width: 184px;
+  padding: 6px !important;
+  border: 1px solid var(--g-line) !important;
+  border-radius: 3px !important;
+  background: var(--g-white) !important;
+  box-shadow: 0 10px 28px rgba(16, 24, 32, 0.1) !important;
+}
+
+.VPNavBar .VPMenu .VPMenuLink + .VPMenuLink,
+.VPNavBar .VPMenu .VPMenuGroup + .VPMenuGroup {
+  border-top: 0 !important;
+}
+
+.VPNavBar .VPMenu .link {
+  padding: 8px 12px !important;
+  border-radius: 2px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  line-height: 22px !important;
+  color: var(--g-ink) !important;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.VPNavBar .VPMenu .link:hover {
+  background: var(--g-soft) !important;
+  color: var(--g-cyan-text) !important;
+}
+
+.VPNavBar .VPMenu .link.active {
+  color: var(--g-cyan-text) !important;
+}
+
+/* an icon a row may carry sits back with the type */
+.VPNavBar .VPMenu .link img,
+.VPNavBar .VPMenu .link svg {
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: 2px;
+}
+
+/* The icon's own direction is right, and the theme turns it a quarter to point down. Both
+   states are set here so the open state is a half turn from the closed one, not a guess. */
+.VPNavBar .vpi-chevron-down {
+  transform: rotate(90deg) !important;
+}
+
+.VPNavBar .VPNavBarMenuGroup:hover .vpi-chevron-down,
+.VPNavBar .VPNavBarTranslations:hover .vpi-chevron-down {
+  transform: rotate(270deg) !important;
+  color: var(--g-cyan-text);
+}
+
+/* a little more air between the links than the default */
+@media (min-width: 960px) {
+  .VPNavBarMenuLink,
+  .VPNavBarMenuGroup .VPFlyout .button {
+    padding: 0 16px !important;
+  }
+}
+
+/* ------------------------------------------------------------------ search on a phone
+   The sheet is the screen: the field takes the width it has, and Cancel gets the room the
+   word actually needs instead of being clipped by the edge. */
+@media (max-width: 959px) {
+  .DocSearch-Modal {
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .DocSearch-SearchBar {
+    padding: 0 16px !important;
+  }
+
+  .DocSearch-Form {
+    height: 56px;
+    padding: 0 !important;
+  }
+
+  .DocSearch-MagnifierLabel svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .DocSearch-Input {
+    font-size: 16px !important;
+    padding-left: 10px !important;
+  }
+
+  .DocSearch-Cancel {
+    flex-shrink: 0;
+    width: auto !important;
+    margin-left: 12px !important;
+    padding: 0 !important;
+    background: none !important;
+    font-size: 15px !important;
+    font-weight: 500;
+    color: var(--g-cyan-text) !important;
+  }
+
+  .DocSearch-Dropdown {
+    background: var(--g-white) !important;
+  }
+
+  .DocSearch-StartScreen,
+  .DocSearch-NoResults {
+    background: var(--g-white);
+  }
+
+  .DocSearch-Footer {
+    background: var(--g-white) !important;
+  }
+}
+
+/* ------------------------------------------------------------------ the search sheet
+   One surface. The sheet is white, a row tints only when it is the one you are on, and
+   the actions beside a row sit back until the row is selected. */
+.DocSearch-Modal,
+.DocSearch-Dropdown,
+.DocSearch-StartScreen,
+.DocSearch-NoResults,
+.DocSearch-Footer {
+  background: var(--g-white) !important;
+}
+
+.DocSearch-Hit a {
+  background: var(--g-white) !important;
+  padding: 0 20px !important;
+}
+
+.DocSearch-Hit[aria-selected='true'] a {
+  background: var(--g-soft) !important;
+}
+
+.DocSearch-Hit-title {
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+.DocSearch-Hit-path {
+  font-size: 12.5px;
+}
+
+.DocSearch-Hit-icon,
+.DocSearch-Hit-action {
+  color: var(--g-grey);
+}
+
+.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-action,
+.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-icon {
+  color: var(--g-cyan-text);
+}
+
+.DocSearch-Hit-action svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* the source label speaks in the same voice as every other label on the site */
+.DocSearch-Hit-source {
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px !important;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-grey) !important;
+  background: var(--g-white) !important;
+}
+
+.DocSearch-Commands,
+.DocSearch-Logo,
+.DocSearch-Label {
+  font-size: 12px;
+  color: var(--g-grey);
+}
+
+.DocSearch-Commands-Key {
+  background: var(--g-soft) !important;
+  box-shadow: none !important;
+  border-radius: 2px;
+  color: var(--g-grey);
+}
+
+/* ------------------------------------------------------------------ the page footer
+   One line, in the same quiet mono as every other piece of meta, sitting on the page's
+   own inset rather than centred in the middle of nowhere. */
+.VPFooter {
+  padding: 20px var(--g-shell-inset) !important;
+  border-top: 1px solid var(--g-line) !important;
+  background: var(--g-white) !important;
+}
+
+.VPFooter .container {
+  max-width: none !important;
+  margin: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  text-align: left !important;
+}
+
+.VPFooter .message,
+.VPFooter .copyright {
+  margin: 0 !important;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px !important;
+  line-height: 18px !important;
+  letter-spacing: 0.02em;
+  color: var(--g-grey) !important;
+  text-align: left !important;
+}
+
+.VPFooter .copyright::before {
+  content: '·';
+  margin-right: 10px;
+  color: var(--g-line);
+}
+
+@media (max-width: 959px) {
+  .VPFooter {
+    padding: 20px 24px !important;
+  }
+
+  .VPFooter .copyright::before {
+    content: none;
+  }
+}
