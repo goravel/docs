@@ -800,7 +800,12 @@
   color: var(--g-grey);
 }
 
-.VPDocAsideOutline,
+.VPDocAsideOutline {
+  margin: 0 0 36px !important;
+  padding: 0 var(--g-shell-inset) 0 var(--g-rail) !important;
+  border: 0 !important;
+}
+
 .goravel-methods {
   margin: 0 0 28px !important;
   padding: 0 var(--g-shell-inset) 0 var(--g-rail) !important;
@@ -897,10 +902,10 @@
 
 .goravel-methods .method {
   position: relative;
-  padding: 3px 0 3px 12px;
+  padding: 2px 0 2px 12px;
   font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  line-height: 20px;
+  font-size: 11.5px;
+  line-height: 18px;
   color: var(--g-grey);
   text-decoration: none;
   overflow-wrap: anywhere;
@@ -986,9 +991,39 @@
 }
 
 .goravel-doc-meta .layer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin-left: auto;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--g-cyan-text);
   white-space: nowrap;
+}
+
+/* the lattice cell, the one marker shape the whole site uses */
+.goravel-doc-meta .layer::before,
+.VPDocAsideOutline .outline-title::before,
+.goravel-methods .label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+
+.VPDocAsideOutline .outline-title,
+.goravel-methods .label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.VPDocAsideOutline .outline-title::before,
+.goravel-methods .label::before {
+  background: var(--g-construct);
 }
 
 @media (max-width: 599px) {
