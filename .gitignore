@@ -4,3 +4,5 @@ node_modules
 .idea
 .vscode
 .DS_Store
+# design sources are not shipped with the site
+design/

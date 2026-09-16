@@ -100,44 +100,50 @@ export const CONCEPTS: Concept[] = [
   },
   {
     name: 'ORM', layer: 'data', phpFile: 'app/Services/TaskService.php', goFile: 'app/services/task_service.go',
-    php: "$tasks = Task::{{where}}('done', false)\n    ->{{orderByDesc}}('created_at')\n    ->{{get}}();",
-    go: 'var tasks []models.Task\n[[facades.Orm]]().[[Query]]().\n\t[[Where]]("done", false).\n\t[[OrderByDesc]]("created_at").\n\t[[Get]](&tasks)',
-    ties: [[1, 3], [2, 4], [3, 5]]
+    php: "$tasks = Task::{{where}}('done', false)\n    ->{{orderByDesc}}('created_at')\n    ->{{limit}}(20)\n    ->{{get}}();",
+    go: 'var tasks []models.Task\n[[facades.Orm]]().[[Query]]().\n\t[[Where]]("done", false).\n\t[[OrderByDesc]]("created_at").\n\t[[Limit]](20).\n\t[[Get]](&tasks)',
+    ties: [[1, 3], [2, 4], [3, 5], [4, 6]]
   },
   {
     name: 'Validation', layer: 'app', phpFile: 'app/Http/Controllers/TaskController.php', goFile: 'app/http/controllers/task_controller.go',
-    php: "$request->{{validate}}([\n    'title' => 'required|max:255',\n]);",
-    go: 'validator, err := ctx.[[Request]]().[[Validate]](map[string]any{\n\t"title": "required|max:255",\n})',
-    ties: [[1, 1], [2, 2]]
+    php: "$validated = $request->{{validate}}([\n    'title'  => 'required|max:255',\n    'due_at' => 'required|date',\n]);",
+    go: 'validator, err := ctx.[[Request]]().[[Validate]](map[string]any{\n\t"title":  "required|max:255",\n\t"due_at": "required|date",\n})\nif validator.[[Fails]]() {\n\treturn ctx.[[Response]]().[[Status]](422).\n\t\t[[Json]](validator.Errors().All())\n}',
+    ties: [[1, 1], [2, 2], [3, 3]]
   },
   {
     name: 'Queues', layer: 'async', phpFile: 'app/Services/TaskService.php', goFile: 'app/services/task_service.go',
-    php: 'SyncTasks::{{dispatch}}();',
-    go: '[[facades.Queue]]().\n\t[[Job]](&jobs.SyncTasks{}, []queue.Arg{}).\n\t[[Dispatch]]()',
-    ties: [[1, 3]]
+    php: "SyncTasks::{{dispatch}}($task)\n    ->{{onQueue}}('sync');",
+    go: '[[facades.Queue]]().\n\t[[Job]](&jobs.SyncTasks{}, []queue.Arg{\n\t\t{Type: "int", Value: task.ID},\n\t}).\n\t[[OnQueue]]("sync").\n\t[[Dispatch]]()',
+    ties: [[1, 2], [2, 5]]
   },
   {
     name: 'Events', layer: 'async', phpFile: 'app/Services/TaskService.php', goFile: 'app/services/task_service.go',
-    php: 'TasksViewed::{{dispatch}}();',
-    go: '[[facades.Event]]().\n\t[[Job]](&events.TasksViewed{}, []event.Arg{}).\n\t[[Dispatch]]()',
-    ties: [[1, 3]]
+    php: 'TasksViewed::{{dispatch}}($tasks);',
+    go: '[[facades.Event]]().\n\t[[Job]](&events.TasksViewed{}, []event.Arg{\n\t\t{Type: "int", Value: len(tasks)},\n\t}).\n\t[[Dispatch]]()',
+    ties: [[1, 2]]
   },
   {
     name: 'Scheduling', layer: 'async', phpFile: 'routes/console.php', goFile: 'bootstrap/app.go',
-    php: "Schedule::{{command}}('emails:send')->{{daily}}();",
-    go: '[[WithSchedule]](func() []schedule.Event {\n\treturn []schedule.Event{\n\t\t[[facades.Schedule]]().[[Command]]("emails:send").[[Daily]](),\n\t}\n})',
-    ties: [[1, 3]]
+    php: "Schedule::{{command}}('emails:send')\n    ->{{daily}}();",
+    go: '[[WithSchedule]](func() []schedule.Event {\n\treturn []schedule.Event{\n\t\t[[facades.Schedule]]().[[Command]]("emails:send").\n\t\t\t[[Daily]](),\n\t}\n})',
+    ties: [[1, 3], [2, 4]]
   },
   {
     name: 'Cache', layer: 'data', phpFile: 'app/Services/TaskService.php', goFile: 'app/services/task_service.go',
-    php: "Cache::{{put}}('key', 'value', 60);",
-    go: '[[facades.Cache]]().[[Put]]("key", "value", time.Minute)',
-    ties: [[1, 1]]
+    php: "$tasks = Cache::{{remember}}('tasks.open', 600, function () {\n    return Task::{{where}}('done', false)->{{get}}();\n});",
+    go: '[[facades.Cache]]().[[Remember]]("tasks.open", 10*time.Minute,\n\tfunc() (any, error) {\n\t\tvar tasks []models.Task\n\t\terr := [[facades.Orm]]().[[Query]]().\n\t\t\t[[Where]]("done", false).[[Get]](&tasks)\n\t\treturn tasks, err\n\t})',
+    ties: [[1, 1], [2, 4]]
+  },
+  {
+    name: 'Testing', layer: 'core', phpFile: 'tests/Feature/TaskTest.php', goFile: 'tests/feature/task_test.go',
+    php: "public function {{test_it_lists_open_tasks}}(): void\n{\n    $this->{{get}}('/tasks')\n        ->{{assertStatus}}(200);\n}",
+    go: 'func (s *TaskTestSuite) [[TestIndex]]() {\n\tresponse, err := s.[[Http]](s.T()).[[Get]]("/tasks")\n\ts.[[Nil]](err)\n\tresponse.[[AssertStatus]](200)\n}',
+    ties: [[1, 1], [3, 2], [4, 4]]
   },
   {
     name: 'Artisan', layer: 'core', phpFile: 'Terminal', goFile: 'Terminal',
     php: 'php artisan {{make:controller}} TaskController',
-    go: './artisan make:controller TaskController',
+    go: './artisan [[make:controller]] TaskController',
     ties: [[1, 1]]
   }
 ]
