@@ -2,12 +2,6 @@
 import { nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vitepress'
 
-/**
- * Reference pages write method names as a bold paragraph of their own, not as a heading, so the
- * outline cannot see them. This reads them out of the rendered page and lists them, with a filter.
- * Nothing in the markdown changes.
- */
-
 type Entry = { id: string; text: string }
 
 const route = useRoute()
@@ -62,9 +56,7 @@ watch(() => route.path, () => nextTick(collect))
 
 <template>
   <div v-if="entries.length" class="goravel-methods">
-    <div class="head">
-      <span class="label">Methods</span>
-    </div>
+    <div class="head">Methods</div>
     <input
       v-if="entries.length >= 14"
       v-model="query"
@@ -82,3 +74,92 @@ watch(() => route.path, () => nextTick(collect))
     >{{ entry.text }}</a>
   </div>
 </template>
+
+<style scoped>
+.goravel-methods {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 28px;
+  padding: 0 var(--g-shell-inset) 0 var(--g-rail);
+}
+
+/* the label's rule runs across the whole rail, like the outline's */
+.head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 calc(var(--g-shell-inset) * -1) 14px calc(var(--g-rail) * -1);
+  padding: 0 var(--g-shell-inset) 12px var(--g-rail);
+  border-bottom: 1px solid var(--g-line);
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-grey);
+}
+
+.head::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--g-construct);
+  transform: rotate(45deg);
+}
+
+.filter {
+  width: 100%;
+  height: 30px;
+  margin: 0 0 6px;
+  padding: 0 10px;
+  border-radius: 2px;
+  background: var(--g-soft);
+  font-size: 13px;
+  color: var(--g-ink);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.filter::placeholder {
+  color: var(--g-grey);
+}
+
+.filter:hover {
+  background: var(--g-hover);
+}
+
+.filter:focus {
+  outline: none;
+  background: var(--g-white);
+  box-shadow: inset 0 0 0 1px var(--g-cyan);
+}
+
+.method {
+  position: relative;
+  padding: 2px 0 2px 12px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 11.5px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+  color: var(--g-grey);
+  transition: color 0.15s ease;
+}
+
+.method:hover {
+  color: var(--g-ink);
+}
+
+.method.active {
+  color: var(--g-cyan-text);
+}
+
+.method.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 2px;
+  background: var(--g-cyan);
+}
+</style>

@@ -5,18 +5,13 @@ import { useData, useRoute } from 'vitepress'
 import DocMeta from './components/DocMeta.vue'
 import MethodIndex from './components/MethodIndex.vue'
 import NotFound from './components/NotFound.vue'
-import VersionSelect from './components/VersionSelect.vue'
 import DocsFooterLinks from './components/DocsFooterLinks.vue'
-import LanguageSelect from './components/LanguageSelect.vue'
 
 const { Layout } = DefaultTheme
 const route = useRoute()
 const { page } = useData()
 
-/**
- * The packages page lists a test coverage percentage in its last column. The number stays the
- * number; a track is drawn beside it, the same track the homepage uses for progress.
- */
+/* The packages page lists a test coverage percentage in its last column. */
 function drawCoverage() {
   if (!page.value.relativePath.includes('getting-started/packages')) return
   document.querySelectorAll<HTMLTableCellElement>('.vp-doc table td:last-child').forEach((cell) => {
@@ -37,7 +32,6 @@ watch(() => route.path, () => nextTick(drawCoverage))
 
 <template>
   <Layout>
-    <template #nav-bar-content-after><VersionSelect /><LanguageSelect /></template>
     <template #doc-before><DocMeta /></template>
     <template #aside-outline-after><MethodIndex /></template>
     <template #not-found><NotFound /></template>

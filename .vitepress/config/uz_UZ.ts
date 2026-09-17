@@ -3,7 +3,6 @@ import {
   ICON_CONTRIBUTE,
   ICON_DEVCHALK,
   ICON_DISCORD,
-  ICON_GITHUB,
   ICON_SUPPORT,
   ICON_TRANSLATE,
   ICON_X,
@@ -107,8 +106,7 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-      // On a docs page the wordmark already reads Goravel / Docs, so the shell hides this
-      // row there. It exists for the homepage, which has no such lockup.
+
       text: "Hujjatlar",
       link: '/uz_UZ/getting-started/installation',
       activeMatch: '/uz_UZ/getting-started/'
@@ -152,7 +150,6 @@ function nav(): DefaultTheme.NavItem[] {
     }
   ]
 }
-
 
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{

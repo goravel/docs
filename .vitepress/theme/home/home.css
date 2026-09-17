@@ -1,19 +1,26 @@
-/* ==================================================================
-   The Goravel homepage
-   ------------------------------------------------------------------
-   One mark, held on a sticky stage, and a stream of blocks scrolling
-   past it. Every piece of the mark is a single element that moves
-   between states, so the page is one continuous object rather than a
-   series of pictures. Five kinds of movement and no others: resolve,
-   route, connect, expand, assemble.
-   ================================================================== */
+/* The homepage. */
 
+/* A full-width rule bleeds through the side margin to the screen's edge. Inside a column that
+   starts at a vertical rule, it starts at that rule instead: those columns set --g-bleed-left or -right. */
 .g-home {
   --g-margin: 96px;
+  --g-bleed-left: var(--g-margin);
+  --g-bleed-right: var(--g-margin);
   --g-secpad: 56px;
-  --g-stage-gap: 80px;
   color: var(--g-ink);
   background: var(--g-white);
+}
+
+@media (max-width: 1280px) {
+  .g-home {
+    --g-margin: 48px;
+  }
+}
+
+@media (max-width: 900px) {
+  .g-home {
+    --g-margin: 24px;
+  }
 }
 
 .g-home .g-wrap {
@@ -21,19 +28,15 @@
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 var(--g-margin);
-  box-sizing: border-box;
 }
 
-/* ------------------------------------------------------------------ type
-   Display sizes take a wide cut of Mona Sans; the docs stay at normal width. Width is what
-   separates the two voices, so no second typeface is needed to do it. */
+/* ------------------------------------------------------------------ type */
 .g-home .g-display {
   font-size: 84px;
   line-height: 82px;
   font-weight: 700;
   font-stretch: 112%;
   letter-spacing: -0.045em;
-  margin: 0;
   text-wrap: balance;
 }
 
@@ -47,7 +50,6 @@
   font-weight: 700;
   font-stretch: 108%;
   letter-spacing: -0.04em;
-  margin: 0;
   text-wrap: balance;
 }
 
@@ -56,45 +58,42 @@
   line-height: 34px;
   font-weight: 650;
   letter-spacing: -0.025em;
-  margin: 0;
 }
 
 .g-home .g-lead {
+  max-width: 560px;
   font-size: 18px;
   line-height: 30px;
   color: var(--g-grey);
-  margin: 0;
-  max-width: 560px;
 }
 
 .g-home .g-body {
   font-size: 16px;
   line-height: 26px;
-  margin: 0;
 }
 
 .g-home .g-small {
   font-size: 15px;
   line-height: 24px;
-  margin: 0;
+}
+
+.g-home .g-label,
+.g-home .g-meta {
+  font-family: var(--vp-font-family-mono);
+  line-height: 16px;
+  color: var(--g-grey);
 }
 
 .g-home .g-label {
-  font-family: var(--vp-font-family-mono);
   font-size: 11px;
-  line-height: 16px;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--g-grey);
 }
 
 .g-home .g-meta {
-  font-family: var(--vp-font-family-mono);
   font-size: 12px;
-  line-height: 16px;
   letter-spacing: 0.02em;
-  color: var(--g-grey);
 }
 
 .g-home .muted { color: var(--g-grey); }
@@ -105,32 +104,47 @@
   font-family: var(--vp-font-family-mono);
   font-size: 0.92em;
   color: var(--g-ink);
-  background: none;
-  padding: 0;
+}
+
+@media (max-width: 1280px) {
+  .g-home .g-display {
+    font-size: 64px;
+    line-height: 64px;
+  }
+
+  .g-home .g-h2 {
+    font-size: 38px;
+    line-height: 42px;
+  }
+}
+
+@media (max-width: 900px) {
+  .g-home .g-display {
+    font-size: 44px;
+    line-height: 46px;
+  }
+
+  .g-home .g-h2 {
+    font-size: 30px;
+    line-height: 34px;
+  }
 }
 
 /* ------------------------------------------------------------------ controls */
-/* ------------------------------------------------------------------ controls
-   One shape, two weights. A filled control is the single primary action on a screen;
-   an outlined control is everything else you can press, including the search field in
-   the bar. Same height, same corner, so the page has one control vocabulary. */
 .g-home .g-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 14px;
-  white-space: nowrap;
   height: 50px;
   padding: 0 24px;
   border: 1px solid transparent;
   border-radius: 3px;
   background: var(--g-cyan);
-  /* Ink, not white. White on #009FE8 measures 2.95:1, under the 4.5:1 a label needs; ink on the
-     same cyan measures 6.9:1. The token already said ink, this rule was overriding it. */
-  color: var(--g-ink);
   font-size: 16px;
   font-weight: 600;
-  text-decoration: none;
+  white-space: nowrap;
+  color: var(--g-ink);
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
@@ -140,10 +154,10 @@
 }
 
 .g-home .g-button.is-outline {
-  background: var(--g-white);
   border-color: var(--g-line);
-  color: var(--g-ink);
+  background: var(--g-white);
   font-weight: 500;
+  color: var(--g-ink);
 }
 
 .g-home .g-button.is-outline:hover {
@@ -152,84 +166,110 @@
   color: var(--g-ink);
 }
 
-.g-home .g-textlink {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 17px;
-  font-weight: 500;
-  color: var(--g-ink);
-  text-decoration: none;
-  transition: color 0.15s ease;
-}
-
-.g-home .g-textlink:hover {
-  color: var(--g-cyan-text);
-}
-
 .g-arrow {
+  flex-shrink: 0;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
   stroke-linecap: square;
-  stroke-linejoin: miter;
-  flex-shrink: 0;
   transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.g-button:hover .g-arrow,
-.g-textlink:hover .g-arrow {
+.g-button:hover .g-arrow {
   transform: translateX(4px);
 }
 
 /* a link in a list is a link, not an action: a hairline that colours in */
 .g-home .g-link {
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--g-line);
   font-size: 15px;
   font-weight: 500;
   color: var(--g-ink);
-  text-decoration: none;
-  padding-bottom: 3px;
-  border-bottom: 1px solid var(--g-line);
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .g-home .g-link:hover {
-  color: var(--g-cyan-text);
   border-color: var(--g-cyan);
+  color: var(--g-cyan-text);
 }
 
-/* ------------------------------------------------------------------ sections
-   Each section is about a screen, and one rule runs the width of the page
-   between them. Inside a section: a heading, a line, and something to work. */
-/* One section, one screen. Each holds a single idea and is wholly visible when you land on
-   it; it grows past a screen only if the content genuinely needs more room. */
-.g-sec > .g-wrap:not(.g-hero-grid) {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+/* ------------------------------------------------------------------ sections */
+/* one section, one screen, and the page settles on a section rather than between two */
+html.g-home-snap {
+  scroll-snap-type: y proximity;
+  scroll-padding-top: var(--vp-nav-height);
 }
 
-.g-sec > .g-hero-grid {
-  flex: 1;
-}
-
-.g-sec {
+.g-sec,
+.g-community {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: calc(100vh - var(--vp-nav-height));
-  padding: var(--g-secpad) 0;
-  box-sizing: border-box;
+  padding-top: var(--g-secpad);
+  padding-bottom: var(--g-secpad);
   border-top: 1px solid var(--g-line);
   scroll-snap-align: start;
-  scroll-snap-stop: normal;
 }
 
 .g-sec.is-hero {
   border-top: 0;
 }
 
+.g-sec > .g-wrap {
+  flex: 1;
+}
+
+.g-sec > .g-wrap:not(.g-hero-grid) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-height: 760px), (max-width: 900px) {
+  html.g-home-snap {
+    scroll-snap-type: none;
+  }
+
+  .g-sec,
+  .g-community {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .g-sec {
+    padding: 64px 0;
+  }
+
+  .g-sec.is-hero {
+    padding-top: 40px;
+  }
+}
+
+.g-sec-head {
+  max-width: 720px;
+}
+
+.g-sec-head .g-lead {
+  margin-top: 16px;
+}
+
+/* the heading shares its row with the mark, so the two files below get the full width */
+.g-sec-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  column-gap: 72px;
+  align-items: center;
+}
+
+.g-figure {
+  display: flex;
+  justify-content: center;
+}
+
+/* ------------------------------------------------------------------ hero */
 .g-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 560px;
@@ -237,34 +277,38 @@
   align-items: center;
 }
 
-/* the proof: the same route, written twice. The reason a Laravel developer reads on. */
+.g-hero-grid .g-lead {
+  margin-top: 28px;
+  font-size: 19px;
+  line-height: 32px;
+}
+
+.g-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 36px;
+  margin-top: 40px;
+}
+
+/* the proof: the same route written twice, the reason a Laravel developer reads on */
 .g-proof {
-  min-width: 0;
-  border-left: 1px solid var(--g-line);
-  padding: var(--g-secpad) 0 var(--g-secpad) 56px;
-  margin: calc(var(--g-secpad) * -1) 0;
-  align-self: stretch;
+  --g-bleed-left: 56px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-self: stretch;
+  margin: calc(var(--g-secpad) * -1) 0;
+  padding: var(--g-secpad) 0 var(--g-secpad) 56px;
+  border-left: 1px solid var(--g-line);
 }
 
 .g-proof-pane .g-label {
   display: block;
-  margin-left: -56px;
-  margin-right: calc(var(--g-margin) * -1);
-  padding: 0 var(--g-margin) 12px 56px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--g-line);
 }
 
-/* the join is one rule from the column edge to the screen edge, with the node sitting on it */
-.g-proof-join {
-  position: relative;
-  height: 1px;
-  margin: 26px calc(var(--g-margin) * -1) 26px -56px;
-  padding: 0;
-  background: var(--g-line);
-}
 .g-proof-pane .g-code {
   padding-top: 16px;
   font-size: 13.5px;
@@ -276,51 +320,26 @@
   color: var(--g-ink);
 }
 
+/* the join is one rule from the column's edge to the screen's, with the node on it */
 .g-proof-join {
-  color: var(--g-cyan);
+  position: relative;
+  height: 1px;
+  margin: 26px calc(var(--g-bleed-right) * -1) 26px calc(var(--g-bleed-left) * -1);
+  background: var(--g-line);
 }
 
 .g-proof-join svg {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  box-sizing: content-box;
   padding: 0 10px;
   background: var(--g-white);
-  box-sizing: content-box;
   fill: var(--g-cyan);
+  transform: translate(-50%, -50%);
 }
 
-.g-hero-grid .g-lead {
-  margin-top: 28px;
-  font-size: 19px;
-  line-height: 32px;
-}
-
-.g-actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px 36px;
-  margin-top: 40px;
-}
-
-.g-sec-head {
-  max-width: 720px;
-}
-
-.g-sec-head .g-lead {
-  margin-top: 16px;
-}
-
-.g-figure {
-  display: flex;
-  justify-content: center;
-}
-
-/* ------------------------------------------------------------------ tabs
-   The one control on the page. Text, a rule under the row, and the accent
-   on the one you are reading. */
+/* ------------------------------------------------------------------ tabs */
 .g-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -329,28 +348,16 @@
   border-bottom: 1px solid var(--g-line);
 }
 
-.g-tabs.is-tight {
-  margin-top: 0;
-  gap: 2px 20px;
-}
-
 .g-tab {
   position: relative;
   padding: 0 0 14px;
-  border: 0;
-  background: none;
-  font-family: inherit;
   font-size: 16px;
   font-weight: 500;
   color: var(--g-grey);
-  cursor: pointer;
   transition: color 0.15s ease;
 }
 
-.g-tab:hover {
-  color: var(--g-ink);
-}
-
+.g-tab:hover,
 .g-tab.is-active {
   color: var(--g-ink);
 }
@@ -372,55 +379,65 @@
   transform: scaleX(1);
 }
 
+@media (max-width: 900px) {
+  .g-tabs {
+    gap: 2px 20px;
+    margin-top: 32px;
+  }
+
+  .g-tab {
+    font-size: 15px;
+  }
+}
+
 /* ------------------------------------------------------------------ panels */
 .g-panel {
   display: grid;
+  flex: 1;
   grid-template-columns: 420px minmax(0, 1fr);
-  column-gap: 0;
   align-items: center;
   margin-top: 40px;
-  flex: 1;
-}
-
-/* The drawing and the text are two columns divided by one rule, and every rule inside the
-   text column runs from that rule to the edge of the screen. Nothing ends in mid air. */
-.g-panel-body {
-  border-left: 1px solid var(--g-line);
-  padding: 40px 0 var(--g-secpad) 56px;
-  margin: -40px 0 calc(var(--g-secpad) * -1);
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.g-panel-body .g-file-head,
-.g-panel-body .g-tabs,
-.g-panel-body .g-layer-code,
-.g-panel-body .g-count {
-  margin-left: -56px;
-  margin-right: calc(var(--g-margin) * -1);
-  padding-left: 56px;
-  padding-right: var(--g-margin);
-}
-
-/* the heading shares its row with the mark, so the two files get the full width */
-.g-sec-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 260px;
-  column-gap: 72px;
-  align-items: center;
 }
 
 .g-panel.is-layers {
   grid-template-columns: 460px minmax(0, 1fr);
 }
 
-.g-panel-body .g-facades {
-  padding-left: 0;
+.g-panel-body {
+  --g-bleed-left: 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: stretch;
+  margin: -40px 0 calc(var(--g-secpad) * -1);
+  padding: 40px 0 var(--g-secpad) 56px;
+  border-left: 1px solid var(--g-line);
 }
 
-.g-panel-body {
+.g-compare {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  margin-top: 40px;
+}
+
+.g-compare .g-col:first-child {
+  --g-bleed-right: 56px;
+  padding-right: 56px;
+}
+
+/* the two files are two columns divided by one rule, like every other panel */
+.g-compare .g-col:last-child {
+  --g-bleed-left: 56px;
+  margin: -40px 0 calc(var(--g-secpad) * -1);
+  padding: 40px 0 var(--g-secpad) 56px;
+  border-left: 1px solid var(--g-line);
+}
+
+/* a long line of code scrolls inside its own block; it never widens the page */
+.g-panel > *,
+.g-compare > *,
+.g-hero-grid > * {
   min-width: 0;
 }
 
@@ -428,37 +445,117 @@
   margin: 0 auto;
 }
 
-.g-compare {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  column-gap: 0;
-  align-items: stretch;
-  margin-top: 40px;
-  flex: 1;
+@media (max-width: 1280px) {
+  .g-hero-grid {
+    grid-template-columns: minmax(0, 1fr) 420px;
+    column-gap: 48px;
+  }
+
+  .g-panel,
+  .g-panel.is-layers {
+    grid-template-columns: 320px minmax(0, 1fr);
+    column-gap: 48px;
+  }
 }
 
-/* the two files are two columns divided by one rule, same as every other panel */
-.g-compare .g-col:last-child {
-  border-left: 1px solid var(--g-line);
-  padding: 40px 0 var(--g-secpad) 56px;
-  margin: -40px 0 calc(var(--g-secpad) * -1);
+@media (max-width: 900px) {
+  .g-hero-grid,
+  .g-sec-split,
+  .g-panel,
+  .g-panel.is-layers,
+  .g-compare {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 32px;
+  }
+
+  .g-proof,
+  .g-panel-body,
+  .g-compare .g-col:last-child {
+    --g-bleed-left: var(--g-margin);
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .g-compare .g-col:first-child {
+    --g-bleed-right: var(--g-margin);
+    padding-right: 0;
+  }
+
+  /* the mark beside a heading has no room of its own on a phone */
+  .g-sec-split .g-figure {
+    display: none;
+  }
+
+  .g-figure .g-mark {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .g-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .g-home .g-button {
+    width: 100%;
+  }
 }
 
-.g-compare .g-col:first-child {
-  padding-right: 56px;
+/* ------------------------------------------------------------------ code */
+.g-file-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--g-line);
 }
 
-.g-col {
-  min-width: 0;
+.g-code {
+  overflow-x: auto;
+  padding: 18px 0 0;
+  font-family: var(--vp-font-family-mono);
+  font-size: 13px;
+  line-height: 26px;
+  tab-size: 2;
 }
 
-/* The two lines that become each other light at the same moment, in both columns. No line is
-   drawn between them: they are the only two lit rows on the screen, so the eye pairs them. */
+.g-code .ln {
+  position: relative;
+  display: block;
+  margin: 0 -14px;
+  padding: 0 14px;
+  white-space: pre;
+  color: var(--g-grey);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.g-code.is-plain .ln {
+  margin: 0;
+  padding: 0;
+}
+
+.g-code .ln .no {
+  display: inline-block;
+  width: 24px;
+  margin-right: 18px;
+  text-align: right;
+  color: var(--g-line);
+  user-select: none;
+}
+
+.g-code .ln.is-lit,
 .g-code .ln.is-pair {
   background: var(--g-cyan-tint);
   color: var(--g-ink);
 }
 
+.g-code .ln.is-lit .no {
+  color: var(--g-cyan);
+}
+
+/* the two lines that become each other light at the same moment, in both columns */
 .g-code .ln.is-pair::before {
   content: '';
   position: absolute;
@@ -467,6 +564,27 @@
   bottom: 2px;
   width: 2px;
   background: var(--g-cyan);
+}
+
+.g-code .call {
+  color: var(--g-cyan-text);
+}
+
+.g-code.is-shell {
+  margin-top: 24px;
+  padding: 14px 16px;
+  border-radius: 2px;
+  background: var(--g-soft);
+  font-size: 14px;
+}
+
+.g-code.is-shell .prompt {
+  margin-right: 10px;
+  color: var(--g-cyan-text);
+}
+
+.g-code.is-shell .src {
+  color: var(--g-ink);
 }
 
 /* content that swaps under a steady heading fades in rather than cutting */
@@ -479,15 +597,40 @@
     opacity: 0;
     transform: translateY(4px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
-/* the tab that is running shows how long it has left */
-.g-tab.is-active::after {
-  transform: scaleX(1);
+/* ------------------------------------------------------------------ layers and lite */
+.g-facades {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px 20px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.g-facades li {
+  font-family: var(--vp-font-family-mono);
+  font-size: 14px;
+}
+
+/* a facade is a destination: the list is the quickest way into the reference */
+.g-facades li a {
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  color: var(--g-ink);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.g-facades li a:hover {
+  border-bottom-color: var(--g-cyan);
+  color: var(--g-cyan-text);
+}
+
+.g-layer-code {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--g-line);
 }
 
 /* how many facades are in so far */
@@ -496,6 +639,8 @@
   align-items: baseline;
   gap: 14px;
   margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--g-line);
 }
 
 .g-count .n {
@@ -511,143 +656,13 @@
   letter-spacing: -0.03em;
 }
 
-/* ------------------------------------------------------------------ code */
-.g-file {
-  min-width: 0;
-  margin-top: 28px;
-}
-
-.g-file-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--g-line);
-}
-
-.g-code {
-  margin: 0;
-  padding: 18px 0 0;
-  max-width: 100%;
-  overflow-x: auto;
-  font-family: var(--vp-font-family-mono);
-  font-size: 13px;
-  line-height: 26px;
-  tab-size: 2;
-}
-
-.g-code .ln {
-  display: block;
-  position: relative;
-  padding: 0 14px;
-  margin: 0 -14px;
-  white-space: pre;
-  color: var(--g-grey);
-  transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-.g-code .ln .no {
-  display: inline-block;
-  width: 24px;
-  text-align: right;
-  margin-right: 18px;
-  color: var(--g-line);
-  user-select: none;
-}
-
-.g-code .ln.is-lit {
-  background: var(--g-cyan-tint);
-  color: var(--g-ink);
-}
-
-.g-code .ln.is-lit .no {
-  color: var(--g-cyan);
-}
-
-.g-code .call {
-  color: var(--g-cyan-text);
-}
-
-.g-code.is-plain .ln {
-  padding: 0;
-  margin: 0;
-}
-
-.g-code.is-shell {
-  margin-top: 24px;
-  padding: 14px 16px;
-  background: var(--g-soft);
-  border-radius: 2px;
-  font-size: 14px;
-}
-
-.g-code.is-shell .prompt {
-  margin-right: 10px;
-  color: var(--g-cyan-text);
-}
-
-.g-code.is-shell .src {
-  color: var(--g-ink);
-}
-
-/* the two languages, and the lines that match */
-.g-parity-col {
-  min-width: 0;
-}
-
-.g-ties {
-  align-self: start;
-  margin-top: 47px;
-  overflow: visible;
-}
-
-.g-tie {
-  fill: none;
-  stroke: var(--g-cyan);
-  stroke-width: 1.25;
-  stroke-dasharray: 160;
-  stroke-dashoffset: 160;
-  opacity: 0;
-}
-
-.g-block.is-live .g-tie {
-  animation: g-connect 0.55s ease forwards;
-  animation-delay: calc(var(--i) * 90ms + 150ms);
-}
-
-@keyframes g-connect {
-  to {
-    opacity: 1;
-    stroke-dashoffset: 0;
+@media (max-width: 900px) {
+  .g-facades {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* ------------------------------------------------------------------ facades */
-.g-facades {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px 20px;
-  margin: 28px 0 0;
-  padding: 0;
-}
-
-.g-facades li {
-  font-family: var(--vp-font-family-mono);
-  font-size: 14px;
-  color: var(--g-ink);
-}
-
-.g-layer-code {
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid var(--g-line);
-}
-
-/* ------------------------------------------------------------------ the mark
-   Every state is one element with a class, so the mark moves between states
-   instead of being redrawn in them. */
+/* ------------------------------------------------------------------ the mark */
 .g-mark {
   display: block;
   max-width: 100%;
@@ -656,11 +671,6 @@
 }
 
 .g-mark-lattice {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.g-mark-lattice.is-on {
   opacity: 0.9;
 }
 
@@ -689,12 +699,6 @@
   stroke-width: 1.4;
 }
 
-.g-face.is-faint {
-  fill: var(--g-white);
-  stroke: var(--g-construct);
-  stroke-width: 1.25;
-}
-
 .g-face.is-ghost {
   fill: transparent;
   stroke: var(--g-grey);
@@ -703,54 +707,13 @@
   opacity: 0.55;
 }
 
-.g-piece-text {
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-.g-piece-text.is-on {
-  opacity: 1;
-}
-
-.g-piece-name {
-  font-family: var(--vp-font-family-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  fill: var(--g-ink);
-  transition: fill 0.4s ease;
-}
-
-.g-piece-meta {
-  font-family: var(--vp-font-family-mono);
-  font-size: 11px;
-  letter-spacing: 0.02em;
-  fill: var(--g-grey);
-  transition: fill 0.4s ease;
-}
-
-.g-piece.is-active .g-piece-name,
-.g-piece.is-active .g-piece-meta {
-  fill: var(--g-cyan-text);
-}
-
-.g-piece.is-ghost .g-piece-name,
-.g-piece.is-ghost .g-piece-meta,
-.g-piece.is-faint .g-piece-name,
-.g-piece.is-faint .g-piece-meta {
-  fill: var(--g-construct);
-}
-
-.g-mark.is-interactive .g-piece.is-hit {
+.g-piece.is-hit {
   cursor: pointer;
-}
-
-.g-mark.is-interactive .g-piece.is-hit:hover .g-face {
-  stroke: var(--g-cyan);
-}
-
-.g-piece.is-hit:focus-visible {
   outline: none;
+}
+
+.g-piece.is-hit:hover .g-face {
+  stroke: var(--g-cyan);
 }
 
 .g-piece.is-hit:focus-visible .g-face {
@@ -797,16 +760,13 @@
   transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.g-node.is-done {
+.g-node.is-done,
+.g-signal-core {
   fill: var(--g-cyan);
 }
 
 .g-signal-halo {
   fill: var(--g-cyan-tint);
-}
-
-.g-signal-core {
-  fill: var(--g-cyan);
 }
 
 .g-leader {
@@ -837,28 +797,6 @@
 }
 
 /* ------------------------------------------------------------------ open source */
-.g-home section.g-community {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: calc(100vh - var(--vp-nav-height));
-  box-sizing: border-box;
-  scroll-snap-align: start;
-  padding: 56px 0;
-  margin-left: calc(var(--g-margin) * -1);
-  margin-right: calc(var(--g-margin) * -1);
-  padding-left: var(--g-margin);
-  padding-right: var(--g-margin);
-  border-top: 1px solid var(--g-line);
-}
-
-.g-home .g-footer {
-  margin-left: calc(var(--g-margin) * -1);
-  margin-right: calc(var(--g-margin) * -1);
-  padding-left: var(--g-margin);
-  padding-right: var(--g-margin);
-}
-
 .g-stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -923,18 +861,15 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   column-gap: 24px;
   margin-top: 40px;
-  margin-left: calc(var(--g-margin) * -1);
-  margin-right: calc(var(--g-margin) * -1);
-  padding: 32px var(--g-margin) 0;
+  padding-top: 32px;
   border-top: 1px solid var(--g-line);
 }
 
 .g-places figure {
-  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
   align-items: flex-start;
+  gap: 12px;
 }
 
 .g-places img {
@@ -964,9 +899,29 @@
   white-space: nowrap;
 }
 
+@media (max-width: 1280px) {
+  .g-stat .value {
+    font-size: 56px;
+    line-height: 54px;
+  }
+}
+
+@media (max-width: 900px) {
+  .g-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 36px;
+  }
+
+  .g-places {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 28px;
+  }
+}
+
 /* ------------------------------------------------------------------ footer */
 .g-footer {
-  padding: 64px 0 32px;
+  padding-top: 64px;
+  padding-bottom: 32px;
   border-top: 1px solid var(--g-line);
 }
 
@@ -979,13 +934,13 @@
 .g-footer-brand {
   display: flex;
   flex-direction: column;
-  gap: 18px;
   align-items: flex-start;
+  gap: 18px;
 }
 
 .g-footer-brand img {
-  height: 24px;
   width: auto;
+  height: 24px;
 }
 
 .g-footer-brand p {
@@ -1000,7 +955,6 @@
 
 .g-footer-col a {
   color: var(--g-grey);
-  text-decoration: none;
   transition: color 0.15s ease;
 }
 
@@ -1017,114 +971,10 @@
   border-top: 1px solid var(--g-line);
 }
 
-/* ------------------------------------------------------------------ narrow */
-@media (max-width: 1280px) {
-  .g-home {
-    --g-margin: 48px;
-  }
-
-  .g-hero-grid {
-    grid-template-columns: minmax(0, 1fr) 420px;
-    column-gap: 48px;
-  }
-
-  .g-panel,
-  .g-panel.is-layers {
-    grid-template-columns: 320px minmax(0, 1fr);
-    column-gap: 48px;
-  }
-
-  .g-home .g-display {
-    font-size: 64px;
-    line-height: 64px;
-  }
-
-  .g-home .g-h2 {
-    font-size: 38px;
-    line-height: 42px;
-  }
-
-  .g-stat .value {
-    font-size: 56px;
-    line-height: 54px;
-  }
-}
-
 @media (max-width: 900px) {
-  .g-home {
-    --g-margin: 24px;
-  }
-
-  .g-sec {
-    padding: 64px 0;
-  }
-
-  .g-sec.is-hero {
-    padding: 40px 0 64px;
-  }
-
-  .g-hero-grid,
-  .g-sec-split,
-  .g-panel,
-  .g-panel.is-parity,
-  .g-panel.is-layers,
-  .g-compare,
   .g-footer-cols {
     grid-template-columns: minmax(0, 1fr);
     row-gap: 32px;
-  }
-
-  /* the mark beside a heading has no room of its own on a phone */
-  .g-sec-split .g-figure {
-    display: none;
-  }
-
-  .g-figure .g-mark {
-    width: 100%;
-    max-width: 360px;
-  }
-
-  .g-ties {
-    display: none;
-  }
-
-  .g-facades {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .g-home .g-display {
-    font-size: 44px;
-    line-height: 46px;
-  }
-
-  .g-home .g-h2 {
-    font-size: 30px;
-    line-height: 34px;
-  }
-
-  .g-tabs {
-    gap: 2px 20px;
-    margin-top: 32px;
-  }
-
-  /* two actions, one width: stacked buttons match instead of stepping */
-  .g-actions {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-  }
-
-  .g-home .g-button {
-    width: 100%;
-  }
-
-  .g-tab {
-    font-size: 15px;
-  }
-
-  .g-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 36px;
   }
 
   .g-community-foot,
@@ -1134,266 +984,25 @@
   }
 }
 
-/* ------------------------------------------------------------------ less motion */
-@media (prefers-reduced-motion: reduce) {
-  .g-mark-spin,
-  .g-piece,
-  .g-face,
-  .g-run,
-  .g-head,
-  .g-block,
-  .g-mark-lattice,
-  .g-request,
-  .g-leaders,
-  .g-piece-text {
-    transition: none !important;
-  }
-
-  .g-block.is-live .g-tie {
-    animation: none;
-    opacity: 1;
-    stroke-dashoffset: 0;
-  }
-
-  .g-block {
-    opacity: 1;
-  }
-}
-
-/* ==================================================================
-   The bar, on the homepage
-   ------------------------------------------------------------------
-   The docs bar is built around the sidebar column. The homepage has no
-   sidebar, so the bar takes the homepage's own grid instead: the
-   wordmark stands on the same vertical as the headline, and the last
-   utility ends on the same vertical as the text. At the top of the page
-   the bar draws nothing; its rule arrives when the page passes under it.
-   ================================================================== */
-/* The bar always draws its rule here: the column rules below it have to terminate on
-   something, and a rule that only appears once you scroll leaves them hanging. */
-.Layout:has(.g-home) .VPNavBar {
-  border-bottom: 1px solid var(--g-line) !important;
-}
-
-.Layout:has(.g-home) .VPNavBar .wrapper {
-  padding: 0 !important;
-}
-
-/* The bar is one object across the whole site, so it keeps the shell's inset here too. It used
-   to take the homepage's 96px content margin, which meant the wordmark and the whole utility
-   cluster jumped 56px the moment a reader went from the homepage into the docs. The hero keeps
-   its own margin: the hero is content, the bar is shell. */
-.Layout:has(.g-home) .VPNavBar .container {
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 0 var(--g-shell-inset) !important;
-  box-sizing: border-box !important;
-}
-
-/* the wordmark is not a cell here: no width, no rule, no section label */
-.Layout:has(.g-home) .VPNavBar .container > .title {
-  width: auto !important;
-  padding: 0 !important;
-  border: 0 !important;
-}
-
-.Layout:has(.g-home) .VPNavBar .content {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-
-/* the bar's own rule lives on its last pixel, so the body must stop one short of it */
-.Layout:has(.g-home) .VPNavBar .content-body {
-  padding: 0 !important;
-  border-bottom: 0 !important;
-  height: calc(100% - 1px) !important;
-}
-
-.Layout:has(.g-home) .VPNavBar .container > .title {
-  height: calc(100% - 1px) !important;
-}
-
-.Layout:has(.g-home) .VPNavBarMenu {
-  padding-left: 56px !important;
-}
-
-@media (min-width: 961px) {
-  .Layout:has(.g-home) .VPNavBarSearch {
-    width: 280px !important;
-  }
-}
-
-/* on a phone the bar is the docs bar: mark, search, menu */
-@media (max-width: 960px) {
-  .Layout:has(.g-home) .VPNavBar .wrapper {
-    padding: 0 !important;
-  }
-
-  .Layout:has(.g-home) .VPNavBar .container {
-    padding: 0 24px !important;
-  }
-
-  .Layout:has(.g-home) .VPNavBarSearch {
-    width: auto !important;
-    margin-left: auto !important;
-  }
-}
-
-@media (max-width: 1280px) {
-  .g-home,
-  .Layout:has(.g-home) {
-    --g-home-margin: 48px;
-  }
-
-  .Layout:has(.g-home) .VPNavBarMenu {
-    padding-left: 40px !important;
-  }
-}
-
-@media (max-width: 960px) {
-  .g-home,
-  .Layout:has(.g-home) {
-    --g-home-margin: 24px;
-  }
-}
-
-/* a long line of code scrolls inside its own block; it never widens the page */
-.g-panel > *,
-.g-compare > *,
-.g-hero-grid > * {
-  min-width: 0;
-}
-
-.g-home pre.g-code {
-  max-width: none;
-  overflow-x: auto;
-  box-sizing: border-box;
-}
-
-/* a code block that carries a bleeding rule sizes itself from its margins, not from 100% */
-.g-panel-body .g-layer-code {
-  width: auto;
-}
-
-/* ------------------------------------------------------------------ rules that bleed
-   A rule inside a section runs the width of the screen, the same as the rule between
-   sections. Nothing on this page draws a line that stops in the middle of the page. */
-.g-tabs,
-.g-file-head,
-.g-layer-code,
-.g-people,
-.g-groups,
-.g-footer-bar,
-.g-count {
-  margin-left: calc(var(--g-margin) * -1);
-  margin-right: calc(var(--g-margin) * -1);
-  padding-left: var(--g-margin);
-  padding-right: var(--g-margin);
-}
-
-/* a file head in the compare runs from the screen edge to the rule between the columns */
-.g-compare .g-col:first-child .g-file-head {
-  margin-left: calc(var(--g-margin) * -1);
-  margin-right: -56px;
-  padding-left: var(--g-margin);
-  padding-right: 56px;
-}
-
-.g-compare .g-col:last-child .g-file-head {
-  margin-left: -56px;
-  margin-right: calc(var(--g-margin) * -1);
-  padding-left: 56px;
-  padding-right: var(--g-margin);
-}
-
-.g-count {
-  padding-top: 24px;
-  border-top: 1px solid var(--g-line);
-}
-
-/* the page settles on a section rather than stopping halfway between two */
-html.g-home-snap {
-  scroll-snap-type: y proximity;
-  scroll-padding-top: var(--vp-nav-height);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html.g-home-snap {
-    scroll-snap-type: none;
-  }
-}
-
-/* a short screen keeps its content: the section grows instead of clipping */
-@media (max-height: 760px), (max-width: 900px) {
-  html.g-home-snap {
-    scroll-snap-type: none;
-  }
-
-  .g-sec,
-  .g-home section.g-community {
-    min-height: 0;
-  }
-}
-
-/* The homepage used to give the bar's search an outlined white treatment of its own, so the
-   same control looked like two different things depending on which page you were on. The bar
-   is one object across the site; its search is styled once, in the shell. */
-
-/* the page carries its own footer, so the theme's is a second copy of the same line */
+/* the page carries its own footer, so the theme's would be a second copy */
 .Layout:has(.g-home) .VPFooter {
   display: none !important;
 }
 
-/* ------------------------------------------------------------------ narrow: one column
-   The rules that divide two columns have nothing to divide when there is one column, so
-   they go, and everything that bled to them bleeds to the page edge instead. */
-@media (max-width: 900px) {
-  .g-proof,
-  .g-panel-body,
-  .g-compare .g-col:last-child {
-    border-left: 0;
-    padding-left: 0;
-  }
-
-  .g-compare .g-col:first-child {
-    padding-right: 0;
-  }
-
-  .g-proof-pane .g-label,
-  .g-proof-join,
-  .g-panel-body .g-file-head,
-  .g-panel-body .g-tabs,
-  .g-panel-body .g-layer-code,
-  .g-panel-body .g-count,
-  .g-compare .g-col:first-child .g-file-head,
-  .g-compare .g-col:last-child .g-file-head {
-    margin-left: calc(var(--g-margin) * -1);
-    margin-right: calc(var(--g-margin) * -1);
-    padding-left: var(--g-margin);
-    padding-right: var(--g-margin);
-  }
-
-  .g-places {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 28px;
-  }
-
-  .g-footer-cols {
-    row-gap: 32px;
-  }
-}
-
-/* a facade is a destination: the list is the quickest way into the reference */
-.g-facades li a {
-  color: var(--g-ink);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  padding-bottom: 2px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-}
-
-.g-facades li a:hover {
-  color: var(--g-cyan-text);
-  border-bottom-color: var(--g-cyan);
+/* ------------------------------------------------------------------ rules that bleed */
+/* last, so the side paddings win over the shorthands above */
+.g-tabs,
+.g-file-head,
+.g-layer-code,
+.g-count,
+.g-people,
+.g-places,
+.g-community,
+.g-footer,
+.g-footer-bar,
+.g-proof-pane .g-label {
+  margin-left: calc(var(--g-bleed-left) * -1);
+  margin-right: calc(var(--g-bleed-right) * -1);
+  padding-left: var(--g-bleed-left);
+  padding-right: var(--g-bleed-right);
 }

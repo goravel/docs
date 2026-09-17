@@ -2,6 +2,7 @@ import {
   transformerMetaWordHighlight,
   transformerNotationWordHighlight
 } from '@shikijs/transformers'
+import { fileURLToPath, URL } from 'node:url'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import { createFileSystemTypesCache } from '@shikijs/vitepress-twoslash/cache-fs'
 import tailwindcss from '@tailwindcss/vite'
@@ -13,6 +14,7 @@ import sub from 'markdown-it-sub'
 import sup from 'markdown-it-sup'
 import taskLists from 'markdown-it-task-lists'
 import { goravelDark, goravelLight } from './goravel-code'
+import { GITHUB_SVG } from './nav-icons'
 import {
   groupIconMdPlugin,
   groupIconVitePlugin
@@ -20,17 +22,6 @@ import {
 
 // import {enSearch, zh_CNSearch} from './search'
 
-
-/**
- * Tell a container's type name apart from a title its author wrote.
- *
- * `::: warning` renders the word WARNING, which is a label and is set like one: small, mono,
- * tracked. `::: warning Read this before upgrading` renders a sentence, and setting a sentence
- * as a label stretches it into something unreadable. The markup VitePress emits is identical in
- * both cases, so the difference cannot be reached from CSS. This wraps VitePress's own renderer
- * for each container and adds `has-custom-title` when the opening fence carried words of its
- * own, which the stylesheet then sets as text rather than as a label.
- */
 function markCustomContainerTitles(md: MarkdownRenderer) {
   for (const name of ['info', 'tip', 'warning', 'danger', 'details']) {
     const key = `container_${name}_open`
@@ -75,9 +66,7 @@ export const shared = defineConfig({
     theme: { light: goravelLight, dark: goravelDark },
     lineNumbers: true,
     codeTransformers: [
-      /* VitePress enables four notation transformers (diff, focus, highlight, error level) but
-         not the word ones, so `[!code word:Foo]` in a comment, and `/Foo/` on the fence, both
-         rendered as literal text. */
+
       transformerNotationWordHighlight(),
       transformerMetaWordHighlight(),
       transformerTwoslash({
@@ -99,13 +88,11 @@ export const shared = defineConfig({
   },
 
   themeConfig: {
-    /* a 4x RGBA cut of the wordmark: the 1000px original is an indexed PNG and the browser
-       had to take it down eleven-fold, which is what made the mark look soft */
+
     logo: '/logo@2x.png',
     siteTitle: false,
-    /* Only GitHub. Discord and X live in Community, and listing them in both places made the
-       bar read as a toolbar of every link we have rather than a set of decisions. */
-    socialLinks: [{ icon: 'github', link: 'https://github.com/goravel/goravel' }],
+
+    socialLinks: [{ icon: { svg: GITHUB_SVG }, link: 'https://github.com/goravel/goravel' }],
     search: {
       provider: 'algolia',
       options: {
@@ -143,6 +130,15 @@ export const shared = defineConfig({
   },
 
   vite: {
-    plugins: [groupIconVitePlugin(), tailwindcss() as any]
+    plugins: [groupIconVitePlugin(), tailwindcss() as any],
+    resolve: {
+
+      alias: [
+        {
+          find: /^.*\/VPNavBar\.vue$/,
+          replacement: fileURLToPath(new URL('../theme/components/NavBar.vue', import.meta.url))
+        }
+      ]
+    }
   }
 })

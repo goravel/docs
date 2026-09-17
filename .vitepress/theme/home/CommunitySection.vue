@@ -1,8 +1,8 @@
 <script setup lang="ts">
-/**
- * Open source. The numbers, the people who wrote it, and the two places to find them.
- * The contributor list and the group images are the ones the page has always carried.
- */
+import { useHomeI18n } from './i18n'
+
+const { tr } = useHomeI18n()
+/* Open source. */
 const STATS = [
   { value: '4,831', label: 'GitHub stars' },
   { value: '43', label: 'contributors' },
@@ -59,7 +59,7 @@ const PEOPLE = [
 
 <template>
   <section class="g-community">
-    <h2 class="g-h2">Open source.</h2>
+    <h2 class="g-h2">{{ tr('Open source.') }}</h2>
 
     <div class="g-stats">
       <div v-for="s in STATS" :key="s.label" class="g-stat">
@@ -81,7 +81,7 @@ const PEOPLE = [
     </div>
 
     <div class="g-community-foot">
-      <p class="g-h3">MIT licensed. Built in the open.</p>
+      <p class="g-h3">{{ tr('MIT licensed. Built in the open.') }}</p>
       <span class="links">
         <a class="g-link" href="https://github.com/goravel/goravel" target="_blank" rel="noreferrer">GitHub</a>
         <a class="g-link" href="https://discord.gg/cFc5csczzS" target="_blank" rel="noreferrer">Discord</a>
@@ -91,8 +91,8 @@ const PEOPLE = [
 
     <div class="g-places">
       <figure>
-        <img src="/wechat.jpg" alt="WeChat group QR code" width="112" height="112" loading="lazy" />
-        <figcaption class="g-small muted">WeChat group</figcaption>
+        <img src="/wechat.jpg" :alt="tr('WeChat group QR code')" width="112" height="112" loading="lazy" />
+        <figcaption class="g-small muted">{{ tr('WeChat group') }}</figcaption>
       </figure>
       <figure>
         <a href="https://discord.gg/cFc5csczzS" target="_blank" rel="noreferrer" class="discord" aria-label="Discord">
@@ -101,11 +101,11 @@ const PEOPLE = [
         <figcaption class="g-small muted">Discord</figcaption>
       </figure>
       <figure>
-        <img src="/reward-wechat.jpg" alt="WeChat reward QR code" width="112" height="112" loading="lazy" />
-        <figcaption class="g-small muted">Support with WeChat</figcaption>
+        <img src="/reward-wechat.jpg" :alt="tr('WeChat reward QR code')" width="112" height="112" loading="lazy" />
+        <figcaption class="g-small muted">{{ tr('Support with WeChat') }}</figcaption>
       </figure>
       <figure>
-        <img src="/reward.png" alt="Open Collective QR code" width="112" height="112" loading="lazy" />
+        <img src="/reward.png" :alt="tr('Open Collective QR code')" width="112" height="112" loading="lazy" />
         <figcaption class="g-small muted">Open Collective</figcaption>
       </figure>
     </div>

@@ -1,11 +1,5 @@
 import type { ThemeRegistration } from 'shiki'
 
-/*
- * Goravel syntax themes, drawn only from the logo's blues and the neutral
- * greys: keywords in Goravel blue, strings in the logo's light (dark theme) or
- * deep (light theme) face, and framework calls in bold ink so APIs stand out.
- */
-
 interface Palette {
   fg: string
   bg: string
@@ -53,7 +47,7 @@ function theme(name: string, type: 'light' | 'dark', p: Palette): ThemeRegistrat
           'constant.language',
           'variable.language'
         ],
-        settings: { foreground: p.keyword }
+        settings: { foreground: p.keyword, fontStyle: 'bold' }
       },
       {
         scope: [

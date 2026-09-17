@@ -1,5 +1,8 @@
 <script setup lang="ts">
-/** The end of the page: where to go next, and the licence. */
+import { useHomeI18n } from './i18n'
+
+const { tr } = useHomeI18n()
+/* The end of the page: where to go next, and the licence. */
 const COLUMNS = [
   {
     title: 'Documentation',
@@ -38,7 +41,7 @@ const COLUMNS = [
     <div class="g-footer-cols">
       <div class="g-footer-brand">
         <img src="/logo@2x.png" alt="Goravel" height="24" />
-        <p class="g-small muted">A Go framework with the structure of Laravel.</p>
+        <p class="g-small muted">{{ tr('A Go framework with the structure of Laravel.') }}</p>
       </div>
       <div v-for="c in COLUMNS" :key="c.title" class="g-footer-col">
         <span class="g-label ink">{{ c.title }}</span>

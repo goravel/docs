@@ -2,24 +2,7 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 
-/**
- * The line above every article: where the page sits, and which layer of the framework it belongs to.
- * Both are derived from the path, so no markdown and no config has to change.
- */
-
-const SECTIONS: Record<string, string> = {
-  'getting-started': 'Getting Started',
-  'architecture-concepts': 'Architecture Concepts',
-  'the-basics': 'The Basics',
-  'digging-deeper': 'Digging Deeper',
-  ai: 'AI',
-  security: 'Security',
-  database: 'Database',
-  orm: 'ORM',
-  testing: 'Testing',
-  upgrade: 'Upgrade',
-  prologue: 'Prologue'
-}
+/* The line above every article: where the page sits, and which layer of the framework it belongs to. */
 
 // Every facade belongs to exactly one layer of the mark, and so does every guide.
 const LAYERS: Record<string, string> = {
@@ -83,3 +66,62 @@ const parts = computed(() => {
     <span v-if="parts.layer" class="layer">{{ parts.layer }} layer</span>
   </div>
 </template>
+
+<style scoped>
+.goravel-doc-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 20px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  color: var(--g-grey);
+}
+
+.crumbs {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.current {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--g-ink);
+}
+
+.sep {
+  opacity: 0.55;
+}
+
+.layer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--g-cyan-text);
+}
+
+.layer::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+
+/* on a phone the trail is just the page and its layer */
+@media (max-width: 599px) {
+  .crumbs > span:not(.current) {
+    display: none;
+  }
+}
+</style>

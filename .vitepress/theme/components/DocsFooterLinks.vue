@@ -1,24 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useData } from 'vitepress'
+import { useSidebar } from 'vitepress/theme'
 
-/**
- * The community links, at the end of a documentation page.
- *
- * The bar on a docs page carries no destinations, because the sidebar is the navigation there.
- * That left Discord, X and the contribution guide reachable only from the homepage, so they are
- * carried here instead, the way Laravel's docs put them in the footer rather than the header.
- */
-const { frontmatter, theme } = useData()
+/* One row of project links at the end of a documentation page. */
+const { hasSidebar } = useSidebar()
 
-const isDocs = computed(
-  () => frontmatter.value.layout !== 'goravel-home' && frontmatter.value.sidebar !== false
-)
-
-/**
- * One row, not a second site. A reader at the foot of a twenty-minute page wants the few
- * places they might go next, not the whole ecosystem again; the homepage carries that.
- */
 const links = [
   { text: 'Documentation', href: '/getting-started/installation' },
   { text: 'Release notes', href: '/prologue/releases' },
@@ -29,10 +14,47 @@ const links = [
 </script>
 
 <template>
-  <div v-if="isDocs" class="g-docs-foot">
-    <nav class="g-docs-foot-row" aria-label="Goravel">
-      <span class="mark">Goravel</span>
-      <a v-for="l in links" :key="l.text" :href="l.href">{{ l.text }}</a>
-    </nav>
-  </div>
+  <nav v-if="hasSidebar" class="foot" aria-label="Goravel">
+    <span class="mark">Goravel</span>
+    <a v-for="l in links" :key="l.text" :href="l.href">{{ l.text }}</a>
+  </nav>
 </template>
+
+<style scoped>
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 18px 24px;
+  border-top: 1px solid var(--g-line);
+  background: var(--g-white);
+}
+
+@media (min-width: 960px) {
+  .foot {
+    gap: 10px 26px;
+    margin-left: var(--vp-sidebar-width);
+    padding: 20px var(--g-shell-inset) 20px var(--g-gutter);
+    border-left: 1px solid var(--g-line);
+  }
+}
+
+.mark {
+  margin-right: 6px;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--g-ink);
+}
+
+a {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--g-grey);
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--g-ink);
+}
+</style>

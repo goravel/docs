@@ -1,18 +1,15 @@
 <script setup lang="ts">
-/**
- * The homepage.
- *
- * Seven sections, each about a screen, divided by one rule that runs the width of the page. Every
- * section says one thing: a heading, a line, and something you can work. The mark is the same
- * object throughout, and it only ever moves because the reader asked it to.
- */
+/* The homepage. */
 import { computed, onBeforeUnmount, onMounted } from 'vue'
-import { useCycle, usePairs } from './useCycle'
+import { useHomeI18n } from './i18n'
+import { useCycle } from './useCycle'
 import Stage from './Stage.vue'
 import CommunitySection from './CommunitySection.vue'
 import HomeFooter from './HomeFooter.vue'
 import { CONCEPTS, FILES, LAYER_CODE, LITE_STEPS, MOVES, STOPS, tokenize, type View } from './content'
 import { FACADE_INFO, FACADE_LINK, LAYERS, LAYER_ORDER, LITE, type LayerKey, type PieceState } from './geometry'
+
+const { tr, link } = useHomeI18n()
 
 /* The snap is on the document, so it has to be put on and taken off with the page. */
 onMounted(() => document.documentElement.classList.add('g-home-snap'))
@@ -25,9 +22,6 @@ function lit(layer?: LayerKey | null) {
   for (const k of LAYER_ORDER) out[k] = k === layer ? 'active' : 'solid'
   return out
 }
-
-// ------------------------------------------------------------------ hero
-const heroView: View = { kind: 'hero', states: lit(), caption: 'The Goravel mark, with one request inside it.' }
 
 // ------------------------------------------------------------------ one request
 const { index: stopIndex, set: setStop, root: stopsRoot } = useCycle(STOPS.length, 2600)
@@ -53,18 +47,14 @@ const conceptView = computed<View>(() => ({
 const { index: layerIndex, set: setLayer, root: layerRoot } = useCycle(LAYERS.length, 3200)
 const layer = computed(() => LAYERS[layerIndex.value])
 const layerKey = computed(() => layer.value.key)
-const selectLayer = (k: LayerKey) => setLayer(LAYERS.findIndex((l) => l.key === k))
-const layerView = computed<View>(() => {
-  // the rest of the mark stays solid, so you can see the hole the piece came out of
-  const states: Partial<Record<LayerKey, PieceState>> = {}
-  for (const k of LAYER_ORDER) states[k] = k === layerKey.value ? 'active' : 'solid'
-  return {
-    kind: 'map',
-    states,
-    moves: { [layerKey.value]: MOVES[layerKey.value] },
-    caption: `The ${layer.value.name} piece, pulled out of the mark`
-  }
-})
+const selectLayer = (k: LayerKey) => setLayer(LAYER_ORDER.indexOf(k))
+// the rest of the mark stays solid, so you can see the hole the piece came out of
+const layerView = computed<View>(() => ({
+  kind: 'map',
+  states: lit(layerKey.value),
+  moves: { [layerKey.value]: MOVES[layerKey.value] },
+  caption: `The ${layer.value.name} piece, pulled out of the mark`
+}))
 
 // ------------------------------------------------------------------ start with the core
 const { index: liteIndex, set: setLite, root: liteRoot } = useCycle(LITE_STEPS.length, 2400)
@@ -88,8 +78,8 @@ const liteView = computed<View>(() => {
   return { kind: 'lite', states, caption: `${installed.value.length} of 30 facades installed` }
 })
 
-/** Which two lines are being matched at this moment. */
-const { step: tieStep, root: tieRoot } = usePairs(() => concept.value.ties, 1500)
+/* Which two lines are being matched at this moment. */
+const { index: tieStep, root: tieRoot } = useCycle(() => concept.value.ties.length, 1500, 0.3)
 const pair = computed(() => concept.value.ties[tieStep.value % concept.value.ties.length] ?? [0, 0])
 </script>
 
@@ -99,16 +89,16 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
     <section class="g-sec is-hero">
       <div class="g-wrap g-hero-grid">
         <div>
-          <h1 class="g-display">Familiar structure.<br /><span class="light">Native Go.</span></h1>
-          <p class="g-lead">Routing, an ORM, validation, queues, events and cache, in one framework.</p>
+          <h1 class="g-display">{{ tr('Familiar structure.') }}<br /><span class="light">{{ tr('Native Go.') }}</span></h1>
+          <p class="g-lead">{{ tr('Routing, an ORM, validation, queues, events and cache, in one framework.') }}</p>
           <div class="g-actions">
-            <a class="g-button" href="/getting-started/installation.html">
-              Get started
+            <a class="g-button" :href="link('/getting-started/installation.html')">
+              {{ tr('Get started') }}
               <svg class="g-arrow" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
                 <path d="M3 10h13M11 5l5 5-5 5" />
               </svg>
             </a>
-            <a class="g-button is-outline" href="/getting-started/configuration.html">Read the documentation</a>
+            <a class="g-button is-outline" :href="link('/getting-started/configuration.html')">{{ tr('Read the documentation') }}</a>
           </div>
         </div>
         <div class="g-proof">
@@ -139,11 +129,11 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
     <section class="g-sec">
       <div class="g-wrap">
         <header class="g-sec-head">
-          <h2 class="g-h2">Follow one request.</h2>
-          <p class="g-lead"><code class="g-inline">GET /tasks</code>, from the router to the response.</p>
+          <h2 class="g-h2">{{ tr('Follow one request.') }}</h2>
+          <p class="g-lead"><code class="g-inline">GET /tasks</code>{{ tr(', from the router to the response.') }}</p>
         </header>
 
-        <nav ref="stopsRoot" class="g-tabs" aria-label="Request stops">
+        <nav ref="stopsRoot" class="g-tabs" :aria-label="tr('Request stops')">
           <button
             v-for="(s, i) in STOPS"
             :key="s.key"
@@ -152,7 +142,7 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
             :class="{ 'is-active': i === stopIndex }"
             :aria-current="i === stopIndex"
             @click="setStop(i)"
-          >{{ s.name }}</button>
+          >{{ tr(s.name) }}</button>
         </nav>
 
         <div class="g-panel">
@@ -161,7 +151,7 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
           </div>
           <div class="g-panel-body">
             <div class="g-file-head">
-              <span class="g-label">{{ nameOf(stop.layer) }}</span>
+              <span class="g-label">{{ tr(nameOf(stop.layer)) }}</span>
               <span class="g-meta">{{ FILES[stop.file].name }}</span>
             </div>
             <pre :key="stopIndex" class="g-code g-swap"><code><span
@@ -184,15 +174,15 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
       <div class="g-wrap">
         <div class="g-sec-split">
           <header class="g-sec-head">
-            <h2 class="g-h2">Laravel’s structure, written in Go.</h2>
-            <p class="g-lead">The same facades, the same method names, the same file layout.</p>
+            <h2 class="g-h2">{{ tr('Laravel’s structure, written in Go.') }}</h2>
+            <p class="g-lead">{{ tr('The same facades, the same method names, the same file layout.') }}</p>
           </header>
           <div class="g-figure is-small">
             <Stage :view="conceptView" :width="260" :height="240" :scale="0.62" />
           </div>
         </div>
 
-        <nav ref="conceptRoot" class="g-tabs" aria-label="Concepts">
+        <nav ref="conceptRoot" class="g-tabs" :aria-label="tr('Concepts')">
           <button
             v-for="(c, i) in CONCEPTS"
             :key="c.name"
@@ -201,7 +191,7 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
             :class="{ 'is-active': i === conceptIndex }"
             :aria-current="i === conceptIndex"
             @click="setConcept(i)"
-          >{{ c.name }}</button>
+          >{{ tr(c.name) }}</button>
         </nav>
 
         <div ref="tieRoot" class="g-compare">
@@ -239,11 +229,11 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
     <section class="g-sec">
       <div class="g-wrap">
         <header class="g-sec-head">
-          <h2 class="g-h2">Five layers, thirty facades.</h2>
-          <p class="g-lead">Every facade belongs to one piece of the mark. Choose a piece.</p>
+          <h2 class="g-h2">{{ tr('Five layers, thirty facades.') }}</h2>
+          <p class="g-lead">{{ tr('Every facade belongs to one piece of the mark. Choose a piece.') }}</p>
         </header>
 
-        <nav ref="layerRoot" class="g-tabs" aria-label="Layers">
+        <nav ref="layerRoot" class="g-tabs" :aria-label="tr('Layers')">
           <button
             v-for="(l, i) in LAYERS"
             :key="l.key"
@@ -252,7 +242,7 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
             :class="{ 'is-active': l.key === layerKey }"
             :aria-current="l.key === layerKey"
             @click="setLayer(i)"
-          >{{ l.name }}</button>
+          >{{ tr(l.name) }}</button>
         </nav>
 
         <div class="g-panel is-layers">
@@ -278,11 +268,11 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
     <section class="g-sec">
       <div class="g-wrap">
         <header class="g-sec-head">
-          <h2 class="g-h2">Start with the core.</h2>
-          <p class="g-lead">Goravel Lite is four facades. Add the rest when you need them.</p>
+          <h2 class="g-h2">{{ tr('Start with the core.') }}</h2>
+          <p class="g-lead">{{ tr('Goravel Lite is four facades. Add the rest when you need them.') }}</p>
         </header>
 
-        <nav ref="liteRoot" class="g-tabs" aria-label="Install steps">
+        <nav ref="liteRoot" class="g-tabs" :aria-label="tr('Install steps')">
           <button
             v-for="(s, i) in LITE_STEPS"
             :key="s.title"
@@ -291,7 +281,7 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
             :class="{ 'is-active': i === liteIndex }"
             :aria-current="i === liteIndex"
             @click="setLite(i)"
-          >{{ s.title }}</button>
+          >{{ tr(s.title) }}</button>
         </nav>
 
         <div class="g-panel">
@@ -302,7 +292,7 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
             <pre class="g-code is-shell"><code><span class="ln"><span class="prompt">$</span><span class="src">{{ liteStep.cmd }}</span></span></code></pre>
             <p class="g-count">
               <span class="n">{{ installed.length }}</span><span class="muted"> / 30</span>
-              <span class="g-body muted">facades installed</span>
+              <span class="g-body muted">{{ tr('facades installed') }}</span>
             </p>
           </div>
         </div>
