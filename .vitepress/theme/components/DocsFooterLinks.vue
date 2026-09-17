@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useSidebar } from 'vitepress/theme'
 
-/* One row of project links at the end of a documentation page. */
 const { hasSidebar } = useSidebar()
 
 const links = [

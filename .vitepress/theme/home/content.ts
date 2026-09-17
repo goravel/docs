@@ -1,6 +1,5 @@
-/* Everything the page says, in one place, so the stage can be driven from it. */
-import type { LayerKey, PieceState } from './geometry'
-
+export type LayerKey = 'http' | 'app' | 'core' | 'data' | 'async'
+export type PieceState = 'solid' | 'active' | 'ghost'
 export type StopKey = 'route' | 'mw' | 'ctrl' | 'svc' | 'orm' | 'event' | 'resp'
 
 export const FILES: Record<string, { name: string; lines: string[] }> = {
@@ -142,22 +141,47 @@ export const CONCEPTS: Concept[] = [
   }
 ]
 
-/* How far each piece travels when it is pulled out of the mark, in lattice steps. */
-export const MOVES: Record<LayerKey, [number, number, number]> = {
-  http: [0, 0, 1.5],
-  app: [0, 0, 0.75],
-  core: [0, 0, 0],
-  data: [0.9, 0, 0],
-  async: [0, 0.9, 0]
-}
+export const LAYERS: { key: LayerKey; name: string; facades: string[] }[] = [
+  { key: 'http', name: 'HTTP', facades: ['Route', 'Http', 'Session', 'Grpc', 'RateLimiter', 'View'] },
+  { key: 'app', name: 'Application', facades: ['Validation', 'Auth', 'Gate', 'Hash', 'Crypt', 'Lang', 'AI'] },
+  { key: 'core', name: 'Core', facades: ['App', 'Artisan', 'Config', 'Process', 'Log', 'Testing'] },
+  { key: 'data', name: 'Data', facades: ['Orm', 'DB', 'Schema', 'Seeder', 'Cache', 'Storage'] },
+  { key: 'async', name: 'Async', facades: ['Queue', 'Event', 'Schedule', 'Mail', 'Telemetry'] }
+]
 
-/* Where a piece's leader starts, so the line runs along the axis it moved on. */
-export const ANCHOR: Record<LayerKey, [number, number, number]> = {
-  http: [2.4, 0.5, 3],
-  app: [2.4, 2.5, 3],
-  core: [3, 2.5, 2.5],
-  data: [3, 0.5, 2.2],
-  async: [0.5, 3, 2.2]
+export const LITE = ['App', 'Artisan', 'Config', 'Process']
+
+export const FACADES: Record<string, [link: string, summary: string]> = {
+  Route: ['/the-basics/routing.html', 'Routes, groups and middleware'],
+  Http: ['/digging-deeper/http-client.html', 'HTTP client for outgoing requests'],
+  Session: ['/the-basics/session.html', 'Session data across requests'],
+  Grpc: ['/the-basics/grpc.html', 'gRPC servers and clients'],
+  RateLimiter: ['/the-basics/routing.html#rate-limiting', 'Named rate limiters'],
+  View: ['/the-basics/views.html', 'Templates rendered as responses'],
+  Validation: ['/the-basics/validation.html', 'Validate requests and data'],
+  Auth: ['/security/authentication.html', 'JWT and session guards'],
+  Gate: ['/security/authorization.html', 'Authorization gates and policies'],
+  Hash: ['/security/hashing.html', 'Password hashing'],
+  Crypt: ['/security/encryption.html', 'Encryption and decryption'],
+  Lang: ['/digging-deeper/localization.html', 'Localization'],
+  AI: ['/ai/sdk.html', 'Agents and conversations with AI providers'],
+  App: ['/architecture-concepts/service-container.html', 'The service container'],
+  Artisan: ['/digging-deeper/artisan-console.html', 'Console commands'],
+  Config: ['/getting-started/configuration.html', 'Configuration values'],
+  Process: ['/digging-deeper/processes.html', 'Run system processes'],
+  Log: ['/the-basics/logging.html', 'Logging to channels'],
+  Testing: ['/testing/getting-started.html', 'Test helpers, like Docker databases'],
+  Orm: ['/orm/getting-started.html', 'Models, relationships and queries'],
+  DB: ['/database/queries.html', 'Query builder'],
+  Schema: ['/database/migrations.html', 'Migrations'],
+  Seeder: ['/database/seeding.html', 'Database seeders'],
+  Cache: ['/digging-deeper/cache.html', 'Cache stores'],
+  Storage: ['/digging-deeper/filesystem.html', 'File storage'],
+  Queue: ['/digging-deeper/queues.html', 'Background jobs'],
+  Event: ['/digging-deeper/event.html', 'Events and listeners'],
+  Schedule: ['/digging-deeper/task-scheduling.html', 'Task scheduling'],
+  Mail: ['/digging-deeper/mail.html', 'Sending mail'],
+  Telemetry: ['/digging-deeper/telemetry.html', 'Traces, metrics and logs']
 }
 
 export const LAYER_CODE: Record<LayerKey, string> = {
@@ -177,17 +201,16 @@ export const LITE_STEPS = [
   { title: 'Install everything', cmd: './artisan package:install --all', add: ['*'] }
 ]
 
-/* What the mark is doing while a block is in view. */
 export interface View {
   kind: 'journey' | 'parity' | 'map' | 'lite'
   states: Partial<Record<LayerKey, PieceState>>
-  moves?: Partial<Record<LayerKey, [number, number, number]>>
+  pulled?: LayerKey
   turn?: number
   stop?: StopKey
   caption?: string
 }
 
-/* `[[Name]]` in Go, `{{name}}` in PHP: the call is the one thing the eye should land on. */
+// marks a call: [[Name]] in Go, {{name}} in PHP
 export function tokenize(src: string, marker: 'go' | 'php' = 'go') {
   const re = marker === 'go' ? /(\[\[[^\]]+\]\])/ : /(\{\{[^}]+\}\})/
   return src.split('\n').map((line) =>

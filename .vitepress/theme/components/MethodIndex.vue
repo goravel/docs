@@ -1,64 +1,53 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vitepress'
 
-type Entry = { id: string; text: string }
+// Latest, WhereIn, OrderBy / OrderByDesc
+const METHOD_NAME = /^[A-Z]\w*( \/ [A-Z]\w*)*$/
 
 const route = useRoute()
-const entries = ref<Entry[]>([])
+const methods = ref<{ id: string; name: string }[]>([])
 const query = ref('')
 const active = ref('')
-let observer: IntersectionObserver | null = null
+const shown = computed(() => methods.value.filter((m) => m.name.toLowerCase().includes(query.value.toLowerCase())))
+let observer: IntersectionObserver | undefined
 
-function slug(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-}
-
-// A method name, as the docs write them: Latest, WhereIn, OrderBy / OrderByDesc.
-const METHOD = /^[A-Z][A-Za-z0-9]*( \/ [A-Z][A-Za-z0-9]*)*$/
+const textOf = (el: Element) => (el.textContent ?? '').replace(/[\u200b#:]/g, '').trim()
 
 function collect() {
   observer?.disconnect()
-  const found: Entry[] = []
-  const seen = new Set<string>()
+  const found = new Map<string, HTMLElement>()
+  for (const el of document.querySelectorAll<HTMLElement>('.vp-doc h3, .vp-doc h4, .vp-doc p:has(> strong:only-child)')) {
+    const name = textOf(el)
+    if (METHOD_NAME.test(name) && !found.has(name)) found.set(name, el)
+  }
+  methods.value = []
+  if (found.size < 6) return
 
-  // reference pages write some method names as headings and some as a bold paragraph of their own
-  document.querySelectorAll<HTMLElement>('.vp-doc h3, .vp-doc h4, .vp-doc p > strong:only-child').forEach((node) => {
-    const el = node.tagName === 'STRONG' ? (node.parentElement as HTMLElement) : node
-    if (!el || el.textContent!.length > 80) return
-    const text = (node.textContent || '').replace('​', '').replace(/#$/, '').trim().replace(/:$/, '')
-    if (!METHOD.test(text) || seen.has(text)) return
-    const id = el.id || 'method-' + slug(text)
-    el.id = id
-    seen.add(text)
-    found.push({ id, text })
-  })
-  entries.value = found.length >= 6 ? found : []
-
-  if (entries.value.length) {
-    observer = new IntersectionObserver(
-      (records) => {
-        const seen = records.filter((r) => r.isIntersecting).map((r) => (r.target as HTMLElement).id)
-        if (seen.length) active.value = seen[0]
-      },
-      { rootMargin: '-80px 0px -70% 0px' }
-    )
-    entries.value.forEach((e) => {
-      const el = document.getElementById(e.id)
-      if (el) observer!.observe(el)
-    })
+  observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries.find((entry) => entry.isIntersecting)
+      if (visible) active.value = visible.target.id
+    },
+    { rootMargin: '-80px 0px -70% 0px' }
+  )
+  for (const [name, el] of found) {
+    el.id ||= 'method-' + name.toLowerCase().replace(/\W+/g, '-')
+    observer.observe(el)
+    methods.value.push({ id: el.id, name })
   }
 }
 
 onMounted(collect)
+onUnmounted(() => observer?.disconnect())
 watch(() => route.path, () => nextTick(collect))
 </script>
 
 <template>
-  <div v-if="entries.length" class="goravel-methods">
+  <div v-if="methods.length" class="goravel-methods">
     <div class="head">Methods</div>
     <input
-      v-if="entries.length >= 14"
+      v-if="methods.length >= 14"
       v-model="query"
       class="filter"
       type="search"
@@ -66,12 +55,12 @@ watch(() => route.path, () => nextTick(collect))
       aria-label="Filter methods"
     />
     <a
-      v-for="entry in entries.filter((e) => e.text.toLowerCase().includes(query.toLowerCase()))"
-      :key="entry.id"
+      v-for="method in shown"
+      :key="method.id"
       class="method"
-      :class="{ active: entry.id === active }"
-      :href="'#' + entry.id"
-    >{{ entry.text }}</a>
+      :class="{ active: method.id === active }"
+      :href="`#${method.id}`"
+    >{{ method.name }}</a>
   </div>
 </template>
 
@@ -83,7 +72,6 @@ watch(() => route.path, () => nextTick(collect))
   padding: 0 var(--g-shell-inset) 0 var(--g-rail);
 }
 
-/* the label's rule runs across the whole rail, like the outline's */
 .head {
   display: flex;
   align-items: center;

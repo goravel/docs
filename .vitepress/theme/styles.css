@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
 @import 'tailwindcss';
+/* icons as classes, such as icon-[simple-icons--discord], from the installed Iconify sets */
+@plugin '@iconify/tailwind4';
+@source '../config';
 
 :root {
   --vp-nav-logo-height: 36px;

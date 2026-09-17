@@ -1,17 +1,15 @@
 <script setup lang="ts">
-/* The homepage. */
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { useHomeI18n } from './i18n'
 import { useCycle } from './useCycle'
-import Stage from './Stage.vue'
+import GoravelMark from './GoravelMark.vue'
 import CommunitySection from './CommunitySection.vue'
 import HomeFooter from './HomeFooter.vue'
-import { CONCEPTS, FILES, LAYER_CODE, LITE_STEPS, MOVES, STOPS, tokenize, type View } from './content'
-import { FACADE_INFO, FACADE_LINK, LAYERS, LAYER_ORDER, LITE, type LayerKey, type PieceState } from './geometry'
+import { CONCEPTS, FACADES, FILES, LAYERS, LAYER_CODE, LITE, LITE_STEPS, STOPS, tokenize, type LayerKey, type PieceState, type View } from './content'
 
 const { tr, link } = useHomeI18n()
 
-/* The snap is on the document, so it has to be put on and taken off with the page. */
+// scroll snap belongs on <html>, so it is added and removed with the page
 onMounted(() => document.documentElement.classList.add('g-home-snap'))
 onBeforeUnmount(() => document.documentElement.classList.remove('g-home-snap'))
 
@@ -19,11 +17,10 @@ const nameOf = (k: LayerKey | null | undefined) => (k ? LAYERS.find((l) => l.key
 
 function lit(layer?: LayerKey | null) {
   const out: Partial<Record<LayerKey, PieceState>> = {}
-  for (const k of LAYER_ORDER) out[k] = k === layer ? 'active' : 'solid'
+  for (const { key } of LAYERS) out[key] = key === layer ? 'active' : 'solid'
   return out
 }
 
-// ------------------------------------------------------------------ one request
 const { index: stopIndex, set: setStop, root: stopsRoot } = useCycle(STOPS.length, 2600)
 const stop = computed(() => STOPS[stopIndex.value])
 const stopView = computed<View>(() => ({
@@ -33,7 +30,6 @@ const stopView = computed<View>(() => ({
   caption: `${stop.value.name}, handled by ${nameOf(stop.value.layer)}`
 }))
 
-// ------------------------------------------------------------------ Laravel, in Go
 const { index: conceptIndex, set: setConcept, root: conceptRoot } = useCycle(CONCEPTS.length, 5200)
 const concept = computed(() => CONCEPTS[conceptIndex.value])
 const conceptView = computed<View>(() => ({
@@ -43,20 +39,17 @@ const conceptView = computed<View>(() => ({
   caption: `${concept.value.name}, handled by ${nameOf(concept.value.layer)}`
 }))
 
-// ------------------------------------------------------------------ five layers
 const { index: layerIndex, set: setLayer, root: layerRoot } = useCycle(LAYERS.length, 3200)
 const layer = computed(() => LAYERS[layerIndex.value])
 const layerKey = computed(() => layer.value.key)
-const selectLayer = (k: LayerKey) => setLayer(LAYER_ORDER.indexOf(k))
-// the rest of the mark stays solid, so you can see the hole the piece came out of
+const selectLayer = (k: LayerKey) => setLayer(LAYERS.findIndex((l) => l.key === k))
 const layerView = computed<View>(() => ({
   kind: 'map',
   states: lit(layerKey.value),
-  moves: { [layerKey.value]: MOVES[layerKey.value] },
+  pulled: layerKey.value,
   caption: `The ${layer.value.name} piece, pulled out of the mark`
 }))
 
-// ------------------------------------------------------------------ start with the core
 const { index: liteIndex, set: setLite, root: liteRoot } = useCycle(LITE_STEPS.length, 2400)
 const liteStep = computed(() => LITE_STEPS[liteIndex.value])
 const installed = computed(() =>
@@ -78,14 +71,12 @@ const liteView = computed<View>(() => {
   return { kind: 'lite', states, caption: `${installed.value.length} of 30 facades installed` }
 })
 
-/* Which two lines are being matched at this moment. */
 const { index: tieStep, root: tieRoot } = useCycle(() => concept.value.ties.length, 1500, 0.3)
 const pair = computed(() => concept.value.ties[tieStep.value % concept.value.ties.length] ?? [0, 0])
 </script>
 
 <template>
   <div class="g-home">
-    <!-- ---------------------------------------------------------- hero -->
     <section class="g-sec is-hero">
       <div class="g-wrap g-hero-grid">
         <div>
@@ -125,7 +116,6 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
       </div>
     </section>
 
-    <!-- ---------------------------------------------------------- one request -->
     <section class="g-sec">
       <div class="g-wrap">
         <header class="g-sec-head">
@@ -147,7 +137,7 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
 
         <div class="g-panel">
           <div class="g-figure">
-            <Stage :view="stopView" :width="400" :height="368" :scale="0.9" />
+            <GoravelMark :view="stopView" :scale="0.9" />
           </div>
           <div class="g-panel-body">
             <div class="g-file-head">
@@ -169,7 +159,6 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
       </div>
     </section>
 
-    <!-- ---------------------------------------------------------- Laravel, in Go -->
     <section class="g-sec">
       <div class="g-wrap">
         <div class="g-sec-split">
@@ -178,7 +167,7 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
             <p class="g-lead">{{ tr('The same facades, the same method names, the same file layout.') }}</p>
           </header>
           <div class="g-figure is-small">
-            <Stage :view="conceptView" :width="260" :height="240" :scale="0.62" />
+            <GoravelMark :view="conceptView" :scale="0.62" />
           </div>
         </div>
 
@@ -225,7 +214,6 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
       </div>
     </section>
 
-    <!-- ---------------------------------------------------------- five layers -->
     <section class="g-sec">
       <div class="g-wrap">
         <header class="g-sec-head">
@@ -247,12 +235,12 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
 
         <div class="g-panel is-layers">
           <div class="g-figure">
-            <Stage :view="layerView" :width="460" :height="420" :scale="0.94" @select="selectLayer" />
+            <GoravelMark :view="layerView" :scale="0.94" @select="selectLayer" />
           </div>
           <div class="g-panel-body">
             <ul :key="layerIndex" class="g-facades g-swap">
               <li v-for="f in layer.facades" :key="f">
-                <a :href="FACADE_LINK[f]" :title="FACADE_INFO[f]">{{ f }}</a>
+                <a :href="FACADES[f][0]" :title="FACADES[f][1]">{{ f }}</a>
               </li>
             </ul>
             <pre class="g-code is-plain g-layer-code"><code><span
@@ -264,7 +252,6 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
       </div>
     </section>
 
-    <!-- ---------------------------------------------------------- lite -->
     <section class="g-sec">
       <div class="g-wrap">
         <header class="g-sec-head">
@@ -286,7 +273,7 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
 
         <div class="g-panel">
           <div class="g-figure is-small">
-            <Stage :view="liteView" :width="380" :height="360" :scale="0.86" />
+            <GoravelMark :view="liteView" :scale="0.86" />
           </div>
           <div class="g-panel-body">
             <pre class="g-code is-shell"><code><span class="ln"><span class="prompt">$</span><span class="src">{{ liteStep.cmd }}</span></span></code></pre>

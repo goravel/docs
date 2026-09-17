@@ -1,7 +1,6 @@
-/* The default theme's frame, restyled. The theme scopes its own rules, so layout overrides need !important. */
+/* The default theme scopes its styles, so layout overrides here need !important. */
 
 /* ------------------------------------------------------------------ the frame */
-/* sidebar rule, article column, outline: the column keeps its width and the outline takes the slack */
 @media (min-width: 960px) {
   .VPContent.has-sidebar {
     padding-left: var(--vp-sidebar-width) !important;
@@ -85,7 +84,7 @@
 }
 
 /* ------------------------------------------------------------------ sidebar */
-/* rows run from the screen edge to the sidebar rule; --inset is where their text starts */
+/* rows run to both edges of the sidebar; the insets are where their text starts */
 .VPSidebar {
   --inset-left: var(--g-shell-inset);
   --inset-right: 24px;
@@ -183,7 +182,6 @@
   font-weight: 500;
 }
 
-/* you are here: the lattice cell, on the text's own line */
 .VPSidebarItem.level-1.is-active > .item::before {
   content: '';
   position: absolute;
@@ -227,7 +225,6 @@
   display: none;
 }
 
-/* the title's rule runs across the whole rail */
 .VPDocAsideOutline .outline-title {
   display: flex;
   align-items: center;
@@ -284,7 +281,6 @@
   padding-left: 12px;
 }
 
-/* the outline bar on narrower screens */
 .VPLocalNav {
   border-bottom: 1px solid var(--g-line) !important;
 }
@@ -312,7 +308,7 @@
 }
 
 /* ------------------------------------------------------------------ search */
-/* The theme resets Algolia's variables on every DocSearch node, so ours are set at that level too. */
+/* the theme resets Algolia's variables on every DocSearch node, so they are set at that level */
 :root [class*='DocSearch'] {
   --docsearch-container-background: rgba(16, 24, 32, 0.32);
   --docsearch-modal-background: var(--g-white);
@@ -463,8 +459,6 @@
 }
 
 .VPNavScreenMenuLink,
-.VPNavScreenMenuGroupLink,
-.VPNavScreenMenuGroupSection .title,
 .VPNavScreenMenuGroup .button {
   padding: 10px 0 !important;
   border-bottom: 0 !important;
@@ -477,8 +471,37 @@
   border-bottom: 0 !important;
 }
 
-.VPNavScreenMenuGroup .items {
-  padding-left: 14px;
+.VPNavScreenMenuGroupSection {
+  padding: 8px 0 10px;
+}
+
+.VPNavScreenMenuGroupSection .title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 2px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  line-height: 24px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--g-cyan-text);
+}
+
+.VPNavScreenMenuGroupSection .title::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+
+.VPNavScreen .VPNavScreenMenuGroupLink {
+  margin-left: 0;
+  padding: 7px 0;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .VPNavScreenAppearance {
@@ -491,10 +514,10 @@
   border: 0 !important;
 }
 
-.VPNavScreen .VPSocialLinks {
-  margin-left: 0 !important;
+/* -7px lines the icon, not its 34px target, up with the rows above */
+.VPNavScreen .container .VPSocialLinks {
   justify-content: flex-start;
-  gap: 4px;
+  margin: 20px 0 0 -7px;
 }
 
 .VPNavScreen .VPSocialLink {
@@ -507,19 +530,14 @@
   background: var(--g-soft);
 }
 
-/* a row in the Community menu: the owner's mark, then the name */
 .g-menu-row {
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.g-menu-title {
   white-space: nowrap;
 }
 
 .g-menu-icon {
-  display: block;
   flex-shrink: 0;
   width: 20px;
   height: 20px;
@@ -527,14 +545,13 @@
   transition: color 0.15s ease;
 }
 
-/* DevChalk's mark is a painting, so it reads as an avatar */
-.g-menu-icon.is-avatar {
-  border-radius: 4px;
-  object-fit: cover;
-}
-
 a:hover .g-menu-icon {
   color: var(--g-cyan-text);
+}
+
+.g-menu-icon.is-devchalk {
+  border-radius: 4px;
+  background: url('/devchalk-mark.png') center / cover;
 }
 
 /* ------------------------------------------------------------------ footer */

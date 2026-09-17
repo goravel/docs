@@ -1,6 +1,5 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
-/* Step through a section's examples while it is on screen, until the reader picks one. */
 export function useCycle(count: number | (() => number), ms: number, threshold = 0.35) {
   const index = ref(0)
   const root = ref<HTMLElement | null>(null)
@@ -23,7 +22,6 @@ export function useCycle(count: number | (() => number), ms: number, threshold =
     }, ms)
   }
 
-  /* The reader chose one: stop moving and stay where they put it. */
   function set(i: number) {
     held = true
     stop()

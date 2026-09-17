@@ -13,8 +13,7 @@ import footnote from 'markdown-it-footnote'
 import sub from 'markdown-it-sub'
 import sup from 'markdown-it-sup'
 import taskLists from 'markdown-it-task-lists'
-import { goravelDark, goravelLight } from './goravel-code'
-import { GITHUB_SVG } from './nav-icons'
+import { goravelCode } from './goravel-code'
 import {
   groupIconMdPlugin,
   groupIconVitePlugin
@@ -29,7 +28,7 @@ function markCustomContainerTitles(md: MarkdownRenderer) {
     if (!original) continue
     md.renderer.rules[key] = (tokens, idx, options, env, self) => {
       const html = original(tokens, idx, options, env, self)
-      // anything after the type name on the fence is a title the author typed
+      // text after the type on the fence is a custom title
       const custom = /^[a-z-]+[ \t]+\S/i.test((tokens[idx].info || '').trim())
       return custom ? html.replace('custom-block', 'custom-block has-custom-title') : html
     }
@@ -43,6 +42,8 @@ export const shared = defineConfig({
     'en/:rest*': ':rest*'
   },
 
+  // there is no dark design
+  appearance: false,
   lastUpdated: true,
   cleanUrls: false,
   metaChunk: true,
@@ -63,10 +64,9 @@ export const shared = defineConfig({
   ],
 
   markdown: {
-    theme: { light: goravelLight, dark: goravelDark },
+    theme: goravelCode,
     lineNumbers: true,
     codeTransformers: [
-
       transformerNotationWordHighlight(),
       transformerMetaWordHighlight(),
       transformerTwoslash({
@@ -76,7 +76,6 @@ export const shared = defineConfig({
     config(md) {
       md.use(groupIconMdPlugin)
       md.use(timeline)
-      // markdown VitePress does not ship: footnotes, task lists, sub/sup and definition lists
       md.use(footnote)
       md.use(taskLists, { label: true })
       md.use(sub)
@@ -88,11 +87,9 @@ export const shared = defineConfig({
   },
 
   themeConfig: {
-
     logo: '/logo@2x.png',
     siteTitle: false,
-
-    socialLinks: [{ icon: { svg: GITHUB_SVG }, link: 'https://github.com/goravel/goravel' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/goravel/goravel' }],
     search: {
       provider: 'algolia',
       options: {
@@ -132,7 +129,6 @@ export const shared = defineConfig({
   vite: {
     plugins: [groupIconVitePlugin(), tailwindcss() as any],
     resolve: {
-
       alias: [
         {
           find: /^.*\/VPNavBar\.vue$/,

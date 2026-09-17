@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-/* A small menu in the bar, for the version and the language. */
 defineProps<{ label: string; options: { text: string; link: string; note?: string; selected?: boolean }[] }>()
 
 const open = ref(false)
@@ -57,7 +56,7 @@ const onFocusOut = (e: FocusEvent) => {
 }
 
 .trigger[aria-expanded='true'] .caret {
-  transform: rotate(-90deg); /* the theme draws this chevron as a right one turned 90deg */
+  transform: rotate(-90deg); /* the theme's down chevron is a right chevron turned 90deg */
 }
 
 .menu {
@@ -90,7 +89,6 @@ const onFocusOut = (e: FocusEvent) => {
   background: var(--g-soft);
 }
 
-/* the lattice cell marks the one you are on */
 .option::before {
   content: '';
   flex-shrink: 0;

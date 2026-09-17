@@ -1,14 +1,5 @@
 import { defineConfig, type DefaultTheme } from 'vitepress'
-import {
-  ICON_CONTRIBUTE,
-  ICON_DEVCHALK,
-  ICON_DISCORD,
-  ICON_OPEN_COLLECTIVE,
-  ICON_TRANSLATE,
-  ICON_X,
-  ICON_YOUTUBE,
-  menuRow
-} from './nav-icons'
+import { community } from './community'
 
 export const config = defineConfig({
   lang: 'en-US',
@@ -110,7 +101,6 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-
       text: 'Docs',
       link: '/getting-started/installation',
       activeMatch: '/getting-started/'
@@ -125,33 +115,18 @@ function nav(): DefaultTheme.NavItem[] {
       link: '/architecture-concepts/request-lifecycle',
       activeMatch: '/architecture-concepts/'
     },
-    {
-      text: 'Community',
-      items: [
-        {
-          text: 'Connect',
-          items: [
-            { text: menuRow('Discord', ICON_DISCORD), link: 'https://discord.gg/cFc5csczzS' },
-            { text: menuRow('X', ICON_X), link: 'https://x.com/goravel_dev' }
-          ]
-        },
-        {
-          text: 'Learn',
-          items: [
-            { text: menuRow('Video Tutorials', ICON_YOUTUBE), link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf' },
-            { text: menuRow('DevChalk', ICON_DEVCHALK), link: 'https://devchalk.com/goravel' }
-          ]
-        },
-        {
-          text: 'Contribute',
-          items: [
-            { text: menuRow('Contribution Guide', ICON_CONTRIBUTE), link: '/prologue/contributions' },
-            { text: menuRow('Add a Language', ICON_TRANSLATE), link: '/prologue/contributions#add-a-new-language' },
-            { text: menuRow('Open Collective', ICON_OPEN_COLLECTIVE), link: 'https://opencollective.com/goravel' }
-          ]
-        }
-      ]
-    }
+    community(
+      {
+        title: 'Community',
+        connect: 'Connect',
+        learn: 'Learn',
+        videos: 'Video Tutorials',
+        contribute: 'Contribute',
+        guide: 'Contribution Guide',
+        language: 'Add a Language',
+        languageAnchor: 'add-a-new-language'
+      }
+    )
   ]
 }
 

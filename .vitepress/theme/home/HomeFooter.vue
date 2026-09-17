@@ -2,7 +2,6 @@
 import { useHomeI18n } from './i18n'
 
 const { tr } = useHomeI18n()
-/* The end of the page: where to go next, and the licence. */
 const COLUMNS = [
   {
     title: 'Documentation',

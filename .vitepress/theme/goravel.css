@@ -1,5 +1,3 @@
-/* Goravel docs: the tokens, and everything inside an article. */
-
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Mona+Sans:wdth,wght@75..125,200..900&display=swap');
 
 :root {
@@ -14,7 +12,6 @@
   --g-cyan-tint: #ebf7fd;
   --g-construct: rgba(104, 116, 125, 0.4);
 
-  /* severity, for callouts and code markers only */
   --g-amber: #e08700;
   --g-amber-text: #8f5a00;
   --g-amber-tint: #fdf6eb;
@@ -22,11 +19,11 @@
   --g-red-text: #b02b2b;
   --g-red-tint: #fdeeee;
 
-  --g-shell-inset: 40px;     /* the page's outer inset, left and right */
-  --g-control: 34px;         /* the height every bar control shares */
-  --g-gutter: 64px;          /* from the sidebar rule to the first character */
+  --g-shell-inset: 40px;
+  --g-control: 34px;
+  --g-gutter: 64px;          /* sidebar rule to the text */
   --g-measure: 704px;        /* about 68 characters at 17px */
-  --g-rail: 32px;            /* from the column rule to the outline */
+  --g-rail: 32px;            /* column rule to the outline */
   --g-aside: 368px;          /* outline 240 + rail 32 + margin 96 */
   --g-col: calc(var(--g-measure) + var(--g-gutter) + var(--g-rail));
 
@@ -50,6 +47,7 @@
   --vp-c-bg-elv: var(--g-white);
 
   --vp-code-block-bg: var(--g-soft);
+  --vp-code-block-color: var(--g-ink);
   --vp-code-line-highlight-color: var(--g-cyan-tint);
   --vp-code-line-number-color: var(--g-grey);
   --vp-code-copy-code-bg: var(--g-soft);
@@ -65,7 +63,6 @@
 }
 
 /* ------------------------------------------------------------------ bands */
-/* A band runs from the sidebar rule to the column rule, or from edge to edge on a phone. */
 .VPDoc {
   --g-left: var(--g-gutter);
   --g-right: var(--g-rail);
@@ -90,7 +87,7 @@
   padding-right: var(--g-right);
 }
 
-/* the theme scopes these two, and giscus writes inline styles, so they need the weight */
+/* the theme scopes .edit-info and giscus sets inline styles */
 .VPDocFooter .edit-info,
 #giscus {
   margin-left: calc(var(--g-left) * -1) !important;
@@ -109,7 +106,6 @@
   letter-spacing: -0.035em;
 }
 
-/* the opening paragraph reads as the lead */
 .vp-doc h1 + p,
 .vp-doc h2:first-of-type + p {
   font-size: 18px;
@@ -184,7 +180,6 @@
   color: var(--g-ink);
 }
 
-/* reference pages write a method name as a bold paragraph of its own: it becomes an entry */
 .vp-doc p:has(> strong:only-child):not(li > p):not(blockquote p):not(.custom-block p) {
   margin-top: 36px;
   padding-top: 18px;
@@ -213,8 +208,7 @@
 }
 
 /* ------------------------------------------------------------------ code */
-/* A block is a band: its ground and its rules are painted past the box, so its text stays on
-   the article's edge. A phone has no room for that, so there the box itself bleeds. */
+/* The ground and rules are painted past the box, so the text keeps the article's edge. */
 .vp-doc {
   --g-code-ground: var(--g-soft);
   --g-code-left: var(--g-left);
@@ -249,7 +243,6 @@
   border-bottom: 1px solid var(--g-line);
 }
 
-/* the rule under the header, which holds the language and the copy button */
 .vp-doc div[class*='language-']::after {
   top: 43px;
   z-index: 2;
@@ -285,7 +278,7 @@
   color: var(--g-grey);
 }
 
-/* the theme swaps the language for the copy button on hover; here both stay */
+/* the theme hides the language on hover */
 .vp-doc [class*='language-'] > span.lang,
 .vp-doc [class*='language-']:hover > button.copy + span.lang,
 .vp-doc [class*='language-'] > button.copy:focus + span.lang {
@@ -307,7 +300,6 @@
   background-color: var(--g-white);
 }
 
-/* a block with no language has no header */
 .vp-doc div[class*='language-']:has(> span.lang:empty) {
   padding-top: 0;
 }
@@ -324,7 +316,6 @@
   top: 0;
 }
 
-/* markers */
 .vp-doc [class*='language-'] .line.highlighted,
 .vp-doc [class*='language-'] .line.diff.add {
   background: var(--g-cyan-tint);
@@ -366,8 +357,6 @@
   background: var(--g-cyan-tint);
 }
 
-/* A group is one band: it paints the ground and the rule above the tabs, and the block under
-   the tabs draws the rest. */
 .vp-doc .vp-code-group {
   position: relative;
   margin: 28px 0;
@@ -406,7 +395,6 @@
   box-shadow: none;
 }
 
-/* The upgrade guide hands a markdown block to an AI agent: labelled, capped, and wrapped. */
 .vp-doc div[class*='language-markdown']::before {
   border-top: 2px solid var(--g-ink);
 }
@@ -426,7 +414,6 @@
   font-size: 12px;
 }
 
-/* its lines wrap, so numbers would not line up with them */
 .vp-doc div[class*='language-markdown'].line-numbers-mode {
   padding-left: 0;
 }
@@ -537,7 +524,6 @@
   color: var(--g-red-text);
 }
 
-/* the lattice cell: hollow for context, filled for anything louder */
 .vp-doc .custom-block .custom-block-title::before {
   content: '';
   flex-shrink: 0;
@@ -552,7 +538,6 @@
   box-shadow: inset 0 0 0 1.25px currentColor;
 }
 
-/* a title the author wrote is set as text, not as a type label */
 .vp-doc .custom-block.has-custom-title .custom-block-title {
   margin-bottom: 6px;
   font-family: var(--vp-font-family-base);
@@ -576,7 +561,6 @@
   margin-top: 8px;
 }
 
-/* code inside a callout sits on a lighter ground of the callout's own tint */
 .vp-doc .custom-block {
   --g-code-ground: rgba(255, 255, 255, 0.66);
 }
@@ -595,7 +579,6 @@
   margin-bottom: 14px;
 }
 
-/* the folded block: a summary that reads like a label */
 .vp-doc .custom-block.details {
   padding-top: 14px;
   padding-bottom: 16px;
@@ -645,7 +628,6 @@
   background: currentColor;
 }
 
-/* the chevron at the far end */
 .vp-doc .custom-block.details summary::after {
   width: 6px;
   height: 6px;
@@ -659,7 +641,6 @@
   transform: rotate(45deg);
 }
 
-/* a blockquote note reads the same way as a callout */
 .vp-doc blockquote {
   margin-top: 28px;
   margin-bottom: 28px;
@@ -694,7 +675,6 @@
 }
 
 /* ------------------------------------------------------------------ tables */
-/* the rule belongs to the row and runs the whole band; the inset belongs to the cells */
 .vp-doc table {
   display: table;
   width: calc(100% + var(--g-left) + var(--g-right));
@@ -757,7 +737,6 @@
   overflow-wrap: anywhere;
 }
 
-/* test coverage on the packages page, drawn by Layout.vue */
 .vp-doc td:has(> .goravel-coverage) {
   white-space: nowrap;
 }
@@ -855,7 +834,7 @@
   margin-top: 6px;
 }
 
-/* centred on the label's first line: (29 - 15) / 2 */
+/* (line height 29 - box 15) / 2 */
 .vp-doc .task-list-item input[type='checkbox'] {
   appearance: none;
   flex-shrink: 0;
@@ -914,7 +893,6 @@
   color: var(--g-grey);
 }
 
-/* the pager is one rule across the band: grey for the page behind, cyan for the page ahead */
 .VPDocFooter .prev-next {
   gap: 0 !important;
   padding-top: 0;
@@ -956,7 +934,7 @@
 }
 
 /* ------------------------------------------------------------------ Chinese */
-/* negative tracking closes up CJK glyphs, which are already set tight */
+/* negative tracking crowds CJK glyphs */
 :lang(zh) .g-home .g-display,
 :lang(zh) .g-home .g-h2,
 :lang(zh) .g-home .g-h3,

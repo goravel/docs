@@ -2,68 +2,59 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 
-/* The line above every article: where the page sits, and which layer of the framework it belongs to. */
-
-// Every facade belongs to exactly one layer of the mark, and so does every guide.
-const LAYERS: Record<string, string> = {
+const LAYER_OF: Record<string, string> = {
   'architecture-concepts': 'Core',
   'the-basics': 'HTTP',
   ai: 'Application',
   security: 'Application',
   database: 'Data',
   orm: 'Data',
-  testing: 'Core'
-}
-
-const DIGGING: Record<string, string> = {
-  'artisan-console': 'Core',
-  cache: 'Data',
-  collections: 'Core',
-  color: 'Core',
-  event: 'Async',
-  filesystem: 'Data',
-  helpers: 'Core',
-  'http-client': 'HTTP',
-  localization: 'Application',
-  mail: 'Async',
-  'package-development': 'Core',
-  pluralization: 'Application',
-  processes: 'Core',
-  queues: 'Async',
-  strings: 'Core',
-  'task-scheduling': 'Async',
-  telemetry: 'Async'
+  testing: 'Core',
+  'digging-deeper/artisan-console': 'Core',
+  'digging-deeper/cache': 'Data',
+  'digging-deeper/collections': 'Core',
+  'digging-deeper/color': 'Core',
+  'digging-deeper/event': 'Async',
+  'digging-deeper/filesystem': 'Data',
+  'digging-deeper/helpers': 'Core',
+  'digging-deeper/http-client': 'HTTP',
+  'digging-deeper/localization': 'Application',
+  'digging-deeper/mail': 'Async',
+  'digging-deeper/package-development': 'Core',
+  'digging-deeper/pluralization': 'Application',
+  'digging-deeper/processes': 'Core',
+  'digging-deeper/queues': 'Async',
+  'digging-deeper/strings': 'Core',
+  'digging-deeper/task-scheduling': 'Async',
+  'digging-deeper/telemetry': 'Async'
 }
 
 const { page, theme } = useData()
 
-const parts = computed(() => {
-  const relative = page.value.relativePath
-  const path = '/' + relative.replace(/\.md$/, '')
-  const stripped = relative.replace(/^(en|zh_CN|uz_UZ)\//, '')
-  const [dir, file] = stripped.split('/')
-  if (!file) return null
-
-  // the section name comes from the sidebar itself, so it is already translated
-  const groups = (theme.value.sidebar ?? []) as { text?: string; base?: string }[]
-  const group = groups.find((g) => g.base && path.startsWith(g.base.replace(/\/$/, '')))
-
-  const name = file.replace(/\.md$/, '')
-  const layer = dir === 'digging-deeper' ? DIGGING[name] : LAYERS[dir]
-  return { section: group?.text ?? null, layer: layer ?? null }
+const meta = computed(() => {
+  const path = page.value.filePath.replace(/^(en|zh_CN|uz_UZ)\//, '').replace(/\.md$/, '')
+  const [dir, name] = path.split('/')
+  if (!name) return null
+  const groups = theme.value.sidebar as { text: string; base: string }[]
+  return {
+    section: groups.find((group) => group.base.endsWith(`/${dir}/`))?.text,
+    layer: LAYER_OF[path] ?? LAYER_OF[dir]
+  }
 })
 </script>
 
 <template>
-  <div v-if="parts" class="goravel-doc-meta">
+  <div v-if="meta" class="goravel-doc-meta">
     <span class="crumbs">
       <span>Docs</span>
-      <span v-if="parts.section" class="sep">/</span>
-      <span v-if="parts.section">{{ parts.section }}</span>
+      <template v-if="meta.section">
+        <span class="sep">/</span>
+        <span>{{ meta.section }}</span>
+      </template>
       <span class="sep">/</span>
       <span class="current">{{ page.title }}</span>
     </span>
-    <span v-if="parts.layer" class="layer">{{ parts.layer }} layer</span>
+    <span v-if="meta.layer" class="layer">{{ meta.layer }} layer</span>
   </div>
 </template>
 
@@ -118,7 +109,6 @@ const parts = computed(() => {
   transform: rotate(45deg);
 }
 
-/* on a phone the trail is just the page and its layer */
 @media (max-width: 599px) {
   .crumbs > span:not(.current) {
     display: none;

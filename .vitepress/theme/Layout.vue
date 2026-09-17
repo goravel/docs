@@ -11,7 +11,6 @@ const { Layout } = DefaultTheme
 const route = useRoute()
 const { page } = useData()
 
-/* The packages page lists a test coverage percentage in its last column. */
 function drawCoverage() {
   if (!page.value.relativePath.includes('getting-started/packages')) return
   document.querySelectorAll<HTMLTableCellElement>('.vp-doc table td:last-child').forEach((cell) => {

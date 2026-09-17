@@ -1,14 +1,5 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
-import {
-  ICON_CONTRIBUTE,
-  ICON_DEVCHALK,
-  ICON_DISCORD,
-  ICON_OPEN_COLLECTIVE,
-  ICON_TRANSLATE,
-  ICON_X,
-  ICON_YOUTUBE,
-  menuRow
-} from './nav-icons'
+import { community } from './community'
 export const config = defineConfig({
   lang: "uz-UZ",
   description: "Goravel — bu to‘liq funksiyalarga ega va yuqori darajada kengaytiriladigan web-ilovalar frameworki hisoblanadi. U Go dasturchilari (gopherlar) uchun boshlang‘ich platforma (scaffolding) sifatida xizmat qiladi va ularga o‘z ilovalarini tez, tartibli va professional tarzda yaratishga yordam beradi.",
@@ -106,7 +97,6 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-
       text: "Hujjatlar",
       link: '/uz_UZ/getting-started/installation',
       activeMatch: '/uz_UZ/getting-started/'
@@ -121,33 +111,19 @@ function nav(): DefaultTheme.NavItem[] {
       link: '/uz_UZ/architecture-concepts/request-lifecycle',
       activeMatch: '/uz_UZ/architecture-concepts/'
     },
-    {
-      text: 'Hamjamiyat',
-      items: [
-        {
-          text: 'Aloqa',
-          items: [
-            { text: menuRow('Discord', ICON_DISCORD), link: 'https://discord.gg/cFc5csczzS' },
-            { text: menuRow('X', ICON_X), link: 'https://x.com/goravel_dev' }
-          ]
-        },
-        {
-          text: "O'rganish",
-          items: [
-            { text: menuRow('Video darsliklar', ICON_YOUTUBE), link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf' },
-            { text: menuRow('DevChalk', ICON_DEVCHALK), link: 'https://devchalk.com/goravel' }
-          ]
-        },
-        {
-          text: "Hissa qo'shish",
-          items: [
-            { text: menuRow("Hissa qo'shish bo'yicha qo'llanma", ICON_CONTRIBUTE), link: '/uz_UZ/prologue/contributions' },
-            { text: menuRow("Til qo'shish", ICON_TRANSLATE), link: '/uz_UZ/prologue/contributions#add-a-new-language' },
-            { text: menuRow('Open Collective', ICON_OPEN_COLLECTIVE), link: 'https://opencollective.com/goravel' }
-          ]
-        }
-      ]
-    }
+    community(
+      {
+        title: 'Hamjamiyat',
+        connect: 'Aloqa',
+        learn: "O'rganish",
+        videos: 'Video darsliklar',
+        contribute: "Hissa qo'shish",
+        guide: "Hissa qo'shish bo'yicha qo'llanma",
+        language: "Til qo'shish",
+        languageAnchor: 'add-a-new-language'
+      },
+      '/uz_UZ'
+    )
   ]
 }
 

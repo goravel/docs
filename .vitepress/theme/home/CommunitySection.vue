@@ -2,7 +2,6 @@
 import { useHomeI18n } from './i18n'
 
 const { tr } = useHomeI18n()
-/* Open source. */
 const STATS = [
   { value: '4,831', label: 'GitHub stars' },
   { value: '43', label: 'contributors' },

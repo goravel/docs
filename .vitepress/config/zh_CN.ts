@@ -1,14 +1,5 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
-import {
-  ICON_BILIBILI,
-  ICON_CONTRIBUTE,
-  ICON_DEVCHALK,
-  ICON_DISCORD,
-  ICON_OPEN_COLLECTIVE,
-  ICON_TRANSLATE,
-  ICON_X,
-  menuRow
-} from './nav-icons'
+import { community } from './community'
 export const config = defineConfig({
   lang: "zh-CN",
   description: "Goravel 是一个功能完整且可扩展性极强的 Web 应用程序框架。作为一个起始脚手架，帮助 Gopher 快速构建自己的应用程序。",
@@ -106,8 +97,7 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-
-      text: "文档",
+      text: '文档',
       link: '/zh_CN/getting-started/installation',
       activeMatch: '/zh_CN/getting-started/'
     },
@@ -121,33 +111,20 @@ function nav(): DefaultTheme.NavItem[] {
       link: '/zh_CN/architecture-concepts/request-lifecycle',
       activeMatch: '/zh_CN/architecture-concepts/'
     },
-    {
-      text: '社区',
-      items: [
-        {
-          text: '联系',
-          items: [
-            { text: menuRow('Discord', ICON_DISCORD), link: 'https://discord.gg/cFc5csczzS' },
-            { text: menuRow('X', ICON_X), link: 'https://x.com/goravel_dev' }
-          ]
-        },
-        {
-          text: '学习',
-          items: [
-            { text: menuRow('视频教程', ICON_BILIBILI), link: 'https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0' },
-            { text: menuRow('DevChalk', ICON_DEVCHALK), link: 'https://devchalk.com/goravel' }
-          ]
-        },
-        {
-          text: '参与贡献',
-          items: [
-            { text: menuRow('贡献指南', ICON_CONTRIBUTE), link: '/zh_CN/prologue/contributions' },
-            { text: menuRow('新增语言', ICON_TRANSLATE), link: '/zh_CN/prologue/contributions#新增语言' },
-            { text: menuRow('Open Collective', ICON_OPEN_COLLECTIVE), link: 'https://opencollective.com/goravel' }
-          ]
-        }
-      ]
-    }
+    community(
+      {
+        title: '社区',
+        connect: '联系',
+        learn: '学习',
+        videos: '视频教程',
+        contribute: '参与贡献',
+        guide: '贡献指南',
+        language: '新增语言',
+        languageAnchor: '新增语言'
+      },
+      '/zh_CN',
+      'bilibili'
+    )
   ]
 }
 

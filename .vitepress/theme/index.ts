@@ -19,7 +19,6 @@ export default {
   Layout,
   enhanceApp({ app }: EnhanceAppContext) {
     app.use(TwoslashFloatingVue)
-    // `layout: goravel-home` in a page's frontmatter renders this inside the normal shell.
     app.component('goravel-home', GoravelHome)
   },
   setup() {

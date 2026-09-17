@@ -4,10 +4,10 @@ import { useData, useRoute } from 'vitepress'
 import { useSidebar } from 'vitepress/theme'
 import VPNavBarSearch from 'vitepress/dist/client/theme-default/components/VPNavBarSearch.vue'
 import VPNavBarHamburger from 'vitepress/dist/client/theme-default/components/VPNavBarHamburger.vue'
+import VPSocialLinks from 'vitepress/dist/client/theme-default/components/VPSocialLinks.vue'
 import { useLangs } from 'vitepress/dist/client/theme-default/composables/langs'
 import SelectMenu from './SelectMenu.vue'
 
-/* The site bar. */
 defineProps<{ isScreenOpen: boolean }>()
 defineEmits<{ (e: 'toggle-screen'): void }>()
 
@@ -24,11 +24,8 @@ const route = useRoute()
 
 const home = computed(() => (localeIndex.value === 'root' ? '/' : `/${localeIndex.value}/`))
 const nav = computed(() => theme.value.nav ?? [])
-// the first nav item names the docs in each language, and doubles as the lockup's section label
 const section = computed(() => nav.value[0]?.text ?? 'Docs')
-const github = computed(() => theme.value.socialLinks?.[0])
 
-/* Every language, in the order the config lists them, each linking to this page in that language. */
 const languages = computed(() =>
   Object.values(site.value.locales).map(({ label }) => ({
     text: label!,
@@ -47,7 +44,6 @@ watch(menuOpen, (open) =>
 )
 onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 
-/* Close when keyboard focus leaves the menu, so tabbing past it does not leave it open. */
 const onFocusOut = (e: FocusEvent) => {
   if (!(e.currentTarget as HTMLElement).contains(e.relatedTarget as Node)) menuOpen.value = false
 }
@@ -88,8 +84,7 @@ const onFocusOut = (e: FocusEvent) => {
     <div class="utils">
       <SelectMenu v-if="hasSidebar" label="v1.18" :options="VERSIONS" />
       <SelectMenu class="lang" :label="currentLang.label!" :options="languages" />
-      <a v-if="github" class="github" :href="github.link" aria-label="GitHub" target="_blank" rel="noreferrer"
-         v-html="(github.icon as { svg: string }).svg" />
+      <VPSocialLinks class="social" :links="theme.socialLinks ?? []" />
     </div>
 
     <VPNavBarHamburger class="hamburger" :active="isScreenOpen" @click="$emit('toggle-screen')" />
@@ -108,7 +103,6 @@ const onFocusOut = (e: FocusEvent) => {
   background: var(--g-white);
 }
 
-/* brand */
 .brand {
   display: flex;
   align-items: center;
@@ -150,18 +144,18 @@ const onFocusOut = (e: FocusEvent) => {
   border-bottom: 1px solid var(--g-line);
 }
 
-/* the search sits over the article column and is exactly as wide as it */
 .docs .search {
   flex: 0 1 calc(var(--g-measure) + var(--g-gutter));
   padding-left: var(--g-gutter);
 }
 
 .docs .utils {
-  flex: 1;
+  flex: 1 0 auto;
   justify-content: flex-end;
+  margin-left: 0;
+  padding-right: var(--g-shell-inset);
 }
 
-/* destinations */
 .nav {
   display: flex;
   align-items: center;
@@ -196,10 +190,9 @@ const onFocusOut = (e: FocusEvent) => {
 }
 
 .menu button[aria-expanded='true'] .chevron {
-  transform: rotate(-90deg); /* the theme draws this chevron as a right one turned 90deg */
+  transform: rotate(-90deg); /* the theme's down chevron is a right chevron turned 90deg */
 }
 
-/* the Community panel drops from the bar's rule and runs the width of the screen */
 .panel {
   position: fixed;
   top: var(--vp-nav-height);
@@ -258,7 +251,6 @@ const onFocusOut = (e: FocusEvent) => {
   color: var(--g-cyan-text);
 }
 
-/* utilities */
 .search {
   margin-left: auto;
 }
@@ -267,7 +259,6 @@ const onFocusOut = (e: FocusEvent) => {
   width: 100%;
 }
 
-/* the search reads as a field: one grey cell, the shortcut at its far end */
 .search :deep(.DocSearch-Button) {
   gap: 9px;
   width: 100%;
@@ -337,7 +328,7 @@ const onFocusOut = (e: FocusEvent) => {
   padding: 0 6px 0 2px;
 }
 
-/* VitePress's own scoped styles give the search flex-grow and a 32px left padding */
+/* the theme gives the search flex-grow and a 32px left padding */
 .bar:not(.docs) .search {
   flex: 0 0 280px;
   padding-left: 0;
@@ -350,24 +341,18 @@ const onFocusOut = (e: FocusEvent) => {
   margin-left: 20px;
 }
 
-.docs .utils {
-  margin-left: 0;
-  padding-right: var(--g-shell-inset);
+.social {
+  margin-left: 2px;
 }
 
-.github {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.social :deep(.VPSocialLink) {
   width: var(--g-control);
   height: var(--g-control);
-  margin-left: 2px;
-  color: var(--g-grey);
-  transition: color 0.15s ease;
 }
 
-.github:hover {
-  color: var(--g-ink);
+.social :deep(.VPSocialLink > span) {
+  width: 17px;
+  height: 17px;
 }
 
 .hamburger {
@@ -381,7 +366,7 @@ const onFocusOut = (e: FocusEvent) => {
   background: var(--g-soft);
 }
 
-/* the theme slides the middle line aside to make a cross; a square target has no room for it */
+/* the theme slides the middle line aside, which overflows a square target */
 .hamburger.active :deep(.middle) {
   opacity: 0;
 }
@@ -392,7 +377,6 @@ const onFocusOut = (e: FocusEvent) => {
   }
 }
 
-/* a phone: the wordmark, the version on a docs page, the search, and the menu */
 @media (max-width: 959px) {
   .bar,
   .docs {
@@ -409,7 +393,7 @@ const onFocusOut = (e: FocusEvent) => {
   .nav,
   .section,
   .lang,
-  .github {
+  .social {
     display: none;
   }
 

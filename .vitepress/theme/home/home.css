@@ -1,7 +1,4 @@
-/* The homepage. */
-
-/* A full-width rule bleeds through the side margin to the screen's edge. Inside a column that
-   starts at a vertical rule, it starts at that rule instead: those columns set --g-bleed-left or -right. */
+/* full-width rules bleed to the screen edge, or to a column's rule where one sets --g-bleed-* */
 .g-home {
   --g-margin: 96px;
   --g-bleed-left: var(--g-margin);
@@ -179,7 +176,6 @@
   transform: translateX(4px);
 }
 
-/* a link in a list is a link, not an action: a hairline that colours in */
 .g-home .g-link {
   padding-bottom: 3px;
   border-bottom: 1px solid var(--g-line);
@@ -195,7 +191,6 @@
 }
 
 /* ------------------------------------------------------------------ sections */
-/* one section, one screen, and the page settles on a section rather than between two */
 html.g-home-snap {
   scroll-snap-type: y proximity;
   scroll-padding-top: var(--vp-nav-height);
@@ -256,7 +251,6 @@ html.g-home-snap {
   margin-top: 16px;
 }
 
-/* the heading shares its row with the mark, so the two files below get the full width */
 .g-sec-split {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 260px;
@@ -291,7 +285,6 @@ html.g-home-snap {
   margin-top: 40px;
 }
 
-/* the proof: the same route written twice, the reason a Laravel developer reads on */
 .g-proof {
   --g-bleed-left: 56px;
   display: flex;
@@ -320,7 +313,6 @@ html.g-home-snap {
   color: var(--g-ink);
 }
 
-/* the join is one rule from the column's edge to the screen's, with the node on it */
 .g-proof-join {
   position: relative;
   height: 1px;
@@ -426,7 +418,6 @@ html.g-home-snap {
   padding-right: 56px;
 }
 
-/* the two files are two columns divided by one rule, like every other panel */
 .g-compare .g-col:last-child {
   --g-bleed-left: 56px;
   margin: -40px 0 calc(var(--g-secpad) * -1);
@@ -434,7 +425,7 @@ html.g-home-snap {
   border-left: 1px solid var(--g-line);
 }
 
-/* a long line of code scrolls inside its own block; it never widens the page */
+/* lets long code scroll inside its column */
 .g-panel > *,
 .g-compare > *,
 .g-hero-grid > * {
@@ -481,7 +472,6 @@ html.g-home-snap {
     padding-right: 0;
   }
 
-  /* the mark beside a heading has no room of its own on a phone */
   .g-sec-split .g-figure {
     display: none;
   }
@@ -555,7 +545,6 @@ html.g-home-snap {
   color: var(--g-cyan);
 }
 
-/* the two lines that become each other light at the same moment, in both columns */
 .g-code .ln.is-pair::before {
   content: '';
   position: absolute;
@@ -587,7 +576,6 @@ html.g-home-snap {
   color: var(--g-ink);
 }
 
-/* content that swaps under a steady heading fades in rather than cutting */
 .g-swap {
   animation: g-swap 0.32s ease both;
 }
@@ -614,7 +602,6 @@ html.g-home-snap {
   font-size: 14px;
 }
 
-/* a facade is a destination: the list is the quickest way into the reference */
 .g-facades li a {
   padding-bottom: 2px;
   border-bottom: 1px solid transparent;
@@ -633,7 +620,6 @@ html.g-home-snap {
   border-top: 1px solid var(--g-line);
 }
 
-/* how many facades are in so far */
 .g-count {
   display: flex;
   align-items: baseline;
@@ -670,16 +656,37 @@ html.g-home-snap {
   overflow: visible;
 }
 
+/* the mark is drawn at four sizes; lines keep their pixel width */
+.g-mark-lattice,
+.g-face,
+.g-leader,
+.g-track {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
 .g-mark-lattice {
+  stroke: var(--g-line);
   opacity: 0.9;
 }
 
 .g-mark-spin {
+  transform-origin: 133px 154px;
+  transform: rotate(calc(var(--turn) * 120deg));
   transition: transform 0.75s cubic-bezier(0.33, 0.1, 0.2, 1);
 }
 
 .g-piece {
   transition: transform 0.6s cubic-bezier(0.33, 0.1, 0.2, 1);
+}
+
+.g-piece.is-pulled {
+  transform: var(--pull);
+}
+
+.g-piece.is-hit {
+  cursor: pointer;
+  outline: none;
 }
 
 .g-face {
@@ -700,16 +707,10 @@ html.g-home-snap {
 }
 
 .g-face.is-ghost {
-  fill: transparent;
   stroke: var(--g-grey);
   stroke-width: 1;
   stroke-dasharray: 3 4;
   opacity: 0.55;
-}
-
-.g-piece.is-hit {
-  cursor: pointer;
-  outline: none;
 }
 
 .g-piece.is-hit:hover .g-face {
@@ -721,24 +722,25 @@ html.g-home-snap {
   stroke-width: 2;
 }
 
-/* the request: one path, revealed as far as the stop in view */
-.g-request,
-.g-leaders {
+.g-leader {
+  stroke: var(--g-construct);
+  stroke-width: 0.75;
+  stroke-dasharray: 2 3;
   opacity: 0;
   transition: opacity 0.4s ease;
 }
 
-.g-request.is-on,
-.g-leaders.is-on {
+.g-request {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.g-leader.is-on,
+.g-request.is-on {
   opacity: 1;
 }
 
 .g-track {
-  fill: none;
-  stroke-linejoin: miter;
-}
-
-.g-track.is-next {
   stroke: var(--g-grey);
   stroke-width: 1.5;
   stroke-dasharray: 4 4;
@@ -747,12 +749,11 @@ html.g-home-snap {
 
 .g-track.is-done {
   stroke: var(--g-cyan);
-  stroke-width: 2;
-}
-
-.g-run {
-  stroke-dasharray: calc(var(--len) * 1px);
-  stroke-dashoffset: calc(var(--off) * 1px);
+  stroke-width: 2.2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: var(--ahead);
+  vector-effect: none;
+  opacity: 1;
   transition: stroke-dashoffset 0.75s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -760,7 +761,7 @@ html.g-home-snap {
   transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.g-node.is-done,
+.g-node,
 .g-signal-core {
   fill: var(--g-cyan);
 }
@@ -769,17 +770,10 @@ html.g-home-snap {
   fill: var(--g-cyan-tint);
 }
 
-.g-leader {
-  fill: none;
-  stroke: var(--g-construct);
-  stroke-width: 0.75;
-  stroke-dasharray: 2 3;
-}
-
 .g-mono-ink,
 .g-mono-grey {
   font-family: var(--vp-font-family-mono);
-  font-size: 13px;
+  font-size: 14.4px;
   font-weight: 500;
 }
 
@@ -855,7 +849,6 @@ html.g-home-snap {
   gap: 24px;
 }
 
-/* where to find the project: four places, one row, one line of type each */
 .g-places {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -984,13 +977,12 @@ html.g-home-snap {
   }
 }
 
-/* the page carries its own footer, so the theme's would be a second copy */
 .Layout:has(.g-home) .VPFooter {
   display: none !important;
 }
 
 /* ------------------------------------------------------------------ rules that bleed */
-/* last, so the side paddings win over the shorthands above */
+/* last, so these paddings win over the shorthands above */
 .g-tabs,
 .g-file-head,
 .g-layer-code,
