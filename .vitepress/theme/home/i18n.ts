@@ -56,7 +56,12 @@ const zh_CN: Dict = {
   'Install steps': '安装步骤',
   'WeChat group QR code': '微信群二维码',
   'WeChat reward QR code': '微信赞赏二维码',
-  'Open Collective QR code': 'Open Collective 二维码'
+  'Open Collective QR code': 'Open Collective 二维码',
+  'HTTP layer': 'HTTP 层',
+  'Application layer': '应用层',
+  'Core layer': '核心层',
+  'Data layer': '数据层',
+  'Async layer': '异步层'
 }
 
 const uz_UZ: Dict = {
@@ -112,7 +117,12 @@ const uz_UZ: Dict = {
   'Install steps': "O'rnatish bosqichlari",
   'WeChat group QR code': 'WeChat guruhi QR kodi',
   'WeChat reward QR code': "WeChat qo'llab-quvvatlash QR kodi",
-  'Open Collective QR code': 'Open Collective QR kodi'
+  'Open Collective QR code': 'Open Collective QR kodi',
+  'HTTP layer': 'HTTP qatlami',
+  'Application layer': 'Ilova qatlami',
+  'Core layer': 'Yadro qatlami',
+  'Data layer': "Ma'lumotlar qatlami",
+  'Async layer': 'Asinxron qatlami'
 }
 
 const DICTS: Record<string, Dict> = { zh_CN, uz_UZ }

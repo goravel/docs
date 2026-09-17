@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
+import { useHomeI18n } from '../home/i18n'
 
 const LAYER_OF: Record<string, string> = {
   'architecture-concepts': 'Core',
@@ -30,6 +31,7 @@ const LAYER_OF: Record<string, string> = {
 }
 
 const { page, theme } = useData()
+const { tr } = useHomeI18n()
 
 const meta = computed(() => {
   const path = page.value.filePath.replace(/^(en|zh_CN|uz_UZ)\//, '').replace(/\.md$/, '')
@@ -46,7 +48,7 @@ const meta = computed(() => {
 <template>
   <div v-if="meta" class="goravel-doc-meta">
     <span class="crumbs">
-      <span>Docs</span>
+      <span>{{ theme.nav?.[0]?.text }}</span>
       <template v-if="meta.section">
         <span class="sep">/</span>
         <span>{{ meta.section }}</span>
@@ -54,7 +56,7 @@ const meta = computed(() => {
       <span class="sep">/</span>
       <span class="current">{{ page.title }}</span>
     </span>
-    <span v-if="meta.layer" class="layer">{{ meta.layer }} layer</span>
+    <span v-if="meta.layer" class="layer">{{ tr(`${meta.layer} layer`) }}</span>
   </div>
 </template>
 
