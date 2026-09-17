@@ -511,8 +511,7 @@
 .g-menu-row {
   display: flex;
   align-items: center;
-  gap: 11px;
-  min-height: 20px;
+  gap: 12px;
 }
 
 .g-menu-title {
@@ -522,30 +521,20 @@
 .g-menu-icon {
   display: block;
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   color: var(--g-grey);
-  transition: color 0.12s ease, opacity 0.12s ease;
-}
-
-.g-menu-icon.is-brand {
-  width: 17px;
-  height: 17px;
-  opacity: 0.82;
+  transition: color 0.15s ease;
 }
 
 /* DevChalk's mark is a painting, so it reads as an avatar */
 .g-menu-icon.is-avatar {
-  width: 20px;
-  height: 20px;
   border-radius: 4px;
   object-fit: cover;
-  opacity: 0.92;
 }
 
 a:hover .g-menu-icon {
   color: var(--g-cyan-text);
-  opacity: 1;
 }
 
 /* ------------------------------------------------------------------ footer */

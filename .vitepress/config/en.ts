@@ -3,7 +3,7 @@ import {
   ICON_CONTRIBUTE,
   ICON_DEVCHALK,
   ICON_DISCORD,
-  ICON_SUPPORT,
+  ICON_OPEN_COLLECTIVE,
   ICON_TRANSLATE,
   ICON_X,
   ICON_YOUTUBE,
@@ -147,7 +147,7 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             { text: menuRow('Contribution Guide', ICON_CONTRIBUTE), link: '/prologue/contributions' },
             { text: menuRow('Add a Language', ICON_TRANSLATE), link: '/prologue/contributions#add-a-new-language' },
-            { text: menuRow('Open Collective', ICON_SUPPORT), link: 'https://opencollective.com/goravel' }
+            { text: menuRow('Open Collective', ICON_OPEN_COLLECTIVE), link: 'https://opencollective.com/goravel' }
           ]
         }
       ]

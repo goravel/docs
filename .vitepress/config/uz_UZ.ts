@@ -3,7 +3,7 @@ import {
   ICON_CONTRIBUTE,
   ICON_DEVCHALK,
   ICON_DISCORD,
-  ICON_SUPPORT,
+  ICON_OPEN_COLLECTIVE,
   ICON_TRANSLATE,
   ICON_X,
   ICON_YOUTUBE,
@@ -143,7 +143,7 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             { text: menuRow("Hissa qo'shish bo'yicha qo'llanma", ICON_CONTRIBUTE), link: '/uz_UZ/prologue/contributions' },
             { text: menuRow("Til qo'shish", ICON_TRANSLATE), link: '/uz_UZ/prologue/contributions#add-a-new-language' },
-            { text: menuRow('Open Collective', ICON_SUPPORT), link: 'https://opencollective.com/goravel' }
+            { text: menuRow('Open Collective', ICON_OPEN_COLLECTIVE), link: 'https://opencollective.com/goravel' }
           ]
         }
       ]

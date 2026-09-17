@@ -4,7 +4,7 @@ import {
   ICON_CONTRIBUTE,
   ICON_DEVCHALK,
   ICON_DISCORD,
-  ICON_SUPPORT,
+  ICON_OPEN_COLLECTIVE,
   ICON_TRANSLATE,
   ICON_X,
   menuRow
@@ -143,7 +143,7 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             { text: menuRow('贡献指南', ICON_CONTRIBUTE), link: '/zh_CN/prologue/contributions' },
             { text: menuRow('新增语言', ICON_TRANSLATE), link: '/zh_CN/prologue/contributions#新增语言' },
-            { text: menuRow('Open Collective', ICON_SUPPORT), link: 'https://opencollective.com/goravel' }
+            { text: menuRow('Open Collective', ICON_OPEN_COLLECTIVE), link: 'https://opencollective.com/goravel' }
           ]
         }
       ]
