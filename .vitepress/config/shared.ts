@@ -35,6 +35,19 @@ function markCustomContainerTitles(md: MarkdownRenderer) {
   }
 }
 
+// a first line that is only a file path comment, like `// config/app.go`, becomes the block's title
+function liftFileNames(md: MarkdownRenderer) {
+  const fence = md.renderer.rules.fence!
+  md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+    const token = tokens[idx]
+    const path = token.content.match(/^(?:\/\/|#|--) ?([\w.@-]+(?:\/[\w.@-]+)*\.\w+)\n/)
+    // line highlights like {2,4} count from the first line, so a block using them keeps it
+    if (!path || /\{[\d,-]+\}/.test(token.info)) return fence(tokens, idx, options, env, self)
+    token.content = token.content.slice(path[0].length)
+    return fence(tokens, idx, options, env, self).replace(/<span class="lang">[^<]*<\/span>/, `<span class="lang">${path[1]}</span>`)
+  }
+}
+
 export const shared = defineConfig({
   title: 'Goravel',
 
@@ -82,6 +95,7 @@ export const shared = defineConfig({
       md.use(sup)
       md.use(deflist)
       markCustomContainerTitles(md)
+      liftFileNames(md)
     },
     languages: ['go']
   },

@@ -31,7 +31,7 @@ const LAYER_OF: Record<string, string> = {
 }
 
 const { page, theme } = useData()
-const { tr } = useHomeI18n()
+const { tr, link } = useHomeI18n()
 
 const meta = computed(() => {
   const path = page.value.filePath.replace(/^(en|zh_CN|uz_UZ)\//, '').replace(/\.md$/, '')
@@ -56,7 +56,7 @@ const meta = computed(() => {
       <span class="sep">/</span>
       <span class="current">{{ page.title }}</span>
     </span>
-    <span v-if="meta.layer" class="layer">{{ tr(`${meta.layer} layer`) }}</span>
+    <a v-if="meta.layer" class="layer" :href="link('/#layers')">{{ tr(`${meta.layer} layer`) }}</a>
   </div>
 </template>
 
@@ -100,6 +100,11 @@ const meta = computed(() => {
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--g-cyan-text);
+}
+
+.layer:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .layer::before {

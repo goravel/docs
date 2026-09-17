@@ -271,7 +271,8 @@
 
 .vp-doc [class*='language-'] > span.lang {
   top: 14px;
-  right: 56px;
+  right: auto;
+  left: 0;
   font-family: var(--vp-font-family-mono);
   font-size: 12px;
   letter-spacing: 0.02em;
@@ -377,15 +378,23 @@
 
 .vp-code-group .tabs {
   margin: 0;
+  padding: 0;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
 }
 
+/* tab text starts on the article's edge, like the block's own label */
 .vp-code-group .tabs label {
+  padding: 0 24px 0 0;
   font-family: var(--vp-font-family-mono);
   font-size: 12px;
   letter-spacing: 0.02em;
+}
+
+.vp-code-group .tabs label::after {
+  left: 0;
+  right: 24px;
 }
 
 .vp-doc .vp-code-group div[class*='language-'] {
@@ -400,8 +409,6 @@
 }
 
 .vp-doc div[class*='language-markdown'] > span.lang {
-  left: 0;
-  right: auto;
   font-size: 0;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -447,6 +454,10 @@
 
   .vp-doc div[class*='language-'] {
     padding-left: 0 !important;
+  }
+
+  .vp-code-group .tabs {
+    padding-left: 24px;
   }
 
   .vp-doc div[class*='language-'] > .line-numbers-wrapper {

@@ -204,7 +204,7 @@ export const LITE_STEPS = [
 export interface View {
   kind: 'journey' | 'parity' | 'map' | 'lite'
   states: Partial<Record<LayerKey, PieceState>>
-  pulled?: LayerKey
+  pulled?: LayerKey[]
   turn?: number
   stop?: StopKey
   caption?: string

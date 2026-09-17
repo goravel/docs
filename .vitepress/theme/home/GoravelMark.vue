@@ -65,7 +65,7 @@ const nameOf = (key: LayerKey) => LAYERS.find((l) => l.key === key)!.name
         v-for="piece in PIECES"
         :key="piece.key"
         class="g-piece"
-        :class="{ 'is-pulled': view.pulled === piece.key, 'is-hit': interactive }"
+        :class="{ 'is-pulled': view.pulled?.includes(piece.key), 'is-hit': interactive }"
         :style="{ '--pull': piece.pull }"
         :tabindex="interactive ? 0 : undefined"
         :role="interactive ? 'button' : undefined"
@@ -84,7 +84,7 @@ const nameOf = (key: LayerKey) => LAYERS.find((l) => l.key === key)!.name
     </g>
 
     <template v-for="piece in PIECES" :key="piece.key">
-      <path v-if="piece.leader" class="g-leader" :class="{ 'is-on': view.pulled === piece.key }" :d="piece.leader" />
+      <path v-if="piece.leader" class="g-leader" :class="{ 'is-on': view.pulled?.includes(piece.key) }" :d="piece.leader" />
     </template>
 
     <g class="g-request" :class="{ 'is-on': stop }">

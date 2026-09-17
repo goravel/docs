@@ -2,9 +2,6 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vitepress'
 
-// Latest, WhereIn, OrderBy / OrderByDesc
-const METHOD_NAME = /^[A-Z]\w*( \/ [A-Z]\w*)*$/
-
 const route = useRoute()
 const methods = ref<{ id: string; name: string }[]>([])
 const query = ref('')
@@ -12,14 +9,26 @@ const active = ref('')
 const shown = computed(() => methods.value.filter((m) => m.name.toLowerCase().includes(query.value.toLowerCase())))
 let observer: IntersectionObserver | undefined
 
-const textOf = (el: Element) => (el.textContent ?? '').replace(/[\u200b#:]/g, '').trim()
+// `After`, `path.App()`
+const CODE_NAME = /^[\w.]+(\(\))?$/
+// WithSession, Where / OrWhere; a plain word like Cursor is a section, not a method
+const HEADING_NAME = /^([A-Z][a-z]+[A-Z]\w*|[A-Z]\w*( \/ [A-Z]\w*)+)$/
+// **Latest**
+const BOLD_NAME = /^[A-Z]\w*( \/ [A-Z]\w*)*$/
+
+function methodName(el: HTMLElement) {
+  const name = (el.textContent ?? '').replace(/[\u200b#:]/g, '').trim()
+  if (el.tagName === 'P') return BOLD_NAME.test(name) ? name : null
+  if (el.querySelector(':scope > code')) return CODE_NAME.test(name) ? name : null
+  return HEADING_NAME.test(name) ? name : null
+}
 
 function collect() {
   observer?.disconnect()
   const found = new Map<string, HTMLElement>()
   for (const el of document.querySelectorAll<HTMLElement>('.vp-doc h3, .vp-doc h4, .vp-doc p:has(> strong:only-child)')) {
-    const name = textOf(el)
-    if (METHOD_NAME.test(name) && !found.has(name)) found.set(name, el)
+    const name = methodName(el)
+    if (name && !found.has(name)) found.set(name, el)
   }
   methods.value = []
   if (found.size < 6) return
@@ -126,7 +135,7 @@ watch(() => route.path, () => nextTick(collect))
   position: relative;
   padding: 2px 0 2px 12px;
   font-family: var(--vp-font-family-mono);
-  font-size: 11.5px;
+  font-size: 12px;
   line-height: 18px;
   overflow-wrap: anywhere;
   color: var(--g-grey);

@@ -46,7 +46,7 @@ const selectLayer = (k: LayerKey) => setLayer(LAYERS.findIndex((l) => l.key === 
 const layerView = computed<View>(() => ({
   kind: 'map',
   states: lit(layerKey.value),
-  pulled: layerKey.value,
+  pulled: [layerKey.value],
   caption: `The ${layer.value.name} piece, pulled out of the mark`
 }))
 
@@ -68,11 +68,17 @@ const liteView = computed<View>(() => {
         ? 'active'
         : 'solid'
   }
-  return { kind: 'lite', states, caption: `${installed.value.length} of 30 facades installed` }
+  // a layer that is not installed yet waits outside the mark, and slides in when it is
+  const pulled = LAYERS.filter((l) => states[l.key] === 'ghost').map((l) => l.key)
+  return { kind: 'lite', states, pulled, caption: `${installed.value.length} of 30 facades installed` }
 })
 
 const { index: tieStep, root: tieRoot } = useCycle(() => concept.value.ties.length, 1500, 0.3)
 const pair = computed(() => concept.value.ties[tieStep.value % concept.value.ties.length] ?? [0, 0])
+const files = computed(() => [
+  { label: 'Laravel · PHP', name: concept.value.phpFile, lines: tokenize(concept.value.php, 'php'), pair: pair.value[0], go: false },
+  { label: 'Goravel · Go', name: concept.value.goFile, lines: tokenize(concept.value.go), pair: pair.value[1], go: true }
+])
 </script>
 
 <template>
@@ -161,60 +167,47 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
 
     <section class="g-sec">
       <div class="g-wrap">
-        <div class="g-sec-split">
-          <header class="g-sec-head">
-            <h2 class="g-h2">{{ tr('Laravel’s structure, written in Go.') }}</h2>
-            <p class="g-lead">{{ tr('The same facades, the same method names, the same file layout.') }}</p>
-          </header>
-          <div class="g-figure is-small">
-            <GoravelMark :view="conceptView" :scale="0.62" />
-          </div>
-        </div>
+        <header class="g-sec-head">
+          <h2 class="g-h2">{{ tr('Laravel’s structure, written in Go.') }}</h2>
+          <p class="g-lead">{{ tr('The same facades, the same method names, the same file layout.') }}</p>
+        </header>
 
-        <nav ref="conceptRoot" class="g-tabs" :aria-label="tr('Concepts')">
-          <button
-            v-for="(c, i) in CONCEPTS"
-            :key="c.name"
-            type="button"
-            class="g-tab"
-            :class="{ 'is-active': i === conceptIndex }"
-            :aria-current="i === conceptIndex"
-            @click="setConcept(i)"
-          >{{ tr(c.name) }}</button>
-        </nav>
-
-        <div ref="tieRoot" class="g-compare">
-          <div class="g-col">
-            <div class="g-file-head">
-              <span class="g-label">Laravel · PHP</span>
-              <span class="g-meta">{{ concept.phpFile }}</span>
-            </div>
-            <pre :key="'php' + conceptIndex" class="g-code is-plain g-swap"><code><span
-              v-for="(ln, n) in tokenize(concept.php, 'php')"
-              :key="n"
-              class="ln"
-              :class="{ 'is-pair': n + 1 === pair[0] }"
-            ><span v-for="(t, j) in ln" :key="j" :class="{ call: t.call }">{{ t.text }}</span>
-</span></code></pre>
+        <div class="g-parity">
+          <div class="g-parity-side">
+            <nav ref="conceptRoot" class="g-list" :aria-label="tr('Concepts')">
+              <button
+                v-for="(c, i) in CONCEPTS"
+                :key="c.name"
+                type="button"
+                class="g-list-item"
+                :class="{ 'is-active': i === conceptIndex }"
+                :aria-current="i === conceptIndex"
+                @click="setConcept(i)"
+              >{{ tr(c.name) }}</button>
+            </nav>
+            <GoravelMark :view="conceptView" :scale="0.5" />
           </div>
-          <div class="g-col">
-            <div class="g-file-head">
-              <span class="g-label cyan">Goravel · Go</span>
-              <span class="g-meta">{{ concept.goFile }}</span>
-            </div>
-            <pre :key="'go' + conceptIndex" class="g-code is-plain g-swap"><code><span
-              v-for="(ln, n) in tokenize(concept.go)"
-              :key="n"
-              class="ln"
-              :class="{ 'is-pair': n + 1 === pair[1] }"
-            ><span v-for="(t, j) in ln" :key="j" :class="{ call: t.call }">{{ t.text }}</span>
+
+          <div ref="tieRoot" class="g-parity-code">
+            <div v-for="file in files" :key="file.label" :class="{ 'is-go': file.go }">
+              <div class="g-file-head">
+                <span class="g-label" :class="{ cyan: file.go }">{{ file.label }}</span>
+                <span class="g-meta">{{ file.name }}</span>
+              </div>
+              <pre :key="file.label + conceptIndex" class="g-code is-plain g-swap"><code><span
+                v-for="(ln, n) in file.lines"
+                :key="n"
+                class="ln"
+                :class="{ 'is-pair': n + 1 === file.pair }"
+              ><span v-for="(t, j) in ln" :key="j" :class="{ call: t.call }">{{ t.text }}</span>
 </span></code></pre>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="g-sec">
+    <section id="layers" class="g-sec">
       <div class="g-wrap">
         <header class="g-sec-head">
           <h2 class="g-h2">{{ tr('Five layers, thirty facades.') }}</h2>
@@ -259,24 +252,23 @@ const pair = computed(() => concept.value.ties[tieStep.value % concept.value.tie
           <p class="g-lead">{{ tr('Goravel Lite is four facades. Add the rest when you need them.') }}</p>
         </header>
 
-        <nav ref="liteRoot" class="g-tabs" :aria-label="tr('Install steps')">
-          <button
-            v-for="(s, i) in LITE_STEPS"
-            :key="s.title"
-            type="button"
-            class="g-tab"
-            :class="{ 'is-active': i === liteIndex }"
-            :aria-current="i === liteIndex"
-            @click="setLite(i)"
-          >{{ tr(s.title) }}</button>
-        </nav>
-
-        <div class="g-panel">
-          <div class="g-figure is-small">
-            <GoravelMark :view="liteView" :scale="0.86" />
-          </div>
-          <div class="g-panel-body">
-            <pre class="g-code is-shell"><code><span class="ln"><span class="prompt">$</span><span class="src">{{ liteStep.cmd }}</span></span></code></pre>
+        <div class="g-assemble">
+          <ol ref="liteRoot" class="g-steps" :aria-label="tr('Install steps')">
+            <li v-for="(s, i) in LITE_STEPS" :key="s.title">
+              <button
+                type="button"
+                class="g-step"
+                :class="{ 'is-done': i < liteIndex, 'is-active': i === liteIndex }"
+                :aria-current="i === liteIndex"
+                @click="setLite(i)"
+              >
+                <span class="g-step-title">{{ tr(s.title) }}</span>
+                <code class="g-step-cmd">$ {{ s.cmd }}</code>
+              </button>
+            </li>
+          </ol>
+          <div class="g-assemble-figure">
+            <GoravelMark :view="liteView" :scale="1" />
             <p class="g-count">
               <span class="n">{{ installed.length }}</span><span class="muted"> / 30</span>
               <span class="g-body muted">{{ tr('facades installed') }}</span>

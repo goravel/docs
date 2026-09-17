@@ -88,7 +88,7 @@ const suggestions = [
 
 .label {
   margin-bottom: 10px;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
 }
 
