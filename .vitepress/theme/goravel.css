@@ -89,6 +89,7 @@
 
 /* the theme scopes .edit-info and giscus sets inline styles */
 .VPDocFooter .edit-info,
+.VPDocFooter .prev-next,
 #giscus {
   margin-left: calc(var(--g-left) * -1) !important;
   margin-right: calc(var(--g-right) * -1) !important;
@@ -904,31 +905,35 @@
   color: var(--g-grey);
 }
 
+/* one rule across the band, with the page ahead marked on it in cyan */
 .VPDocFooter .prev-next {
   gap: 0 !important;
   padding-top: 0;
-  border-top: 0;
+  border-top: 1px solid var(--g-line);
 }
 
 .VPDocFooter .pager-link {
   display: block;
   width: auto !important;
+  padding: 20px 0 0;
   border: 0;
-  border-top: 1px solid var(--g-line);
   border-radius: 0;
   background: transparent;
 }
 
-.VPDocFooter .pager-link.prev {
-  margin-left: calc(var(--g-left) * -1);
-  padding: 20px 24px 0 var(--g-left);
-}
-
 .VPDocFooter .pager-link.next {
-  margin-right: calc(var(--g-right) * -1);
+  margin: -1px calc(var(--g-right) * -1) 0 0;
   padding: 20px var(--g-right) 0 24px;
   border-top: 2px solid var(--g-cyan);
   text-align: right;
+}
+
+/* stacked on a phone, the cyan rule would float between the two links, so it runs edge to edge */
+@media (max-width: 639px) {
+  .VPDocFooter .pager-link.next {
+    margin: 20px calc(var(--g-right) * -1) 0 calc(var(--g-left) * -1);
+    padding-left: var(--g-left);
+  }
 }
 
 .VPDocFooter .pager-link .title {

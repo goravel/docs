@@ -92,6 +92,13 @@
   border-right: 1px solid var(--g-line);
 }
 
+/* above 1440px the theme widens the sidebar to centre its layout; this one stays on the left */
+@media (min-width: 960px) {
+  .VPSidebar {
+    width: var(--vp-sidebar-width) !important;
+  }
+}
+
 @media (max-width: 959px) {
   .VPSidebar {
     --inset-left: 20px;

@@ -1,6 +1,8 @@
 /* full-width rules bleed to the screen edge, or to a column's rule where one sets --g-bleed-* */
 .g-home {
-  --g-margin: 96px;
+  container-type: inline-size;
+  /* the page margin, which grows past 96px so the content stays 1248px wide on a wide screen */
+  --g-margin: max(96px, (100cqw - 1248px) / 2);
   --g-bleed-left: var(--g-margin);
   --g-bleed-right: var(--g-margin);
   --g-secpad: 56px;
@@ -21,9 +23,6 @@
 }
 
 .g-home .g-wrap {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
   padding: 0 var(--g-margin);
 }
 
@@ -177,17 +176,17 @@
 }
 
 .g-home .g-link {
-  padding-bottom: 3px;
-  border-bottom: 1px solid var(--g-line);
   font-size: 15px;
   font-weight: 500;
   color: var(--g-ink);
-  transition: color 0.15s ease, border-color 0.15s ease;
+  text-decoration: underline 1px var(--g-line);
+  text-underline-offset: 6px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
 .g-home .g-link:hover {
-  border-color: var(--g-cyan);
   color: var(--g-cyan-text);
+  text-decoration-color: var(--g-cyan);
 }
 
 /* ------------------------------------------------------------------ sections */
@@ -466,7 +465,8 @@ html.g-home-snap {
   display: grid;
   flex: 1;
   grid-template-columns: 260px minmax(0, 1fr);
-  margin-top: 40px;
+  margin-top: 36px;
+  border-top: 1px solid var(--g-line);
 }
 
 .g-parity-side {
@@ -475,7 +475,7 @@ html.g-home-snap {
   flex-direction: column;
   justify-content: space-between;
   gap: 32px;
-  padding-right: 56px;
+  padding: 32px 56px 0 0;
 }
 
 .g-list {
@@ -517,7 +517,7 @@ html.g-home-snap {
   flex-direction: column;
   justify-content: center;
   gap: 32px;
-  margin: -40px 0 calc(var(--g-secpad) * -1);
+  margin-bottom: calc(var(--g-secpad) * -1);
   padding: 40px 0 var(--g-secpad) 56px;
   border-left: 1px solid var(--g-line);
 }
@@ -544,7 +544,7 @@ html.g-home-snap {
 
   .g-parity-side {
     --g-bleed-right: var(--g-margin);
-    padding-right: 0;
+    padding: 24px 0 0;
   }
 
   .g-parity-side .g-mark {
@@ -562,6 +562,10 @@ html.g-home-snap {
     padding: 0;
     border-left: 0;
   }
+
+  .g-parity {
+    row-gap: 24px;
+  }
 }
 
 /* ------------------------------------------------------------------ start with the core */
@@ -569,7 +573,8 @@ html.g-home-snap {
   display: grid;
   flex: 1;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  margin-top: 40px;
+  margin-top: 36px;
+  border-top: 1px solid var(--g-line);
 }
 
 .g-steps {
@@ -644,7 +649,7 @@ html.g-home-snap {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin: -40px 0 calc(var(--g-secpad) * -1);
+  margin-bottom: calc(var(--g-secpad) * -1);
   padding: 40px 0 var(--g-secpad) 56px;
   border-left: 1px solid var(--g-line);
 }
@@ -663,7 +668,7 @@ html.g-home-snap {
   .g-assemble-figure {
     order: -1;
     margin: 0;
-    padding: 0;
+    padding: 48px 0 0;
     border-left: 0;
   }
 }
@@ -1107,6 +1112,8 @@ html.g-home-snap {
 /* ------------------------------------------------------------------ rules that bleed */
 /* last, so these paddings win over the shorthands above */
 .g-tabs,
+.g-parity,
+.g-assemble,
 .g-file-head,
 .g-layer-code,
 .g-step,
