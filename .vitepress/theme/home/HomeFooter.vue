@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { useHomeI18n } from './i18n'
+import { useData } from 'vitepress'
+import { LINKS } from '../../links'
+import { useI18n } from '../i18n'
 
-const { tr } = useHomeI18n()
+const { theme } = useData()
+const { tr, link, languages } = useI18n()
+
 const COLUMNS = [
   {
     title: 'Documentation',
@@ -26,10 +30,10 @@ const COLUMNS = [
   {
     title: 'Community',
     items: [
-      ['GitHub', 'https://github.com/goravel/goravel'],
-      ['Discord', 'https://discord.gg/cFc5csczzS'],
-      ['X', 'https://x.com/goravel_dev'],
-      ['Open Collective', 'https://opencollective.com/goravel']
+      ['GitHub', LINKS.github],
+      ['Discord', LINKS.discord],
+      ['X', LINKS.x],
+      ['Open Collective', LINKS.openCollective]
     ]
   }
 ]
@@ -43,13 +47,17 @@ const COLUMNS = [
         <p class="g-small muted">{{ tr('A Go framework with the structure of Laravel.') }}</p>
       </div>
       <div v-for="c in COLUMNS" :key="c.title" class="g-footer-col">
-        <span class="g-label ink">{{ c.title }}</span>
-        <a v-for="[label, href] in c.items" :key="label" class="g-small" :href="href">{{ label }}</a>
+        <span class="g-label ink">{{ tr(c.title) }}</span>
+        <a v-for="[label, href] in c.items" :key="label" class="g-small" :href="link(href)">{{ tr(label) }}</a>
       </div>
     </div>
     <div class="g-footer-bar">
-      <span class="g-meta">Released under the MIT License · Copyright © 2021–2026 Goravel</span>
-      <span class="g-meta">English · 简体中文 · Oʻzbekcha</span>
+      <span class="g-meta">{{ theme.footer?.message }} · {{ theme.footer?.copyright }}</span>
+      <span class="g-meta">
+        <template v-for="(l, i) in languages" :key="l.text">
+          <template v-if="i"> · </template><a :href="l.link">{{ l.text }}</a>
+        </template>
+      </span>
     </div>
   </footer>
 </template>

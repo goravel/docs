@@ -35,7 +35,6 @@ export default {
         mapping: 'pathname',
         inputPosition: 'top',
         lang: 'en',
-
         locales: {
           'zh-CN': 'zh-CN',
           en: 'en'

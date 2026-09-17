@@ -75,21 +75,14 @@
 
 .g-home .g-label,
 .g-home .g-meta {
-  font-family: var(--vp-font-family-mono);
   line-height: 16px;
-  color: var(--g-grey);
-}
-
-.g-home .g-label {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .g-home .g-meta {
+  font-family: var(--vp-font-family-mono);
   font-size: 12px;
   letter-spacing: 0.02em;
+  color: var(--g-grey);
 }
 
 .g-home .muted { color: var(--g-grey); }
@@ -287,15 +280,24 @@ html.g-home-snap {
   margin-top: 40px;
 }
 
-.g-proof {
+/* a column whose left rule runs from the section's top edge to its bottom edge */
+.g-proof,
+.g-panel-body,
+.g-parity-code,
+.g-assemble-figure {
   --g-bleed-left: 56px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-left: 56px;
+  border-left: 1px solid var(--g-line);
+}
+
+.g-proof {
   align-self: stretch;
   margin: calc(var(--g-secpad) * -1) 0;
-  padding: var(--g-secpad) 0 var(--g-secpad) 56px;
-  border-left: 1px solid var(--g-line);
+  padding-top: var(--g-secpad);
+  padding-bottom: var(--g-secpad);
 }
 
 .g-proof-pane .g-label {
@@ -398,14 +400,10 @@ html.g-home-snap {
 }
 
 .g-panel-body {
-  --g-bleed-left: 56px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-self: stretch;
   margin: -40px 0 calc(var(--g-secpad) * -1);
-  padding: 40px 0 var(--g-secpad) 56px;
-  border-left: 1px solid var(--g-line);
+  padding-top: 40px;
+  padding-bottom: var(--g-secpad);
 }
 
 /* lets long code scroll inside its column */
@@ -512,14 +510,10 @@ html.g-home-snap {
 }
 
 .g-parity-code {
-  --g-bleed-left: 56px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   gap: 32px;
   margin-bottom: calc(var(--g-secpad) * -1);
-  padding: 40px 0 var(--g-secpad) 56px;
-  border-left: 1px solid var(--g-line);
+  padding-top: 40px;
+  padding-bottom: var(--g-secpad);
 }
 
 .g-parity-code .g-code {
@@ -644,14 +638,11 @@ html.g-home-snap {
 }
 
 .g-assemble-figure {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 16px;
   margin-bottom: calc(var(--g-secpad) * -1);
-  padding: 40px 0 var(--g-secpad) 56px;
-  border-left: 1px solid var(--g-line);
+  padding-top: 40px;
+  padding-bottom: var(--g-secpad);
 }
 
 @media (max-width: 900px) {
@@ -1086,6 +1077,10 @@ html.g-home-snap {
   margin-top: 40px;
   padding-top: 16px;
   border-top: 1px solid var(--g-line);
+}
+
+.g-footer-bar a:hover {
+  color: var(--g-cyan-text);
 }
 
 @media (max-width: 900px) {

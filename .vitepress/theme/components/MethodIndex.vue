@@ -54,7 +54,7 @@ watch(() => route.path, () => nextTick(collect))
 
 <template>
   <div v-if="methods.length" class="goravel-methods">
-    <div class="head">Methods</div>
+    <div class="outline-title">Methods</div>
     <input
       v-if="methods.length >= 14"
       v-model="query"
@@ -79,30 +79,6 @@ watch(() => route.path, () => nextTick(collect))
   flex-direction: column;
   margin-bottom: 28px;
   padding: 0 var(--g-shell-inset) 0 var(--g-rail);
-}
-
-.head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 calc(var(--g-shell-inset) * -1) 14px calc(var(--g-rail) * -1);
-  padding: 0 var(--g-shell-inset) 12px var(--g-rail);
-  border-bottom: 1px solid var(--g-line);
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--g-grey);
-}
-
-.head::before {
-  content: '';
-  flex-shrink: 0;
-  width: 6px;
-  height: 6px;
-  background: var(--g-construct);
-  transform: rotate(45deg);
 }
 
 .filter {

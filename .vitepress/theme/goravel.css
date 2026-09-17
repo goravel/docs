@@ -46,12 +46,9 @@
   --vp-c-bg-soft: var(--g-soft);
   --vp-c-bg-elv: var(--g-white);
 
-  --vp-code-block-bg: var(--g-soft);
   --vp-code-block-color: var(--g-ink);
   --vp-code-line-highlight-color: var(--g-cyan-tint);
   --vp-code-line-number-color: var(--g-grey);
-  --vp-code-copy-code-bg: var(--g-soft);
-  --vp-code-copy-code-border-color: var(--g-line);
   --vp-code-copy-code-hover-bg: var(--g-white);
   --vp-code-tab-divider: var(--g-line);
   --vp-code-tab-text-color: var(--g-grey);
@@ -60,6 +57,44 @@
 
   --vp-nav-height: 64px;
   --vp-sidebar-width: 272px;
+}
+
+/* ------------------------------------------------------------------ labels and marks */
+.g-label,
+.vp-doc .custom-block .custom-block-title,
+.vp-doc th,
+.vp-doc .footnotes::before,
+.VPDocAsideOutline .outline-title,
+.goravel-methods .outline-title,
+.VPNavScreenMenuGroupSection .title {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--g-grey);
+}
+
+.g-diamond {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* the lattice cell, the one marker shape on the site */
+.g-diamond::before,
+.vp-doc .custom-block .custom-block-title::before,
+.VPDocAsideOutline .outline-title::before,
+.goravel-methods .outline-title::before,
+.VPNavScreenMenuGroupSection .title::before,
+.VPSidebarItem.level-1.is-active > .item::before,
+.VPDocOutlineItem .outline-link.active::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  transform: rotate(45deg);
 }
 
 /* ------------------------------------------------------------------ bands */
@@ -298,10 +333,6 @@
   opacity: 1;
 }
 
-.vp-doc [class*='language-'] > button.copy:hover {
-  background-color: var(--g-white);
-}
-
 .vp-doc div[class*='language-']:has(> span.lang:empty) {
   padding-top: 0;
 }
@@ -318,7 +349,6 @@
   top: 0;
 }
 
-.vp-doc [class*='language-'] .line.highlighted,
 .vp-doc [class*='language-'] .line.diff.add {
   background: var(--g-cyan-tint);
 }
@@ -479,16 +509,22 @@
 }
 
 /* ------------------------------------------------------------------ callouts */
-.vp-doc .custom-block {
+/* callouts and blockquote notes are bands with a rule above and below */
+.vp-doc .custom-block,
+.vp-doc blockquote {
   margin-top: 28px;
   margin-bottom: 28px;
-  padding-top: 16px;
-  padding-bottom: 18px;
   border: 0;
   border-top: 1px solid var(--g-line);
   border-bottom: 1px solid var(--g-line);
-  border-radius: 0;
   background: var(--g-white);
+}
+
+.vp-doc .custom-block {
+  --g-code-ground: rgba(255, 255, 255, 0.66);
+  padding-top: 16px;
+  padding-bottom: 18px;
+  border-radius: 0;
   font-size: 16px;
   line-height: 28px;
 }
@@ -515,13 +551,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
   line-height: 16px;
-  font-weight: 500;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--g-grey);
 }
 
 .vp-doc .custom-block.tip .custom-block-title {
@@ -537,12 +567,8 @@
 }
 
 .vp-doc .custom-block .custom-block-title::before {
-  content: '';
-  flex-shrink: 0;
   width: 8px;
   height: 8px;
-  background: currentColor;
-  transform: rotate(45deg);
 }
 
 .vp-doc .custom-block.info .custom-block-title::before {
@@ -571,10 +597,6 @@
 
 .vp-doc .custom-block p + p {
   margin-top: 8px;
-}
-
-.vp-doc .custom-block {
-  --g-code-ground: rgba(255, 255, 255, 0.66);
 }
 
 .vp-doc .custom-block code {
@@ -654,14 +676,8 @@
 }
 
 .vp-doc blockquote {
-  margin-top: 28px;
-  margin-bottom: 28px;
   padding-top: 14px;
   padding-bottom: 16px;
-  border: 0;
-  border-top: 1px solid var(--g-line);
-  border-bottom: 1px solid var(--g-line);
-  background: var(--g-white);
   color: var(--g-ink);
 }
 
@@ -716,13 +732,7 @@
 .vp-doc th {
   padding: 0 24px 10px 0;
   background: transparent;
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   text-align: left;
-  color: var(--g-grey);
 }
 
 .vp-doc td {
@@ -788,12 +798,6 @@
   content: 'Notes';
   display: block;
   margin-bottom: 12px;
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--g-grey);
 }
 
 .vp-doc .footnotes ol {

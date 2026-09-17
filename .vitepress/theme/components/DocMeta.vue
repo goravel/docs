@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
-import { useHomeI18n } from '../home/i18n'
+import { useI18n } from '../i18n'
 
 const LAYER_OF: Record<string, string> = {
   'architecture-concepts': 'Core',
@@ -31,7 +31,7 @@ const LAYER_OF: Record<string, string> = {
 }
 
 const { page, theme } = useData()
-const { tr, link } = useHomeI18n()
+const { tr, link } = useI18n()
 
 const meta = computed(() => {
   const path = page.value.filePath.replace(/^(en|zh_CN|uz_UZ)\//, '').replace(/\.md$/, '')
@@ -56,7 +56,7 @@ const meta = computed(() => {
       <span class="sep">/</span>
       <span class="current">{{ page.title }}</span>
     </span>
-    <a v-if="meta.layer" class="layer" :href="link('/#layers')">{{ tr(`${meta.layer} layer`) }}</a>
+    <a v-if="meta.layer" class="g-label g-diamond layer" :href="link('/#layers')">{{ tr(`${meta.layer} layer`) }}</a>
   </div>
 </template>
 
@@ -91,13 +91,7 @@ const meta = computed(() => {
 }
 
 .layer {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   margin-left: auto;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   white-space: nowrap;
   color: var(--g-cyan-text);
 }
@@ -105,15 +99,6 @@ const meta = computed(() => {
 .layer:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
-}
-
-.layer::before {
-  content: '';
-  flex-shrink: 0;
-  width: 6px;
-  height: 6px;
-  background: currentColor;
-  transform: rotate(45deg);
 }
 
 @media (max-width: 599px) {

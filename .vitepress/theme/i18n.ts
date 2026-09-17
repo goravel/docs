@@ -1,5 +1,6 @@
 import { computed } from 'vue'
-import { useData } from 'vitepress'
+import { useData, useRoute } from 'vitepress'
+import { useLangs } from 'vitepress/dist/client/theme-default/composables/langs.js'
 
 type Dict = Record<string, string>
 
@@ -60,7 +61,22 @@ const zh_CN: Dict = {
   'Application layer': '应用层',
   'Core layer': '核心层',
   'Data layer': '数据层',
-  'Async layer': '异步层'
+  'Async layer': '异步层',
+  'GitHub stars': 'GitHub 星标',
+  contributors: '贡献者',
+  forks: '复刻',
+  'current release': '当前版本',
+  Documentation: '文档',
+  Project: '项目',
+  Community: '社区',
+  Installation: '安装',
+  ORM: 'ORM',
+  'Release Notes': '发行说明',
+  'Upgrading To v1.18': '升级到 v1.18',
+  'Compare With Laravel': '与 Laravel 对比',
+  'Contribution Guide': '贡献指南',
+  'Privacy Policy': '隐私政策',
+  Contribute: '参与贡献'
 }
 
 const uz_UZ: Dict = {
@@ -120,18 +136,45 @@ const uz_UZ: Dict = {
   'Application layer': 'Ilova qatlami',
   'Core layer': 'Yadro qatlami',
   'Data layer': "Ma'lumotlar qatlami",
-  'Async layer': 'Asinxron qatlami'
+  'Async layer': 'Asinxron qatlami',
+  'GitHub stars': 'GitHub yulduzlari',
+  contributors: "hissa qo'shuvchilar",
+  forks: 'forklar',
+  'current release': 'joriy versiya',
+  Documentation: 'Hujjatlar',
+  Project: 'Loyiha',
+  Community: 'Hamjamiyat',
+  Installation: "O'rnatish",
+  ORM: 'ORM',
+  'Release Notes': 'Chiqarish eslatmalari',
+  'Upgrading To v1.18': 'v1.18 ga yangilash',
+  'Compare With Laravel': 'Laravel bilan solishtirish',
+  'Contribution Guide': "Hissa qo'shish bo'yicha qo'llanma",
+  'Privacy Policy': 'Maxfiylik siyosati',
+  Contribute: "Hissa qo'shish"
 }
 
 const DICTS: Record<string, Dict> = { zh_CN, uz_UZ }
 
-export function useHomeI18n() {
-  const { localeIndex } = useData()
+export function useI18n() {
+  const { site, localeIndex } = useData()
+  const route = useRoute()
+  const { localeLinks, currentLang } = useLangs({ correspondingLink: true })
   const dict = computed(() => DICTS[localeIndex.value] ?? {})
 
   const tr = (en: string) => dict.value[en] ?? en
 
-  const link = (path: string) => (localeIndex.value === 'root' ? path : `/${localeIndex.value}${path}`)
+  // a docs path in the current language; links that leave the site pass through
+  const link = (path: string) => (localeIndex.value === 'root' || !path.startsWith('/') ? path : `/${localeIndex.value}${path}`)
 
-  return { tr, link }
+  // every language, each linking to this page in that language
+  const languages = computed(() =>
+    Object.values(site.value.locales).map(({ label }) => ({
+      text: label!,
+      link: localeLinks.value.find((l) => l.text === label)?.link ?? route.path,
+      selected: label === currentLang.value.label
+    }))
+  )
+
+  return { tr, link, languages, currentLang }
 }

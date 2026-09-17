@@ -14,13 +14,13 @@ const suggestions = [
 <template>
   <div class="goravel-404">
     <div class="left">
-      <p class="code">404</p>
+      <p class="g-label">404</p>
       <h1 class="title">This page does not exist.</h1>
       <p class="lead">It may have moved in a newer version of the docs, or the address may be wrong.</p>
       <a class="home" :href="base('')">Go to the documentation</a>
     </div>
     <div class="right">
-      <span class="label">Try these</span>
+      <span class="g-label label">Try these</span>
       <a v-for="[text, link] in suggestions" :key="link" class="suggestion" :href="base(link)">{{ text }}</a>
     </div>
   </div>
@@ -36,15 +36,6 @@ const suggestions = [
 .left {
   padding: 112px var(--g-gutter) 160px;
   border-right: 1px solid var(--g-line);
-}
-
-.code,
-.label {
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  color: var(--g-grey);
 }
 
 .title {
@@ -88,8 +79,6 @@ const suggestions = [
 
 .label {
   margin-bottom: 10px;
-  font-size: 12px;
-  text-transform: uppercase;
 }
 
 .suggestion {

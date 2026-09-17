@@ -1,4 +1,4 @@
-import type { ThemeRegistration } from 'shiki'
+import type { ThemeOptions } from 'vitepress'
 
 const INK = '#101820'
 const GREY = '#68747d'
@@ -7,7 +7,7 @@ const RED = '#b02b2b'
 
 const rule = (scope: string[], foreground: string) => ({ scope, settings: { foreground } })
 
-export const goravelCode: ThemeRegistration = {
+export const goravelCode: ThemeOptions = {
   name: 'goravel',
   type: 'light',
   // transparent, so a callout's lighter ground shows through

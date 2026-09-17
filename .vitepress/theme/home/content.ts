@@ -2,21 +2,21 @@ export type LayerKey = 'http' | 'app' | 'core' | 'data' | 'async'
 export type PieceState = 'solid' | 'active' | 'ghost'
 export type StopKey = 'route' | 'mw' | 'ctrl' | 'svc' | 'orm' | 'event' | 'resp'
 
-export const FILES: Record<string, { name: string; lines: string[] }> = {
+export const FILES: Record<string, { name: string; code: string }> = {
   web: {
     name: 'routes/web.go',
-    lines: [
+    code: [
       'func Web() {',
       '\t[[facades.Route]]().[[Middleware]](middleware.Auth()).',
       '\t\t[[Group]](func(router route.Router) {',
       '\t\t\trouter.[[Get]]("/tasks", controllers.NewTaskController().Index)',
       '\t\t})',
       '}'
-    ]
+    ].join('\n')
   },
   auth: {
     name: 'app/http/middleware/auth.go',
-    lines: [
+    code: [
       'func (m *Auth) Handle(ctx http.Context) {',
       '\ttoken := ctx.[[Request]]().[[Header]]("Authorization", "")',
       '\tif _, err := [[facades.Auth]](ctx).[[Parse]](token); err != nil {',
@@ -25,11 +25,11 @@ export const FILES: Record<string, { name: string; lines: string[] }> = {
       '\t}',
       '\tctx.[[Request]]().[[Next]]()',
       '}'
-    ]
+    ].join('\n')
   },
   controller: {
     name: 'app/http/controllers/task_controller.go',
-    lines: [
+    code: [
       'func (r *TaskController) Index(ctx http.Context) http.Response {',
       '\ttasks, err := r.taskService.Open(ctx)',
       '\tif err != nil {',
@@ -37,11 +37,11 @@ export const FILES: Record<string, { name: string; lines: string[] }> = {
       '\t}',
       '\treturn ctx.[[Response]]().[[Success]]().[[Json]](tasks)',
       '}'
-    ]
+    ].join('\n')
   },
   service: {
     name: 'app/services/task_service.go',
-    lines: [
+    code: [
       'func (s *TaskService) Open(ctx context.Context) ([]models.Task, error) {',
       '\tvar tasks []models.Task',
       '\terr := [[facades.Orm]]().[[WithContext]](ctx).[[Query]]().[[Where]]("done", false).[[Get]](&tasks)',
@@ -52,11 +52,11 @@ export const FILES: Record<string, { name: string; lines: string[] }> = {
       '\t[[facades.Queue]]().[[Job]](&jobs.SyncTasks{}, []queue.Arg{}).[[Dispatch]]()',
       '\treturn tasks, nil',
       '}'
-    ]
+    ].join('\n')
   }
 }
 
-export interface Stop {
+interface Stop {
   key: StopKey
   name: string
   layer: LayerKey | null
@@ -74,7 +74,7 @@ export const STOPS: Stop[] = [
   { key: 'resp', name: 'Response', layer: 'http', file: 'controller', lit: [6] }
 ]
 
-export interface Concept {
+interface Concept {
   name: string
   layer: LayerKey
   phpFile: string

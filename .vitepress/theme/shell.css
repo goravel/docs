@@ -189,14 +189,10 @@
 }
 
 .VPSidebarItem.level-1.is-active > .item::before {
-  content: '';
   position: absolute;
   left: calc(var(--inset-left) - 17px);
   top: 13px;
-  width: 6px;
-  height: 6px;
   background: var(--g-cyan);
-  transform: rotate(45deg);
 }
 
 /* ------------------------------------------------------------------ outline */
@@ -231,28 +227,20 @@
   display: none;
 }
 
-.VPDocAsideOutline .outline-title {
+/* the method index's heading is drawn the same way */
+.VPDocAsideOutline .outline-title,
+.goravel-methods .outline-title {
   display: flex;
   align-items: center;
   gap: 8px;
   margin: 0 calc(var(--g-shell-inset) * -1) 14px calc(var(--g-rail) * -1);
   padding: 0 var(--g-shell-inset) 12px var(--g-rail);
   border-bottom: 1px solid var(--g-line);
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--g-grey);
 }
 
-.VPDocAsideOutline .outline-title::before {
-  content: '';
-  flex-shrink: 0;
-  width: 6px;
-  height: 6px;
+.VPDocAsideOutline .outline-title::before,
+.goravel-methods .outline-title::before {
   background: var(--g-construct);
-  transform: rotate(45deg);
 }
 
 .VPDocOutlineItem .outline-link {
@@ -273,14 +261,10 @@
 }
 
 .VPDocOutlineItem .outline-link.active::before {
-  content: '';
   position: absolute;
   left: 0;
   top: 11px;
-  width: 6px;
-  height: 6px;
   background: var(--g-cyan);
-  transform: rotate(45deg);
 }
 
 .VPDocOutlineItem.nested {
@@ -486,21 +470,8 @@
   align-items: center;
   gap: 9px;
   margin-bottom: 2px;
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
   line-height: 24px;
-  font-weight: 500;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
   color: var(--g-cyan-text);
-}
-
-.VPNavScreenMenuGroupSection .title::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  background: currentColor;
-  transform: rotate(45deg);
 }
 
 .VPNavScreen .VPNavScreenMenuGroupLink {

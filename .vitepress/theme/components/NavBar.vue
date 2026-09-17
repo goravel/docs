@@ -1,62 +1,42 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import { useSidebar } from 'vitepress/theme'
 import VPNavBarSearch from 'vitepress/dist/client/theme-default/components/VPNavBarSearch.vue'
 import VPNavBarHamburger from 'vitepress/dist/client/theme-default/components/VPNavBarHamburger.vue'
 import VPSocialLinks from 'vitepress/dist/client/theme-default/components/VPSocialLinks.vue'
-import { useLangs } from 'vitepress/dist/client/theme-default/composables/langs'
+import { VERSIONS } from '../../links'
+import { useDismiss } from '../dismiss'
+import { useI18n } from '../i18n'
 import SelectMenu from './SelectMenu.vue'
 
 defineProps<{ isScreenOpen: boolean }>()
 defineEmits<{ (e: 'toggle-screen'): void }>()
 
-const VERSIONS = [
-  { text: 'v1.18', note: 'Latest', link: 'https://www.goravel.dev/', selected: true },
-  { text: 'v1.17', link: 'https://v117.goravel.dev/' },
-  { text: 'v1.16', link: 'https://v116.goravel.dev/' }
-]
-
-const { site, theme, localeIndex } = useData()
+const { theme, localeIndex } = useData()
 const { hasSidebar } = useSidebar()
-const { localeLinks, currentLang } = useLangs({ correspondingLink: true })
+const { languages, currentLang } = useI18n()
 const route = useRoute()
 
 const home = computed(() => (localeIndex.value === 'root' ? '/' : `/${localeIndex.value}/`))
 const nav = computed(() => theme.value.nav ?? [])
 const section = computed(() => nav.value[0]?.text ?? 'Docs')
 
-const languages = computed(() =>
-  Object.values(site.value.locales).map(({ label }) => ({
-    text: label!,
-    link: localeLinks.value.find((l) => l.text === label)?.link ?? route.path,
-    selected: label === currentLang.value.label
-  }))
-)
-
 const isActive = (match?: string) => !!match && new RegExp(match).test(route.path)
 
 const menuOpen = ref(false)
-
-const onKey = (e: KeyboardEvent) => e.key === 'Escape' && (menuOpen.value = false)
-watch(menuOpen, (open) =>
-  open ? window.addEventListener('keydown', onKey) : window.removeEventListener('keydown', onKey)
-)
-onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
-
-const onFocusOut = (e: FocusEvent) => {
-  if (!(e.currentTarget as HTMLElement).contains(e.relatedTarget as Node)) menuOpen.value = false
-}
+const navRoot = ref<HTMLElement | null>(null)
+const onFocusOut = useDismiss(navRoot, () => (menuOpen.value = false))
 </script>
 
 <template>
   <div class="bar" :class="{ docs: hasSidebar }">
     <a class="brand" :href="home">
       <img src="/logo@2x.png" alt="Goravel" width="89" height="24" />
-      <span v-if="hasSidebar" class="section">/ {{ section }}</span>
+      <span v-if="hasSidebar" class="g-label section">/ {{ section }}</span>
     </a>
 
-    <nav v-if="!hasSidebar" class="nav">
+    <nav v-if="!hasSidebar" ref="navRoot" class="nav">
       <template v-for="item in nav" :key="item.text">
         <a v-if="'link' in item" :href="item.link" :class="{ active: isActive(item.activeMatch) }">{{ item.text }}</a>
         <div
@@ -71,7 +51,7 @@ const onFocusOut = (e: FocusEvent) => {
           </button>
           <div v-show="menuOpen" class="panel">
             <section v-for="group in item.items" :key="group.text" class="group">
-              <p class="label">{{ group.text }}</p>
+              <p class="g-label g-diamond label">{{ group.text }}</p>
               <a v-for="row in group.items" :key="row.link" :href="row.link" v-html="row.text" />
             </section>
           </div>
@@ -113,15 +93,6 @@ const onFocusOut = (e: FocusEvent) => {
 .brand img {
   height: 24px;
   width: auto;
-}
-
-.section {
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--g-grey);
 }
 
 .docs {
@@ -221,24 +192,9 @@ const onFocusOut = (e: FocusEvent) => {
 }
 
 .label {
-  display: flex;
-  align-items: center;
   gap: 9px;
   margin: 0 0 10px;
-  font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
   color: var(--g-cyan-text);
-}
-
-.label::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  background: currentColor;
-  transform: rotate(45deg);
 }
 
 .group a {

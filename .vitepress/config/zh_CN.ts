@@ -5,64 +5,62 @@ export const config = defineConfig({
   description: "Goravel 是一个功能完整且可扩展性极强的 Web 应用程序框架。作为一个起始脚手架，帮助 Gopher 快速构建自己的应用程序。",
   themeConfig: {
     nav: nav(),
-    sidebar: [
-      {
+    sidebar: [{
       text: "快速开始",
       base: "/zh_CN/getting-started/",
       collapsed: true,
-        items: sidebarGettingStarted()
-      }, {
+      items: sidebarGettingStarted()
+    }, {
       text: "核心架构",
       base: "/zh_CN/architecture-concepts/",
       collapsed: true,
-        items: sidebarFoundation()
-      }, {
+      items: sidebarFoundation()
+    }, {
       text: "基础功能",
       base: "/zh_CN/the-basics/",
       collapsed: true,
-        items: sidebarBasic()
-      }, {
+      items: sidebarBasic()
+    }, {
       text: "高级功能",
       base: "/zh_CN/digging-deeper/",
       collapsed: true,
-        items: sidebarAdvanced()
-      }, {
+      items: sidebarAdvanced()
+    }, {
       text: "安全",
       base: "/zh_CN/security/",
       collapsed: true,
-        items: sidebarSecurity()
-      }, {
+      items: sidebarSecurity()
+    }, {
       text: 'AI',
       base: '/zh_CN/ai/',
       collapsed: true,
-        items: sidebarAI()
-      }, {
+      items: sidebarAI()
+    }, {
       text: "数据库",
       base: "/zh_CN/database/",
       collapsed: true,
-        items: sidebarDatabase()
-      }, {
+      items: sidebarDatabase()
+    }, {
       text: 'ORM',
       base: "/zh_CN/orm/",
       collapsed: true,
-        items: sidebarOrm()
-      }, {
+      items: sidebarOrm()
+    }, {
       text: "测试",
       base: "/zh_CN/testing/",
       collapsed: true,
-        items: sidebarTesting()
-      }, {
+      items: sidebarTesting()
+    }, {
       text: "升级",
       base: "/zh_CN/upgrade/",
       collapsed: true,
-        items: sidebarUpgrade()
-      }, {
+      items: sidebarUpgrade()
+    }, {
       text: "序言",
       base: "/zh_CN/prologue/",
       collapsed: true,
-        items: sidebarPrologue()
-      }
-    ],
+      items: sidebarPrologue()
+    }],
     editLink: {
       pattern: 'https://github.com/goravel/docs/edit/master/:path',
       text: "在 GitHub 上编辑此页面"

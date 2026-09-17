@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted } from 'vue'
-import { useHomeI18n } from './i18n'
+import { useI18n } from '../i18n'
 import { useCycle } from './useCycle'
+import CodeLines from './CodeLines.vue'
 import GoravelMark from './GoravelMark.vue'
 import CommunitySection from './CommunitySection.vue'
 import HomeFooter from './HomeFooter.vue'
-import { CONCEPTS, FACADES, FILES, LAYERS, LAYER_CODE, LITE, LITE_STEPS, STOPS, tokenize, type LayerKey, type PieceState, type View } from './content'
+import { CONCEPTS, FACADES, FILES, LAYERS, LAYER_CODE, LITE, LITE_STEPS, STOPS, type LayerKey, type PieceState, type View } from './content'
 
-const { tr, link } = useHomeI18n()
+const { tr, link } = useI18n()
 
 // scroll snap belongs on <html>, so it is added and removed with the page
 onMounted(() => document.documentElement.classList.add('g-home-snap'))
@@ -76,8 +77,8 @@ const liteView = computed<View>(() => {
 const { index: tieStep, root: tieRoot } = useCycle(() => concept.value.ties.length, 1500, 0.3)
 const pair = computed(() => concept.value.ties[tieStep.value % concept.value.ties.length] ?? [0, 0])
 const files = computed(() => [
-  { label: 'Laravel · PHP', name: concept.value.phpFile, lines: tokenize(concept.value.php, 'php'), pair: pair.value[0], go: false },
-  { label: 'Goravel · Go', name: concept.value.goFile, lines: tokenize(concept.value.go), pair: pair.value[1], go: true }
+  { label: 'Laravel · PHP', name: concept.value.phpFile, code: concept.value.php, lang: 'php' as const, pair: pair.value[0] },
+  { label: 'Goravel · Go', name: concept.value.goFile, code: concept.value.go, lang: 'go' as const, pair: pair.value[1] }
 ])
 </script>
 
@@ -101,10 +102,7 @@ const files = computed(() => [
         <div class="g-proof">
           <div class="g-proof-pane">
             <span class="g-label">Laravel · PHP</span>
-            <pre class="g-code is-plain"><code><span
-              v-for="(ln, n) in tokenize(CONCEPTS[0].php, 'php')" :key="n" class="ln"><span
-              v-for="(t, j) in ln" :key="j" :class="{ call: t.call }">{{ t.text }}</span>
-</span></code></pre>
+            <CodeLines class="is-plain" :code="CONCEPTS[0].php" lang="php" />
           </div>
 
           <div class="g-proof-join" aria-hidden="true">
@@ -113,10 +111,7 @@ const files = computed(() => [
 
           <div class="g-proof-pane is-go">
             <span class="g-label cyan">Goravel · Go</span>
-            <pre class="g-code is-plain"><code><span
-              v-for="(ln, n) in tokenize(CONCEPTS[0].go)" :key="n" class="ln"><span
-              v-for="(t, j) in ln" :key="j" :class="{ call: t.call }">{{ t.text }}</span>
-</span></code></pre>
+            <CodeLines class="is-plain" :code="CONCEPTS[0].go" />
           </div>
         </div>
       </div>
@@ -150,16 +145,7 @@ const files = computed(() => [
               <span class="g-label">{{ tr(nameOf(stop.layer)) }}</span>
               <span class="g-meta">{{ FILES[stop.file].name }}</span>
             </div>
-            <pre :key="stopIndex" class="g-code g-swap"><code><span
-              v-for="(line, n) in FILES[stop.file].lines"
-              :key="n"
-              class="ln"
-              :class="{ 'is-lit': stop.lit.includes(n + 1) }"
-            ><span class="no">{{ n + 1 }}</span><span class="src"><span
-              v-for="(t, j) in tokenize(line)[0]"
-              :key="j"
-              :class="{ call: t.call }"
-            >{{ t.text }}</span></span></span></code></pre>
+            <CodeLines :key="stopIndex" class="g-swap" :code="FILES[stop.file].code" numbered :lit="stop.lit" />
           </div>
         </div>
       </div>
@@ -189,18 +175,12 @@ const files = computed(() => [
           </div>
 
           <div ref="tieRoot" class="g-parity-code">
-            <div v-for="file in files" :key="file.label" :class="{ 'is-go': file.go }">
+            <div v-for="file in files" :key="file.label" :class="{ 'is-go': file.lang === 'go' }">
               <div class="g-file-head">
-                <span class="g-label" :class="{ cyan: file.go }">{{ file.label }}</span>
+                <span class="g-label" :class="{ cyan: file.lang === 'go' }">{{ file.label }}</span>
                 <span class="g-meta">{{ file.name }}</span>
               </div>
-              <pre :key="file.label + conceptIndex" class="g-code is-plain g-swap"><code><span
-                v-for="(ln, n) in file.lines"
-                :key="n"
-                class="ln"
-                :class="{ 'is-pair': n + 1 === file.pair }"
-              ><span v-for="(t, j) in ln" :key="j" :class="{ call: t.call }">{{ t.text }}</span>
-</span></code></pre>
+              <CodeLines :key="file.label + conceptIndex" class="is-plain g-swap" :code="file.code" :lang="file.lang" :pair="file.pair" />
             </div>
           </div>
         </div>
@@ -233,13 +213,10 @@ const files = computed(() => [
           <div class="g-panel-body">
             <ul :key="layerIndex" class="g-facades g-swap">
               <li v-for="f in layer.facades" :key="f">
-                <a :href="FACADES[f][0]" :title="FACADES[f][1]">{{ f }}</a>
+                <a :href="link(FACADES[f][0])" :title="FACADES[f][1]">{{ f }}</a>
               </li>
             </ul>
-            <pre class="g-code is-plain g-layer-code"><code><span
-              v-for="(ln, n) in tokenize(LAYER_CODE[layerKey])" :key="n" class="ln"><span
-              v-for="(t, j) in ln" :key="j" :class="{ call: t.call }">{{ t.text }}</span>
-</span></code></pre>
+            <CodeLines class="is-plain g-layer-code" :code="LAYER_CODE[layerKey]" />
           </div>
         </div>
       </div>

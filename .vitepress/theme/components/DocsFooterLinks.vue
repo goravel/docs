@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import { useSidebar } from 'vitepress/theme'
+import { LINKS } from '../../links'
+import { useI18n } from '../i18n'
 
 const { hasSidebar } = useSidebar()
+const { tr, link } = useI18n()
 
 const links = [
-  { text: 'Documentation', href: '/getting-started/installation' },
-  { text: 'Release notes', href: '/prologue/releases' },
-  { text: 'GitHub', href: 'https://github.com/goravel/goravel' },
-  { text: 'Discord', href: 'https://discord.gg/cFc5csczzS' },
-  { text: 'Contribute', href: '/prologue/contributions' }
+  ['Documentation', '/getting-started/installation'],
+  ['Release Notes', '/prologue/releases'],
+  ['GitHub', LINKS.github],
+  ['Discord', LINKS.discord],
+  ['Contribute', '/prologue/contributions']
 ]
 </script>
 
 <template>
   <nav v-if="hasSidebar" class="foot" aria-label="Goravel">
     <span class="mark">Goravel</span>
-    <a v-for="l in links" :key="l.text" :href="l.href">{{ l.text }}</a>
+    <a v-for="[text, href] in links" :key="text" :href="link(href)">{{ tr(text) }}</a>
   </nav>
 </template>
 

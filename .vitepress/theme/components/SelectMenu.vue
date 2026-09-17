@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useDismiss } from '../dismiss'
 
 defineProps<{ label: string; options: { text: string; link: string; note?: string; selected?: boolean }[] }>()
 
 const open = ref(false)
-
-const onFocusOut = (e: FocusEvent) => {
-  if (!(e.currentTarget as HTMLElement).contains(e.relatedTarget as Node)) open.value = false
-}
+const root = ref<HTMLElement | null>(null)
+const onFocusOut = useDismiss(root, () => (open.value = false))
 </script>
 
 <template>
-  <div class="select" @focusout="onFocusOut" @keydown.escape="open = false">
+  <div ref="root" class="select" @focusout="onFocusOut">
     <button class="trigger" type="button" :aria-expanded="open" @click="open = !open">
       {{ label }}<span class="caret vpi-chevron-down" />
     </button>

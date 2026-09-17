@@ -13,52 +13,62 @@ export const config = defineConfig({
         base: '/getting-started/',
         collapsed: true,
         items: sidebarGettingStarted()
-      }, {
+      },
+      {
         text: 'Architecture Concepts',
         base: '/architecture-concepts/',
         collapsed: true,
         items: sidebarFoundation()
-      }, {
+      },
+      {
         text: 'The Basics',
         base: '/the-basics/',
         collapsed: true,
         items: sidebarBasic()
-      }, {
+      },
+      {
         text: 'Digging Deeper',
         base: '/digging-deeper/',
         collapsed: true,
         items: sidebarAdvanced()
-      }, {
+      },
+      {
         text: 'AI',
         base: '/ai/',
         collapsed: true,
         items: sidebarAI()
-      }, {
+      },
+      {
         text: 'Security',
         base: '/security/',
         collapsed: true,
         items: sidebarSecurity()
-      }, {
+      },
+      {
         text: 'Database',
         base: '/database/',
         collapsed: true,
         items: sidebarDatabase()
-      }, {
+      },
+      {
         text: 'ORM',
         base: '/orm/',
         collapsed: true,
         items: sidebarOrm()
-      }, {
+      },
+      {
         text: 'Testing',
         base: '/testing/',
         collapsed: true,
         items: sidebarTesting()
-      }, {
+      },
+      {
         text: 'Upgrade',
         base: '/upgrade/',
         collapsed: true,
         items: sidebarUpgrade()
-      }, {
+      },
+      {
         text: 'Prologue',
         base: '/prologue/',
         collapsed: true,

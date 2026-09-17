@@ -13,6 +13,7 @@ import footnote from 'markdown-it-footnote'
 import sub from 'markdown-it-sub'
 import sup from 'markdown-it-sup'
 import taskLists from 'markdown-it-task-lists'
+import { LINKS } from '../links'
 import { goravelCode } from './goravel-code'
 import {
   groupIconMdPlugin,
@@ -103,7 +104,7 @@ export const shared = defineConfig({
   themeConfig: {
     logo: '/logo@2x.png',
     siteTitle: false,
-    socialLinks: [{ icon: 'github', link: 'https://github.com/goravel/goravel' }],
+    socialLinks: [{ icon: 'github', link: LINKS.github }],
     search: {
       provider: 'algolia',
       options: {
