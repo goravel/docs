@@ -1,6 +1,32 @@
 /* The default theme scopes its styles, so layout overrides here need !important. */
 
 /* ------------------------------------------------------------------ the frame */
+/* past 1440px the site stays 1440px wide and centred, and its borders run top to bottom,
+   so every full-width rule ends on them. The nav, the sidebar and the menu panel are fixed,
+   so they are placed inside the frame by hand. */
+@media (min-width: 1441px) {
+  :root {
+    --g-frame-x: calc(max(0px, (100% - var(--g-frame)) / 2) + 1px);
+  }
+
+  .Layout {
+    max-width: var(--g-frame);
+    margin: 0 auto;
+    border-right: 1px solid var(--g-line);
+    border-left: 1px solid var(--g-line);
+  }
+
+  .VPNav {
+    right: var(--g-frame-x);
+    left: var(--g-frame-x) !important;
+    width: auto !important;
+  }
+
+  .VPSidebar {
+    left: var(--g-frame-x) !important;
+  }
+}
+
 @media (min-width: 960px) {
   .VPContent.has-sidebar {
     padding-left: var(--vp-sidebar-width) !important;

@@ -30,6 +30,8 @@
   --g-measure: 704px;        /* about 68 characters at 17px */
   --g-rail: 32px;            /* column rule to the outline */
   --g-aside: 368px;          /* outline 240 + rail 32 + margin 96 */
+  --g-frame: 1440px;         /* the widest the site gets; wider screens frame it */
+  --g-frame-x: 0px;          /* where the fixed nav and sidebar start; see the frame in shell.css */
   --g-col: calc(var(--g-measure) + var(--g-gutter) + var(--g-rail));
 
   --vp-font-family-base: 'Mona Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,

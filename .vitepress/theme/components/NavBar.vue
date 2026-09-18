@@ -167,8 +167,8 @@ const onFocusOut = useDismiss(navRoot, () => (menuOpen.value = false))
 .panel {
   position: fixed;
   top: var(--vp-nav-height);
-  left: 0;
-  right: 0;
+  left: var(--g-frame-x);
+  right: var(--g-frame-x);
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
