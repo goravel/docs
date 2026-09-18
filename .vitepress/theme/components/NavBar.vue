@@ -5,6 +5,8 @@ import { useSidebar } from 'vitepress/theme'
 import VPNavBarSearch from 'vitepress/dist/client/theme-default/components/VPNavBarSearch.vue'
 import VPNavBarHamburger from 'vitepress/dist/client/theme-default/components/VPNavBarHamburger.vue'
 import VPSocialLinks from 'vitepress/dist/client/theme-default/components/VPSocialLinks.vue'
+// the default nav's link rule: page links get .html while clean URLs are off
+import { normalizeLink } from 'vitepress/dist/client/theme-default/support/utils.js'
 import { VERSIONS } from '../../links'
 import { useDismiss } from '../dismiss'
 import { useI18n } from '../i18n'
@@ -38,7 +40,7 @@ const onFocusOut = useDismiss(navRoot, () => (menuOpen.value = false))
 
     <nav v-if="!hasSidebar" ref="navRoot" class="nav">
       <template v-for="item in nav" :key="item.text">
-        <a v-if="'link' in item" :href="item.link" :class="{ active: isActive(item.activeMatch) }">{{ item.text }}</a>
+        <a v-if="'link' in item" :href="normalizeLink(item.link)" :class="{ active: isActive(item.activeMatch) }">{{ item.text }}</a>
         <div
           v-else
           class="menu"
@@ -52,7 +54,7 @@ const onFocusOut = useDismiss(navRoot, () => (menuOpen.value = false))
           <div v-show="menuOpen" class="panel">
             <section v-for="group in item.items" :key="group.text" class="group">
               <p class="g-label g-diamond label">{{ group.text }}</p>
-              <a v-for="row in group.items" :key="row.link" :href="row.link" v-html="row.text" />
+              <a v-for="row in group.items" :key="row.link" :href="normalizeLink(row.link)" v-html="row.text" />
             </section>
           </div>
         </div>

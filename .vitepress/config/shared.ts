@@ -10,7 +10,6 @@ import { defineConfig, type MarkdownRenderer } from 'vitepress'
 import timeline from 'vitepress-markdown-timeline'
 import deflist from 'markdown-it-deflist'
 import footnote from 'markdown-it-footnote'
-import sub from 'markdown-it-sub'
 import sup from 'markdown-it-sup'
 import taskLists from 'markdown-it-task-lists'
 import { LINKS } from '../links'
@@ -92,7 +91,6 @@ export const shared = defineConfig({
       md.use(timeline)
       md.use(footnote)
       md.use(taskLists, { label: true })
-      md.use(sub)
       md.use(sup)
       md.use(deflist)
       markCustomContainerTitles(md)

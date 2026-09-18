@@ -25,7 +25,6 @@
     "@vueuse/core": "^12.8.2",
     "markdown-it-deflist": "^4.0.0",
     "markdown-it-footnote": "^4.0.0",
-    "markdown-it-sub": "^2.0.0",
     "markdown-it-sup": "^2.0.0",
     "markdown-it-task-lists": "^2.1.1",
     "prettier": "^3.6.2",

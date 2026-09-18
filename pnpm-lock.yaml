@@ -60,9 +60,6 @@ importers:
       markdown-it-footnote:
         specifier: ^4.0.0
         version: 4.0.0
-      markdown-it-sub:
-        specifier: ^2.0.0
-        version: 2.0.0
       markdown-it-sup:
         specifier: ^2.0.0
         version: 2.0.0
@@ -1261,9 +1258,6 @@ packages:
 
   markdown-it-footnote@4.0.0:
     resolution: {integrity: sha512-WYJ7urf+khJYl3DqofQpYfEYkZKbmXmwxQV8c8mO/hGIhgZ1wOe7R4HLFNwqx7TjILbnC98fuyeSsin19JdFcQ==}
-
-  markdown-it-sub@2.0.0:
-    resolution: {integrity: sha512-iCBKgwCkfQBRg2vApy9vx1C1Tu6D8XYo8NvevI3OlwzBRmiMtsJ2sXupBgEA7PPxiDwNni3qIUkhZ6j5wofDUA==}
 
   markdown-it-sup@2.0.0:
     resolution: {integrity: sha512-5VgmdKlkBd8sgXuoDoxMpiU+BiEt3I49GItBzzw7Mxq9CxvnhE/k09HFli09zgfFDRixDQDfDxi0mgBCXtaTvA==}
@@ -2885,8 +2879,6 @@ snapshots:
   markdown-it-deflist@4.0.0: {}
 
   markdown-it-footnote@4.0.0: {}
-
-  markdown-it-sub@2.0.0: {}
 
   markdown-it-sup@2.0.0: {}
 

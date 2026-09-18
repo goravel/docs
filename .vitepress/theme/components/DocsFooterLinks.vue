@@ -7,11 +7,11 @@ const { hasSidebar } = useSidebar()
 const { tr, link } = useI18n()
 
 const links = [
-  ['Documentation', '/getting-started/installation'],
-  ['Release Notes', '/prologue/releases'],
+  ['Documentation', '/getting-started/installation.html'],
+  ['Release Notes', '/prologue/releases.html'],
   ['GitHub', LINKS.github],
   ['Discord', LINKS.discord],
-  ['Contribute', '/prologue/contributions']
+  ['Contribute', '/prologue/contributions.html']
 ]
 </script>
 
