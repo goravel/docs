@@ -16,9 +16,10 @@ onBeforeUnmount(() => document.documentElement.classList.remove('g-home-snap'))
 
 const nameOf = (k: LayerKey | null | undefined) => (k ? LAYERS.find((l) => l.key === k)!.name : 'Your code')
 
-function lit(layer?: LayerKey | null) {
+// the piece of the layer in focus keeps the logo's colour; the rest go pale, and all of them do in your own code
+function focus(layer: LayerKey | null) {
   const out: Partial<Record<LayerKey, PieceState>> = {}
-  for (const { key } of LAYERS) out[key] = key === layer ? 'active' : 'solid'
+  for (const { key } of LAYERS) out[key] = key === layer ? 'solid' : 'dim'
   return out
 }
 
@@ -26,7 +27,7 @@ const { index: stopIndex, set: setStop, root: stopsRoot } = useCycle(STOPS.lengt
 const stop = computed(() => STOPS[stopIndex.value])
 const stopView = computed<View>(() => ({
   kind: 'journey',
-  states: lit(stop.value.layer),
+  states: focus(stop.value.layer),
   stop: stop.value.key,
   caption: `${stop.value.name}, handled by ${nameOf(stop.value.layer)}`
 }))
@@ -35,8 +36,7 @@ const { index: conceptIndex, set: setConcept, root: conceptRoot } = useCycle(CON
 const concept = computed(() => CONCEPTS[conceptIndex.value])
 const conceptView = computed<View>(() => ({
   kind: 'parity',
-  states: lit(concept.value.layer),
-  turn: conceptIndex.value % 3,
+  states: focus(concept.value.layer),
   caption: `${concept.value.name}, handled by ${nameOf(concept.value.layer)}`
 }))
 
@@ -46,30 +46,21 @@ const layerKey = computed(() => layer.value.key)
 const selectLayer = (k: LayerKey) => setLayer(LAYERS.findIndex((l) => l.key === k))
 const layerView = computed<View>(() => ({
   kind: 'map',
-  states: lit(layerKey.value),
+  states: focus(layerKey.value),
   pulled: [layerKey.value],
   caption: `The ${layer.value.name} piece, pulled out of the mark`
 }))
 
 const { index: liteIndex, set: setLite, root: liteRoot } = useCycle(LITE_STEPS.length, 2400)
-const liteStep = computed(() => LITE_STEPS[liteIndex.value])
 const installed = computed(() =>
   liteIndex.value === LITE_STEPS.length - 1
     ? LAYERS.flatMap((l) => l.facades)
     : [...LITE, ...LITE_STEPS.slice(1, liteIndex.value + 1).flatMap((s) => s.add)]
 )
+// an installed layer is drawn in the logo's colours; one that is not yet waits outside the mark as an outline
 const liteView = computed<View>(() => {
-  const added = liteIndex.value === 0 ? [] : liteStep.value.add
   const states: Partial<Record<LayerKey, PieceState>> = {}
-  for (const l of LAYERS) {
-    const have = l.facades.filter((f) => installed.value.includes(f))
-    states[l.key] = !have.length
-      ? 'ghost'
-      : have.some((f) => added.includes(f)) || added.includes('*')
-        ? 'active'
-        : 'solid'
-  }
-  // a layer that is not installed yet waits outside the mark, and slides in when it is
+  for (const l of LAYERS) states[l.key] = l.facades.some((f) => installed.value.includes(f)) ? 'solid' : 'ghost'
   const pulled = LAYERS.filter((l) => states[l.key] === 'ghost').map((l) => l.key)
   return { kind: 'lite', states, pulled, caption: `${installed.value.length} of 30 facades installed` }
 })

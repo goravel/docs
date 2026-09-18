@@ -1,5 +1,6 @@
 export type LayerKey = 'http' | 'app' | 'core' | 'data' | 'async'
-export type PieceState = 'solid' | 'active' | 'ghost'
+// solid: the logo's colour; dim: out of focus; ghost: not installed
+export type PieceState = 'solid' | 'dim' | 'ghost'
 export type StopKey = 'route' | 'mw' | 'ctrl' | 'svc' | 'orm' | 'event' | 'resp'
 
 export const FILES: Record<string, { name: string; code: string }> = {
@@ -205,7 +206,6 @@ export interface View {
   kind: 'journey' | 'parity' | 'map' | 'lite'
   states: Partial<Record<LayerKey, PieceState>>
   pulled?: LayerKey[]
-  turn?: number
   stop?: StopKey
   caption?: string
 }

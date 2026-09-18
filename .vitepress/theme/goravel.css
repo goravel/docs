@@ -12,6 +12,11 @@
   --g-cyan-tint: #ebf7fd;
   --g-construct: rgba(104, 116, 125, 0.4);
 
+  /* the logo's three faces, used only by the mark */
+  --g-logo-top: #86d3fd;
+  --g-logo-right: #009fe8;
+  --g-logo-left: #2f7e9c;
+
   --g-amber: #e08700;
   --g-amber-text: #8f5a00;
   --g-amber-tint: #fdf6eb;

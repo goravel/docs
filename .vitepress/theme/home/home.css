@@ -683,10 +683,15 @@ html.g-home-snap {
   tab-size: 2;
 }
 
+/* the tint of a lit line reaches past the text, so the bleed sits on the block and not on the line,
+   where it would widen the block and raise a scrollbar */
+.g-code:not(.is-plain) {
+  margin: 0 -14px;
+}
+
 .g-code .ln {
   position: relative;
   display: block;
-  margin: 0 -14px;
   padding: 0 14px;
   white-space: pre;
   color: var(--g-grey);
@@ -694,7 +699,6 @@ html.g-home-snap {
 }
 
 .g-code.is-plain .ln {
-  margin: 0;
   padding: 0;
 }
 
@@ -812,12 +816,6 @@ html.g-home-snap {
   opacity: 0.9;
 }
 
-.g-mark-spin {
-  transform-origin: 133px 154px;
-  transform: rotate(calc(var(--turn) * 120deg));
-  transition: transform 0.75s cubic-bezier(0.33, 0.1, 0.2, 1);
-}
-
 .g-piece {
   transition: transform 0.6s cubic-bezier(0.33, 0.1, 0.2, 1);
 }
@@ -831,21 +829,26 @@ html.g-home-snap {
   outline: none;
 }
 
-.g-face {
-  stroke-linejoin: miter;
-  transition: fill 0.45s ease, stroke 0.45s ease, stroke-width 0.35s ease;
-}
-
+/* flat and unoutlined, like the logo; out of focus a piece is a pale tint of its own colour */
 .g-face.is-solid {
   fill: var(--face);
-  stroke: var(--g-ink);
-  stroke-width: 1.25;
 }
 
-.g-face.is-active {
-  fill: var(--g-cyan-tint);
-  stroke: var(--g-cyan);
-  stroke-width: 1.4;
+.g-face.is-dim {
+  fill: color-mix(in srgb, var(--face) 28%, var(--g-white));
+}
+
+.g-face {
+  transition: fill 0.45s ease;
+}
+
+.g-piece.is-hit:hover .g-face.is-dim {
+  fill: color-mix(in srgb, var(--face) 60%, var(--g-white));
+}
+
+.g-piece.is-hit:focus-visible .g-face {
+  stroke: var(--g-ink);
+  stroke-width: 2;
 }
 
 .g-face.is-ghost {
@@ -853,15 +856,6 @@ html.g-home-snap {
   stroke-width: 1;
   stroke-dasharray: 3 4;
   opacity: 0.55;
-}
-
-.g-piece.is-hit:hover .g-face {
-  stroke: var(--g-cyan);
-}
-
-.g-piece.is-hit:focus-visible .g-face {
-  stroke: var(--g-cyan);
-  stroke-width: 2;
 }
 
 .g-leader {
@@ -882,6 +876,7 @@ html.g-home-snap {
   opacity: 1;
 }
 
+/* the request is drawn in ink, so it reads on any of the logo's blues */
 .g-track {
   stroke: var(--g-grey);
   stroke-width: 1.5;
@@ -890,7 +885,7 @@ html.g-home-snap {
 }
 
 .g-track.is-done {
-  stroke: var(--g-cyan);
+  stroke: var(--g-ink);
   stroke-width: 2.2;
   stroke-dasharray: 1;
   stroke-dashoffset: var(--ahead);
@@ -905,11 +900,14 @@ html.g-home-snap {
 
 .g-node,
 .g-signal-core {
-  fill: var(--g-cyan);
+  fill: var(--g-ink);
 }
 
 .g-signal-halo {
-  fill: var(--g-cyan-tint);
+  fill: var(--g-white);
+  stroke: var(--g-ink);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
 }
 
 .g-mono-ink,

@@ -6,13 +6,13 @@ const props = defineProps<{ view: View; scale: number }>()
 const emit = defineEmits<{ select: [LayerKey] }>()
 const clipId = useId()
 
-// back to front; face is the side of the cube a piece lies on
-const PIECES: { key: LayerKey; face: number; d: string; pull: string; leader?: string }[] = [
-  { key: 'http', face: 0, d: 'M133 0.4 L266 77.2 L221.7 102.8 L88.7 26 Z', pull: 'translate(0, -76.8px)', leader: 'M217.2 74.6 L217.2 -2.2' },
-  { key: 'data', face: 1, d: 'M266 77.2 L266 230.8 L133 307.6 L133 256.4 L221.7 205.2 L221.7 102.8 Z', pull: 'translate(39.9px, 23px)', leader: 'M243.8 131 L283.7 154' },
-  { key: 'async', face: 2, d: 'M0 77.2 L44.3 102.8 L44.3 205.2 L133 256.4 L133 307.6 L0 230.8 Z', pull: 'translate(-39.9px, 23px)', leader: 'M22.2 131 L-17.7 154' },
-  { key: 'app', face: 0, d: 'M44.3 51.6 L177.3 128.4 L133 154 L0 77.2 Z', pull: 'translate(0, -38.4px)', leader: 'M128.6 125.8 L128.6 87.4' },
-  { key: 'core', face: 1, d: 'M177.3 128.4 L177.3 179.6 L133 205.2 L133 154 Z', pull: 'none' }
+// the paths and colours of public/logo.svg, back to front
+const PIECES: { key: LayerKey; color: string; d: string; pull: string; leader?: string }[] = [
+  { key: 'http', color: 'var(--g-logo-top)', d: 'M133 0.4 L266 77.2 L221.7 102.8 L88.7 26 Z', pull: 'translate(0, -76.8px)', leader: 'M217.2 74.6 L217.2 -2.2' },
+  { key: 'data', color: 'var(--g-logo-right)', d: 'M266 77.2 L266 230.8 L133 307.6 L133 256.4 L221.7 205.2 L221.7 102.8 Z', pull: 'translate(39.9px, 23px)', leader: 'M243.8 131 L283.7 154' },
+  { key: 'async', color: 'var(--g-logo-left)', d: 'M0 77.2 L44.3 102.8 L44.3 205.2 L133 256.4 L133 307.6 L0 230.8 Z', pull: 'translate(-39.9px, 23px)', leader: 'M22.2 131 L-17.7 154' },
+  { key: 'app', color: 'var(--g-logo-top)', d: 'M44.3 51.6 L177.3 128.4 L133 154 L0 77.2 Z', pull: 'translate(0, -38.4px)', leader: 'M128.6 125.8 L128.6 87.4' },
+  { key: 'core', color: 'var(--g-logo-right)', d: 'M177.3 128.4 L177.3 179.6 L133 205.2 L133 154 Z', pull: 'none' }
 ]
 
 // along: the share of the main line behind the request
@@ -26,11 +26,8 @@ const STOPS: Record<StopKey, { x: number; y: number; along: number }> = {
   resp: { x: 319.2, y: 72.1, along: 1 }
 }
 
-const SHADES = ['#ffffff', '#f7f9fa', '#e5eaed']
-
 const interactive = computed(() => props.view.kind === 'map')
 const stop = computed(() => props.view.stop && STOPS[props.view.stop])
-const shade = (face: number) => SHADES[(face + (props.view.turn ?? 0)) % 3]
 const nameOf = (key: LayerKey) => LAYERS.find((l) => l.key === key)!.name
 </script>
 
@@ -39,7 +36,6 @@ const nameOf = (key: LayerKey) => LAYERS.find((l) => l.key === key)!.name
     class="g-mark"
     viewBox="-89.2 -50.4 444.4 408.9"
     :width="444.4 * scale"
-    :style="{ '--turn': view.turn ?? 0 }"
     role="img"
     :aria-label="view.caption"
   >
@@ -60,27 +56,20 @@ const nameOf = (key: LayerKey) => LAYERS.find((l) => l.key === key)!.name
          M-89.2 538.3L355.2 281.7M-89.2 589.5L355.2 332.9"
     />
 
-    <g class="g-mark-spin">
-      <g
-        v-for="piece in PIECES"
-        :key="piece.key"
-        class="g-piece"
-        :class="{ 'is-pulled': view.pulled?.includes(piece.key), 'is-hit': interactive }"
-        :style="{ '--pull': piece.pull }"
-        :tabindex="interactive ? 0 : undefined"
-        :role="interactive ? 'button' : undefined"
-        :aria-label="interactive ? nameOf(piece.key) : undefined"
-        :aria-pressed="interactive ? view.states[piece.key] === 'active' : undefined"
-        @click="interactive && emit('select', piece.key)"
-        @keydown.enter.space.prevent="interactive && emit('select', piece.key)"
-      >
-        <path
-          class="g-face"
-          :class="`is-${view.states[piece.key] ?? 'solid'}`"
-          :style="{ '--face': shade(piece.face) }"
-          :d="piece.d"
-        />
-      </g>
+    <g
+      v-for="piece in PIECES"
+      :key="piece.key"
+      class="g-piece"
+      :class="{ 'is-pulled': view.pulled?.includes(piece.key), 'is-hit': interactive }"
+      :style="{ '--pull': piece.pull }"
+      :tabindex="interactive ? 0 : undefined"
+      :role="interactive ? 'button' : undefined"
+      :aria-label="interactive ? nameOf(piece.key) : undefined"
+      :aria-pressed="interactive ? view.states[piece.key] === 'solid' : undefined"
+      @click="interactive && emit('select', piece.key)"
+      @keydown.enter.space.prevent="interactive && emit('select', piece.key)"
+    >
+      <path class="g-face" :class="`is-${view.states[piece.key] ?? 'solid'}`" :style="{ '--face': piece.color }" :d="piece.d" />
     </g>
 
     <template v-for="piece in PIECES" :key="piece.key">
