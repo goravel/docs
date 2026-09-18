@@ -9,6 +9,18 @@ export const config = defineConfig({
     nav: nav(),
     sidebar: [
       {
+        text: 'Prologue',
+        base: '/prologue/',
+        collapsed: true,
+        items: sidebarPrologue()
+      },
+      {
+        text: 'Upgrade',
+        base: '/upgrade/',
+        collapsed: true,
+        items: sidebarUpgrade()
+      },
+      {
         text: 'Getting Started',
         base: '/getting-started/',
         collapsed: true,
@@ -61,18 +73,6 @@ export const config = defineConfig({
         base: '/testing/',
         collapsed: true,
         items: sidebarTesting()
-      },
-      {
-        text: 'Upgrade',
-        base: '/upgrade/',
-        collapsed: true,
-        items: sidebarUpgrade()
-      },
-      {
-        text: 'Prologue',
-        base: '/prologue/',
-        collapsed: true,
-        items: sidebarPrologue()
       }
     ],
 

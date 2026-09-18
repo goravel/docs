@@ -26,7 +26,7 @@ const zh_CN: Dict = {
   'Routing, an ORM, validation, queues, events and cache, in one framework.':
     '路由、ORM、验证、队列、事件与缓存，尽在一个框架之中。',
   'Get started': '快速开始',
-  'Read the documentation': '阅读文档',
+  'Compare with Laravel': '与 Laravel 对比',
   'Follow one request.': '跟随一个请求。',
   ', from the router to the response.': '，从路由到响应。',
   'Event and Queue': '事件与队列',
@@ -101,7 +101,7 @@ const uz_UZ: Dict = {
   'Routing, an ORM, validation, queues, events and cache, in one framework.':
     "Marshrutlash, ORM, validatsiya, navbatlar, hodisalar va kesh, barchasi bitta freymvorkda.",
   'Get started': 'Tezda boshlash',
-  'Read the documentation': "Hujjatlarni o'qish",
+  'Compare with Laravel': 'Laravel bilan solishtirish',
   'Follow one request.': "Bitta so'rovni kuzating.",
   ', from the router to the response.': ", marshrutizatordan javobgacha.",
   'Event and Queue': 'Hodisa va navbat',

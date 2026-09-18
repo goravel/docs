@@ -137,7 +137,7 @@ export const CONCEPTS: Concept[] = [
   {
     name: 'Artisan', layer: 'core', phpFile: 'Terminal', goFile: 'Terminal',
     php: 'php artisan {{make:controller}} TaskController',
-    go: './artisan [[make:controller]] TaskController',
+    go: 'go run . artisan [[make:controller]] TaskController',
     ties: [[1, 1]]
   }
 ]
@@ -195,11 +195,11 @@ export const LAYER_CODE: Record<LayerKey, string> = {
 
 export const LITE_STEPS = [
   { title: 'Create a Lite project', cmd: 'goravel new blog', add: [] as string[] },
-  { title: 'Add routing', cmd: './artisan package:install Route', add: ['Route'] },
-  { title: 'Add the ORM', cmd: './artisan package:install Orm', add: ['Orm'] },
-  { title: 'Add queues', cmd: './artisan package:install Queue', add: ['Queue'] },
-  { title: 'Add validation', cmd: './artisan package:install Validation', add: ['Validation'] },
-  { title: 'Install everything', cmd: './artisan package:install --all', add: ['*'] }
+  { title: 'Add routing', cmd: 'go run . artisan package:install Route', add: ['Route'] },
+  { title: 'Add the ORM', cmd: 'go run . artisan package:install Orm', add: ['Orm'] },
+  { title: 'Add queues', cmd: 'go run . artisan package:install Queue', add: ['Queue'] },
+  { title: 'Add validation', cmd: 'go run . artisan package:install Validation', add: ['Validation'] },
+  { title: 'Install everything', cmd: 'go run . artisan package:install --all', add: ['*'] }
 ]
 
 export interface View {

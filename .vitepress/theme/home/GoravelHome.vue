@@ -87,7 +87,7 @@ const files = computed(() => [
                 <path d="M3 10h13M11 5l5 5-5 5" />
               </svg>
             </a>
-            <a class="g-button is-outline" :href="link('/getting-started/configuration.html')">{{ tr('Read the documentation') }}</a>
+            <a class="g-button is-outline" :href="link('/prologue/compare-with-laravel.html')">{{ tr('Compare with Laravel') }}</a>
           </div>
         </div>
         <div class="g-proof">

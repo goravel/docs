@@ -6,6 +6,16 @@ export const config = defineConfig({
   themeConfig: {
     nav: nav(),
     sidebar: [{
+      text: "Kirish",
+      base: "/uz_UZ/prologue/",
+      collapsed: true,
+      items: sidebarPrologue()
+    }, {
+      text: "Yangilash",
+      base: "/uz_UZ/upgrade/",
+      collapsed: true,
+      items: sidebarUpgrade()
+    }, {
       text: "Boshlash",
       base: "/uz_UZ/getting-started/",
       collapsed: true,
@@ -50,16 +60,6 @@ export const config = defineConfig({
       base: "/uz_UZ/testing/",
       collapsed: true,
       items: sidebarTesting()
-    }, {
-      text: "Yangilash",
-      base: "/uz_UZ/upgrade/",
-      collapsed: true,
-      items: sidebarUpgrade()
-    }, {
-      text: "Kirish",
-      base: "/uz_UZ/prologue/",
-      collapsed: true,
-      items: sidebarPrologue()
     }],
     editLink: {
       pattern: 'https://github.com/goravel/docs/edit/master/:path',

@@ -129,17 +129,16 @@
   padding: 0 24px;
   border: 1px solid transparent;
   border-radius: 3px;
-  background: var(--g-cyan);
+  background: var(--g-cyan-text);
   font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
-  color: var(--g-ink);
+  color: var(--g-white);
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
 .g-home .g-button:hover {
-  background: var(--g-cyan-text);
-  color: var(--g-white);
+  background: var(--g-ink);
 }
 
 .g-home .g-button.is-outline {
@@ -966,14 +965,6 @@ html.g-home-snap {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  filter: grayscale(1);
-  opacity: 0.75;
-  transition: filter 0.2s ease, opacity 0.2s ease;
-}
-
-.g-person:hover img {
-  filter: none;
-  opacity: 1;
 }
 
 .g-community-foot {

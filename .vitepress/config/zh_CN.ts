@@ -6,6 +6,16 @@ export const config = defineConfig({
   themeConfig: {
     nav: nav(),
     sidebar: [{
+      text: "序言",
+      base: "/zh_CN/prologue/",
+      collapsed: true,
+      items: sidebarPrologue()
+    }, {
+      text: "升级",
+      base: "/zh_CN/upgrade/",
+      collapsed: true,
+      items: sidebarUpgrade()
+    }, {
       text: "快速开始",
       base: "/zh_CN/getting-started/",
       collapsed: true,
@@ -50,16 +60,6 @@ export const config = defineConfig({
       base: "/zh_CN/testing/",
       collapsed: true,
       items: sidebarTesting()
-    }, {
-      text: "升级",
-      base: "/zh_CN/upgrade/",
-      collapsed: true,
-      items: sidebarUpgrade()
-    }, {
-      text: "序言",
-      base: "/zh_CN/prologue/",
-      collapsed: true,
-      items: sidebarPrologue()
     }],
     editLink: {
       pattern: 'https://github.com/goravel/docs/edit/master/:path',
