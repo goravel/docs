@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { StorageSerializers, useFetch, useLocalStorage } from '@vueuse/core'
 import { LINKS } from '../../links'
 import { useDismiss } from '../dismiss'
 import { useI18n } from '../i18n'
+import { data } from './github.data'
 
 const { tr } = useI18n()
-
-const STATS = [
-  { value: '4,831', label: 'GitHub stars' },
-  { value: '43', label: 'contributors' },
-  { value: '271', label: 'forks' },
-  { value: 'v1.18', label: 'current release' }
-]
 
 const PEOPLE = [
   'hwbrzzl', 'DevHaoZi', 'kkumar-gcc', 'almas-x', 'merouanekhalili', 'hongyukeji', 'sidshrivastav',
@@ -22,6 +17,33 @@ const PEOPLE = [
   'oguzhankrcb', 'ChisThanh', 'wyicwx', 'LinboLen', 'president-tuychiyev', 'eddyjj92',
   'codedsultan'
 ]
+
+// live stars and forks: the browser asks GitHub at most once an hour, since the numbers move
+// slowly and GitHub allows 60 requests an hour without a token. Until an answer arrives, or
+// if GitHub refuses, the last numbers stay: the previous answer, else the build's.
+const live = useLocalStorage<{ stars: number; forks: number; at: number } | null>('goravel-github', null, {
+  serializer: StorageSerializers.object,
+  initOnMounted: true
+})
+const { data: repo, execute } = useFetch('https://api.github.com/repos/goravel/goravel', { immediate: false, timeout: 5000 })
+  .json<{ stargazers_count: number; forks_count: number }>()
+
+onMounted(async () => {
+  if (live.value && Date.now() - live.value.at < 3_600_000) return
+  await execute()
+  live.value = {
+    stars: repo.value?.stargazers_count ?? live.value?.stars ?? data.stars,
+    forks: repo.value?.forks_count ?? live.value?.forks ?? data.forks,
+    at: Date.now()
+  }
+})
+
+const stats = computed(() => [
+  { value: (live.value?.stars ?? data.stars).toLocaleString('en-US'), label: 'GitHub stars' },
+  { value: String(PEOPLE.length), label: 'contributors' },
+  { value: (live.value?.forks ?? data.forks).toLocaleString('en-US'), label: 'forks' },
+  { value: data.release, label: 'current release' }
+])
 
 const QR_CODES = [
   { label: 'WeChat group', src: '/wechat.jpg', alt: 'WeChat group QR code' },
@@ -37,7 +59,7 @@ const onFocusOut = useDismiss(links, () => (qr.value = null))
     <h2 class="g-h2">{{ tr('Open source.') }}</h2>
 
     <div class="g-stats">
-      <div v-for="s in STATS" :key="s.label" class="g-stat">
+      <div v-for="s in stats" :key="s.label" class="g-stat">
         <span class="value">{{ s.value }}</span>
         <span class="g-body muted">{{ tr(s.label) }}</span>
       </div>
