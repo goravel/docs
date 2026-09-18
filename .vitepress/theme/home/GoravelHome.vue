@@ -29,7 +29,7 @@ const stopView = computed<View>(() => ({
   kind: 'journey',
   states: focus(stop.value.layer),
   stop: stop.value.key,
-  caption: `${stop.value.name}, handled by ${nameOf(stop.value.layer)}`
+  caption: `${tr(stop.value.name)}, ${tr(nameOf(stop.value.layer))}`
 }))
 
 const { index: conceptIndex, set: setConcept, root: conceptRoot } = useCycle(CONCEPTS.length, 5200)
@@ -37,7 +37,7 @@ const concept = computed(() => CONCEPTS[conceptIndex.value])
 const conceptView = computed<View>(() => ({
   kind: 'parity',
   states: focus(concept.value.layer),
-  caption: `${concept.value.name}, handled by ${nameOf(concept.value.layer)}`
+  caption: `${tr(concept.value.name)}, ${tr(nameOf(concept.value.layer))}`
 }))
 
 const { index: layerIndex, set: setLayer, root: layerRoot } = useCycle(LAYERS.length, 3200)
@@ -48,7 +48,7 @@ const layerView = computed<View>(() => ({
   kind: 'map',
   states: focus(layerKey.value),
   pulled: [layerKey.value],
-  caption: `The ${layer.value.name} piece, pulled out of the mark`
+  caption: tr(`${layer.value.name} layer`)
 }))
 
 const { index: liteIndex, set: setLite, root: liteRoot } = useCycle(LITE_STEPS.length, 2400)
@@ -62,7 +62,7 @@ const liteView = computed<View>(() => {
   const states: Partial<Record<LayerKey, PieceState>> = {}
   for (const l of LAYERS) states[l.key] = l.facades.some((f) => installed.value.includes(f)) ? 'solid' : 'ghost'
   const pulled = LAYERS.filter((l) => states[l.key] === 'ghost').map((l) => l.key)
-  return { kind: 'lite', states, pulled, caption: `${installed.value.length} of 30 facades installed` }
+  return { kind: 'lite', states, pulled, caption: `${installed.value.length} / 30 ${tr('facades installed')}` }
 })
 
 const { index: tieStep, root: tieRoot } = useCycle(() => concept.value.ties.length, 1500, 0.3)

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vitepress'
+import { useI18n } from '../i18n'
 
 const route = useRoute()
+const { tr } = useI18n()
 const methods = ref<{ id: string; name: string }[]>([])
 const query = ref('')
 const active = ref('')
@@ -54,14 +56,14 @@ watch(() => route.path, () => nextTick(collect))
 
 <template>
   <div v-if="methods.length" class="goravel-methods">
-    <div class="outline-title">Methods</div>
+    <div class="outline-title">{{ tr('Methods') }}</div>
     <input
       v-if="methods.length >= 14"
       v-model="query"
       class="filter"
       type="search"
-      placeholder="Filter"
-      aria-label="Filter methods"
+      :placeholder="tr('Filter')"
+      :aria-label="tr('Filter methods')"
     />
     <a
       v-for="method in shown"

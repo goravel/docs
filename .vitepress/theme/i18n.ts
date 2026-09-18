@@ -76,7 +76,17 @@ const zh_CN: Dict = {
   'Compare With Laravel': '与 Laravel 对比',
   'Contribution Guide': '贡献指南',
   'Privacy Policy': '隐私政策',
-  Contribute: '参与贡献'
+  Contribute: '参与贡献',
+  'Your code': '你的代码',
+  'This page does not exist.': '页面不存在。',
+  'It may have moved in a newer version of the docs, or the address may be wrong.': '它可能已在新版文档中移动，或者地址有误。',
+  'Go to the documentation': '前往文档',
+  'Try these': '试试这些',
+  'Upgrading To v1.18 From v1.17': '从 v1.17 升级到 v1.18',
+  'Excellent Packages': '优秀扩展包',
+  Methods: '方法',
+  Filter: '筛选',
+  'Filter methods': '筛选方法'
 }
 
 const uz_UZ: Dict = {

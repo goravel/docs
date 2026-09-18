@@ -121,7 +121,9 @@ facades.Gate().After(func(ctx context.Context, ability string, arguments map[str
 })
 ```
 
-> Notice: The return result of `After` will be applied only when `facades.Gate().Define` returns nil.
+::: warning
+The return result of `After` will be applied only when `facades.Gate().Define` returns nil.
+:::
 
 ### Inject Context
 

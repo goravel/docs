@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { withBase } from 'vitepress'
+import { useI18n } from '../i18n'
 
-const base = (path: string) => withBase(`/${path}`)
+const { tr, link } = useI18n()
 
 const suggestions = [
-  ['Installation', 'getting-started/installation.html'],
-  ['Routing', 'the-basics/routing.html'],
-  ['Upgrading To v1.18 From v1.17', 'upgrade/v1.18.html'],
-  ['Excellent Packages', 'getting-started/packages.html']
+  ['Installation', '/getting-started/installation.html'],
+  ['Routing', '/the-basics/routing.html'],
+  ['Upgrading To v1.18 From v1.17', '/upgrade/v1.18.html'],
+  ['Excellent Packages', '/getting-started/packages.html']
 ]
 </script>
 
@@ -15,13 +15,13 @@ const suggestions = [
   <div class="goravel-404">
     <div class="left">
       <p class="g-label">404</p>
-      <h1 class="title">This page does not exist.</h1>
-      <p class="lead">It may have moved in a newer version of the docs, or the address may be wrong.</p>
-      <a class="home" :href="base('')">Go to the documentation</a>
+      <h1 class="title">{{ tr('This page does not exist.') }}</h1>
+      <p class="lead">{{ tr('It may have moved in a newer version of the docs, or the address may be wrong.') }}</p>
+      <a class="home" :href="link('/')">{{ tr('Go to the documentation') }}</a>
     </div>
     <div class="right">
-      <span class="g-label label">Try these</span>
-      <a v-for="[text, link] in suggestions" :key="link" class="suggestion" :href="base(link)">{{ text }}</a>
+      <span class="g-label label">{{ tr('Try these') }}</span>
+      <a v-for="[text, path] in suggestions" :key="path" class="suggestion" :href="link(path)">{{ tr(text) }}</a>
     </div>
   </div>
 </template>

@@ -215,7 +215,7 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 })
 ```
 
-## 速率限制
+## 速率限制 {#rate-limiting}
 
 ### 定义速率限制器
 

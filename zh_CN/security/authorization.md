@@ -121,7 +121,9 @@ facades.Gate().After(func(ctx context.Context, ability string, arguments map[str
 })
 ```
 
-> 注意：只有当 `facades.Gate().Define` 返回 nil 时，才会应用 `After` 的返回结果。
+::: warning
+只有当 `facades.Gate().Define` 返回 nil 时，才会应用 `After` 的返回结果。
+:::
 
 ### 注入 Context
 

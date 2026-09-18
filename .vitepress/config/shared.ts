@@ -62,6 +62,16 @@ export const shared = defineConfig({
   metaChunk: true,
 
   head: [
+    // the fonts, requested with the page instead of after the stylesheet
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+    [
+      'link',
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Mona+Sans:wdth,wght@75..125,200..900&display=swap'
+      }
+    ],
     [
       'script',
       {

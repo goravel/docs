@@ -15,7 +15,9 @@ The Goravel provides simple drivers for working with local filesystems, Amazon S
 
 Goravel's filesystem configuration file is located at `config/filesystems.go`. Within this file, you may configure all of your filesystem "disks", each disk represents a particular storage driver and storage location.
 
-> You may configure as many disks as you like and may even have multiple disks that use the same driver.
+::: tip
+You may configure as many disks as you like and may even have multiple disks that use the same driver.
+:::
 
 ### The Local Driver
 
@@ -85,7 +87,9 @@ You may use the `Url` method to get the URL for a given file. If you are using t
 url := facades.Storage().Url("file.jpg")
 ```
 
-> When using the `local` driver, the return value of `Url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
+::: warning
+When using the `local` driver, the return value of `Url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
+:::
 
 #### Temporary URLs
 
