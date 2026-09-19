@@ -6,7 +6,7 @@ The default file structure can make you better start project advancement, and yo
 
 ## Folder Tree
 
-```
+```text
 goravel/
 ├── app/                        # Core application logic
 │   ├── ai/                     # AI agents and tools

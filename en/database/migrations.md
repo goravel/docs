@@ -51,14 +51,14 @@ func Boot() contractsfoundation.Application {
 
 Use `create_users_table` to automatically generate a table containing the infrastructure of `users`:
 
-```
+```text
 ^create_(\w+)_table$
 ^create_(\w+)$
 ```
 
 Use `add_avatar_to_users_table` to automatically generate a structure for adding fields to the `users` table:
 
-```
+```text
 _(to|from|in)_(\w+)_table$
 _(to|from|in)_(\w+)$
 ```

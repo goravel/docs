@@ -12,6 +12,15 @@ Goravel 提供了可拓展的缓存模块，该模块可以使用 `facades.Cache
 
 在 `config/cache.go` 中进行所有自定义配置。
 
+### 缓存键前缀
+
+`prefix` 配置会添加到每个缓存键之前，避免多个应用共用同一缓存存储时发生键冲突。 前缀为 `goravel_cache` 时，键 `users` 会存储为 `goravel_cache:users`。 前缀为空时，键按原样存储。
+
+```go
+// config/cache.go
+"prefix": config.GetString("APP_NAME", "goravel") + "_cache",
+```
+
 ## 使用缓存
 
 ### 注入 Context

@@ -2,7 +2,7 @@
 
 ## Server Requirements
 
-- Golang >= 1.23
+- Golang >= 1.25
 
 ## Installation
 
@@ -11,12 +11,14 @@
 Initialize the installer according to the [documentation](https://github.com/goravel/installer), and then initialize a new Goravel project using the following command:
 
 ```shell
-// Install the latest version of the goravel installer
+# Install the latest version of the goravel installer
 go install github.com/goravel/installer/goravel@latest
 
-// Enter the directory where you want to install the project
+# Enter the directory where you want to install the project
 goravel new blog
 ```
+
+The installer asks which template to use: the full framework, or [Goravel Lite](#goravel-goravel-lite) with only the essential facades.
 
 ### Manual Installation
 
@@ -25,16 +27,16 @@ goravel new blog
 The complete framework with full features.
 
 ```shell
-// Download framework
+# Download framework
 git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
-// Install dependencies
+# Install dependencies
 cd goravel && go mod tidy
 
-// Create .env environment configuration file
+# Create .env environment configuration file
 cp .env.example .env
 
-// Generate application key
+# Generate application key
 ./artisan key:generate
 ```
 
@@ -43,19 +45,18 @@ cp .env.example .env
 The lite framework with only essential features, suitable for building microservices or small applications. You can install additional facades as needed.
 
 ```shell
-// Download framework
+# Download framework
 git clone --depth=1 https://github.com/goravel/goravel-lite.git && rm -rf goravel-lite/.git*
-s
-// Install dependencies
+# Install dependencies
 cd goravel-lite && go mod tidy
 
-// Create .env environment configuration file
+# Create .env environment configuration file
 cp .env.example .env
 
-// Generate application key
+# Generate application key
 ./artisan key:generate
 
-// Install additional facades as needed, for example:
+# Install additional facades as needed, for example:
 ./artisan package:install Cache
 ```
 
@@ -87,7 +88,7 @@ APP_ENV=production APP_DEBUG=true go run .
 
 Install [air-verse/air](https://github.com/air-verse/air), Goravel has a built-in configuration file that can be used directly:
 
-```
+```shell
 air
 ```
 
@@ -188,7 +189,7 @@ You may want to add the production environment env file to version control, but 
 ```shell
 ./artisan env:encrypt
 
-// Specify the file name and key
+# Specify the file name and key
 ./artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
@@ -197,6 +198,6 @@ Then use the `env:decrypt` command to decrypt the env file in the production env
 ```shell
 GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc ./artisan env:decrypt
 
-// or
+# or
 ./artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```

@@ -51,14 +51,14 @@ func Boot() contractsfoundation.Application {
 
 使用 `create_users_table` 将会自动生成包含 `users` 基础结构的表，实现原理是根据正则进行匹配：
 
-```
+```text
 ^create_(\w+)_table$
 ^create_(\w+)$
 ```
 
 使用 `add_avatar_to_users_table` 将会自动生成向 `users` 表增加字段的结构，实现原理是根据正则进行匹配：
 
-```
+```text
 _(to|from|in)_(\w+)_table$
 _(to|from|in)_(\w+)$
 ```

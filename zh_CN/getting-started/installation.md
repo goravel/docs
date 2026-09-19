@@ -2,7 +2,7 @@
 
 ## 服务要求
 
-- Golang >= 1.23
+- Golang >= 1.25
 
 ## 安装 Goravel
 
@@ -11,12 +11,14 @@
 根据[文档](https://github.com/goravel/installer)初始化安装器，然后使用下面命令初始化一个新的 Goravel 项目：
 
 ```shell
-// 安装最新版本的 goravel 安装器
+# 安装最新版本的 goravel 安装器
 go install github.com/goravel/installer/goravel@latest
 
-// 输入您想要安装项目
+# 输入您想要安装项目
 goravel new blog
 ```
+
+安装器会询问使用哪个模板：完整框架，或仅包含核心 facades 的 [Goravel Lite](#goravel-goravel-lite)。
 
 ### 手动安装
 
@@ -25,16 +27,16 @@ goravel new blog
 包含所有 facades 的全功能框架。
 
 ```shell
-// 下载框架
+# 下载框架
 git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
-// 安装依赖
+# 安装依赖
 cd goravel && go mod tidy
 
-// 创建 .env 环境配置文件
+# 创建 .env 环境配置文件
 cp .env.example .env
 
-// 生成应用密钥
+# 生成应用密钥
 ./artisan key:generate
 ```
 
@@ -43,19 +45,18 @@ cp .env.example .env
 仅包含核心功能的轻量级框架，适合构建微服务或小型应用。 你可以根据需要安装额外的 facades。
 
 ```shell
-// 下载框架
+# 下载框架
 git clone --depth=1 https://github.com/goravel/goravel-lite.git && rm -rf goravel-lite/.git*
-s
-// 安装依赖
+# 安装依赖
 cd goravel-lite && go mod tidy
 
-// 创建 .env 环境配置文件
+# 创建 .env 环境配置文件
 cp .env.example .env
 
-// 生成应用密钥
+# 生成应用密钥
 ./artisan key:generate
 
-// 根据需要安装额外的 facades，例如：
+# 根据需要安装额外的 facades，例如：
 ./artisan package:install Cache
 ```
 
@@ -87,7 +88,7 @@ APP_ENV=production APP_DEBUG=true go run .
 
 安装 [airverse/air] (https://github.com/air-verse/air), Goravel 有一个内置的配置文件，可以直接使用：
 
-```
+```shell
 air
 ```
 
@@ -189,7 +190,7 @@ Goravel 安装到本地后，要生成应用程序的密钥。 运行下面命�
 ```shell
 ./artisan env:encrypt
 
-// 指定文件名与秘钥
+# 指定文件名与秘钥
 ./artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
@@ -198,6 +199,6 @@ Goravel 安装到本地后，要生成应用程序的密钥。 运行下面命�
 ```shell
 GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc ./artisan env:decrypt
 
-// 或者
+# 或者
 ./artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```

@@ -97,7 +97,7 @@ func (r *UserData) Scan(value any) (err error) {
 ```shell
 ./artisan make:model --table=users User
 
-// 如果 Model 已存在可以使用 -f 选项强制覆盖
+# 如果 Model 已存在可以使用 -f 选项强制覆盖
 ./artisan make:model --table=users -f User
 ```
 
@@ -248,7 +248,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | DB          | [获取通用数据库接口](#获取通用数据库接口)   |
 | Query       | [获取数据库实例](#获取数据库实例)       |
 | Transaction | [事务](#事务)                 |
-| WithContext | [注入 Context](#注入-Context) |
+| WithContext | [注入 Context](#注入-context) |
 
 ## facades.Orm().Query() 可用方法
 
@@ -257,7 +257,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Avg                         | [聚合](#聚合)                     |
 | BeginTransaction            | [手动开始事务](#事务)                 |
 | Commit                      | [提交事务](#事务)                   |
-| Context                     | [注入 Context](#注入-Context)     |
+| Context                     | [注入 Context](#注入-context)     |
 | Count                       | [计数](#计数)                     |
 | Create                      | [创建数据](#创建)                   |
 | Cursor                      | [游标](#游标)                     |
@@ -278,7 +278,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Group                       | [Group 查询](#group-by-having)  |
 | Having                      | [Having 查询](#group-by-having) |
 | Join                        | [Join 查询](#join-查询)           |
-| Limit                       | [Limit 查询](#limit-查询)         |
+| Limit                       | [Limit 查询](#指定查询数量)         |
 | LockForUpdate               | [悲观锁](#悲观锁)                   |
 | Max                         | [最大值](#聚合)                    |
 | Min                         | [最小值](#聚合)                    |
@@ -985,7 +985,7 @@ var sum int
 err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum)
 
 var avg float64
-err := facades.Orm().Query().Model(models.User{}).Average("age", &avg)
+err := facades.Orm().Query().Model(models.User{}).Avg("age", &avg)
 
 var max int
 err := facades.Orm().Query().Model(models.User{}).Max("age", &max)

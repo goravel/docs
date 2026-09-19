@@ -6,7 +6,7 @@
 
 - [一对一](#一对一)
 - [一对多](#一对多)
-- [多对多](#多对多)
+- [多对多](#多对多关联)
 - [多态](#多态)
 
 ## 定义关联
@@ -128,7 +128,7 @@ type Comment struct {
 
 特别提醒，由于角色可以属于多个用户，因此我们不能简单地在 `roles` 表上放置 `user_id` 列。 如果这样，这意味着角色只能属于一个用户。 为了支持将角色分配给多个用户，需要使用 `role_user` 表。 我们可以这样定义表结构：
 
-```
+```text
 users
   id - integer
   name - string
@@ -196,7 +196,7 @@ type Role struct {
 
 对应表结构：
 
-```
+```text
 users
   id - integer
   name - string
@@ -218,7 +218,7 @@ role_user
 
 多态关联与简单的关联类似，不过，目标模型能够在一个关联上从属于多个模型。 例如，博客 `Post` 和 `Video` 可能共享一个关联到 `Image` 模型的关系。 同时共享多个关联到 `Comment` 模型。 让我们先看看表结构：
 
-```
+```text
 posts
   id - integer
   name - string

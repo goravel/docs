@@ -10,7 +10,7 @@ The testing function of Goravel relies on Golang's official test component, exte
 
 By default, the `.env` file in the root directory is used to inject configuration information during testing. If you want to use different `.env` files for different packages, you can create a `.env` file in the package directory, and the test will read this file first.
 
-```
+```text
 - /app
 - /config
 - ...

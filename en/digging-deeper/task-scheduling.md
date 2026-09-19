@@ -39,7 +39,7 @@ When `app.debug` is `true`, the console will print all logs. Otherwise, only `er
 
 ### Schedule Frequency Options
 
-We've already seen a few examples of how you may configure a task to run at specified intervals. However, there are many more task schedule frequencies avaibable to assign to tasks:
+We've already seen a few examples of how you may configure a task to run at specified intervals. However, there are many more task schedule frequencies available to assign to tasks:
 
 | Method                   | Description                                         |
 | ------------------------ | --------------------------------------------------- |

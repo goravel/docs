@@ -97,7 +97,7 @@ func (r *UserData) Scan(value any) (err error) {
 ```shell
 ./artisan make:model --table=users User
 
-// If the Model already exists, you can use the -f option to force overwrite
+# If the Model already exists, you can use the -f option to force overwrite
 ./artisan make:model --table=users -f User
 ```
 
@@ -254,7 +254,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 
 | Functions                   | Action                                                                        |
 | --------------------------- | ----------------------------------------------------------------------------- |
-| Avg                         | [Avg](#Avarage)                                                               |
+| Avg                         | [Avg](#aggregates)                                                               |
 | BeginTransaction            | [Begin transaction](#transaction)                                             |
 | Commit                      | [Commit transaction](#transaction)                                            |
 | Context                     | [Inject Context](#inject-context)                                             |
@@ -275,13 +275,13 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | FirstOrFail                 | [Not Found Error](#not-found-error)                                           |
 | ForceDelete                 | [Force delete](#delete)                                                       |
 | Get                         | [Query multiple lines](#query-multiple-lines)                                 |
-| Group                       | [Group](#group-by--having)                                                    |
+| Group                       | [Group](#group-by-having)                                                    |
 | Having                      | [Having](#group-by-having)                                                    |
 | Join                        | [Join](#join)                                                                 |
 | Limit                       | [Limit](#limit)                                                               |
 | LockForUpdate               | [Pessimistic Locking](#pessimistic-locking)                                   |
-| Max                         | [Max](#Avarage)                                                               |
-| Min                         | [Min](#Avarage)                                                               |
+| Max                         | [Max](#aggregates)                                                               |
+| Min                         | [Min](#aggregates)                                                               |
 | Model                       | [Specify a model](#specify-table-query)                                       |
 | Offset                      | [Offset](#offset)                                                             |
 | Order                       | [Order](#order)                                                               |
@@ -302,17 +302,17 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Raw                         | [Execute native SQL](#execute-native-sql)                                     |
 | Restore                     | [Restore](#restore)                                                           |
 | Rollback                    | [Rollback transaction](#transaction)                                          |
-| Save                        | [Update a existing model](#update-a-existing-model)                           |
+| Save                        | [Update an existing model](#update-an-existing-model)                           |
 | SaveQuietly                 | [Saving a single model without events](#saving-a-single-model-without-events) |
 | Scan                        | [Scan struct](#execute-native-sql)                                            |
 | Scopes                      | [Scopes](#scopes)                                                             |
 | Select                      | [Specify Fields](#specify-fields)                                             |
 | SharedLock                  | [Pessimistic Locking](#pessimistic-locking)                                   |
-| Sum                         | [Sum](#Avarage)                                                               |
+| Sum                         | [Sum](#aggregates)                                                               |
 | Table                       | [Specify a table](#specify-table-query)                                       |
 | ToSql                       | [Get SQL](#get-sql)                                                           |
 | ToRawSql                    | [Get SQL](#get-sql)                                                           |
-| Update                      | [Update a single column](#update-a-single-column)                             |
+| Update                      | [Update columns](#update-columns)                             |
 | UpdateOrCreate              | [Update or create](#update-or-create)                                         |
 | Where                       | [Where](#where)                                                               |
 | WhereAll                    | [WhereAll](#where)                                                        |
@@ -705,7 +705,7 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 
 ### Cursor
 
-Can be used to significantly reduce your application's memory consumption when iterating through tens of thousands of Eloquent model records. Note, the `Cursor` method can be used with `With` at the same time, please use [Lazy Eager Loading](./relationships.md#lazy-eager-loading) to load relationship in the `for` logic.
+Can be used to significantly reduce your application's memory consumption when iterating through tens of thousands of model records. Note, the `Cursor` method can be used with `With` at the same time, please use [Lazy Eager Loading](./relationships.md#lazy-eager-loading) to load relationship in the `for` logic.
 
 ```go
 cursor, err := facades.Orm().Query().Model(models.User{}).Cursor()
@@ -979,14 +979,14 @@ var users []models.User
 facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
-### Avarage
+### Aggregates
 
 ```go
 var sum int
 err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum)
 
 var avg float64
-err := facades.Orm().Query().Model(models.User{}).Average("age", &avg)
+err := facades.Orm().Query().Model(models.User{}).Avg("age", &avg)
 
 var max int
 err := facades.Orm().Query().Model(models.User{}).Max("age", &max)
@@ -1071,7 +1071,7 @@ Just register the events you need. Model events are not dispatched when doing ba
 
 #### Defining Observers
 
-If you are listening to many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names that reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
+If you are listening to many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names that reflect the model events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
 ```shell
 ./artisan make:observer UserObserver

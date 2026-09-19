@@ -8,7 +8,7 @@ Of course, it's not practical to return entire HTML document strings directly fr
 
 When using the Goravel default template `html/template`, you can create views by adding a file with the `.tmpl` extension in the application `resources/views` directory.
 
-```
+```html
 // resources/views/welcome.tmpl
 {{ define "welcome.tmpl" }}
 <html>
@@ -59,7 +59,7 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 If you need to determine if a view exists, you can use the `facades.View()` method. It checks `resources/views/` as well as any directories registered with `LoadViewsFrom`:
 
 ```go
-if facades.View().Exist("welcome.tmpl") {
+if facades.View().Exists("welcome.tmpl") {
   // ...
 }
 ```
@@ -77,7 +77,7 @@ func (r *ServiceProvider) Boot(app foundation.Application) {
 
 When a view is rendered, the application's `resources/views` directory takes priority — users can override any package view by creating a file with the same name in `resources/views`. If the view is not found there, the registered package view directories are searched in registration order as fallbacks.
 
-The `Exist` method also checks registered package view paths in addition to `resources/views/`.
+The `Exists` method also checks registered package view paths in addition to `resources/views/`.
 
 ## Passing Data To Views
 

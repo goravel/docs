@@ -6,7 +6,7 @@ Goravel 的本地化功能提供了一种方便的方法来检索各种语言的
 
 每一种语言文件独立一个文件：
 
-```
+```text
 /lang
   en.json
   cn.json
@@ -14,7 +14,7 @@ Goravel 的本地化功能提供了一种方便的方法来检索各种语言的
 
 或者当语言过多时，可以对其进行分类：
 
-```
+```text
 /lang
   /en
     user.json
@@ -38,7 +38,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 你可以配置一个「备用语言」，当当前语言不包含给定的翻译字符串时，将使用该语言。 和默认语言一样，备用语言也是在 `config/app.go` 配置文件中配置。
 
-```
+```go
 "fallback_locale": "en",
 ```
 
@@ -46,7 +46,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 你可以使用 `CurrentLocale` 和 `IsLocale` 方法来确定当前的 `locale` 或检查 `locale` 是否是一个给定值。
 
-```
+```go
 locale := facades.App().CurrentLocale(ctx)
 if facades.App().IsLocale(ctx, "en") {}
 ```
@@ -71,7 +71,7 @@ if facades.App().IsLocale(ctx, "en") {}
 
 例如：
 
-```
+```json
 // lang/en.json
 {
   "name": "It's your name",
@@ -141,7 +141,7 @@ facades.Lang(ctx).Choice("messages.apples", 10)
 
 也可以在复数化字符串中定义占位符属性。 通过将数组作为第三个参数传递给 `facades.Lang(ctx).Choice()` 方法，可以替换这些占位符：
 
-```
+```go
 "minutes_ago": "{1} :value minute ago|[2,*] :value minutes ago",
 
 facades.Lang(ctx).Choice("time.minutes_ago", 5, translation.Option{
@@ -157,7 +157,7 @@ facades.Lang(ctx).Choice("time.minutes_ago", 5, translation.Option{
 
 在多语言文件同级目录下创建一个 `fs.go` 文件：
 
-```
+```text
 /lang
   en.json
   cn.json

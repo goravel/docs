@@ -152,7 +152,7 @@ go install github.com/goravel/installer/goravel@latest
 ```shell
 goravel skill:list
 
-// 显示技能及描述
+# 显示技能及描述
 goravel skill:list --detail
 ```
 

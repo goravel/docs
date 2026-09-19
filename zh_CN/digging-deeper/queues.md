@@ -42,7 +42,7 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 
 自定义驱动实现后，可以添加配置到 `config/queue.go` 中：
 
-```
+```go
 ...
 "connections": map[string]any{
   "redis": map[string]any{

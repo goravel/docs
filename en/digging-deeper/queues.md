@@ -42,7 +42,7 @@ The official implementation of the `Redis` driver, you can refer to [Redis Drive
 
 After implementing the custom driver, you can add the configuration to `config/queue.go`:
 
-```
+```go
 ...
 "connections": map[string]any{
   "redis": map[string]any{
@@ -147,7 +147,7 @@ func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, de
 
 ## Start Queue Server
 
-The default queue worker will be run by the runner of queue seriver provider, if you want to start multiple queue workers with different configuration, you can create [a runner](../architecture-concepts/service-providers.md#runners) and add it to the `WithRunners` function in the `bootstrap/app.go` file:
+The default queue worker will be run by the runner of queue service provider, if you want to start multiple queue workers with different configuration, you can create [a runner](../architecture-concepts/service-providers.md#runners) and add it to the `WithRunners` function in the `bootstrap/app.go` file:
 
 ```go
 func Boot() contractsfoundation.Application {

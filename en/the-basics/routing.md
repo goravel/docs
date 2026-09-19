@@ -44,7 +44,7 @@ Use the `route:list` command to view routes list:
 | ---------- | ------------------------------------- |
 | Group      | [Group Routing](#group-routing)       |
 | Prefix     | [Routing Prefix](#routing-prefix)     |
-| ServeHTTP  | [Testing Routing](#testing-routing)   |
+| ServeHTTP  | [HTTP Tests](../testing/http-tests.md)   |
 | Get        | [Basic Routing](#basic-routing)       |
 | Post       | [Basic Routing](#basic-routing)       |
 | Put        | [Basic Routing](#basic-routing)       |

@@ -154,7 +154,7 @@ View all available Goravel agent skills:
 ```shell
 goravel skill:list
 
-// Show skills with descriptions
+# Show skills with descriptions
 goravel skill:list --detail
 ```
 

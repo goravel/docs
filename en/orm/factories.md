@@ -26,7 +26,7 @@ As you can see, in their most basic form, factories are structs that have a `Def
 
 To create a factory, run the `make:factory` Artisan command:
 
-```
+```shell
 go run . artisan make:factory PostFactory
 ```
 

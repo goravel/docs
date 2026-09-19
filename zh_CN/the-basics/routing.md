@@ -44,7 +44,7 @@ func Boot() contractsfoundation.Application {
 | ---------- | ----------------- |
 | Group      | [路由分组](#路由分组)     |
 | Prefix     | [路由前缀](#路由前缀)     |
-| ServeHTTP  | [测试路由](#测试路由)     |
+| ServeHTTP  | [HTTP 测试](../testing/http-tests.md)     |
 | Get        | [基本路由](#基本路由)     |
 | Post       | [基本路由](#基本路由)     |
 | Put        | [基本路由](#基本路由)     |

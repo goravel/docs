@@ -12,7 +12,7 @@ facades.Config().GetString("app.host")
 
 ## How Facades Work
 
-Each service provider registers its corresponding bindings in the service container, then the service container providers vairous `Make*` functions to build the binding instances. The `facades` in the `app/facades` folder call these `Make*` functions to get the instances from the service container. Let's use the `Route` facade as an example:
+Each service provider registers its corresponding bindings in the service container, then the service container provides various `Make*` functions to build the binding instances. The `facades` in the `app/facades` folder call these `Make*` functions to get the instances from the service container. Let's use the `Route` facade as an example:
 
 1. The `Route` service provider registers the `binding.Route` binding in the service container:
 

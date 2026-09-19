@@ -28,10 +28,10 @@ func (a *Auth) Signature() string {
 
 ### Create Middleware By Command
 
-```
+```shell
 ./artisan make:middleware Auth
 
-// Support nested folders
+# Support nested folders
 ./artisan make:middleware user/Auth
 ```
 

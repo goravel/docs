@@ -20,7 +20,7 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [goravel/sqlite](https://github.com/goravel/sqlite) | A Sqlite database driver | 45.2% |
 | [goravel/gemini](https://github.com/goravel/gemini) | A Gemini driver for `facades.AI()` | 51.8% |
 | [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | A MongoDB package | 16.9% |
-| [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli) | A goravel scaffold commandline tool | 15.2% |
+| [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli) | A Goravel scaffold command-line tool | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | A workflow package | 4.4% |
 | [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud) | A goravel crud package | 4.2% |
 | [hulutech-web/tinker](https://github.com/hulutech-web/tinker) | A goravel tinker package | 3.6% |

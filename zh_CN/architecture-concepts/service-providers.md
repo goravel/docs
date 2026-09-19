@@ -74,7 +74,7 @@ type Runner interface {
 }
 ```
 
-下面是一个在 `ServiceProvider` 中定义 `HTTPRunner` 的示例，用于启动和关闭 HTTP 服务器。它的签名为 `goravel:http`，意味着可以通过 [app.disabled_runners](../getting-started/configuration.md#disabled-runners) 配置选项在 `app.Start()` 中选择性地禁用它。
+下面是一个在 `ServiceProvider` 中定义 `HTTPRunner` 的示例，用于启动和关闭 HTTP 服务器。它的签名为 `goravel:http`，意味着可以通过 [app.disabled_runners](../getting-started/configuration.md#禁用-runners) 配置选项在 `app.Start()` 中选择性地禁用它。
 
 ```go
 type ServiceProvider struct {}

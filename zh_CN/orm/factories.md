@@ -26,7 +26,7 @@ func (f *UserFactory) Definition() map[string]any {
 
 可以使用 Artisan 命令 `make:factory` 创建工厂：
 
-```
+```shell
 go run . artisan make:factory PostFactory
 ```
 

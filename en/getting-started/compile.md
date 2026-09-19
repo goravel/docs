@@ -45,7 +45,7 @@ go build .
 
 The Following files and folders need to be uploaded to the server during deployment:
 
-```
+```text
 .env
 ./main // Compile the resulting binary file
 ./public // if exists
@@ -65,13 +65,13 @@ go build --ldflags "-extldflags -static" -o main .
 Compilation is differentiated by platform, you need to select a matching compilation method according to the deployment situation.
 
 ```shell
-// Compile Linux environment
+# Compile Linux environment
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build .
 
-// Compile Windows environment
+# Compile Windows environment
 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build .
 
-// Compile Mac environment
+# Compile Mac environment
 CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 ```
 
@@ -134,13 +134,13 @@ When the `app.timezone` configuration is not `UTC`, you need to set the timezone
 
 1. Add timezone settings in Dockerfile
 
-```
+```dockerfile
 RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
 ```
 
 2. Set timezone during compilation
 
-```
+```shell
 go build -tags timetzdata .
 ```
 

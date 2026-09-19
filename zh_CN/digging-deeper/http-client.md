@@ -156,11 +156,11 @@ response, err := facades.Http().
     Get("https://api.example.com")
 ```
 
-为了方便起见，你可以使用 `AcceptJson` 快速指定你期望 API 响应为 `application/json` 格式：
+为了方便起见，你可以使用 `AcceptJSON` 快速指定你期望 API 响应为 `application/json` 格式：
 
 ```go
 response, err := facades.Http().
-    AcceptJson().
+    AcceptJSON().
     Get("https://api.example.com/data")
 ```
 
@@ -251,7 +251,7 @@ type User struct {
 
 func main() {
     var user User
-    response, err := facades.Http().AcceptJson().Get("https://jsonplaceholder.typicode.com/users/1")
+    response, err := facades.Http().AcceptJSON().Get("https://jsonplaceholder.typicode.com/users/1")
     if err != nil {
         fmt.Println("Error making request:", err)
         return

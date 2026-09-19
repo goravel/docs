@@ -28,10 +28,10 @@ func (a *Auth) Signature() string {
 
 ### 命令创建中间件
 
-```
+```shell
 ./artisan make:middleware Auth
 
-// 支持嵌套文件夹
+# 支持嵌套文件夹
 ./artisan make:middleware user/Auth
 ```
 

@@ -161,11 +161,11 @@ response, err := facades.Http().
     Get("https://api.example.com")
 ```
 
-For convenience, you can use `AcceptJson` to quickly specify that you expect the API response to be in `application/json` format:
+For convenience, you can use `AcceptJSON` to quickly specify that you expect the API response to be in `application/json` format:
 
 ```go
 response, err := facades.Http().
-    AcceptJson().
+    AcceptJSON().
     Get("https://api.example.com/data")
 ```
 
@@ -257,7 +257,7 @@ type User struct {
 
 func main() {
     var user User
-    response, err := facades.Http().AcceptJson().Get("https://jsonplaceholder.typicode.com/users/1")
+    response, err := facades.Http().AcceptJSON().Get("https://jsonplaceholder.typicode.com/users/1")
     if err != nil {
         fmt.Println("Error making request:", err)
         return
