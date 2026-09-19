@@ -1,27 +1,46 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
+import { useElementHover, useTimeoutFn } from '@vueuse/core'
 import { useI18n } from '../i18n'
-import { useCycle } from './useCycle'
+import { useTicker } from './useTicker'
 import CodeLines from './CodeLines.vue'
 import { LARAVEL } from './config'
 
 const { tr, link } = useI18n()
 const concepts = LARAVEL.concepts
 
-const at = ref(0)
-const concept = computed(() => concepts[at.value])
-const tour = concepts.reduce((n, c) => n + c.ties.length, 0)
-const touring = ref(true)
-const { index: tie, hold, root: card } = useCycle(() => concept.value.ties.length, 1500, 0.3, tour)
-const pair = computed(() => concept.value.ties[tie.value % concept.value.ties.length] ?? [0, 0])
+const DWELL = 3
+const IDLE = 8000
 
-watch(tie, (now, before) => {
-  if (touring.value && now < before) at.value = (at.value + 1) % concepts.length
+const at = ref(0)
+const line = ref(0)
+const dwell = ref(0)
+const touring = ref(true)
+const concept = computed(() => concepts[at.value])
+const pair = computed(() => concept.value.ties[line.value] ?? [0, 0])
+
+const { ticks, root: card } = useTicker(1500)
+const hovered = useElementHover(card)
+const { start: wake } = useTimeoutFn(() => (touring.value = true), IDLE, { immediate: false })
+
+watch(ticks, () => {
+  dwell.value++
+  if (line.value + 1 < concept.value.ties.length) {
+    line.value++
+    return
+  }
+  line.value = 0
+  if (!touring.value || hovered.value || dwell.value < DWELL) return
+  dwell.value = 0
+  at.value = (at.value + 1) % concepts.length
 })
 
 const choose = (i: number) => {
   touring.value = false
   at.value = i
+  line.value = 0
+  dwell.value = 0
+  wake()
 }
 
 function onTabKey(event: KeyboardEvent) {
@@ -63,7 +82,7 @@ function onTabKey(event: KeyboardEvent) {
           @click="choose(i)"
         >{{ tr(c.name) }}</button>
       </div>
-      <div id="home-panel" :key="at" role="tabpanel" tabindex="0" :aria-labelledby="`home-tab-${at}`" class="home-card g-swap" @click="hold">
+      <div id="home-panel" :key="at" role="tabpanel" tabindex="0" :aria-labelledby="`home-tab-${at}`" class="home-card g-swap">
         <div class="home-file">
           <div class="g-file-head">
             <span class="g-label home-brand"><span class="icon-[simple-icons--laravel]" aria-hidden="true" />Laravel · PHP</span>
