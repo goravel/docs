@@ -23,6 +23,7 @@ const route = useRoute()
 const home = computed(() => (localeIndex.value === 'root' ? '/' : `/${localeIndex.value}/`))
 const nav = computed(() => theme.value.nav ?? [])
 const section = computed(() => nav.value[0]?.text ?? 'Docs')
+const version = VERSIONS.find((v) => v.selected)!.text
 
 const isActive = (match?: string) => !!match && new RegExp(match).test(route.path)
 
@@ -64,7 +65,7 @@ const onFocusOut = useDismiss(navRoot, () => (menuOpen.value = false))
     <VPNavBarSearch class="search" />
 
     <div class="utils">
-      <SelectMenu v-if="hasSidebar" label="v1.18" :options="VERSIONS" />
+      <SelectMenu v-if="hasSidebar" :label="version" :options="VERSIONS" />
       <SelectMenu class="lang" :label="currentLang.label!" :options="languages" />
       <VPSocialLinks class="social" :links="theme.socialLinks ?? []" />
     </div>

@@ -37,9 +37,9 @@ const meta = computed(() => {
   const path = page.value.filePath.replace(/^(en|zh_CN|uz_UZ)\//, '').replace(/\.md$/, '')
   const [dir, name] = path.split('/')
   if (!name) return null
-  const groups = theme.value.sidebar as { text: string; base: string }[]
+  const groups: { text?: string; base?: string }[] = Array.isArray(theme.value.sidebar) ? theme.value.sidebar : []
   return {
-    section: groups.find((group) => group.base.endsWith(`/${dir}/`))?.text,
+    section: groups.find((group) => group.base?.endsWith(`/${dir}/`))?.text,
     layer: LAYER_OF[path] ?? LAYER_OF[dir]
   }
 })

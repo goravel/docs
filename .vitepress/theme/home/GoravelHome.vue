@@ -14,6 +14,7 @@ const { tr, link } = useI18n()
 onMounted(() => document.documentElement.classList.add('g-home-snap'))
 onBeforeUnmount(() => document.documentElement.classList.remove('g-home-snap'))
 
+const TOTAL = Object.keys(FACADES).length
 const nameOf = (k: LayerKey | null | undefined) => (k ? LAYERS.find((l) => l.key === k)!.name : 'Your code')
 
 // the piece of the layer in focus keeps the logo's colour; the rest go pale, and all of them do in your own code
@@ -62,7 +63,7 @@ const liteView = computed<View>(() => {
   const states: Partial<Record<LayerKey, PieceState>> = {}
   for (const l of LAYERS) states[l.key] = l.facades.some((f) => installed.value.includes(f)) ? 'solid' : 'ghost'
   const pulled = LAYERS.filter((l) => states[l.key] === 'ghost').map((l) => l.key)
-  return { kind: 'lite', states, pulled, caption: `${installed.value.length} / 30 ${tr('facades installed')}` }
+  return { kind: 'lite', states, pulled, caption: `${installed.value.length} / ${TOTAL} ${tr('facades installed')}` }
 })
 
 const { index: tieStep, root: tieRoot } = useCycle(() => concept.value.ties.length, 1500, 0.3)
@@ -238,7 +239,7 @@ const files = computed(() => [
           <div class="g-assemble-figure">
             <GoravelMark :view="liteView" :scale="1" />
             <p class="g-count">
-              <span class="n">{{ installed.length }}</span><span class="muted"> / 30</span>
+              <span class="n">{{ installed.length }}</span><span class="muted"> / {{ TOTAL }}</span>
               <span class="g-body muted">{{ tr('facades installed') }}</span>
             </p>
           </div>

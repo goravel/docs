@@ -28,7 +28,8 @@ function methodName(el: HTMLElement) {
 function collect() {
   observer?.disconnect()
   const found = new Map<string, HTMLElement>()
-  for (const el of document.querySelectorAll<HTMLElement>('.vp-doc h3, .vp-doc h4, .vp-doc p:has(> strong:only-child)')) {
+  for (const node of document.querySelectorAll<HTMLElement>('.vp-doc h3, .vp-doc h4, .vp-doc p > strong:only-child')) {
+    const el = node.tagName === 'STRONG' ? node.parentElement! : node
     const name = methodName(el)
     if (name && !found.has(name)) found.set(name, el)
   }

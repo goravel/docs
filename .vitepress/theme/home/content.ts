@@ -210,6 +210,17 @@ export interface View {
   caption?: string
 }
 
+// kept by hand; the homepage's contributor count is the length of this list
+export const CONTRIBUTORS = [
+  'hwbrzzl', 'DevHaoZi', 'kkumar-gcc', 'almas-x', 'merouanekhalili', 'hongyukeji', 'sidshrivastav',
+  'Juneezee', 'dragoonchang', 'dhanusaputra', 'mauri870', 'Marian0', 'ahmed3mar', 'flc1125',
+  'zzpwestlife', 'juantarrel', 'Kamandlou', 'livghit', 'jeff87218', 'shayan-yousefi', 'zxdstyle',
+  'milwad-dev', 'mdanialr', 'KlassnayaAfrodita', 'YlanzinhoY', 'gouguoyin', 'dzham', 'praem90',
+  'vendion', 'tzsk', 'ycb1986', 'BadJacky', 'NiteshSingh17', 'alfanzain', 'oprudkyi', 'zoryamba',
+  'oguzhankrcb', 'ChisThanh', 'wyicwx', 'LinboLen', 'president-tuychiyev', 'eddyjj92',
+  'codedsultan'
+]
+
 // marks a call: [[Name]] in Go, {{name}} in PHP
 export function tokenize(src: string, marker: 'go' | 'php' = 'go') {
   const re = marker === 'go' ? /(\[\[[^\]]+\]\])/ : /(\{\{[^}]+\}\})/

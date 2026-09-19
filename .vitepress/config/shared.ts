@@ -48,6 +48,18 @@ function liftFileNames(md: MarkdownRenderer) {
   }
 }
 
+// a percentage in the packages table's coverage column gets a bar beside it when the page is built
+function drawCoverageBars(md: MarkdownRenderer) {
+  const close = md.renderer.rules.td_close ?? ((tokens, idx, options, _env, self) => self.renderToken(tokens, idx, options))
+  md.renderer.rules.td_close = (tokens, idx, options, env, self) => {
+    const value = env.relativePath?.includes('getting-started/packages') && tokens[idx - 1].content.match(/^([\d.]+)%$/)
+    const bar = value
+      ? `<span class="goravel-coverage"><span class="track"><span class="fill" style="width:${Math.min(100, parseFloat(value[1]))}%"></span></span></span>`
+      : ''
+    return bar + close(tokens, idx, options, env, self)
+  }
+}
+
 export const shared = defineConfig({
   title: 'Goravel',
 
@@ -105,6 +117,7 @@ export const shared = defineConfig({
       md.use(deflist)
       markCustomContainerTitles(md)
       liftFileNames(md)
+      drawCoverageBars(md)
     },
     languages: ['go']
   },

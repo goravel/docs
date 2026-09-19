@@ -36,15 +36,15 @@ export const config = defineConfig({
       collapsed: true,
       items: sidebarAdvanced()
     }, {
-      text: "安全",
-      base: "/zh_CN/security/",
-      collapsed: true,
-      items: sidebarSecurity()
-    }, {
       text: 'AI',
       base: '/zh_CN/ai/',
       collapsed: true,
       items: sidebarAI()
+    }, {
+      text: "安全",
+      base: "/zh_CN/security/",
+      collapsed: true,
+      items: sidebarSecurity()
     }, {
       text: "数据库",
       base: "/zh_CN/database/",

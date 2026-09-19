@@ -4,19 +4,10 @@ import { StorageSerializers, useFetch, useLocalStorage } from '@vueuse/core'
 import { LINKS } from '../../links'
 import { useDismiss } from '../dismiss'
 import { useI18n } from '../i18n'
+import { CONTRIBUTORS } from './content'
 import { data } from './github.data'
 
 const { tr } = useI18n()
-
-const PEOPLE = [
-  'hwbrzzl', 'DevHaoZi', 'kkumar-gcc', 'almas-x', 'merouanekhalili', 'hongyukeji', 'sidshrivastav',
-  'Juneezee', 'dragoonchang', 'dhanusaputra', 'mauri870', 'Marian0', 'ahmed3mar', 'flc1125',
-  'zzpwestlife', 'juantarrel', 'Kamandlou', 'livghit', 'jeff87218', 'shayan-yousefi', 'zxdstyle',
-  'milwad-dev', 'mdanialr', 'KlassnayaAfrodita', 'YlanzinhoY', 'gouguoyin', 'dzham', 'praem90',
-  'vendion', 'tzsk', 'ycb1986', 'BadJacky', 'NiteshSingh17', 'alfanzain', 'oprudkyi', 'zoryamba',
-  'oguzhankrcb', 'ChisThanh', 'wyicwx', 'LinboLen', 'president-tuychiyev', 'eddyjj92',
-  'codedsultan'
-]
 
 // live stars and forks: the browser asks GitHub at most once an hour, since the numbers move
 // slowly and GitHub allows 60 requests an hour without a token. Until an answer arrives, or
@@ -40,7 +31,7 @@ onMounted(async () => {
 
 const stats = computed(() => [
   { value: (live.value?.stars ?? data.stars).toLocaleString('en-US'), label: 'GitHub stars' },
-  { value: String(PEOPLE.length), label: 'contributors' },
+  { value: String(CONTRIBUTORS.length), label: 'contributors' },
   { value: (live.value?.forks ?? data.forks).toLocaleString('en-US'), label: 'forks' },
   { value: data.release, label: 'current release' }
 ])
@@ -67,7 +58,7 @@ const onFocusOut = useDismiss(links, () => (qr.value = null))
 
     <div class="g-people">
       <a
-        v-for="name in PEOPLE"
+        v-for="name in CONTRIBUTORS"
         :key="name"
         class="g-person"
         :href="`https://github.com/${name}`"
