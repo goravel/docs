@@ -634,9 +634,11 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 有时你可能希望在 CLI 之外执行 Artisan 命令，可以使用 `facades.Artisan()` 上的 `Call` 方法来完成此操作。
 
 ```go
-facades.Route().GET("/", func(c *gin.Context) {
+facades.Route().Get("/", func(ctx http.Context) http.Response {
   facades.Artisan().Call("emails")
   facades.Artisan().Call("emails --lang Chinese name") // 携带参数与选项
+
+  return ctx.Response().Success().String("done")
 })
 ```
 

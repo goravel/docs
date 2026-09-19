@@ -1,12 +1,12 @@
 ---
-title: Goravel - Full-featured Golang Development Framework
+title: Goravel - Familiar structure. Native Go.
 
 head:
   - [
       'meta',
       {
         name: description,
-        content: Goravel is a Golang development framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications.
+        content: "Goravel is a full-featured web framework for Go with the structure of Laravel. Routing, ORM, queues, scheduling, mail, auth and testing in one framework."
       }
     ]
   - ['meta', { property: og:url, content: https://www.goravel.dev }]
@@ -15,14 +15,14 @@ head:
       'meta',
       {
         property: og:title,
-        content: Goravel - Full-featured Golang Development Framework
+        content: Goravel - Familiar structure. Native Go.
       }
     ]
   - [
       'meta',
       {
         property: og:description,
-        content: Goravel is a Golang development framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications.
+        content: "Goravel is a full-featured web framework for Go with the structure of Laravel. Routing, ORM, queues, scheduling, mail, auth and testing in one framework."
       }
     ]
   - ['meta', { property: og:image, content: https://www.goravel.dev/meta.png }]
@@ -33,14 +33,14 @@ head:
       'meta',
       {
         name: twitter:title,
-        content: Goravel - The Golang Framework For Web Artisans
+        content: Goravel - Familiar structure. Native Go.
       }
     ]
   - [
       'meta',
       {
         name: twitter:description,
-        content: Goravel is a Golang development framework with complete functions and excellent scalability. As a starting scaffolding to help Gopher quickly build their own applications.
+        content: "Goravel is a full-featured web framework for Go with the structure of Laravel. Routing, ORM, queues, scheduling, mail, auth and testing in one framework."
       }
     ]
   - ['meta', { name: twitter:image, content: https://www.goravel.dev/meta.png }]

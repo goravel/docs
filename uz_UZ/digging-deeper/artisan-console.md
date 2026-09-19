@@ -636,9 +636,11 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 Ba'zan siz Artisan buyrug'ini CLI tashqarisida bajarishingiz mumkin, buning uchun `facades.Artisan()` da `Call` metodidan foydalanishingiz mumkin.
 
 ```go
-facades.Route().Get("/", func(c *gin.Context) {
+facades.Route().Get("/", func(ctx http.Context) http.Response {
   facades.Artisan().Call("emails")
   facades.Artisan().Call("emails --lang Chinese name") // With arguments and options
+
+  return ctx.Response().Success().String("done")
 })
 ```
 

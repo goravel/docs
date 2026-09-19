@@ -41,10 +41,10 @@ When `app.debug` is `true`, the console will print all logs. Otherwise, only `er
 
 We've already seen a few examples of how you may configure a task to run at specified intervals. However, there are many more task schedule frequencies avaibable to assign to tasks:
 
-| 方法                     | 描述                                                |
+| Method                   | Description                                         |
 | ------------------------ | --------------------------------------------------- |
-| `.Cron("* * * * *")`     | Custom Crone schedule (minutes)                     |
-| `.Cron("* * * * * *")`   | Custom Crone schedule (seconds)                     |
+| `.Cron("* * * * *")`     | Custom Cron schedule (minutes)                     |
+| `.Cron("* * * * * *")`   | Custom Cron schedule (seconds)                     |
 | `.EverySecond()`         | Run the task every second                           |
 | `.EveryTwoSeconds()`     | Run the task every two seconds                      |
 | `.EveryFiveSeconds()`    | Run the task every five seconds                     |
@@ -87,7 +87,7 @@ We've already seen a few examples of how you may configure a task to run at spec
 
 By default, scheduled tasks will continue to run even if a previous instance is still running. To prevent this, use the following methods:
 
-| 方法                     | 描述                   |
+| Method                   | Description            |
 | ------------------------ | ---------------------- |
 | `.SkipIfStillRunning()`  | Skip if still running  |
 | `.DelayIfStillRunning()` | Delay if still running |
