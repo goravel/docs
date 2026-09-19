@@ -1,7 +1,5 @@
 # Mock
 
-[[toc]]
-
 ## Tavsifi
 
 Goravelning barcha funksiyalari `facades` yordamida amalga oshiriladi va barcha `facades` interfeyslardan tashkil topgan. Shunday qilib, [stretchr/testify](http://github.com/stretchr/testify) dan olingan mock funksiyasi bilan Goravel ajoyib sinov tajribasini taqdim eta oladi.

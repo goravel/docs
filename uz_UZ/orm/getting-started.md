@@ -1,7 +1,5 @@
 # Boshlash
 
-[[toc]]
-
 ## Kirish
 
 Goravel juda oddiy va oson ishlatiladigan ma'lumotlar bazasi o'zaro ta'sirini taqdim etadi, dasturchilar `facades.Orm()` yordamida amallarni bajarishlari mumkin. Boshlashdan oldin [Ma'lumotlar bazasini sozlash](../database/getting-started) bo'limiga murojaat qiling.
@@ -1057,7 +1055,9 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 }
 ```
 
-> Eslatma: Faqat sizga kerak bo'lgan tadbirlarni ro'yxatdan o'tkazing. Orm orqali partiyali operatsiyalar bajarilayotganda model tadbirlari ishga tushirilmaydi.
+::: warning
+Faqat sizga kerak bo'lgan tadbirlarni ro'yxatdan o'tkazing. Orm orqali partiyali operatsiyalar bajarilayotganda model tadbirlari ishga tushirilmaydi.
+:::
 
 ### Kuzatuvchilar
 
@@ -1115,7 +1115,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-> Eslatma: Agar siz `DispatchesEvents` va `Observer` ni bir vaqtning o'zida o'rnatsangiz, faqat `DispatchesEvents` qo'llaniladi.
+::: warning
+Agar siz `DispatchesEvents` va `Observer` ni bir vaqtning o'zida o'rnatsangiz, faqat `DispatchesEvents` qo'llaniladi.
+:::
 
 #### Kuzatuvchidagi parametr
 

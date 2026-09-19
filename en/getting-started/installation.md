@@ -1,7 +1,5 @@
 # Installation
 
-[[toc]]
-
 ## Server Requirements
 
 - Golang >= 1.23
@@ -97,8 +95,6 @@ Once you have successfully installed Air, you need to make sure it can be execut
 Depending on your setup, Air might not be automatically available as a command.  
 Here are two simple ways to ensure it runs correctly:
 
----
-
 #### 🪄 Option 1: Using a Helper Script (`air.sh`)
 
 If Air is installed but not recognized as a terminal command, you can create a small helper script that locates and runs it automatically.
@@ -151,8 +147,7 @@ After this setup, you can start your project simply by running:
 air
 ```
 
-#### ✅ Tip
-
+:::tip
 To verify that Air is installed and accessible, run:
 
 ```bash
@@ -160,6 +155,7 @@ which air
 ```
 
 If it doesn't return a valid path (for example `/Users/yourname/go/bin/air`), it means the helper script or the path hasn't been configured yet.
+:::
 
 ## Configuration
 

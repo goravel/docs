@@ -1,7 +1,5 @@
 # Session
 
-[[toc]]
-
 ## Introduction
 
 Session enables you to store user information across multiple requests, providing a stateful experience within the inherently stateless HTTP protocol. This user information is stored persistently on the server side. Goravel offers a unified interface for interacting with various persistent storage drivers.

@@ -1,7 +1,5 @@
 # Konfiguratsiya
 
-[[toc]]
-
 ## Kirish
 
 Goravel freymvorkining barcha konfiguratsiya fayllari `config` papkasida saqlanadi. Siz aniq ko'rsatmalarni ko'rib chiqishingiz va loyiha ehtiyojlariga mos ravishda ularni moslashuvchan sozlashingiz mumkin.

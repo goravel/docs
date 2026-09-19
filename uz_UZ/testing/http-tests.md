@@ -1,7 +1,5 @@
 # HTTP Testlari
 
-[[toc]]
-
 ## Kirish
 
 Veb-ilovalarni yaratishda, siz tez-tez HTTP so'rovlaringiz boshidan oxirigacha to'g'ri ishlayotganligini sinab ko'rishingiz kerak bo'ladi. Goravelning test vositalari buni oddiy qiladi - siz murakkab test muhitlarini sozlashsiz so'rovlarni simulyatsiya qilishingiz va javoblarni tekshirishingiz mumkin.

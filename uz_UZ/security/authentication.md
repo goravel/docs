@@ -1,7 +1,5 @@
 # Autentifikatsiya
 
-[[toc]]
-
 ## Kirish
 
 Autentifikatsiya veb-ilovalarda ajralmas xususiyatdir. Goravelning `facades.Auth()` moduli JWT va Session drayverlarini qo‘llab-quvvatlaydi va siz drayver va foydalanuvchi provayderini sozlashingiz mumkin.

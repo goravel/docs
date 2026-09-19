@@ -1,7 +1,5 @@
 # Grpc
 
-[[toc]]
-
 ## Introduction
 
 Grpc module can be operated by `facades.Grpc()`. Goravel provides an elegant way to build and consume gRPC services, supporting both server and client sides.

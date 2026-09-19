@@ -1,7 +1,5 @@
 # HTTP So‘rovlari
 
-[[toc]]
-
 ## Kirish
 
 Goravelning `contracts/http/Request` metodi ilova tomonidan qayta ishlangan joriy HTTP so‘rovi bilan o‘zaro aloqada bo‘lishi va birga yuborilgan kiritish ma’lumotlari va fayllarni olishi mumkin.
@@ -113,7 +111,9 @@ names := ctx.Request().QueryMap("names")
 queries := ctx.Request().Queries()
 ```
 
-> Eslatma: Faqat bir o‘lchamli Json ma’lumotlari olinishi mumkin, aks holda bo‘sh qaytariladi.
+::: warning
+Faqat bir o‘lchamli Json ma’lumotlari olinishi mumkin, aks holda bo‘sh qaytariladi.
+:::
 
 ### Kiritish Qiymatini Olish
 

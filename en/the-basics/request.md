@@ -1,7 +1,5 @@
 # HTTP Requests
 
-[[toc]]
-
 ## Introduction
 
 The `contracts/http/Request` method of Goravel can interact with the current HTTP request processed by the application, and get the input and files submitted together.
@@ -113,7 +111,9 @@ names := ctx.Request().QueryMap("names")
 queries := ctx.Request().Queries()
 ```
 
-> Note: Only one-dimensional Json data can be obtained, otherwise it will return empty.
+::: warning
+Only one-dimensional Json data can be obtained, otherwise it will return empty.
+:::
 
 ### Retrieving An Input Value
 

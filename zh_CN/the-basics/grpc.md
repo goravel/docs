@@ -1,7 +1,5 @@
 # Grpc
 
-[[toc]]
-
 ## 简介
 
 Grpc 模块可以使用 `facades.Grpc()` 进行操作。 Goravel 提供了一种优雅的方式来构建和使用 gRPC 服务，同时支持服务端和客户端。

@@ -1,7 +1,5 @@
 # Navbatlar
 
-[[toc]]
-
 ## Kirish
 
 Veb-ilovangizni yaratishda, veb-so‘rov davomida bajarish uchun juda uzoq vaqt talab qiladigan, yuklangan CSV faylini tahlil qilish va saqlash kabi vazifalar bo‘lishi mumkin. Xo‘sh, Goravel sizga orqa fonda ishlaydigan navbatga qo‘yilgan ishlarni yaratish imkoniyatini beruvchi yechimni taklif qiladi. Shu tarzda, vaqt talab qiladigan vazifalarni navbatga o‘tkazish orqali, ilovangiz veb-so‘rovlarga ancha tezroq javob bera oladi va mijozlaringiz uchun yaxshi foydalanuvchi tajribasini taqdim etadi. Ushbu xususiyatni amalga oshirish uchun biz `facades.Queue()` dan foydalanamiz.

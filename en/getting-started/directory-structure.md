@@ -1,7 +1,5 @@
 # Directory Structure
 
-[[toc]]
-
 ## Introduction
 
 The default file structure can make you better start project advancement, and you can also add new folders freely, but do not modify the default folders.

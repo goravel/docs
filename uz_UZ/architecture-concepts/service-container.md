@@ -1,7 +1,5 @@
 # Xizmat Konteyneri
 
-[[toc]]
-
 ## Kirish
 
 Goravel xizmat konteyneri sinf bog'liqliklarini boshqarish va bog'liqlik in'ektsiyasini amalga oshirish uchun kuchli vosita hisoblanadi. U Goravelning barcha modullarini o'z ichiga oladi va sizga o'z xizmatlaringizni konteynerga bog'lash va kerak bo'lganda ularni hal qilish imkonini beradi. Xizmat konteyneri Goravel atrofidagi uchinchi tomon paketlari uchun kuchli qo'llab-quvvatlashni ta'minlaydi.

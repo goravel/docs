@@ -1,7 +1,5 @@
 # Pochta
 
-[[toc]]
-
 ## Kirish
 
 Goravel pochtani mahalliy ravishda osongina yuborish uchun `facades.Mail()` dan foydalanishi mumkin.

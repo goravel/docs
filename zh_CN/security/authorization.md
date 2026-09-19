@@ -1,7 +1,5 @@
 # 用户授权
 
-[[toc]]
-
 ## 简介
 
 除了提供内置的 [身份验证（authentication)](./authentication.md) 服务外，Goravel 还提供了一种可以很简单就进行使用的方法，来对用户与资源的授权关系进行管理。 即使用户已经通过了「身份验证（authentication)」， 用户也可能无权对应用程序中的模型或数据库记录进行删除或更改。 Goravel的授权功能允许有系统地管理这些授权检查。
@@ -123,7 +121,9 @@ facades.Gate().After(func(ctx context.Context, ability string, arguments map[str
 })
 ```
 
-> 注意：只有当 `facades.Gate().Define` 返回 nil 时，才会应用 `After` 的返回结果。
+::: warning
+只有当 `facades.Gate().Define` 返回 nil 时，才会应用 `After` 的返回结果。
+:::
 
 ### 注入 Context
 

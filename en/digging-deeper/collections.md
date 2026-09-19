@@ -1,7 +1,5 @@
 # Collections
 
-[[toc]]
-
 ## Introduction
 
 Goravel provides a fluent collection API through the `github.com/goravel/framework/support/collect` package. Collections make it convenient to filter, transform, aggregate, and inspect slice data with chainable methods.

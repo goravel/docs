@@ -1,7 +1,5 @@
 # Authorization
 
-[[toc]]
-
 ## Introduction
 
 Goravel offers built-in [authentication](./authentication.md) services and an easy-to-use authorization feature to manage user actions on resources. Even if a user is authenticated, they may not have the authority to modify or delete certain Eloquent models or database records. Goravel's authorization feature allows for a systematic way of managing these authorization checks.
@@ -123,7 +121,9 @@ facades.Gate().After(func(ctx context.Context, ability string, arguments map[str
 })
 ```
 
-> Notice: The return result of `After` will be applied only when `facades.Gate().Define` returns nil.
+::: warning
+The return result of `After` will be applied only when `facades.Gate().Define` returns nil.
+:::
 
 ### Inject Context
 

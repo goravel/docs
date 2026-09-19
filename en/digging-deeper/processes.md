@@ -1,7 +1,5 @@
 # Processes
 
-[[toc]]
-
 ## Introduction
 
 Goravel provides an expressive and elegant API around Go's standard `os/exec` package, allowing you to invoke external commands from your application seamlessly. By default, Go's process handling can be verbose; Goravel's `Process` facade simplifies this common task, offering a fluent interface for executing commands, handling output, and managing asynchronous processes.

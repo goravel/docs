@@ -1,7 +1,5 @@
 # Yordamchilar
 
-[[toc]]
-
 ## Mavjud usullar
 
 ### Yo'llar

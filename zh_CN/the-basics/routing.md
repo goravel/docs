@@ -1,7 +1,5 @@
 # 路由
 
-[[toc]]
-
 ## 简介
 
 Goravel 路由模块可以使用 `facades.Route()` 进行操作。
@@ -185,7 +183,9 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **注意**：中间件排除使用 `Signature()` 方法来识别中间件。请确保每个中间件返回唯一的签名，以便 `WithoutMiddleware` 正常工作。框架内置的中间件已经提供了唯一的签名。
+::: warning
+中间件排除使用 `Signature()` 方法来识别中间件。请确保每个中间件返回唯一的签名，以便 `WithoutMiddleware` 正常工作。框架内置的中间件已经提供了唯一的签名。
+:::
 
 ## 获取所有路由
 
@@ -215,7 +215,7 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 })
 ```
 
-## 速率限制
+## 速率限制 {#rate-limiting}
 
 ### 定义速率限制器
 

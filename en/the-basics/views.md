@@ -1,7 +1,5 @@
 # Views
 
-[[toc]]
-
 ## Introduction
 
 Of course, it's not practical to return entire HTML document strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory.

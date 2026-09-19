@@ -1,7 +1,5 @@
 # HTTP mijozi
 
-[[toc]]
-
 ## Kirish
 
 Dasturiy ta'minotni ishlab chiqishda, ma'lumotlarni olish uchun API ni chaqirish kerak bo'lgan ko'p holatlar mavjud — xoh u mikroservisga ulanish bo'lsin, xoh uchinchi tomon API siga kirish bo'lsin. Bunday hollarda,

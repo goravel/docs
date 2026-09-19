@@ -1,7 +1,5 @@
 # Vazifa rejalashtirish
 
-[[toc]]
-
 ## Kirish
 
 Avvalroq, serveringizda rejalashtirilishi kerak bo‘lgan har bir vazifa uchun cron konfiguratsiyasi yozuvini yaratishingiz kerak edi. Biroq, bu yondashuv tezda muammoga aylanadi, chunki vazifa jadvalingiz manba nazoratida emas va cron yozuvlarini ko‘rish yoki qo‘shish/o‘zgartirish uchun serveringizga SSH orqali ulanishingiz kerak.

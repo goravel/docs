@@ -1,7 +1,5 @@
 # So‘rovning ishlash jarayoni
 
-[[toc]]
-
 ## Kirish
 
 Har qanday vositadan real hayotda foydalanish, uning qanday ishlashini bilganingizda yanada intuitiv va tushunarli bo‘ladi. Ushbu hujjat sizga Goravel qanday ishlashini aniq va umumiy darajada tushuntirib berishni maqsad qiladi. Agar har bir atamani darhol to'g'ri tushunmasangiz, tashvishlanmang - faqat narsalar qanday ishlashini asosiy ma'noda tushunishga harakat qiling, va siz qo'llanmaning qolgan qismini o'rganayotganda bilimingiz o'sib boradi.

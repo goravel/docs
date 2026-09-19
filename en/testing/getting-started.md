@@ -1,7 +1,5 @@
 # Getting Started
 
-[[toc]]
-
 ## Introduction
 
 The testing function of Goravel relies on Golang's official test component, extending unit testing to support integration testing and improve application robustness.

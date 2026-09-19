@@ -1,7 +1,5 @@
 # 贡献指南
 
-[[toc]]
-
 Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、文章、教程等。 完成两个 `Feature`（5 个 `Good First Issue` == 1 个 `Feature`）后，你将成为核心开发者。 之后每三个月至少完成一个 `Feature`，可以保持这个头衔。
 
 让我们一起将 Goravel 变得更高效！
@@ -17,7 +15,7 @@ Goravel 欢迎不同人才提供丰富多样的贡献，例如编码、翻译、
 
 <div class="flex flex-wrap gap-2 mt-5" :class="$style.contributors"><a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
-<a href="https://github.com/kkumar-gcc" target="_blank"><img src="https://avatars.githubusercontent.com/u/84431594?v=4" width="48" height="48"></a>
+<a href="https://github.com/krishankumar01" target="_blank"><img src="https://avatars.githubusercontent.com/u/84431594?v=4" width="48" height="48"></a>
 <a href="https://github.com/almas-x" target="_blank"><img src="https://avatars.githubusercontent.com/u/9382335?v=4" width="48" height="48"></a>
 </div>
 
@@ -184,7 +182,9 @@ goravel skill:install --path ~/goravel-skills
 goravel skill:install --force goravel-testing
 ```
 
-> **注意**：除非使用 `--force`，否则已有技能将被保留。
+::: info
+除非使用 `--force`，否则已有技能将被保留。
+:::
 
 ## 行为准则
 

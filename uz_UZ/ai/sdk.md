@@ -1,7 +1,5 @@
 # AI SDK
 
-[[toc]]
-
 ## Kirish
 
 AI SDK Goravel ilovalarida AI provayderlari bilan o'zaro aloqa qilish uchun yagona API taqdim etadi. U `AI` fasadini, holatli suhbatlarni, agent klasslarini, provayder/model opsiyalarini, ilovalarni, oqimli javoblarni, rasm yaratishni, audio yaratishni va transkripsiyani o'z ichiga oladi.

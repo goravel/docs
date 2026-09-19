@@ -1,7 +1,5 @@
 # 服务提供者
 
-[[toc]]
-
 ## 简介
 
 内核启动过程中最重要的是加载 服务提供者。 应用程序下的所有 `ServiceProvider` 都在 `bootstrap/providers.go` 文件中进行配置。

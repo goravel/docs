@@ -1,4 +1,5 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
+import { community } from './community'
 export const config = defineConfig({
   lang: "uz-UZ",
   description: "Goravel — bu to‘liq funksiyalarga ega va yuqori darajada kengaytiriladigan web-ilovalar frameworki hisoblanadi. U Go dasturchilari (gopherlar) uchun boshlang‘ich platforma (scaffolding) sifatida xizmat qiladi va ularga o‘z ilovalarini tez, tartibli va professional tarzda yaratishga yordam beradi.",
@@ -7,46 +8,57 @@ export const config = defineConfig({
     sidebar: [{
       text: "Kirish",
       base: "/uz_UZ/prologue/",
+      collapsed: true,
       items: sidebarPrologue()
     }, {
       text: "Yangilash",
       base: "/uz_UZ/upgrade/",
+      collapsed: true,
       items: sidebarUpgrade()
     }, {
       text: "Boshlash",
       base: "/uz_UZ/getting-started/",
+      collapsed: true,
       items: sidebarGettingStarted()
     }, {
       text: "Arxitektura tushunchalari",
       base: "/uz_UZ/architecture-concepts/",
+      collapsed: true,
       items: sidebarFoundation()
     }, {
       text: "Asosiy tushunchalar",
       base: "/uz_UZ/the-basics/",
+      collapsed: true,
       items: sidebarBasic()
     }, {
       text: "Chuqurroq o'rganish",
       base: "/uz_UZ/digging-deeper/",
+      collapsed: true,
       items: sidebarAdvanced()
     }, {
       text: "AI",
       base: "/uz_UZ/ai/",
+      collapsed: true,
       items: sidebarAI()
     }, {
       text: "Xavfsizlik",
       base: "/uz_UZ/security/",
+      collapsed: true,
       items: sidebarSecurity()
     }, {
       text: "Ma'lumotlar bazasi",
       base: "/uz_UZ/database/",
+      collapsed: true,
       items: sidebarDatabase()
     }, {
       text: 'ORM',
       base: "/uz_UZ/orm/",
+      collapsed: true,
       items: sidebarOrm()
     }, {
       text: "Testlash",
       base: "/uz_UZ/testing/",
+      collapsed: true,
       items: sidebarTesting()
     }],
     editLink: {
@@ -81,36 +93,38 @@ export const config = defineConfig({
   }
 });
 function nav(): DefaultTheme.NavItem[] {
-  return [{
-    text: "Tez boshlash",
-    link: "/uz_UZ/getting-started/installation",
-    activeMatch: "/uz_UZ/getting-started/"
-  }, {
-    text: "Video darsliklar",
-    items: [{
-      text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>YouTube</span></span>',
-      link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
-    }, {
-      text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
-      link: 'https://devchalk.com/goravel'
-    }]
-  }, {
-    text: "Versiyalar",
-    items: [{
-      text: "v1.18 (Eng so'nggi)",
-      link: 'https://www.goravel.dev/'
-    }, {
-      text: "v1.17",
-      link: 'https://v117.goravel.dev/'
-    }, {
-      text: 'v1.16',
-      link: 'https://v116.goravel.dev/'
-    }]
-  }, {
-    text: "Tarjima qilish",
-    link: "/uz_UZ/prologue/contributions#add-a-new-language"
-  }];
+  return [
+    {
+      text: 'Hujjatlar',
+      link: '/uz_UZ/getting-started/installation',
+      activeMatch: '^/uz_UZ/(?!getting-started/packages)(getting-started|architecture-concepts|the-basics|digging-deeper|database|orm|testing|security|ai)/'
+    },
+    {
+      text: 'Paketlar',
+      link: '/uz_UZ/getting-started/packages',
+      activeMatch: '^/uz_UZ/getting-started/packages'
+    },
+    {
+      text: 'Relizlar',
+      link: '/uz_UZ/prologue/releases',
+      activeMatch: '^/uz_UZ/(prologue/releases|upgrade/)'
+    },
+    community(
+      {
+        title: 'Hamjamiyat',
+        connect: 'Aloqa',
+        learn: "O'rganish",
+        videos: 'Video darsliklar',
+        contribute: "Hissa qo'shish",
+        guide: "Hissa qo'shish bo'yicha qo'llanma",
+        language: "Til qo'shish",
+        languageAnchor: 'add-a-new-language'
+      },
+      '/uz_UZ'
+    )
+  ]
 }
+
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{
     text: "O'rnatish",

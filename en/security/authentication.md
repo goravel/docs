@@ -1,7 +1,5 @@
 # Authentication
 
-[[toc]]
-
 ## Introduction
 
 Authentication is an indispensable feature in Web Applications, the `facades.Auth()` module of Goravel provides support for JWT and Session drivers, and you can customize the driver and user provider.

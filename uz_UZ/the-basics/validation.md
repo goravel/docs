@@ -1,7 +1,5 @@
 # Tekshirish
 
-[[toc]]
-
 ## Kirish
 
 Goravel ilovangizning kiruvchi ma'lumotlarini tekshirish uchun bir nechta turli yondashuvlarni taqdim etadi. Barcha kiruvchi HTTP so'rovlarida mavjud bo'lgan `Validate` usulidan foydalanish eng keng tarqalgan usuldir. Goravel qulay tekshirish qoidalarining keng turlarini o'z ichiga oladi.

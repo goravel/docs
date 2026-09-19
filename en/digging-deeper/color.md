@@ -1,7 +1,5 @@
 # Color
 
-[[toc]]
-
 ## Introduction
 
 The `color` package provides a set of functions to colorize the output of the terminal using [PTerm](https://github.com/pterm/pterm) library.

@@ -1,7 +1,5 @@
 # Boshlash
 
-[[toc]]
-
 ## Kirish
 
 Deyarli barcha ilovalar ma'lumotlar bazalari bilan o'zaro aloqada bo'lishi kerak, shuning uchun Goravel juda oddiy va qulay ma'lumotlar bazasi o'zaro aloqasini taqdim etadi. Dasturchilar ma'lumotlar bazalari bilan ishlash uchun native SQL, so'rov quruvchi va [Orm](../orm/getting-started) dan foydalanishlari mumkin. Hozirda Goravel quyidagi to'rtta ma'lumotlar bazasini rasmiy qo'llab-quvvatlaydi:
@@ -75,7 +73,9 @@ var product Product
 err := facades.DB().Select(&product, "SELECT * FROM products WHERE id = ?", 1)
 ```
 
-> Eslatma: Turli ma'lumotlar bazasi drayverlari turli joy egallovchilarni talab qiladi. Masalan, `?` belgisi MySQL uchun, `@` belgisi esa PostgreSQL uchun ishlatiladi.
+::: warning
+Turli ma'lumotlar bazasi drayverlari turli joy egallovchilarni talab qiladi. Masalan, `?` belgisi MySQL uchun, `@` belgisi esa PostgreSQL uchun ishlatiladi.
+:::
 
 ### Kiritish
 

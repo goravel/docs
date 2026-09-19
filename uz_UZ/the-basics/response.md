@@ -1,7 +1,5 @@
 # HTTP Javobi
 
-[[toc]]
-
 ## Kirish
 
 Controllerda HTTP javobi uchun `ctx.Response()` dan foydalanishingiz mumkin.

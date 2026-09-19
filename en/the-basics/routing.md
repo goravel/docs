@@ -1,7 +1,5 @@
 # Routing
 
-[[toc]]
-
 ## Introduction
 
 The Goravel routing module can be operated by `facades.Route()`.
@@ -185,7 +183,9 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **Note**: Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
+::: warning
+Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
+:::
 
 ## Get All Routes
 

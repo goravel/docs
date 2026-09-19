@@ -1,7 +1,5 @@
 # Migratsiyalar
 
-[[toc]]
-
 ## Kirish
 
 Bir necha odam ilovalarni ishlab chiqishda hamkorlik qilganda, sinxronizatsiya uchun standartlashtirilgan ma'lumotlar bazasi tuzilishiga ega bo'lish juda muhimdir. Bunisiz, har bir kishining individual ma'lumotlari mos kelmasligi sababli tartibsizlik yuzaga kelishi mumkin. Ma'lumotlar bazasi migratsiyasi bu muammoning yechimidir. Ma'lumotlar bazasi tuzilishi versiyalarni boshqarish orqali barcha ishlab chiquvchilar orasida uning izchilligini ta'minlash uchun nazorat qilinadi.

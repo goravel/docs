@@ -1,7 +1,5 @@
 # Zavodlar
 
-[[toc]]
-
 ## Kirish
 
 Ilovingizni sinovdan o‘tkazish yoki ma’lumotlar bazangizni to‘ldirishda, oldindan ma’lumotlar bazangizga bir nechta yozuvlarni kiritish zarur bo‘lishi mumkin. Har bir ustun uchun qo‘lda qiymatlarni kiritish o‘rniga, Goravel sizga model zavodlarini yaratish orqali har bir modelingiz uchun standart atributlar to‘plamini belgilash imkonini beradi.

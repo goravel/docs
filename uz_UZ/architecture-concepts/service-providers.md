@@ -1,7 +1,5 @@
 # Xizmat ko'rsatuvchilar
 
-[[toc]]
-
 ## Kirish
 
 The most important thing in the kernel boot operation is to load the `ServiceProvider`. Ilovaning barcha `ServiceProvider`lari `bootstrap/providers.go` faylida sozlanadi.

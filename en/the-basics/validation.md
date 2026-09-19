@@ -1,7 +1,5 @@
 # Validation
 
-[[toc]]
-
 ## Introduction
 
 Goravel provides several different approaches to validate your application's incoming data. It is most common to use the `Validate` method available on all incoming HTTP requests. Goravel includes a wide variety of convenient validation rules.
@@ -147,7 +145,9 @@ func (r *PostController) Store(ctx http.Context) {
 
 Check more rules in the [Available Validation Rules](#available-validation-rules) section.
 
-> Note that since `form` passed values ​​are of `string` type by default, all fields in request should also be of `string` type, otherwise please use `JSON` to pass values.
+::: warning
+Since `form` passed values ​​are of `string` type by default, all fields in request should also be of `string` type, otherwise please use `JSON` to pass values.
+:::
 
 ### Authorizing Form Requests
 

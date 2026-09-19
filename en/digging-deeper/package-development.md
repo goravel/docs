@@ -1,7 +1,5 @@
 # Package Development
 
-[[toc]]
-
 ## Introduction
 
 Packages are the primary way of adding functionality to Goravel. These packages may contain routes, controllers, and configurations that are specifically designed to enhance a Goravel application. This guide focuses on developing Goravel-specific packages.

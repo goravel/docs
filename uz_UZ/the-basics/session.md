@@ -1,7 +1,5 @@
 # Session
 
-[[toc]]
-
 ## Kirish
 
 Seans sizga bir nechta so‘rovlar bo‘yicha foydalanuvchi ma’lumotlarini saqlash imkonini beradi, bu esa tabiatan stateless HTTP protokolida holatli tajribani ta’minlaydi. Ushbu foydalanuvchi ma’lumotlari server tomonida doimiy ravishda saqlanadi. Goravel turli doimiy saqlash haydovchilari bilan o‘zaro aloqada bo‘lish uchun birlashtirilgan interfeysni taklif qiladi.

@@ -1,7 +1,5 @@
 # Facades
 
-[[toc]]
-
 ## Introduction
 
 `facades` provide a "static" interface for the core functionality of the application and provide a more flexible, more elegant, and easy-to-test syntax. All `facades` of Goravel are defined under the `app/facades` folder:
@@ -65,4 +63,6 @@ func Route() route.Route {
 ./artisan package:uninstall Route
 ```
 
-> Notice: if you are using the `./artisan package:install` command to choose the `facades` manually, you need to press `x` to select the facades you want to install, then press `Enter` to confirm. `facades` are not selected if you directly press `Enter`.
+::: tip
+If you are using the `./artisan package:install` command to choose the `facades` manually, you need to press `x` to select the facades you want to install, then press `Enter` to confirm. `facades` are not selected if you directly press `Enter`.
+:::
