@@ -89,6 +89,17 @@
   }
 }
 
+@media (min-width: 1280px) {
+  .VPDoc:not(.has-aside) .container > .content {
+    width: 100% !important;
+    border-right: 0;
+  }
+
+  .VPDoc:not(.has-aside) .vp-doc p {
+    max-width: 720px;
+  }
+}
+
 @media (max-width: 959px) {
   .VPDoc {
     padding-left: 24px !important;

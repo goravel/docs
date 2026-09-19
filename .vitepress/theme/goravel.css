@@ -759,6 +759,10 @@
   overflow-wrap: anywhere;
 }
 
+.vp-doc td:first-child > a {
+  overflow-wrap: normal;
+}
+
 .vp-doc td:has(> .goravel-coverage) {
   white-space: nowrap;
 }
