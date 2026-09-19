@@ -97,17 +97,17 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: '文档',
       link: '/zh_CN/getting-started/installation',
-      activeMatch: '/zh_CN/getting-started/'
+      activeMatch: '^/zh_CN/(?!getting-started/packages)(getting-started|architecture-concepts|the-basics|digging-deeper|database|orm|testing|security|ai)/'
     },
     {
-      text: '指南',
-      link: '/zh_CN/the-basics/routing',
-      activeMatch: '/zh_CN/(the-basics|digging-deeper|database|orm|testing|security|ai)/'
+      text: '扩展包',
+      link: '/zh_CN/getting-started/packages',
+      activeMatch: '^/zh_CN/getting-started/packages'
     },
     {
-      text: '框架',
-      link: '/zh_CN/architecture-concepts/request-lifecycle',
-      activeMatch: '/zh_CN/architecture-concepts/'
+      text: '版本发布',
+      link: '/zh_CN/prologue/releases',
+      activeMatch: '^/zh_CN/(prologue/releases|upgrade/)'
     },
     community(
       {

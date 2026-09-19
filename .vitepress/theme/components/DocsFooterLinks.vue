@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSidebar } from 'vitepress/theme'
+import { useSidebar } from 'vitepress/theme-without-fonts'
 import { LINKS } from '../../links'
 import { useI18n } from '../i18n'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DefaultTheme from 'vitepress/theme'
+import DefaultTheme from 'vitepress/theme-without-fonts'
 import DocMeta from './components/DocMeta.vue'
 import MethodIndex from './components/MethodIndex.vue'
 import NotFound from './components/NotFound.vue'

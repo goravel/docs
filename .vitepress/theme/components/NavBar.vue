@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useData, useRoute } from 'vitepress'
-import { useSidebar } from 'vitepress/theme'
+import { useSidebar } from 'vitepress/theme-without-fonts'
 import VPNavBarSearch from 'vitepress/dist/client/theme-default/components/VPNavBarSearch.vue'
 import VPNavBarHamburger from 'vitepress/dist/client/theme-default/components/VPNavBarHamburger.vue'
 import VPSocialLinks from 'vitepress/dist/client/theme-default/components/VPSocialLinks.vue'

@@ -95,19 +95,19 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-      text: "Hujjatlar",
+      text: 'Hujjatlar',
       link: '/uz_UZ/getting-started/installation',
-      activeMatch: '/uz_UZ/getting-started/'
+      activeMatch: '^/uz_UZ/(?!getting-started/packages)(getting-started|architecture-concepts|the-basics|digging-deeper|database|orm|testing|security|ai)/'
     },
     {
-      text: "Qo'llanmalar",
-      link: '/uz_UZ/the-basics/routing',
-      activeMatch: '/uz_UZ/(the-basics|digging-deeper|database|orm|testing|security|ai)/'
+      text: 'Paketlar',
+      link: '/uz_UZ/getting-started/packages',
+      activeMatch: '^/uz_UZ/getting-started/packages'
     },
     {
-      text: 'Freymvork',
-      link: '/uz_UZ/architecture-concepts/request-lifecycle',
-      activeMatch: '/uz_UZ/architecture-concepts/'
+      text: 'Relizlar',
+      link: '/uz_UZ/prologue/releases',
+      activeMatch: '^/uz_UZ/(prologue/releases|upgrade/)'
     },
     community(
       {

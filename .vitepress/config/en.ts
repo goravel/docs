@@ -113,17 +113,17 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Docs',
       link: '/getting-started/installation',
-      activeMatch: '/getting-started/'
+      activeMatch: '^/(?!getting-started/packages)(getting-started|architecture-concepts|the-basics|digging-deeper|database|orm|testing|security|ai)/'
     },
     {
-      text: 'Guides',
-      link: '/the-basics/routing',
-      activeMatch: '/(the-basics|digging-deeper|database|orm|testing|security|ai)/'
+      text: 'Packages',
+      link: '/getting-started/packages',
+      activeMatch: '^/getting-started/packages'
     },
     {
-      text: 'Framework',
-      link: '/architecture-concepts/request-lifecycle',
-      activeMatch: '/architecture-concepts/'
+      text: 'Releases',
+      link: '/prologue/releases',
+      activeMatch: '^/(prologue/releases|upgrade/)'
     },
     community(
       {

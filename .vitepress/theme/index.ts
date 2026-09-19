@@ -1,5 +1,5 @@
 import TwoslashFloatingVue from '@shikijs/vitepress-twoslash/client'
-import Theme from 'vitepress/theme'
+import Theme from 'vitepress/theme-without-fonts'
 import Layout from './Layout.vue'
 import giscusTalk from 'vitepress-plugin-comment-with-giscus'
 import { useData, useRoute } from 'vitepress'
@@ -19,7 +19,7 @@ export default {
   enhanceApp({ app }: EnhanceAppContext) {
     app.use(TwoslashFloatingVue)
     // only the three homepages use it, so doc pages do not download it
-    app.component('goravel-home', defineAsyncComponent(() => import('./home/GoravelHome.vue')))
+    app.component('goravel-home', defineAsyncComponent(() => import('./home/Home.vue')))
   },
   setup() {
     // Get frontmatter and route
