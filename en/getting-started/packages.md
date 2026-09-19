@@ -2,7 +2,7 @@
 
 You can find extended packages for Goravel here, and you can also create a PR for [goravel/docs](https://github.com/goravel/docs) to commit your owner package, please improve the test coverage of your package as much as possible.
 
-| Package | Description | Test Coverage* |
+| Package | Description | Test Coverage |
 | --------------------------------------------------------------------------------- | --------------------------------------------- | ------------- |
 | [goravel/gin](https://github.com/goravel/gin) | The Gin driver for `facades.Route()` | 83.1% |
 | [goravel/fiber](https://github.com/goravel/fiber) | The Fiber driver for `facades.Route()` | 81.0% |
@@ -26,13 +26,16 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [hulutech-web/tinker](https://github.com/hulutech-web/tinker) | A goravel tinker package | 3.6% |
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket) | A webSocket package | 0% |
 
-***Note**: The packages are ordered based on their test rate.
+::: info
+Packages are ordered by test coverage.
+:::
 
-💡 Tip: To help more developers discover your work, you can also add relevant topics to your repository.
-Recommended topic: [`goravel-package`](https://github.com/topics/goravel-package)
+::: tip Help developers find your package
+Add the [`goravel-package`](https://github.com/topics/goravel-package) topic to your repository.
 
-- On GitHub, navigate to the main page of the repository.
-- In the top right corner of the page, to the right of "About", click gear icon (settings).
-- Under "Topics", start to type the topic you want to add to your repository to display a dropdown menu of any matching topics.
-- Click the topic you want to add or continue typing to create a new topic. For example: `goravel-package`, `goravel` and any other relevant keywords.
-- Click `Save changes` — this will make your package more discoverable.
+1. On GitHub, navigate to the main page of the repository.
+2. In the top right corner of the page, to the right of "About", click gear icon (settings).
+3. Under "Topics", start to type the topic you want to add to your repository to display a dropdown menu of any matching topics.
+4. Click the topic you want to add or continue typing to create a new topic. For example: `goravel-package`, `goravel` and any other relevant keywords.
+5. Click `Save changes` — this will make your package more discoverable.
+:::

@@ -214,7 +214,9 @@ file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFileAs("photos", file, "name")
 ```
 
-> If the file name specified by `StoreAs` and `PutFileAs` doesn't have a suffix, the suffix is automatically added based on the MIME of the file; otherwise, the specified file name is used directly.
+::: info
+If the file name passed to `StoreAs` or `PutFileAs` has no suffix, one is added based on the file's MIME type. Otherwise the name is used as given.
+:::
 
 ### Specifying A Disk
 

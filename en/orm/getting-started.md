@@ -699,7 +699,9 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 })
 ```
 
-> `created_at` and `updated_at` will be filled automatically.
+::: info
+`created_at` and `updated_at` are filled automatically.
+:::
 
 ### Cursor
 
@@ -744,7 +746,9 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 // UPDATE `users` SET `updated_at`='2023-09-18 21:07:06.489',`name`='hello',`age`=18 WHERE `name` = 'tom';
 ```
 
-> When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
+::: warning Zero values are skipped
+When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
+:::
 
 #### Update JSON fields
 
@@ -816,7 +820,8 @@ facades.Orm().Query().Select(orm.Associations).Delete(&user)
 facades.Orm().Query().Select("Account").Delete(&users)
 ```
 
-Note: The associations will be deleted only if the primary key of the record is not empty, and Orm uses these primary keys as conditions to delete associated records:
+::: warning
+The associations are deleted only if the primary key of the record is not empty, because Orm uses these primary keys as conditions to delete associated records:
 
 ```go
 // Delete user that name='goravel', but don't delete account of user
@@ -828,6 +833,7 @@ facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.
 // Delete user that id = 1 and delete account of that user
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
+:::
 
 If execute batch delete without any conditions, ORM doesn't do that and returns an error. So you have to add some conditions, or use native SQL.
 
@@ -995,7 +1001,9 @@ Orm models dispatch several events, allowing you to hook into the following mome
 
 The `Retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `Creating` and `Created` events will dispatch. The `Updating` / `Updated` events will dispatch when an existing model is modified and the `Save` method is called. The `Saving` / `Saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
 
-Note: All events will only be triggered when operating a model. For example, if you want to trigger the `Updating` and `Updated` events when calling the `Update` method, you need to pass the existing model to the `Model` method: `facades.Orm().Query().Model(&user).Update("name", "Goravel")`.
+::: warning
+All events will only be triggered when operating a model. For example, if you want to trigger the `Updating` and `Updated` events when calling the `Update` method, you need to pass the existing model to the `Model` method: `facades.Orm().Query().Model(&user).Update("name", "Goravel")`.
+:::
 
 To start listening to model events, define a `DispatchesEvents` method on your model. This property maps various points of the model's lifecycle to your own event classes.
 

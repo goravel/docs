@@ -125,7 +125,7 @@ s.Nil(err)
 s.True(json["created"])
 ```
 
-:::tip
+::: tip
 `AssertJson` 方法检查响应是否包含所有指定的值，即使响应包含额外的字段。 除非使用 `AssertExactJson`，否则不需要完全匹配。
 :::
 

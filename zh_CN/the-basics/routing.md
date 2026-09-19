@@ -316,4 +316,6 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 
 Goravel 已默认启用 CORS，详细配置可以到 `config/cors.go` 文件中进行修改。
 
-> 有关 CORS 和 CORS 标头的更多信息，请参阅 [MDN 关于 CORS 的 Web 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
+::: tip
+有关 CORS 和 CORS 标头的更多信息，请参阅 [MDN 关于 CORS 的 Web 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
+:::

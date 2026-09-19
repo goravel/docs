@@ -698,7 +698,9 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 })
 ```
 
-> `created_at` 和 `updated_at` 字段将会被自动填充。
+::: info
+`created_at` 和 `updated_at` 字段将会被自动填充。
+:::
 
 ### 游标
 
@@ -743,7 +745,9 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 // UPDATE `users` SET `updated_at`='2023-09-18 21:07:06.489',`name`='hello',`age`=18 WHERE `name` = 'tom';
 ```
 
-> 当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。 你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。 注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
+::: warning 零值会被忽略
+当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。 你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。 注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
+:::
 
 #### 更新 JSON 字段
 
@@ -815,7 +819,8 @@ facades.Orm().Query().Select(orm.Associations).Delete(&user)
 facades.Orm().Query().Select("Account").Delete(&users)
 ```
 
-注意：只有当记录的主键不为空时，关联才会被删除，Orm 会使用这些主键作为条件来删除关联记录：
+::: warning
+只有当记录的主键不为空时，关联才会被删除，Orm 会使用这些主键作为条件来删除关联记录：
 
 ```go
 // 会删除所有 name=`goravel` 的 user，但这些 user 的 account 不会被删除
@@ -827,6 +832,7 @@ facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.
 // 会删除 id = `1` 的 user，并且 account 也会被删除
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
+:::
 
 如果在没有任何条件的情况下执行批量删除，ORM 不会执行该操作，并返回错误。 对此，你必须加一些条件，或者使用原生 SQL。
 
@@ -994,7 +1000,9 @@ Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节�
 
 当从数据库中检索到现有模型时，将调度 `Retrieved` 事件。 当一个新模型第一次被保存时，`Creating` 和 `Created` 事件将被触发。 `Updating` / `Updated` 事件将在修改现有模型并调用 `Save` 方法时触发。 `Saving` / `Saved` 事件将在创建或更新模型时触发 - 即使模型的属性没有更改。 以「-ing」结尾的事件名称在模型的任何更改被持久化之前被调度，而以「-ed」结尾的事件在对模型的更改被持久化之后被调度。
 
-注意：所有事件都只会在操作一个模型时触发。 例如在调用 `Update` 方法时，想要触发 `Updating` 和 `Updated` 事件，需要将现有模型传入到 `Model` 方法中：`facades.Orm().Query().Model(&user).Update("name", "Goravel")`。
+::: warning
+所有事件都只会在操作一个模型时触发。 例如在调用 `Update` 方法时，想要触发 `Updating` 和 `Updated` 事件，需要将现有模型传入到 `Model` 方法中：`facades.Orm().Query().Model(&user).Update("name", "Goravel")`。
+:::
 
 要开始监听模型事件，请在模型上定义一个 `DispatchesEvents` 方法。 此方法将模型生命周期的各个点映射到你定义的事件类中。
 

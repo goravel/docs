@@ -59,7 +59,9 @@ cp .env.example .env
 ./artisan package:install Cache
 ```
 
-> 如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
+::: tip
+如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
+:::
 
 ## 启动服务
 
@@ -89,13 +91,13 @@ APP_ENV=production APP_DEBUG=true go run .
 air
 ```
 
-#### 🧰 安装 Air 后
+#### 安装 Air 后
 
 安装了 Air 成功后，你需要确保它能够在你的环境中正确执行。  
 根据你的环境设置，Air 可能不能自动成为一个有效的命令。  
 以下是确保正确运行的两种简单方式：
 
-#### 🪄 选项 1: 使用一个 Helper 脚本 (`air.sh`)
+#### 选项 1: 使用一个 Helper 脚本 (`air.sh`)
 
 如果 Air 已安装但无法被识别为一个终端命令，你可以创建一个脚本，自动定位和运行它。
 
@@ -131,7 +133,7 @@ $GO_BIN
 
 这样会确保 Air 正常运行即使你的 `$PATH` 中没有包含 Go 软件库。
 
-#### 💡 选项2：将Go Bin 添加到PATH (Mac/Linux)
+#### 选项 2：将Go Bin 添加到PATH (Mac/Linux)
 
 如果你喜欢在没有脚本的情况下直接运行 air，你可以添加 Go bin 目录到你的 PATH。
 
@@ -148,7 +150,7 @@ source ~/.zshrc
 air
 ```
 
-:::tip
+::: tip
 要验证  air 已安装并可被执行，可以运行：
 
 ```bash

@@ -134,7 +134,9 @@ func (s *ExampleTestSuite) TestIndex() {
 
 When using `go test`, multiple packages are tested in parallel. As a result, refreshing the database or cache in a test case using a local database or cache can potentially affect other parallel test cases. To address this, Goravel offers Docker-based testing. With Docker, a database or cache image can be created and used independently across different packages.
 
-> Due to the limited support of the Docker image for the windows system, currently, the Docker test can only be run in non-windows environments.
+::: warning
+Docker images have limited support on Windows, so Docker tests currently run only in non-Windows environments.
+:::
 
 #### Initiate Docker
 
@@ -290,4 +292,6 @@ func TestMain(m *testing.M) {
 }
 ```
 
-> For more usage of the TestMain method, see [Official Documentation](https://pkg.go.dev/testing#hdr-Main).
+::: tip
+For more on the `TestMain` method, see the [official documentation](https://pkg.go.dev/testing#hdr-Main).
+:::

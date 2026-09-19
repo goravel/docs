@@ -134,7 +134,9 @@ func (s *ExampleTestSuite) TestIndex() {
 
 由于 `go test` 在不同包之间是并行测试。 因此当使用本地数据库或缓存进行测试时，不能在测试用例中执行重置数据库或缓存操作，否则将有可能对并行运行的其他测试用例产生影响。 针对这种情况，Goravel 支持使用 Docker 进行测试。 不同包之间可以独立使用由 Docker 创建的镜像。
 
-> 由于 Docker 镜像对 windows 系统的支持有限，目前 Docker 测试仅支持在非 windows 环境下运行。
+::: warning
+由于 Docker 镜像对 windows 系统的支持有限，目前 Docker 测试仅支持在非 windows 环境下运行。
+:::
 
 #### 初始化镜像
 
@@ -291,4 +293,6 @@ func TestMain(m *testing.M) {
 }
 ```
 
-> 关于 TestMain 方法的更多使用，参见[官方文档](https://pkg.go.dev/testing#hdr-Main)。
+::: tip
+关于 TestMain 方法的更多使用，参见[官方文档](https://pkg.go.dev/testing#hdr-Main)。
+:::

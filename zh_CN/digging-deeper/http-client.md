@@ -207,7 +207,7 @@ response, err := facades.Http().
     Get("https://api.example.com/api/resource")
 ```
 
-:::tip
+::: tip
 `WithToken` 方法还接受一个可选的第二个参数，用于指定令牌类型（例如，“Bearer”、“Token”）。
 如果未提供类型，则默认为“Bearer”。
 
@@ -457,7 +457,7 @@ func TestExternalApi(t *testing.T) {
 }
 ```
 
-:::warning 全局状态与并行测试
+::: warning 全局状态与并行测试
 `Fake` 和 `Reset` 方法会改变 HTTP 客户端的全局状态。 因此，**你应该避免并行运行模拟 HTTP 客户端的测试**（`t.Parallel()`）。 这样做可能会导致竞态条件，即一个测试重置模拟时，另一个测试仍在运行。
 :::
 

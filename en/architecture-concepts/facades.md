@@ -43,7 +43,9 @@ func Route() route.Route {
 }
 ```
 
-> Given that the `facades` is exposed to the application, you can also create your own `facades` or override the existing `facades` in the `app/facades` folder.
+::: tip
+Because `facades` are exposed to the application, you can create your own `facades` or override the existing ones in the `app/facades` folder.
+:::
 
 ## Install/Uninstall Facades
 

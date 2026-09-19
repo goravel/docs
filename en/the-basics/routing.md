@@ -316,4 +316,6 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 
 Goravel has CORS enabled by default, the configuration can be modified in `config/cors.go`.
 
-> For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+::: tip
+For more on CORS and its headers, see the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+:::

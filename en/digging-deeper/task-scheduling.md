@@ -99,7 +99,9 @@ facades.Schedule().Command("send:emails name").EveryMinute().DelayIfStillRunning
 
 ### Running Tasks On One Server
 
-> To utilize this feature, your application must be using the memcached, dynamodb, or redis cache driver as the default cache driver. In addition, all servers must be communicating with the same central cache server.
+::: warning
+This feature takes a lock in the default cache, so every server must share that cache. Use a shared driver such as [redis](./cache.md) as the default cache driver. The `memory` driver will not work, because each server has its own.
+:::
 
 If your application's scheduler runs on multiple servers, you can ensure that a scheduled job is executed on only one of them. For example, let's say you have a scheduled task that generates a new report every Friday night. If the task scheduler runs on three worker servers, the scheduled task will run on all three servers and create the report three times. This is not ideal!
 

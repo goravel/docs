@@ -67,7 +67,9 @@ payload, err := facades.Auth(ctx).Parse(token)
 3. `ExpireAt`: 过期时间；
 4. `IssuedAt`: 发行时间；
 
-> 当 `err` 为非 `ErrorTokenExpired` 的错误时，payload == nil
+::: info
+当 `err` 为非 `ErrorTokenExpired` 的错误时，payload == nil
+:::
 
 可以通过 `err` 来判断 `Token` 是否过期：
 
@@ -78,7 +80,9 @@ payload, err := facades.Auth(ctx).Parse(token)
 errors.Is(err, auth.ErrorTokenExpired)
 ```
 
-> Token 带不带 Bearer 前缀均可正常解析。
+::: tip
+Token 带不带 Bearer 前缀均可正常解析。
+:::
 
 ## 获取用户
 
@@ -112,7 +116,9 @@ err := facades.Auth(ctx).Guard("admin").Parse(token)
 err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
-> 当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。
+::: warning
+当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。
+:::
 
 JWT Token 与其生成时所使用的守卫绑定。如果你使用不同的守卫解析 Token，Goravel 会返回 `auth.ErrorGuardMismatch`：
 

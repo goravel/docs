@@ -214,7 +214,9 @@ file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFileAs("photos", file, "name")
 ```
 
-> `StoreAs` 与 `PutFileAs` 指定的文件名如果不带后缀，将根据文件的 MIME 自动添加后缀；否则，直接使用指定的文件名。
+::: info
+`StoreAs` 与 `PutFileAs` 指定的文件名如果不带后缀，将根据文件的 MIME 自动添加后缀；否则，直接使用指定的文件名。
+:::
 
 ### 指定一个磁盘
 

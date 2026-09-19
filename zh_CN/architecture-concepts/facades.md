@@ -43,7 +43,9 @@ func Route() route.Route {
 }
 ```
 
-> `facades` 被暴露于应用程序中，你也可以在 `app/facades` 文件夹中创建自己的 `facades` 或覆盖现有的 `facades`。
+::: tip
+`facades` 被暴露于应用程序中，你也可以在 `app/facades` 文件夹中创建自己的 `facades` 或覆盖现有的 `facades`。
+:::
 
 ## 安装/卸载 Facades
 
