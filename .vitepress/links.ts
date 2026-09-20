@@ -1,7 +1,7 @@
 export const LINKS = {
   github: 'https://github.com/goravel/goravel',
   discord: 'https://discord.gg/cFc5csczzS',
-  x: 'https://x.com/goravel_dev',
+  x: 'https://x.com/goravelgolang',
   openCollective: 'https://opencollective.com/goravel',
   devchalk: 'https://devchalk.com/goravel',
   youtube: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf',

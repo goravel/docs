@@ -34,7 +34,7 @@ const { page, theme } = useData()
 const { tr } = useI18n()
 
 const meta = computed(() => {
-  const path = page.value.filePath.replace(/^(en|zh_CN|uz_UZ)\//, '').replace(/\.md$/, '')
+  const path = page.value.filePath.replace(/^(en|zh_CN)\//, '').replace(/\.md$/, '')
   const [dir, name] = path.split('/')
   if (!name) return null
   const groups: { text?: string; base?: string }[] = Array.isArray(theme.value.sidebar) ? theme.value.sidebar : []

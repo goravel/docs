@@ -1,7 +1,14 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useI18n } from '../i18n'
 
 const { tr, link } = useI18n()
+const RETIRED = /^\/uz_UZ(?=\/|$)/
+
+onMounted(() => {
+  if (!RETIRED.test(location.pathname)) return
+  location.replace((location.pathname.replace(RETIRED, '') || '/') + location.search + location.hash)
+})
 
 const suggestions = [
   ['Installation', '/getting-started/installation.html'],

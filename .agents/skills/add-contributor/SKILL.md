@@ -5,7 +5,7 @@ description: "Use when adding a new contributor to the Goravel docs. Fetches Git
 
 # Add Contributor Skill
 
-This skill automates adding a new contributor to the Goravel documentation contributor lists across all language versions (`en/`, `zh_CN/`, `uz_UZ/`, and any future language directories) of `prologue/contributions.md` and `index.md`.
+This skill automates adding a new contributor to the Goravel documentation contributor lists across all language versions (`en/`, `zh_CN/`, and any future language directories) of `prologue/contributions.md` and `index.md`.
 
 ## Workflow
 
