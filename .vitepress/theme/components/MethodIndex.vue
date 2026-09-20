@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRoute } from 'vitepress'
+import { computed, nextTick, ref, watch } from 'vue'
+import { onContentUpdated } from 'vitepress'
+import { useIntersectionObserver } from '@vueuse/core'
 import { useI18n } from '../i18n'
 
-const route = useRoute()
 const { tr } = useI18n()
 const methods = ref<{ id: string; name: string }[]>([])
 const query = ref('')
 const active = ref('')
 const shown = computed(() => methods.value.filter((m) => m.name.toLowerCase().includes(query.value.toLowerCase())))
 const list = ref<HTMLElement | null>(null)
-let observer: IntersectionObserver | undefined
+const targets = ref<HTMLElement[]>([])
 
 // `After`, `path.App()`
 const CODE_NAME = /^[\w.]+(\(\))?$/
@@ -32,7 +32,6 @@ const PROSE_NAME = /^[A-Z]\w*(\(\))?$/
 const CALL = /(?<!facades)\.([A-Z]\w*)\(/g
 
 function collect() {
-  observer?.disconnect()
   const named = new Map<string, HTMLElement>()
   const add = (name: string | null, el: Element | null) => {
     if (name && el && !named.has(name)) named.set(name, el as HTMLElement)
@@ -79,31 +78,24 @@ function collect() {
   closeSection()
   for (const [name, el] of pinned) named.set(name, el)
 
-  const found = [...named].sort(([, a], [, b]) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : a === b ? 0 : 1))
-  methods.value = []
-  if (found.length < 6) return
-
-  observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries.find((entry) => entry.isIntersecting)
-      if (visible) active.value = visible.target.id
-    },
-    { rootMargin: '-80px 0px -70% 0px' }
-  )
-  for (const [name, el] of found) {
-    el.id ||= 'method-' + name.toLowerCase().replace(/\W+/g, '-')
-    observer.observe(el)
-    methods.value.push({ id: el.id, name })
-  }
+  const found = named.size < 6 ? [] : [...named].sort(([, a], [, b]) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : a === b ? 0 : 1))
+  for (const [name, el] of found) el.id ||= 'method-' + name.toLowerCase().replace(/\W+/g, '-')
+  methods.value = found.map(([name, el]) => ({ id: el.id, name }))
+  targets.value = [...new Set(found.map(([, el]) => el))]
 }
 
-onMounted(collect)
-onUnmounted(() => observer?.disconnect())
-watch(() => route.path, () => nextTick(collect))
+onContentUpdated(collect)
+useIntersectionObserver(
+  targets,
+  (entries) => {
+    const visible = entries.find((entry) => entry.isIntersecting)
+    if (visible) active.value = visible.target.id
+  },
+  { rootMargin: '-80px 0px -70% 0px' }
+)
 watch(active, async () => {
   await nextTick()
-  const el = list.value?.querySelector<HTMLElement>('.active')
-  if (el && list.value) list.value.scrollTop = el.offsetTop - list.value.clientHeight / 2
+  list.value?.querySelector('.active')?.scrollIntoView({ block: 'nearest' })
 })
 </script>
 
@@ -141,7 +133,6 @@ watch(active, async () => {
 }
 
 .list {
-  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 0;
