@@ -22,7 +22,7 @@ The reader has a task and wants to get back to their code. A good page gets them
 
 - **It answers "how do I do X".** Organise a page by what the reader wants to do, not by how the package is built inside.
 - **It can be pasted.** Every example runs when it is copied into a fresh project.
-- **It can be scanned.** The reader finds the section from the outline, and the method from the method index, without reading from the top.
+- **It can be scanned.** The outline on the right lists every `##` and `###` heading, so the reader finds the section without reading from the top.
 - **It is true.** Every method, option and config key exists in the framework today.
 - **It feels familiar.** Goravel follows Laravel. Use the names a Laravel developer already knows, and say where Goravel differs.
 
@@ -33,7 +33,7 @@ Order the sections the way a reader meets them: introduction, installation or co
 One section covers one task. Write it in this order.
 
 1. **A heading that names the task.** "Storing Items For A Limited Time", not "Put". The reader searches for what they want to do. Reference pages with one short section per method are the exception, and there the method is the heading.
-2. **One sentence that names the method** in inline code. It tells the reader what to look for in the example, and it registers the method in the page's method index.
+2. **One sentence that names the method** in inline code. It tells the reader what to look for in the example.
 3. **A complete example** that starts with its file path.
 4. **What comes back, and what can go wrong**, when the reader could be surprised.
 5. **A callout, only when needed.** One gotcha that would cost the reader an hour belongs in a warning. Most sections need none.
@@ -85,64 +85,6 @@ Examples are the part of the docs people actually use.
 - **Shell comments start with `#`.** The copy button copies the whole block, and a `//` line makes the command fail.
 - **One idea per block.** Two alternatives go in a code group, not in one long block with comments between them.
 - **Always name the language.** A block without one has no highlighting. Use `go`, `shell`, `json`, `yaml`, `sql`, `dockerfile`, `html`, `php`, `diff`, or `text` for directory trees and plain output.
-
-## Make Every Method Findable
-
-A page that documents six or more methods gets a **Methods** list under the outline, with a filter on long pages. Readers use it to jump straight to a method, so a method that is missing from it is a method people will not find. You never write the list. The sections below register their methods in the three ways a page can, and together they produce the list on this page.
-
-After writing a page, open it and read its Methods list. If a method is missing, or a wrong name is listed, say it on the heading.
-
-### Say it on the heading
-
-This is explicit and always wins. The attribute is invisible, does not change the anchor, and is copied as it is into the Chinese page, because method names are the same in every language. A section with `methods` lists exactly those names, and `{methods=""}` lists nothing. It combines with a fixed anchor: `{#input methods="Input InputInt"}`.
-
-````md demo
-### Retrieving Items {methods="Get GetString Pull"}
-
-```go
-value := facades.Cache().Get("user", "default")
-name := facades.Cache().GetString("name")
-token := facades.Cache().Pull("token")
-```
-````
-
-### Name it in the text
-
-With no attribute, a method is listed when the text names it in inline code and the code of the same section calls it. The link lands on that sentence.
-
-````md demo
-### Checking And Removing Items
-
-You may use the `Has` method to check that an item exists, the `Forget` method to remove one item, and the `Flush` method to remove them all:
-
-```go
-if facades.Cache().Has("user") {
-	facades.Cache().Forget("user")
-}
-
-facades.Cache().Flush()
-```
-````
-
-### Use the method as the heading
-
-On a reference page with one short section per method, the heading is the method: a name with an inner capital such as `WithSession`, names joined by ` / `, inline code such as `path.App()`, or one word that the code in its section calls.
-
-````md demo
-#### Forever
-
-```go
-facades.Cache().Forever("site", "goravel.dev")
-```
-
-#### Add
-
-```go
-stored := facades.Cache().Add("user", "Goravel", 5*time.Minute)
-```
-````
-
-A long page can also open with a table. Every row with a method name in its first cell and a link to an anchor on the same page in its second is listed.
 
 ## Callouts
 
@@ -283,7 +225,7 @@ A badge takes the type `info`, `tip`, `warning` or `danger`.
 ## Two Languages
 
 - Every page exists in `en/` and `zh_CN/` with the same headings in the same order and the same code blocks. Change both in the same PR.
-- Translate the text. Keep code, method names, file paths, config keys and the `methods` attribute as they are.
+- Translate the text. Keep code, method names, file paths and config keys as they are.
 - Link to a page with a relative path to the `.md` file, such as `../architecture-concepts/facades.md#install-uninstall-facades`.
 - An anchor is the heading in lower case with hyphens for spaces. A Chinese page has Chinese anchors, so never copy an English anchor into a Chinese page. Give a heading a fixed anchor when it may be renamed: `### Update columns {#update-columns}`.
 - A new page goes into the sidebar in both `.vitepress/config/en.ts` and `.vitepress/config/zh_CN.ts`.
@@ -301,6 +243,6 @@ Switch the theme with the button in the top bar and check your page in both.
 - [ ] Each section names its task in the heading and its method in the first sentence
 - [ ] Every example is complete, starts with its file path, and uses methods that exist in the framework
 - [ ] Every code block has a language, and shell comments use `#`
-- [ ] The Methods list on the page shows every method the page documents
+- [ ] The outline reads as a list of tasks, because every `##` and `###` heading is in it
 - [ ] English and Chinese have the same headings and code blocks, and Chinese pages use Chinese anchors
 - [ ] You looked at the page in both the light and the dark theme

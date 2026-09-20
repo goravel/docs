@@ -89,6 +89,7 @@ export const config = defineConfig({
       next: 'Next page'
     },
     outline: {
+      level: [2, 3],
       label: 'On this page'
     },
     lastUpdated: {

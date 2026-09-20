@@ -100,7 +100,6 @@
 .vp-doc th,
 .vp-doc .footnotes::before,
 .VPDocAsideOutline .outline-title,
-.goravel-methods .outline-title,
 .VPNavScreenMenuGroupSection .title {
   font-family: var(--vp-font-family-mono);
   font-size: 12px;
@@ -120,7 +119,6 @@
 .g-diamond::before,
 .vp-doc .custom-block .custom-block-title::before,
 .VPDocAsideOutline .outline-title::before,
-.goravel-methods .outline-title::before,
 .VPNavScreenMenuGroupSection .title::before,
 .VPSidebarItem.level-1.is-active > .item::before,
 .VPDocOutlineItem .outline-link.active::before {

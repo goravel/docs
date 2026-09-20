@@ -259,21 +259,14 @@
     min-height: 0;
   }
 
-  .VPDoc .VPDocAside:has(.goravel-methods) .VPDocAsideOutline.has-outline {
-    display: flex;
-    flex: 0 1 auto;
-    flex-direction: column;
-    min-height: 0;
-    max-height: 46%;
-  }
-
-  .VPDoc .VPDocAside:has(.goravel-methods) .VPDocAsideOutline .content {
+  .VPDoc .VPDocAsideOutline.has-outline,
+  .VPDoc .VPDocAsideOutline .content {
     display: flex;
     flex-direction: column;
     min-height: 0;
   }
 
-  .VPDoc .VPDocAside:has(.goravel-methods) .VPDocAsideOutline .content > .VPDocOutlineItem {
+  .VPDoc .VPDocAsideOutline .content > .VPDocOutlineItem {
     min-height: 0;
     overflow-y: auto;
     scrollbar-width: thin;
@@ -296,9 +289,7 @@
   display: none;
 }
 
-/* the method index's heading is drawn the same way */
-.VPDocAsideOutline .outline-title,
-.goravel-methods .outline-title {
+.VPDocAsideOutline .outline-title {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -307,8 +298,7 @@
   border-bottom: 1px solid var(--g-line);
 }
 
-.VPDocAsideOutline .outline-title::before,
-.goravel-methods .outline-title::before {
+.VPDocAsideOutline .outline-title::before {
   background: var(--g-construct);
 }
 
