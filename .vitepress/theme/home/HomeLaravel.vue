@@ -13,6 +13,7 @@ const DWELL = 3
 const IDLE = 8000
 
 const at = ref(0)
+const tabs = ref<HTMLElement | null>(null)
 const line = ref(0)
 const dwell = ref(0)
 const touring = ref(true)
@@ -22,6 +23,12 @@ const pair = computed(() => concept.value.ties[line.value] ?? [0, 0])
 const { ticks, root: card } = useTicker(1500)
 const hovered = useElementHover(card)
 const { start: wake } = useTimeoutFn(() => (touring.value = true), IDLE, { immediate: false })
+
+watch(at, async () => {
+  await nextTick()
+  const tab = tabs.value?.children[at.value] as HTMLElement | undefined
+  if (tab) tabs.value!.scrollLeft = tab.offsetLeft - 16
+})
 
 watch(ticks, () => {
   dwell.value++
@@ -67,7 +74,7 @@ function onTabKey(event: KeyboardEvent) {
     </div>
 
     <div ref="card" class="home-feat-show">
-      <div class="g-tabs" role="tablist" :aria-label="tr('Concepts')" @keydown="onTabKey">
+      <div ref="tabs" class="g-tabs" role="tablist" :aria-label="tr('Concepts')" @keydown="onTabKey">
         <button
           v-for="(c, i) in LARAVEL.concepts"
           :id="`home-tab-${i}`"
@@ -240,9 +247,22 @@ function onTabKey(event: KeyboardEvent) {
   }
 
   .home-feat-show .g-tabs {
+    position: relative;
+    flex-wrap: nowrap;
     justify-content: flex-start;
     gap: 0 18px;
+    overflow-x: auto;
     padding: 0 16px;
+    scrollbar-width: none;
+  }
+
+  .home-feat-show .g-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .home-feat-show .g-tab::after {
+    bottom: 0;
   }
 
   .home-file {
@@ -275,6 +295,17 @@ function onTabKey(event: KeyboardEvent) {
 
   .home-file .g-code {
     font-size: 12.5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .home-file .g-file-head {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .home-brand {
+    white-space: nowrap;
   }
 }
 </style>
