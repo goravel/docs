@@ -48,6 +48,15 @@ function liftFileNames(md: MarkdownRenderer) {
   }
 }
 
+// a fence opened as ````md demo shows its source and then renders it, so an example is written once
+function renderDemos(md: MarkdownRenderer) {
+  const fence = md.renderer.rules.fence!
+  md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+    const source = fence(tokens, idx, options, env, self)
+    return /^md\s+demo\b/.test(tokens[idx].info.trim()) ? source + md.render(tokens[idx].content, { ...env }) : source
+  }
+}
+
 // a percentage in the packages table's coverage column gets a bar beside it when the page is built
 function drawCoverageBars(md: MarkdownRenderer) {
   const close = md.renderer.rules.td_close ?? ((tokens, idx, options, _env, self) => self.renderToken(tokens, idx, options))
@@ -66,6 +75,7 @@ export const shared = defineConfig({
   rewrites: {
     'en/:rest*': ':rest*'
   },
+  srcExclude: ['README.md', 'CONTRIBUTING.md', 'AGENTS.md', 'CLAUDE.md'],
 
   appearance: true,
   lastUpdated: true,
@@ -116,6 +126,7 @@ export const shared = defineConfig({
       md.use(deflist)
       markCustomContainerTitles(md)
       liftFileNames(md)
+      renderDemos(md)
       drawCoverageBars(md)
     },
     languages: ['go']

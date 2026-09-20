@@ -4,7 +4,7 @@ This is goravel official document.
 
 ## Contributing
 
-We welcome contributions to the Goravel documentation. Please see the [contributing guide](en/prologue/contributions.md) for more information.
+We welcome contributions to the Goravel documentation. To write or edit a page, start with [CONTRIBUTING.md](CONTRIBUTING.md). For contributing to Goravel in general, see the [contribution guide](en/prologue/contributions.md).
 
 ## Install
 
