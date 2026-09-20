@@ -148,14 +148,6 @@ export const shared = defineConfig({
                 buttonText: '搜索文档'
               }
             }
-          },
-          uz_UZ: {
-            placeholder: 'Fayllarni qidirish',
-            translations: {
-              button: {
-                buttonText: 'Hujjatlarda qidirish'
-              }
-            }
           }
         }
       }

@@ -95,57 +95,7 @@ const zh_CN: Dict = {
   'Features earn a T‑shirt': '贡献功能可获得 T 恤'
 }
 
-const uz_UZ: Dict = {
-  Route: 'Marshrut',
-  Middleware: 'Oraliq dastur',
-  Controller: 'Kontroller',
-  Service: 'Xizmat',
-  Response: 'Javob',
-  Routing: 'Marshrutlash',
-  Validation: 'Validatsiya',
-  Queues: 'Navbatlar',
-  Events: 'Hodisalar',
-  Scheduling: 'Rejalashtirish',
-  Cache: 'Kesh',
-  Testing: 'Test',
-  'HTTP layer': 'HTTP qatlami',
-  'Application layer': 'Ilova qatlami',
-  'Core layer': 'Yadro qatlami',
-  'Data layer': "Ma'lumotlar qatlami",
-  'Async layer': 'Asinxron qatlami',
-  'Familiar structure.': 'Tanish tuzilma.',
-  'Native Go.': 'Sof Go.',
-  'Routing, an ORM, validation, queues, events and cache, in one framework.':
-    "Marshrutlash, ORM, validatsiya, navbatlar, hodisalar va kesh, barchasi bitta freymvorkda.",
-  'Get started': 'Tezda boshlash',
-  'Compare with Laravel': 'Laravel bilan solishtirish',
-  'Start with the core.': 'Yadrodan boshlang.',
-  'facades installed': "ta fasad o'rnatilgan",
-  'Open source.': 'Ochiq manba.',
-  'WeChat group': 'WeChat guruhi',
-  'Support with WeChat': "WeChat orqali qo'llab-quvvatlash",
-  'A Go framework with the structure of Laravel.': 'Laravel tuzilmasiga ega Go freymvorki.',
-  Concepts: 'Tushunchalar',
-  'Install steps': "O'rnatish bosqichlari",
-  'WeChat group QR code': 'WeChat guruhi QR kodi',
-  'WeChat reward QR code': "WeChat qo'llab-quvvatlash QR kodi",
-  'GitHub stars': 'GitHub yulduzlari',
-  contributors: "hissa qo'shuvchilar",
-  forks: 'forklar',
-  Documentation: 'Hujjatlar',
-  Project: 'Loyiha',
-  Community: 'Hamjamiyat',
-  Installation: "O'rnatish",
-  ORM: 'ORM',
-  'Release Notes': 'Chiqarish eslatmalari',
-  'Upgrading To v1.18': 'v1.18 ga yangilash',
-  'Compare With Laravel': 'Laravel bilan solishtirish',
-  'Contribution Guide': "Hissa qo'shish bo'yicha qo'llanma",
-  'Privacy Policy': 'Maxfiylik siyosati',
-  Contribute: "Hissa qo'shish"
-}
-
-const DICTS: Record<string, Dict> = { zh_CN, uz_UZ }
+const DICTS: Record<string, Dict> = { zh_CN }
 
 export function useI18n() {
   const { site, localeIndex } = useData()
