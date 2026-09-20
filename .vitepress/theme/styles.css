@@ -2,3 +2,4 @@
 /* icons as classes, such as icon-[simple-icons--discord], from the installed Iconify sets */
 @plugin '@iconify/tailwind4';
 @source '../config';
+@source not inline('outline');

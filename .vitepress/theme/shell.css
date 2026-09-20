@@ -252,7 +252,7 @@
   .VPDoc .aside-content {
     flex: 1 1 auto;
     min-height: 0;
-    padding-bottom: 24px;
+    padding-bottom: 0;
   }
 
   .VPDoc .VPDocAside {
@@ -275,7 +275,7 @@
 }
 
 .VPDocAsideOutline {
-  margin-bottom: 36px;
+  margin-bottom: 0;
   padding: 0 var(--g-shell-inset) 0 var(--g-rail) !important;
   border: 0 !important;
 }
@@ -321,7 +321,7 @@
 
 .VPDocOutlineItem .outline-link.active::before {
   position: absolute;
-  left: 0;
+  left: 2px;
   top: 11px;
   background: var(--g-cyan);
 }
@@ -341,6 +341,10 @@
 @media (min-width: 960px) {
   .VPLocalNav {
     padding-left: calc(var(--vp-sidebar-width) + var(--g-gutter)) !important;
+  }
+
+  .VPLocalNavOutlineDropdown {
+    padding-left: 0 !important;
   }
 }
 

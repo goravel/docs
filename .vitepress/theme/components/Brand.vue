@@ -10,7 +10,7 @@ defineProps<{ laravel?: boolean; goravel?: boolean; no?: boolean }>()
   </span>
 </template>
 
-<style>
+<style scoped>
 .brand {
   display: inline-flex;
   align-items: center;
