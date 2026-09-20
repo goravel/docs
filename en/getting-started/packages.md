@@ -1,6 +1,10 @@
+---
+aside: false
+---
+
 # Excellent Extend Packages
 
-You can find extended packages for Goravel here, and you can also create a PR for [goravel/docs](https://github.com/goravel/docs) to commit your owner package, please improve the test coverage of your package as much as possible.
+Here you can find packages that extend Goravel. To add your own, open a PR against [goravel/docs](https://github.com/goravel/docs). Please keep your package's test coverage as high as you can.
 
 | Package | Description | Test Coverage |
 | --------------------------------------------------------------------------------- | --------------------------------------------- | ------------- |
@@ -17,8 +21,8 @@ You can find extended packages for Goravel here, and you can also create a PR fo
 | [goravel/anthropic](https://github.com/goravel/anthropic) | An Anthropic driver for `facades.AI()` | 73.3% |
 | [goravel/mysql](https://github.com/goravel/mysql) | A MySQL database driver | 73.3% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver) | A Sqlserver database driver | 60.6% |
-| [goravel/sqlite](https://github.com/goravel/sqlite) | A Sqlite database driver | 45.2% |
 | [goravel/gemini](https://github.com/goravel/gemini) | A Gemini driver for `facades.AI()` | 51.8% |
+| [goravel/sqlite](https://github.com/goravel/sqlite) | A Sqlite database driver | 45.2% |
 | [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | A MongoDB package | 16.9% |
 | [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli) | A Goravel scaffold command-line tool | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | A workflow package | 4.4% |

@@ -1,3 +1,7 @@
+---
+aside: false
+---
+
 # 优秀扩展包
 
 你可以在这里寻找 Goravel 扩展包，你也可以为 [goravel/docs](https://github.com/goravel/docs) 创建一个 PR 将自己的扩展包添加到这里，请尽可能提高包的测试覆盖率。
@@ -17,8 +21,8 @@
 | [goravel/anthropic](https://github.com/goravel/anthropic)                               | `facades.AI()` 模块 Anthropic 驱动   | 73.3% |
 | [goravel/mysql](https://github.com/goravel/mysql)                                       | MySQL 数据库驱动                     | 73.3% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver)                               | Sqlserver 数据库驱动                 | 60.6% |
-| [goravel/sqlite](https://github.com/goravel/sqlite)                                     | Sqlite 数据库驱动                    | 45.2% |
 | [goravel/gemini](https://github.com/goravel/gemini)                                     | `facades.AI()` 模块 Gemini 驱动      | 51.8% |
+| [goravel/sqlite](https://github.com/goravel/sqlite)                                     | Sqlite 数据库驱动                    | 45.2% |
 | [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | MongoDB 包                       | 16.9% |
 | [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli)         | Goravel Scaffold 命令行工具          | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow)       | 工作流                             | 4.4%  |

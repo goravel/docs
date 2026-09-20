@@ -1,3 +1,7 @@
+---
+aside: false
+---
+
 # Ajoyib Kengaytiruvchi Paketlar
 
 Bu yerda Goravel uchun kengaytirilgan paketlarni topishingiz mumkin, shuningdek, o'zingizning paketingizni joylashtirish uchun [goravel/docs](https://github.com/goravel/docs) repozitoriyasiga PR yaratishingiz mumkin. Iltimos, paketingizning test qamrovini iloji boricha yaxshilang.
@@ -17,8 +21,8 @@ Bu yerda Goravel uchun kengaytirilgan paketlarni topishingiz mumkin, shuningdek,
 | [goravel/anthropic](https://github.com/goravel/anthropic)                               | `facades.AI()` uchun Anthropic haydovchisi       | 73.3% |
 | [goravel/mysql](https://github.com/goravel/mysql)                                       | MySQL ma'lumotlar bazasi haydovchisi             | 73.3% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver)                               | SQL Server ma'lumotlar bazasi haydovchisi        | 60.6% |
-| [goravel/sqlite](https://github.com/goravel/sqlite)                                     | SQLite ma'lumotlar bazasi haydovchisi            | 45.2% |
 | [goravel/gemini](https://github.com/goravel/gemini)                                     | `facades.AI()` uchun Gemini haydovchisi          | 51.8% |
+| [goravel/sqlite](https://github.com/goravel/sqlite)                                     | SQLite ma'lumotlar bazasi haydovchisi            | 45.2% |
 | [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | MongoDB paketi                                   | 16.9% |
 | [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli)         | Goravel qolip buyruq qatori vositasi             | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow)       | Ish jarayoni paketi                              | 4.4%  |
