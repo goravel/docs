@@ -1,7 +1,5 @@
 # Pluralization
 
-[[toc]]
-
 ## Introduction
 
 Strings are important for any web application. Goravel provides simple utilities to convert words between singular 

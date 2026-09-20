@@ -1,7 +1,5 @@
 # 快速入门
 
-[[toc]]
-
 ## 简介
 
 Goravel 提供了一套非常简单易用的数据库交互方式，开发者可以使用 `facades.Orm()` 进行操作。 在开始之前请先[配置数据库](../database/getting-started)。
@@ -99,7 +97,7 @@ func (r *UserData) Scan(value any) (err error) {
 ```shell
 ./artisan make:model --table=users User
 
-// 如果 Model 已存在可以使用 -f 选项强制覆盖
+# 如果 Model 已存在可以使用 -f 选项强制覆盖
 ./artisan make:model --table=users -f User
 ```
 
@@ -250,7 +248,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | DB          | [获取通用数据库接口](#获取通用数据库接口)   |
 | Query       | [获取数据库实例](#获取数据库实例)       |
 | Transaction | [事务](#事务)                 |
-| WithContext | [注入 Context](#注入-Context) |
+| WithContext | [注入 Context](#注入-context) |
 
 ## facades.Orm().Query() 可用方法
 
@@ -259,7 +257,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Avg                         | [聚合](#聚合)                     |
 | BeginTransaction            | [手动开始事务](#事务)                 |
 | Commit                      | [提交事务](#事务)                   |
-| Context                     | [注入 Context](#注入-Context)     |
+| Context                     | [注入 Context](#注入-context)     |
 | Count                       | [计数](#计数)                     |
 | Create                      | [创建数据](#创建)                   |
 | Cursor                      | [游标](#游标)                     |
@@ -280,7 +278,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Group                       | [Group 查询](#group-by-having)  |
 | Having                      | [Having 查询](#group-by-having) |
 | Join                        | [Join 查询](#join-查询)           |
-| Limit                       | [Limit 查询](#limit-查询)         |
+| Limit                       | [Limit 查询](#指定查询数量)         |
 | LockForUpdate               | [悲观锁](#悲观锁)                   |
 | Max                         | [最大值](#聚合)                    |
 | Min                         | [最小值](#聚合)                    |
@@ -700,7 +698,9 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 })
 ```
 
-> `created_at` 和 `updated_at` 字段将会被自动填充。
+::: info
+`created_at` 和 `updated_at` 字段将会被自动填充。
+:::
 
 ### 游标
 
@@ -745,7 +745,9 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 // UPDATE `users` SET `updated_at`='2023-09-18 21:07:06.489',`name`='hello',`age`=18 WHERE `name` = 'tom';
 ```
 
-> 当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。 你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。 注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
+::: warning 零值会被忽略
+当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。 你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。 注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
+:::
 
 #### 更新 JSON 字段
 
@@ -817,7 +819,8 @@ facades.Orm().Query().Select(orm.Associations).Delete(&user)
 facades.Orm().Query().Select("Account").Delete(&users)
 ```
 
-注意：只有当记录的主键不为空时，关联才会被删除，Orm 会使用这些主键作为条件来删除关联记录：
+::: warning
+只有当记录的主键不为空时，关联才会被删除，Orm 会使用这些主键作为条件来删除关联记录：
 
 ```go
 // 会删除所有 name=`goravel` 的 user，但这些 user 的 account 不会被删除
@@ -829,6 +832,7 @@ facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.
 // 会删除 id = `1` 的 user，并且 account 也会被删除
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
+:::
 
 如果在没有任何条件的情况下执行批量删除，ORM 不会执行该操作，并返回错误。 对此，你必须加一些条件，或者使用原生 SQL。
 
@@ -981,7 +985,7 @@ var sum int
 err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum)
 
 var avg float64
-err := facades.Orm().Query().Model(models.User{}).Average("age", &avg)
+err := facades.Orm().Query().Model(models.User{}).Avg("age", &avg)
 
 var max int
 err := facades.Orm().Query().Model(models.User{}).Max("age", &max)
@@ -996,7 +1000,9 @@ Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节�
 
 当从数据库中检索到现有模型时，将调度 `Retrieved` 事件。 当一个新模型第一次被保存时，`Creating` 和 `Created` 事件将被触发。 `Updating` / `Updated` 事件将在修改现有模型并调用 `Save` 方法时触发。 `Saving` / `Saved` 事件将在创建或更新模型时触发 - 即使模型的属性没有更改。 以「-ing」结尾的事件名称在模型的任何更改被持久化之前被调度，而以「-ed」结尾的事件在对模型的更改被持久化之后被调度。
 
-注意：所有事件都只会在操作一个模型时触发。 例如在调用 `Update` 方法时，想要触发 `Updating` 和 `Updated` 事件，需要将现有模型传入到 `Model` 方法中：`facades.Orm().Query().Model(&user).Update("name", "Goravel")`。
+::: warning
+所有事件都只会在操作一个模型时触发。 例如在调用 `Update` 方法时，想要触发 `Updating` 和 `Updated` 事件，需要将现有模型传入到 `Model` 方法中：`facades.Orm().Query().Model(&user).Update("name", "Goravel")`。
+:::
 
 要开始监听模型事件，请在模型上定义一个 `DispatchesEvents` 方法。 此方法将模型生命周期的各个点映射到你定义的事件类中。
 
@@ -1056,7 +1062,9 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 }
 ```
 
-> 注意：仅注册用到的事件即可。 通过 Orm 进行批量操作时，不会调度模型事件。
+::: warning
+仅注册用到的事件即可。 通过 Orm 进行批量操作时，不会调度模型事件。
+:::
 
 ### 观察者
 
@@ -1114,7 +1122,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-> 注意：如果同时使用了 `DispatchesEvents` 与 `Observer`，将只应用 `DispatchesEvents`。
+::: warning
+如果同时使用了 `DispatchesEvents` 与 `Observer`，将只应用 `DispatchesEvents`。
+:::
 
 #### 观察者传参
 

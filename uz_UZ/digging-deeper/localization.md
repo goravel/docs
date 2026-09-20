@@ -1,7 +1,5 @@
 # Mahalliylashtirish
 
-[[toc]]
-
 ## Kirish
 
 Goravelning lokalizatsiya xususiyatlari turli tillardagi satrlarni olishning qulay usulini taqdim etadi, bu esa ilovangizda bir nechta tillarni qo'llab-quvvatlashni osonlashtiradi. Til satrlari `lang` katalogidagi fayllarda saqlanadi va Goravel til fayllarini tartibga solishning ikkita usulini qo'llab-quvvatlaydi:

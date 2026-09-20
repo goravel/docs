@@ -1,7 +1,5 @@
 # Shifrlash
 
-[[toc]]
-
 ## Kirish
 
 Goravelning shifrlash xizmatlari OpenSSL yordamida AES-256 shifrlash orqali matnni shifrlash va ochish uchun oddiy, qulay interfeysni taqdim etadi. Goravelning barcha shifrlangan qiymatlari xabar autentifikatsiya kodi (GMAC) yordamida imzolangan, shuning uchun ularning asosiy qiymati shifrlanganidan keyin o‘zgartirilishi yoki buzilishi mumkin emas.

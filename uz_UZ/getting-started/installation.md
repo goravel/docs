@@ -1,7 +1,5 @@
 # O'rnatish
 
-[[toc]]
-
 ## Server Talablari
 
 - Golang >= 1.23
@@ -97,8 +95,6 @@ Air muvaffaqiyatli o'rnatilgandan so'ng, u muhitingizda to'g'ri bajarilishiga is
 Sozlashingizga qarab, Air avtomatik ravishda buyruq sifatida mavjud bo'lmasligi mumkin.  
 Uning to'g'ri ishlashini ta'minlashning ikkita oddiy usuli:
 
----
-
 #### 🪄 Variant 1: Yordamchi Skriptdan (`air.sh`) Foydalanish
 
 Agar Air o'rnatilgan bo'lsa, lekin terminal buyrug'i sifatida tan olinmasa, uni avtomatik ravishda topadigan va ishga tushiradigan kichik yordamchi skript yaratishingiz mumkin.
@@ -152,8 +148,7 @@ Ushbu sozlashdan so'ng, loyihangizni shunchaki ishga tushirish orqali boshlashin
 air
 ```
 
-#### ✅ Maslahat
-
+:::tip
 Air o'rnatilganligi va kirish mumkinligini tekshirish uchun ishga tushiring:
 
 ```bash
@@ -161,6 +156,7 @@ which air
 ```
 
 Agar u to'g'ri yo'lni qaytarmasa (masalan, `/Users/yourname/go/bin/air`), bu yordamchi skript yoki yo'l hali sozlanmaganligini anglatadi.
+:::
 
 ## Konfiguratsiya
 

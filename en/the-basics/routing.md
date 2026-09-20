@@ -1,7 +1,5 @@
 # Routing
 
-[[toc]]
-
 ## Introduction
 
 The Goravel routing module can be operated by `facades.Route()`.
@@ -46,7 +44,7 @@ Use the `route:list` command to view routes list:
 | ---------- | ------------------------------------- |
 | Group      | [Group Routing](#group-routing)       |
 | Prefix     | [Routing Prefix](#routing-prefix)     |
-| ServeHTTP  | [Testing Routing](#testing-routing)   |
+| ServeHTTP  | [HTTP Tests](../testing/http-tests.md)   |
 | Get        | [Basic Routing](#basic-routing)       |
 | Post       | [Basic Routing](#basic-routing)       |
 | Put        | [Basic Routing](#basic-routing)       |
@@ -185,7 +183,9 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **Note**: Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
+::: warning
+Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
+:::
 
 ## Get All Routes
 
@@ -316,4 +316,6 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 
 Goravel has CORS enabled by default, the configuration can be modified in `config/cors.go`.
 
-> For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+::: tip
+For more on CORS and its headers, see the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+:::

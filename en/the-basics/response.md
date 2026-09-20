@@ -1,7 +1,5 @@
 # HTTP Response
 
-[[toc]]
-
 ## Introduction
 
 You can use `ctx.Response()` for HTTP response in the Controller.

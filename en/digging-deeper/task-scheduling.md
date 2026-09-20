@@ -1,7 +1,5 @@
 # Task Scheduling
 
-[[toc]]
-
 ## Introduction
 
 In the past, you might need to create a cron configuration entry for each task that needed scheduling on your server. However, this approach can quickly become a pain as your task schedule is not in source control, and you have to SSH into your server to view or add/edit cron entries.
@@ -41,12 +39,12 @@ When `app.debug` is `true`, the console will print all logs. Otherwise, only `er
 
 ### Schedule Frequency Options
 
-We've already seen a few examples of how you may configure a task to run at specified intervals. However, there are many more task schedule frequencies avaibable to assign to tasks:
+We've already seen a few examples of how you may configure a task to run at specified intervals. However, there are many more task schedule frequencies available to assign to tasks:
 
-| 方法                     | 描述                                                |
+| Method                   | Description                                         |
 | ------------------------ | --------------------------------------------------- |
-| `.Cron("* * * * *")`     | Custom Crone schedule (minutes)                     |
-| `.Cron("* * * * * *")`   | Custom Crone schedule (seconds)                     |
+| `.Cron("* * * * *")`     | Custom Cron schedule (minutes)                     |
+| `.Cron("* * * * * *")`   | Custom Cron schedule (seconds)                     |
 | `.EverySecond()`         | Run the task every second                           |
 | `.EveryTwoSeconds()`     | Run the task every two seconds                      |
 | `.EveryFiveSeconds()`    | Run the task every five seconds                     |
@@ -89,7 +87,7 @@ We've already seen a few examples of how you may configure a task to run at spec
 
 By default, scheduled tasks will continue to run even if a previous instance is still running. To prevent this, use the following methods:
 
-| 方法                     | 描述                   |
+| Method                   | Description            |
 | ------------------------ | ---------------------- |
 | `.SkipIfStillRunning()`  | Skip if still running  |
 | `.DelayIfStillRunning()` | Delay if still running |
@@ -101,7 +99,9 @@ facades.Schedule().Command("send:emails name").EveryMinute().DelayIfStillRunning
 
 ### Running Tasks On One Server
 
-> To utilize this feature, your application must be using the memcached, dynamodb, or redis cache driver as the default cache driver. In addition, all servers must be communicating with the same central cache server.
+::: warning
+This feature takes a lock in the default cache, so every server must share that cache. Use a shared driver such as [redis](./cache.md) as the default cache driver. The `memory` driver will not work, because each server has its own.
+:::
 
 If your application's scheduler runs on multiple servers, you can ensure that a scheduled job is executed on only one of them. For example, let's say you have a scheduled task that generates a new report every Friday night. If the task scheduler runs on three worker servers, the scheduled task will run on all three servers and create the report three times. This is not ideal!
 

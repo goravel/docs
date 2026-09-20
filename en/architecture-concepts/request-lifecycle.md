@@ -1,7 +1,5 @@
 # Request Lifecycle
 
-[[toc]]
-
 ## Introduction
 
 Using any tool in the real world feels more intuitive when you know how it works. This document aims to give you a clear, high-level look at how Goravel functions. Don’t worry if you don’t get every term right away—just aim for a basic sense of how things work, and your expertise will grow as you explore the rest of the docs.

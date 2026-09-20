@@ -1,7 +1,5 @@
 # Jarayonlar
 
-[[toc]]
-
 ## Kirish
 
 Goravel Go'ning standart `os/exec` paketi atrofida ifodali va oqlangan API taqdim etadi, bu sizga ilovangizdan tashqi buyruqlarni muammosiz chaqirish imkonini beradi. Odatiy bo'lib, Go'ning jarayonlarni boshqarishi batafsil bo'lishi mumkin; Goravel'ning "Jarayon" jabhasi bu umumiy vazifani soddalashtiradi, buyruqlarni bajarish, chiqishlarni boshqarish va asinxron jarayonlarni boshqarish uchun ravon interfeysni taklif qiladi.

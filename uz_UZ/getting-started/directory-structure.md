@@ -1,7 +1,5 @@
 # Papka tuzilishi
 
-[[toc]]
-
 ## Kirish
 
 Standart fayl tuzilmasi loyihaning rivojlanishini yaxshiroq boshlashingizga yordam beradi, shuningdek, siz yangi papkalarni bemalol qo‘shishingiz mumkin, lekin standart papkalarni o‘zgartirmang.

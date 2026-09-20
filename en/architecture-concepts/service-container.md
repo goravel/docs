@@ -1,7 +1,5 @@
 # Service Container
 
-[[toc]]
-
 ## Introduction
 
 The Goravel service container is a powerful tool for managing class dependencies and performing dependency injection. It contains all the modules of Goravel, and allows you to bind your own services to container and resolve them when needed. The service container provides powerful support for third-party packages around Goravel.

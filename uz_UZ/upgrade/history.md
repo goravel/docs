@@ -1,3 +1,7 @@
+---
+aside: false
+---
+
 # Yangilash tarixi
 
 - [v1.15 dan v1.16 ga yangilash](v1.16.md)

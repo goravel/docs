@@ -1,7 +1,5 @@
 # Contribution Guide
 
-[[toc]]
-
 Goravel welcomes rich and diverse contributions from different talents, such as coding, translations, articles, tutorials, etc. After completing two features(5 `Good First Issue` == 1 `Feature`), you will be recognized as a core contributor. By completing one feature every three months, you can maintain this status.
 
 Let's make Goravel more efficient together!
@@ -18,7 +16,7 @@ Let's make Goravel more efficient together!
 <div class="flex flex-wrap gap-2 mt-5" :class="$style.contributors">
 <a href="https://github.com/hwbrzzl" target="_blank"><img src="https://avatars.githubusercontent.com/u/24771476?v=4" width="48" height="48"></a>
 <a href="https://github.com/DevHaoZi" target="_blank"><img src="https://avatars.githubusercontent.com/u/115467771?v=4" width="48" height="48"></a>
-<a href="https://github.com/kkumar-gcc" target="_blank"><img src="https://avatars.githubusercontent.com/u/84431594?v=4" width="48" height="48"></a>
+<a href="https://github.com/krishankumar01" target="_blank"><img src="https://avatars.githubusercontent.com/u/84431594?v=4" width="48" height="48"></a>
 <a href="https://github.com/almas-x" target="_blank"><img src="https://avatars.githubusercontent.com/u/9382335?v=4" width="48" height="48"></a>
 </div>
 
@@ -156,7 +154,7 @@ View all available Goravel agent skills:
 ```shell
 goravel skill:list
 
-// Show skills with descriptions
+# Show skills with descriptions
 goravel skill:list --detail
 ```
 
@@ -186,7 +184,9 @@ Overwrite existing skills with `--force`:
 goravel skill:install --force goravel-testing
 ```
 
-> **Note**: Existing skills are preserved unless `--force` is used.
+::: info
+Existing skills are preserved unless `--force` is used.
+:::
 
 ## Code of Conduct
 

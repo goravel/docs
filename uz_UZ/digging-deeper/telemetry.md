@@ -1,7 +1,5 @@
 # Telemetriya
 
-[[toc]]
-
 ## Kirish
 
 Goravel [OpenTelemetry](https://opentelemetry.io) asosida qurilgan kuzatuvchanlik modulini taqdim etadi, undan `facades.Telemetry()` orqali foydalanish mumkin. Bu sizning ilovangizdan treyslar, metrikalar va loglarni yig'ish va ularni Jaeger, Prometheus, Grafana yoki Datadog kabi har qanday OTLP-mos backendga eksport qilish imkonini beradi.

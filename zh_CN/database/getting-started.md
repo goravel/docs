@@ -1,7 +1,5 @@
 # 简介
 
-[[toc]]
-
 ## 简介
 
 几乎所有的应用程序都需要和数据库进行交互，Goravel 为此提供了一套非常简单易用的数据库交互方式。 开发者可以使用原生 SQL，查询构造器，以及 [Orm](../orm/getting-started) 等方式与数据库交互。 目前，Goravel 为以下四种数据库提供了官方支持：
@@ -75,7 +73,9 @@ var product Product
 err := facades.DB().Select(&product, "SELECT * FROM products WHERE id = ?", 1)
 ```
 
-> 注意：不同数据库驱动需要使用不同的占位符。 例如：`?` 占位符适用于 MySQL，而 `@` 占位符适用于 PostgreSQL。
+::: warning
+不同数据库驱动需要使用不同的占位符。 例如：`?` 占位符适用于 MySQL，而 `@` 占位符适用于 PostgreSQL。
+:::
 
 ### Insert
 

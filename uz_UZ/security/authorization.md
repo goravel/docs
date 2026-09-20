@@ -1,7 +1,5 @@
 # Avtorizatsiya
 
-[[toc]]
-
 ## Kirish
 
 Goravel foydalanuvchilarning resurslar ustidagi amallarini boshqarish uchun o‘rnatilgan [autentifikatsiya](./authentication.md) xizmatlari va oson foydalaniladigan avtorizatsiya xususiyatini taklif etadi. Foydalanuvchi autentifikatsiyadan o‘tgan bo‘lsa ham, u ma’lum Eloquent modellarini yoki ma’lumotlar bazasi yozuvlarini o‘zgartirish yoki o‘chirish huquqiga ega bo‘lmasligi mumkin. Goravelning avtorizatsiya xususiyati bu avtorizatsiya tekshiruvlarini tizimli boshqarish usulini taqdim etadi.

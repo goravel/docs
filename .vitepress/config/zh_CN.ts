@@ -1,4 +1,5 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
+import { community } from './community'
 export const config = defineConfig({
   lang: "zh-CN",
   description: "Goravel 是一个功能完整且可扩展性极强的 Web 应用程序框架。作为一个起始脚手架，帮助 Gopher 快速构建自己的应用程序。",
@@ -7,46 +8,57 @@ export const config = defineConfig({
     sidebar: [{
       text: "序言",
       base: "/zh_CN/prologue/",
+      collapsed: true,
       items: sidebarPrologue()
     }, {
       text: "升级",
       base: "/zh_CN/upgrade/",
+      collapsed: true,
       items: sidebarUpgrade()
     }, {
       text: "快速开始",
       base: "/zh_CN/getting-started/",
+      collapsed: true,
       items: sidebarGettingStarted()
     }, {
       text: "核心架构",
       base: "/zh_CN/architecture-concepts/",
+      collapsed: true,
       items: sidebarFoundation()
     }, {
       text: "基础功能",
       base: "/zh_CN/the-basics/",
+      collapsed: true,
       items: sidebarBasic()
     }, {
       text: "高级功能",
       base: "/zh_CN/digging-deeper/",
+      collapsed: true,
       items: sidebarAdvanced()
-    }, {
-      text: "安全",
-      base: "/zh_CN/security/",
-      items: sidebarSecurity()
     }, {
       text: 'AI',
       base: '/zh_CN/ai/',
+      collapsed: true,
       items: sidebarAI()
+    }, {
+      text: "安全",
+      base: "/zh_CN/security/",
+      collapsed: true,
+      items: sidebarSecurity()
     }, {
       text: "数据库",
       base: "/zh_CN/database/",
+      collapsed: true,
       items: sidebarDatabase()
     }, {
       text: 'ORM',
       base: "/zh_CN/orm/",
+      collapsed: true,
       items: sidebarOrm()
     }, {
       text: "测试",
       base: "/zh_CN/testing/",
+      collapsed: true,
       items: sidebarTesting()
     }],
     editLink: {
@@ -81,36 +93,39 @@ export const config = defineConfig({
   }
 });
 function nav(): DefaultTheme.NavItem[] {
-  return [{
-    text: "快速开始",
-    link: "/zh_CN/getting-started/installation",
-    activeMatch: "/zh_CN/getting-started/"
-  }, {
-    text: "视频教程",
-    items: [{
-      text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://www.youtube.com/favicon.ico" alt="" aria-hidden="true" style="width:14px;height:14px;display:block;" /><span>YouTube</span></span>',
-      link: "https://space.bilibili.com/1886603340/channel/seriesdetail?sid=4302621&ctype=0"
-    }, {
-      text: '<span style="display:inline-flex;align-items:center;gap:6px;"><img src="https://devchalk.com/mark-480.webp" alt="" aria-hidden="true" style="width:14px;height:14px;border-radius:3px;display:block;" /><span>DevChalk</span></span>',
-      link: 'https://devchalk.com/goravel'
-    }]
-  }, {
-    text: "版本",
-    items: [{
-      text: "v1.18 (最新)",
-      link: 'https://www.goravel.dev/'
-    }, {
-      text: "v1.17",
-      link: 'https://v117.goravel.dev/'
-    }, {
-      text: 'v1.16',
-      link: 'https://v116.goravel.dev/'
-    }]
-  }, {
-    text: "翻译",
-    link: "/zh_CN/prologue/contributions#新增语言"
-  }];
+  return [
+    {
+      text: '文档',
+      link: '/zh_CN/getting-started/installation',
+      activeMatch: '^/zh_CN/(?!getting-started/packages)(getting-started|architecture-concepts|the-basics|digging-deeper|database|orm|testing|security|ai)/'
+    },
+    {
+      text: '扩展包',
+      link: '/zh_CN/getting-started/packages',
+      activeMatch: '^/zh_CN/getting-started/packages'
+    },
+    {
+      text: '版本发布',
+      link: '/zh_CN/prologue/releases',
+      activeMatch: '^/zh_CN/(prologue/releases|upgrade/)'
+    },
+    community(
+      {
+        title: '社区',
+        connect: '联系',
+        learn: '学习',
+        videos: '视频教程',
+        contribute: '参与贡献',
+        guide: '贡献指南',
+        language: '新增语言',
+        languageAnchor: '新增语言'
+      },
+      '/zh_CN',
+      'bilibili'
+    )
+  ]
 }
+
 function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [{
     text: "安装",

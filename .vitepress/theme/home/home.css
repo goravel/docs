@@ -1,0 +1,538 @@
+/* full-width rules bleed to the screen edge, or to a column's rule where one sets --g-bleed-* */
+.g-home {
+  container-type: inline-size;
+  /* the page margin, which grows past 96px so the content stays 1248px wide on a wide screen */
+  --g-margin: max(96px, (100cqw - 1248px) / 2);
+  --g-bleed-left: var(--g-margin);
+  --g-bleed-right: var(--g-margin);
+  --g-secpad: 56px;
+  --g-grey: #5b6770;
+  color: var(--g-ink);
+  background: var(--g-white);
+}
+
+@media (max-width: 1280px) {
+  .g-home {
+    --g-margin: 48px;
+  }
+}
+
+@media (max-width: 900px) {
+  .g-home {
+    --g-margin: 24px;
+  }
+}
+
+.g-home .g-wrap {
+  padding: 0 var(--g-margin);
+}
+
+/* ------------------------------------------------------------------ type */
+.g-home .g-display {
+  font-size: 84px;
+  line-height: 82px;
+  font-weight: 700;
+  font-stretch: 112%;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.g-home .g-display .light {
+  font-weight: 450;
+}
+
+.g-home .g-h2 {
+  font-size: 48px;
+  line-height: 52px;
+  font-weight: 700;
+  font-stretch: 108%;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.g-home .g-h3 {
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+
+.g-home .g-lead {
+  max-width: 560px;
+  font-size: 18px;
+  line-height: 30px;
+  color: var(--g-grey);
+}
+
+.g-home .g-body {
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.g-home .g-small {
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.g-home .g-label,
+.g-home .g-meta {
+  font-size: 12.5px;
+  line-height: 16px;
+}
+
+.g-home .g-meta {
+  font-family: var(--vp-font-family-mono);
+  letter-spacing: 0.02em;
+  color: var(--g-grey);
+}
+
+.g-home .muted { color: var(--g-grey); }
+.g-home .cyan { color: var(--g-cyan-text); }
+.g-home .ink { color: var(--g-ink); }
+
+@media (max-width: 1280px) {
+  .g-home .g-display {
+    font-size: 64px;
+    line-height: 64px;
+  }
+
+  .g-home .g-h2 {
+    font-size: 38px;
+    line-height: 42px;
+  }
+}
+
+@media (max-width: 900px) {
+  .g-home .g-display {
+    font-size: 44px;
+    line-height: 46px;
+  }
+
+  .g-home .g-h2 {
+    font-size: 30px;
+    line-height: 34px;
+  }
+}
+
+/* ------------------------------------------------------------------ controls */
+.g-home .g-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  height: 50px;
+  padding: 0 24px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: var(--g-cyan-text);
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--g-white);
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.g-home .g-button:not(.is-outline):hover {
+  border-color: var(--g-cyan-text);
+  background: var(--g-white);
+  color: var(--g-cyan-text);
+}
+
+.g-home .g-button.is-outline {
+  border-color: var(--g-line);
+  background: var(--g-white);
+  font-weight: 500;
+  color: var(--g-ink);
+}
+
+.g-home .g-button.is-outline:hover {
+  border-color: var(--g-ink);
+  background: var(--g-white);
+  color: var(--g-ink);
+}
+
+.g-arrow {
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: square;
+  transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.g-button:hover .g-arrow {
+  transform: translateX(4px);
+}
+
+.g-home .g-link {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--g-ink);
+  text-decoration: underline 1px var(--g-line);
+  text-underline-offset: 6px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.g-home .g-link:hover {
+  color: var(--g-cyan-text);
+  text-decoration-color: var(--g-cyan);
+}
+
+.g-community {
+  padding-top: 88px;
+  padding-bottom: 88px;
+  border-top: 1px solid var(--g-line);
+  scroll-snap-align: start;
+}
+
+@media (max-width: 900px) {
+
+  .g-community {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+
+.g-sec-head {
+  max-width: 720px;
+}
+
+.g-sec-head .g-lead {
+  margin-top: 16px;
+}
+
+.g-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 36px;
+  margin-top: 40px;
+}
+
+/* ------------------------------------------------------------------ tabs */
+.g-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 28px;
+  margin-top: 36px;
+  border-bottom: 1px solid var(--g-line);
+}
+
+.g-tab {
+  position: relative;
+  padding: 0 0 14px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--g-grey);
+  transition: color 0.15s ease;
+}
+
+.g-tab:hover,
+.g-tab.is-active {
+  color: var(--g-ink);
+}
+
+.g-tab::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--g-cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.g-tab.is-active::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 900px) {
+  .g-tabs {
+    gap: 2px 20px;
+    margin-top: 32px;
+  }
+
+  .g-tab {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .g-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .g-home .g-button {
+    width: 100%;
+  }
+}
+
+/* ------------------------------------------------------------------ code */
+.g-file-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--g-line);
+}
+
+.g-code {
+  overflow-x: auto;
+  padding: 18px 0 0;
+  font-family: var(--vp-font-family-mono);
+  font-size: 13px;
+  line-height: 26px;
+  tab-size: 2;
+}
+
+/* the tint of a lit line reaches past the text, so the bleed sits on the block and not on the line,
+   where it would widen the block and raise a scrollbar */
+.g-code:not(.is-plain) {
+  margin: 0 -14px;
+}
+
+.g-code .ln {
+  position: relative;
+  display: block;
+  padding: 0 14px;
+  white-space: pre;
+  color: var(--g-grey);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.g-code.is-plain .ln {
+  padding: 0;
+}
+
+.g-code .ln .no {
+  display: inline-block;
+  width: 24px;
+  margin-right: 18px;
+  text-align: right;
+  color: var(--g-line);
+  user-select: none;
+}
+
+.g-code .ln.is-lit,
+.g-code .ln.is-pair {
+  background: var(--g-cyan-tint);
+  color: var(--g-ink);
+}
+
+.g-code .ln.is-lit .no {
+  color: var(--g-cyan);
+}
+
+.g-code .call {
+  color: var(--g-cyan-text);
+}
+
+.g-swap {
+  animation: g-swap 0.26s ease both;
+}
+
+@keyframes g-swap {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.g-count {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.g-count .n {
+  font-size: 56px;
+  line-height: 52px;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+
+.g-count .muted {
+  font-size: 28px;
+  letter-spacing: -0.03em;
+}
+
+/* ------------------------------------------------------------------ the mark */
+.g-mark {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* the mark is drawn at four sizes; lines keep their pixel width */
+.g-mark-lattice,
+.g-face,
+.g-leader,
+.g-track {
+  vector-effect: non-scaling-stroke;
+}
+
+.g-mark-lattice,
+.g-leader,
+.g-track {
+  fill: none;
+}
+
+.g-mark-lattice {
+  stroke: var(--g-line);
+  opacity: 0.9;
+}
+
+/* a piece Lite has not installed waits outside the mark as a dashed outline */
+.g-face.is-ghost {
+  stroke-dasharray: 3 4;
+}
+
+.g-leader {
+  stroke: var(--g-construct);
+  stroke-width: 0.75;
+  stroke-dasharray: 2 3;
+}
+
+/* ------------------------------------------------------------------ footer */
+.g-footer {
+  padding-top: 48px;
+  padding-bottom: 28px;
+  border-top: 1px solid var(--g-line);
+}
+
+.g-footer-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 2fr);
+  column-gap: 24px;
+}
+
+.g-footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.g-footer-brand img {
+  width: auto;
+  height: 24px;
+}
+
+.g-footer-brand p {
+  max-width: 300px;
+}
+
+.g-footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.g-footer-col a {
+  color: var(--g-grey);
+  transition: color 0.15s ease;
+}
+
+.g-footer-col a:hover {
+  color: var(--g-cyan-text);
+}
+
+.g-footer-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid var(--g-line);
+}
+
+.g-footer-bar a:hover {
+  color: var(--g-cyan-text);
+}
+
+@media (max-width: 900px) {
+  .g-footer-cols {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 32px;
+  }
+
+  .g-footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .g-community-foot,
+  .g-footer-bar {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
+
+.g-home :focus-visible {
+  outline: 2px solid var(--g-cyan);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-home .g-swap {
+    animation: none;
+  }
+}
+
+.home-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.home-sec {
+  --g-secpad: 112px;
+  padding: var(--g-secpad) 0;
+  border-top: 1px solid var(--g-line);
+}
+
+.g-code .ln.is-note {
+  color: var(--g-grey);
+}
+
+@media (max-width: 1280px) {
+  .home-sec {
+    --g-secpad: 80px;
+  }
+}
+
+@media (max-width: 900px) {
+  .home-sec {
+    --g-secpad: 64px;
+  }
+}
+
+.Layout:has(.g-home) .VPFooter {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------------ rules that bleed */
+/* last, so these paddings win over the shorthands above */
+.g-tabs,
+.g-file-head,
+.g-community,
+.g-footer,
+.g-footer-bar {
+  margin-left: calc(var(--g-bleed-left) * -1);
+  margin-right: calc(var(--g-bleed-right) * -1);
+  padding-left: var(--g-bleed-left);
+  padding-right: var(--g-bleed-right);
+}

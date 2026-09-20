@@ -1,7 +1,5 @@
 # Helpers
 
-[[toc]]
-
 ## Available Methods
 
 ### Paths

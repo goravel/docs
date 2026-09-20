@@ -1,7 +1,5 @@
 # Service Providers
 
-[[toc]]
-
 ## Introduction
 
 The most important thing in the kernel boot operation is to load the `ServiceProvider`. All `ServiceProvider` under the application are configured in the `bootstrap/providers.go` file.

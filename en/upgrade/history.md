@@ -1,3 +1,7 @@
+---
+aside: false
+---
+
 # History Upgrade
 
 - [Upgrading To v1.16 From v1.15](v1.16.md)

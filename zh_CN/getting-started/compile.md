@@ -1,7 +1,5 @@
 # 编译
 
-[[toc]]
-
 ## 编译命令
 
 Goravel 项目可以通过以下命令编译：
@@ -47,7 +45,7 @@ go build .
 
 部署时需要将下列文件与文件夹上传至服务器：
 
-```
+```text
 .env
 ./main // 编译生成的二进制文件
 ./public // 如果存在
@@ -67,13 +65,13 @@ go build --ldflags "-extldflags -static" -o main .
 编译有平台区分，需要根据部署情况，选择匹配的编译方式。
 
 ```shell
-// 编译 Linux 环境
+# 编译 Linux 环境
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build .
 
-// 编译 Windows 环境
+# 编译 Windows 环境
 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build .
 
-// 编译 Mac 环境
+# 编译 Mac 环境
 CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 ```
 
@@ -126,7 +124,9 @@ docker-compose build
 docker-compose up
 ```
 
-> 注意：如需外部访问，需要将 APP_HOST 改为 0.0.0.0
+::: tip
+如需外部访问，需要将 APP_HOST 改为 0.0.0.0
+:::
 
 ## 设置时区
 
@@ -134,13 +134,13 @@ docker-compose up
 
 1. 在 Dockerfile 中添加时区设置
 
-```
+```dockerfile
 RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
 ```
 
 2. 在编译时设置时区
 
-```
+```shell
 go build -tags timetzdata .
 ```
 

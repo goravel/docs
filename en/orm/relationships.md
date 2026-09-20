@@ -1,15 +1,13 @@
 # Relationships
 
-[[toc]]
-
 ## Introduction
 
 It's common for database tables to be interconnected. For instance, a blog post may have many comments, or an order may be linked to the user who placed it. `Orm` simplifies managing and dealing with such relationships, and it can handle various common relationships:
 
-- [One To One](#One-To-One)
-- [One To Many](#One-To-Many)
-- [Many To Many](#Many-To-Many)
-- [Polymorphic](#Polymorphic)
+- [One To One](#one-to-one)
+- [One To Many](#one-to-many)
+- [Many To Many](#many-to-many-relationships)
+- [Polymorphic](#polymorphic)
 
 ## Defining Relationships
 
@@ -130,7 +128,7 @@ To define this relationship, three database tables are needed: `users`, `roles`,
 
 Remember, since a role can belong to many users, we cannot simply place a `user_id` column on the `roles` table. This would mean that a role could only belong to a single user. In order to provide support for roles being assigned to multiple users, the `role_user` table is needed. We can summarize the relationship's table structure like so:
 
-```
+```text
 users
   id - integer
   name - string
@@ -198,7 +196,7 @@ type Role struct {
 
 Table structure:
 
-```
+```text
 users
   id - integer
   name - string
@@ -220,7 +218,7 @@ A polymorphic relationship allows the child model to belong to more than one typ
 
 A polymorphic relation is similar to a normal relation; however, the child model can belong to more than one type of model using a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a polymorphic relation allows you to have a single table of unique images that may be associated with posts and users. First, let's examine the table structure:
 
-```
+```text
 posts
   id - integer
   name - string

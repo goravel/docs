@@ -1,7 +1,5 @@
 # 哈希
 
-[[toc]]
-
 ## 简介
 
 Goravel `facades.Hash()` 为存储用户密码提供了安全的 Argon2id 和 Bcrypt 哈希加密方式。 如果你正在使用 Goravel 应用初始脚手架 ，默认情况下，将使用 Argon2id 进行注册和身份验证。

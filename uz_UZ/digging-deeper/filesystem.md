@@ -1,7 +1,5 @@
 # Fayl saqlash
 
-[[toc]]
-
 ## Kirish
 
 Goravel mahalliy fayl tizimlari, Amazon S3, Aliyun OSS, Tencent COS, Minio va Cloudinary bilan ishlash uchun oddiy drayverlarni taqdim etadi. Yanada yaxshisi, ushbu saqlash variantlari o'rtasida mahalliy ishlab chiqish mashinangiz va ishlab chiqarish serveringiz o'rtasida o'tish juda oddiy, chunki har bir tizim uchun API bir xil bo'lib qoladi. Goravel `local` haydovchi bilan birga keladi, boshqa haydovchilar uchun iltimos, tegishli mustaqil kengaytma paketini tekshiring:
@@ -337,4 +335,6 @@ type Driver interface {
 }
 ```
 
-> Eslatma: Maxsus drayver ro'yxatdan o'tkazilganda konfiguratsiya yuklanmaganligi sababli, iltimos, maxsus drayverda konfiguratsiyani olish uchun `facades.Config().Env()` dan foydalaning.
+::: warning
+Maxsus drayver ro'yxatdan o'tkazilganda konfiguratsiya yuklanmaganligi sababli, iltimos, maxsus drayverda konfiguratsiyani olish uchun `facades.Config().Env()` dan foydalaning.
+:::

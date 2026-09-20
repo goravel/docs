@@ -1,7 +1,5 @@
 # Fasadlar
 
-[[toc]]
-
 ## Kirish
 
 `facades` ilova yadrosining asosiy funksiyalari uchun "static" interfeysni ta'minlaydi va ko'proq moslashuvchan, chiroyli va sinov o'tkazish oson bo'lgan sintaksisni taqdim etadi. Goravel’ning barcha facadelari app/facades papkasi ichida joylashgan:

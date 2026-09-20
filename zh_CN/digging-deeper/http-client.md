@@ -1,7 +1,5 @@
 # HTTP 客户端
 
-[[toc]]
-
 ## 简介
 
 在软件开发中，有很多时候你需要调用 API 来获取数据——无论是连接到微服务还是访问第三方 API。 在这种情况下，Goravel 提供了一个易于使用、富有表现力且极简的 API，它基于标准的 `net/http` 库构建，所有这些都旨在提升开发者的体验。
@@ -158,11 +156,11 @@ response, err := facades.Http().
     Get("https://api.example.com")
 ```
 
-为了方便起见，你可以使用 `AcceptJson` 快速指定你期望 API 响应为 `application/json` 格式：
+为了方便起见，你可以使用 `AcceptJSON` 快速指定你期望 API 响应为 `application/json` 格式：
 
 ```go
 response, err := facades.Http().
-    AcceptJson().
+    AcceptJSON().
     Get("https://api.example.com/data")
 ```
 
@@ -209,7 +207,7 @@ response, err := facades.Http().
     Get("https://api.example.com/api/resource")
 ```
 
-:::tip
+::: tip
 `WithToken` 方法还接受一个可选的第二个参数，用于指定令牌类型（例如，“Bearer”、“Token”）。
 如果未提供类型，则默认为“Bearer”。
 
@@ -253,7 +251,7 @@ type User struct {
 
 func main() {
     var user User
-    response, err := facades.Http().AcceptJson().Get("https://jsonplaceholder.typicode.com/users/1")
+    response, err := facades.Http().AcceptJSON().Get("https://jsonplaceholder.typicode.com/users/1")
     if err != nil {
         fmt.Println("Error making request:", err)
         return
@@ -459,7 +457,7 @@ func TestExternalApi(t *testing.T) {
 }
 ```
 
-:::warning 全局状态与并行测试
+::: warning 全局状态与并行测试
 `Fake` 和 `Reset` 方法会改变 HTTP 客户端的全局状态。 因此，**你应该避免并行运行模拟 HTTP 客户端的测试**（`t.Parallel()`）。 这样做可能会导致竞态条件，即一个测试重置模拟时，另一个测试仍在运行。
 :::
 

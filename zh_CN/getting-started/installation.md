@@ -1,10 +1,8 @@
 # 安装
 
-[[toc]]
-
 ## 服务要求
 
-- Golang >= 1.23
+- Golang >= 1.25
 
 ## 安装 Goravel
 
@@ -13,12 +11,14 @@
 根据[文档](https://github.com/goravel/installer)初始化安装器，然后使用下面命令初始化一个新的 Goravel 项目：
 
 ```shell
-// 安装最新版本的 goravel 安装器
+# 安装最新版本的 goravel 安装器
 go install github.com/goravel/installer/goravel@latest
 
-// 输入您想要安装项目
+# 输入您想要安装项目
 goravel new blog
 ```
+
+安装器会询问使用哪个模板：完整框架，或仅包含核心 facades 的 [Goravel Lite](#goravel-goravel-lite)。
 
 ### 手动安装
 
@@ -27,16 +27,16 @@ goravel new blog
 包含所有 facades 的全功能框架。
 
 ```shell
-// 下载框架
+# 下载框架
 git clone --depth=1 https://github.com/goravel/goravel.git && rm -rf goravel/.git*
 
-// 安装依赖
+# 安装依赖
 cd goravel && go mod tidy
 
-// 创建 .env 环境配置文件
+# 创建 .env 环境配置文件
 cp .env.example .env
 
-// 生成应用密钥
+# 生成应用密钥
 ./artisan key:generate
 ```
 
@@ -45,23 +45,24 @@ cp .env.example .env
 仅包含核心功能的轻量级框架，适合构建微服务或小型应用。 你可以根据需要安装额外的 facades。
 
 ```shell
-// 下载框架
+# 下载框架
 git clone --depth=1 https://github.com/goravel/goravel-lite.git && rm -rf goravel-lite/.git*
-s
-// 安装依赖
+# 安装依赖
 cd goravel-lite && go mod tidy
 
-// 创建 .env 环境配置文件
+# 创建 .env 环境配置文件
 cp .env.example .env
 
-// 生成应用密钥
+# 生成应用密钥
 ./artisan key:generate
 
-// 根据需要安装额外的 facades，例如：
+# 根据需要安装额外的 facades，例如：
 ./artisan package:install Cache
 ```
 
-> 如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
+::: tip
+如果安装依赖较慢，请使用国内代理，[详见文章](https://learnku.com/go/wikis/38122)。
+:::
 
 ## 启动服务
 
@@ -87,19 +88,17 @@ APP_ENV=production APP_DEBUG=true go run .
 
 安装 [airverse/air] (https://github.com/air-verse/air), Goravel 有一个内置的配置文件，可以直接使用：
 
-```
+```shell
 air
 ```
 
-#### 🧰 安装 Air 后
+#### 安装 Air 后
 
 安装了 Air 成功后，你需要确保它能够在你的环境中正确执行。  
 根据你的环境设置，Air 可能不能自动成为一个有效的命令。  
 以下是确保正确运行的两种简单方式：
 
----
-
-#### 🪄 选项 1: 使用一个 Helper 脚本 (`air.sh`)
+#### 选项 1: 使用一个 Helper 脚本 (`air.sh`)
 
 如果 Air 已安装但无法被识别为一个终端命令，你可以创建一个脚本，自动定位和运行它。
 
@@ -135,7 +134,7 @@ $GO_BIN
 
 这样会确保 Air 正常运行即使你的 `$PATH` 中没有包含 Go 软件库。
 
-#### 💡 选项2：将Go Bin 添加到PATH (Mac/Linux)
+#### 选项 2：将Go Bin 添加到PATH (Mac/Linux)
 
 如果你喜欢在没有脚本的情况下直接运行 air，你可以添加 Go bin 目录到你的 PATH。
 
@@ -152,8 +151,7 @@ source ~/.zshrc
 air
 ```
 
-#### ✅ 提示
-
+::: tip
 要验证  air 已安装并可被执行，可以运行：
 
 ```bash
@@ -161,6 +159,7 @@ which air
 ```
 
 如果它没有返回一个有效的路径(例如`/Users/yourname/go/bin/air`)，它意味着帮助脚本或路径尚未配置。
+:::
 
 ## 配置
 
@@ -191,7 +190,7 @@ Goravel 安装到本地后，要生成应用程序的密钥。 运行下面命�
 ```shell
 ./artisan env:encrypt
 
-// 指定文件名与秘钥
+# 指定文件名与秘钥
 ./artisan env:encrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```
 
@@ -200,6 +199,6 @@ Goravel 安装到本地后，要生成应用程序的密钥。 运行下面命�
 ```shell
 GORAVEL_ENV_ENCRYPTION_KEY=BgcELROHL8sAV568T7Fiki7krjLHOkUc ./artisan env:decrypt
 
-// 或者
+# 或者
 ./artisan env:decrypt --name .env.safe --key BgcELROHL8sAV568T7Fiki7krjLHOkUc
 ```

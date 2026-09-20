@@ -1,7 +1,5 @@
 # Artisan 命令行
 
-[[toc]]
-
 ## 简介
 
 Artisan 是 Goravel 自带的命令行工具。 该模块可以使用 `facades.Artisan()` 进行操作。 它提供了许多有用的命令，这些命令可以在构建应用时为你提供帮助。 你可以通过命令查看所有可用的 Artisan 命令。
@@ -92,7 +90,9 @@ func Boot() contractsfoundation.Application {
 - **返回 `[]string{}`**——删除所有命令。
 - **返回条目**——仅保留签名与某个条目匹配的命令。
 
-> 注意：过滤器适用于所有命令，包括通过 `WithCommands` 添加的命令，因此用户无法通过手动添加命令来绕过过滤器。
+::: info
+过滤器适用于所有命令，包括通过 `WithCommands` 添加的命令，因此用户无法通过手动添加命令来绕过过滤器。
+:::
 
 ### 命令结构
 
@@ -634,9 +634,11 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 有时你可能希望在 CLI 之外执行 Artisan 命令，可以使用 `facades.Artisan()` 上的 `Call` 方法来完成此操作。
 
 ```go
-facades.Route().GET("/", func(c *gin.Context) {
+facades.Route().Get("/", func(ctx http.Context) http.Response {
   facades.Artisan().Call("emails")
   facades.Artisan().Call("emails --lang Chinese name") // 携带参数与选项
+
+  return ctx.Response().Success().String("done")
 })
 ```
 

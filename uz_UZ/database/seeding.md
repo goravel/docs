@@ -1,7 +1,5 @@
 # Ma'lumotlar bazasi: Urg'ochi qo'shish
 
-[[toc]]
-
 ## Kirish
 
 Goravel ma'lumotlar bazangizni seed struct yordamida ma'lumotlar bilan to'ldirish imkoniyatini o'z ichiga oladi. Barcha urug' strukturalari `database/seeders` katalogida saqlanadi. Standart bo‘yicha, siz uchun `DatabaseSeeder` struktura belgilangan.

@@ -1,7 +1,5 @@
 # Middleware
 
-[[toc]]
-
 ## Introduction
 
 Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application.
@@ -30,10 +28,10 @@ func (a *Auth) Signature() string {
 
 ### Create Middleware By Command
 
-```
+```shell
 ./artisan make:middleware Auth
 
-// Support nested folders
+# Support nested folders
 ./artisan make:middleware user/Auth
 ```
 
@@ -101,7 +99,9 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **Note**: Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
+::: warning
+Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
+:::
 
 ## Abort Request
 

@@ -1,7 +1,5 @@
 # 视图
 
-[[toc]]
-
 ## 简介
 
 当然，直接从路由和控制器返回整个 HTML 文档字符串是不切实际的。 值得庆幸的是，视图提供了一种方便的方式来将我们所有的 HTML 放在单独的文件中。 视图将你的控制器 / 应用程序逻辑与你的表现逻辑分开并存储在 `resources/views` 目录中。
@@ -10,7 +8,7 @@
 
 使用框架默认模版 `html/template` 时，可以通过在应用程序 `resources/views` 目录中放置具有 `.tmpl` 扩展名的文件来创建视图。
 
-```
+```html
 // resources/views/welcome.tmpl
 {{ define "welcome.tmpl" }}
 <html>
@@ -61,7 +59,7 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 如果需要判断视图文件是否存在，可以使用 `facades.View()` 方法。它会检查 `resources/views/` 目录以及通过 `LoadViewsFrom` 注册的任何目录：
 
 ```go
-if facades.View().Exist("welcome.tmpl") {
+if facades.View().Exists("welcome.tmpl") {
   // ...
 }
 ```
@@ -79,7 +77,7 @@ func (r *ServiceProvider) Boot(app foundation.Application) {
 
 渲染视图时，应用程序的 `resources/views` 目录具有优先权——用户可以在 `resources/views` 中创建同名文件来覆盖任何包视图。如果在此目录中未找到视图，则会按注册顺序在已注册的包视图目录中进行回退搜索。
 
-`Exist` 方法除了检查 `resources/views/` 外，也会检查已注册的包视图路径。
+`Exists` 方法除了检查 `resources/views/` 外，也会检查已注册的包视图路径。
 
 ## 向视图传递数据
 

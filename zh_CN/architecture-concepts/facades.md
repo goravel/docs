@@ -1,7 +1,5 @@
 # Facades
 
-[[toc]]
-
 ## 简介
 
 `facades` 为应用的核心功能提供一个「静态」接口，能够提供更加灵活、更加优雅、易于测试的语法。 Goravel 的所有 `facades` 都定义在 `app/facades` 文件夹下：
@@ -45,7 +43,9 @@ func Route() route.Route {
 }
 ```
 
-> `facades` 被暴露于应用程序中，你也可以在 `app/facades` 文件夹中创建自己的 `facades` 或覆盖现有的 `facades`。
+::: tip
+`facades` 被暴露于应用程序中，你也可以在 `app/facades` 文件夹中创建自己的 `facades` 或覆盖现有的 `facades`。
+:::
 
 ## 安装/卸载 Facades
 
@@ -65,4 +65,6 @@ func Route() route.Route {
 ./artisan package:uninstall Route
 ```
 
-> 注意：如果你使用 `./artisan package:install` 命令手动选择 `facades`，需要按下 `x` 选择要安装的 facades，然后按下 `Enter` 确认安装。 如果你直接按下 `Enter`，默认没有 `facades` 被选中。
+::: tip
+如果你使用 `./artisan package:install` 命令手动选择 `facades`，需要按下 `x` 选择要安装的 facades，然后按下 `Enter` 确认安装。 如果你直接按下 `Enter`，默认没有 `facades` 被选中。
+:::

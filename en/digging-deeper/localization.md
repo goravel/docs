@@ -1,14 +1,12 @@
 # Localization
 
-[[toc]]
-
 ## Introduction
 
 Goravel's localization features provide a convenient way to retrieve strings in various languages, making it easy to support multiple languages in your application. Language strings are stored in files in the `lang` directory, and Goravel supports two ways to organize language files:
 
 Each language has its own file:
 
-```
+```text
 /lang
   en.json
   cn.json
@@ -16,7 +14,7 @@ Each language has its own file:
 
 Or, when there are too many translations, they can be categorized:
 
-```
+```text
 /lang
   /en
     user.json
@@ -40,7 +38,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 You can configure a "fallback locale" that will be used when the current language does not contain the given translation string. Like the default language, the fallback language is also configured in the `config/app.go` configuration file.
 
-```
+```go
 "fallback_locale": "en",
 ```
 
@@ -48,7 +46,7 @@ You can configure a "fallback locale" that will be used when the current languag
 
 You can use the `CurrentLocale` and `IsLocale` methods to determine the current `locale` or check if the `locale` is a given value.
 
-```
+```go
 locale := facades.App().CurrentLocale(ctx)
 if facades.App().IsLocale(ctx, "en") {}
 ```
@@ -73,7 +71,7 @@ You can use the `facades.Lang(ctx).Get()` method to retrieve translation strings
 
 For example:
 
-```
+```json
 // lang/en.json
 {
   "name": "It's your name",
@@ -143,7 +141,7 @@ facades.Lang(ctx).Choice("messages.apples", 10)
 
 You can also define placeholder attributes in pluralization strings. By passing an array as the third parameter to the `facades.Lang(ctx).Choice()` method, you can replace these placeholders:
 
-```
+```go
 "minutes_ago": "{1} :value minute ago|[2,*] :value minutes ago",
 
 facades.Lang(ctx).Choice("time.minutes_ago", 5, translation.Option{
@@ -159,7 +157,7 @@ When using embed loading, the language files will be compiled into the binary fi
 
 In the same directory as the language files, create a `fs.go` file:
 
-```
+```text
 /lang
   en.json
   cn.json

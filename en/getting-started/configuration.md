@@ -1,7 +1,5 @@
 # Configuration
 
-[[toc]]
-
 ## Introduction
 
 All configuration files of the Goravel framework are stored in the `config` directory. You can view specific instructions and configure them flexibly according to project needs.
@@ -12,7 +10,9 @@ Running applications in different environments usually requires different config
 
 Therefore, the framework provides the `.env.example` file in the root directory. You need to copy this file, rename it to `.env` before you start development, and modify the configuration items in the `.env` file according to your project needs.
 
-Note that the `.env` file should not be added to version control, because when multiple people collaborate, different developers may use different configurations, and different deployment environment configurations are different.
+::: warning
+The `.env` file should not be added to version control, because when multiple people collaborate, different developers may use different configurations, and different deployment environment configurations are different.
+:::
 
 In addition, if an intruder gains access to your code repository, there will be a risk of exposing sensitive configuration. If you want to add a new configuration item, you can add it to the `.env.example` file to synchronize the configuration of all developers.
 

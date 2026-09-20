@@ -1,7 +1,5 @@
 # Cache
 
-[[toc]]
-
 ## Introduction
 
 Goravel provides an expandable cache module that can be operated using `facades.Cache()`. Goravel comes with a `memory` driver, for other drivers, please check the corresponding independent extension packages:
@@ -13,6 +11,15 @@ Goravel provides an expandable cache module that can be operated using `facades.
 ## Configuration
 
 Make all custom configurations in `config/cache.go`.
+
+### Cache Key Prefix
+
+The `prefix` option is added in front of every key, so applications sharing one cache store do not collide. With the prefix `goravel_cache`, the key `users` is stored as `goravel_cache:users`. An empty prefix stores the key as is.
+
+```go
+// config/cache.go
+"prefix": config.GetString("APP_NAME", "goravel") + "_cache",
+```
 
 ## Cache Usage
 

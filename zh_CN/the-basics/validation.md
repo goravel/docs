@@ -1,7 +1,5 @@
 # 表单验证
 
-[[toc]]
-
 ## 简介
 
 Goravel 提供了几种不同的方法来验证传入应用程序的数据。 最常见的做法是在所有传入的 HTTP 请求中使用 `Validate` 方法。Goravel 包含了各种方便的验证规则。
@@ -147,7 +145,9 @@ func (r *PostController) Store(ctx http.Context) {
 
 更多验证规则详见 [可用的验证规则](#可用的验证规则)。
 
-> 注意，由于 `form` 传值默认为 `string` 类型，因此 request 中所有字段也都应为 `string` 类型，否则请使用 `JSON` 传值。
+::: warning
+由于 `form` 传值默认为 `string` 类型，因此 request 中所有字段也都应为 `string` 类型，否则请使用 `JSON` 传值。
+:::
 
 ### 表单请求授权验证
 

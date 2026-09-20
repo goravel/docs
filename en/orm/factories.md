@@ -1,7 +1,5 @@
 # Factories
 
-[[toc]]
-
 ## Introduction
 
 When testing your application or seeding your database, it might be necessary to insert a few records into your database beforehand. Instead of manually inputting values for each column, Goravel allows you to define a set of default attributes for each of your models by creating model factories.
@@ -28,7 +26,7 @@ As you can see, in their most basic form, factories are structs that have a `Def
 
 To create a factory, run the `make:factory` Artisan command:
 
-```
+```shell
 go run . artisan make:factory PostFactory
 ```
 

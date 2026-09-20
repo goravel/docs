@@ -1,7 +1,5 @@
 # 发送邮件
 
-[[toc]]
-
 ## 简介
 
 Goravel 可以使用 `facades.Mail()` 便捷的在本地发送邮件。

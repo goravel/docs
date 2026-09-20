@@ -1,7 +1,5 @@
 # 进程
 
-[[toc]]
-
 ## 介绍
 
 Goravel 围绕 Go 标准 `os/exec` 包提供了一个富有表现力且优雅的 API，允许你从应用程序中无缝调用外部命令。 默认情况下，Go 的进程处理可能很冗长；Goravel 的 `Process` facade 简化了这一常见任务，为执行命令、处理输出和管理异步进程提供了流畅的接口。
@@ -166,7 +164,7 @@ result := facades.Process().Pipe(func(pipe process.Pipe) {
 }).Run()
 ```
 
-:::warning
+::: warning
 诸如 `Timeout`、`Env` 或 `Input` 之类的进程选项必须在调用 `Pipe` 方法**之后**进行配置。
 在 `Pipe` 调用之前应用的任何配置都将被忽略。
 
@@ -225,7 +223,7 @@ case <-time.After(1 * time.Second):
 result := running.Wait()
 ```
 
-:::warning
+::: warning
 即使你使用 `Done` 通道来检测完成，之后也**必须**调用 `Wait()`。
 这确保进程被操作系统正确“捕获”并清理底层资源。
 :::
@@ -273,7 +271,7 @@ if running.Running() {
 }
 ```
 
-:::tip
+::: tip
 如果你需要在进程完成时执行代码，请勿轮询 `Running()`。 请使用 `Done()` 通道或 `Wait()` 方法，这比重复检查状态要高效得多。
 :::
 
@@ -374,7 +372,7 @@ case <-time.After(10 * time.Second):
 
 可以使用 `OnOutput` 方法实时检查池的输出。
 
-:::warning
+::: warning
 `OnOutput` 回调可能会从多个 goroutine 并发调用。 确保你的回调逻辑是线程安全的。
 :::
 

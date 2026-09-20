@@ -1,7 +1,5 @@
 # Kontrollerlar
 
-[[toc]]
-
 ## Kirish
 
 Alohida marshrutda barcha so‘rovni qayta ishlash mantiqini yopish (closure) shaklida belgilash o‘rniga, birlashtirish uchun kontrollerdan foydalanish mumkin. Kontrollerlar `app/http/controllers` katalogida saqlanadi.

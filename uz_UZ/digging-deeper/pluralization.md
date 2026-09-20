@@ -1,7 +1,5 @@
 # Ko'pliklashtirish
 
-[[toc]]
-
 ## Kirish
 
 Satrlar har qanday veb-ilova uchun muhimdir. Goravel so'zlarni birlik va ko'plik shakllariga aylantirish uchun oddiy yordamchi dasturlarni taqdim etadi. Sukut bo'yicha **inglizcha** ni qo'llab-quvvatlaydi, lekin siz boshqa tillarni yoki maxsus qoidalarni osongina qo'shishingiz mumkin.

@@ -1,0 +1,617 @@
+/* The default theme scopes its styles, so layout overrides here need !important. */
+
+/* ------------------------------------------------------------------ the frame */
+/* past 1440px the site stays 1440px wide and centred, and its borders run top to bottom,
+   so every full-width rule ends on them. The nav, the sidebar and the menu panel are fixed,
+   so they are placed inside the frame by hand. */
+@media (min-width: 1441px) {
+  :root {
+    --g-frame-x: calc(max(0px, (100% - var(--g-frame)) / 2) + 1px);
+  }
+
+  .Layout {
+    max-width: var(--g-frame);
+    margin: 0 auto;
+    border-right: 1px solid var(--g-line);
+    border-left: 1px solid var(--g-line);
+  }
+
+  .VPNav {
+    right: var(--g-frame-x);
+    left: var(--g-frame-x) !important;
+    width: auto !important;
+  }
+
+  .VPSidebar {
+    left: var(--g-frame-x) !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPContent.has-sidebar {
+    padding-left: var(--vp-sidebar-width) !important;
+    padding-right: 0 !important;
+  }
+
+  .VPDoc {
+    padding: 0 !important;
+  }
+
+  .VPDoc .container {
+    max-width: none !important;
+    margin: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+  .VPDoc .container > .content {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: var(--g-col) !important;
+    max-width: none !important;
+    padding: 0 var(--g-rail) 0 var(--g-gutter) !important;
+    border-right: 1px solid var(--g-line);
+  }
+
+  .VPDoc .content-container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 36px 0 72px !important;
+  }
+
+  .VPDoc .container > .aside {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: calc(100% - var(--g-col)) !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .VPDoc .aside-curtain {
+    display: none !important;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .VPDoc .container > .content {
+    width: 100% !important;
+    border-right: 0;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1599px) {
+  .VPDoc .container > .content {
+    width: calc(100% - var(--g-aside)) !important;
+  }
+
+  .VPDoc .container > .aside {
+    width: var(--g-aside) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .VPDoc:not(.has-aside) .container > .content {
+    width: 100% !important;
+    border-right: 0;
+  }
+
+  .VPDoc:not(.has-aside) .vp-doc p {
+    max-width: 720px;
+  }
+}
+
+@media (max-width: 959px) {
+  .VPDoc {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  .VPDoc .container,
+  .VPDoc .container > .content {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  .VPDoc .content-container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 24px 0 64px !important;
+  }
+}
+
+/* ------------------------------------------------------------------ sidebar */
+/* rows run to both edges of the sidebar; the insets are where their text starts */
+.VPSidebar {
+  --inset-left: var(--g-shell-inset);
+  --inset-right: 24px;
+  padding: calc(var(--vp-nav-height) + 28px) var(--inset-right) 96px var(--inset-left) !important;
+  border-right: 1px solid var(--g-line);
+}
+
+/* above 1440px the theme widens the sidebar to centre its layout; this one stays on the left */
+@media (min-width: 960px) {
+  .VPSidebar {
+    width: var(--vp-sidebar-width) !important;
+  }
+}
+
+@media (max-width: 959px) {
+  .VPSidebar {
+    --inset-left: 20px;
+    --inset-right: 20px;
+    padding-top: 24px !important;
+  }
+}
+
+.VPSidebar > .curtain {
+  display: none !important;
+}
+
+.VPSidebar .group {
+  padding: 0 !important;
+  border-top: 0 !important;
+}
+
+.VPSidebar .group + .group {
+  margin-top: 4px;
+}
+
+.VPSidebarItem.level-0 {
+  padding-bottom: 0 !important;
+}
+
+.VPSidebarItem.level-0 > .item,
+.VPSidebarItem.level-1 > .item {
+  width: auto !important;
+  margin: 0 calc(var(--inset-right) * -1) 0 calc(var(--inset-left) * -1) !important;
+  padding: 8px var(--inset-right) 8px var(--inset-left) !important;
+  border: 0 !important;
+  line-height: 20px;
+  transition: background-color 0.15s ease;
+}
+
+.VPSidebarItem.level-1 > .item {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+.VPSidebarItem.level-0 > .item:hover,
+.VPSidebarItem.level-1 > .item:hover {
+  background: var(--g-soft);
+}
+
+.VPSidebarItem .indicator {
+  display: none !important;
+}
+
+.VPSidebarItem .text {
+  padding: 0 !important;
+  line-height: 20px;
+}
+
+.VPSidebarItem.level-1 .link .text {
+  font-weight: 400;
+}
+
+.VPSidebarItem.level-1 > .item:hover .text {
+  color: var(--g-ink);
+}
+
+.VPSidebarItem .caret {
+  width: 20px !important;
+  height: 20px !important;
+  margin-right: -4px;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+
+.VPSidebarItem .item:hover .caret {
+  opacity: 1;
+}
+
+.VPSidebarItem .caret-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.VPSidebarItem .items {
+  margin: 2px 0 12px !important;
+  padding-left: 0 !important;
+  border-left: 0 !important;
+}
+
+.VPSidebarItem.is-active > .item .text {
+  color: var(--g-cyan-text) !important;
+}
+
+.VPSidebarItem.level-1.is-active > .item::before {
+  position: absolute;
+  left: calc(var(--inset-left) - 17px);
+  top: 13px;
+  background: var(--g-cyan);
+}
+
+/* ------------------------------------------------------------------ outline */
+@media (min-width: 1280px) {
+  .VPDoc .aside-container {
+    position: sticky !important;
+    top: calc(var(--vp-nav-height) + 36px) !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: calc(100vh - var(--vp-nav-height) - 64px);
+    padding: 0 !important;
+  }
+
+  .VPDoc .aside-content {
+    min-height: 0;
+    padding-bottom: 24px;
+  }
+}
+
+.VPDocAsideOutline {
+  margin-bottom: 36px;
+  padding: 0 var(--g-shell-inset) 0 var(--g-rail) !important;
+  border: 0 !important;
+}
+
+.VPDocAsideOutline .content {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.VPDocAsideOutline .outline-marker {
+  display: none;
+}
+
+/* the method index's heading is drawn the same way */
+.VPDocAsideOutline .outline-title,
+.goravel-methods .outline-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 calc(var(--g-shell-inset) * -1) 14px calc(var(--g-rail) * -1);
+  padding: 0 var(--g-shell-inset) 12px var(--g-rail);
+  border-bottom: 1px solid var(--g-line);
+}
+
+.VPDocAsideOutline .outline-title::before,
+.goravel-methods .outline-title::before {
+  background: var(--g-construct);
+}
+
+.VPDocOutlineItem .outline-link {
+  position: relative;
+  padding: 5px 0 5px 12px;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.VPDocOutlineItem .outline-link:hover,
+.VPDocOutlineItem .outline-link.active {
+  color: var(--g-ink);
+}
+
+.VPDocOutlineItem .outline-link.active {
+  font-weight: 500;
+}
+
+.VPDocOutlineItem .outline-link.active::before {
+  position: absolute;
+  left: 0;
+  top: 11px;
+  background: var(--g-cyan);
+}
+
+.VPDocOutlineItem.nested {
+  padding-left: 12px;
+}
+
+.VPLocalNav {
+  border-bottom: 1px solid var(--g-line) !important;
+}
+
+.VPLocalNav.empty {
+  display: none !important;
+}
+
+@media (min-width: 960px) {
+  .VPLocalNav {
+    padding-left: calc(var(--vp-sidebar-width) + var(--g-gutter)) !important;
+  }
+}
+
+.VPLocalNav .menu,
+.VPLocalNav .VPLocalNavOutlineDropdown button {
+  font-size: 13px;
+  color: var(--g-grey);
+}
+
+.VPLocalNavOutlineDropdown .items {
+  border: 1px solid var(--g-line) !important;
+  border-radius: 2px !important;
+  box-shadow: 0 10px 28px rgba(16, 24, 32, 0.1) !important;
+}
+
+/* ------------------------------------------------------------------ search */
+/* the theme resets Algolia's variables on every DocSearch node, so they are set at that level */
+:root [class*='DocSearch'] {
+  --docsearch-container-background: rgba(16, 24, 32, 0.32);
+  --docsearch-modal-background: var(--g-white);
+  --docsearch-modal-shadow: 0 16px 48px rgba(16, 24, 32, 0.12);
+  --docsearch-searchbox-shadow: none;
+  --docsearch-searchbox-focus-background: var(--g-white);
+  --docsearch-highlight-color: var(--g-cyan-text);
+  --docsearch-hit-background: var(--g-white);
+  --docsearch-hit-color: var(--g-ink);
+  --docsearch-hit-active-color: var(--g-ink);
+  --docsearch-hit-shadow: none;
+  --docsearch-footer-background: var(--g-white);
+  --docsearch-footer-height: 48px;
+  --docsearch-footer-shadow: inset 0 1px 0 var(--g-line);
+}
+
+.DocSearch-Modal {
+  margin-top: 88px;
+  border: 1px solid var(--g-line);
+  border-radius: 2px;
+}
+
+.DocSearch-SearchBar {
+  padding: 0;
+  border-bottom: 1px solid var(--g-line);
+}
+
+.DocSearch-Form {
+  height: 60px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 0;
+}
+
+.DocSearch-MagnifierLabel {
+  color: var(--g-grey);
+}
+
+.DocSearch-Input {
+  padding-left: 12px;
+  font-size: 17px;
+}
+
+.DocSearch-Reset {
+  border-radius: 2px;
+}
+
+.DocSearch-Commands-Key {
+  border-radius: 2px;
+  background: var(--g-soft);
+  box-shadow: none;
+}
+
+.DocSearch-Dropdown {
+  padding: 8px 0;
+}
+
+.DocSearch-Hit-source {
+  padding: 12px 20px 6px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-grey);
+}
+
+.DocSearch-Hit a {
+  padding: 0 20px;
+  border-radius: 0;
+}
+
+.DocSearch-Hit[aria-selected='true'] a {
+  background: var(--g-soft);
+}
+
+.DocSearch-Hit-title {
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+.DocSearch-Hit-path {
+  font-size: 12.5px;
+}
+
+.DocSearch-Hit-action svg {
+  width: 16px;
+  height: 16px;
+}
+
+.DocSearch-Footer {
+  border-radius: 0;
+}
+
+.DocSearch-Commands,
+.DocSearch-Logo,
+.DocSearch-Label {
+  font-size: 12px;
+  color: var(--g-grey);
+}
+
+.DocSearch-Commands,
+.DocSearch-Logo {
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .DocSearch-Modal {
+    margin-top: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .DocSearch-SearchBar {
+    padding: 0 16px;
+  }
+
+  .DocSearch-Form {
+    height: 56px;
+    padding: 0;
+  }
+
+  .DocSearch-MagnifierLabel svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .DocSearch-Input {
+    padding-left: 10px;
+    font-size: 16px;
+  }
+
+  .DocSearch-Cancel {
+    margin-left: 12px;
+    font-size: 15px;
+  }
+}
+
+/* ------------------------------------------------------------------ the phone menu */
+.VPNavScreen {
+  padding: 0 !important;
+}
+
+.VPNavScreen .container {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 24px 24px 96px !important;
+}
+
+.VPNavScreenMenuLink,
+.VPNavScreenMenuGroup .button {
+  padding: 10px 0 !important;
+  border-bottom: 0 !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: var(--g-ink) !important;
+}
+
+.VPNavScreenMenuGroup {
+  border-bottom: 0 !important;
+}
+
+.VPNavScreenMenuGroupSection {
+  padding: 8px 0 10px;
+}
+
+.VPNavScreenMenuGroupSection .title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 2px;
+  line-height: 24px;
+  color: var(--g-cyan-text);
+}
+
+.VPNavScreen .VPNavScreenMenuGroupLink {
+  margin-left: 0;
+  padding: 7px 0;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.VPNavScreenAppearance {
+  display: none !important;
+}
+
+.VPNavScreenTranslations {
+  margin-top: 28px !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+/* -7px lines the icon, not its 34px target, up with the rows above */
+.VPNavScreen .container .VPSocialLinks {
+  justify-content: flex-start;
+  margin: 20px 0 0 -7px;
+}
+
+.VPNavScreen .VPSocialLink {
+  width: var(--g-control) !important;
+  height: var(--g-control) !important;
+  border-radius: 2px;
+}
+
+.VPNavScreen .VPSocialLink:hover {
+  background: var(--g-soft);
+}
+
+.g-menu-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.g-menu-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--g-grey);
+  transition: color 0.15s ease;
+}
+
+a:hover .g-menu-icon {
+  color: var(--g-cyan-text);
+}
+
+.g-menu-icon.is-devchalk {
+  border-radius: 4px;
+  background: url('/devchalk-mark.png') center / cover;
+}
+
+/* ------------------------------------------------------------------ footer */
+.VPFooter {
+  padding: 20px var(--g-shell-inset) !important;
+}
+
+.VPFooter .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  max-width: none;
+  margin: 0;
+  text-align: left;
+}
+
+.VPFooter .message,
+.VPFooter .copyright {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px !important;
+  line-height: 18px !important;
+  letter-spacing: 0.02em;
+}
+
+.VPFooter .copyright::before {
+  content: '·';
+  margin-right: 10px;
+  color: var(--g-line);
+}
+
+@media (max-width: 959px) {
+  .VPFooter {
+    padding: 20px 24px !important;
+  }
+
+  .VPFooter .copyright::before {
+    content: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+  }
+}

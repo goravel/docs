@@ -1,7 +1,5 @@
 # Mail
 
-[[toc]]
-
 ## Introduction
 
 Goravel can use `facades.Mail()` to easily send mail locally.

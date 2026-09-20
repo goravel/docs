@@ -1,7 +1,5 @@
 # Artisan Console
 
-[[toc]]
-
 ## Introduction
 
 Artisan is the CLI tool that comes with Goravel for interacting with the command line. You can access it using `facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
@@ -92,7 +90,9 @@ The return value determines the filtering behavior:
 - **Return `[]string{}`** — all commands are dropped.
 - **Return entries** — only commands whose signature matches an entry are kept.
 
-> Note: The filter applies to all commands including those added via `WithCommands`, so the user cannot bypass the filter by adding commands manually.
+::: info
+The filter applies to all commands including those added via `WithCommands`, so the user cannot bypass the filter by adding commands manually.
+:::
 
 ### Command Structure
 
@@ -167,7 +167,7 @@ func (receiver *SendEmails) Extend() command.Extend {
 }
 ```
 
-Supported agrument types : `ArgumentFloat32`, `ArgumentFloat64`, `ArgumentInt`, `ArgumentInt8`, `ArgumentInt16`, `ArgumentInt32`, `ArgumentInt64`, `ArgumentString`, `ArgumentUint`, `ArgumentUint8`, `ArgumentUint16`, `ArgumentUint32`, `ArgumentUint64`, `ArgumentTimestamp`, `ArgumentFloat32Slice`, `ArgumentFloat64Slice`, `ArgumentIntSlice`, `ArgumentInt8Slice`, `ArgumentInt16Slice`, `ArgumentInt32Slice`, `ArgumentInt64Slice`, `ArgumentStringSlice`, `ArgumentUintSlice`, `ArgumentUint8Slice`, `ArgumentUint16Slice`, `ArgumentUint32Slice`, `ArgumentUint64Slice`, `ArgumentTimestampSlice`
+Supported argument types: `ArgumentFloat32`, `ArgumentFloat64`, `ArgumentInt`, `ArgumentInt8`, `ArgumentInt16`, `ArgumentInt32`, `ArgumentInt64`, `ArgumentString`, `ArgumentUint`, `ArgumentUint8`, `ArgumentUint16`, `ArgumentUint32`, `ArgumentUint64`, `ArgumentTimestamp`, `ArgumentFloat32Slice`, `ArgumentFloat64Slice`, `ArgumentIntSlice`, `ArgumentInt8Slice`, `ArgumentInt16Slice`, `ArgumentInt32Slice`, `ArgumentInt64Slice`, `ArgumentStringSlice`, `ArgumentUintSlice`, `ArgumentUint8Slice`, `ArgumentUint16Slice`, `ArgumentUint32Slice`, `ArgumentUint64Slice`, `ArgumentTimestampSlice`
 
 Argument types with single value support next fields:
 
@@ -636,9 +636,11 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 Sometimes you may wish to execute an Artisan command outside of the CLI, you can use the `Call` method on the `facades.Artisan()` to operate this.
 
 ```go
-facades.Route().Get("/", func(c *gin.Context) {
+facades.Route().Get("/", func(ctx http.Context) http.Response {
   facades.Artisan().Call("emails")
   facades.Artisan().Call("emails --lang Chinese name") // With arguments and options
+
+  return ctx.Response().Success().String("done")
 })
 ```
 

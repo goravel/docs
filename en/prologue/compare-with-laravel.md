@@ -1,40 +1,44 @@
+---
+aside: false
+---
+
 # Compare With Laravel
 
-Goravel is heavily inspired by the Laravel framework, aiming to bring similar elegance and simplicity to Go developers. Here are some key comparisons between Goravel and Laravel to help you understand how Goravel aligns with Laravel's features:
+Goravel follows the structure of Laravel, so the concepts, the facades and most method names carry over. The table below shows the same task in both frameworks. Where one of them does not have a feature, it says so.
 
-| Feature                | Goravel                          | Laravel                          | Code Example                     |
-|------------------------|----------------------------------|----------------------------------|----------------------------------|
-| [Artisan Console](https://www.goravel.dev/digging-deeper/artisan-console.html) | ✅ | ✅ | ./artisan key:generate <br> php artisan key:generate |
-| [Authentication](https://www.goravel.dev/security/authentication.html) | ✅ | ✅ | facades.Auth(ctx).Login(&user) <br> Auth::login($user) |
-| [Authorization](https://www.goravel.dev/security/authorization.html) | ✅ | ✅ | facades.Gate().Allows("update", user) <br> Gate::allows('update', $user) |
-| [Cache](https://www.goravel.dev/digging-deeper/cache.html) | ✅ | ✅ | facades.Cache().Put("key", "value", time.Minute) <br> Cache::put('key', 'value', 60) |
-| [Carbon](https://www.goravel.dev/digging-deeper/helpers.html) | ✅ | ✅ | carbon.Now().AddDays(1) <br> Carbon::now()->addDays(1) |
-| [Config](https://www.goravel.dev/getting-started/configuration.html) | ✅ | ✅ | facades.Config().GetString("app.name") <br> config('app.name') |
-| [Crypt](https://www.goravel.dev/security/encryption.html) | ✅ | ✅ | facades.Crypt().EncryptString("text") <br> Crypt::encryptString('text') |
-| [DB](https://www.goravel.dev/database/getting-started.html) | ✅ | ✅ | facades.DB().Table("users").Get(&users) <br> DB::table('users')->get() |
-| [Event](https://www.goravel.dev/digging-deeper/event.html) | ✅ | ✅ | facades.Event().Job(&events.Order{}).Dispatch() <br> Order::dispatch() |
-| [Factory](https://www.goravel.dev/orm/factories.html) | ✅ | ✅ | facades.Orm().Factory().Make(&user) <br> User::factory()->make() |
-| [FileStorage](https://www.goravel.dev/digging-deeper/filesystem.html) | ✅ | ✅ | facades.Storage().Put("file.txt", "content") <br> Storage::put('file.txt', 'content') |
-| [Hash](https://www.goravel.dev/security/hashing.html) | ✅ | ✅ | facades.Hash().Make("password") <br> Hash::make('password') |
-| [Http](https://www.goravel.dev/the-basics/routing.html) | ✅ | ✅ | facades.Route().Get("/", controller.Index) <br> Route::get('/', [Controller::class, 'index']) |
-| [Http Client](https://www.goravel.dev/digging-deeper/http-client.html) | ✅ | ✅ | facades.Http().Get("https://api.com") <br> Http::get('https://api.com') |
-| [Localization](https://www.goravel.dev/digging-deeper/localization.html) | ✅ | ✅ | facades.Lang(ctx).Get("messages.welcome") <br> __('messages.welcome') |
-| [Logger](https://www.goravel.dev/the-basics/logging.html) | ✅ | ✅ | facades.Log().Info("message") <br> Log::info('message') |
-| [Mail](https://www.goravel.dev/digging-deeper/mail.html) | ✅ | ✅ | facades.Mail().To("user@example.com").Send() <br> Mail::to('user@example.com')->send(new Order()) |
-| [Mock](https://www.goravel.dev/testing/mock.html) | ✅ | ✅ | |
-| [Migrate](https://www.goravel.dev/database/migrations.html) | ✅ | ✅ | ./artisan migrate <br> php artisan migrate |
-| [Orm](https://www.goravel.dev/orm/getting-started.html) | ✅ | ✅ | facades.Orm().Query().Find(&user, 1) <br> User::find(1) |
-| [Package Development](https://www.goravel.dev/digging-deeper/package-development.html) | ✅ | ✅ | |
-| [Process](https://www.goravel.dev/digging-deeper/process.html) | ✅ | ✅ | facades.Process().Run("ls", "-la") <br> `Process::run('ls -la') |
-| [Queue](https://www.goravel.dev/digging-deeper/queues.html) | ✅ | ✅ | facades.Queue().Job(&jobs.Process{}).Dispatch() <br> Process::dispatch() |
-| [Rate Limiting](https://www.goravel.dev/digging-deeper/process.html) | ✅ | ✅ | facades.RateLimiter().For("global", ...) <br> RateLimiter::for('global', ...) |
-| [Seeder](https://www.goravel.dev/database/seeding.html) | ✅ | ✅ | facades.Seeder().Call([]seeder.Seeder{&User{}}) <br> $this->call([User::class]) |
-| [Session](https://www.goravel.dev/the-basics/session.html) | ✅ | ✅ | ctx.Request().Session().Put("key", "value") <br> session(['key' => 'value']) |
-| [Task Scheduling](https://www.goravel.dev/digging-deeper/task-scheduling.html) | ✅ | ✅ | facades.Schedule().Command("emails:send").Daily() <br> Schedule::command('emails:send')->daily() |
-| [Testing](https://www.goravel.dev/testing/getting-started.html) | ✅ | ✅ | |
-| [Validation](https://www.goravel.dev/the-basics/validation.html) | ✅ | ✅ | ctx.Request().ValidateRequest() <br> $request->validate() |
-| [View](https://www.goravel.dev/the-basics/views.html) | ✅ | ✅ | ctx.Response().View().Make("welcome.tmpl") <br> view('welcome') |
-| [Grpc](https://www.goravel.dev/the-basics/grpc.html) | ✅ | 🚧 | |
-| Notifications | 🚧 | ✅ | |
-| Broadcasting | 🚧 | ✅ | |
-| Livewire | 🚧 | ✅ | |
+| Feature | <Brand laravel /> Laravel | <Brand goravel /> Goravel |
+| --- | --- | --- |
+| [Artisan Console](../digging-deeper/artisan-console.md) | `php artisan key:generate` | `./artisan key:generate` |
+| [Authentication](../security/authentication.md) | `Auth::login($user)` | `facades.Auth(ctx).Login(&user)` |
+| [Authorization](../security/authorization.md) | `Gate::allows('update-post', $post)` | `facades.Gate().Allows("update-post", map[string]any{"post": post})` |
+| [Cache](../digging-deeper/cache.md) | `Cache::put('key', 'value', 60)` | `facades.Cache().Put("key", "value", time.Minute)` |
+| [Carbon](../digging-deeper/helpers.md) | `Carbon::now()->addDays(1)` | `carbon.Now().AddDays(1)` |
+| [Config](../getting-started/configuration.md) | `config('app.name')` | `facades.Config().GetString("app.name")` |
+| [Crypt](../security/encryption.md) | `Crypt::encryptString('text')` | `facades.Crypt().EncryptString("text")` |
+| [DB](../database/getting-started.md) | `DB::table('users')->get()` | `facades.DB().Table("users").Get(&users)` |
+| [Event](../digging-deeper/event.md) | `OrderShipped::dispatch()` | `facades.Event().Job(&events.OrderShipped{}, []event.Arg{}).Dispatch()` |
+| [Factory](../orm/factories.md) | `User::factory()->make()` | `facades.Orm().Factory().Make(&user)` |
+| [File Storage](../digging-deeper/filesystem.md) | `Storage::put('file.txt', 'content')` | `facades.Storage().Put("file.txt", "content")` |
+| [Hash](../security/hashing.md) | `Hash::make('password')` | `facades.Hash().Make("password")` |
+| [HTTP Client](../digging-deeper/http-client.md) | `Http::get('https://example.com')` | `facades.Http().Get("https://example.com")` |
+| [Localization](../digging-deeper/localization.md) | `__('messages.welcome')` | `facades.Lang(ctx).Get("messages.welcome")` |
+| [Logging](../the-basics/logging.md) | `Log::info('message')` | `facades.Log().Info("message")` |
+| [Mail](../digging-deeper/mail.md) | `Mail::to('user@example.com')->send(new OrderShipped())` | `facades.Mail().To([]string{"user@example.com"}).Send()` |
+| [Migrations](../database/migrations.md) | `php artisan migrate` | `./artisan migrate` |
+| [Mock](../testing/mock.md) | `Cache::shouldReceive('get')` | `mock.Factory().Cache()` |
+| [ORM](../orm/getting-started.md) | `User::find(1)` | `facades.Orm().Query().Find(&user, 1)` |
+| [Package Development](../digging-deeper/package-development.md) | `$this->loadViewsFrom($path, 'courier')` | `facades.View().LoadViewsFrom("/path/to/package/views")` |
+| [Process](../digging-deeper/processes.md) | `Process::run('ls -la')` | `facades.Process().Run("ls", "-la")` |
+| [Queue](../digging-deeper/queues.md) | `SendEmail::dispatch()` | `facades.Queue().Job(&jobs.SendEmail{}, []queue.Arg{}).Dispatch()` |
+| [Rate Limiting](../the-basics/routing.md#rate-limiting) | `RateLimiter::for('global', ...)` | `facades.RateLimiter().For("global", ...)` |
+| [Routing](../the-basics/routing.md) | `Route::get('/', [Controller::class, 'index'])` | `facades.Route().Get("/", controller.Index)` |
+| [Seeder](../database/seeding.md) | `$this->call([UserSeeder::class])` | `facades.Seeder().Call([]seeder.Seeder{&UserSeeder{}})` |
+| [Session](../the-basics/session.md) | `session(['key' => 'value'])` | `ctx.Request().Session().Put("key", "value")` |
+| [Task Scheduling](../digging-deeper/task-scheduling.md) | `Schedule::command('emails:send')->daily()` | `facades.Schedule().Command("emails:send").Daily()` |
+| [Testing](../testing/getting-started.md) | `$this->get('/tasks')` | `s.Http(s.T()).Get("/tasks")` |
+| [Validation](../the-basics/validation.md) | `$request->validate([...])` | `ctx.Request().ValidateRequest(&storePost)` |
+| [View](../the-basics/views.md) | `view('welcome')` | `ctx.Response().View().Make("welcome.tmpl")` |
+| [Grpc](../the-basics/grpc.md) | <Brand laravel no /> Not built in | `facades.Grpc().Connect("user")` |
+| Notifications | `$user->notify(new InvoicePaid())` | <Brand goravel no /> Not yet |
+| Broadcasting | `broadcast(new OrderShipped($order))` | <Brand goravel no /> Not yet |
+| Livewire | `<livewire:counter />` | <Brand goravel no /> Not yet |

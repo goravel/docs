@@ -1,18 +1,27 @@
 import TwoslashFloatingVue from '@shikijs/vitepress-twoslash/client'
-import Theme from 'vitepress/theme'
+import Theme from 'vitepress/theme-without-fonts'
+import Layout from './Layout.vue'
+import Brand from './components/Brand.vue'
 import giscusTalk from 'vitepress-plugin-comment-with-giscus'
 import { useData, useRoute } from 'vitepress'
-import { toRefs } from 'vue'
+import { defineAsyncComponent, toRefs } from 'vue'
 import '@shikijs/vitepress-twoslash/style.css'
 import 'virtual:group-icons.css'
 import 'vitepress-markdown-timeline/dist/theme/index.css'
 import type { EnhanceAppContext } from 'vitepress'
 import './styles.css'
+import './goravel.css'
+import './shell.css'
+import './home/home.css'
 
 export default {
   extends: Theme,
+  Layout,
   enhanceApp({ app }: EnhanceAppContext) {
     app.use(TwoslashFloatingVue)
+    app.component('Brand', Brand)
+    // only the three homepages use it, so doc pages do not download it
+    app.component('goravel-home', defineAsyncComponent(() => import('./home/Home.vue')))
   },
   setup() {
     // Get frontmatter and route
@@ -28,12 +37,9 @@ export default {
         mapping: 'pathname',
         inputPosition: 'top',
         lang: 'en',
-        // i18n setting (Note: This configuration will override the default language set by lang)
-        // Configured as an object with key-value pairs inside:
-        // [your i18n configuration name]: [corresponds to the language pack name in Giscus]
         locales: {
           'zh-CN': 'zh-CN',
-          en: 'en'
+          'en-US': 'en'
         },
         strict: '0',
         reactionsEnabled: '1',
@@ -47,9 +53,6 @@ export default {
         route
       },
       // Whether to activate the comment area on all pages.
-      // The default is true, which means enabled, this parameter can be ignored;
-      // If it is false, it means it is not enabled.
-      // You can use `comment: true` preface to enable it separately on the page.
       true
     )
   }

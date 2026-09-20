@@ -1,7 +1,5 @@
 # Getting Started
 
-[[toc]]
-
 ## Introduction
 
 Goravel provides a very simple and easy-to-use database interaction, developers can use `facades.Orm()` to operate. Please refer to [Configure Database](../database/getting-started) before starting.
@@ -99,7 +97,7 @@ func (r *UserData) Scan(value any) (err error) {
 ```shell
 ./artisan make:model --table=users User
 
-// If the Model already exists, you can use the -f option to force overwrite
+# If the Model already exists, you can use the -f option to force overwrite
 ./artisan make:model --table=users -f User
 ```
 
@@ -256,7 +254,7 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 
 | Functions                   | Action                                                                        |
 | --------------------------- | ----------------------------------------------------------------------------- |
-| Avg                         | [Avg](#Avarage)                                                               |
+| Avg                         | [Avg](#aggregates)                                                               |
 | BeginTransaction            | [Begin transaction](#transaction)                                             |
 | Commit                      | [Commit transaction](#transaction)                                            |
 | Context                     | [Inject Context](#inject-context)                                             |
@@ -277,13 +275,13 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | FirstOrFail                 | [Not Found Error](#not-found-error)                                           |
 | ForceDelete                 | [Force delete](#delete)                                                       |
 | Get                         | [Query multiple lines](#query-multiple-lines)                                 |
-| Group                       | [Group](#group-by--having)                                                    |
+| Group                       | [Group](#group-by-having)                                                    |
 | Having                      | [Having](#group-by-having)                                                    |
 | Join                        | [Join](#join)                                                                 |
 | Limit                       | [Limit](#limit)                                                               |
 | LockForUpdate               | [Pessimistic Locking](#pessimistic-locking)                                   |
-| Max                         | [Max](#Avarage)                                                               |
-| Min                         | [Min](#Avarage)                                                               |
+| Max                         | [Max](#aggregates)                                                               |
+| Min                         | [Min](#aggregates)                                                               |
 | Model                       | [Specify a model](#specify-table-query)                                       |
 | Offset                      | [Offset](#offset)                                                             |
 | Order                       | [Order](#order)                                                               |
@@ -304,17 +302,17 @@ facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 | Raw                         | [Execute native SQL](#execute-native-sql)                                     |
 | Restore                     | [Restore](#restore)                                                           |
 | Rollback                    | [Rollback transaction](#transaction)                                          |
-| Save                        | [Update a existing model](#update-a-existing-model)                           |
+| Save                        | [Update an existing model](#update-an-existing-model)                           |
 | SaveQuietly                 | [Saving a single model without events](#saving-a-single-model-without-events) |
 | Scan                        | [Scan struct](#execute-native-sql)                                            |
 | Scopes                      | [Scopes](#scopes)                                                             |
 | Select                      | [Specify Fields](#specify-fields)                                             |
 | SharedLock                  | [Pessimistic Locking](#pessimistic-locking)                                   |
-| Sum                         | [Sum](#Avarage)                                                               |
+| Sum                         | [Sum](#aggregates)                                                               |
 | Table                       | [Specify a table](#specify-table-query)                                       |
 | ToSql                       | [Get SQL](#get-sql)                                                           |
 | ToRawSql                    | [Get SQL](#get-sql)                                                           |
-| Update                      | [Update a single column](#update-a-single-column)                             |
+| Update                      | [Update columns](#update-columns)                             |
 | UpdateOrCreate              | [Update or create](#update-or-create)                                         |
 | Where                       | [Where](#where)                                                               |
 | WhereAll                    | [WhereAll](#where)                                                        |
@@ -701,11 +699,13 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 })
 ```
 
-> `created_at` and `updated_at` will be filled automatically.
+::: info
+`created_at` and `updated_at` are filled automatically.
+:::
 
 ### Cursor
 
-Can be used to significantly reduce your application's memory consumption when iterating through tens of thousands of Eloquent model records. Note, the `Cursor` method can be used with `With` at the same time, please use [Lazy Eager Loading](./relationships.md#lazy-eager-loading) to load relationship in the `for` logic.
+Can be used to significantly reduce your application's memory consumption when iterating through tens of thousands of model records. Note, the `Cursor` method can be used with `With` at the same time, please use [Lazy Eager Loading](./relationships.md#lazy-eager-loading) to load relationship in the `for` logic.
 
 ```go
 cursor, err := facades.Orm().Query().Model(models.User{}).Cursor()
@@ -746,7 +746,9 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 // UPDATE `users` SET `updated_at`='2023-09-18 21:07:06.489',`name`='hello',`age`=18 WHERE `name` = 'tom';
 ```
 
-> When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
+::: warning Zero values are skipped
+When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
+:::
 
 #### Update JSON fields
 
@@ -818,7 +820,8 @@ facades.Orm().Query().Select(orm.Associations).Delete(&user)
 facades.Orm().Query().Select("Account").Delete(&users)
 ```
 
-Note: The associations will be deleted only if the primary key of the record is not empty, and Orm uses these primary keys as conditions to delete associated records:
+::: warning
+The associations are deleted only if the primary key of the record is not empty, because Orm uses these primary keys as conditions to delete associated records:
 
 ```go
 // Delete user that name='goravel', but don't delete account of user
@@ -830,6 +833,7 @@ facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.
 // Delete user that id = 1 and delete account of that user
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
+:::
 
 If execute batch delete without any conditions, ORM doesn't do that and returns an error. So you have to add some conditions, or use native SQL.
 
@@ -975,14 +979,14 @@ var users []models.User
 facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
-### Avarage
+### Aggregates
 
 ```go
 var sum int
 err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum)
 
 var avg float64
-err := facades.Orm().Query().Model(models.User{}).Average("age", &avg)
+err := facades.Orm().Query().Model(models.User{}).Avg("age", &avg)
 
 var max int
 err := facades.Orm().Query().Model(models.User{}).Max("age", &max)
@@ -997,7 +1001,9 @@ Orm models dispatch several events, allowing you to hook into the following mome
 
 The `Retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `Creating` and `Created` events will dispatch. The `Updating` / `Updated` events will dispatch when an existing model is modified and the `Save` method is called. The `Saving` / `Saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
 
-Note: All events will only be triggered when operating a model. For example, if you want to trigger the `Updating` and `Updated` events when calling the `Update` method, you need to pass the existing model to the `Model` method: `facades.Orm().Query().Model(&user).Update("name", "Goravel")`.
+::: warning
+All events will only be triggered when operating a model. For example, if you want to trigger the `Updating` and `Updated` events when calling the `Update` method, you need to pass the existing model to the `Model` method: `facades.Orm().Query().Model(&user).Update("name", "Goravel")`.
+:::
 
 To start listening to model events, define a `DispatchesEvents` method on your model. This property maps various points of the model's lifecycle to your own event classes.
 
@@ -1057,13 +1063,15 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 }
 ```
 
-> Note: Just register the events you need. Model events are not dispatched when doing batch operations through Orm.
+::: warning
+Just register the events you need. Model events are not dispatched when doing batch operations through Orm.
+:::
 
 ### Observers
 
 #### Defining Observers
 
-If you are listening to many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names that reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
+If you are listening to many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names that reflect the model events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
 ```shell
 ./artisan make:observer UserObserver
@@ -1115,7 +1123,9 @@ func Boot() contractsfoundation.Application {
 }
 ```
 
-> Note: If you set `DispatchesEvents` and `Observer` at the same time, only `DispatchesEvents` will be applied.
+::: warning
+If you set `DispatchesEvents` and `Observer` at the same time, only `DispatchesEvents` will be applied.
+:::
 
 #### Parameter in Observer
 

@@ -1,7 +1,5 @@
 # Authentication
 
-[[toc]]
-
 ## Introduction
 
 Authentication is an indispensable feature in Web Applications, the `facades.Auth()` module of Goravel provides support for JWT and Session drivers, and you can customize the driver and user provider.
@@ -69,7 +67,9 @@ Through `payload` you can get:
 3. `ExpireAt`: Expire time;
 4. `IssuedAt`: Issued time;
 
-> If `err` isn't nil other than `ErrorTokenExpired`, the payload should be nil.
+::: info
+If `err` is anything other than `ErrorTokenExpired`, the payload is nil.
+:::
 
 You can judge whether the Token is expired by err:
 
@@ -80,7 +80,9 @@ You can judge whether the Token is expired by err:
 errors.Is(err, auth.ErrorTokenExpired)
 ```
 
-> The token can be parsed normally with or without the Bearer prefix.
+::: tip
+The token can be parsed with or without the `Bearer` prefix.
+:::
 
 ## Get User
 
@@ -114,7 +116,9 @@ err := facades.Auth(ctx).Guard("admin").Parse(token)
 err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
-> When the default guard is not used, the `Guard` method must be called before calling the above methods.
+::: warning
+When you are not using the default guard, call the `Guard` method before any of the methods above.
+:::
 
 JWT tokens are bound to the guard that generated them. If you parse a token with a different guard, Goravel returns `auth.ErrorGuardMismatch`:
 

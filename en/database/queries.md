@@ -1,7 +1,5 @@
 # Query Builder
 
-[[toc]]
-
 ## Introduction
 
 The database query builder provides a convenient interface to create and execute database queries. It can be used to perform most database operations in your application and works with all supported database systems.
@@ -130,7 +128,9 @@ err := facades.DB().Table("products").Chunk(2, func(rows []db.Row) error {
 })
 ```
 
-> Note: When modifying records in the Chunk callback, it may result in records not being included in the chunked results.
+::: warning
+When modifying records in the Chunk callback, it may result in records not being included in the chunked results.
+:::
 
 ### Cursor
 

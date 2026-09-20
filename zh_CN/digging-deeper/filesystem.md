@@ -1,7 +1,5 @@
 # 文件存储
 
-[[toc]]
-
 ## 简介
 
 Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Minio 和 Cloudinary 提供了简单易用的驱动程序。 更棒的是，由于每个系统的 API 保持不变，所以在这些存储选项之间切换是非常简单的。 框架自带 `local` 驱动，如需其他驱动，请查看对应的独立扩展包：
@@ -17,7 +15,9 @@ Goravel 为使用本地文件系统、Amazon S3、Aliyun OSS、Tencent COS、Min
 
 配置文件位于 `config/filesystems.go`。 在这个文件中你可以配置所有的「磁盘」，每个磁盘代表特定的存储驱动及存储位置。
 
-> 技巧：你可以配置任意数量的磁盘，甚至可以添加多个使用相同驱动的磁盘。
+::: tip
+你可以配置任意数量的磁盘，甚至可以添加多个使用相同驱动的磁盘。
+:::
 
 ### 本地驱动
 
@@ -87,7 +87,9 @@ if (facades.Storage().Disk("s3").Missing("file.jpg")) {
 url := facades.Storage().Url("file.jpg")
 ```
 
-> 注意：当使用 `local` 驱动时， `Url` 的返回值不是 url 编码的。 因此，我们建议总是使用可以创建有效 url 的名称来存储文件。
+::: warning
+当使用 `local` 驱动时， `Url` 的返回值不是 url 编码的。 因此，我们建议总是使用可以创建有效 url 的名称来存储文件。
+:::
 
 #### 临时地址
 
@@ -212,7 +214,9 @@ file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFileAs("photos", file, "name")
 ```
 
-> `StoreAs` 与 `PutFileAs` 指定的文件名如果不带后缀，将根据文件的 MIME 自动添加后缀；否则，直接使用指定的文件名。
+::: info
+`StoreAs` 与 `PutFileAs` 指定的文件名如果不带后缀，将根据文件的 MIME 自动添加后缀；否则，直接使用指定的文件名。
+:::
 
 ### 指定一个磁盘
 
@@ -337,4 +341,6 @@ type Driver interface {
 }
 ```
 
-> 注意：由于注册自定义驱动时配置信息尚未加载完毕，所以在自定义驱动中，请使用 `facades.Config().Env()` 获取配置信息。
+::: warning
+由于注册自定义驱动时配置信息尚未加载完毕，所以在自定义驱动中，请使用 `facades.Config().Env()` 获取配置信息。
+:::

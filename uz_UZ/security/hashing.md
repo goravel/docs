@@ -1,7 +1,5 @@
 # Xeshlash
 
-[[toc]]
-
 ## Kirish
 
 Goravel `facades.Hash()` foydalanuvchi parollarini saqlash uchun xavfsiz Argon2id va Bcrypt xeshlashni taqdim etadi. Agar siz Goravel ilova boshlangʻich toʻplamlaridan birini ishlatayotgan boʻlsangiz, sukut boʻyicha roʻyxatdan oʻtish va autentifikatsiya uchun Argon2id ishlatiladi.

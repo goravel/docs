@@ -1,7 +1,5 @@
 # Encryption
 
-[[toc]]
-
 ## Introduction
 
 Goravel's encryption services provide a simple, convenient interface for encrypting and decrypting text via OpenSSL using AES-256 encryption. All of Goravel's encrypted values are signed using a message authentication code (GMAC) so that their underlying value can not be modified or tampered with once encrypted.

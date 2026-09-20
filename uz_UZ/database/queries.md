@@ -1,7 +1,5 @@
 # So'rov Quruvchi
 
-[[toc]]
-
 ## Kirish
 
 Ma'lumotlar bazasi so'rovlari quruvchisi ma'lumotlar bazasi so'rovlarini yaratish va bajarish uchun qulay interfeysni taqdim etadi. U ilovangizda ko'p ma'lumotlar bazasi operatsiyalarini bajarish uchun ishlatilishi mumkin va barcha qo'llab-quvvatlanadigan ma'lumotlar bazasi tizimlari bilan ishlaydi.
@@ -130,7 +128,9 @@ err := facades.DB().Table("products").Chunk(2, func(rows []db.Row) error {
 })
 ```
 
-> Eslatma: Chunk chaqiruvida yozuvlarni o'zgartirish, yozuvlarning chunk natijalariga kiritilmasligiga olib kelishi mumkin.
+::: warning
+Chunk chaqiruvida yozuvlarni o'zgartirish, yozuvlarning chunk natijalariga kiritilmasligiga olib kelishi mumkin.
+:::
 
 ### Kursor
 

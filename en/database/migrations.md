@@ -1,7 +1,5 @@
 # Migrations
 
-[[toc]]
-
 ## Introduction
 
 When multiple people collaborate to develop applications, it's crucial to have a standardized database structure for synchronization. Without this, there could be chaos as everyone's individual data won't match up. Database migration is the solution to this problem. The database structure is version-controlled to ensure its consistency within all developers.
@@ -53,14 +51,14 @@ func Boot() contractsfoundation.Application {
 
 Use `create_users_table` to automatically generate a table containing the infrastructure of `users`:
 
-```
+```text
 ^create_(\w+)_table$
 ^create_(\w+)$
 ```
 
 Use `add_avatar_to_users_table` to automatically generate a structure for adding fields to the `users` table:
 
-```
+```text
 _(to|from|in)_(\w+)_table$
 _(to|from|in)_(\w+)$
 ```

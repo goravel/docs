@@ -1,7 +1,5 @@
 # 队列
 
-[[toc]]
-
 ## 简介
 
 在构建 Web 应用程序时，你可能需要执行一些比较耗时的任务（例如解析和存储上传的 CSV 文件）。 Goravel 可以让你轻松地创建可在后台排队处理的任务。 通过将耗时的任务移到队列中，你的应用程序可以以超快的速度响应 Web 请求，并为客户提供更好的用户体验。 我们使用 `facades.Queue()` 实现这些功能。
@@ -44,7 +42,7 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 
 自定义驱动实现后，可以添加配置到 `config/queue.go` 中：
 
-```
+```go
 ...
 "connections": map[string]any{
   "redis": map[string]any{

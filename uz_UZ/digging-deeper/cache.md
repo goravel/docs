@@ -1,7 +1,5 @@
 # Kesh
 
-[[toc]]
-
 ## Kirish
 
 Goravel kengaytiriladigan keshlash modulini taqdim etadi, uni `facades.Cache()` yordamida boshqarish mumkin. Goravel "memory" haydovchisi bilan birga keladi, boshqa haydovchilar uchun mos keladigan mustaqil kengaytma paketlarini tekshiring:

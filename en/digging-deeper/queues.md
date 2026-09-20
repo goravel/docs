@@ -1,7 +1,5 @@
 # Queues
 
-[[toc]]
-
 ## Introduction
 
 When building your web application, there may be tasks, like parsing and storing an uploaded CSV file, that take too long to complete during a web request. Fortunately, Goravel offers a solution by allowing you to create queued jobs that can run in the background. This way, by moving time-intensive tasks to a queue, your application can respond to web requests much faster and provide a better user experience for your customers. To implement this feature, we use `facades.Queue()`.
@@ -44,7 +42,7 @@ The official implementation of the `Redis` driver, you can refer to [Redis Drive
 
 After implementing the custom driver, you can add the configuration to `config/queue.go`:
 
-```
+```go
 ...
 "connections": map[string]any{
   "redis": map[string]any{
@@ -149,7 +147,7 @@ func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, de
 
 ## Start Queue Server
 
-The default queue worker will be run by the runner of queue seriver provider, if you want to start multiple queue workers with different configuration, you can create [a runner](../architecture-concepts/service-providers.md#runners) and add it to the `WithRunners` function in the `bootstrap/app.go` file:
+The default queue worker will be run by the runner of queue service provider, if you want to start multiple queue workers with different configuration, you can create [a runner](../architecture-concepts/service-providers.md#runners) and add it to the `WithRunners` function in the `bootstrap/app.go` file:
 
 ```go
 func Boot() contractsfoundation.Application {

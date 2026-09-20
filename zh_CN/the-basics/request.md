@@ -1,7 +1,5 @@
 # 请求
 
-[[toc]]
-
 ## 简介
 
 Goravel 的 `contracts/http/Request` 方法可以与应用程序处理的当前 HTTP 请求进行交互，以及检索与请求一起提交的输入内容和文件。
@@ -113,7 +111,9 @@ names := ctx.Request().QueryMap("names")
 queries := ctx.Request().Queries()
 ```
 
-> 注意：只能获取单维Json数据，否则它将返回为空。
+::: warning
+只能获取单维Json数据，否则它将返回为空。
+:::
 
 ### 检索一个输入值
 

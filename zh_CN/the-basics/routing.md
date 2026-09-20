@@ -1,7 +1,5 @@
 # 路由
 
-[[toc]]
-
 ## 简介
 
 Goravel 路由模块可以使用 `facades.Route()` 进行操作。
@@ -46,7 +44,7 @@ func Boot() contractsfoundation.Application {
 | ---------- | ----------------- |
 | Group      | [路由分组](#路由分组)     |
 | Prefix     | [路由前缀](#路由前缀)     |
-| ServeHTTP  | [测试路由](#测试路由)     |
+| ServeHTTP  | [HTTP 测试](../testing/http-tests.md)     |
 | Get        | [基本路由](#基本路由)     |
 | Post       | [基本路由](#基本路由)     |
 | Put        | [基本路由](#基本路由)     |
@@ -185,7 +183,9 @@ facades.Route().Middleware(middleware.Auth()).
   })
 ```
 
-> **注意**：中间件排除使用 `Signature()` 方法来识别中间件。请确保每个中间件返回唯一的签名，以便 `WithoutMiddleware` 正常工作。框架内置的中间件已经提供了唯一的签名。
+::: warning
+中间件排除使用 `Signature()` 方法来识别中间件。请确保每个中间件返回唯一的签名，以便 `WithoutMiddleware` 正常工作。框架内置的中间件已经提供了唯一的签名。
+:::
 
 ## 获取所有路由
 
@@ -215,7 +215,7 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 })
 ```
 
-## 速率限制
+## 速率限制 {#rate-limiting}
 
 ### 定义速率限制器
 
@@ -316,4 +316,6 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 
 Goravel 已默认启用 CORS，详细配置可以到 `config/cors.go` 文件中进行修改。
 
-> 有关 CORS 和 CORS 标头的更多信息，请参阅 [MDN 关于 CORS 的 Web 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
+::: tip
+有关 CORS 和 CORS 标头的更多信息，请参阅 [MDN 关于 CORS 的 Web 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)。
+:::
