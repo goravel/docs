@@ -39,6 +39,7 @@ Goravel follows the structure of Laravel, so the concepts, the facades and most 
 | [Validation](../the-basics/validation.md) | `$request->validate([...])` | `ctx.Request().ValidateRequest(&storePost)` |
 | [View](../the-basics/views.md) | `view('welcome')` | `ctx.Response().View().Make("welcome.tmpl")` |
 | [Grpc](../the-basics/grpc.md) | <Brand laravel no /> Not built in | `facades.Grpc().Connect("user")` |
+| [Telemetry](../digging-deeper/telemetry.md) | <Brand laravel no /> Not built in | `facades.Telemetry().Tracer("app").Start(ctx, "order.process")` |
 | Notifications | `$user->notify(new InvoicePaid())` | <Brand goravel no /> Not yet |
 | Broadcasting | `broadcast(new OrderShipped($order))` | <Brand goravel no /> Not yet |
 | Livewire | `<livewire:counter />` | <Brand goravel no /> Not yet |
