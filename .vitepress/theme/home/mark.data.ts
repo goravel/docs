@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { defineLoader } from 'vitepress'
 import { svgPathProperties } from 'svg-path-properties'
+import { PIECES } from './config'
 
 export interface Mark {
   pieces: { fill: string; d: string; at: { x: number; y: number } }[]
@@ -30,6 +31,8 @@ export default defineLoader({
       d: m[2],
       at: bounds(m[2])
     }))
+    if (pieces.length !== PIECES.length || pieces.some((p) => !p.fill))
+      throw new Error(`logo.svg: expected ${PIECES.length} filled pieces, found ${pieces.length}`)
     return { pieces }
   }
 })

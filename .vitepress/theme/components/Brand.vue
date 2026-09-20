@@ -5,7 +5,7 @@ defineProps<{ laravel?: boolean; goravel?: boolean; no?: boolean }>()
 <template>
   <span class="brand" :class="{ 'is-no': no }" aria-hidden="true">
     <span v-if="laravel" class="brand-mark icon-[simple-icons--laravel]" />
-    <img v-else class="brand-mark" src="/logo.svg" alt="" width="14" height="14" />
+    <img v-else-if="goravel" class="brand-mark" src="/logo.svg" alt="" width="14" height="14" />
     <span v-if="no" class="brand-state icon-[lucide--x]" />
   </span>
 </template>

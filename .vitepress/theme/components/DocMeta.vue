@@ -31,7 +31,7 @@ const LAYER_OF: Record<string, string> = {
 }
 
 const { page, theme } = useData()
-const { tr, link } = useI18n()
+const { tr } = useI18n()
 
 const meta = computed(() => {
   const path = page.value.filePath.replace(/^(en|zh_CN|uz_UZ)\//, '').replace(/\.md$/, '')
@@ -56,7 +56,7 @@ const meta = computed(() => {
       <span class="sep">/</span>
       <span class="current">{{ page.title }}</span>
     </span>
-    <a v-if="meta.layer" class="g-label g-diamond layer" :href="link('/#layers')">{{ tr(`${meta.layer} layer`) }}</a>
+    <span v-if="meta.layer" class="g-label g-diamond layer">{{ tr(`${meta.layer} layer`) }}</span>
   </div>
 </template>
 
@@ -94,11 +94,6 @@ const meta = computed(() => {
   margin-left: auto;
   white-space: nowrap;
   color: var(--g-cyan-text);
-}
-
-.layer:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 @media (max-width: 599px) {

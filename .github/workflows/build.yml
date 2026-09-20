@@ -24,3 +24,5 @@ jobs:
 
       - name: Build with VitePress
         run: pnpm docs:build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -39,7 +39,7 @@ export default {
         lang: 'en',
         locales: {
           'zh-CN': 'zh-CN',
-          en: 'en'
+          'en-US': 'en'
         },
         strict: '0',
         reactionsEnabled: '1',

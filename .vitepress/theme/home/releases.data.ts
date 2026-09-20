@@ -20,7 +20,10 @@ const QUARTER: Record<string, string> = { Q1: '01-01', Q2: '04-01', Q3: '07-01',
 
 function day(text: string) {
   const quarter = text.match(/^(Q[1-4]), (\d{4})$/)
-  return quarter ? `${quarter[2]}-${QUARTER[quarter[1]]}` : new Date(`${text} UTC`).toISOString().slice(0, 10)
+  if (quarter) return `${quarter[2]}-${QUARTER[quarter[1]]}`
+  const date = new Date(`${text} UTC`)
+  if (Number.isNaN(date.getTime())) throw new Error(`releases.md: "${text}" is neither a date nor a quarter like "Q1, 2027"`)
+  return date.toISOString().slice(0, 10)
 }
 
 export default defineLoader({

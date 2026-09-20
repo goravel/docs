@@ -411,7 +411,9 @@
 
 .g-footer-cols {
   display: grid;
-  grid-template-columns: minmax(0, 6fr) repeat(3, minmax(0, 2fr));
+  grid-template-columns: minmax(0, 6fr);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 2fr);
   column-gap: 24px;
 }
 
@@ -461,6 +463,7 @@
 
 @media (max-width: 900px) {
   .g-footer-cols {
+    grid-auto-flow: row;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     row-gap: 32px;
   }

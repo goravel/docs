@@ -23,7 +23,7 @@ const route = useRoute()
 const home = computed(() => (localeIndex.value === 'root' ? '/' : `/${localeIndex.value}/`))
 const nav = computed(() => theme.value.nav ?? [])
 const section = computed(() => nav.value[0]?.text ?? 'Docs')
-const version = VERSIONS.find((v) => v.selected)!.text
+const version = (VERSIONS.find((v) => v.selected) ?? VERSIONS[0]).text
 
 const isActive = (match?: string) => !!match && new RegExp(match).test(route.path)
 

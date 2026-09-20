@@ -14,12 +14,13 @@ const wechat = computed(() => localeIndex.value === 'zh_CN')
 
 const others = CONTRIBUTORS.filter((name) => !CORE_TEAM.includes(name))
 
-const live = useLocalStorage<{ stars: number; forks: number; at: number } | null>('goravel-github', null, {
+const live = useLocalStorage<{ stars: number; at: number } | null>('goravel-github', null, {
   serializer: StorageSerializers.object,
   initOnMounted: true
 })
 const { data: repo, execute } = useFetch('https://api.github.com/repos/goravel/goravel', { immediate: false, timeout: 5000 })
-  .json<{ stargazers_count: number; forks_count: number }>()
+  .json<{ stargazers_count: number }>()
+const now = ref(plan.now)
 
 onMounted(async () => {
   now.value = new Date().toISOString().slice(0, 10)
@@ -27,14 +28,12 @@ onMounted(async () => {
   await execute()
   live.value = {
     stars: repo.value?.stargazers_count ?? live.value?.stars ?? github.stars,
-    forks: repo.value?.forks_count ?? live.value?.forks ?? github.forks,
     at: Date.now()
   }
 })
 
 const stars = computed(() => (live.value?.stars ?? github.stars).toLocaleString('en-US'))
 
-const now = ref(plan.now)
 const time = (date: string) => Date.parse(date)
 const years = computed(() => {
   const first = new Date(Math.min(...plan.releases.map((r) => time(r.from)))).getUTCFullYear()
