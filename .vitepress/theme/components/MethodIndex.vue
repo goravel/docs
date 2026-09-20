@@ -9,6 +9,7 @@ const methods = ref<{ id: string; name: string }[]>([])
 const query = ref('')
 const active = ref('')
 const shown = computed(() => methods.value.filter((m) => m.name.toLowerCase().includes(query.value.toLowerCase())))
+const list = ref<HTMLElement | null>(null)
 let observer: IntersectionObserver | undefined
 
 // `After`, `path.App()`
@@ -25,16 +26,62 @@ function methodName(el: HTMLElement) {
   return HEADING_NAME.test(name) ? name : null
 }
 
+// `Path` named in a section's text and called as .Path( in that section's code;
+// a heading written as `### Input {methods="Input InputInt"}` lists exactly those instead
+const PROSE_NAME = /^[A-Z]\w*(\(\))?$/
+const CALL = /(?<!facades)\.([A-Z]\w*)\(/g
+
 function collect() {
   observer?.disconnect()
-  const found = new Map<string, HTMLElement>()
-  for (const node of document.querySelectorAll<HTMLElement>('.vp-doc h3, .vp-doc h4, .vp-doc p > strong:only-child')) {
-    const el = node.tagName === 'STRONG' ? node.parentElement! : node
-    const name = methodName(el)
-    if (name && !found.has(name)) found.set(name, el)
+  const named = new Map<string, HTMLElement>()
+  const add = (name: string | null, el: Element | null) => {
+    if (name && el && !named.has(name)) named.set(name, el as HTMLElement)
   }
+
+  const pinned = new Map<string, HTMLElement>()
+  let heading: HTMLElement | null = null
+  let listed = false
+  let mentions: HTMLElement[] = []
+  let calls = new Set<string>()
+  const closeSection = () => {
+    const title = (heading?.textContent ?? '').replace(/[\u200b#]/g, '').trim()
+    if (calls.has(title)) add(title, heading)
+    for (const code of mentions) {
+      const name = code.textContent!.replace('()', '')
+      if (calls.has(name)) add(name, code.closest('p, li'))
+    }
+    mentions = []
+    calls = new Set()
+  }
+
+  for (const node of document.querySelector('.vp-doc > div')?.children ?? []) {
+    if (/^H[2-4]$/.test(node.tagName)) {
+      closeSection()
+      heading = node as HTMLElement
+      listed = heading.hasAttribute('methods')
+      for (const name of heading.getAttribute('methods')?.split(/[\s,]+/).filter(Boolean) ?? []) pinned.set(name, heading)
+      if (!listed && node.tagName !== 'H2') add(methodName(heading), node)
+      continue
+    }
+    if (listed) continue
+    if (node.matches('p') && node.querySelector(':scope > strong:only-child')) add(methodName(node as HTMLElement), node)
+    for (const row of node.querySelectorAll('tbody tr')) {
+      const name = row.querySelector('td')?.textContent?.trim() ?? ''
+      const hash = row.querySelector<HTMLAnchorElement>('a[href^="#"]')?.hash
+      if (hash && PROSE_NAME.test(name)) add(name, document.getElementById(decodeURIComponent(hash.slice(1))))
+    }
+    const blocks = node.matches('div[class*="language-"]') ? [node] : [...node.querySelectorAll('div[class*="language-"]')]
+    for (const block of blocks) for (const call of block.textContent!.matchAll(CALL)) calls.add(call[1])
+    for (const code of node.querySelectorAll<HTMLElement>('code')) {
+      if (!code.closest('pre, table') && PROSE_NAME.test(code.textContent ?? '')) mentions.push(code)
+    }
+  }
+  closeSection()
+  for (const [name, el] of pinned) named.set(name, el)
+
+  const found = [...named].sort(([, a], [, b]) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : a === b ? 0 : 1))
   methods.value = []
-  if (found.size < 6) return
+  if (found.length < 6) return
 
   observer = new IntersectionObserver(
     (entries) => {
@@ -53,6 +100,11 @@ function collect() {
 onMounted(collect)
 onUnmounted(() => observer?.disconnect())
 watch(() => route.path, () => nextTick(collect))
+watch(active, async () => {
+  await nextTick()
+  const el = list.value?.querySelector<HTMLElement>('.active')
+  if (el && list.value) list.value.scrollTop = el.offsetTop - list.value.clientHeight / 2
+})
 </script>
 
 <template>
@@ -66,25 +118,40 @@ watch(() => route.path, () => nextTick(collect))
       :placeholder="tr('Filter')"
       :aria-label="tr('Filter methods')"
     />
-    <a
-      v-for="method in shown"
-      :key="method.id"
-      class="method"
-      :class="{ active: method.id === active }"
-      :href="`#${method.id}`"
-    >{{ method.name }}</a>
+    <div ref="list" class="list">
+      <a
+        v-for="method in shown"
+        :key="method.name"
+        class="method"
+        :class="{ active: method.id === active }"
+        :href="`#${method.id}`"
+      >{{ method.name }}</a>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .goravel-methods {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
+  min-height: 0;
   margin-bottom: 28px;
   padding: 0 var(--g-shell-inset) 0 var(--g-rail);
 }
 
+.list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--g-line) transparent;
+}
+
 .filter {
+  flex-shrink: 0;
   width: 100%;
   height: 30px;
   margin: 0 0 6px;

@@ -243,9 +243,41 @@
     padding: 0 !important;
   }
 
+  .VPDoc .aside-container,
   .VPDoc .aside-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .VPDoc .aside-content {
+    flex: 1 1 auto;
     min-height: 0;
     padding-bottom: 24px;
+  }
+
+  .VPDoc .VPDocAside {
+    min-height: 0;
+  }
+
+  .VPDoc .VPDocAside:has(.goravel-methods) .VPDocAsideOutline.has-outline {
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column;
+    min-height: 0;
+    max-height: 46%;
+  }
+
+  .VPDoc .VPDocAside:has(.goravel-methods) .VPDocAsideOutline .content {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .VPDoc .VPDocAside:has(.goravel-methods) .VPDocAsideOutline .content > .VPDocOutlineItem {
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--g-line) transparent;
   }
 }
 
