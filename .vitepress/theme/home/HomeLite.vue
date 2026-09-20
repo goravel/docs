@@ -148,7 +148,7 @@ const pick = (i: number) => {
   margin: 0;
   padding: 10px 0;
   border: 1px solid var(--g-line);
-  background: var(--g-soft);
+  background: var(--g-code);
   list-style: none;
 }
 

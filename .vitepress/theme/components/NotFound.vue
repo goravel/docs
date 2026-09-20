@@ -71,7 +71,7 @@ const suggestions = [
   background: var(--g-cyan);
   font-size: 15px;
   font-weight: 600;
-  color: var(--g-white);
+  color: var(--g-on-accent);
 }
 
 .home:hover {

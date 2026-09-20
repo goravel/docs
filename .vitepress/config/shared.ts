@@ -40,7 +40,7 @@ function liftFileNames(md: MarkdownRenderer) {
   const fence = md.renderer.rules.fence!
   md.renderer.rules.fence = (tokens, idx, options, env, self) => {
     const token = tokens[idx]
-    const path = token.content.match(/^(?:\/\/|#|--) ?([\w.@-]+(?:\/[\w.@-]+)*\.\w+)\n/)
+    const path = token.content.match(/^(?:\/\/|#|--) ?((?:[\w.@-]+\/)*[\w.@-]*\.\w+)\n/)
     // line highlights like {2,4} count from the first line, so a block using them keeps it
     if (!path || /\{[\d,-]+\}/.test(token.info)) return fence(tokens, idx, options, env, self)
     token.content = token.content.slice(path[0].length)
@@ -67,8 +67,7 @@ export const shared = defineConfig({
     'en/:rest*': ':rest*'
   },
 
-  // there is no dark design
-  appearance: false,
+  appearance: true,
   lastUpdated: true,
   cleanUrls: false,
   metaChunk: true,

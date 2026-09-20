@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
+import { useData } from 'vitepress'
 import { Motion, MotionConfig } from 'motion-v'
 import type { PieceKey, PieceState } from './config'
 import { data as mark } from './mark.data'
@@ -52,10 +53,14 @@ const lattice = computed(() => {
   return lines.join('')
 })
 
+const { isDark } = useData()
+const ground = computed(() => (isDark.value ? [13, 20, 27] : [255, 255, 255]))
+
 const tint = (fill: string, amount: number) => {
   const value = parseInt(fill.slice(1), 16)
-  const channel = (shift: number) => Math.round((((value >> shift) & 255) - 255) * amount + 255)
-  return `rgb(${channel(16)}, ${channel(8)}, ${channel(0)})`
+  const channel = (shift: number, base: number) => Math.round((((value >> shift) & 255) - base) * amount + base)
+  const [r, g, b] = ground.value
+  return `rgb(${channel(16, r)}, ${channel(8, g)}, ${channel(0, b)})`
 }
 
 const stateOf = (key: PieceKey) => props.states[key] ?? 'solid'
@@ -64,7 +69,7 @@ const isPulled = (key: PieceKey) => props.pulled?.includes(key) ?? false
 function paint(piece: { key: PieceKey; fill: string }) {
   const state = stateOf(piece.key)
   return {
-    fill: state === 'ghost' ? 'rgba(255, 255, 255, 0)' : state === 'dim' ? tint(piece.fill, 0.28) : piece.fill,
+    fill: state === 'ghost' ? `rgba(${ground.value.join(', ')}, 0)` : state === 'dim' ? tint(piece.fill, 0.28) : piece.fill,
     stroke: `rgba(104, 116, 125, ${state === 'ghost' ? 0.55 : 0})`
   }
 }

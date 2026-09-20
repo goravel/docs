@@ -11,6 +11,10 @@
   background: var(--g-white);
 }
 
+.dark .g-home {
+  --g-grey: #93a2ad;
+}
+
 @media (max-width: 1280px) {
   .g-home {
     --g-margin: 48px;
@@ -128,7 +132,7 @@
   font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
-  color: var(--g-white);
+  color: var(--g-on-accent);
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 

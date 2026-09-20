@@ -26,7 +26,7 @@ export function community(words: Words, prefix = '', videos: 'youtube' | 'bilibi
         text: words.connect,
         items: [
           row('Discord', LINKS.discord, 'icon-[simple-icons--discord]', '#5865F2'),
-          row('X', LINKS.x, 'icon-[simple-icons--x]', '#000000')
+          row('X', LINKS.x, 'icon-[simple-icons--x]')
         ]
       },
       {

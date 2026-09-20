@@ -337,7 +337,7 @@
 /* ------------------------------------------------------------------ search */
 /* the theme resets Algolia's variables on every DocSearch node, so they are set at that level */
 :root [class*='DocSearch'] {
-  --docsearch-container-background: rgba(16, 24, 32, 0.32);
+  --docsearch-container-background: var(--g-scrim);
   --docsearch-modal-background: var(--g-white);
   --docsearch-modal-shadow: 0 16px 48px rgba(16, 24, 32, 0.12);
   --docsearch-searchbox-shadow: none;

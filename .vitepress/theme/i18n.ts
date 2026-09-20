@@ -17,6 +17,7 @@ const zh_CN: Dict = {
   Scheduling: '调度',
   Cache: '缓存',
   Testing: '测试',
+  'Switch theme': '切换主题',
   'HTTP layer': 'HTTP 层',
   'Application layer': '应用层',
   'Core layer': '核心层',

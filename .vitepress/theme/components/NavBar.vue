@@ -15,9 +15,9 @@ import SelectMenu from './SelectMenu.vue'
 defineProps<{ isScreenOpen: boolean }>()
 defineEmits<{ (e: 'toggle-screen'): void }>()
 
-const { theme, localeIndex } = useData()
+const { theme, localeIndex, isDark } = useData()
 const { hasSidebar } = useSidebar()
-const { languages, currentLang } = useI18n()
+const { tr, languages, currentLang } = useI18n()
 const route = useRoute()
 
 const home = computed(() => (localeIndex.value === 'root' ? '/' : `/${localeIndex.value}/`))
@@ -67,6 +67,9 @@ const onFocusOut = useDismiss(navRoot, () => (menuOpen.value = false))
     <div class="utils">
       <SelectMenu v-if="hasSidebar" :label="version" :options="VERSIONS" />
       <SelectMenu class="lang" :label="currentLang.label!" :options="languages" />
+      <button type="button" class="theme" :aria-label="tr('Switch theme')" @click="isDark = !isDark">
+        <span class="sun icon-[lucide--sun]" /><span class="moon icon-[lucide--moon]" />
+      </button>
       <VPSocialLinks class="social" :links="theme.socialLinks ?? []" />
     </div>
 
@@ -298,6 +301,37 @@ const onFocusOut = useDismiss(navRoot, () => (menuOpen.value = false))
   align-items: center;
   gap: 18px;
   margin-left: 20px;
+}
+
+.theme {
+  display: grid;
+  place-items: center;
+  width: var(--g-control);
+  height: var(--g-control);
+  margin: 0 -8px 0 -6px;
+  border-radius: 2px;
+  color: var(--g-grey);
+}
+
+.theme:hover {
+  color: var(--g-ink);
+}
+
+.theme span {
+  width: 17px;
+  height: 17px;
+}
+
+.moon {
+  display: none;
+}
+
+:global(.dark .bar .theme .sun) {
+  display: none;
+}
+
+:global(.dark .bar .theme .moon) {
+  display: block;
 }
 
 .social {
