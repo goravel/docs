@@ -81,7 +81,7 @@ Goravel's GitHub issue trackers are not intended to provide Goravel help or supp
 
 You may propose new features or improvements to existing Goravel behavior in the Goravel framework repository's [GitHub discussion board](https://github.com/goravel/goravel/discussions). Informal discussion regarding bugs, new features, and implementation of existing features takes place in Discord or WeChat. Bowen, the maintainer of Goravel, is typically present in the group on weekdays from 9am-6pm (UTC+08:00), and sporadically present in the group at other times.
 
-## Modify Existing Languages
+## Modify Document
 
 If there is a typo in a specific language, you can submit a PR directly to the corresponding language file in [goravel/docs](https://github.com/goravel/docs). And please confirm whether the typo exists in other languages, if so, please fix it at the same time. It's very easy to achieve this through your AI agent. If you are not sure, you can submit an issue to [goravel/goravel](https://github.com/goravel/goravel/issues/new).
 
