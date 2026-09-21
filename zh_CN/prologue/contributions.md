@@ -79,10 +79,6 @@ Goravel 的 GitHub issue 不提供 Goravel 的帮助或支持。 你可以通过
 
 你可以在 Goravel 仓库的 [GitHub 讨论区](https://github.com/goravel/goravel/discussions) 中提出新功能或对现有 Goravel 行为的改进。 也可以在 Discord 或微信群中进行有关错误、新功能和现有功能实现的非正式讨论。 Goravel 的维护者 Bowen 通常在工作日的上午 9 点至下午 6 点（UTC+08:00）出现在频道中，并在其他时间偶尔出现在频道中。
 
-## 新增语言
-
-欢迎为 Goravel 文档添加新的语言，你可以提交一个标题为 "Add [Language] Language" 的 Issue 到 [goravel/goravel](https://github.com/goravel/goravel/issues/new)。我们将确认你的请求。
-
 ## 修改现有语言
 
 如果某个语言存在拼写错误，你可以直接向 [goravel/docs](https://github.com/goravel/docs) 中对应的语言文件提交 PR。请确认该错误是否也存在于其他语言中，如果存在，请一并修复。通过你的 AI 代理可以轻松实现。如果你不确定，可以提交 Issue 到 [goravel/goravel](https://github.com/goravel/goravel/issues/new)。
