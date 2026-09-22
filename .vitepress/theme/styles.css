@@ -2,4 +2,5 @@
 /* icons as classes, such as icon-[simple-icons--discord], from the installed Iconify sets */
 @plugin '@iconify/tailwind4';
 @source '../config';
+/* VitePress names the outline dropdown's list `outline`, which Tailwind would otherwise style as its utility */
 @source not inline('outline');

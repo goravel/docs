@@ -1,5 +1,4 @@
 ---
-search: false
 head:
   - - meta
     - name: robots
@@ -179,6 +178,10 @@ go run .
 
 :::
 ````
+
+### 演示块
+
+以 ````md demo` 开头的代码块会先显示源码，再把它渲染出来。 它只用于像本页这样讲解 Markdown 本身的页面，让示例只写一次。 介绍 Goravel 的页面不需要它。
 
 ### 单行命令
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, nextTick, onMounted, ref, useId, watch } from 'vue'
 import { useData } from 'vitepress'
 import { Motion, MotionConfig } from 'motion-v'
 import type { PieceKey, PieceState } from './config'
@@ -54,7 +54,16 @@ const lattice = computed(() => {
 })
 
 const { isDark } = useData()
-const ground = computed(() => (isDark.value ? [13, 20, 27] : [255, 255, 255]))
+const ground = ref([255, 255, 255])
+const outline = ref([104, 116, 125])
+const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))
+const read = () => {
+  const style = getComputedStyle(document.documentElement)
+  ground.value = rgb(style.getPropertyValue('--g-white').trim())
+  outline.value = rgb(style.getPropertyValue('--g-grey').trim())
+}
+onMounted(read)
+watch(isDark, () => nextTick(read))
 
 const tint = (fill: string, amount: number) => {
   const value = parseInt(fill.slice(1), 16)
@@ -70,7 +79,7 @@ function paint(piece: { key: PieceKey; fill: string }) {
   const state = stateOf(piece.key)
   return {
     fill: state === 'ghost' ? `rgba(${ground.value.join(', ')}, 0)` : state === 'dim' ? tint(piece.fill, 0.28) : piece.fill,
-    stroke: `rgba(104, 116, 125, ${state === 'ghost' ? 0.55 : 0})`
+    stroke: `rgba(${outline.value.join(', ')}, ${state === 'ghost' ? 0.55 : 0})`
   }
 }
 </script>

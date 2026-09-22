@@ -357,7 +357,7 @@
 .VPLocalNavOutlineDropdown .items {
   border: 1px solid var(--g-line) !important;
   border-radius: 2px !important;
-  box-shadow: 0 10px 28px rgba(16, 24, 32, 0.1) !important;
+  box-shadow: 0 10px 28px rgba(var(--g-shadow), 0.1) !important;
 }
 
 /* ------------------------------------------------------------------ search */
@@ -365,7 +365,7 @@
 :root [class*='DocSearch'] {
   --docsearch-container-background: var(--g-scrim);
   --docsearch-modal-background: var(--g-white);
-  --docsearch-modal-shadow: 0 16px 48px rgba(16, 24, 32, 0.12);
+  --docsearch-modal-shadow: 0 16px 48px rgba(var(--g-shadow), 0.12);
   --docsearch-searchbox-shadow: none;
   --docsearch-searchbox-focus-background: var(--g-white);
   --docsearch-highlight-color: var(--g-cyan-text);

@@ -22,7 +22,7 @@ defineProps<{ laravel?: boolean; goravel?: boolean; no?: boolean }>()
 .brand-mark {
   width: 14px;
   height: 14px;
-  color: #ff2d20;
+  color: var(--g-laravel);
 }
 
 .brand-state {

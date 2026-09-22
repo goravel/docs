@@ -6,6 +6,6 @@ Before you write or edit a page, read [en/prologue/writing-docs.md](en/prologue/
 
 The theme has one rule of its own:
 
-- Never write a colour in the theme or in a page. Use the `--g-*` tokens in `.vitepress/theme/goravel.css`, so the light and dark themes both work.
+- Never write a color in the theme or in a page. Use the `--g-*` tokens in `.vitepress/theme/goravel.css`, so the light and dark themes both work.
 
 Verify with `pnpm docs:build`, which fails on dead links. Preview with `pnpm docs:dev`.

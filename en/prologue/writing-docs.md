@@ -1,5 +1,4 @@
 ---
-search: false
 head:
   - - meta
     - name: robots
@@ -88,7 +87,7 @@ Examples are the part of the docs people actually use.
 
 ## Callouts
 
-Use a callout for what the reader must not miss. Never write `Note:`, `Tip:` or `Attention:` as plain text.
+Use a callout for what the reader must not miss. Never write `Note:`, `Tip:` or `Warning:` as plain text.
 
 | You want to | Use |
 | ----------- | --- |
@@ -180,6 +179,10 @@ go run .
 :::
 ````
 
+### Demos
+
+A fence opened as ````md demo` shows its source and then renders it. It exists for pages like this one that teach Markdown itself, so an example is written once. A page about Goravel never needs it.
+
 ### One-line commands
 
 Line numbers are on everywhere. Turn them off for a one-line command.
@@ -234,7 +237,7 @@ A badge takes the type `info`, `tip`, `warning` or `danger`.
 
 Switch the theme with the button in the top bar and check your page in both.
 
-- Never write a colour in a page. Raw HTML uses the theme tokens: `var(--g-ink)` for text, `var(--g-grey)` for quiet text, `var(--g-line)` for rules, `var(--g-cyan)` for the accent, `var(--g-code)` for a code ground.
+- Never write a color in a page. Raw HTML uses the theme tokens: `var(--g-ink)` for text, `var(--g-grey)` for quiet text, `var(--g-line)` for rules, `var(--g-cyan)` for the accent, `var(--g-code)` for a code ground.
 - Use images with a transparent background that stay readable on a dark ground, or give them their own solid ground.
 
 ## Before You Open A PR

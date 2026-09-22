@@ -6,13 +6,9 @@
   --g-bleed-left: var(--g-margin);
   --g-bleed-right: var(--g-margin);
   --g-secpad: 56px;
-  --g-grey: #5b6770;
+  --g-grey: var(--g-grey-strong);
   color: var(--g-ink);
   background: var(--g-white);
-}
-
-.dark .g-home {
-  --g-grey: #93a2ad;
 }
 
 @media (max-width: 1280px) {

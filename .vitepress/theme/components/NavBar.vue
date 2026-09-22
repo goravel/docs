@@ -181,7 +181,7 @@ const onFocusOut = useDismiss(navRoot, () => (menuOpen.value = false))
   padding: 0 var(--g-shell-inset);
   border-bottom: 1px solid var(--g-line);
   background: var(--g-white);
-  box-shadow: 0 24px 40px -24px rgba(16, 24, 32, 0.12);
+  box-shadow: 0 24px 40px -24px rgba(var(--g-shadow), 0.12);
 }
 
 .group {

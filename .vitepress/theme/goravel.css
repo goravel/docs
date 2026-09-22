@@ -4,7 +4,8 @@
   --g-code: #f7f9fa;
   --g-hover: #eef2f5;
   --g-ink: #101820;
-  --g-grey: #68747d;
+  --g-grey: #636f78;
+  --g-grey-strong: #5b6770;
   --g-line: #e5eaed;
   --g-control-line: #e5eaed;
   --g-cyan: #009fe8;
@@ -16,6 +17,8 @@
   --g-glass: rgba(255, 255, 255, 0.66);
   --g-glass-strong: rgba(255, 255, 255, 0.72);
   --g-scrim: rgba(16, 24, 32, 0.32);
+  --g-shadow: 16, 24, 32;
+  --g-laravel: #ff2d20;
 
   --g-amber: #e08700;
   --g-amber-text: #8f5a00;
@@ -77,6 +80,7 @@
   --g-hover: #19242f;
   --g-ink: #e6edf2;
   --g-grey: #8a99a5;
+  --g-grey-strong: #93a2ad;
   --g-line: #222f3b;
   --g-control-line: #46576a;
   --g-cyan-text: #5cc4f7;
@@ -87,6 +91,7 @@
   --g-glass: rgba(13, 20, 27, 0.5);
   --g-glass-strong: rgba(13, 20, 27, 0.6);
   --g-scrim: rgba(0, 0, 0, 0.6);
+  --g-shadow: 0, 0, 0;
 
   --g-amber-text: #f2b765;
   --g-amber-tint: #2a2113;

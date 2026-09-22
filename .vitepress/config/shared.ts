@@ -48,12 +48,14 @@ function liftFileNames(md: MarkdownRenderer) {
   }
 }
 
-// a fence opened as ````md demo shows its source and then renders it, so an example is written once
+// a fence opened as ````md demo shows its source and then renders it, so an example is written once;
+// the rendered headings are kept out of the outline
 function renderDemos(md: MarkdownRenderer) {
   const fence = md.renderer.rules.fence!
   md.renderer.rules.fence = (tokens, idx, options, env, self) => {
     const source = fence(tokens, idx, options, env, self)
-    return /^md\s+demo\b/.test(tokens[idx].info.trim()) ? source + md.render(tokens[idx].content, { ...env }) : source
+    if (!/^md\s+demo\b/.test(tokens[idx].info.trim())) return source
+    return source + md.render(tokens[idx].content, { ...env }).replace(/<h([1-6])\b/g, '<h$1 class="ignore-header"')
   }
 }
 

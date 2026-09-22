@@ -216,7 +216,7 @@ function onTabKey(event: KeyboardEvent) {
 }
 
 .home-brand [class*='laravel'] {
-  color: #ff2d20;
+  color: var(--g-laravel);
 }
 
 .home-file .g-code {

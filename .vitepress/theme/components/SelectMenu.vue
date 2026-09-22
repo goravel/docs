@@ -68,7 +68,7 @@ const onFocusOut = useDismiss(root, () => (open.value = false))
   border: 1px solid var(--g-line);
   border-radius: 2px;
   background: var(--g-white);
-  box-shadow: 0 4px 12px rgba(16, 24, 32, 0.06);
+  box-shadow: 0 4px 12px rgba(var(--g-shadow), 0.06);
 }
 
 .option {
