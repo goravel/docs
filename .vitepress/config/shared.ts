@@ -77,7 +77,7 @@ export const shared = defineConfig({
   rewrites: {
     'en/:rest*': ':rest*'
   },
-  srcExclude: ['README.md', 'CONTRIBUTING.md', 'AGENTS.md', 'CLAUDE.md'],
+  srcExclude: ['README.md', 'AGENTS.md'],
 
   appearance: true,
   lastUpdated: true,
