@@ -7,6 +7,9 @@ interface Palette {
   red: string
 }
 
+// These palettes mirror the light and dark values of the theme tokens in
+// .vitepress/theme/goravel.css: ink -> --g-ink, grey -> --g-grey,
+// cyan -> --g-cyan-text, red -> --g-red-text. Keep them in step.
 const LIGHT: Palette = { ink: '#101820', grey: '#636f78', cyan: '#0074ae', red: '#b02b2b' }
 const DARK: Palette = { ink: '#e6edf2', grey: '#8a99a5', cyan: '#5cc4f7', red: '#f59393' }
 

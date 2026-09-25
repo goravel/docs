@@ -55,10 +55,13 @@ const lattice = computed(() => {
 
 const { isDark } = useData()
 const ground = ref([255, 255, 255])
-const outline = ref([104, 116, 125])
+// the fallback mirrors --g-grey-strong, which .g-home maps --g-grey to
+const outline = ref([91, 103, 112])
 const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))
 const read = () => {
-  const style = getComputedStyle(document.documentElement)
+  // .g-home raises --g-grey to --g-grey-strong, so read the mark's own scope
+  const scope = document.querySelector('.g-home') ?? document.documentElement
+  const style = getComputedStyle(scope)
   ground.value = rgb(style.getPropertyValue('--g-white').trim())
   outline.value = rgb(style.getPropertyValue('--g-grey').trim())
 }

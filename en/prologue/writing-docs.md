@@ -19,7 +19,7 @@ Preview your changes with `pnpm docs:dev`, and run `pnpm docs:build` before open
 
 The reader has a task and wants to get back to their code. A good page gets them there.
 
-- **It answers "how do I do X".** Organise a page by what the reader wants to do, not by how the package is built inside.
+- **It answers "how do I do X".** Organize a page by what the reader wants to do, not by how the package is built inside.
 - **It can be pasted.** Every example runs when it is copied into a fresh project.
 - **It can be scanned.** The outline on the right lists every `##` and `###` heading, so the reader finds the section without reading from the top.
 - **It is true.** Every method, option and config key exists in the framework today.
