@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
-import { useElementHover, useTimeoutFn } from '@vueuse/core'
+import { useElementHover, useTemplateRefsList, useTimeoutFn } from '@vueuse/core'
 import { useI18n } from '../i18n'
 import { useTicker } from './useTicker'
 import CodeLines from './CodeLines.vue'
@@ -13,6 +13,7 @@ const DWELL = 3
 const IDLE = 8000
 
 const at = ref(0)
+const tabs = useTemplateRefsList<HTMLButtonElement>()
 const line = ref(0)
 const dwell = ref(0)
 const touring = ref(true)
@@ -22,6 +23,15 @@ const pair = computed(() => concept.value.ties[line.value] ?? [0, 0])
 const { ticks, root: card } = useTicker(1500)
 const hovered = useElementHover(card)
 const { start: wake } = useTimeoutFn(() => (touring.value = true), IDLE, { immediate: false })
+
+watch(at, async () => {
+  await nextTick()
+  // scroll only the strip; scrollIntoView would also move the page, which fights the tour
+  const tab = tabs.value[at.value]
+  const strip = tab?.parentElement
+  if (!tab || !strip || strip.scrollWidth <= strip.clientWidth) return
+  strip.scrollTo({ left: tab.offsetLeft - (strip.clientWidth - tab.offsetWidth) / 2, behavior: 'smooth' })
+})
 
 watch(ticks, () => {
   dwell.value++
@@ -72,6 +82,7 @@ function onTabKey(event: KeyboardEvent) {
           v-for="(c, i) in LARAVEL.concepts"
           :id="`home-tab-${i}`"
           :key="c.name"
+          :ref="tabs.set"
           type="button"
           role="tab"
           class="g-tab"
@@ -209,7 +220,7 @@ function onTabKey(event: KeyboardEvent) {
 }
 
 .home-brand [class*='laravel'] {
-  color: #ff2d20;
+  color: var(--g-laravel);
 }
 
 .home-file .g-code {
@@ -240,9 +251,22 @@ function onTabKey(event: KeyboardEvent) {
   }
 
   .home-feat-show .g-tabs {
+    position: relative;
+    flex-wrap: nowrap;
     justify-content: flex-start;
     gap: 0 18px;
+    overflow-x: auto;
     padding: 0 16px;
+    scrollbar-width: none;
+  }
+
+  .home-feat-show .g-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .home-feat-show .g-tab::after {
+    bottom: 0;
   }
 
   .home-file {
@@ -275,6 +299,17 @@ function onTabKey(event: KeyboardEvent) {
 
   .home-file .g-code {
     font-size: 12.5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .home-file .g-file-head {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .home-brand {
+    white-space: nowrap;
   }
 }
 </style>

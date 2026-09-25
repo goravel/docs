@@ -511,8 +511,14 @@ const onFocusOut = useDismiss(joins, () => (qr.value = null))
     content: none;
   }
 
-  .os-row.is-join .os-cell:nth-child(n + 3) {
-    border-top: 1px solid var(--g-line);
+  .os-row.is-join .os-cell:nth-child(3)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(var(--g-bleed-left) * -1);
+    right: calc(-100% - var(--g-bleed-right));
+    height: 1px;
+    background: var(--g-line);
   }
 
 

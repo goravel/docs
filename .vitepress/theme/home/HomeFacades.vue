@@ -56,11 +56,12 @@ const names = Object.keys(FACADES).sort((a, b) => a.localeCompare(b, 'en', { sen
   border-bottom: 1px solid var(--g-line);
 }
 
-.home-cell::after {
+.home-cell::before {
   content: '';
+  display: none;
   position: absolute;
-  right: -3px;
-  bottom: -3px;
+  left: -3px;
+  top: -3px;
   z-index: 1;
   width: 5px;
   height: 5px;
@@ -83,7 +84,7 @@ const names = Object.keys(FACADES).sort((a, b) => a.localeCompare(b, 'en', { sen
   letter-spacing: 0.08em;
   text-transform: uppercase;
   vertical-align: middle;
-  color: var(--g-white);
+  color: var(--g-on-accent);
   background: var(--g-cyan-text);
 }
 
@@ -107,7 +108,7 @@ const names = Object.keys(FACADES).sort((a, b) => a.localeCompare(b, 'en', { sen
   margin-top: auto;
   padding: 14px 0;
   border: 1px solid var(--g-line);
-  background: var(--g-soft);
+  background: var(--g-code);
   font-size: 12.5px;
   line-height: 24px;
   scrollbar-width: thin;
@@ -165,6 +166,19 @@ const names = Object.keys(FACADES).sort((a, b) => a.localeCompare(b, 'en', { sen
 
 .home-cell .ln {
   color: var(--g-ink);
+}
+
+@media (min-width: 1400px) {
+  .home-cell:nth-child(3n + 3)::before,
+  .home-cell:nth-child(3n + 4)::before {
+    display: block;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1399px) {
+  .home-cell:nth-child(2n + 3)::before {
+    display: block;
+  }
 }
 
 @media (max-width: 1399px) {

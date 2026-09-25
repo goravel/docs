@@ -39,6 +39,7 @@ Goravel 沿用了 Laravel 的结构，因此概念、门面以及大部分方法
 | [表单验证](../the-basics/validation.md) | `$request->validate([...])` | `ctx.Request().ValidateRequest(&storePost)` |
 | [视图](../the-basics/views.md) | `view('welcome')` | `ctx.Response().View().Make("welcome.tmpl")` |
 | [Grpc](../the-basics/grpc.md) | <Brand laravel no /> 未内置 | `facades.Grpc().Connect("user")` |
+| [Telemetry](../digging-deeper/telemetry.md) | <Brand laravel no /> 未内置 | `facades.Telemetry().Tracer("app").Start(ctx, "order.process")` |
 | 通知 | `$user->notify(new InvoicePaid())` | <Brand goravel no /> 暂未支持 |
 | 广播 | `broadcast(new OrderShipped($order))` | <Brand goravel no /> 暂未支持 |
 | Livewire | `<livewire:counter />` | <Brand goravel no /> 暂未支持 |

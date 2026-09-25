@@ -6,7 +6,7 @@
   --g-bleed-left: var(--g-margin);
   --g-bleed-right: var(--g-margin);
   --g-secpad: 56px;
-  --g-grey: #5b6770;
+  --g-grey: var(--g-grey-strong);
   color: var(--g-ink);
   background: var(--g-white);
 }
@@ -128,7 +128,7 @@
   font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
-  color: var(--g-white);
+  color: var(--g-on-accent);
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 

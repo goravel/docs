@@ -243,14 +243,39 @@
     padding: 0 !important;
   }
 
+  .VPDoc .aside-container,
   .VPDoc .aside-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .VPDoc .aside-content {
+    flex: 1 1 auto;
     min-height: 0;
-    padding-bottom: 24px;
+    padding-bottom: 0;
+  }
+
+  .VPDoc .VPDocAside {
+    min-height: 0;
+  }
+
+  .VPDoc .VPDocAsideOutline.has-outline,
+  .VPDoc .VPDocAsideOutline .content {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .VPDoc .VPDocAsideOutline .content > .VPDocOutlineItem {
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--g-line) transparent;
   }
 }
 
 .VPDocAsideOutline {
-  margin-bottom: 36px;
+  margin-bottom: 0;
   padding: 0 var(--g-shell-inset) 0 var(--g-rail) !important;
   border: 0 !important;
 }
@@ -264,9 +289,7 @@
   display: none;
 }
 
-/* the method index's heading is drawn the same way */
-.VPDocAsideOutline .outline-title,
-.goravel-methods .outline-title {
+.VPDocAsideOutline .outline-title {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -275,8 +298,7 @@
   border-bottom: 1px solid var(--g-line);
 }
 
-.VPDocAsideOutline .outline-title::before,
-.goravel-methods .outline-title::before {
+.VPDocAsideOutline .outline-title::before {
   background: var(--g-construct);
 }
 
@@ -299,7 +321,7 @@
 
 .VPDocOutlineItem .outline-link.active::before {
   position: absolute;
-  left: 0;
+  left: 2px;
   top: 11px;
   background: var(--g-cyan);
 }
@@ -320,6 +342,10 @@
   .VPLocalNav {
     padding-left: calc(var(--vp-sidebar-width) + var(--g-gutter)) !important;
   }
+
+  .VPLocalNavOutlineDropdown {
+    padding-left: 0 !important;
+  }
 }
 
 .VPLocalNav .menu,
@@ -331,15 +357,15 @@
 .VPLocalNavOutlineDropdown .items {
   border: 1px solid var(--g-line) !important;
   border-radius: 2px !important;
-  box-shadow: 0 10px 28px rgba(16, 24, 32, 0.1) !important;
+  box-shadow: 0 10px 28px rgba(var(--g-shadow), 0.1) !important;
 }
 
 /* ------------------------------------------------------------------ search */
 /* the theme resets Algolia's variables on every DocSearch node, so they are set at that level */
 :root [class*='DocSearch'] {
-  --docsearch-container-background: rgba(16, 24, 32, 0.32);
+  --docsearch-container-background: var(--g-scrim);
   --docsearch-modal-background: var(--g-white);
-  --docsearch-modal-shadow: 0 16px 48px rgba(16, 24, 32, 0.12);
+  --docsearch-modal-shadow: 0 16px 48px rgba(var(--g-shadow), 0.12);
   --docsearch-searchbox-shadow: none;
   --docsearch-searchbox-focus-background: var(--g-white);
   --docsearch-highlight-color: var(--g-cyan-text);

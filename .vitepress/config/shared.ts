@@ -40,11 +40,26 @@ function liftFileNames(md: MarkdownRenderer) {
   const fence = md.renderer.rules.fence!
   md.renderer.rules.fence = (tokens, idx, options, env, self) => {
     const token = tokens[idx]
-    const path = token.content.match(/^(?:\/\/|#|--) ?([\w.@-]+(?:\/[\w.@-]+)*\.\w+)\n/)
+    // a demo holds markdown, not one code block, so its first line is never a file name
+    if (/^md\s+demo\b/.test(token.info.trim())) return fence(tokens, idx, options, env, self)
+    const path = token.content.match(/^(?:\/\/|#|--) ?((?:[\w.@-]+\/)*[\w.@-]*\.\w+)\n/)
     // line highlights like {2,4} count from the first line, so a block using them keeps it
     if (!path || /\{[\d,-]+\}/.test(token.info)) return fence(tokens, idx, options, env, self)
     token.content = token.content.slice(path[0].length)
     return fence(tokens, idx, options, env, self).replace(/<span class="lang">[^<]*<\/span>/, `<span class="lang">${path[1]}</span>`)
+  }
+}
+
+// a fence opened as ````md demo shows its source and then renders it, so an example is written once;
+// the rendered headings are kept out of the outline
+function renderDemos(md: MarkdownRenderer) {
+  const fence = md.renderer.rules.fence!
+  md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+    const source = fence(tokens, idx, options, env, self)
+    if (!/^md\s+demo\b/.test(tokens[idx].info.trim())) return source
+    // a demo teaches syntax, so a link in it is illustrative; keep it out of the page's dead-link check
+    // (VitePress's link plugin pushes into env.links)
+    return source + md.render(tokens[idx].content, { ...env, links: [] }).replace(/<h([1-6])(?![^>]*\bclass=)/g, '<h$1 class="ignore-header"')
   }
 }
 
@@ -66,9 +81,9 @@ export const shared = defineConfig({
   rewrites: {
     'en/:rest*': ':rest*'
   },
+  srcExclude: ['**/README.md', '**/AGENTS.md'],
 
-  // there is no dark design
-  appearance: false,
+  appearance: true,
   lastUpdated: true,
   cleanUrls: false,
   metaChunk: true,
@@ -117,6 +132,7 @@ export const shared = defineConfig({
       md.use(deflist)
       markCustomContainerTitles(md)
       liftFileNames(md)
+      renderDemos(md)
       drawCoverageBars(md)
     },
     languages: ['go']

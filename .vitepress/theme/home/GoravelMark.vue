@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, nextTick, onMounted, ref, useId, watch } from 'vue'
+import { useData } from 'vitepress'
 import { Motion, MotionConfig } from 'motion-v'
 import type { PieceKey, PieceState } from './config'
 import { data as mark } from './mark.data'
@@ -52,10 +53,26 @@ const lattice = computed(() => {
   return lines.join('')
 })
 
+const { isDark } = useData()
+const ground = ref([255, 255, 255])
+// the fallback mirrors --g-grey-strong, which .g-home maps --g-grey to
+const outline = ref([91, 103, 112])
+const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))
+const read = () => {
+  // .g-home raises --g-grey to --g-grey-strong, so read the mark's own scope
+  const scope = document.querySelector('.g-home') ?? document.documentElement
+  const style = getComputedStyle(scope)
+  ground.value = rgb(style.getPropertyValue('--g-white').trim())
+  outline.value = rgb(style.getPropertyValue('--g-grey').trim())
+}
+onMounted(read)
+watch(isDark, () => nextTick(read))
+
 const tint = (fill: string, amount: number) => {
   const value = parseInt(fill.slice(1), 16)
-  const channel = (shift: number) => Math.round((((value >> shift) & 255) - 255) * amount + 255)
-  return `rgb(${channel(16)}, ${channel(8)}, ${channel(0)})`
+  const channel = (shift: number, base: number) => Math.round((((value >> shift) & 255) - base) * amount + base)
+  const [r, g, b] = ground.value
+  return `rgb(${channel(16, r)}, ${channel(8, g)}, ${channel(0, b)})`
 }
 
 const stateOf = (key: PieceKey) => props.states[key] ?? 'solid'
@@ -64,8 +81,8 @@ const isPulled = (key: PieceKey) => props.pulled?.includes(key) ?? false
 function paint(piece: { key: PieceKey; fill: string }) {
   const state = stateOf(piece.key)
   return {
-    fill: state === 'ghost' ? 'rgba(255, 255, 255, 0)' : state === 'dim' ? tint(piece.fill, 0.28) : piece.fill,
-    stroke: `rgba(104, 116, 125, ${state === 'ghost' ? 0.55 : 0})`
+    fill: state === 'ghost' ? `rgba(${ground.value.join(', ')}, 0)` : state === 'dim' ? tint(piece.fill, 0.28) : piece.fill,
+    stroke: `rgba(${outline.value.join(', ')}, ${state === 'ghost' ? 0.55 : 0})`
   }
 }
 </script>

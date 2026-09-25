@@ -74,6 +74,7 @@ export const config = defineConfig({
       next: "下一页"
     },
     outline: {
+      level: [2, 3],
       label: "页面导航"
     },
     lastUpdated: {

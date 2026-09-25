@@ -45,8 +45,8 @@ export default {
         reactionsEnabled: '1',
         lazyLoad: '1',
         homePageShowComment: '0',
-        lightTheme: 'preferred_color_scheme',
-        darkTheme: 'preferred_color_scheme'
+        lightTheme: 'light',
+        darkTheme: 'transparent_dark'
       },
       {
         frontmatter,

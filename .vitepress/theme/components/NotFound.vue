@@ -67,15 +67,18 @@ const suggestions = [
   height: 46px;
   margin-top: 28px;
   padding: 0 22px;
+  border: 1px solid transparent;
   border-radius: 2px;
-  background: var(--g-cyan);
+  background: var(--g-cyan-text);
   font-size: 15px;
   font-weight: 600;
-  color: var(--g-white);
+  color: var(--g-on-accent);
 }
 
 .home:hover {
-  background: var(--g-cyan-text);
+  border-color: var(--g-cyan-text);
+  background: var(--g-white);
+  color: var(--g-cyan-text);
 }
 
 .right {
