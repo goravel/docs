@@ -1,7 +1,5 @@
 # HTTP Tests
 
-[[toc]]
-
 ## Introduction
 
 When building web applications, you'll often need to test if your HTTP requests work correctly from start to finish. Goravel's testing tools make this straightforward - you can simulate requests and verify responses without setting up complex test environments.

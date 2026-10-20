@@ -1,7 +1,5 @@
 # 视图
 
-[[toc]]
-
 ## 简介
 
 当然，直接从路由和控制器返回整个 HTML 文档字符串是不切实际的。 值得庆幸的是，视图提供了一种方便的方式来将我们所有的 HTML 放在单独的文件中。 视图将你的控制器 / 应用程序逻辑与你的表现逻辑分开并存储在 `resources/views` 目录中。
@@ -10,7 +8,7 @@
 
 使用框架默认模版 `html/template` 时，可以通过在应用程序 `resources/views` 目录中放置具有 `.tmpl` 扩展名的文件来创建视图。
 
-```
+```html
 // resources/views/welcome.tmpl
 {{ define "welcome.tmpl" }}
 <html>
@@ -42,7 +40,7 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 {{ end }}
 
 ctx.Response().View().Make("admin/profile.tmpl", map[string]any{
-  "Name": "Goravel",
+  "name": "Goravel",
 })
 ```
 
@@ -58,13 +56,28 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 
 ### 判断视图文件是否存在
 
-如果需要判断视图文件是否存在，可以使用 `facades.View()`：
+如果需要判断视图文件是否存在，可以使用 `facades.View()` 方法。它会检查 `resources/views/` 目录以及通过 `LoadViewsFrom` 注册的任何目录：
 
 ```go
-if facades.View().Exist("welcome.tmpl") {
+if facades.View().Exists("welcome.tmpl") {
   // ...
 }
 ```
+
+## 从包注册视图
+
+扩展包可以使用 `LoadViewsFrom` 方法注册自己的视图目录。这使得包能够提供默认视图，而不会污染用户的 `resources/views` 目录：
+
+```go
+// 在扩展包的 service_provider.go 中
+func (r *ServiceProvider) Boot(app foundation.Application) {
+    facades.View().LoadViewsFrom("/path/to/package/views")
+}
+```
+
+渲染视图时，应用程序的 `resources/views` 目录具有优先权——用户可以在 `resources/views` 中创建同名文件来覆盖任何包视图。如果在此目录中未找到视图，则会按注册顺序在已注册的包视图目录中进行回退搜索。
+
+`Exists` 方法除了检查 `resources/views/` 外，也会检查已注册的包视图路径。
 
 ## 向视图传递数据
 
@@ -80,23 +93,93 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### 与所有视图共享数据
 
-有时，你可能需要与应用程序呈现的所有视图共享数据， 可以使用 `facades.View()` 的 `Share` 方法。 你可以在服务提供器的 `Boot` 方法中调用视图 `Share` 方法。 例如，可以将它们添加到 `app/providers/app_service_provider.go` 或者为它们生成一个单独的服务提供器：
+有时，你可能需要与应用程序呈现的所有视图共享数据， 可以使用 `facades.View()` 中的 `Share` 函数。 通常，你应该将 `Share` 函数的调用放在 `bootstrap/app.go::WithCallback` 函数中：
 
 ```go
-package providers
-
-import (
-	"github.com/goravel/framework/contracts/foundation"
-    "github.com/goravel/framework/facades
-)
-
-type AppServiceProvider struct {
-}
-
-func (receiver *AppServiceProvider) Register(app foundation.Application) {
-}
-
-func (receiver *AppServiceProvider) Boot(app foundation.Application) {
-    facades.View().Share("key", "value")
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.View().Share("key", "value")
+    }).
+    Create()
 }
 ```
+
+## CSRF 令牌中间件
+
+此中间件可应用于路由，以确保请求来自经过身份验证的来源，以防范跨站请求伪造（CSRF）攻击。
+
+::: v-pre
+
+1. 将中间件（`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`）注册到全局或特定路由。
+2. 在视图文件中向表单添加 `<input type="hidden" name="_token" value="{{ .csrf_token }}" />`，或在请求头中添加 `X-CSRF-TOKEN={{ .csrf_token }}` 以包含 CSRF 令牌。
+3. 中间件将在表单提交时自动验证令牌。
+   :::
+
+## 注册自定义分隔符和函数
+
+你可以在视图中注册自定义分隔符和函数，它们可以被注册在 `http.drivers.*.template` 配置中。
+
+对于 gin 驱动：
+
+```go
+// config/http.go
+import (
+  "html/template"
+
+  "github.com/gin-gonic/gin/render"
+  "github.com/goravel/gin"
+)
+
+"template": func() (render.HTMLRender, error) {
+  return gin.NewTemplate(gin.RenderOptions{
+    Delims: &gin.Delims{
+      Left:  "{{",
+      Right: "}}",
+    },
+    FuncMap: template.FuncMap{
+      // Add custom template functions here
+    },
+  })
+},
+```
+
+用于 fiber 驱动：
+
+```go
+// config/http.go
+import (
+  "github.com/gofiber/fiber/v2"
+  "github.com/gofiber/template"
+  "github.com/gofiber/template/html/v2"
+  "github.com/goravel/framework/support/path"
+)
+
+"template": func() (fiber.Views, error) {
+  engine := &html.Engine{
+    Engine: template.Engine{
+      Left:       "{{",
+      Right:      "}}",
+      Directory:  path.Resource("views"),
+      Extension:  ".tmpl",
+      LayoutName: "embed",
+      // Add custom template functions here
+      Funcmap:    make(map[string]interface{}),
+    },
+  }
+
+  engine.AddFunc(engine.LayoutName, func() error {
+    return fmt.Errorf("layoutName called unexpectedly")
+  })
+  return engine, nil
+},
+```
+
+## 自定义模板引擎
+
+你可以通过实现 gin 的 `render.HTMLRender` 接口或者 fiber 的 `fiber.Views` 接口来创建自己的自定义模板引擎。 在创建自定义引擎后，你可以将它注册到配置 `http.drivers.*.template` 。
+
+## 高级功能
+
+模板引擎默认由 `http/template` 驱动，你可以参考其官方文档获取更多高级功能：https://pkg.go.dev/html/template

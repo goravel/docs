@@ -1,7 +1,5 @@
 # Authentication
 
-[[toc]]
-
 ## Introduction
 
 Authentication is an indispensable feature in Web Applications, the `facades.Auth()` module of Goravel provides support for JWT and Session drivers, and you can customize the driver and user provider.
@@ -14,16 +12,16 @@ You can configure the parameters of JWT in the `config/jwt.go` file, such as `se
 
 ### Different JWT Guard supports different configurations
 
-You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/auth.go` file, if not set, the `jwt.ttl` configuration is used by default.
+You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/auth.go` file, if not set, these three configurations are used by the `config/jwt.go` file as default.
 
 ```go
 // config/auth.go
 "guards": map[string]any{
   "user": map[string]any{
     "driver": "jwt",
-++    "ttl": 60,
-++    "refresh_ttl": 0,
-++    "secret": "your-secret",
+++  "ttl": 60,
+++  "refresh_ttl": 0,
+++  "secret": "your-secret",
   },
 },
 ```
@@ -31,7 +29,7 @@ You can set TTL, Secret and RefreshTTL for each Guard separately in the `config/
 ## Generate JWT Token
 
 ```shell
-go run . artisan jwt:secret
+./artisan jwt:secret
 ```
 
 ## Generate Token Using User
@@ -69,7 +67,9 @@ Through `payload` you can get:
 3. `ExpireAt`: Expire time;
 4. `IssuedAt`: Issued time;
 
-> If `err` isn't nil other than `ErrorTokenExpired`, the payload should be nil.
+::: info
+If `err` is anything other than `ErrorTokenExpired`, the payload is nil.
+:::
 
 You can judge whether the Token is expired by err:
 
@@ -80,7 +80,9 @@ You can judge whether the Token is expired by err:
 errors.Is(err, auth.ErrorTokenExpired)
 ```
 
-> The token can be parsed normally with or without the Bearer prefix.
+::: tip
+The token can be parsed with or without the `Bearer` prefix.
+:::
 
 ## Get User
 
@@ -111,10 +113,23 @@ err := facades.Auth(ctx).Logout()
 ```go
 token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
 err := facades.Auth(ctx).Guard("admin").Parse(token)
-token, err := facades.Auth(ctx).Guard("admin").User(&user)
+err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
-> When the default guard is not used, the `Guard` method must be called before calling the above methods.
+::: warning
+When you are not using the default guard, call the `Guard` method before any of the methods above.
+:::
+
+JWT tokens are bound to the guard that generated them. If you parse a token with a different guard, Goravel returns `auth.ErrorGuardMismatch`:
+
+```go
+token, err := facades.Auth(ctx).Guard("user").LoginUsingID(1)
+payload, err := facades.Auth(ctx).Guard("admin").Parse(token)
+
+if errors.Is(err, auth.ErrorGuardMismatch) {
+  // The token was issued by another guard.
+}
+```
 
 ## Custom Driver
 

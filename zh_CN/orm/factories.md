@@ -1,7 +1,5 @@
 # 模型工厂
 
-[[toc]]
-
 ## 介绍
 
 测试时你可能需要在执行测试之前向数据库中插入一些记录。 Goravel 允许你使用模型工厂为每个模型定义一组默认属性，而不是在创建测试数据时手动指定每一列的值。
@@ -28,7 +26,7 @@ func (f *UserFactory) Definition() map[string]any {
 
 可以使用 Artisan 命令 `make:factory` 创建工厂：
 
-```
+```shell
 go run . artisan make:factory PostFactory
 ```
 

@@ -1,0 +1,26 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 266 308" width="510" height="510">
+	<title>goravel</title>
+	<style>
+		tspan { white-space:pre } 
+		.s0 { fill: #009fe8 } 
+		.s1 { fill: #2f7e9c } 
+		.s2 { fill: #86d3fd } 
+	</style>
+	<g id="图层 1">
+		<g id="&lt;Group&gt;">
+			<g id="&lt;Group&gt;">
+				<path id="&lt;Path&gt;" class="s0" d="m177.3 179.6v-51.2l-44.3 25.6v51.2l44.3-25.6z"/>
+				<g id="&lt;Group&gt;">
+					<path id="&lt;Path&gt;" class="s0" d="m266 77.2v153.6l-133 76.8v-51.2l88.7-51.2v-102.4z"/>
+				</g>
+			</g>
+			<g id="&lt;Group&gt;">
+				<path id="&lt;Path&gt;" class="s1" d="m133 256.4v51.2l-133-76.8v-153.6l44.3 25.6v102.4z"/>
+			</g>
+			<g id="&lt;Group&gt;">
+				<path id="&lt;Path&gt;" class="s2" d="m44.3 51.6l-44.3 25.6 133 76.8 44.3-25.6z"/>
+				<path id="&lt;Path&gt;" class="s2" d="m133 0.4l-44.3 25.6 133 76.8 44.3-25.6z"/>
+			</g>
+		</g>
+	</g>
+</svg>

@@ -1,27 +1,37 @@
 # 编译
 
-[[toc]]
-
 ## 编译命令
 
 Goravel 项目可以通过以下命令编译：
 
+```shell
+# 选择系统进行编译
+./artisan build
+
+# 指定系统进行编译
+./artisan build --os=linux
+./artisan build -o=linux
+
+# 静态编译
+./artisan build --static
+./artisan build -s
+
+# 指定输出文件名
+./artisan build --name=goravel
+./artisan build -n=goravel
+
+# 构建前运行 go generate
+./artisan build --generate
+./artisan build -g
 ```
-// 选择系统进行编译
-go run . artisan build
 
-// 指定系统进行编译
-go run . artisan build --os=linux
-go run . artisan build -o=linux
+`--generate` 标志会在构建步骤之前运行 `go generate ./...`。该功能默认禁用，可以与其他构建选项组合使用：
 
-// 静态编译
-go run . artisan build --static
-go run . artisan build -s
-
-// 指定输出文件名
-go run . artisan build --name=goravel
-go run . artisan build -n=goravel
+```shell
+./artisan build --generate --os=linux --arch=amd64
 ```
+
+当 `--generate` 与 `--os` 或 `--arch` 等目标选项组合使用时，generate 步骤会使用相同的构建环境。
 
 ## 手动编译
 
@@ -35,12 +45,11 @@ go build .
 
 部署时需要将下列文件与文件夹上传至服务器：
 
-```
-./main // 编译生成的二进制文件
+```text
 .env
-./public
-./storage
-./resources
+./main // 编译生成的二进制文件
+./public // 如果存在
+./resources // 如果存在
 ```
 
 ### 静态编译
@@ -56,13 +65,13 @@ go build --ldflags "-extldflags -static" -o main .
 编译有平台区分，需要根据部署情况，选择匹配的编译方式。
 
 ```shell
-// 编译 Linux 环境
+# 编译 Linux 环境
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build .
 
-// 编译 Windows 环境
+# 编译 Windows 环境
 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build .
 
-// 编译 Mac 环境
+# 编译 Mac 环境
 CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 ```
 
@@ -94,12 +103,15 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
 RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone
 WORKDIR /www
+COPY --from=builder /build/.env /www/.env
 COPY --from=builder /build/main /www/
+
+# 如果存在
 COPY --from=builder /build/database/ /www/database/
 COPY --from=builder /build/public/ /www/public/
 COPY --from=builder /build/storage/ /www/storage/
 COPY --from=builder /build/resources/ /www/resources/
-COPY --from=builder /build/.env /www/.env
+
 ENTRYPOINT ["/www/main"]
 ```
 
@@ -112,7 +124,9 @@ docker-compose build
 docker-compose up
 ```
 
-> 注意：如需外部访问，需要将 APP_HOST 改为 0.0.0.0
+::: tip
+如需外部访问，需要将 APP_HOST 改为 0.0.0.0
+:::
 
 ## 设置时区
 
@@ -120,13 +134,13 @@ docker-compose up
 
 1. 在 Dockerfile 中添加时区设置
 
-```
+```dockerfile
 RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
 ```
 
 2. 在编译时设置时区
 
-```
+```shell
 go build -tags timetzdata .
 ```
 
@@ -137,7 +151,3 @@ import (
     _ "time/tzdata"
 )
 ```
-
-## 减小打包体积
-
-将 `config/app.go::providers` 中未用到的 `ServiceProvider` 注释掉将能有效地减少打包体积。

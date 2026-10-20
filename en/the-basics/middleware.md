@@ -1,7 +1,5 @@
 # Middleware
 
-[[toc]]
-
 ## Introduction
 
 Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application.
@@ -17,47 +15,53 @@ import (
   "github.com/goravel/framework/contracts/http"
 )
 
-func Auth() http.Middleware {
-  return func(ctx http.Context) {
-    ctx.Request().Next()
-  }
+type Auth struct{}
+
+func (a *Auth) Handle(ctx http.Context) {
+  ctx.Request().Next()
+}
+
+func (a *Auth) Signature() string {
+  return "auth"
 }
 ```
 
 ### Create Middleware By Command
 
-```
-go run . artisan make:middleware Auth
+```shell
+./artisan make:middleware Auth
 
-// Support nested folders
-go run . artisan make:middleware user/Auth
+# Support nested folders
+./artisan make:middleware user/Auth
 ```
 
 ## Register Middleware
 
 ### Global Middleware
 
-If you want to apply middleware for every HTTP request of your application, you only need to register the middleware in the `Middleware` in the `app/http/kernel.go` file.
+If you want to apply middleware for every HTTP request of your application, you only need to register the middleware in the `WithMiddleware` function in the `bootstrap/app.go` file.
 
 ```go
-// app/http/kernel.go
-package http
-
-import (
-  "github.com/goravel/framework/contracts/http"
-
-  "goravel/app/http/middleware"
-)
-
-type Kernel struct {
-}
-
-func (kernel *Kernel) Middleware() []http.Middleware {
-  return []http.Middleware{
-    middleware.Auth(),
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMiddleware(func(handler configuration.Middleware) {
+			handler.Append(
+				middleware.Custom(),
+			)
+		}).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
+
+The `handler` provides multiple functions to manage middleware:
+
+- `Append(middlewares ...http.Middleware)`: Append middleware to the end of the middleware stack.
+- `GetGlobalMiddleware() []http.Middleware`: Get all global middleware.
+- `GetRecover() func(ctx http.Context, err any)`: Get the custom recovery function.
+- `Prepend(middlewares ...http.Middleware)`: Prepend middleware to the beginning of the middleware stack.
+- `Recover(fn func(ctx http.Context, err any)) Middleware`: Set a custom recovery function to handle panics.
+- `Use(middleware ...http.Middleware) Middleware`: Replace the current middleware stack with the given middleware.
 
 ### Assign Middleware for Routing
 
@@ -68,6 +72,36 @@ import "github.com/goravel/framework/http/middleware"
 
 facades.Route().Middleware(middleware.Auth()).Get("users", userController.Show)
 ```
+
+### Excluding Middleware
+
+The `WithoutMiddleware` method allows specific routes to bypass certain middleware that would otherwise be applied by parent groups. This is useful for public endpoints, webhook handlers, or routes that should skip authentication or rate limiting.
+
+Use `WithoutMiddleware` on individual routes after `Middleware` is applied to a group:
+
+```go
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  router.Get("/dashboard", dashboardController.Index)
+
+  // This route excludes the throttle middleware
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+You can also exclude middleware for an entire group:
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    router.Get("/public", publicController.Index)
+  })
+```
+
+::: warning
+Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
+:::
 
 ## Abort Request
 

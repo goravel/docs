@@ -1,7 +1,5 @@
 # File Storage
 
-[[toc]]
-
 ## Introduction
 
 The Goravel provides simple drivers for working with local filesystems, Amazon S3, Aliyun OSS, Tencent COS, Minio and Cloudinary. Even better, switching between these storage options between your local development machine and production server is amazingly simple as the API remains the same for each system. Goravel comes with a `local` driver, for other drivers, please check the corresponding independent extension package:
@@ -12,13 +10,14 @@ The Goravel provides simple drivers for working with local filesystems, Amazon S
 | OSS        | [https://github.com/goravel/oss](https://github.com/goravel/oss)               |
 | COS        | [https://github.com/goravel/cos](https://github.com/goravel/cos)               |
 | Minio      | [https://github.com/goravel/minio](https://github.com/goravel/minio)           |
-| Cloudinary | [https://github.com/goravel/cloudinary](https://github.com/goravel/cloudinary) |
 
 ## Configuration
 
 Goravel's filesystem configuration file is located at `config/filesystems.go`. Within this file, you may configure all of your filesystem "disks", each disk represents a particular storage driver and storage location.
 
-> You may configure as many disks as you like and may even have multiple disks that use the same driver.
+::: tip
+You may configure as many disks as you like and may even have multiple disks that use the same driver.
+:::
 
 ### The Local Driver
 
@@ -61,7 +60,7 @@ facades.Storage().WithContext(ctx).Put("avatars/1.png", "Contents")
 The `Get` method may be used to retrieve the contents of a file. The raw string contents of the file will be returned by the method. Remember, all file paths should be specified relative to the disk's `root` location:
 
 ```go
-contents := facades.Storage().Get("file.jpg")
+content := facades.Storage().Get("file.jpg")
 ```
 
 The `Exists` method may be used to determine if a file exists on the disk:
@@ -88,7 +87,9 @@ You may use the `Url` method to get the URL for a given file. If you are using t
 url := facades.Storage().Url("file.jpg")
 ```
 
-> When using the `local` driver, the return value of `Url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
+::: warning
+When using the `local` driver, the return value of `Url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
+:::
 
 #### Temporary URLs
 
@@ -213,7 +214,9 @@ file, err := filesystem.NewFile("./logo.png")
 path := facades.Storage().PutFileAs("photos", file, "name")
 ```
 
-> If the file name specified by `StoreAs` and `PutFileAs` doesn't have a suffix, the suffix is automatically added based on the MIME of the file; otherwise, the specified file name is used directly.
+::: info
+If the file name passed to `StoreAs` or `PutFileAs` has no suffix, one is added based on the file's MIME type. Otherwise the name is used as given.
+:::
 
 ### Specifying A Disk
 
@@ -338,4 +341,6 @@ type Driver interface {
 }
 ```
 
-> Note: Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config().Env` to obtain the configuration in the custom driver.
+::: warning
+Since the configuration has not been loaded when the custom driver is registered, so please use `facades.Config().Env()` to obtain the configuration in the custom driver.
+:::

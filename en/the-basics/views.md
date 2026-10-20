@@ -1,7 +1,5 @@
 # Views
 
-[[toc]]
-
 ## Introduction
 
 Of course, it's not practical to return entire HTML document strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory.
@@ -10,7 +8,7 @@ Of course, it's not practical to return entire HTML document strings directly fr
 
 When using the Goravel default template `html/template`, you can create views by adding a file with the `.tmpl` extension in the application `resources/views` directory.
 
-```
+```html
 // resources/views/welcome.tmpl
 {{ define "welcome.tmpl" }}
 <html>
@@ -58,13 +56,28 @@ ctx.Response().View().First([]string{"custom/admin.tmpl", "admin.tmpl"}, map[str
 
 ### Determining If A View Exists
 
-If you need to determine if a view exists, you can use the `facades.View()` method:
+If you need to determine if a view exists, you can use the `facades.View()` method. It checks `resources/views/` as well as any directories registered with `LoadViewsFrom`:
 
 ```go
-if facades.View().Exist("welcome.tmpl") {
+if facades.View().Exists("welcome.tmpl") {
   // ...
 }
 ```
+
+## Registering Views From Packages
+
+Extension packages may register their own view directory using the `LoadViewsFrom` method. This allows packages to provide default views without cluttering the user's `resources/views` directory:
+
+```go
+// In an extension package's service_provider.go
+func (r *ServiceProvider) Boot(app foundation.Application) {
+    facades.View().LoadViewsFrom("/path/to/package/views")
+}
+```
+
+When a view is rendered, the application's `resources/views` directory takes priority — users can override any package view by creating a file with the same name in `resources/views`. If the view is not found there, the registered package view directories are searched in registration order as fallbacks.
+
+The `Exists` method also checks registered package view paths in addition to `resources/views/`.
 
 ## Passing Data To Views
 
@@ -80,23 +93,92 @@ facades.Route().Get("/", func(ctx http.Context) http.Response {
 
 ### Sharing Data With All Views
 
-Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `Share` method in `facades.View()`. Typically, you should place calls to the `Share` method within a service provider's `Boot` method. You are free to add them to the `app/providers/app_service_provider.go` class or generate a separate service provider to house them:
+Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `Share` function in `facades.View()`. Typically, you should place calls to the `Share` function in the `bootstrap/app.go::WithCallback` function:
 
 ```go
-package providers
-
-import (
-	"github.com/goravel/framework/contracts/foundation"
-    "github.com/goravel/framework/facades"
-)
-
-type AppServiceProvider struct {
-}
-
-func (receiver *AppServiceProvider) Register(app foundation.Application) {
-}
-
-func (receiver *AppServiceProvider) Boot(app foundation.Application) {
-    facades.View().Share("key", "value")
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.View().Share("key", "value")
+    }).
+    Create()
 }
 ```
+
+## CSRF Token Middleware
+
+This middleware can be applied to routes to ensure that requests are coming from authenticated sources to against Cross-Site Request Forgery (CSRF) attacks.
+
+::: v-pre
+1. Register the middleware (`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`) to global or a specific route.
+2. Add `<input type="hidden" name="_token" value="{{ .csrf_token }}" />` to your form in the view file, or add `X-CSRF-TOKEN={{ .csrf_token }}` to your request header to include the CSRF token.
+3. The middleware will automatically verify the token on form submission.
+:::
+
+## Register Custom Delims And Functions 
+
+You can register custom Delims and functions to be used within your views, they can be registered in the configuration `http.drivers.*.template`.
+
+For the gin driver:
+
+```go
+// config/http.go
+import (
+  "html/template"
+
+  "github.com/gin-gonic/gin/render"
+  "github.com/goravel/gin"
+)
+
+"template": func() (render.HTMLRender, error) {
+  return gin.NewTemplate(gin.RenderOptions{
+    Delims: &gin.Delims{
+      Left:  "{{",
+      Right: "}}",
+    },
+    FuncMap: template.FuncMap{
+      // Add custom template functions here
+    },
+  })
+},
+```
+
+For the fiber driver:
+
+```go
+// config/http.go
+import (
+  "github.com/gofiber/fiber/v2"
+  "github.com/gofiber/template"
+  "github.com/gofiber/template/html/v2"
+  "github.com/goravel/framework/support/path"
+)
+
+"template": func() (fiber.Views, error) {
+  engine := &html.Engine{
+    Engine: template.Engine{
+      Left:       "{{",
+      Right:      "}}",
+      Directory:  path.Resource("views"),
+      Extension:  ".tmpl",
+      LayoutName: "embed",
+      // Add custom template functions here
+      Funcmap:    make(map[string]interface{}),
+    },
+  }
+
+  engine.AddFunc(engine.LayoutName, func() error {
+    return fmt.Errorf("layoutName called unexpectedly")
+  })
+  return engine, nil
+},
+```
+
+## Custom Template Engines
+
+You can create your own custom template engines by implementing the `render.HTMLRender` interface of gin or the `fiber.Views` interface of fiber. After creating your custom engine, you can register it to the configuration `http.drivers.*.template`.
+
+## Advanced Features
+
+`http/template` is the default template engine, you can refer to the official documentation for more advanced features: https://pkg.go.dev/html/template.

@@ -1,25 +1,23 @@
 # Artisan Console
 
-[[toc]]
-
 ## Introduction
 
 Artisan is the CLI tool that comes with Goravel for interacting with the command line. You can access it using `facades.Artisan()`. This tool has several useful commands that can assist you in the development of your application. Utilize the following command to view all available commands.
 
 ```shell
-go run . artisan list
+./artisan list
 
 # or
-./artisan list
+go run . artisan list
 ```
 
-Each command also has a "help" feature that shows and explains the arguments and options associated with the command. To see the help screen, just add "help" before the command name.
+Each command also has a "help" flag that shows and explains the arguments and options associated with the command:
 
 ```shell
-go run . artisan help migrate
+./artisan migrate --help
 ```
 
-Instead of repeating `go run . artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
+Instead of repeating `./artisan ...` command, you may want to add an alias to your shell configuration with the terminal command below:
 
 ```shell
 echo -e "\r\nalias artisan=\"go run . artisan\"" >>~/.zshrc
@@ -31,20 +29,70 @@ Then you can simply run your commands like this:
 artisan make:controller DemoController
 ```
 
-You can also use `artisan` shell script like this:
-
-```shell
-./artisan make:controller DemoController
-```
+You can also use the `artisan` shell script to run built-in commands.
 
 ### Generating Commands
 
 You can use the `make:command` command to create a new command in the `app/console/commands` directory. Don't worry if this directory does not exist in your application, it will be created the first time you run the `make:command` command:
 
 ```shell
-go run . artisan make:command SendEmails
-go run . artisan make:command user/SendEmails
+./artisan make:command SendEmails
+./artisan make:command user/SendEmails
 ```
+
+### Register Commands
+
+All commands should be registered via the `WithCommands` function in the `bootstrap/app.go` file:
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithConfig(config.Boot).
+		Create()
+}
+```
+
+A new command created by `make:command` will be registered automatically in the `bootstrap/commands.go::Commands()` function and the function will be called by `WithCommands`. You need register the command manually if you create the command file by yourself.
+
+### Filtering Commands
+
+You may want to scope which built-in Artisan commands are registered in different environments — for example, hiding dev commands like `make:*`, `package:*`, and `vendor:publish` in production. The `WithCommandsFilter` method on `ApplicationBuilder` lets you return a positive list of command signatures to keep:
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithCommands(Commands).
+		WithCommandsFilter(func() []string {
+			if facades.Config().GetString("app.env") == "production" {
+				return []string{
+					"up", "down", "key:generate", "about",
+					"schedule:*", // glob
+					"queue:*",    // glob
+				}
+			}
+			return nil // keep everything in other environments
+		}).
+		WithConfig(config.Boot).
+		Create()
+}
+```
+
+The callback runs once at build time and each entry is matched against `command.Signature()` in one of two ways:
+
+- **Exact match** (no wildcard) — the signature must match the entry exactly.
+- **Glob match** (entry contains `*`) — checked using `path.Match`. `*` matches any sequence of non-`/` characters.
+
+The return value determines the filtering behavior:
+
+- **Method not called** — all commands are kept (default).
+- **Return `nil`** — all commands are kept (no filter applied).
+- **Return `[]string{}`** — all commands are dropped.
+- **Return entries** — only commands whose signature matches an entry are kept.
+
+::: info
+The filter applies to all commands including those added via `WithCommands`, so the user cannot bypass the filter by adding commands manually.
+:::
 
 ### Command Structure
 
@@ -93,11 +141,67 @@ When you write console commands, it's typical to collect user input through `arg
 Follow the arguments after the command:
 
 ```shell
-go run . artisan send:emails NAME EMAIL
+./artisan send:emails SUBJECT EMAIL_1 EMAIL_2
 ```
+
+Definition：
+
+```go
+// send:emails <subject> <email...>
+func (receiver *SendEmails) Extend() command.Extend {
+	return command.Extend{
+		Arguments: []command.Argument{
+			&command.ArgumentString{
+				Name:     "subject",
+				Usage:    "subject of email",
+				Required: true,
+			},
+			&command.ArgumentStringSlice{
+				Name:  "emails",
+				Usage: "target emails",
+				Min:   1,
+				Max:   -1,
+			},
+		},
+	}
+}
+```
+
+Supported argument types: `ArgumentFloat32`, `ArgumentFloat64`, `ArgumentInt`, `ArgumentInt8`, `ArgumentInt16`, `ArgumentInt32`, `ArgumentInt64`, `ArgumentString`, `ArgumentUint`, `ArgumentUint8`, `ArgumentUint16`, `ArgumentUint32`, `ArgumentUint64`, `ArgumentTimestamp`, `ArgumentFloat32Slice`, `ArgumentFloat64Slice`, `ArgumentIntSlice`, `ArgumentInt8Slice`, `ArgumentInt16Slice`, `ArgumentInt32Slice`, `ArgumentInt64Slice`, `ArgumentStringSlice`, `ArgumentUintSlice`, `ArgumentUint8Slice`, `ArgumentUint16Slice`, `ArgumentUint32Slice`, `ArgumentUint64Slice`, `ArgumentTimestampSlice`
+
+Argument types with single value support next fields:
+
+```go
+	Name     string // the name of this argument
+	Value    T      // the default value of this argument
+	Usage    string // the usage text to show
+	Required bool   // if this argument is required
+```
+
+Slice argument types fields:
+
+```go
+	Name  string // the name of this argument
+	Value T      // the default value of this argument
+	Usage string // the usage text to show
+	Min   int    // the min num of occurrences of this argument
+	Max   int    // the max num of occurrences of this argument, set to -1 for unlimited
+```
+
+Timestamp arguments additionally supports `Layouts []string` field, that should be filled with [supported layouts](https://pkg.go.dev/time#pkg-constants)
 
 Get arguments:
 
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+  subject := ctx.ArgumentString("subject")
+  emails := ctx.ArgumentStringSlice("emails")
+
+  return nil
+}
+```
+
+Alternatively, it is possible to access arguments directly:
 ```go
 func (receiver *SendEmails) Handle(ctx console.Context) error {
   name := ctx.Argument(0)
@@ -142,8 +246,8 @@ func (receiver *ListCommand) Handle(ctx console.Context) error {
 Usage：
 
 ```shell
-go run . artisan emails --lang Chinese
-go run . artisan emails -l Chinese
+./artisan emails --lang Chinese
+./artisan emails -l Chinese
 ```
 
 Except `command.StringFlag`, we can also use other type `Flag` and `Option*`: `StringSliceFlag`, `BoolFlag`, `Float64Flag`, `Float64SliceFlag`, `IntFlag`, `IntSliceFlag`, `Int64Flag`, `Int64SliceFlag`.
@@ -360,6 +464,19 @@ func (receiver *SendEmails) Handle(ctx console.Context) error {
 }
 ```
 
+There are few helpers to write to console with respective color:
+
+```go
+ctx.Green("This is a green message")
+ctx.Greenln("This is a green line message")
+ctx.Red("This is a red message")
+ctx.Redln("This is a red line message")
+ctx.Yellow("This is a yellow message")
+ctx.Yellowln("This is a yellow line message")
+ctx.Black("This is a black message")
+ctx.Blackln("This is a black line message")
+```
+
 You can use the `NewLine` method to write a new line to the console:
 
 ```go
@@ -368,6 +485,31 @@ ctx.NewLine()
 
 // write multiple blank lines
 ctx.NewLine(2)
+```
+
+#### Tables
+
+You may use the `Table` method to render structured data in a tabular format. The method accepts headers and rows, and writes the rendered table directly to the console:
+
+```go
+func (receiver *SendEmails) Handle(ctx console.Context) error {
+    headers := []string{"ID", "Email", "Status"}
+    rows := [][]string{
+        {"1", "a@example.com", "Queued"},
+        {"2", "b@example.com", "Sent"},
+    }
+
+    ctx.Table(headers, rows)
+
+    return nil
+}
+```
+
+You can pass a `console.TableOption` as the third argument to customize borders, dimensions, and styles.
+```go
+ctx.Table(headers, rows, console.TableOption{
+    Width: 80,
+})
 ```
 
 #### Progress Bars
@@ -415,9 +557,70 @@ err := ctx.Spinner("Loading...", console.SpinnerOption{
 })
 ```
 
+### Divider
+
+To show terminal-width divider you may use `Divider` method.
+
+```go
+ctx.Divider()     // ----------
+ctx.Divider("=>") // =>=>=>=>=>
+```
+
+## Graceful Shutdown
+
+By default, pressing `Ctrl+C` (or sending `SIGTERM`) cancels the `console.Context` passed to `Handle`. The framework runs `Handle` in a goroutine, so it returns `context.Canceled` as soon as the signal fires and the process exits. Commands that need to release resources — closing network listeners, draining queues, flushing buffers — can opt into a cleanup callback by implementing the optional `console.Shutdownable` interface.
+
+```go
+type Shutdownable interface {
+  Shutdown(ctx Context) error
+}
+```
+
+When a command implements `Shutdownable`, the framework races `Handle` against the signal context. If `Handle` returns first, the framework then calls `Shutdown` with a fresh `console.Context` (the original is already cancelled) and a 30s budget so the command can finish any cleanup. If the signal fires first, the framework calls `Shutdown` with the same fresh context and 30s budget, then returns; `Handle` is left to run on its own in the goroutine and the process exits.
+
+`console.Context` now embeds `context.Context`, so commands can use `<-ctx.Done()` directly, pass `ctx` to functions that expect a `context.Context`, and call `ctx.Deadline()` / `ctx.Err()` / `ctx.Value(key)` without an accessor.
+
+```go
+package commands
+
+import (
+  "errors"
+  "net/http"
+
+  "github.com/goravel/framework/contracts/console"
+  "github.com/goravel/framework/contracts/console/command"
+)
+
+type Serve struct {
+  server *http.Server
+}
+
+func (r *Serve) Signature() string   { return "serve" }
+func (r *Serve) Description() string { return "Start the HTTP server" }
+func (r *Serve) Extend() command.Extend {
+  return command.Extend{Category: "server"}
+}
+
+func (r *Serve) Handle(ctx console.Context) error {
+  if err := r.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+    return err
+  }
+  return nil
+}
+
+func (r *Serve) Shutdown(ctx console.Context) error {
+  ctx.Info("received signal, shutting down gracefully...")
+  return r.server.Shutdown(ctx)
+}
+```
+
+The built-in `schedule:run` command is a real example. Its `Handle` blocks on `schedule.Run()`, and on signal the framework calls `Shutdown`, which delegates to `schedule.Shutdown(ctx)` so scheduled tasks get a chance to finish their work.
+
+Commands that do not implement `Shutdownable` keep the original behavior — the process exits as soon as the signal is received.
+
 ## Category
 
-You can set a set of commands to the same category, convenient in `go run . artisan list`:
+You can set a set of commands to the same category, convenient in `./artisan list`:
 
 ```go
 // Extend The console command extend.
@@ -428,26 +631,16 @@ func (receiver *ConsoleMakeCommand) Extend() command.Extend {
 }
 ```
 
-## Registering Commands
-
-All of your console commands need to be registered within the `Commands` function in `app\console\kernel.go`.
-
-```go
-func (kernel Kernel) Commands() []console.Command {
-  return []console.Command{
-    &commands.SendEmails{},
-  }
-}
-```
-
 ## Programmatically Executing Commands
 
 Sometimes you may wish to execute an Artisan command outside of the CLI, you can use the `Call` method on the `facades.Artisan()` to operate this.
 
 ```go
-facades.Route().Get("/", func(c *gin.Context) {
+facades.Route().Get("/", func(ctx http.Context) http.Response {
   facades.Artisan().Call("emails")
   facades.Artisan().Call("emails --lang Chinese name") // With arguments and options
+
+  return ctx.Response().Success().String("done")
 })
 ```
 
@@ -456,5 +649,5 @@ facades.Route().Get("/", func(c *gin.Context) {
 Some commands print colors by default, such as the `list` command. However, in some terminals or logs, the color values may be garbled. You can use the `--no-ansi` option to disable the print colors:
 
 ```shell
-go run . artisan list --no-ansi
+./artisan list --no-ansi
 ```

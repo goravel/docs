@@ -1,7 +1,5 @@
 # 快速入门
 
-[[toc]]
-
 ## 简介
 
 Goravel 提供了一套非常简单易用的数据库交互方式，开发者可以使用 `facades.Orm()` 进行操作。 在开始之前请先[配置数据库](../database/getting-started)。
@@ -22,8 +20,8 @@ Goravel 提供了一套非常简单易用的数据库交互方式，开发者可
 使用 `make:model` 命令创建模型：
 
 ```shell
-go run . artisan make:model User
-go run . artisan make:model user/User
+./artisan make:model User
+./artisan make:model user/User
 ```
 
 创建的模型文件位于 `app/models/user.go` 文件中，内容如下：
@@ -57,36 +55,80 @@ type User struct {
 
 更多 Tag 使用方法详见：https://gorm.io/docs/models.html。
 
+#### Json 字段
+
+如果你想要使用 JSON 字段，你可以定义字段类型为 `datatypes.JSONMap` 或者一个 struct，并添加标签： \`gorm:"type:json"：
+
+```go
+package models
+
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"github.com/goravel/framework/database/orm"
+	"gorm.io/datatypes"
+)
+
+type User struct {
+	orm.Model
+	Json1 datatypes.JSONMap `gorm:"type:json" json:"json1"`
+	Json2 *UserData `gorm:"type:json;serializer:json" json:"json2"`
+}
+
+type UserData struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+}
+
+func (r *UserData) Value() (driver.Value, error) {
+	return json.Marshal(r)
+}
+
+func (r *UserData) Scan(value any) (err error) {
+	if data, ok := value.([]byte); ok && len(data) > 0 {
+		err = json.Unmarshal(data, &r)
+	}
+	return
+}
+```
+
 #### 根据数据表创建模型
 
 ```shell
 ./artisan make:model --table=users User
 
-// 如果 Model 已存在可以使用 -f 选项强制覆盖
+# 如果 Model 已存在可以使用 -f 选项强制覆盖
 ./artisan make:model --table=users -f User
 ```
 
-如果数据表中有字段类型框架无法识别，可以在 `app/providers/database_service_provider.go` 文件的 `Boot` 方法中调用 `facades.Schema().Extend` 方法扩展字段类型：
+如果数据表中有字段类型框架无法识别，可以在 `bootstrap/app.go::WithCallback` 函数中调用 `facades.Schema().Extend()` 方法扩展字段类型：
 
 ```go
 import "github.com/goravel/framework/contracts/schema"
 
-facades.Schema().Extend(&schema.Extension{
-  GoTypes: []schema.GoType{
-    {
-        Pattern: "uuid",
-        Type: "uuid.UUID",
-        NullType: "uuid.NullUUID",
-        Imports: []string{"github.com/google/uuid"},
-    },
-    {
-        Pattern: "point",
-        Type: "geom.Point",
-        NullType: "*geom.Point",
-        Imports: []string{"github.com/twpayne/go-geom"},
-    },
-  },
-})
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Schema().Extend(&schema.Extension{
+        GoTypes: []schema.GoType{
+          {
+              Pattern: "uuid",
+              Type: "uuid.UUID",
+              NullType: "uuid.NullUUID",
+              Imports: []string{"github.com/google/uuid"},
+          },
+          {
+              Pattern: "point",
+              Type: "geom.Point",
+              NullType: "*geom.Point",
+              Imports: []string{"github.com/twpayne/go-geom"},
+          },
+        },
+      })
+    }).
+    Create()
+}
 ```
 
 ### 指定表名
@@ -135,23 +177,67 @@ func (r *User) Connection() string {
 
 ### 设置 Global Scope
 
-Model 中支持设置 `GlobalScope` 方法，在查找、更新和删除操作时限制作用域：
+Model 中支持设置 `GlobalScopes` 方法，在查询、更新和删除操作时限制作用域：
 
 ```go
-import "github.com/goravel/framework/contracts/orm"
+import (
+	contractsorm "github.com/goravel/framework/contracts/database/orm"
+	"github.com/goravel/framework/database/orm"
+)
 
 type User struct {
   orm.Model
   Name string
 }
 
-func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
-  return []func(orm.Query) orm.Query{
-    func(query orm.Query) orm.Query {
+func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query {
+  return map[string]func(contractsorm.Query) contractsorm.Query{
+    "name": func(query contractsorm.Query) contractsorm.Query {
       return query.Where("name", "goravel")
     },
   }
 }
+```
+
+你可以在全局作用域中通过查询访问 `facades.Orm().WithContext(ctx)` 传入的 context：
+
+```go
+import (
+  "context"
+
+  contractsorm "github.com/goravel/framework/contracts/database/orm"
+  "github.com/goravel/framework/database/orm"
+  "github.com/goravel/framework/facades"
+)
+
+type User struct {
+  orm.Model
+  Name string
+}
+
+func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query {
+  return map[string]func(contractsorm.Query) contractsorm.Query{
+    "tenant": func(query contractsorm.Query) contractsorm.Query {
+      tenantID, _ := query.Context().Value("tenant_id").(uint)
+
+      return query.Where("tenant_id", tenantID)
+    },
+  }
+}
+
+ctx := context.WithValue(context.Background(), "tenant_id", uint(1))
+var users []User
+err := facades.Orm().WithContext(ctx).Query().Find(&users)
+```
+
+如果要在查询中移除全局作用域，可以使用 `WithoutGlobalScopes` 函数：
+
+```go
+// 移除所有全局作用域
+facades.Orm().Query().WithoutGlobalScopes().Get(&users)
+
+// 移除指定的全局作用域
+facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 ```
 
 ## facades.Orm() 可用方法
@@ -162,15 +248,17 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | DB          | [获取通用数据库接口](#获取通用数据库接口)   |
 | Query       | [获取数据库实例](#获取数据库实例)       |
 | Transaction | [事务](#事务)                 |
-| WithContext | [注入 Context](#注入-Context) |
+| WithContext | [注入 Context](#注入-context) |
 
 ## facades.Orm().Query() 可用方法
 
 | 方法                          | 作用                            |
 | --------------------------- | ----------------------------- |
+| Avg                         | [聚合](#聚合)                     |
 | BeginTransaction            | [手动开始事务](#事务)                 |
 | Commit                      | [提交事务](#事务)                   |
-| Count                       | [检索聚合](#检索聚合)                 |
+| Context                     | [注入 Context](#注入-context)     |
+| Count                       | [计数](#计数)                     |
 | Create                      | [创建数据](#创建)                   |
 | Cursor                      | [游标](#游标)                     |
 | Delete                      | [删除数据](#删除)                   |
@@ -190,8 +278,10 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | Group                       | [Group 查询](#group-by-having)  |
 | Having                      | [Having 查询](#group-by-having) |
 | Join                        | [Join 查询](#join-查询)           |
-| Limit                       | [Limit 查询](#limit-查询)         |
+| Limit                       | [Limit 查询](#指定查询数量)         |
 | LockForUpdate               | [悲观锁](#悲观锁)                   |
+| Max                         | [最大值](#聚合)                    |
+| Min                         | [最小值](#聚合)                    |
 | Model                       | [指定模型](#指定表查询)                |
 | Offset                      | [指定查询开始位置](#指定查询开始位置)         |
 | Order                       | [排序](#排序)                     |
@@ -218,14 +308,17 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | Scopes                      | [Scopes](#scopes)             |
 | Select                      | [指定查询列](#指定查询列)               |
 | SharedLock                  | [悲观锁](#悲观锁)                   |
-| Sum                         | [求和](#求和)                     |
+| Sum                         | [求和](#聚合)                     |
 | Table                       | [指定表](#指定表查询)                 |
 | ToSql                       | [获取 SQL](#获取-sql)             |
 | ToRawSql                    | [获取 SQL](#获取-sql)             |
 | Update                      | [更新单个字段](#更新)                 |
 | UpdateOrCreate              | [更新或创建一条数据](#更新或创建一条数据)       |
 | Where                       | [查询条件](#where-条件)             |
+| WhereAll                    | [查询条件](#where-条件)             |
+| WhereAny                    | [查询条件](#where-条件)             |
 | WhereBetween                | [查询条件](#where-条件)             |
+| WhereNone                   | [查询条件](#where-条件)             |
 | WhereNotBetween             | [查询条件](#where-条件)             |
 | WhereNotIn                  | [查询条件](#where-条件)             |
 | WhereNull                   | [查询条件](#where-条件)             |
@@ -399,8 +492,20 @@ facades.Orm().Query().WhereIn("name", []any{"a"})
 
 facades.Orm().Query().OrWhere("name", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
-facades.Orm().Query().OrWhereNUll("name")
+facades.Orm().Query().OrWhereNull("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
+
+var products []Product
+facades.DB().Table("products").WhereAll([]string{"weight", "height"}, "=", 200).Find(&products)
+// SQL: SELECT * FROM products WHERE weight = ? AND height = ?
+
+var users []User
+facades.DB().Table("users").WhereAny([]string{"name", "email"}, "=", "John").Find(&users)
+// SQL: SELECT * FROM users WHERE (name = ? OR email = ?)
+
+var products []Product
+facades.DB().Table("products").WhereNone([]string{"age", "score"}, ">", 18).Find(&products)
+// SQL: SELECT * FROM products WHERE NOT (age > ?) AND NOT (score > ?)
 ```
 
 JSON 字段查询
@@ -516,7 +621,7 @@ facades.Orm().Query().ToRawSql().Get(models.User{})
 
 `ToSql` 与 `ToRawSql` 后可以调用的方法：`Count`, `Create`, `Delete`, `Find`, `First`, `Get`, `Pluck`, `Save`, `Sum`, `Update`。
 
-### 检索聚合
+### 计数
 
 ```go
 count, err := facades.Orm().Query().Table("users").Count()
@@ -541,7 +646,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm().Query().Model(&models.User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
+facades.Orm().Query().Model(&models.User{}).Select("name", "sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
 // SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "tom";
 ```
 
@@ -554,7 +659,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").Join("left join emails on emails.user_id = users.id").Scan(&result)
+facades.Orm().Query().Model(&models.User{}).Select("users.name", "emails.email").Join("left join emails on emails.user_id = users.id").Scan(&result)
 // SELECT users.name, emails.email FROM `users` LEFT JOIN emails ON emails.user_id = users.id;
 ```
 
@@ -593,7 +698,9 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 })
 ```
 
-> `created_at` 和 `updated_at` 字段将会被自动填充。
+::: info
+`created_at` 和 `updated_at` 字段将会被自动填充。
+:::
 
 ### 游标
 
@@ -638,7 +745,9 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 // UPDATE `users` SET `updated_at`='2023-09-18 21:07:06.489',`name`='hello',`age`=18 WHERE `name` = 'tom';
 ```
 
-> 当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。 你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。 注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
+::: warning 零值会被忽略
+当使用 `struct` 进行批量更新时，Orm 只会更新非零值的字段。 你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段。 注意 `struct` 只能为 `Model`，如果想用非 `Model` 批量更新，需要使用 `.Table("users")`，但此时无法自动更新 `updated_at` 字段。
+:::
 
 #### 更新 JSON 字段
 
@@ -710,7 +819,8 @@ facades.Orm().Query().Select(orm.Associations).Delete(&user)
 facades.Orm().Query().Select("Account").Delete(&users)
 ```
 
-注意：只有当记录的主键不为空时，关联才会被删除，Orm 会使用这些主键作为条件来删除关联记录：
+::: warning
+只有当记录的主键不为空时，关联才会被删除，Orm 会使用这些主键作为条件来删除关联记录：
 
 ```go
 // 会删除所有 name=`goravel` 的 user，但这些 user 的 account 不会被删除
@@ -722,6 +832,7 @@ facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.
 // 会删除 id = `1` 的 user，并且 account 也会被删除
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
+:::
 
 如果在没有任何条件的情况下执行批量删除，ORM 不会执行该操作，并返回错误。 对此，你必须加一些条件，或者使用原生 SQL。
 
@@ -793,8 +904,8 @@ facades.Orm().Query().Model(&models.User{ID: 1}).WithTrashed().Restore()
 ```go
 import (
   "github.com/goravel/framework/contracts/database/orm"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/models"
 )
 
@@ -867,10 +978,20 @@ var users []models.User
 facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
-### 求和
+### 聚合
 
 ```go
-sum, err := facades.Orm().Query().Model(models.User{}).Sum("id")
+var sum int
+err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum)
+
+var avg float64
+err := facades.Orm().Query().Model(models.User{}).Avg("age", &avg)
+
+var max int
+err := facades.Orm().Query().Model(models.User{}).Max("age", &max)
+
+var min int
+err := facades.Orm().Query().Model(models.User{}).Min("age", &min)
 ```
 
 ## Events
@@ -879,7 +1000,9 @@ Orm 模型触发几个事件，允许你挂接到模型生命周期的如下节�
 
 当从数据库中检索到现有模型时，将调度 `Retrieved` 事件。 当一个新模型第一次被保存时，`Creating` 和 `Created` 事件将被触发。 `Updating` / `Updated` 事件将在修改现有模型并调用 `Save` 方法时触发。 `Saving` / `Saved` 事件将在创建或更新模型时触发 - 即使模型的属性没有更改。 以「-ing」结尾的事件名称在模型的任何更改被持久化之前被调度，而以「-ed」结尾的事件在对模型的更改被持久化之后被调度。
 
-注意：所有事件都只会在操作一个模型时触发。 例如在调用 `Update` 方法时，想要触发 `Updating` 和 `Updated` 事件，需要将现有模型传入到 `Model` 方法中：`facades.Orm().Query().Model(&user).Update("name", "Goravel")`。
+::: warning
+所有事件都只会在操作一个模型时触发。 例如在调用 `Update` 方法时，想要触发 `Updating` 和 `Updated` 事件，需要将现有模型传入到 `Model` 方法中：`facades.Orm().Query().Model(&user).Update("name", "Goravel")`。
+:::
 
 要开始监听模型事件，请在模型上定义一个 `DispatchesEvents` 方法。 此方法将模型生命周期的各个点映射到你定义的事件类中。
 
@@ -939,7 +1062,9 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 }
 ```
 
-> 注意：仅注册用到的事件即可。 通过 Orm 进行批量操作时，不会调度模型事件。
+::: warning
+仅注册用到的事件即可。 通过 Orm 进行批量操作时，不会调度模型事件。
+:::
 
 ### 观察者
 
@@ -948,8 +1073,8 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 如果在一个模型上监听了多个事件，可以使用观察者来将这些监听器组织到一个单独的类中。 观察者类的方法名映射到你希望监听的事件。 受影响的模会传入到方法中。 `make:observer` Artisan 命令可以快速建立新的观察者类：
 
 ```shell
-go run . artisan make:observer UserObserver
-go run . artisan make:observer user/UserObserver
+./artisan make:observer UserObserver
+./artisan make:observer user/UserObserver
 ```
 
 此命令将在 `app/observers` 文件夹放置新的观察者类。 如果这个目录不存在，Artisan 将替你创建。 观察者结构如下：
@@ -984,35 +1109,22 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 
 模版中仅包含部分事件，可以根据需要手动添加其他事件。
 
-要注册观察者，需要将观察者与要观察的模型绑定。 你可以在 `app/providers/event_service_provider.go::Boot` 方法中注册观察者：
+要注册观察者，需要将观察者与要观察的模型绑定。 可以在 `bootstrap/app.go::WithCallback` 函数中注册观察者：
 
 ```go
-package providers
-
-import (
-  "github.com/goravel/framework/facades"
-
-  "goravel/app/models"
-  "goravel/app/observers"
-)
-
-type EventServiceProvider struct {
-}
-
-func (receiver *EventServiceProvider) Register(app foundation.Application) {
-  facades.Event().Register(receiver.listen())
-}
-
-func (receiver *EventServiceProvider) Boot(app foundation.Application) {
-  facades.Orm().Observe(models.User{}, &observers.UserObserver{})
-}
-
-func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
-  return map[event.Event][]event.Listener{}
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Orm().Observe(models.User{}, &observers.UserObserver{})
+    }).
+    Create()
 }
 ```
 
-> 注意：如果同时使用了 `DispatchesEvents` 与 `Observer`，将只应用 `DispatchesEvents`。
+::: warning
+如果同时使用了 `DispatchesEvents` 与 `Observer`，将只应用 `DispatchesEvents`。
+:::
 
 #### 观察者传参
 

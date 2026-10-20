@@ -1,14 +1,12 @@
 # Localization
 
-[[toc]]
-
 ## Introduction
 
 Goravel's localization features provide a convenient way to retrieve strings in various languages, making it easy to support multiple languages in your application. Language strings are stored in files in the `lang` directory, and Goravel supports two ways to organize language files:
 
 Each language has its own file:
 
-```
+```text
 /lang
   en.json
   cn.json
@@ -16,7 +14,7 @@ Each language has its own file:
 
 Or, when there are too many translations, they can be categorized:
 
-```
+```text
 /lang
   /en
     user.json
@@ -30,17 +28,17 @@ The default language of the application is stored in the `locale` configuration 
 
 You can also use the `SetLocale` method provided by the App Facade to modify the default language for a single `HTTP` request at runtime:
 
-```
+```go
 facades.Route().Get("/", func(ctx http.Context) http.Response {
-    facades.App().SetLocale(ctx, "en")
+  facades.App().SetLocale(ctx, "en")
 
-    return ctx.Response()
+  return ctx.Response()
 })
 ```
 
 You can configure a "fallback locale" that will be used when the current language does not contain the given translation string. Like the default language, the fallback language is also configured in the `config/app.go` configuration file.
 
-```
+```go
 "fallback_locale": "en",
 ```
 
@@ -48,7 +46,7 @@ You can configure a "fallback locale" that will be used when the current languag
 
 You can use the `CurrentLocale` and `IsLocale` methods to determine the current `locale` or check if the `locale` is a given value.
 
-```
+```go
 locale := facades.App().CurrentLocale(ctx)
 if facades.App().IsLocale(ctx, "en") {}
 ```
@@ -57,7 +55,7 @@ if facades.App().IsLocale(ctx, "en") {}
 
 In language files, you can define single-level or multi-level structures:
 
-```
+```json
 // lang/en.json
 {
   "name": "It's your name",
@@ -73,7 +71,7 @@ You can use the `facades.Lang(ctx).Get()` method to retrieve translation strings
 
 For example:
 
-```
+```json
 // lang/en.json
 {
   "name": "It's your name",
@@ -101,7 +99,7 @@ facades.Lang(ctx).Get("role/user.required.user_id")
 
 You can define placeholders in translation strings. All placeholders have the prefix `:`. For example, you can use a placeholder to define a welcome message:
 
-```
+```json
 {
   "welcome": "Welcome, :name"
 }
@@ -109,7 +107,7 @@ You can define placeholders in translation strings. All placeholders have the pr
 
 To replace placeholders when retrieving a translation string, you can pass a translation option with the replacement map as the second parameter to the `facades.Lang(ctx).Get()` method:
 
-```
+```go
 facades.Lang(ctx).Get("welcome", translation.Option{
   Replace: map[string]string{
     "name": "Goravel",
@@ -121,7 +119,7 @@ facades.Lang(ctx).Get("welcome", translation.Option{
 
 Pluralization is a complex problem because different languages have various pluralization rules. However, Goravel can help you translate strings based on the pluralization rules you define. By using the `|` character, you can differentiate between the singular and plural forms of a string:
 
-```
+```json
 {
   "apples": "There is one apple|There are many apples"
 }
@@ -129,7 +127,7 @@ Pluralization is a complex problem because different languages have various plur
 
 You can even create more complex pluralization rules by specifying translation strings for multiple value ranges:
 
-```
+```json
 {
   "apples": "{0} There are none|[1,19] There are some|[20,*] There are many"
 }
@@ -137,13 +135,13 @@ You can even create more complex pluralization rules by specifying translation s
 
 After defining a translation string with pluralization options, you can use the `facades.Lang(ctx).Choice()` method to retrieve the line for a given `count`. In this example, because the count is greater than 1, the plural form of the translation string is returned:
 
-```
+```go
 facades.Lang(ctx).Choice("messages.apples", 10)
 ```
 
 You can also define placeholder attributes in pluralization strings. By passing an array as the third parameter to the `facades.Lang(ctx).Choice()` method, you can replace these placeholders:
 
-```
+```go
 "minutes_ago": "{1} :value minute ago|[2,*] :value minutes ago",
 
 facades.Lang(ctx).Choice("time.minutes_ago", 5, translation.Option{
@@ -159,7 +157,7 @@ When using embed loading, the language files will be compiled into the binary fi
 
 In the same directory as the language files, create a `fs.go` file:
 
-```
+```text
 /lang
   en.json
   cn.json

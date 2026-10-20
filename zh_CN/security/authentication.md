@@ -1,7 +1,5 @@
 # 用户认证
 
-[[toc]]
-
 ## 简介
 
 用户认证是 Web 应用中不可或缺的功能，Goravel 的 `facades.Auth()` 模块提供 JWT 和 Session 驱动的支持，并且可以根据自己需要自定义驱动。
@@ -14,16 +12,16 @@
 
 ### 不同 JWT Guard 支持不同配置
 
-你可以通过在 `config/auth.go` 文件中为每个 Guard 单独设置 TTL、 Secret 和 RefreshTTL，如果不设置，则默认使用 `jwt.ttl` 等配置。
+你可以在 `config/auth.go` 文件中为每个 Guard 单独设置 TTL、Secret 和 RefreshTTL，如果不设置，则默认使用 `config/jwt.go` 文件中的这三个配置。
 
 ```go
 // config/auth.go
 "guards": map[string]any{
   "user": map[string]any{
     "driver": "jwt",
-++    "ttl": 60,
-++    "refresh_ttl": 0,
-++    "secret": "your-secret",
+++  "ttl": 60,
+++  "refresh_ttl": 0,
+++  "secret": "your-secret",
   },
 },
 ```
@@ -31,7 +29,7 @@
 ## 生成 JWT Token
 
 ```shell
-go run . artisan jwt:secret
+./artisan jwt:secret
 ```
 
 ## 根据用户生成 Token
@@ -69,7 +67,9 @@ payload, err := facades.Auth(ctx).Parse(token)
 3. `ExpireAt`: 过期时间；
 4. `IssuedAt`: 发行时间；
 
-> 当 `err` 为非 `ErrorTokenExpired` 的错误时，payload == nil
+::: info
+当 `err` 为非 `ErrorTokenExpired` 的错误时，payload == nil
+:::
 
 可以通过 `err` 来判断 `Token` 是否过期：
 
@@ -80,7 +80,9 @@ payload, err := facades.Auth(ctx).Parse(token)
 errors.Is(err, auth.ErrorTokenExpired)
 ```
 
-> Token 带不带 Bearer 前缀均可正常解析。
+::: tip
+Token 带不带 Bearer 前缀均可正常解析。
+:::
 
 ## 获取用户
 
@@ -111,10 +113,23 @@ err := facades.Auth(ctx).Logout()
 ```go
 token, err := facades.Auth(ctx).Guard("admin").LoginUsingID(1)
 err := facades.Auth(ctx).Guard("admin").Parse(token)
-token, err := facades.Auth(ctx).Guard("admin").User(&user)
+err := facades.Auth(ctx).Guard("admin").User(&user)
 ```
 
-> 当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。
+::: warning
+当不使用默认授权时，在调用上述方法时都需要前置调用 `Guard` 方法。
+:::
+
+JWT Token 与其生成时所使用的守卫绑定。如果你使用不同的守卫解析 Token，Goravel 会返回 `auth.ErrorGuardMismatch`：
+
+```go
+token, err := facades.Auth(ctx).Guard("user").LoginUsingID(1)
+payload, err := facades.Auth(ctx).Guard("admin").Parse(token)
+
+if errors.Is(err, auth.ErrorGuardMismatch) {
+  // Token 由其他守卫签发。
+}
+```
 
 ## 自定义驱动
 

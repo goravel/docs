@@ -1,7 +1,5 @@
 # Helpers
 
-[[toc]]
-
 ## 可用方法
 
 ### 路径
@@ -177,12 +175,12 @@ carbon.SetLocale("zh-CN")
 carbon.SetTestNow(carbon.Now())
 ```
 
-### `carbon.CleanTestNow()`
+### `carbon.ClearTestNow()`
 
 清除系统时间为正常值：
 
 ```go
-carbon.CleanTestNow()
+carbon.ClearTestNow()
 ```
 
 ### `carbon.IsTestNow()`
@@ -592,6 +590,8 @@ convert.Pointer(1) // *int(1)
 ```go
 import "github.com/goravel/framework/support/collect"
 ```
+
+以下辅助函数直接操作切片或映射。有关流式急切和惰性集合，请参阅 [集合](collections.md)。
 
 ### `collect.Count()`
 

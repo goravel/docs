@@ -1,7 +1,5 @@
 # 快速入门
 
-[[toc]]
-
 ## 介绍
 
 Goravel 的测试功能依托于 Golang 自带的 test 官方组件，是对单元测试的扩展，使 Goravel 应用程序支持集成测试，让应用变得更加健壮。
@@ -12,7 +10,7 @@ Goravel 的测试功能依托于 Golang 自带的 test 官方组件，是对单�
 
 测试时默认使用根目录下的 `.env` 文件注入配置信息。 如果想为不同的包使用不同的 `.env` 文件，可以在包目录下创建 `.env` 文件，测试时会优先读取该文件。
 
-```
+```text
 - /app
 - /config
 - ...
@@ -39,7 +37,7 @@ Goravel 包含一个 `TestCase` Struct，在未来该 Struct 将提供一些便�
 要创建新的测试用例，可以使用 Artisan 命令：`make:test`：
 
 ```shell
-go run . artisan make:test feature/UserTest
+./artisan make:test feature/UserTest
 ```
 
 默认我们使用 [stretchr/testify](https://github.com/stretchr/testify) 包的 `suit` 功能编写我们的测试。 该功能支持配置测试前、测试后、子测试、断言等，可以使我们的测试用例更加有条理。 具体使用请详见官方文档。
@@ -136,7 +134,9 @@ func (s *ExampleTestSuite) TestIndex() {
 
 由于 `go test` 在不同包之间是并行测试。 因此当使用本地数据库或缓存进行测试时，不能在测试用例中执行重置数据库或缓存操作，否则将有可能对并行运行的其他测试用例产生影响。 针对这种情况，Goravel 支持使用 Docker 进行测试。 不同包之间可以独立使用由 Docker 创建的镜像。
 
-> 由于 Docker 镜像对 windows 系统的支持有限，目前 Docker 测试仅支持在非 windows 环境下运行。
+::: warning
+由于 Docker 镜像对 windows 系统的支持有限，目前 Docker 测试仅支持在非 windows 环境下运行。
+:::
 
 #### 初始化镜像
 
@@ -257,8 +257,7 @@ import (
   "os"
   "testing"
 
-  "github.com/goravel/framework/facades"
-
+  "goravel/app/facades"
   "goravel/database/seeders"
 )
 
@@ -271,8 +270,14 @@ func TestMain(m *testing.M) {
   if err := database.Build(); err != nil {
     panic(err)
   }
-
+  if err := database.Ready(); err != nil {
+    panic(err)
+  }
   if err := database.Migrate(); err != nil {
+    panic(err)
+  }
+
+  if err := facades.App().Restart(); err != nil {
     panic(err)
   }
 
@@ -288,4 +293,6 @@ func TestMain(m *testing.M) {
 }
 ```
 
-> 关于 TestMain 方法的更多使用，参见[官方文档](https://pkg.go.dev/testing#hdr-Main)。
+::: tip
+关于 TestMain 方法的更多使用，参见[官方文档](https://pkg.go.dev/testing#hdr-Main)。
+:::

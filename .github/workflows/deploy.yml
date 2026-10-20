@@ -26,6 +26,8 @@ jobs:
 
       - name: Build with VitePress
         run: pnpm docs:build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push gh-pages
         uses: peaceiris/actions-gh-pages@v4

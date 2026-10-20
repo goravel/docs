@@ -1,7 +1,5 @@
 # Controllers
 
-[[toc]]
-
 ## Introduction
 
 Instead of defining all request processing logic in the form of a closure in a separate route, a controller can be used for integration. The controllers are stored in the `app/http/controllers` directory.
@@ -15,7 +13,8 @@ package controllers
 
 import (
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 type UserController struct {
@@ -41,8 +40,7 @@ The route define:
 package routes
 
 import (
-  "github.com/goravel/framework/facades"
-
+  "goravel/app/facades"
   "goravel/app/http/controllers"
 )
 
@@ -55,18 +53,18 @@ func Api() {
 ### Create Controller
 
 ```shell
-go run . artisan make:controller UserController
-go run . artisan make:controller user/UserController
+./artisan make:controller UserController
+./artisan make:controller user/UserController
 ```
 
 ## Resource Controllers
 
-If you think of each Eloquent model in your application as a "resource", it is typical to perform the same sets of actions against each resource in your application. For example, imagine your application contains a `Photo` model and a `Movie` model. It is likely that users can create, read, update, or delete these resources.
+If you think of each model in your application as a "resource", it is typical to perform the same sets of actions against each resource in your application. For example, imagine your application contains a `Photo` model and a `Movie` model. It is likely that users can create, read, update, or delete these resources.
 
 Because of this common use case, Goravel resource routing assigns the typical create, read, update, and delete ("CRUD") routes to a controller with a single line of code. To get started, we can use the `make:controller` Artisan command's `--resource` option to quickly create a controller to handle these actions:
 
 ```shell
-go run . artisan make:controller --resource PhotoController
+./artisan make:controller --resource PhotoController
 ```
 
 This command will generate a controller at `app/http/controllers/photo_controller.go`. The controller will contain a method for each of the available resource operations. Next, you may register a resource route that points to the controller:

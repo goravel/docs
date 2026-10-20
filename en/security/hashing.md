@@ -1,7 +1,5 @@
 # Hashing
 
-[[toc]]
-
 ## Introduction
 
 The Goravel `facades.Hash()` provides secure Argon2id and Bcrypt hashing for storing user passwords. If you are using one of the Goravel application starter kits, Argon2id will be used for registration and authentication by default.

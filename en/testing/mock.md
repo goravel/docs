@@ -1,14 +1,56 @@
 # Mock
 
-[[toc]]
-
 ## Description
 
 All functions of Goravel are implemented using `facades`, and all `facades` are made up of interfaces. So with the mock function from [stretchr/testify](http://github.com/stretchr/testify), Goravel can deliver an exceptional testing experience.
 
+## Mock facades.AI
+
+```go
+import (
+  "testing"
+
+  "github.com/goravel/framework/testing/mock"
+  mocksai "github.com/goravel/framework/mocks/ai"
+  "github.com/stretchr/testify/assert"
+
+  "goravel/app/facades"
+)
+
+func AI() (string, error) {
+  conversation, err := facades.AI().Agent(myAgent)
+  if err != nil {
+    return "", err
+  }
+
+  resp, err := conversation.Prompt("Hello")
+  if err != nil {
+    return "", err
+  }
+
+  return resp.Content(), nil
+}
+
+func TestAI(t *testing.T) {
+  mockFactory := mock.Factory()
+  mockAI := mockFactory.AI()
+  mockConversation := mocksai.NewConversation(t)
+  mockResponse := mocksai.NewAgentResponse(t)
+  mockAI.EXPECT().Agent(mock.Anything).Return(mockConversation, nil).Once()
+  mockConversation.EXPECT().Prompt("Hello").Return(mockResponse, nil).Once()
+  mockResponse.EXPECT().Content().Return("mock response").Once()
+
+  content, err := AI()
+  assert.Nil(t, err)
+  assert.Equal(t, "mock response", content)
+}
+```
+
 ## Mock facades.App
 
 ```go
+import "github.com/goravel/framework/testing/mock"
+
 func CurrentLocale() string {
   return facades.App().CurrentLocale(context.Background())
 }
@@ -26,8 +68,6 @@ func TestCurrentLocale(t *testing.T) {
 ## Mock facades.Artisan
 
 ```go
-import "github.com/goravel/framework/testing/mock"
-
 func ArtisanCall() {
   facades.Artisan().Call("list")
 }
@@ -54,7 +94,8 @@ import (
   "github.com/goravel/framework/http"
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Auth() error {
@@ -127,9 +168,10 @@ func TestConfig(t *testing.T) {
 import (
   "testing"
 
-  "github.com/goravel/framework/facades"
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
+  
+  "goravel/app/facades"
 )
 
 func Crypt(str string) (string, error) {
@@ -152,6 +194,36 @@ func TestCrypt(t *testing.T) {
 	assert.Nil(t, err)
 
 	mockCrypt.AssertExpectations(t)
+}
+```
+
+## Mock facades.DB
+
+```go
+import (
+  "testing"
+
+  "github.com/goravel/framework/contracts/database/db"
+  "github.com/goravel/framework/testing/mock"
+  mocksdb "github.com/goravel/framework/mocks/database/db"
+  "github.com/stretchr/testify/assert"
+
+  "goravel/app/facades"
+)
+
+func DB() error {
+  _, err := facades.DB().Table("users").Insert(map[string]any{"name": "Goravel"})
+  return err
+}
+
+func TestDB(t *testing.T) {
+  mockFactory := mock.Factory()
+  mockDB := mockFactory.DB()
+  mockQuery := mocksdb.NewQuery(t)
+  mockDB.EXPECT().Table("users").Return(mockQuery).Once()
+  mockQuery.EXPECT().Insert(mock.Anything).Return(&db.Result{RowsAffected: 1}, nil).Once()
+
+  assert.Nil(t, DB())
 }
 ```
 
@@ -187,9 +259,10 @@ func TestEvent(t *testing.T) {
 import (
   "testing"
 
-  "github.com/goravel/framework/facades"
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
+  
+  "goravel/app/facades"
 )
 
 func Gate() bool {
@@ -223,7 +296,8 @@ import (
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
   "google.golang.org/grpc"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Grpc() (*grpc.ClientConn, error) {
@@ -253,7 +327,8 @@ import (
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
   "google.golang.org/grpc"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Hash() (string, error) {
@@ -443,7 +518,8 @@ import (
 
   "github.com/goravel/framework/filesystem"
   "github.com/goravel/framework/testing/mock"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Storage() (string, error) {
@@ -470,6 +546,157 @@ func TestStorage(t *testing.T) {
 
 ```
 
+## Mock facades.Testing
+
+```go
+import (
+  "testing"
+
+  "github.com/goravel/framework/testing/mock"
+  mockstesting "github.com/goravel/framework/mocks/testing"
+  "github.com/stretchr/testify/assert"
+
+  "goravel/app/facades"
+)
+
+func Testing() bool {
+  return facades.Testing().Docker().Ready()
+}
+
+func TestTesting(t *testing.T) {
+  mockFactory := mock.Factory()
+  mockTesting := mockFactory.Testing()
+  mockDocker := mockstesting.NewDocker(t)
+  mockTesting.EXPECT().Docker().Return(mockDocker).Once()
+  mockDocker.EXPECT().Ready().Return(true).Once()
+
+  assert.True(t, Testing())
+}
+```
+
+## Mock facades.Session
+
+```go
+import (
+  "testing"
+
+  "github.com/goravel/framework/testing/mock"
+  mockssession "github.com/goravel/framework/mocks/session"
+  "github.com/stretchr/testify/assert"
+
+  "goravel/app/facades"
+)
+
+func Session() error {
+  driver, err := facades.Session().Driver("redis")
+  if err != nil {
+    return err
+  }
+
+  _, err = facades.Session().BuildSession(driver)
+  return err
+}
+
+func TestSession(t *testing.T) {
+  mockFactory := mock.Factory()
+  mockSession := mockFactory.Session()
+  mockDriver := mockssession.NewDriver(t)
+  mockSession.EXPECT().Driver("redis").Return(mockDriver, nil).Once()
+  mockSession.EXPECT().BuildSession(mockDriver).Return(nil, nil).Once()
+
+  assert.Nil(t, Session())
+}
+```
+
+## Mock facades.Schema
+
+```go
+import (
+  "testing"
+
+  contractschema "github.com/goravel/framework/contracts/database/schema"
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+
+  "goravel/app/facades"
+)
+
+func Schema() error {
+  return facades.Schema().Create("users", func(blueprint contractschema.Blueprint) {
+    blueprint.ID()
+    blueprint.String("name")
+  })
+}
+
+func TestSchema(t *testing.T) {
+  mockFactory := mock.Factory()
+  mockSchema := mockFactory.Schema()
+  mockSchema.EXPECT().Create("users", mock.Anything).Return(nil).Once()
+
+  assert.Nil(t, Schema())
+}
+```
+
+## Mock facades.Schedule
+
+```go
+import (
+  "testing"
+
+  "github.com/goravel/framework/testing/mock"
+  mocksschedule "github.com/goravel/framework/mocks/schedule"
+  "github.com/stretchr/testify/assert"
+
+  "goravel/app/facades"
+)
+
+func Schedule() error {
+  return facades.Schedule().Command("my-command").EveryMinute()
+}
+
+func TestSchedule(t *testing.T) {
+  mockFactory := mock.Factory()
+  mockSchedule := mockFactory.Schedule()
+  mockEvent := mocksschedule.NewEvent(t)
+  mockSchedule.EXPECT().Command("my-command").Return(mockEvent).Once()
+  mockEvent.EXPECT().EveryMinute().Return(nil).Once()
+
+  assert.Nil(t, Schedule())
+}
+```
+
+## Mock facades.Route
+
+```go
+import (
+  "testing"
+
+  "github.com/goravel/framework/http"
+  "github.com/goravel/framework/testing/mock"
+  "github.com/stretchr/testify/assert"
+
+  "goravel/app/facades"
+)
+
+func Route() {
+  facades.Route().Get("/api/users", func(ctx http.Context) http.Response {
+    return ctx.Response().Success().Json(http.Json{
+      "users": []string{"Goravel"},
+    })
+  })
+}
+
+func TestRoute(t *testing.T) {
+  mockFactory := mock.Factory()
+  mockRoute := mockFactory.Route()
+  mockRoute.EXPECT().Get("/api/users", mock.Anything).Once()
+
+  assert.NotPanics(t, func() {
+    Route()
+  })
+}
+```
+
 ## Mock facades.Validation
 
 ```go
@@ -478,7 +705,8 @@ import (
 
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 func Validation() string {
@@ -522,7 +750,8 @@ import (
 
   "github.com/goravel/framework/testing/mock"
   "github.com/stretchr/testify/assert"
-  "github.com/goravel/framework/facades"
+  
+  "goravel/app/facades"
 )
 
 func View() bool {

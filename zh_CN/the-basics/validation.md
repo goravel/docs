@@ -1,10 +1,8 @@
 # 表单验证
 
-[[toc]]
-
 ## 简介
 
-Goravel 提供了几种不同的方法来验证传入应用程序的数据。 最常见的做法是在所有传入的 HTTP 请求中使用 `Validate` 方法。Goravel 包含了各种方便的验证规则。 Goravel 包含了各种方便的验证规则。
+Goravel 提供了几种不同的方法来验证传入应用程序的数据。 最常见的做法是在所有传入的 HTTP 请求中使用 `Validate` 方法。Goravel 包含了各种方便的验证规则。
 
 ## 快速验证
 
@@ -35,23 +33,13 @@ import (
   "github.com/goravel/framework/contracts/http"
 )
 
-type PostController struct {
-  // Dependent services
-}
+type PostController struct {}
 
 func NewPostController() *PostController {
-  return &PostController{
-    // Inject services
-  }
+  return &PostController{}
 }
 
-func (r *PostController) Create(ctx http.Context) {
-
-}
-
-func (r *PostController) Store(ctx http.Context) {
-
-}
+func (r *PostController) Store(ctx http.Context) {}
 ```
 
 ### 编写验证逻辑
@@ -60,10 +48,10 @@ func (r *PostController) Store(ctx http.Context) {
 
 ```go
 func (r *PostController) Store(ctx http.Context) {
-  validator, err := ctx.Request().Validate(map[string]string{
-    "title": "required|max_len:255",
+  validator, err := ctx.Request().Validate(map[string]any{
+    "title": "required|max:255",
     "body": "required",
-    "code": "required|regex:^\d{4,6}$",
+    "code": "required|regex:^[0-9]{4,6}$",
   })
 }
 ```
@@ -73,8 +61,8 @@ func (r *PostController) Store(ctx http.Context) {
 如果你的 HTTP 请求包含「嵌套」参数，你可以在验证规则中使用 `.` 语法来指定这些参数：
 
 ```go
-validator, err := ctx.Request().Validate(map[string]string{
-  "title": "required|max_len:255",
+validator, err := ctx.Request().Validate(map[string]any{
+  "title": "required|max:255",
   "author.name": "required",
   "author.description": "required",
 })
@@ -85,9 +73,20 @@ validator, err := ctx.Request().Validate(map[string]string{
 如果你的 HTTP 请求包含「数组」参数，你可以在验证规则中使用 `*` 进行校验：
 
 ```go
-validator, err := ctx.Request().Validate(map[string]string{
+validator, err := ctx.Request().Validate(map[string]any{
   "tags.*": "required",
 })
+```
+
+通配符规则会在验证后的数据中保留原始切片形状：
+
+```go
+validator, err := facades.Validation().Make(ctx,
+  map[string]any{"scores": []int{1, 2}},
+  map[string]any{"scores.*": "required|integer"},
+)
+
+scores := validator.Validated()["scores"].([]int) // []int{1, 2}
 ```
 
 ## 验证表单请求
@@ -97,11 +96,11 @@ validator, err := ctx.Request().Validate(map[string]string{
 面对更复杂的验证场景，你可以创建一个「表单请求」。 表单请求是一个包含了验证逻辑的自定义请求类。 要创建一个表单请求类，请使用 `make:request` Artisan CLI 命令：
 
 ```go
-go run . artisan make:request StorePostRequest
-go run . artisan make:request user/StorePostRequest
+./artisan make:request StorePostRequest
+./artisan make:request user/StorePostRequest
 ```
 
-该命令生成的表单请求类将被置于 `app/http/requests` 目录中。 如果这个目录不存在，在你运行 `make:request` 命令后将会创建这个目录。 Goravel 生成的每个表单请求都有两个方法：`Authorize`, `Rules`。 另外可以自定义 `Filters`, `Messages`, `Attributes` 和 `PrepareForValidation` 方法，进行更进一步的操作。
+该命令生成的表单请求类将被置于 `app/http/requests` 目录中。 如果这个目录不存在，在你运行 `make:request` 命令后将会创建这个目录。 Goravel 生成的每个表单请求都有 `Authorize` 和 `Rules` 方法。 另外可以自定义可选的 `Filters`、`Messages`、`Attributes` 和 `PrepareForValidation` 方法，进行更进一步的操作。
 
 `Authorize` 方法负责确定当前经过身份验证的用户是否可以执行请求操作，而 `Rules` 方法则返回适用于请求数据的验证规则：
 
@@ -112,7 +111,6 @@ import (
   "mime/multipart"
 
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/contracts/validation"
 )
 
 type StorePostRequest struct {
@@ -125,10 +123,10 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
   return nil
 }
 
-func (r *StorePostRequest) Rules(ctx http.Context) map[string]string {
-  return map[string]string{
+func (r *StorePostRequest) Rules(ctx http.Context) map[string]any {
+  return map[string]any{
     // 键与传入的键保持一致
-    "name": "required|max_len:255",
+    "name": "required|max:255",
     "file": "required|file",
     "files": "required|array",
     "files.*": "required|file",
@@ -147,7 +145,9 @@ func (r *PostController) Store(ctx http.Context) {
 
 更多验证规则详见 [可用的验证规则](#可用的验证规则)。
 
-> 注意，由于 `form` 传值默认为 `string` 类型，因此 request 中所有字段也都应为 `string` 类型，否则请使用 `JSON` 传值。
+::: warning
+由于 `form` 传值默认为 `string` 类型，因此 request 中所有字段也都应为 `string` 类型，否则请使用 `JSON` 传值。
+:::
 
 ### 表单请求授权验证
 
@@ -175,12 +175,13 @@ func (r *StorePostRequest) Authorize(ctx http.Context) error {
 
 ### 过滤输入数据
 
-你可以通过完善表单请求的 `Filters` 方法来格式化输入数据。 此方法应返回 `属性/过滤器` 的数组 Map：
+你可以通过完善表单请求的 `Filters` 方法来格式化输入数据。 此方法应返回 `属性/过滤器` 的 Map。过滤器值可以是字符串或 `[]string` 值：
 
 ```go
-func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
-  return map[string]string{
+func (r *StorePostRequest) Filters(ctx http.Context) map[string]any {
+  return map[string]any{
     "name": "trim",
+    "age": []string{"trim", "to_int"},
   }
 }
 ```
@@ -190,7 +191,7 @@ func (r *StorePostRequest) Filters(ctx http.Context) map[string]string {
 你可以通过完善表单请求的 `Messages` 方法来自定义错误消息。 此方法应返回 `属性.规则/对应错误消息` 的 Map：
 
 ```go
-func (r *StorePostRequest) Messages() map[string]string {
+func (r *StorePostRequest) Messages(ctx http.Context) map[string]string {
   return map[string]string{
     "title.required": "A title is required",
     "body.required": "A message is required",
@@ -203,7 +204,7 @@ func (r *StorePostRequest) Messages() map[string]string {
 Goravel 的许多内置验证规则错误消息都包含 `:attribute` 占位符。 如果你希望将验证消息的 `:attribute` 部分替换为自定义属性名称，则可以重写 `Attributes` 方法来指定自定义名称。 此方法应返回属性 / 名称对的数组：
 
 ```go
-func (r *StorePostRequest) Attributes() map[string]string {
+func (r *StorePostRequest) Attributes(ctx http.Context) map[string]string {
   return map[string]string{
     "email": "email address",
   }
@@ -225,20 +226,22 @@ func (r *StorePostRequest) PrepareForValidation(ctx http.Context, data validatio
 
 ## 手动创建验证器
 
-如果你不想在请求中使用 `Validate` 方法，你可以使用 `facades.Validator` 手动创建一个验证器实例。 facades 中的 `Make` 方法将会生成一个新的验证器实例：
+如果你不想在请求中使用 `Validate` 方法，你可以使用 `facades.Validation()` 手动创建一个验证器实例。 facade 中的 `Make` 方法将会生成一个新的验证器实例：
 
 ```go
-func (r *PostController) Store(ctx http.Context) {
-  validator, err := facades.Validation().Make(map[string]any{
-    "name": "Goravel",
-  },
-  map[string]string{
-    "title": "required|max_len:255",
-    "body":  "required",
-  })
+func (r *PostController) Store(ctx http.Context) http.Response {
+  validator, _ := facades.Validation().Make(
+    ctx,
+    map[string]any{
+      "name": "Goravel",
+    },
+    map[string]any{
+      "title": "required|max:255",
+      "body":  "required",
+    })
 
   if validator.Fails() {
-    // Return fail
+    // 返回失败
   }
 
   var user models.User
@@ -247,14 +250,14 @@ func (r *PostController) Store(ctx http.Context) {
 }
 ```
 
-`Make` 方法中的第一个参数是期望校验的数据，可以是 `map[string]any` 与 `struct`。 第二个参数是应用到数据上的校验规则。
+在 `ctx` 之后，传递给 `Make` 方法的 data 参数可以是 `map[string]any`、`struct`、`url.Values`、`map[string][]string`、`*http.Request` 或其他支持的请求数据源。下一个参数是验证规则的 `map[string]any`。规则值可以是字符串或 `[]string` 值。
 
 ### 自定义错误消息
 
-如果需要，你可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。 你可以将自定义消息作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
+如果需要，你可以提供验证程序实例使用的自定义错误消息，而不是 Goravel 提供的默认错误消息。你可以使用 `validation.Messages` 传递自定义消息（也适用于 `ctx.Request().Validate()`）：
 
 ```go
-validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Messages(map[string]string{
   "required": "The :attribute field is required.",
 }))
 ```
@@ -264,59 +267,78 @@ validator, err := facades.Validation().Make(input, rules, validation.Messages(ma
 有时你可能希望只为特定属性指定自定义错误消息， 你可以使用 `.` 表示法。 首先指定属性名称，然后指定规则(也适用于`ctx.Request().Validate()`)：
 
 ```go
-validator, err := facades.Validation().Make(input, rules, validation.Messages(map[string]string{
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Messages(map[string]string{
   "email.required": "We need to know your email address!",
 }))
 ```
 
+显式消息覆盖优先于自定义规则的默认值。Goravel 按以下顺序解析消息：`field.rule` 消息，然后是 `rule` 消息，最后是自定义规则的 `Message()` 返回值。
+
 ### 指定自定义属性值
 
-Goravel 的许多内置验证规则错误消息都包含 `:attribute` 占位符。 为特定字段自定义替换这些占位符的值， 你可以将一个数组自定义属性作为第三个参数传递到 `Make` 方法(也适用于 `ctx.Request().Validate()`）：
+Goravel 的许多内置验证规则错误消息都包含 `:attribute` 占位符。 为特定字段自定义替换这些占位符的值， 你可以使用 `validation.Attributes` 传递自定义属性（也适用于 `ctx.Request().Validate()`）：
 
 ```go
-validator, err := facades.Validation().Make(input, rules, validation.Attributes(map[string]string{
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Attributes(map[string]string{
   "email": "email address",
 }))
 ```
 
 ### 验证前格式化数据
 
-你可以在验证数据前先格式化数据，以便更灵活的进行数据校验，你可以将格式化数据的方法作为第三个参数传递给 `Make` 方法(也适用于`ctx.Request().Validate()`)：
+你可以在验证数据前先格式化数据，以便更灵活的进行数据校验，你可以使用 `validation.PrepareForValidation` 传递格式化回调（也适用于 `ctx.Request().Validate()`）：
 
 ```go
 import (
+  "context"
+
   validationcontract "github.com/goravel/framework/contracts/validation"
   "github.com/goravel/framework/validation"
 )
 
 func (r *PostController) Store(ctx http.Context) http.Response {
-  validator, err := facades.Validation().Make(input, rules, validation.PrepareForValidation(func(ctx http.Context, data validationcontract.Data) error {
-    if name, exist := data.Get("name"); exist {
-      return data.Set("name", name)
-    }
-    return nil
-  }))
+  validator, err := facades.Validation().Make(ctx, input, rules,
+    validation.PrepareForValidation(func(ctx context.Context, data validationcontract.Data) error {
+      if name, exist := data.Get("name"); exist {
+        return data.Set("name", name)
+      }
+
+      return nil
+    }))
+
   ...
 }
 ```
 
 ## 处理验证字段
 
-在使用表单请求或手动创建的验证器实例验证传入请求数据后，你依然希望将请求数据绑定至 `struct`，有两种可以实现方法：
+在使用表单请求或手动创建的验证器实例验证传入请求数据后，你可以获取已验证的数据或将请求数据绑定至 `struct`。
 
-1. 使用 `Bind` 方法，这将会绑定所有传入的数据，包括未通过校验的数据：
+1. 验证通过后，使用 `Validated` 方法仅获取被验证规则覆盖的字段。未包含的字段会被忽略，通配符切片规则保留原始切片形状：
+
+```go
+rules := map[string]any{
+  "name": "required|string",
+  "scores.*": "required|integer",
+}
+
+validator, err := ctx.Request().Validate(rules)
+validated := validator.Validated()
+```
+
+2. 使用 `Bind` 方法在验证成功后绑定数据到结构体。`Bind` 会将已验证的数据合并回原始请求数据中，因此没有验证规则的字段仍然可以被绑定：
 
 ```go
 validator, err := ctx.Request().Validate(rules)
 var user models.User
 err := validator.Bind(&user)
 
-validator, err := facades.Validation().Make(input, rules)
+validator, err := facades.Validation().Make(ctx, input, rules)
 var user models.User
 err := validator.Bind(&user)
 ```
 
-2. 使用「表单请求」进行验证时，传入的数据将会自动被绑定到表单：
+3. 使用「表单请求」进行验证时，传入的数据将会自动被绑定到表单请求：
 
 ```go
 var storePost requests.StorePostRequest
@@ -326,11 +348,11 @@ fmt.Println(storePost.Name)
 
 ## 处理错误信息
 
-### 检索特定字段的一个错误信息（随机）
+### 检索特定字段的一个错误信息
 
 ```go
 validator, err := ctx.Request().Validate(rules)
-validator, err := facades.Validation().Make(input, rules)
+validator, err := facades.Validation().Make(ctx, input, rules)
 
 message := validator.Errors().One("email")
 ```
@@ -355,93 +377,125 @@ if validator.Errors().Has("email") {
 }
 ```
 
+## 翻译与本地化
+
+### 使用翻译来定制验证消息
+
+验证错误消息现在由框架的[本地化](../digging-deeper/localization.md)系统提供支持。默认消息嵌入在框架中，并自动使用应用程序的当前语言环境。消息查找遵循以下顺序：
+
+1. 表单请求 `Messages()` 或显式 `validation.Messages()` 覆盖（先是 `field.rule`，然后是 `rule`）
+2. 自定义规则的 `Message()` 方法
+3. 使用 `validation.*` 键的翻译文件查找（例如 `validation.required`、`validation.min.string`）
+4. 嵌入的默认消息
+
+对于 `min`、`max`、`between`、`size`、`gt`、`gte`、`lt` 和 `lte` 等基于大小的规则，翻译键包含属性类型后缀（例如 `min.string`、`min.numeric`、`min.array`、`min.file`）。
+
+### 发布验证语言文件
+
+使用 `lang:publish` Artisan 命令将验证语言文件发布到应用程序的 `lang` 目录：
+
+```shell
+go run . artisan lang:publish
+```
+
+这会将验证翻译文件从框架复制到 `lang/en/validation.json`，你可以在其中自定义默认的错误消息。
+
+要覆盖现有文件，请使用 `--force`（或 `-f`）标志：
+
+```shell
+go run . artisan lang:publish --force
+```
+
+### 自定义默认消息
+
+发布后，编辑 `lang/en/validation.json` 来自定义任何验证消息。例如：
+
+```json
+{
+    "required": "你忘了填写 :attribute 字段！",
+    "email": ":attribute 必须是一个有效的邮箱地址。"
+}
+```
+
+这些自定义消息将被应用程序中的所有验证器使用，除非被表单请求的 `Messages()` 或显式的 `validation.Messages()` 覆盖。
+
+### 翻译成其他语言
+
+要支持其他语言，请将发布的 `lang/en/validation.json` 复制到相应的语言目录中（例如 `lang/zh/validation.json`）并翻译消息。框架将根据 `facades.App().SetLocale(ctx, "zh")` 设置的当前语言环境使用相应的语言文件。
+
 ## 可用的验证规则
 
-下方列出了所有可用的验证规则及其功能：
+验证规则名称现在默认使用 snake_case。规则和过滤器使用 `map[string]any` 定义；每个值可以是管道分隔的 `string` 或 `[]string` 规则名称。
 
-| 名称                     | 描述                                                                                                                                                                                                                                         |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `required`             | 字段为必填项，值不能为零值。 例如字段类型为 `bool`，传入值为 `false`，也将无法通过校验。                                                                                                                                                                                       |
-| `required_if`          | `required_if:anotherfield,value,...` 如果其它字段 anotherField 为任一值 value ，则此验证字段必须存在且不为空。                                                                                                                                                       |
-| `required_unless`      | `required_unless:anotherfield,value,...` 如果其它字段 anotherField 不等于任一值 value ，则此验证字段必须存在且不为空。                                                                                                                                                 |
-| `required_with`        | `required_with:foo,bar,...` 在其他任一指定字段出现时，验证的字段才必须存在且不为空。                                                                                                                                                                                   |
-| `required_with_all`    | `required_with_all:foo,bar,...` 只有在其他指定字段全部出现时，验证的字段才必须存在且不为空。                                                                                                                                                                             |
-| `required_without`     | `required_without:foo,bar,...` 在其他指定任一字段不出现时，验证的字段才必须存在且不为空。                                                                                                                                                                               |
-| `required_without_all` | `required_without_all:foo,bar,...` 只有在其他指定字段全部不出现时，验证的字段才必须存在且不为空。                                                                                                                                                                         |
-| `int`                  | 检查值是 `intX` `uintX` 类型，同时支持大小检查 `int` `int:2` `int:2,12`。 注意：[使用注意事项](#int)                                                                                                                                                                |
-| `uint`                 | 检查值是 `uintX` 类型(`value >= 0`)                                                                                                                                                                                           |
-| `bool`                 | 检查值是布尔字符串(`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false")                                                                                                         |
-| `string`               | 检查值是字符串类型，同时支持长度检查 `string` `string:2` `string:2,12`                                                                                                                                                                                       |
-| `float`                | 检查值是 `float(floatX)` 类型                                                                                                                                                                                                                    |
-| `slice`                | 检查值是 `slice` 类型(`[]intX` `[]uintX` `[]byte` `[]string` 等)                                                                                                                                                               |
-| `in`                   | `in:foo,bar,…` 检查值是否在给定的枚举列表([]string, []intX, []uintX)中    |
-| `not_in`               | `not_in:foo,bar,…` 检查值不在给定的枚举列表([]string, []intX, []uintX)中 |
-| `starts_with`          | `starts_with:foo` 检查输入的 string 值是否以给定 sub-string 开始                                                                                                                                                                                        |
-| `ends_with`            | `ends_with:foo` 检查输入的 string 值是否以给定 sub-string 结束                                                                                                                                                                                          |
-| `between`              | `between:min,max` 检查值是否为数字且在给定范围内                                                                                                                                                                                                          |
-| `max`                  | `max:value` 检查输入值小于或等于给定值(`intX` `uintX` `floatX`)                                                                                                                                                                      |
-| `min`                  | `min:value` 检查输入值大于或等于给定值(`intX` `uintX` `floatX`)                                                                                                                                                                      |
-| `eq`                   | `eq:value` 检查输入值是否等于给定值                                                                                                                                                                                                                    |
-| `ne`                   | `ne:value` 检查输入值是否不等于给定值                                                                                                                                                                                                                   |
-| `lt`                   | `lt:value` 检查值小于给定大小(`intX` `uintX` `floatX`)                                                                                                                                                                           |
-| `gt`                   | `gt:value` 检查值大于给定大小(`intX` `uintX` `floatX`)                                                                                                                                                                           |
-| `len`                  | `len:value` 检查值长度等于给定大小(`string` `array` `slice` `map`)                                                                                                                                                                 |
-| `min_len`              | `min_len:value` 检查值的最小长度是给定大小(`string` `array` `slice` `map`)                                                                                                                                                           |
-| `max_len`              | `max_len:value` 检查值的最大长度是给定大小(`string` `array` `slice` `map`)                                                                                                                                                           |
-| `email`                | 检查值是 Email 地址字符串                                                                                                                                                                                                                           |
-| `array`                | 检查值是 `array` 或 `slice` 类型                                                                                                                                                                                                                  |
-| `map`                  | 检查值是 `map` 类型                                                                                                                                                                                                                              |
-| `eq_field`             | `eq_field:field` 检查字段值是否等于另一个字段的值                                                                                                                                                                                                          |
-| `ne_field`             | `ne_field:field` 检查字段值是否不等于另一个字段的值                                                                                                                                                                                                         |
-| `gt_field`             | `gte_field:field` 检查字段值是否大于另一个字段的值                                                                                                                                                                                                         |
-| `gte_field`            | `gt_field:field` 检查字段值是否大于或等于另一个字段的值                                                                                                                                                                                                       |
-| `lt_field`             | `lt_field:field` 检查字段值是否小于另一个字段的值                                                                                                                                                                                                          |
-| `lte_field`            | `lte_field:field` 检查字段值是否小于或等于另一个字段的值                                                                                                                                                                                                      |
-| `file`                 | 验证是否是上传的文件                                                                                                                                                                                                                                 |
-| `image`                | 验证是否是上传的图片文件                                                                                                                                                                                                                               |
-| `date`                 | 检查字段值是否为日期字符串                                                                                                                                                                                                                              |
-| `gt_date`              | `gt_date:value` 检查输入值是否大于给定的日期字符串                                                                                                                                                                                                          |
-| `lt_date`              | `lt_date:value` 检查输入值是否小于给定的日期字符串                                                                                                                                                                                                          |
-| `gte_date`             | `gte_date:value` 检查输入值是否大于或等于给定的日期字符串                                                                                                                                                                                                      |
-| `lte_date`             | `lte_date:value` 检查输入值是否小于或等于给定的日期字符串                                                                                                                                                                                                      |
-| `alpha`                | 验证值是否仅包含字母字符                                                                                                                                                                                                                               |
-| `alpha_num`            | 验证是否仅包含字母、数字                                                                                                                                                                                                                               |
-| `alpha_dash`           | 验证是否仅包含字母、数字、破折号（ - ）以及下划线（ \_ ）                                                                                                                                                                                     |
-| `json`                 | 检查值是 JSON 字符串                                                                                                                                                                                                                              |
-| `number`               | 检查值是数字 `>= 0`                                                                                                                                                                                                                              |
-| `full_url`             | 检查值是完整的URL字符串(必须以 http, https 开始的 URL)                                                                                                                                                                                  |
-| `ip`                   | 检查值是 IP（v4或v6）字符串                                                                                                                                                                                                                          |
-| `ipv4`                 | 检查值是 IPv4 字符串                                                                                                                                                                                                                              |
-| `ipv6`                 | 检查值是 IPv6 字符串                                                                                                                                                                                                                              |
-| `regex`                | 检查该值是否可以通过正则验证                                                                                                                                                                                                                             |
-| `uuid`                 | 检查值是UUID字符串                                                                                                                                                                                                                                |
-| `uuid3`                | 检查值是UUID3字符串                                                                                                                                                                                                                               |
-| `uuid4`                | 检查值是UUID4字符串                                                                                                                                                                                                                               |
-| `uuid5`                | 检查值是UUID5字符串                                                                                                                                                                                                                               |
+```go
+rules := map[string]any{
+  "title": "required|string|max:255",
+  "slug": []string{"required", "regex:^(news|docs)-[a-z]+$", "string"},
+}
+```
 
-### 规则使用注意事项
+当 `regex` 或 `not_regex` 模式中包含 `|` 并且你需要在其后添加更多规则时，请使用 `[]string`。
 
-#### int
+| 分类 | 规则 |
+| --- | --- |
+| 必填 | `required`, `required_if`, `required_unless`, `required_with`, `required_with_all`, `required_without`, `required_without_all`, `required_if_accepted`, `required_if_declined` |
+| 存在性 | `filled`, `present`, `present_if`, `present_unless`, `present_with`, `present_with_all`, `missing`, `missing_if`, `missing_unless`, `missing_with`, `missing_with_all` |
+| 接受/拒绝 | `accepted`, `accepted_if`, `declined`, `declined_if` |
+| 禁止 | `prohibited`, `prohibited_if`, `prohibited_unless`, `prohibited_if_accepted`, `prohibited_if_declined`, `prohibits` |
+| 类型 | `string`, `integer`, `int`, `uint`, `numeric`, `boolean`, `bool`, `float`, `array`, `list`, `slice`, `map` |
+| 大小 | `size`, `min`, `max`, `between`, `gt`, `gte`, `lt`, `lte` |
+| 数值 | `digits`, `digits_between`, `decimal`, `multiple_of`, `min_digits`, `max_digits` |
+| 字符串格式 | `alpha`, `alpha_num`, `alpha_dash`, `ascii`, `email`, `url`, `active_url`, `ip`, `ipv4`, `ipv6`, `mac_address`, `mac`, `json`, `uuid`, `uuid3`, `uuid4`, `uuid5`, `ulid`, `hex_color`, `regex`, `not_regex`, `lowercase`, `uppercase` |
+| 字符串内容 | `starts_with`, `doesnt_start_with`, `ends_with`, `doesnt_end_with`, `contains`, `doesnt_contain`, `confirmed` |
+| 比较 | `same`, `different`, `eq`, `ne`, `in`, `not_in`, `in_array`, `in_array_keys` |
+| 日期 | `date`, `date_format`, `date_equals`, `before`, `before_or_equal`, `after`, `after_or_equal`, `timezone` |
+| 排除 | `exclude`, `exclude_if`, `exclude_unless`, `exclude_with`, `exclude_without` |
+| 文件 | `file`, `image`, `mimes`, `mimetypes`, `extensions`, `dimensions`, `encoding` |
+| 控制 | `bail`, `nullable`, `sometimes` |
+| 数组/数据库 | `distinct`, `required_array_keys`, `exists`, `unique` |
 
-当时用 `ctx.Request().Validate(rules)` 进行校验时，传入的 `int` 类型数据将会被 `json.Unmarshal` 解析为 `float64` 类型，从而导致 int 规则验证失败。
+`size`、`min`、`max`、`between`、`gt`、`gte`、`lt` 和 `lte` 规则是类型感知的。它们对数值字段比较数值，对字符串比较字符串长度，对数组、切片和映射比较元素数量，对文件比较文件大小。
 
-**解决方案：**
+`exists` 规则使用 `exists:table,column1,column2,...`。`unique` 规则使用 `unique:table,column,idColumn,except1,except2,...`。这两个规则都支持 `connection.table` 语法作为表参数。
 
-方案一：添加 [`validation.PrepareForValidation`](#验证前格式化数据)，在验证数据前对数据进行格式化；
+`active_url` 规则会执行 DNS 查找 URL 主机。请谨慎在请求热路径上使用它，因为 DNS 解析可能会增加延迟。
 
-方案二：使用 `facades.Validation().Make()` 进行规则校验；
+### 已弃用的规则别名
+
+以下别名保持向后兼容，但将在下个大版本中移除。请使用新的 snake_case 名称：
+
+| 已弃用 | 替代 |
+| --- | --- |
+| `len` | `size` |
+| `min_len` | `min` |
+| `max_len` | `max` |
+| `eq_field` | `same` |
+| `ne_field` | `different` |
+| `gt_field` | `gt` |
+| `gte_field` | `gte` |
+| `lt_field` | `lt` |
+| `lte_field` | `lte` |
+| `gt_date` | `after` |
+| `lt_date` | `before` |
+| `gte_date` | `after_or_equal` |
+| `lte_date` | `before_or_equal` |
+| `number` | `numeric` |
+| `full_url` | `url` |
 
 ## 自定义验证规则
 
 Goravel 提供了各种有用的验证规则，但是，你可能希望定义自己的规则。 注册自定义验证规则的方法之一是使用规则对象。 要生成新的规则，你可以使用 `make:rule` Artisan 命令。
 
+### 创建自定义规则
+
 让我们使用这个命令生成一个验证字符串是否为大写的规则。 Goravel 会将新规则放在 `app/rules` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建规则时创建它。
 
 ```go
-go run . artisan make:rule Uppercase
-// or
-go run . artisan make:rule user/Uppercase
+./artisan make:rule Uppercase
+./artisan make:rule user/Uppercase
 ```
+
+### 定义自定义规则
 
 创建规则后，我们需要定义它的行为。 一个规则包含两个方法：`Passes` 和 `Message`。 `Passes` 方法接收所有数据、待验证的数据与验证参数。 应该根据属性值是否有效返回 `true` 或 `false`。 `Message` 方法应该返回验证失败时应该使用的验证错误消息。
 
@@ -449,6 +503,7 @@ go run . artisan make:rule user/Uppercase
 package rules
 
 import (
+  "context"
   "strings"
 
   "github.com/goravel/framework/contracts/validation"
@@ -463,84 +518,110 @@ func (receiver *Uppercase) Signature() string {
 }
 
 // Passes Determine if the validation rule passes.
-func (receiver *Uppercase) Passes(data validation.Data, val any, options ...any) bool {
+func (receiver *Uppercase) Passes(ctx context.Context, data validation.Data, val any, options ...any) bool {
   return strings.ToUpper(val.(string)) == val.(string)
 }
 
 // Message Get the validation error message.
-func (receiver *Uppercase) Message() string {
+func (receiver *Uppercase) Message(ctx context.Context) string {
   return "The :attribute must be uppercase."
 }
-
 ```
 
-然后将该规则注册到 `app/providers/validation_service_provider.go` 文件的 `rules` 方法中，之后该规则就可以像其他规则一样使用了，如果是通过 `make:rule` 命令生成的规则，则不需要手动注册，框架会自动注册。
+自定义规则消息支持以下占位符：
+
+| 占位符 | 描述 |
+| --- | --- |
+| `:attribute` | 字段名称或自定义属性 |
+| `:value` | 正在验证的字段值 |
+| `:option0`, `:option1`, ... | 传递给 `Passes()` 的规则参数 |
 
 ```go
-package providers
-
-import (
-  "github.com/goravel/framework/contracts/validation"
-  "github.com/goravel/framework/facades"
-
-  "goravel/app/rules"
-)
-
-type ValidationServiceProvider struct {
-}
-
-func (receiver *ValidationServiceProvider) Register() {
-
-}
-
-func (receiver *ValidationServiceProvider) Boot() {
-  if err := facades.Validation().AddRules(receiver.rules()); err != nil {
-    facades.Log().Errorf("add rules error: %+v", err)
-  }
-}
-
-func (receiver *ValidationServiceProvider) rules() []validation.Rule {
-  return []validation.Rule{
-    &rules.Uppercase{},
-  }
+// 包含所有占位符的示例
+func (receiver *Between) Message(ctx context.Context) string {
+  return ":attribute 的值 :value 必须在 :option0 和 :option1 之间。"
 }
 ```
 
-## 可用的过滤器
+### 注册自定义规则
 
-| 规则名                            | 描述                                                                                                                                         |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `int/toInt`                    | 转换(string/intX/floatX) 到 `int` 类型                                                                                       |
-| `uint/toUint`                  | 转换(string/intX/floatX) 到 `uint` 类型                                                                                      |
-| `int64/toInt64`                | 转换(string/intX/floatX) 到 `int64` 类型                                                                                     |
-| `float/toFloat`                | 转换(string/intX/floatX) 到 `float` 类型                                                                                     |
-| `bool/toBool`                  | 转换 string 到 bool (`true`: "1", "on", "yes", "true", `false`: "0", "off", "no", "false") |
-| `trim/trimSpace`               | 清除字符串两端的空格                                                                                                                                 |
-| `ltrim/trimLeft`               | 清除字符串左侧的空格                                                                                                                                 |
-| `rtrim/trimRight`              | 清除字符串右侧的空格                                                                                                                                 |
-| `int/integer`                  | 转换(string/intX/floatX) 到 `int` 类型                                                                                       |
-| `lower/lowercase`              | 转换 string 为小写                                                                                                                              |
-| `upper/uppercase`              | 转换 string 为大写                                                                                                                              |
-| `lcFirst/lowerFirst`           | 转换 string 的第一个字符为小写                                                                                                                        |
-| `ucFirst/upperFirst`           | 转换 string 的第一个字符为大写                                                                                                                        |
-| `ucWord/upperWord`             | 转换每个单词的首字母为大写                                                                                                                              |
-| `camel/camelCase`              | 转换 string 到 camelCase 命名风格                                                                                                                 |
-| `snake/snakeCase`              | 转换 string 到 snake_case 命名风格                                                                                           |
-| `escapeJs/escapeJS`            | 脱敏 JS string.                                                                                                              |
-| `escapeHtml/escapeHTML`        | 脱敏 HTML string.                                                                                                            |
-| `str2ints/strToInts`           | 转换 string 到 `[]int`                                                                                                                        |
-| `str2time/strToTime`           | 转换 date string 到 `time.Time`.                                                                                              |
-| `str2arr/str2array/strToArray` | 转换 string 到 `[]string`                                                                                                                     |
-
-## 自定义过滤规则
-
-Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自己的规则。 要生成新的规则，你可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个转换 string 为 int 的规则。 这个规则框架已经内置，这里只是为了示例。 Goravel 会将新规则放在 `app/filters` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建规则时创建它：
+通过 `make:rule` 创建的新规则将自动注册到 `bootstrap/rules.go::Rules()` 函数中，并且该函数将由 `WithRules` 调用。 如果你自行创建规则文件，则需要手动注册。
 
 ```go
-go run . artisan make:filter ToInt
-// or
-go run . artisan make:filter user/ToInt
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithRules(Rules).
+		WithConfig(config.Boot).
+		Create()
+}
 ```
+
+## 可用的验证过滤器
+
+验证过滤器默认使用 snake_case 名称。过滤器在验证之前运行，可以在表单请求上声明，也可以在手动创建验证器时使用 `validation.Filters` 声明。
+
+| 分类 | 过滤器 |
+| --- | --- |
+| 字符串清理 | `trim`, `ltrim`, `rtrim` |
+| 大小写转换 | `lower`, `upper`, `title`, `ucfirst`, `lcfirst` |
+| 命名风格 | `camel`, `snake` |
+| 类型转换 | `to_int`, `to_int64`, `to_uint`, `to_float`, `to_bool`, `to_string`, `to_time` |
+| 短类型别名 | `int`, `int64`, `uint`, `float`, `bool` |
+| 转义/编码 | `strip_tags`, `escape_js`, `escape_html`, `url_encode`, `url_decode` |
+| 字符串分割 | `str_to_ints`, `str_to_array`, `str_to_time` |
+
+```go
+validator, err := facades.Validation().Make(ctx, input, rules, validation.Filters(map[string]any{
+  "name": "trim",
+  "age": []string{"trim", "to_int"},
+}))
+```
+
+### 已弃用的过滤器别名
+
+以下别名保持向后兼容，但将在下个大版本中移除。请使用新的 snake_case 名称：
+
+| 已弃用 | 替代 |
+| --- | --- |
+| `trimSpace` | `trim` |
+| `trimLeft` | `ltrim` |
+| `trimRight` | `rtrim` |
+| `lowercase` | `lower` |
+| `uppercase` | `upper` |
+| `lcFirst`, `lowerFirst` | `lcfirst` |
+| `ucFirst`, `upperFirst` | `ucfirst` |
+| `ucWord`, `upperWord` | `title` |
+| `camelCase` | `camel` |
+| `snakeCase` | `snake` |
+| `toInt`, `integer` | `to_int` |
+| `toUint` | `to_uint` |
+| `toInt64` | `to_int64` |
+| `toFloat` | `to_float` |
+| `toBool` | `to_bool` |
+| `toString` | `to_string` |
+| `toTime`, `str2time`, `strToTime` | `to_time` 或 `str_to_time` |
+| `escapeJs`, `escapeJS` | `escape_js` |
+| `escapeHtml`, `escapeHTML` | `escape_html` |
+| `urlEncode` | `url_encode` |
+| `urlDecode` | `url_decode` |
+| `stripTags` | `strip_tags` |
+| `str2ints`, `strToInts` | `str_to_ints` |
+| `str2arr`, `str2array`, `strToArray` | `str_to_array` |
+
+## 自定义过滤器
+
+Goravel 提供了各种有用的过滤规则，但是，你可能希望使用自己的规则。
+
+### 创建自定义过滤器
+
+要生成新的过滤器对象，你可以使用 `make:filter` Artisan 命令。 让我们使用这个命令生成一个将字符串转换为整数的过滤器。 这个过滤器框架已经内置，这里只是为了示例。 Goravel 会将新过滤器放在 `app/filters` 目录中。 如果此目录不存在，Goravel 将在你执行 Artisan 命令创建过滤器时创建它：
+
+```go
+./artisan make:filter ToInt
+./artisan make:filter user/ToInt
+```
+
+### 定义自定义过滤器
 
 一个过滤器包含两个方法：`Signature` 和 `Handle`。 `Signature` 方法设置该过滤器的名称。 `Handle` 方法执行具体的过滤逻辑：
 
@@ -548,10 +629,9 @@ go run . artisan make:filter user/ToInt
 package filters
 
 import (
-  "strings"
+  "context"
 
   "github.com/spf13/cast"
-  "github.com/goravel/framework/contracts/validation"
 )
 
 type ToInt struct {
@@ -559,45 +639,26 @@ type ToInt struct {
 
 // Signature The signature of the filter.
 func (receiver *ToInt) Signature() string {
-  return "ToInt"
+  return "to_int_custom"
 }
 
 // Handle defines the filter function to apply.
-func (receiver *ToInt) Handle() any {
+func (receiver *ToInt) Handle(ctx context.Context) any {
   return func (val any) int {
-    return cast.ToString(val)
+    return cast.ToInt(val)
   }
 }
 ```
 
-然后将该过滤器注册到 `app/providers/validation_service_provider.go` 文件的 `filters` 方法中，之后就可以像其他过滤器一样使用了，如果是通过 `make:filter` 命令生成的过滤器，则不需要手动注册，框架会自动注册。
+### 注册自定义过滤器
+
+通过 `make:filter` 创建的新过滤器将自动注册到 `bootstrap/filters.go::Filters()` 函数中，并且该函数将由 `WithFilters` 调用。 如果你自行创建过滤器文件，则需要手动注册。
 
 ```go
-package providers
-
-import (
-  "github.com/goravel/framework/contracts/validation"
-  "github.com/goravel/framework/facades"
-
-  "goravel/app/filters"
-)
-
-type ValidationServiceProvider struct {
-}
-
-func (receiver *ValidationServiceProvider) Register() {
-
-}
-
-func (receiver *ValidationServiceProvider) Boot() {
-  if err := facades.Validation().AddFilters(receiver.filters()); err != nil {
-    facades.Log().Errorf("add filters error: %+v", err)
-  }
-}
-
-func (receiver *ValidationServiceProvider) filters() []validation.Filter {
-  return []validation.Filter{
-    &filters.ToInt{},
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithFilters(Filters).
+		WithConfig(config.Boot).
+		Create()
 }
 ```

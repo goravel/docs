@@ -1,7 +1,5 @@
 # 数据填充
 
-[[toc]]
-
 ## 简介
 
 Goravel 内置了一个可为你的数据库填充测试数据的 struct。 所有的填充 struct 都放在 `database/seeds` 目录下。 Goravel 默认定义了一个 `DatabaseSeeder` struct。
@@ -11,7 +9,7 @@ Goravel 内置了一个可为你的数据库填充测试数据的 struct。 所�
 运行 [Artisan 命令](../digging-deeper/artisan-console.md) `make:seeder` 可以生成 Seeder。 框架生成的 seeders 都放在 `database/seeders` 目录下：
 
 ```shell
-go run . artisan make:seeder UserSeeder
+./artisan make:seeder UserSeeder
 ```
 
 Seeder struct 只包含两个方法：`Signature`, `Run`。 `Signature` 方法定义 Seeder 的名称，`Run` 方法会在执行 `db:seed` 这个 Artisan command 时被调用。 在 `Run` 方法里，你可以按需在数据库中插入数据。
@@ -23,8 +21,8 @@ package seeders
 
 import (
 	"github.com/goravel/framework/contracts/database/seeder"
-	"github.com/goravel/framework/facades"
-
+	
+	"goravel/app/facades"
 	"goravel/app/models"
 )
 
@@ -74,34 +72,32 @@ func (s *DatabaseSeeder) Run() error {
 你可以使用 Artisan 命令 `db:seed` 来填充数据库。 默认情况下，`db:seed` 命令将运行 `database/seeders/database_seeder.go`，这个 struct 又可以调用其他 seed。 不过，你也可以使用 `--seeder` 选项来指定一个特定的 seeder：
 
 ```shell
-go run . artisan db:seed
+./artisan db:seed
 ```
 
-如果你想在运行 `db:seed` 命令时执行其他 seeder，可以在 `app/providers/database_service_provider.go` 中注册该 seeder，如果是通过 `make:seeder` 命令生成的 seeder，则不需要手动注册，框架会自动注册。
+如果你想在运行 `db:seed` 命令时执行其他 seeder，可以在 `bootstrp/app.go::WithSeeders` 函数中注册该 seeder，如果 seeder 是通过 `make:seeder` 命令生成的，框架会自动注册它。
 
 ```go
-// app/providers/database_service_provider.go
-func (receiver *DatabaseServiceProvider) Boot(app foundation.Application) {
-	facades.Seeder().Register([]seeder.Seeder{
-		&seeders.DatabaseSeeder{},
-        &seeders.UserSeeder{},
-        &seeders.PhotoSeeder{},
-	})
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithSeeders(Seeders).
+		WithConfig(config.Boot).
+		Create()
 }
 
-go run . artisan db:seed --seeder=UserSeeder PhotoSeeder // The signature of seeder
+./artisan db:seed --seeder=UserSeeder PhotoSeeder // The signature of seeder
 ```
 
 你还可以使用 `migrate:fresh` 或 `migrate:refresh` 命令结合 `--seed` 选项，这将删除数据库中所有表并重新运行所有迁移。 此命令对于完全重建数据库非常有用。 也可以使用 `--seeder` 运行一个指定的 seeder：
 
 ```shell
-go run . artisan migrate:fresh --seed
+./artisan migrate:fresh --seed
 
-go run . artisan migrate:fresh --seed --seeder=UserSeeder
+./artisan migrate:fresh --seed --seeder=UserSeeder
 
-go run . artisan migrate:refresh --seed
+./artisan migrate:refresh --seed
 
-go run . artisan migrate:refresh --seed --seeder=UserSeeder
+./artisan migrate:refresh --seed --seeder=UserSeeder
 ```
 
 ### 在生产环境中强制运行填充
@@ -109,5 +105,5 @@ go run . artisan migrate:refresh --seed --seeder=UserSeeder
 一些填充操作可能会导致原有数据的更新或丢失。 为了保护生产环境数据库的数据，在生产环境中运行填充命令前会进行确认。 可以添加 `--force` 选项来强制运行填充命令：
 
 ```shell
-go run . artisan db:seed --force
+./artisan db:seed --force
 ```

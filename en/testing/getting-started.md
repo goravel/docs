@@ -1,7 +1,5 @@
 # Getting Started
 
-[[toc]]
-
 ## Introduction
 
 The testing function of Goravel relies on Golang's official test component, extending unit testing to support integration testing and improve application robustness.
@@ -12,7 +10,7 @@ The testing function of Goravel relies on Golang's official test component, exte
 
 By default, the `.env` file in the root directory is used to inject configuration information during testing. If you want to use different `.env` files for different packages, you can create a `.env` file in the package directory, and the test will read this file first.
 
-```
+```text
 - /app
 - /config
 - ...
@@ -39,7 +37,7 @@ There is a `TestCase` Struct in Goravel, and the Struct will provide some conven
 To create a new test case, use the `make:test` Artisan command:
 
 ```shell
-go run . artisan make:test feature/UserTest
+./artisan make:test feature/UserTest
 ```
 
 Our test cases are written using the suite function of the [stretchr/testify](https://github.com/stretchr/testify) package by default. This function enables us to configure pre-test, post-test, sub-test, and assertion, among other things, which results in more organized test cases. For further information, kindly refer to the official documentation.
@@ -136,7 +134,9 @@ func (s *ExampleTestSuite) TestIndex() {
 
 When using `go test`, multiple packages are tested in parallel. As a result, refreshing the database or cache in a test case using a local database or cache can potentially affect other parallel test cases. To address this, Goravel offers Docker-based testing. With Docker, a database or cache image can be created and used independently across different packages.
 
-> Due to the limited support of the Docker image for the windows system, currently, the Docker test can only be run in non-windows environments.
+::: warning
+Docker images have limited support on Windows, so Docker tests currently run only in non-Windows environments.
+:::
 
 #### Initiate Docker
 
@@ -256,8 +256,7 @@ import (
   "os"
   "testing"
 
-  "github.com/goravel/framework/facades"
-
+  "goravel/app/facades"
   "goravel/database/seeders"
 )
 
@@ -270,8 +269,14 @@ func TestMain(m *testing.M) {
   if err := database.Build(); err != nil {
     panic(err)
   }
-
+  if err := database.Ready(); err != nil {
+    panic(err)
+  }
   if err := database.Migrate(); err != nil {
+    panic(err)
+  }
+
+  if err := facades.App().Restart(); err != nil {
     panic(err)
   }
 
@@ -287,4 +292,6 @@ func TestMain(m *testing.M) {
 }
 ```
 
-> For more usage of the TestMain method, see [Official Documentation](https://pkg.go.dev/testing#hdr-Main).
+::: tip
+For more on the `TestMain` method, see the [official documentation](https://pkg.go.dev/testing#hdr-Main).
+:::
