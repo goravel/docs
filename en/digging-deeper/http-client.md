@@ -64,6 +64,7 @@ type Response interface {
     Redirect() bool                 // Check if the response is a redirect (3xx status code)
     ServerError() bool              // Check if the status code is in the 5xx range
     Status() int                    // Get the HTTP status code
+    Stream() (io.ReadCloser, error) // Return a ReadCloser allowing the response body to be streamed
     Successful() bool               // Check if the status code is in the 2xx range
 
     /* status code related methods */
