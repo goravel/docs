@@ -1,7 +1,5 @@
 # 请求
 
-[[toc]]
-
 ## 简介
 
 Goravel 的 `contracts/http/Request` 方法可以与应用程序处理的当前 HTTP 请求进行交互，以及检索与请求一起提交的输入内容和文件。
@@ -13,9 +11,7 @@ Goravel 的 `contracts/http/Request` 方法可以与应用程序处理的当前 
 ```go
 import "github.com/goravel/framework/contracts/http"
 
-facades.Route().Get("/", func(ctx http.Context) {
-
-})
+facades.Route().Get("/", func(ctx http.Context) http.Response {})
 ```
 
 ### 获取请求路径
@@ -115,7 +111,9 @@ names := ctx.Request().QueryMap("names")
 queries := ctx.Request().Queries()
 ```
 
-> 注意：只能获取单维Json数据，否则它将返回为空。
+::: warning
+只能获取单维Json数据，否则它将返回为空。
+:::
 
 ### 检索一个输入值
 
@@ -213,18 +211,21 @@ ctx := ctx.Context()
 
 ## 自定义 Recovery
 
-可以通过在 `app/providers/route_service_provider.go` 文件中调用 `Recover` 方法 设置自定义 `recovery`。
+你可以在 `bootstrap/app.go::WithMiddleware` 函数中设置自定义的 `recovery`。
 
 ```go
-// app/providers/route_service_provider.go
-func (receiver *RouteServiceProvider) Boot(app foundation.Application) {
-  // Add HTTP middleware
-  facades.Route().GlobalMiddleware(http.Kernel{}.Middleware()...)
-  facades.Route().Recover(func(ctx http.Context, err error) {
-    ctx.Request().Abort()
-    // or
-    // ctx.Response().String(500, "Internal Server Error").Abort()
-  })
-  ...
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMiddleware(func(handler configuration.Middleware) {
+			handler.Append(
+				httpmiddleware.Throttle("global"),
+				sessionmiddleware.StartSession(),
+			).Recover(func(ctx http.Context, err any) {
+				facades.Log().Error(err)
+				_ = ctx.Response().String(contractshttp.StatusInternalServerError, "recover").Abort()
+			})
+		}).
+		WithConfig(config.Boot).
+		Create()
 }
 ```

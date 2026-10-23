@@ -1,4 +1,5 @@
 import { defineConfig, type DefaultTheme } from 'vitepress'
+import { community } from './community'
 
 export const config = defineConfig({
   lang: 'en-US',
@@ -8,48 +9,69 @@ export const config = defineConfig({
     nav: nav(),
     sidebar: [
       {
-        text: 'Quickstart',
-        base: '/getting-started/',
-        items: sidebarQuickstart()
+        text: 'Prologue',
+        base: '/prologue/',
+        collapsed: true,
+        items: sidebarPrologue()
       },
       {
         text: 'Upgrade',
         base: '/upgrade/',
+        collapsed: true,
         items: sidebarUpgrade()
+      },
+      {
+        text: 'Getting Started',
+        base: '/getting-started/',
+        collapsed: true,
+        items: sidebarGettingStarted()
       },
       {
         text: 'Architecture Concepts',
         base: '/architecture-concepts/',
+        collapsed: true,
         items: sidebarFoundation()
       },
       {
         text: 'The Basics',
         base: '/the-basics/',
+        collapsed: true,
         items: sidebarBasic()
       },
       {
         text: 'Digging Deeper',
         base: '/digging-deeper/',
+        collapsed: true,
         items: sidebarAdvanced()
+      },
+      {
+        text: 'AI',
+        base: '/ai/',
+        collapsed: true,
+        items: sidebarAI()
       },
       {
         text: 'Security',
         base: '/security/',
+        collapsed: true,
         items: sidebarSecurity()
       },
       {
         text: 'Database',
         base: '/database/',
+        collapsed: true,
         items: sidebarDatabase()
       },
       {
         text: 'ORM',
         base: '/orm/',
+        collapsed: true,
         items: sidebarOrm()
       },
       {
         text: 'Testing',
         base: '/testing/',
+        collapsed: true,
         items: sidebarTesting()
       }
     ],
@@ -67,6 +89,7 @@ export const config = defineConfig({
       next: 'Next page'
     },
     outline: {
+      level: [2, 3],
       label: 'On this page'
     },
     lastUpdated: {
@@ -89,22 +112,36 @@ export const config = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-      text: 'Quickstart',
+      text: 'Docs',
       link: '/getting-started/installation',
-      activeMatch: '/getting-started/'
+      activeMatch: '^/(?!getting-started/packages)(getting-started|architecture-concepts|the-basics|digging-deeper|database|orm|testing|security|ai)/'
     },
     {
-      text: 'Video Tutorials',
-      link: 'https://www.youtube.com/playlist?list=PL40Xne4u-oXJ0Z5uFiPWHqIMvzZaG_BDf'
+      text: 'Packages',
+      link: '/getting-started/packages',
+      activeMatch: '^/getting-started/packages'
     },
     {
-      text: 'Translate',
-      link: '/getting-started/contributions#add-a-new-language'
-    }
+      text: 'Releases',
+      link: '/prologue/releases',
+      activeMatch: '^/(prologue/releases|upgrade/)'
+    },
+    community(
+      {
+        title: 'Community',
+        connect: 'Connect',
+        learn: 'Learn',
+        videos: 'Video Tutorials',
+        contribute: 'Contribute',
+        guide: 'Contribution Guide',
+        language: 'Add a Language',
+        languageAnchor: 'add-a-new-language'
+      }
+    )
   ]
 }
 
-function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
+function sidebarGettingStarted(): DefaultTheme.SidebarItem[] {
   return [
     {
       text: 'Installation',
@@ -123,6 +160,15 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
       link: 'compile'
     },
     {
+      text: 'Excellent Packages',
+      link: 'packages'
+    }
+  ]
+}
+
+function sidebarPrologue(): DefaultTheme.SidebarItem[] {
+  return [
+    {
       text: 'Release Notes',
       link: 'releases'
     },
@@ -131,8 +177,8 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
       link: 'contributions'
     },
     {
-      text: 'Excellent Packages',
-      link: 'packages'
+      text: 'Compare With Laravel',
+      link: 'compare-with-laravel'
     },
     {
       text: 'Privacy Policy',
@@ -144,12 +190,12 @@ function sidebarQuickstart(): DefaultTheme.SidebarItem[] {
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Upgrading To v1.16 From v1.15',
-      link: 'v1.16'
+      text: 'Upgrading To v1.18 From v1.17',
+      link: 'v1.18'
     },
     {
-      text: 'Upgrading To v1.15 From v1.14',
-      link: 'v1.15'
+      text: 'Upgrading To v1.17 From v1.16',
+      link: 'v1.17'
     },
     {
       text: 'History',
@@ -267,8 +313,16 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
       link: 'color'
     },
     {
+      text: 'Processes',
+      link: 'processes'
+    },
+    {
       text: 'Strings',
       link: 'strings'
+    },
+    {
+      text: 'Collections',
+      link: 'collections'
     },
     {
       text: 'Helpers',
@@ -277,6 +331,23 @@ function sidebarAdvanced(): DefaultTheme.SidebarItem[] {
     {
       text: 'HTTP Client',
       link: 'http-client'
+    },
+    {
+      text: 'Pluralization',
+      link: 'pluralization'
+    },
+    {
+      text: 'Telemetry',
+      link: 'telemetry'
+    }
+  ]
+}
+
+function sidebarAI(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'AI SDK',
+      link: 'sdk'
     }
   ]
 }

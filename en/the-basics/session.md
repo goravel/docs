@@ -1,7 +1,5 @@
 # Session
 
-[[toc]]
-
 ## Introduction
 
 Session enables you to store user information across multiple requests, providing a stateful experience within the inherently stateless HTTP protocol. This user information is stored persistently on the server side. Goravel offers a unified interface for interacting with various persistent storage drivers.
@@ -12,18 +10,18 @@ The `session` configuration file is located at `config/session.go`. The default 
 
 ### Register Middleware
 
-By default, Goravel does not start a session automatically. However, it provides middleware to start a session. You can register the session middleware in the `app/http/kernel.go` file to apply it to all routes, or you can add it to specific routes:
+By default, Goravel does not start a session automatically. However, it provides middleware to start a session. You can register the middleware in the `WithMiddleware` function in the `bootstrap/app.go` file, or you can add it to specific routes:
 
 ```go
-import (
-  "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/session/middleware"
-)
-
-func (kernel Kernel) Middleware() []http.Middleware {
-  return []http.Middleware{
-    middleware.StartSession(),
-  }
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithMiddleware(func(handler configuration.Middleware) {
+			handler.Append(
+				middleware.StartSession(),
+			)
+		}).
+		WithConfig(config.Boot).
+		Create()
 }
 ```
 
@@ -173,14 +171,12 @@ ctx.Request().Session().Now("status", "Task was successful!")
 Use the `Session` facade to build a custom session. The `Session` facade provides the `BuildSession` method, which takes a driver instance and an optional session ID if you want to specify a custom session ID:
 
 ```go
-import "github.com/goravel/framework/facades"
-
 session := facades.Session().BuildSession(driver, "sessionID")
 ```
 
 ### Add Custom Session Drivers
 
-#### Implementing The Driver
+#### Implementing Driver
 
 To implement a custom session driver, driver must implement the `contracts/session/driver` interface.
 
@@ -202,7 +198,7 @@ type Driver interface {
 }
 ```
 
-#### Registering The Driver
+#### Register Driver
 
 After implementing the driver, you only need to add it to the `config/session.go` configuration file:
 

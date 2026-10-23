@@ -1,7 +1,5 @@
 # 控制器
 
-[[toc]]
-
 ## 简介
 
 为了代替在单独路由中以闭包形式定义所有的请求处理逻辑，可以使用控制器来进行整合。 控制器被存放在 `app/http/controllers` 目录中。
@@ -15,16 +13,17 @@ package controllers
 
 import (
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
+
+  "goravel/app/facades"
 )
 
 type UserController struct {
-  // Dependent services
+  // 依赖服务
 }
 
 func NewUserController() *UserController {
   return &UserController{
-    // Inject services
+    // 注入服务
   }
 }
 
@@ -41,12 +40,11 @@ func (r *UserController) Show(ctx http.Context) http.Response {
 package routes
 
 import (
-  "github.com/goravel/framework/facades"
-
+  "goravel/app/facades"
   "goravel/app/http/controllers"
 )
 
-func Web() {
+func Api() {
   userController := controllers.NewUserController()
   facades.Route().Get("/{id}", userController.Show)
 }
@@ -55,8 +53,8 @@ func Web() {
 ### 创建控制器
 
 ```shell
-go run . artisan make:controller UserController
-go run . artisan make:controller user/UserController
+./artisan make:controller UserController
+./artisan make:controller user/UserController
 ```
 
 ## 资源型控制器
@@ -66,7 +64,7 @@ go run . artisan make:controller user/UserController
 Goravel 的资源路由通过单行代码即可将典型的「CURD (增删改查)」路由分配给控制器。 首先，我们可以使用 Artisan 命令 `make:controller` 的 `--resource` 选项来快速创建一个控制器：
 
 ```shell
-go run . artisan make:controller --resource PhotoController
+./artisan make:controller --resource PhotoController
 ```
 
 这个命令将会生成一个控制器 `app/http/controllers/photo_controller.go`。 其中包括每个可用资源操作的方法。 接下来，你可以给控制器注册一个资源路由：

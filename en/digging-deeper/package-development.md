@@ -1,7 +1,5 @@
 # Package Development
 
-[[toc]]
-
 ## Introduction
 
 Packages are the primary way of adding functionality to Goravel. These packages may contain routes, controllers, and configurations that are specifically designed to enhance a Goravel application. This guide focuses on developing Goravel-specific packages.
@@ -13,22 +11,20 @@ Here is an example for building a third-party package: [goravel/example-package]
 You can use easily create a package template using the Artisan command:
 
 ```shell
-go run . artisan make:package sms
+./artisan make:package sms
 ```
 
 The created files are saved by default in the root `packages` folder, you can use `--root` option to customize:
 
 ```shell
-go run . artisan make:package --root=pkg sms
+./artisan make:package --root=pkg sms
 ```
 
 ## Service Providers
 
 [Service providers](../architecture-concepts/service-providers.md) act as the bridge between your package and Goravel. They are typically located in the root of the package as a `service_provider.go` file. Their main function is to bind items into Goravel's service container and guide Goravel in loading package resources.
 
-## Usage
-
-### Auto Install
+## Install The Package
 
 When creating a package, if it contains a `setup/setup.go` file, you can define the package installation logic in this file, and then users can use the `package:install` command to install the package:
 
@@ -40,45 +36,79 @@ The following is an explanation of the installation process defined in the `setu
 
 ```go
 // setup/setup.go
+package main
+
+import (
+	"os"
+
+	"github.com/goravel/framework/packages"
+	"github.com/goravel/framework/packages/modify"
+	"github.com/goravel/framework/support/file"
+	"github.com/goravel/framework/support/path"
+)
+
 func main() {
-  // When installing in this way, the configuration file will be published to the project's config directory.
-  // You can also manually publish this configuration file: ./artisan vendor:publish --package=github.com/goravel/example-package
-	config, err := supportfile.GetPackageContent(packages.GetModulePath(), "setup/config/hello.go")
+	// Initialize setup to get paths, this should be called at the beginning.
+	setup := packages.Setup(os.Args)
+
+	// The config file will be published to the project's config directory automatically when installing by this way.
+	// You can also publish this config file manually: ./artisan vendor:publish --package=github.com/goravel/example-package
+	config, err := file.GetPackageContent(setup.Paths().Module().String(), "setup/config/hello.go")
 	if err != nil {
 		panic(err)
 	}
 
-  // Execute installation or uninstallation operations based on user input parameters
-	packages.Setup(os.Args).
-    // Define installation process
-		Install(
-      // Find config/app.go file
-			modify.GoFile(path.Config("app.go")).
-        // Find imports and add import: examplepackage "github.com/goravel/example-package"
-				Find(match.Imports()).Modify(modify.AddImport(packages.GetModulePath(), "examplepackage")).
-        // Find providers and register service providers: &examplepackage.ServiceProvider{}，note that you need to add the import first, then you can register the service provider
-				Find(match.Providers()).Modify(modify.Register("&examplepackage.ServiceProvider{}")),
-      // Find hello.go file, create or overwrite file
-			modify.File(path.Config("hello.go")).Overwrite(config),
-		).
-    // Define uninstallation process
-		Uninstall(
-      // Find config/app.go file
-			modify.GoFile(path.Config("app.go")).
-        // Find providers and unregister service providers: &examplepackage.ServiceProvider{}
-				Find(match.Providers()).Modify(modify.Unregister("&examplepackage.ServiceProvider{}")).
-        // Find imports and delete import: examplepackage "github.com/goravel/example-package"，note that you need to unregister the service provider first, then you can delete the import
-				Find(match.Imports()).Modify(modify.RemoveImport(packages.GetModulePath(), "examplepackage")),
-      // Find hello.go file, delete file
-			modify.File(path.Config("hello.go")).Remove(),
-		).
-    // Execute installation or uninstallation operations
-		Execute()
+	serviceProvider := "&hello.ServiceProvider{}"
+	moduleImport := setup.Paths().Module().Import()
+
+	setup.Install(
+		// Register the service provider to the providers slice in bootstrap/providers.go
+		modify.RegisterProvider(moduleImport, serviceProvider),
+
+		// Add the config file to the config directory
+		modify.File(path.Config("hello.go")).Overwrite(config),
+	).Uninstall(
+		// Remove the config file from the config directory
+		modify.File(path.Config("hello.go")).Remove(),
+
+		// Unregister the service provider from the providers slice in bootstrap/providers.go
+		modify.UnregisterProvider(moduleImport, serviceProvider),
+	).Execute()
+}
 ```
 
-### Manual Install
+If the package import path is long or its default package name is not convenient, setup modify helpers support an import alias in the `"<alias> <import-path>"` format. Use the same aliased import string when installing and uninstalling:
 
-Register the `ServiceProvider` in the package to `config/app.go::providers`, then export `facades` to the application. For detailed steps, refer to [goravel/example-package](https://github.com/goravel/example-package).
+```go
+func main() {
+	setup := packages.Setup(os.Args)
+
+	serviceProvider := "&admin.ServiceProvider{}"
+	moduleImport := "admin " + setup.Paths().Module().Import()
+
+	setup.Install(
+		modify.RegisterProvider(moduleImport, serviceProvider),
+	).Uninstall(
+		modify.UnregisterProvider(moduleImport, serviceProvider),
+	).Execute()
+}
+```
+
+After installation, the generated import uses the alias and the registered item can reference that alias:
+
+```go
+import (
+	admin "github.com/example/goravel-admin"
+)
+
+func Providers() []foundation.ServiceProvider {
+	return []foundation.ServiceProvider{
+		&admin.ServiceProvider{},
+	}
+}
+```
+
+Alias import strings are also supported by setup helpers that add and remove routes, middleware, commands, jobs, migrations, rules, filters, seeders, and service providers.
 
 ## Resources
 
@@ -116,6 +146,30 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
   })
 }
 ```
+
+### Models
+
+If there are any new [models](../orm/getting-started.md) defined as part of your package, they can be published using the `Publishes` method:
+
+```go
+func (receiver *ServiceProvider) Boot(app foundation.Application) {
+  app.Publishes("github.com/goravel/example-package", map[string]string{
+    "models": app.ModelPath("models"),
+  })
+}
+```
+
+### Views
+
+If your package provides default [views](../the-basics/views.md), register their directory using `LoadViewsFrom` in your service provider's `Boot` method:
+
+```go
+func (receiver *ServiceProvider) Boot(app foundation.Application) {
+    facades.View().LoadViewsFrom("/path/to/package/views")
+}
+```
+
+The application's `resources/views` directory takes priority over registered package views, so users can override any package view by creating a file with the same name.
 
 ## Commands
 
@@ -161,7 +215,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 In the project, You can publish the resources registered in a package using `vendor:publish` Artisan command:
 
 ```shell
-go run . artisan vendor:publish --package={You package name}
+./artisan vendor:publish --package={You package name}
 ```
 
 The command can use the following options:

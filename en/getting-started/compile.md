@@ -1,27 +1,37 @@
 # Compile
 
-[[toc]]
-
 ## Compile command
 
 The Goravel project can be compiled with the following command:
 
+```shell
+# Select the system to compile
+./artisan build
+
+# Specify the system to compile
+./artisan build --os=linux
+./artisan build -o=linux
+
+# Static compilation
+./artisan build --static
+./artisan build -s
+
+# Specify the output file name
+./artisan build --name=goravel
+./artisan build -n=goravel
+
+# Run go generate before building
+./artisan build --generate
+./artisan build -g
 ```
-// Select the system to compile
-go run . artisan build
 
-// Specify the system to compile
-go run . artisan build --os=linux
-go run . artisan build -o=linux
+The `--generate` flag runs `go generate ./...` before the build step. It is disabled by default and can be combined with other build options:
 
-// Static compilation
-go run . artisan build --static
-go run . artisan build -s
-
-// Specify the output file name
-go run . artisan build --name=goravel
-go run . artisan build -n=goravel
+```shell
+./artisan build --generate --os=linux --arch=amd64
 ```
+
+When `--generate` is combined with target options such as `--os` or `--arch`, the generate step uses the same build environment.
 
 ## Manual compilation
 
@@ -35,12 +45,11 @@ go build .
 
 The Following files and folders need to be uploaded to the server during deployment:
 
-```
-./main // Compile the resulting binary file
+```text
 .env
-./public
-./storage
-./resources
+./main // Compile the resulting binary file
+./public // if exists
+./resources // if exists
 ```
 
 ### Static compilation
@@ -56,13 +65,13 @@ go build --ldflags "-extldflags -static" -o main .
 Compilation is differentiated by platform, you need to select a matching compilation method according to the deployment situation.
 
 ```shell
-// Compile Linux environment
+# Compile Linux environment
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build .
 
-// Compile Windows environment
+# Compile Windows environment
 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build .
 
-// Compile Mac environment
+# Compile Mac environment
 CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build .
 ```
 
@@ -94,12 +103,15 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
 RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone
 WORKDIR /www
+COPY --from=builder /build/.env /www/.env
 COPY --from=builder /build/main /www/
+
+# If exists
 COPY --from=builder /build/database/ /www/database/
 COPY --from=builder /build/public/ /www/public/
 COPY --from=builder /build/storage/ /www/storage/
 COPY --from=builder /build/resources/ /www/resources/
-COPY --from=builder /build/.env /www/.env
+
 ENTRYPOINT ["/www/main"]
 ```
 
@@ -112,7 +124,9 @@ docker-compose build
 docker-compose up
 ```
 
-> Note: If you need external access, you need to change APP_HOST to 0.0.0.0
+::: tip
+If you need external access, you need to change APP_HOST to 0.0.0.0
+:::
 
 ## Set timezone
 
@@ -120,13 +134,13 @@ When the `app.timezone` configuration is not `UTC`, you need to set the timezone
 
 1. Add timezone settings in Dockerfile
 
-```
+```dockerfile
 RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
 ```
 
 2. Set timezone during compilation
 
-```
+```shell
 go build -tags timetzdata .
 ```
 
@@ -137,7 +151,3 @@ import (
     _ "time/tzdata"
 )
 ```
-
-## Reduce package size
-
-Commenting out the unused `ServiceProvider` in `config/app.go::providers` will effectively reduce the packaging volume.

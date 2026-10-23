@@ -1,7 +1,5 @@
 # 日志
 
-[[toc]]
-
 ## 简介
 
 为了了解应用程序的运行状况，Goravel 提供了强大的日志模块，可以通过 `facades.Log()` 将日志消息、系统错误记录到文件或其他通道。
@@ -13,6 +11,8 @@
 `Goravel` 默认使用 `stack` 通道记录日志，`stack` 允许日志转发到多个通道中。
 
 `single` 和 `daily` 驱动中的 `print` 配置可以控制日志输出到控制台。
+
+`level` 配置控制最小日志级别。 低于此级别的日志将被过滤掉。 可用的级别有 `debug`（默认）、`info`、`warning` 和 `error`。
 
 ## 可用的通道驱动
 
@@ -28,6 +28,22 @@
 ```go
 facades.Log().WithContext(ctx)
 ```
+
+当使用 `WithContext` 时，Goravel 会将 context 中的键值对写入日志输出。框架内部键（如 `GoravelAuthJwt` 和 `goravel_http_client_name`）会被自动排除，以避免泄露敏感或冗余的值。
+
+你可以通过在 `config/logging.go` 中添加 `context.exclude` 来排除额外的 context 键：
+
+```go
+// config/logging.go
+"context": map[string]any{
+  "exclude": []any{
+    "access_token",
+    "secret_key",
+  },
+},
+```
+
+字符串条目通过显示名称匹配字符串 context 键和类型化字符串 context 键。可比较的非字符串条目匹配精确的 context 键值，这对于 struct 哨兵键非常有用。不可比较的条目（如 slices 或 maps）将被忽略。
 
 ## 写日志消息
 
@@ -87,10 +103,10 @@ facades.Log().User("John").Debug(message)
 然后包含 `via` 选项，实现 `framework\contracts\log\Logger` 接口：
 
 ```go
-// config/logging.go 配置
+// config/logging.go
 "custom": map[string]interface{}{
     "driver": "custom",
-    "via":    &Logger{},
+    "via":    &CustomLogger{},
 },
 ```
 
@@ -103,49 +119,12 @@ facades.Log().User("John").Debug(message)
 package log
 
 type Logger interface {
-  // Handle pass channel config path here
-  Handle(channel string) (Hook, error)
+  // 在此处传递通道配置路径
+  Handle(channel string) (Handler, error)
 }
 ```
 
-文件可以储存到 `app/extensions` 文件夹中（可修改）。 例如：
+你可以参考 daily 和 single 日志驱动程序的实现：
 
-```go
-package extensions
-
-import (
-  "fmt"
-
-  "github.com/goravel/framework/contracts/log"
-)
-
-type Logger struct {
-}
-
-// Handle 传入通道配置路径
-func (logger *Logger) Handle(channel string) (log.Hook, error) {
-  return &Hook{}, nil
-}
-
-type Hook struct {
-}
-
-// Levels 要监控的等级
-func (h *Hook) Levels() []log.Level {
-  return []log.Level{
-    log.DebugLevel,
-    log.InfoLevel,
-    log.WarningLevel,
-    log.ErrorLevel,
-    log.FatalLevel,
-    log.PanicLevel,
-  }
-}
-
-// Fire 当触发时执行的逻辑
-func (h *Hook) Fire(entry log.Entry) error {
-  fmt.Printf("context=%v level=%v time=%v message=%s", entry.Context(), entry.Level(), entry.Time(), entry.Message())
-
-  return nil
-}
-```
+- [Daily](https://github.com/goravel/framework/blob/master/log/logger/daily.go)
+- [Single](https://github.com/goravel/framework/blob/master/log/logger/single.go)

@@ -1,7 +1,5 @@
 # 扩展包开发
 
-[[toc]]
-
 ## 简介
 
 包是向 Goravel 添加功能的主要方式。 这些包可能包含专门用于增强 Goravel 应用程序的路由、控制器和配置。 本指南主要涵盖了那些特定于 Goravel 的包的开发。
@@ -13,22 +11,20 @@
 你可以使用 Artisan 命令便捷的创建一个包模板：
 
 ```shell
-go run . artisan make:package sms
+./artisan make:package sms
 ```
 
 创建的文件默认保存在根目录 `packages` 文件夹中，你可以使用 `--root` 选项自定义：
 
 ```shell
-go run . artisan make:package --root=pkg sms
+./artisan make:package --root=pkg sms
 ```
 
 ## 服务提供者
 
 [服务提供者](../architecture-concepts/service-providers.md)是你的包和 Goravel 之间的连接点。 通常位于包的根目录中：`service_provider.go`。 服务提供者负责将事物绑定到 Goravel 的[服务容器](../architecture-concepts/service-container.md)并通知 Goravel 在哪里加载包资源。
 
-## 使用
-
-### 自动安装
+## 安装包
 
 当创建包时包含一个 `setup/setup.go` 文件，你可以在这个文件中定义包的安装逻辑，之后用户可以使用 `package:install` 命令安装包：
 
@@ -40,45 +36,79 @@ go run . artisan make:package --root=pkg sms
 
 ```go
 // setup/setup.go
+package main
+
+import (
+	"os"
+
+	"github.com/goravel/framework/packages"
+	"github.com/goravel/framework/packages/modify"
+	"github.com/goravel/framework/support/file"
+	"github.com/goravel/framework/support/path"
+)
+
 func main() {
-  // 当使用这种方式安装时，配置文件将会被发布到项目的 config 目录。
-  // 你也可以手动发布这个配置文件：./artisan vendor:publish --package=github.com/goravel/example-package
-	config, err := supportfile.GetPackageContent(packages.GetModulePath(), "setup/config/hello.go")
+	// 初始化 setup 以获取路径
+	setup := packages.Setup(os.Args)
+
+	// 通过这种方式安装时，配置文件将自动发布到项目的配置目录。
+	// 你也可以手动发布此配置文件：./artisan vendor:publish --package=github.com/goravel/example-package
+	config, err := file.GetPackageContent(setup.Paths().Module().String(), "setup/config/hello.go")
 	if err != nil {
 		panic(err)
 	}
 
-  // 根据用户输入的参数，执行安装或卸载操作
-	packages.Setup(os.Args).
-    // 定义安装过程
-		Install(
-      // 查找 config/app.go 文件
-			modify.GoFile(path.Config("app.go")).
-        // 查找 imports 并添加导入: examplepackage "github.com/goravel/example-package"
-				Find(match.Imports()).Modify(modify.AddImport(packages.GetModulePath(), "examplepackage")).
-        // 查找 providers 并注册服务提供者: &examplepackage.ServiceProvider{}，注意这里需要先添加导入，然后才能注册服务提供者
-				Find(match.Providers()).Modify(modify.Register("&examplepackage.ServiceProvider{}")),
-      // 查找 hello.go 文件，创建或覆盖文件
-			modify.File(path.Config("hello.go")).Overwrite(config),
-		).
-    // 定义卸载过程
-		Uninstall(
-      // 查找 config/app.go 文件
-			modify.GoFile(path.Config("app.go")).
-        // 查找 providers 并取消注册服务提供者: &examplepackage.ServiceProvider{}
-				Find(match.Providers()).Modify(modify.Unregister("&examplepackage.ServiceProvider{}")).
-        // 查找 imports 并删除导入: examplepackage "github.com/goravel/example-package"，注意这里需要先取消注册服务提供者，然后才能删除导入
-				Find(match.Imports()).Modify(modify.RemoveImport(packages.GetModulePath(), "examplepackage")),
-      // 查找 hello.go 文件，删除文件
-			modify.File(path.Config("hello.go")).Remove(),
-		).
-    // 执行安装或卸载操作
-		Execute()
+	serviceProvider := "&hello.ServiceProvider{}"
+	moduleImport := setup.Paths().Module().Import()
+
+	setup.Install(
+		// 将服务提供者注册到 bootstrap/providers.go 中的 providers 切片
+		modify.RegisterProvider(moduleImport, serviceProvider),
+
+		// 将配置文件添加到配置目录
+		modify.File(path.Config("hello.go")).Overwrite(config),
+	).Uninstall(
+		// 从配置目录中移除配置文件
+		modify.File(path.Config("hello.go")).Remove(),
+
+		// 从 bootstrap/providers.go 中的 providers 切片中注销服务提供者
+		modify.UnregisterProvider(moduleImport, serviceProvider),
+	).Execute()
+}
 ```
 
-### 手动安装
+如果包的导入路径较长或默认包名不方便使用，安装辅助函数支持 `"<别名> <导入路径>"` 格式的导入别名。安装和卸载时请使用相同的别名导入字符串：
 
-将包内的 `ServiceProvider` 注册到 `config/app.go::providers`，然后将 `facades` 导出到应用中即可。 详细步骤可以参考：[goravel/example-package](https://github.com/goravel/example-package)。
+```go
+func main() {
+	setup := packages.Setup(os.Args)
+
+	serviceProvider := "&admin.ServiceProvider{}"
+	moduleImport := "admin " + setup.Paths().Module().Import()
+
+	setup.Install(
+		modify.RegisterProvider(moduleImport, serviceProvider),
+	).Uninstall(
+		modify.UnregisterProvider(moduleImport, serviceProvider),
+	).Execute()
+}
+```
+
+安装后，生成的导入将使用别名，注册项可以引用该别名：
+
+```go
+import (
+	admin "github.com/example/goravel-admin"
+)
+
+func Providers() []foundation.ServiceProvider {
+	return []foundation.ServiceProvider{
+		&admin.ServiceProvider{},
+	}
+}
+```
+
+别名导入字符串也适用于添加和删除路由、中间件、命令、任务、迁移、规则、过滤器、种子数据和服务提供者的安装辅助函数。
 
 ## 资源
 
@@ -105,6 +135,18 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 }
 ```
 
+### 视图
+
+如果你的包提供了默认的[视图](../the-basics/views.md)，可以在服务提供者的 `Boot` 方法中使用 `LoadViewsFrom` 注册它们的目录：
+
+```go
+func (receiver *ServiceProvider) Boot(app foundation.Application) {
+    facades.View().LoadViewsFrom("/path/to/package/views")
+}
+```
+
+应用程序的 `resources/views` 目录优先级高于注册的包视图，因此用户可以通过创建同名文件来覆盖任何包视图。
+
 ### 迁移
 
 如果你的包包含[数据库迁移](../database/migrations.md)，也可以使用 `Publishes` 方法进行发布：
@@ -113,6 +155,18 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 func (receiver *ServiceProvider) Boot(app foundation.Application) {
   app.Publishes("github.com/goravel/example-package", map[string]string{
     "migrations": app.DatabasePath("migrations"),
+  })
+}
+```
+
+### 模型
+
+如果包中定义了新的 [模型](../orm/getting-started.md)，它们也可以使用 `Publishes` 方法发布：
+
+```go
+func (receiver *ServiceProvider) Boot(app foundation.Application) {
+  app.Publishes("github.com/goravel/example-package", map[string]string{
+    "models": app.ModelPath("models"),
   })
 }
 ```
@@ -161,7 +215,7 @@ func (receiver *ServiceProvider) Boot(app foundation.Application) {
 在项目中，你可以使用 Artisan 命令 `vendor:publish` 发布包中注册的资源：
 
 ```shell
-go run . artisan vendor:publish --package={你的包名}
+./artisan vendor:publish --package={你的包名}
 ```
 
 该命令可以使用如下参数：

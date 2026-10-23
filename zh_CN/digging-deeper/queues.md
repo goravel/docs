@@ -1,7 +1,5 @@
 # 队列
 
-[[toc]]
-
 ## 简介
 
 在构建 Web 应用程序时，你可能需要执行一些比较耗时的任务（例如解析和存储上传的 CSV 文件）。 Goravel 可以让你轻松地创建可在后台排队处理的任务。 通过将耗时的任务移到队列中，你的应用程序可以以超快的速度响应 Web 请求，并为客户提供更好的用户体验。 我们使用 `facades.Queue()` 实现这些功能。
@@ -40,11 +38,11 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 
 如果当前驱动无法满足需求，你可以自定义驱动。 需要实现 `contracts/queue/driver.go` 中的 [Driver](https://github.com/goravel/framework/blob/master/contracts/queue/driver.go#L14) 接口。
 
-官方实现了 `Redis` 驱动，你可以参考 [Redis Driver](https://github.com/goravel/framework/blob/master/queue/drivers/redis/driver.go) 实现自己的自定义驱动。
+官方实现了 `Redis` 驱动，你可以参考 [Redis Driver](https://github.com/goravel/redis) 实现自己的自定义驱动。
 
 自定义驱动实现后，可以添加配置到 `config/queue.go` 中：
 
-```
+```go
 ...
 "connections": map[string]any{
   "redis": map[string]any{
@@ -58,6 +56,39 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 },
 ```
 
+### 批量接收驱动
+
+对于高吞吐量场景（如 Kafka、RabbitMQ 消费者通道），你可以选择实现 `DriverWithReceive` 接口以启用带阻塞语义的批量消息消费。当驱动实现了该接口时，队列工作器会自动使用 `Receive` 而非 `Pop`，从而减少轮询开销并提高吞吐量：
+
+```go
+import (
+  "context"
+  "github.com/goravel/framework/contracts/queue"
+)
+
+type KafkaDriver struct{}
+
+// Implement the base Driver interface
+func (d *KafkaDriver) Driver() string {
+  return "kafka"
+}
+
+func (d *KafkaDriver) Push(task queue.Task, queue string) error {
+  // push job to Kafka
+}
+
+func (d *KafkaDriver) Pop(queue string) (queue.ReservedJob, error) {
+  // standard single-job pop
+}
+
+// Implement the optional DriverWithReceive for batch consumption
+func (d *KafkaDriver) Receive(ctx context.Context, queue string, count int) ([]queue.ReservedJob, error) {
+  // batch receive up to `count` jobs, blocking until at least one is available or ctx expires
+}
+```
+
+当 `Receive` 可用时，工作器会运行一个阻塞的批量循环，每次调用有 5 秒超时，并在出错或空批次时使用指数退避（100ms–3.2s）。`context.Context` 会在工作器关闭时取消，确保干净的终止。
+
 ## 创建任务
 
 ### 生成任务类
@@ -65,8 +96,21 @@ err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{
 默认情况下，应用程序的所有的任务都被存储在了 `app/jobs` 目录中。 如果 `app/jobs` 目录不存在，当你运行 `make:job` Artisan 命令时，将会自动创建该目录：
 
 ```shell
-go run . artisan make:job ProcessPodcast
-go run . artisan make:job user/ProcessPodcast
+./artisan make:job ProcessPodcast
+./artisan make:job user/ProcessPodcast
+```
+
+### 注册任务
+
+通过 `make:job` 创建的新任务将自动注册到 `bootstrap/jobs.go::Jobs()` 函数中，并且该函数将由 `WithJobs` 调用。 如果你自行创建任务文件，则需要手动注册。
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithJobs(Jobs).
+		WithConfig(config.Boot).
+		Create()
+}
 ```
 
 ### 类结构
@@ -101,76 +145,24 @@ func (r *ProcessPodcast) ShouldRetry(err error, attempt int) (retryable bool, de
 }
 ```
 
-### 注册任务
-
-当任务创建好后，需要注册到 `app/provides/queue_service_provider.go`，以便能够正确调用。 如果是通过 `make:job` 命令生成的任务，则不需要手动注册，框架会自动注册。
-
-```go
-func (receiver *QueueServiceProvider) Jobs() []queue.Job {
-  return []queue.Job{
-    &jobs.Test{},
-  }
-}
-```
-
 ## 启动队列服务器
 
-在根目录下 `main.go` 中启动队列服务器。
+默认队列将由队列服务提供者的 runner 启动，如果你想启动多个具有不同配置的队列工作器，可以创建一个[runner](../architecture-concepts/service-providers.md#runners)并将其添加到 `bootstrap/app.go` 文件中的 `WithRunners` 函数：
 
 ```go
-package main
-
-import (
-  "github.com/goravel/framework/facades"
-
-  "goravel/bootstrap"
-)
-
-func main() {
-  // This bootstraps the framework and gets it ready for use.
-  bootstrap.Boot()
-
-  // Start queue server by facades.Queue().
-  go func() {
-    if err := facades.Queue().Worker().Run(); err != nil {
-      facades.Log().Errorf("Queue run error: %v", err)
-    }
-  }()
-
-  select {}
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithRunners(func() []contractsfoundation.Runner {
+      return []contractsfoundation.Runner{
+        YourRunner,
+      }
+    }).
+    Create()
 }
 ```
 
-`facades.Queue().Worker` 方法中可以传入不同的参数，通过启动多个 `facades.Queue().Worker`，可以达到监听多个队列的目的。
-
-```go
-// 不传参数，默认监听 `config/queue.go` 中的配置，并发数为 1
-go func() {
-  if err := facades.Queue().Worker().Run(); err != nil {
-    facades.Log().Errorf("Queue run error: %v", err)
-  }
-}()
-
-// 监听 redis 链接的 processing 队列，并发数 10，重试次数 3
-go func() {
-  if err := facades.Queue().Worker(queue.Args{
-    Connection: "redis",
-    Queue: "processing",
-    Concurrent: 10,
-    Tries: 3,
-  }).Run(); err != nil {
-    facades.Log().Errorf("Queue run error: %v", err)
-  }
-}()
-```
-
-## 停止队列服务器
-
-当队列服务器运行时，你可以通过调用 `Shutdown` 方法来停止队列服务器，该方法会等待当前运行中的任务完成后才会停止队列。
-
-```go
-err := facades.Queue().Worker().Shutdown()
-```
+你可以参考[默认队列 runner](https://github.com/goravel/framework/blob/master/queue/runners.go)。
 
 ## 调度任务
 
@@ -182,8 +174,8 @@ package controllers
 import (
   "github.com/goravel/framework/contracts/queue"
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/jobs"
 )
 
@@ -208,15 +200,15 @@ package controllers
 import (
   "github.com/goravel/framework/contracts/queue"
   "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/jobs"
 )
 
 type UserController struct {
 }
 
-func (r *serController) Show(ctx http.Context) {
+func (r *UserController) Show(ctx http.Context) {
   err := facades.Queue().Job(&jobs.Test{}, []queue.Arg{}).DispatchSync()
   if err != nil {
     // do something

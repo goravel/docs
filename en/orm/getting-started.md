@@ -1,7 +1,5 @@
 # Getting Started
 
-[[toc]]
-
 ## Introduction
 
 Goravel provides a very simple and easy-to-use database interaction, developers can use `facades.Orm()` to operate. Please refer to [Configure Database](../database/getting-started) before starting.
@@ -22,8 +20,8 @@ For example, the model name is `UserOrder`, and the table name is `user_orders`.
 Use the `make:model` command to create a model:
 
 ```shell
-go run . artisan make:model User
-go run . artisan make:model user/User
+./artisan make:model User
+./artisan make:model user/User
 ```
 
 Created model file is located in `app/models/user.go` file, the content is as follows:
@@ -57,36 +55,80 @@ type User struct {
 
 More Tag usage details can be found at: https://gorm.io/docs/models.html.
 
+#### Json Field
+
+If you want to use JSON field, you can define the field type as `datatypes.JSONMap` or a custom struct, and add the Tag: `gorm:"type:json"`:
+
+```go
+package models
+
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"github.com/goravel/framework/database/orm"
+	"gorm.io/datatypes"
+)
+
+type User struct {
+	orm.Model
+	Json1 datatypes.JSONMap `gorm:"type:json" json:"json1"`
+	Json2 *UserData `gorm:"type:json;serializer:json" json:"json2"`
+}
+
+type UserData struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+}
+
+func (r *UserData) Value() (driver.Value, error) {
+	return json.Marshal(r)
+}
+
+func (r *UserData) Scan(value any) (err error) {
+	if data, ok := value.([]byte); ok && len(data) > 0 {
+		err = json.Unmarshal(data, &r)
+	}
+	return
+}
+```
+
 #### Create Model based on data table
 
 ```shell
 ./artisan make:model --table=users User
 
-// If the Model already exists, you can use the -f option to force overwrite
+# If the Model already exists, you can use the -f option to force overwrite
 ./artisan make:model --table=users -f User
 ```
 
-If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend` method to extend the field type in the `Boot` method of the `app/providers/database_service_provider.go` file:
+If the data table has a field type that the framework cannot recognize, you can call the `facades.Schema().Extend()` method to extend the field type in the `bootstrap/app.go::WithCallback` function:
 
 ```go
 import "github.com/goravel/framework/contracts/schema"
 
-facades.Schema().Extend(&schema.Extension{
-  GoTypes: []schema.GoType{
-    {
-        Pattern: "uuid",
-        Type: "uuid.UUID",
-        NullType: "uuid.NullUUID",
-        Imports: []string{"github.com/google/uuid"},
-    },
-    {
-        Pattern: "point",
-        Type: "geom.Point",
-        NullType: "*geom.Point",
-        Imports: []string{"github.com/twpayne/go-geom"},
-    },
-  },
-})
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Schema().Extend(&schema.Extension{
+        GoTypes: []schema.GoType{
+          {
+              Pattern: "uuid",
+              Type: "uuid.UUID",
+              NullType: "uuid.NullUUID",
+              Imports: []string{"github.com/google/uuid"},
+          },
+          {
+              Pattern: "point",
+              Type: "geom.Point",
+              NullType: "*geom.Point",
+              Imports: []string{"github.com/twpayne/go-geom"},
+          },
+        },
+      })
+    }).
+    Create()
+}
 ```
 
 ### Specify Table Name
@@ -135,23 +177,67 @@ func (r *User) Connection() string {
 
 ### Setting Global Scope
 
-Model supports setting the `GlobalScope` method, which restricts the scope of the query, update, and delete operations:
+Model supports setting the `GlobalScopes` method, which restricts the scope of the query, update, and delete operations:
 
 ```go
-import "github.com/goravel/framework/contracts/orm"
+import (
+	contractsorm "github.com/goravel/framework/contracts/database/orm"
+	"github.com/goravel/framework/database/orm"
+)
 
 type User struct {
   orm.Model
   Name string
 }
 
-func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
-  return []func(orm.Query) orm.Query{
-    func(query orm.Query) orm.Query {
+func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query {
+  return map[string]func(contractsorm.Query) contractsorm.Query{
+    "name": func(query contractsorm.Query) contractsorm.Query {
       return query.Where("name", "goravel")
     },
   }
 }
+```
+
+You can access the context passed by `facades.Orm().WithContext(ctx)` from the query inside a global scope:
+
+```go
+import (
+  "context"
+
+  contractsorm "github.com/goravel/framework/contracts/database/orm"
+  "github.com/goravel/framework/database/orm"
+  "github.com/goravel/framework/facades"
+)
+
+type User struct {
+  orm.Model
+  Name string
+}
+
+func (r *User) GlobalScopes() map[string]func(contractsorm.Query) contractsorm.Query {
+  return map[string]func(contractsorm.Query) contractsorm.Query{
+    "tenant": func(query contractsorm.Query) contractsorm.Query {
+      tenantID, _ := query.Context().Value("tenant_id").(uint)
+
+      return query.Where("tenant_id", tenantID)
+    },
+  }
+}
+
+ctx := context.WithValue(context.Background(), "tenant_id", uint(1))
+var users []User
+err := facades.Orm().WithContext(ctx).Query().Find(&users)
+```
+
+If you want to remove global scopes in a query, you can use the `WithoutGlobalScopes` function:
+
+```go
+// Remove all global scopes
+facades.Orm().Query().WithoutGlobalScopes().Get(&users)
+
+// Remove specified global scope
+facades.Orm().Query().WithoutGlobalScopes("name").Get(&users)
 ```
 
 ## facades.Orm() available functions
@@ -168,8 +254,10 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 
 | Functions                   | Action                                                                        |
 | --------------------------- | ----------------------------------------------------------------------------- |
+| Avg                         | [Avg](#aggregates)                                                               |
 | BeginTransaction            | [Begin transaction](#transaction)                                             |
 | Commit                      | [Commit transaction](#transaction)                                            |
+| Context                     | [Inject Context](#inject-context)                                             |
 | Count                       | [Count](#count)                                                               |
 | Create                      | [Create](#create)                                                             |
 | Cursor                      | [Cursor](#cursor)                                                             |
@@ -187,11 +275,13 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | FirstOrFail                 | [Not Found Error](#not-found-error)                                           |
 | ForceDelete                 | [Force delete](#delete)                                                       |
 | Get                         | [Query multiple lines](#query-multiple-lines)                                 |
-| Group                       | [Group](#group-by--having)                                                    |
+| Group                       | [Group](#group-by-having)                                                    |
 | Having                      | [Having](#group-by-having)                                                    |
 | Join                        | [Join](#join)                                                                 |
 | Limit                       | [Limit](#limit)                                                               |
 | LockForUpdate               | [Pessimistic Locking](#pessimistic-locking)                                   |
+| Max                         | [Max](#aggregates)                                                               |
+| Min                         | [Min](#aggregates)                                                               |
 | Model                       | [Specify a model](#specify-table-query)                                       |
 | Offset                      | [Offset](#offset)                                                             |
 | Order                       | [Order](#order)                                                               |
@@ -202,39 +292,42 @@ func (r *User) GlobalScopes() []func(orm.Query) orm.Query {
 | OrWhereNotIn                | [OrWhereNotIn](#where)                                                        |
 | OrWhereNull                 | [OrWhereNull](#where)                                                         |
 | OrWhereIn                   | [OrWhereIn](#where)                                                           |
-| OrWhereJsonContains         | [查询条件](#where-条件)                                                       |
-| OrWhereJsonContainsKey      | [查询条件](#where-条件)                                                       |
-| OrWhereJsonDoesntContain    | [查询条件](#where-条件)                                                       |
-| OrWhereJsonDoesntContainKey | [查询条件](#where-条件)                                                       |
-| OrWhereJsonLength           | [查询条件](#where-条件)                                                       |
+| OrWhereJsonContains         | [OrWhereJsonContains](#where)                                                 |
+| OrWhereJsonContainsKey      | [OrWhereJsonContainsKey](#where)                                              |
+| OrWhereJsonDoesntContain    | [OrWhereJsonDoesntContain](#where)                                            |
+| OrWhereJsonDoesntContainKey | [OrWhereJsonDoesntContainKey](#where)                                         |
+| OrWhereJsonLength           | [OrWhereJsonLength](#where)                                                   |
 | Paginate                    | [Paginate](#paginate)                                                         |
 | Pluck                       | [Query single column](#query-single-column)                                   |
 | Raw                         | [Execute native SQL](#execute-native-sql)                                     |
 | Restore                     | [Restore](#restore)                                                           |
 | Rollback                    | [Rollback transaction](#transaction)                                          |
-| Save                        | [Update a existing model](#update-a-existing-model)                           |
+| Save                        | [Update an existing model](#update-an-existing-model)                           |
 | SaveQuietly                 | [Saving a single model without events](#saving-a-single-model-without-events) |
 | Scan                        | [Scan struct](#execute-native-sql)                                            |
 | Scopes                      | [Scopes](#scopes)                                                             |
 | Select                      | [Specify Fields](#specify-fields)                                             |
 | SharedLock                  | [Pessimistic Locking](#pessimistic-locking)                                   |
-| Sum                         | [Sum](#sum)                                                                   |
+| Sum                         | [Sum](#aggregates)                                                               |
 | Table                       | [Specify a table](#specify-table-query)                                       |
 | ToSql                       | [Get SQL](#get-sql)                                                           |
 | ToRawSql                    | [Get SQL](#get-sql)                                                           |
-| Update                      | [Update a single column](#update-a-single-column)                             |
+| Update                      | [Update columns](#update-columns)                             |
 | UpdateOrCreate              | [Update or create](#update-or-create)                                         |
 | Where                       | [Where](#where)                                                               |
+| WhereAll                    | [WhereAll](#where)                                                        |
+| WhereAny                    | [WhereAny](#where)                                                        |
 | WhereBetween                | [WhereBetween](#where)                                                        |
+| WhereNone                   | [WhereNone](#where)                                                     |
 | WhereNotBetween             | [WhereNotBetween](#where)                                                     |
 | WhereNotIn                  | [WhereNotIn](#where)                                                          |
 | WhereNull                   | [WhereNull](#where)                                                           |
 | WhereIn                     | [WhereIn](#where)                                                             |
-| WhereJsonContains           | [查询条件](#where-条件)                                                       |
-| WhereJsonContainsKey        | [查询条件](#where-条件)                                                       |
-| WhereJsonDoesntContain      | [查询条件](#where-条件)                                                       |
-| WhereJsonDoesntContainKey   | [查询条件](#where-条件)                                                       |
-| WhereJsonLength             | [查询条件](#where-条件)                                                       |
+| WhereJsonContains           | [WhereJsonContains](#where)                                                   |
+| WhereJsonContainsKey        | [WhereJsonContainsKey](#where)                                                |
+| WhereJsonDoesntContain      | [WhereJsonDoesntContain](#where)                                              |
+| WhereJsonDoesntContainKey   | [WhereJsonDoesntContainKey](#where)                                           |
+| WhereJsonLength             | [WhereJsonLength](#where)                                                     |
 | WithoutEvents               | [Muting events](#muting-events)                                               |
 | WithTrashed                 | [Query soft delete data](#query-soft-delete-data)                             |
 
@@ -402,6 +495,18 @@ facades.Orm().Query().OrWhere("name", "tom")
 facades.Orm().Query().OrWhereNotIn("name", []any{"a"})
 facades.Orm().Query().OrWhereNull("name")
 facades.Orm().Query().OrWhereIn("name", []any{"a"})
+
+var products []Product
+facades.DB().Table("products").WhereAll([]string{"weight", "height"}, "=", 200).Find(&products)
+// SQL: SELECT * FROM products WHERE weight = ? AND height = ?
+
+var users []User
+facades.DB().Table("users").WhereAny([]string{"name", "email"}, "=", "John").Find(&users)
+// SQL: SELECT * FROM users WHERE (name = ? OR email = ?)
+
+var products []Product
+facades.DB().Table("products").WhereNone([]string{"age", "score"}, ">", 18).Find(&products)
+// SQL: SELECT * FROM products WHERE NOT (age > ?) AND NOT (score > ?)
 ```
 
 Query JSON columns
@@ -542,7 +647,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm().Query().Model(&models.User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
+facades.Orm().Query().Model(&models.User{}).Select("name", "sum(age) as total").Group("name").Having("name = ?", "tom").Get(&result)
 // SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "tom";
 ```
 
@@ -555,7 +660,7 @@ type Result struct {
 }
 
 var result Result
-facades.Orm().Query().Model(&models.User{}).Select("users.name, emails.email").Join("left join emails on emails.user_id = users.id").Scan(&result)
+facades.Orm().Query().Model(&models.User{}).Select("users.name", "emails.email").Join("left join emails on emails.user_id = users.id").Scan(&result)
 // SELECT users.name, emails.email FROM `users` LEFT JOIN emails ON emails.user_id = users.id;
 ```
 
@@ -594,11 +699,13 @@ err := facades.Orm().Query().Model(&models.User{}).Create(&[]map[string]any{
 })
 ```
 
-> `created_at` and `updated_at` will be filled automatically.
+::: info
+`created_at` and `updated_at` are filled automatically.
+:::
 
 ### Cursor
 
-Can be used to significantly reduce your application's memory consumption when iterating through tens of thousands of Eloquent model records. Note, the `Cursor` method can be used with `With` at the same time, please use [Lazy Eager Loading](./relationships.md#lazy-eager-loading) to load relationship in the `for` logic.
+Can be used to significantly reduce your application's memory consumption when iterating through tens of thousands of model records. Note, the `Cursor` method can be used with `With` at the same time, please use [Lazy Eager Loading](./relationships.md#lazy-eager-loading) to load relationship in the `for` logic.
 
 ```go
 cursor, err := facades.Orm().Query().Model(models.User{}).Cursor()
@@ -639,7 +746,9 @@ facades.Orm().Query().Model(&models.User{}).Where("name", "tom").Update(map[stri
 // UPDATE `users` SET `updated_at`='2023-09-18 21:07:06.489',`name`='hello',`age`=18 WHERE `name` = 'tom';
 ```
 
-> When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
+::: warning Zero values are skipped
+When updating with `struct`, Orm will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update. Note that `struct` can only be `Model`, if you want to update with non `Model`, you need to use `.Table("users")`, however, the `updated_at` field cannot be updated automatically at this time.
+:::
 
 #### Update JSON fields
 
@@ -711,7 +820,8 @@ facades.Orm().Query().Select(orm.Associations).Delete(&user)
 facades.Orm().Query().Select("Account").Delete(&users)
 ```
 
-Note: The associations will be deleted only if the primary key of the record is not empty, and Orm uses these primary keys as conditions to delete associated records:
+::: warning
+The associations are deleted only if the primary key of the record is not empty, because Orm uses these primary keys as conditions to delete associated records:
 
 ```go
 // Delete user that name='goravel', but don't delete account of user
@@ -723,6 +833,7 @@ facades.Orm().Query().Select("Account").Where("name", "goravel").Delete(&models.
 // Delete user that id = 1 and delete account of that user
 facades.Orm().Query().Select("Account").Delete(&models.User{ID: 1})
 ```
+:::
 
 If execute batch delete without any conditions, ORM doesn't do that and returns an error. So you have to add some conditions, or use native SQL.
 
@@ -794,8 +905,8 @@ You can execute a transaction by `Transaction` function.
 ```go
 import (
   "github.com/goravel/framework/contracts/database/orm"
-  "github.com/goravel/framework/facades"
 
+  "goravel/app/facades"
   "goravel/app/models"
 )
 
@@ -868,10 +979,20 @@ var users []models.User
 facades.Orm().Query().Where("votes > ?", 100).LockForUpdate().Get(&users)
 ```
 
-### Sum
+### Aggregates
 
 ```go
-sum, err := facades.Orm().Query().Model(models.User{}).Sum("id")
+var sum int
+err := facades.Orm().Query().Model(models.User{}).Sum("id", &sum)
+
+var avg float64
+err := facades.Orm().Query().Model(models.User{}).Avg("age", &avg)
+
+var max int
+err := facades.Orm().Query().Model(models.User{}).Max("age", &max)
+
+var min int
+err := facades.Orm().Query().Model(models.User{}).Min("age", &min)
 ```
 
 ## Events
@@ -880,7 +1001,9 @@ Orm models dispatch several events, allowing you to hook into the following mome
 
 The `Retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `Creating` and `Created` events will dispatch. The `Updating` / `Updated` events will dispatch when an existing model is modified and the `Save` method is called. The `Saving` / `Saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
 
-Note: All events will only be triggered when operating a model. For example, if you want to trigger the `Updating` and `Updated` events when calling the `Update` method, you need to pass the existing model to the `Model` method: `facades.Orm().Query().Model(&user).Update("name", "Goravel")`.
+::: warning
+All events will only be triggered when operating a model. For example, if you want to trigger the `Updating` and `Updated` events when calling the `Update` method, you need to pass the existing model to the `Model` method: `facades.Orm().Query().Model(&user).Update("name", "Goravel")`.
+:::
 
 To start listening to model events, define a `DispatchesEvents` method on your model. This property maps various points of the model's lifecycle to your own event classes.
 
@@ -940,17 +1063,19 @@ func (u *User) DispatchesEvents() map[contractsorm.EventType]func(contractsorm.E
 }
 ```
 
-> Note: Just register the events you need. Model events are not dispatched when doing batch operations through Orm.
+::: warning
+Just register the events you need. Model events are not dispatched when doing batch operations through Orm.
+:::
 
 ### Observers
 
 #### Defining Observers
 
-If you are listening to many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names that reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
+If you are listening to many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names that reflect the model events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
 ```shell
-go run . artisan make:observer UserObserver
-go run . artisan make:observer user/UserObserver
+./artisan make:observer UserObserver
+./artisan make:observer user/UserObserver
 ```
 
 This command will place the new observer in your `app/observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
@@ -985,35 +1110,22 @@ func (u *UserObserver) ForceDeleted(event orm.Event) error {
 
 The template observer only contains some events, you can add other events according to your needs.
 
-To register an observer, you need to call the `Observe` method on the model you wish to observe. You may register observers in the `Boot` method of your application's `app/providers/event_service_provider.go::Boot` service provider:
+To register an observer, you need to call the `Observe` method on the model you wish to observe. You can register observers in the `bootstrap/app.go::WithCallback` function:
 
 ```go
-package providers
-
-import (
-	"github.com/goravel/framework/facades"
-
-	"goravel/app/models"
-	"goravel/app/observers"
-)
-
-type EventServiceProvider struct {
-}
-
-func (receiver *EventServiceProvider) Register(app foundation.Application) {
-	facades.Event().Register(receiver.listen())
-}
-
-func (receiver *EventServiceProvider) Boot(app foundation.Application) {
-	facades.Orm().Observe(models.User{}, &observers.UserObserver{})
-}
-
-func (receiver *EventServiceProvider) listen() map[event.Event][]event.Listener {
-	return map[event.Event][]event.Listener{}
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.Orm().Observe(models.User{}, &observers.UserObserver{})
+    }).
+    Create()
 }
 ```
 
-> Note: If you set `DispatchesEvents` and `Observer` at the same time, only `DispatchesEvents` will be applied.
+::: warning
+If you set `DispatchesEvents` and `Observer` at the same time, only `DispatchesEvents` will be applied.
+:::
 
 #### Parameter in Observer
 

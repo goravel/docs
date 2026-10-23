@@ -1,7 +1,5 @@
 # Logging
 
-[[toc]]
-
 ## Introduction
 
 In order to understand the running status of the application, Goravel provides a powerful log service that can record log messages and system errors to a file or other channels through `facades.Log()`.
@@ -13,6 +11,8 @@ To configure various log channels, custom configurations can be made in `config/
 `Goravel` uses `stack` channel to record logs by default, `stack` allows logs to be forwarded to multiple channels.
 
 The `print` configuration in `single` and `daily` drivers can control log output to the console.
+
+The `level` configuration controls the minimum log level. Logs below this level will be filtered out. Available levels are `debug` (default), `info`, `warning`, and `error`.
 
 ## Available channel drivers
 
@@ -28,6 +28,22 @@ The `print` configuration in `single` and `daily` drivers can control log output
 ```go
 facades.Log().WithContext(ctx)
 ```
+
+When `WithContext` is used, Goravel writes context key-value pairs to the log output. Framework-internal keys such as `GoravelAuthJwt` and `goravel_http_client_name` are excluded automatically to avoid leaking sensitive or noisy values.
+
+You can exclude additional context keys by adding `context.exclude` to `config/logging.go`:
+
+```go
+// config/logging.go
+"context": map[string]any{
+  "exclude": []any{
+    "access_token",
+    "secret_key",
+  },
+},
+```
+
+String entries match string context keys and typed string context keys by their displayed name. Comparable non-string entries match the exact context key value, which is useful for struct sentinel keys. Uncomparable entries, such as slices or maps, are ignored.
 
 ## Write log messages
 
@@ -90,7 +106,7 @@ Then include a `via` option to implement a `framework\contracts\log\Logger` stru
 // config/logging.go
 "custom": map[string]interface{}{
     "driver": "custom",
-    "via":    &CustomTest{},
+    "via":    &CustomLogger{},
 },
 ```
 
@@ -104,48 +120,11 @@ package log
 
 type Logger interface {
   // Handle pass channel config path here
-  Handle(channel string) (Hook, error)
+  Handle(channel string) (Handler, error)
 }
 ```
 
-files can be stored in the `app/extensions` folder (modifiable). Example:
+You can check the daily and single log drivers for reference:
 
-```go
-package extensions
-
-import (
-  "fmt"
-
-  "github.com/goravel/framework/contracts/log"
-)
-
-type Logger struct {
-}
-
-// Handle pass channel config path here
-func (logger *Logger) Handle(channel string) (log.Hook, error) {
-  return &Hook{}, nil
-}
-
-type Hook struct {
-}
-
-// Levels monitoring level
-func (h *Hook) Levels() []log.Level {
-  return []log.Level{
-    log.DebugLevel,
-    log.InfoLevel,
-    log.WarningLevel,
-    log.ErrorLevel,
-    log.FatalLevel,
-    log.PanicLevel,
-  }
-}
-
-// Fire execute logic when trigger
-func (h *Hook) Fire(entry log.Entry) error {
-  fmt.Printf("context=%v level=%v time=%v message=%s", entry.Context(), entry.Level(), entry.Time(), entry.Message())
-
-  return nil
-}
-```
+- [Daily](https://github.com/goravel/framework/blob/master/log/logger/daily.go)
+- [Single](https://github.com/goravel/framework/blob/master/log/logger/single.go)

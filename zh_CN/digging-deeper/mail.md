@@ -1,7 +1,5 @@
 # 发送邮件
 
-[[toc]]
-
 ## 简介
 
 Goravel 可以使用 `facades.Mail()` 便捷的在本地发送邮件。
@@ -22,6 +20,17 @@ err := facades.Mail().To([]string{"example@example.com"}).
   Content(mail.Html("<h1>Hello Goravel</h1>")).
   Headers(map[string]string{"X-Mailer": "Goravel"}).
   Subject("Subject").
+  Send()
+```
+
+要发送纯文本正文内容，只需设置 `Text` 字段。Goravel 会将 `Text` 作为纯文本邮件部分发送，不会将其渲染为模板路径：
+
+```go
+import "github.com/goravel/framework/mail"
+
+err := facades.Mail().To([]string{"example@example.com"}).
+  Subject("Subject").
+  Content(mail.Content{Text: "Hello Goravel"}).
   Send()
 ```
 
@@ -93,9 +102,9 @@ func NewOrderShipped() *OrderShipped {
 	return &OrderShipped{}
 }
 
-func (m *OrderShipped) Headers() map[string]string{
+func (m *OrderShipped) Headers() map[string]string {
 	return map[string]string{
-		"X-Mailer": "Goravel",
+		"X-Mailer": "goravel",
 	}
 }
 
@@ -104,7 +113,10 @@ func (m *OrderShipped) Attachments() []string {
 }
 
 func (m *OrderShipped) Content() *mail.Content {
-	return &mail.Content{Html: "<h1>Hello Goravel</h1>"}
+	return &mail.Content{
+		Html: "<h1>Hello Goravel</h1>",
+		Text: "Hello Goravel",
+	}
 }
 
 func (m *OrderShipped) Envelope() *mail.Envelope {
@@ -131,3 +143,77 @@ func (m *OrderShipped) Queue() *mail.Queue {
 err := facades.Mail().Send(mails.NewOrderShipped())
 err := facades.Mail().Queue(mails.NewOrderShipped())
 ```
+
+## 使用模板
+
+邮件模块现在支持直接使用 `html/template` 引擎的模板。 这允许你使用动态数据渲染电子邮件模板。
+
+### 配置
+
+要启用模板支持，请配置 `config/mail.go` 文件：
+
+```go
+"template": map[string]any{
+    "default": config.Env("MAIL_TEMPLATE_ENGINE", "html"),
+    "engines": map[string]any{
+        "html": map[string]any{
+            "driver": "html",
+            "path":   config.Env("MAIL_VIEWS_PATH", "resources/views/mail"),
+        },
+    },
+}
+```
+
+### 创建模板
+
+在指定的视图目录中创建你的电子邮件模板。 例如：
+
+```html
+<!-- resources/views/mail/welcome.html -->
+<h1>欢迎 {{.Name}}！</h1>
+<p>感谢您加入 {{.AppName}}。</p>
+```
+
+```text
+# resources/views/mail/welcome.txt
+Welcome {{.Name}}!
+Thank you for joining {{.AppName}}.
+```
+
+### 使用模板发送电子邮件
+
+你可以使用 `Content` 方法来指定模板并传递动态数据。使用 `HtmlView` 指定 HTML 模板，使用 `TextView` 指定纯文本模板：
+
+```go
+facades.Mail().
+    To([]string{"user@example.com"}).
+    Subject("Welcome").
+    Content(mail.Content{
+        HtmlView: "welcome.html",
+        TextView: "welcome.txt",
+        With: map[string]any{
+            "Name": "John",
+            "AppName": "Goravel",
+        },
+    }).
+    Send()
+```
+
+### 自定义模板引擎
+
+你也可以在配置中注册自定义模板引擎：
+
+```go
+"template": map[string]any{
+    "default": "blade",
+    "engines": map[string]any{
+        "blade": map[string]any{
+            "driver": "custom",
+            "via": func() (mail.Template, error) {
+                return NewBladeTemplateEngine(), nil
+            },
+        },
+    },
+}
+```
+

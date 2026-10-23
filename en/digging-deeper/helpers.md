@@ -1,7 +1,5 @@
 # Helpers
 
-[[toc]]
-
 ## Available Methods
 
 ### Paths
@@ -177,12 +175,12 @@ The `carbon.SetTestNow()` function sets the time to a test value:
 carbon.SetTestNow(carbon.Now())
 ```
 
-### `carbon.CleanTestNow()`
+### `carbon.ClearTestNow()`
 
-The `carbon.CleanTestNow()` function clears the test now Carbon object:
+The `carbon.ClearTestNow()` function clears the test now Carbon object:
 
 ```go
-carbon.CleanTestNow()
+carbon.ClearTestNow()
 ```
 
 ### `carbon.IsTestNow()`
@@ -598,6 +596,8 @@ convert.Pointer(1) // *int(1)
 ```go
 import "github.com/goravel/framework/support/collect"
 ```
+
+The helpers below operate directly on slices or maps. For fluent eager and lazy collections, see [Collections](collections.md).
 
 ### `collect.Count()`
 

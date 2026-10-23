@@ -1,7 +1,5 @@
 # 简介
 
-[[toc]]
-
 ## 简介
 
 几乎所有的应用程序都需要和数据库进行交互，Goravel 为此提供了一套非常简单易用的数据库交互方式。 开发者可以使用原生 SQL，查询构造器，以及 [Orm](../orm/getting-started) 等方式与数据库交互。 目前，Goravel 为以下四种数据库提供了官方支持：
@@ -59,7 +57,7 @@ import "github.com/goravel/framework/contracts/database"
 
 ## 运行原生 SQL 查询
 
-配置好数据库连接后，你就可以使用 `facades.DB()` 来运行查询。 `facades.DB` 提供了各种方法用于运行查询：`Select`、`Insert`、`Update`、`Delete` 和 `Statement`。
+配置好数据库连接后，你就可以使用 `facades.DB()` 来运行查询。 `facades.DB()` 提供了多种方法用于运行查询：`Select`、`Insert`、`Update`、`Delete` 和 `Statement`。
 
 ### Select
 
@@ -75,7 +73,9 @@ var product Product
 err := facades.DB().Select(&product, "SELECT * FROM products WHERE id = ?", 1)
 ```
 
-> 注意：不同数据库驱动需要使用不同的占位符。 例如：`?` 占位符适用于 MySQL，而 `@` 占位符适用于 PostgreSQL。
+::: warning
+不同数据库驱动需要使用不同的占位符。 例如：`?` 占位符适用于 MySQL，而 `@` 占位符适用于 PostgreSQL。
+:::
 
 ### Insert
 
@@ -163,15 +163,15 @@ Goravel 提供了几个 Artisan 命令来帮助你了解数据库的结构。
 可以使用 `db:show` 命令查看数据库中的所有表。
 
 ```bash
-go run . artisan db:show
-go run . artisan db:show --database=postgres
+./artisan db:show
+./artisan db:show --database=postgres
 ```
 
 也可以使用 `db:table` 命令查看指定表的结构。
 
 ```bash
-go run . artisan db:table
-go run . artisan db:table --database=postgres
+./artisan db:table
+./artisan db:table --database=postgres
 ```
 
 ### 表的摘要信息
@@ -179,6 +179,6 @@ go run . artisan db:table --database=postgres
 如果你想获得数据库中单张表的概览，你可以执行 `db:table` Artisan命令。 这个命令提供了一个数据库表的概览，包括它的列、类型、属性、键和索引:
 
 ```bash
-go run . artisan db:table users
-go run . artisan db:table users --database=postgres
+./artisan db:table users
+./artisan db:table users --database=postgres
 ```

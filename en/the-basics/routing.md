@@ -1,7 +1,5 @@
 # Routing
 
-[[toc]]
-
 ## Introduction
 
 The Goravel routing module can be operated by `facades.Route()`.
@@ -17,9 +15,20 @@ Goravel uses [gin](https://github.com/gin-gonic/gin) as its default HTTP driver.
 
 ## Default Routing File
 
-To define routing files, simply navigate to the `/routes` directory. By default, the framework utilizes a sample route located in `/routes/web.go`. To establish routing binding, the `func Web()` method is registered in the `app/providers/route_service_provider.go` file.
+To define routing files, simply navigate to the `routes` directory. By default, the framework utilizes a sample route located in `routes/web.go` and it is registered in the `bootstrap/app.go::WithRouting` function.
 
-If you require more precise management, you can add routing files to the `/routes` directory and register them in the `app/providers/route_service_provider.go` file.
+If you require more precise management, you can add routing files to the `routes` directory and register them in the `bootstrap/app.go::WithRouting` function as well.
+
+```go
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithRouting(func() {
+	      routes.Web()
+	    }).
+		WithConfig(config.Boot).
+		Create()
+}
+```
 
 ## Get Routes List
 
@@ -29,93 +38,13 @@ Use the `route:list` command to view routes list:
 ./artisan route:list
 ```
 
-## Start HTTP Server
-
-Start the HTTP server in `main.go` in the root directory by calling `facades.Route().Run()`. This will automatically fetch the `route.host` configuration.
-
-```go
-package main
-
-import (
-  "github.com/goravel/framework/facades"
-
-  "goravel/bootstrap"
-)
-
-func main() {
-  // This bootstraps the framework and gets it ready for use.
-  bootstrap.Boot()
-
-  // Start http server by facades.Route().
-  go func() {
-    if err := facades.Route().Run(); err != nil {
-      facades.Log().Errorf("Route run error: %v", err)
-    }
-  }()
-
-  select {}
-}
-```
-
-## Start HTTPS Server
-
-Please complete the configuration of `http.tls` in `config/http.go` before using HTTPS, the `facades.Route().RunTLS()` method will start the HTTPS server according to the relevant configuration:
-
-```go
-// main.go
-if err := facades.Route().RunTLS(); err != nil {
-  facades.Log().Errorf("Route run error: %v", err)
-}
-```
-
-You can also use `facades.Route().RunTLSWithCert()` method to customize the host and certificate.
-
-```go
-// main.go
-if err := facades.Route().RunTLSWithCert("127.0.0.1:3000", "ca.pem", "ca.key"); err != nil {
-  facades.Log().Errorf("Route run error: %v", err)
-}
-```
-
-## Close HTTP/HTTPS Server
-
-You can gracefully close the HTTP/HTTPS server by calling the `Shutdown` method, which will wait for all requests to be processed before closing.
-
-```go
-// main.go
-bootstrap.Boot()
-
-// Create a channel to listen for OS signals
-quit := make(chan os.Signal)
-signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
-// Start http server by facades.Route().
-go func() {
-  if err := facades.Route().Run(); err != nil {
-    facades.Log().Errorf("Route run error: %v", err)
-  }
-}()
-
-// Listen for the OS signal
-go func() {
-  <-quit
-  if err := facades.Route().Shutdown(); err != nil {
-    facades.Log().Errorf("Route shutdown error: %v", err)
-  }
-
-  os.Exit(0)
-}()
-
-select {}
-```
-
 ### Routing Methods
 
 | Methods    | Action                                |
 | ---------- | ------------------------------------- |
 | Group      | [Group Routing](#group-routing)       |
 | Prefix     | [Routing Prefix](#routing-prefix)     |
-| ServeHTTP  | [Testing Routing](#testing-routing)   |
+| ServeHTTP  | [HTTP Tests](../testing/http-tests.md)   |
 | Get        | [Basic Routing](#basic-routing)       |
 | Post       | [Basic Routing](#basic-routing)       |
 | Put        | [Basic Routing](#basic-routing)       |
@@ -127,8 +56,9 @@ select {}
 | Static     | [File Routing](#file-routing)         |
 | StaticFile | [File Routing](#file-routing)         |
 | StaticFS   | [File Routing](#file-routing)         |
-| Middleware | [Middleware](#middleware)             |
-| GetRoutes  | [Get All Routes](#get-all-routes)     |
+| Middleware         | [Middleware](#middleware)                   |
+| WithoutMiddleware  | [Without Middleware](#without-middleware)   |
+| GetRoutes          | [Get All Routes](#get-all-routes)           |
 | Name       | [Set Route Name](#set-route-name)     |
 | Info       | [Get Route Info](#get-route-info)     |
 
@@ -220,6 +150,43 @@ facades.Route().Middleware(middleware.Cors()).Get("users", userController.Show)
 
 Detail [Middleware](./middleware.md)
 
+## Without Middleware
+
+The `WithoutMiddleware` method allows you to exclude specific middleware from routes that would otherwise be applied by parent groups. This is useful for webhook endpoints, public APIs, or any route that should bypass certain middleware (like authentication or rate limiting).
+
+### Route-Level Exclusion
+
+```go
+import "github.com/goravel/framework/http/middleware"
+
+facades.Route().Middleware(middleware.Auth(), middleware.Throttle("global")).Group(func(router route.Router) {
+  // This route has both middlewares
+  router.Get("/dashboard", dashboardController.Index)
+
+  // This route excludes the throttle middleware
+  router.Get("/api/webhook", webhookController.Handle).
+    WithoutMiddleware(middleware.Throttle("global"))
+})
+```
+
+### Group-Level Exclusion
+
+Exclude middleware for all routes within a group:
+
+```go
+facades.Route().Middleware(middleware.Auth()).
+  WithoutMiddleware(middleware.Auth()).
+  Group(func(router route.Router) {
+    // All routes in this group bypass Auth middleware
+    router.Get("/public", publicController.Index)
+    router.Get("/public/{id}", publicController.Show)
+  })
+```
+
+::: warning
+Middleware exclusion uses the `Signature()` method to identify middlewares. Make sure each middleware returns a unique signature for `WithoutMiddleware` to work correctly. The built-in framework middlewares already provide unique signatures.
+:::
+
 ## Get All Routes
 
 ```go
@@ -252,21 +219,20 @@ facades.Route().Fallback(func(ctx http.Context) http.Response {
 
 ### Defining Rate Limiters
 
-Goravel includes powerful and customizable rate-limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `app/providers/route_service_provider.go` class.
+Goravel includes powerful and customizable rate-limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs, then register them in the `bootstrap/app.go::WithCallback` function.
 
 Rate limiters are defined using the `facades.RateLimiter()`'s `For` method. The `For` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. The rate limiter name may be any string you wish:
 
 ```go
-import (
-  contractshttp "github.com/goravel/framework/contracts/http"
-  "github.com/goravel/framework/facades"
-  "github.com/goravel/framework/http/limit"
-)
-
-func (receiver *RouteServiceProvider) configureRateLimiting() {
-  facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
-    return limit.PerMinute(1000)
-  })
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithConfig(config.Boot).
+    WithCallback(func() {
+      facades.RateLimiter().For("global", func(ctx contractshttp.Context) contractshttp.Limit {
+        return limit.PerMinute(1000)
+      })
+    }).
+    Create()
 }
 ```
 
@@ -350,4 +316,6 @@ facades.Route().Middleware(middleware.Throttle("global")).Get("/", func(ctx http
 
 Goravel has CORS enabled by default, the configuration can be modified in `config/cors.go`.
 
-> For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+::: tip
+For more on CORS and its headers, see the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+:::

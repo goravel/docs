@@ -1,23 +1,45 @@
+---
+aside: false
+---
+
 # Excellent Extend Packages
 
-You can find extended packages for Goravel here, and you can also create a PR for [goravel/docs](https://github.com/goravel/docs) to commit your owner package, please improve the test coverage of your package as much as possible.
+Here you can find packages that extend Goravel. To add your own, open a PR against [goravel/docs](https://github.com/goravel/docs). Please keep your package's test coverage as high as you can.
+
 | Package | Description | Test Coverage |
 | --------------------------------------------------------------------------------- | --------------------------------------------- | ------------- |
 | [goravel/gin](https://github.com/goravel/gin) | The Gin driver for `facades.Route()` | 83.1% |
 | [goravel/fiber](https://github.com/goravel/fiber) | The Fiber driver for `facades.Route()` | 81.0% |
+| [goravel/openai](https://github.com/goravel/openai) | An OpenAI driver for `facades.AI()` | 80.4% |
 | [goravel/cos](https://github.com/goravel/cos) | A COS disk driver for `facades.Storage()` | 80.2% |
 | [goravel/minio](https://github.com/goravel/minio) | A Minio disk driver for `facades.Storage()` | 79.6% |
 | [goravel/redis](https://github.com/goravel/redis) | A Redis disk driver for `facades.Cache()` | 79.1% |
 | [goravel/s3](https://github.com/goravel/s3) | A S3 disk driver for `facades.Storage()` | 77.8% |
 | [goravel/oss](https://github.com/goravel/oss) | A OSS disk driver for `facades.Storage()` | 76.5% |
 | [goravel/installer](https://github.com/goravel/installer) | Goravel installer | 76.2% |
-| [goravel/cloudinary](https://github.com/goravel/cloudinary) | A Cloudinary disk driver for `facades.Storage() | 75.4% |
 | [goravel/postgres](https://github.com/goravel/postgres) | A Postgres database driver | 73.7% |
+| [goravel/anthropic](https://github.com/goravel/anthropic) | An Anthropic driver for `facades.AI()` | 73.3% |
 | [goravel/mysql](https://github.com/goravel/mysql) | A MySQL database driver | 73.3% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver) | A Sqlserver database driver | 60.6% |
+| [goravel/gemini](https://github.com/goravel/gemini) | A Gemini driver for `facades.AI()` | 51.8% |
 | [goravel/sqlite](https://github.com/goravel/sqlite) | A Sqlite database driver | 45.2% |
-| [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli) | A goravel scaffold commandline tool | 15.2% |
+| [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | A MongoDB package | 16.9% |
+| [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli) | A Goravel scaffold command-line tool | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow) | A workflow package | 4.4% |
 | [hulutech-web/goravel-crud](https://github.com/hulutech-web/goravel-crud) | A goravel crud package | 4.2% |
 | [hulutech-web/tinker](https://github.com/hulutech-web/tinker) | A goravel tinker package | 3.6% |
 | [hulutech-web/goravel-socket](https://github.com/hulutech-web/goravel-socket) | A webSocket package | 0% |
+
+::: info
+Packages are ordered by test coverage.
+:::
+
+::: tip Help developers find your package
+Add the [`goravel-package`](https://github.com/topics/goravel-package) topic to your repository.
+
+1. On GitHub, navigate to the main page of the repository.
+2. In the top right corner of the page, to the right of "About", click gear icon (settings).
+3. Under "Topics", start to type the topic you want to add to your repository to display a dropdown menu of any matching topics.
+4. Click the topic you want to add or continue typing to create a new topic. For example: `goravel-package`, `goravel` and any other relevant keywords.
+5. Click `Save changes` — this will make your package more discoverable.
+:::

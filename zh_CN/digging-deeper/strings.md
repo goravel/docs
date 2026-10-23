@@ -1,7 +1,5 @@
 # Strings
 
-[[toc]]
-
 ## 简介
 
 Goravel 提供了一个流畅的字符串操作库，允许你轻松地操作字符串。 可以使用 `String` 方法创建一个 `string` 实例，允许你调用各种方法，每个方法都会返回当前字符串实例，允许你将多个方法链接在一起。 要在应用链式操作后获得最终字符串值，你可以调用 `String` 方法，返回底部的 `string` 值。
@@ -537,6 +535,29 @@ str.Of("Goravel").Pipe(func(s string) string {
 }).String() // "Goravel Framework"
 ```
 
+### `复数`
+
+`Plural` 方法将单数字符串转换为其复数形式。 此函数支持[复数](pluralization.md)支持的任何语言。
+
+```go
+import "github.com/goravel/framework/support/str"
+
+plural := str.Of("goose").Plural().String()
+// "geese"
+```
+
+你可以向函数提供一个整数参数来获取字符串的单数或复数形式：
+
+```go
+import "github.com/goravel/framework/support/str"
+
+plural := str.Of("goose").Plural(2).String()
+// "geese"
+
+plural = str.Of("goose").Plural(1).String()
+// "goose"
+```
+
 ### `Prepend`
 
 `Prepend` 方法将给定值添加到字符串的开头。
@@ -651,6 +672,17 @@ import "github.com/goravel/framework/support/str"
 str.Of("  Goravel  ").RTrim().String() // "  Goravel"
 
 str.Of("/framework/").RTrim("/").String() // "/framework"
+```
+
+### `单数`
+
+`Singular` 方法将字符串转换为其单数形式。 此函数支持[复数](pluralization.md)支持的任何语言。
+
+```go
+import "github.com/goravel/framework/support/str"
+
+singular := str.Of("heroes").Singular().String()
+// "hero"
 ```
 
 ### `Snake`

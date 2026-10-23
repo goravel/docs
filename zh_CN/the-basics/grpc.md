@@ -1,202 +1,455 @@
 # Grpc
 
-[[toc]]
-
 ## 简介
 
-Grpc 模块可以使用 `facades.Grpc()` 进行操作。
+Grpc 模块可以使用 `facades.Grpc()` 进行操作。 Goravel 提供了一种优雅的方式来构建和使用 gRPC 服务，同时支持服务端和客户端。
 
 ## 配置
 
-在 `config/grpc.go` 中进行 Grpc 模块的配置，其中 `grpc.host` 配置 server 的域名，`grpc.clients` 配置 client 的相关信息。
+在 `config/grpc.go` 文件中，你可以配置 Grpc 模块，其中 `grpc.host` 配置服务器的域名，`grpc.clients` 配置将连接到 gRPC 服务的客户端。
+
+## 传输凭证
+
+默认情况下，gRPC 客户端使用不安全的传输凭证，gRPC 服务器在不使用 TLS 的情况下监听。当你的服务需要 TLS 或 mTLS 时，可以在应用程序引导期间注册 `credentials.TransportCredentials`。
+
+### 服务端凭证
+
+在 gRPC 服务器创建之前注册服务端凭证：
+
+```go
+import "google.golang.org/grpc/credentials"
+
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithGrpcServerCredentials(func() credentials.TransportCredentials {
+      creds, err := credentials.NewServerTLSFromFile(
+        "storage/certs/server.crt",
+        "storage/certs/server.key",
+      )
+      if err != nil {
+        panic(err)
+      }
+
+      return creds
+    }).
+    Create()
+}
+```
+
+### 客户端凭证
+
+在 `bootstrap/app.go` 中注册客户端凭证分组，然后在 `config/grpc.go` 中使用 `grpc.clients.<name>.credentials` 引用分组名称：
+
+```go
+import "google.golang.org/grpc/credentials"
+
+func Boot() contractsfoundation.Application {
+  return foundation.Setup().
+    WithGrpcClientCredentials(func() map[string]credentials.TransportCredentials {
+      userCreds, err := credentials.NewClientTLSFromFile(
+        "storage/certs/ca.crt",
+        "user.example.com",
+      )
+      if err != nil {
+        panic(err)
+      }
+
+      return map[string]credentials.TransportCredentials{
+        "user": userCreds,
+      }
+    }).
+    Create()
+}
+```
+
+```go
+// config/grpc.go
+"clients": map[string]any{
+  "user": map[string]any{
+    "host":           config.Env("GRPC_USER_HOST", ""),
+    "port":           config.Env("GRPC_USER_PORT", ""),
+    "credentials":    "user",
+    "interceptors":   []string{},
+    "stats_handlers": []string{},
+  },
+},
+```
+
+如果客户端没有配置 `credentials` 值，Goravel 会使用不安全的凭证以保持向后兼容。如果配置的分组未注册，Goravel 会记录警告并回退到不安全的凭证。对于 mTLS，请返回使用 `credentials.NewTLS` 创建的凭证，并附带包含所需客户端证书或受信任 CA 池的 `tls.Config`。
 
 ## 控制器
 
-控制器文件可以定义在 `/app/grpc/controllers` 目录中。
+控制器可以定义在 `app/grpc/controllers` 目录中。
 
 ```go
-// app/grpc/controllers
+// app/grpc/controllers/user_controller.go
 package controllers
 
 import (
   "context"
   "net/http"
 
-  "github.com/goravel/grpc/protos"
+  proto "github.com/goravel/example-proto"
 )
 
-type UserController struct {
-}
+type UserController struct {}
 
 func NewUserController() *UserController {
   return &UserController{}
 }
 
-func (r *UserController) Show(ctx context.Context, req *protos.UserRequest) (protoBook *protos.UserResponse, err error) {
-  return &protos.UserResponse{
+func (r *UserController) GetUser(ctx context.Context, req *proto.UserRequest) (*proto.UserResponse, error) {
+  return &proto.UserResponse{
     Code: http.StatusOK,
+    Data: &proto.User{
+      Id:    1,
+      Name:  "Goravel",
+      Token: req.GetToken(),
+    },
   }, nil
 }
 ```
 
 ## 定义路由
 
-所有路由文件可以定义在 `/routes` 目录中，例如 `/routes/grpc.go`。 然后注册到 `app/providers/grpc_service_provider.go` 文件中，以实现路由的绑定。
+所有路由文件可以定义在 `routes` 目录中，例如 `routes/grpc.go`。
 
 ```go
 // routes/grpc.go
 package routes
 
 import (
-  "github.com/goravel/grpc/protos"
-  "github.com/goravel/framework/facades"
+  proto "github.com/goravel/example-proto"
 
+  "goravel/app/facades"
   "goravel/app/grpc/controllers"
 )
 
 func Grpc() {
-  protos.RegisterUserServer(facades.Grpc().Server(), controllers.NewUserController())
+  proto.RegisterUserServiceServer(facades.Grpc().Server(), controllers.NewUserController())
 }
 ```
 
 ### 注册路由
 
-路由定义好后，在 `app/providers/grpc_service_provider.go` 文件中注册路由。
+路由定义好后，在 `bootstrap/app.go::WithRouting` 函数中注册路由。
 
 ```go
-// app/providers/grpc_service_provider.go
-package providers
-
-import (
-  "goravel/routes"
-)
-
-type GrpcServiceProvider struct {
+func Boot() contractsfoundation.Application {
+	return foundation.Setup().
+		WithRouting(func() {
+      routes.Grpc()
+    }).
+		WithConfig(config.Boot).
+		Create()
 }
-
-func (router *GrpcServiceProvider) Register() {
-
-}
-
-func (router *GrpcServiceProvider) Boot() {
-  routes.Grpc()
-}
-```
-
-## 启动 Grpc 服务器
-
-在 `main.go` 中启动 Grpc.
-
-```go
-go func() {
-  if err := facades.Grpc().Run(); err != nil {
-    facades.Log().Errorf("Grpc run error: %v", err)
-  }
-}()
 ```
 
 ## 拦截器
 
-拦截器可以定义在 `app/grpc/inteceptors` 文件夹中，然后注册到 `app/grpc/kernel.go`。
+拦截器提供了一种拦截和修改 gRPC 请求和响应的方法。 它们可用于日志记录、身份验证、指标收集等。
 
-**服务端拦截器**
+### 定义拦截器
 
-在 `app/grpc/kernel.go:UnaryServerInterceptors` 方法中设置服务端拦截器。 例如：
+拦截器可以定义在 `app/grpc/interceptors` 文件夹中。
+
+**服务端拦截器示例:**
 
 ```go
-// app/grpc/kernel.go
+// app/grpc/interceptors/test_server.go
+package interceptors
+
 import (
-  "goravel/app/grpc/interceptors"
+  "context"
 
   "google.golang.org/grpc"
 )
 
-func (kernel *Kernel) UnaryServerInterceptors() []grpc.UnaryServerInterceptor {
-  return []grpc.UnaryServerInterceptor{
-    interceptors.Server,
-  }
+func TestServer(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) {
+  // 在请求被处理之前添加你的逻辑
+  // 例如：日志记录、身份验证等
+  
+  return handler(ctx, req)
 }
 ```
 
-**客户端拦截器**
-
-在 `app/grpc/kernel.go:UnaryClientInterceptorGroups` 方法中设置客户端拦截器，该方法可以对拦截器进行分组。 例如设置 `trace` 分组下包含 `interceptors.Client`。
+**客户端拦截器示例:**
 
 ```go
-// app/grpc/kernel.go
+// app/grpc/interceptors/test_client.go
+package interceptors
+
 import (
-  "goravel/app/grpc/interceptors"
+  "context"
 
   "google.golang.org/grpc"
 )
 
-func (kernel *Kernel) UnaryClientInterceptorGroups() map[string][]grpc.UnaryClientInterceptor {
-  return map[string][]grpc.UnaryClientInterceptor{
-    "trace": {
-      interceptors.Client,
-    },
-  }
+func TestClient(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+  // 在请求发送之前添加你的逻辑
+  // 例如：日志记录、添加元数据等
+  
+  return invoker(ctx, method, req, reply, cc, opts...)
 }
 ```
 
-分组名 `trace` 可以被应用到配置项 `grpc.clients.interceptors` 上，这样该 `Client` 就会被应用该分组下的所有拦截器。 例如：
+### 注册拦截器
+
+在 `bootstrap/app.go` 文件中使用 `WithGrpcServerInterceptors`、`WithGrpcClientInterceptors` 函数注册拦截器。
+
+```go
+import (
+  "github.com/goravel/framework/contracts/foundation"
+  "google.golang.org/grpc"
+  "google.golang.org/grpc/stats"
+  
+  "goravel/app/grpc/interceptors"
+)
+
+func Boot() foundation.Application {
+  return foundation.Setup().
+    WithGrpcServerInterceptors(func() []grpc.UnaryServerInterceptor {
+      return []grpc.UnaryServerInterceptor{
+        interceptors.TestServer,
+      }
+    }).
+    WithGrpcClientInterceptors(func() map[string][]grpc.UnaryClientInterceptor {
+      return map[string][]grpc.UnaryClientInterceptor{
+        "default": {
+          interceptors.TestClient,
+        },
+      }
+    }).
+    WithGrpcServerStatsHandlers(func() []stats.Handler {
+      return []stats.Handler{}
+    }).
+    WithGrpcClientStatsHandlers(func() map[string][]stats.Handler {
+      return map[string][]stats.Handler{}
+    }).
+    Create()
+}
+```
+
+### 将拦截器应用于客户端
+
+上面示例中的 `default` 是一个组名，可以应用于配置项 `grpc.clients.interceptors`。 这样，客户端将使用该组下的所有拦截器。
 
 ```go
 package config
 
 import (
-  "github.com/goravel/framework/facades"
+  "goravel/app/facades"
 )
 
 func init() {
-  config := facades.Config
-  config.Add("grpc", map[string]interface{}{
-    // Grpc Configuration
-    //
-    // Configure your server host
+  config := facades.Config()
+  config.Add("grpc", map[string]any{
     "host": config.Env("GRPC_HOST", ""),
-
-    // Configure your client host and interceptors.
-    // Interceptors can be the group name of UnaryClientInterceptorGroups in app/grpc/kernel.go.
+    "port": config.Env("GRPC_PORT", ""),
+    
     "clients": map[string]any{
       "user": map[string]any{
-        "host":         config.Env("GRPC_USER_HOST", ""),
-        "port":         config.Env("GRPC_USER_PORT", ""),
-        "interceptors": []string{"trace"},
+        "host":           config.Env("GRPC_USER_HOST", ""),
+        "port":           config.Env("GRPC_USER_PORT", ""),
+        "interceptors":   []string{"default"},
+        "stats_handlers": []string{},
       },
     },
   })
 }
 ```
 
-## 关闭 Grpc
+## Stats Handlers
 
-你可以调用 `Shutdown` 方法优雅的关闭 Grpc，该方法将会等待所有请求处理完毕后再执行关闭操作。
+Stats Handlers 是 gRPC 用于收集指标和监控 RPC 调用的机制。 它们提供了对客户端和服务器端 RPC 生命周期的钩子，使其非常适合用于：
+
+- 请求/响应监控
+- 性能指标收集
+- 自定义可观测性集成
+- 日志记录和调试
+
+### 注册 Stats Handlers
+
+Stats Handlers 可以在 `bootstrap/app.go` 文件中使用 `WithGrpcServerStatsHandlers` 和 `WithGrpcClientStatsHandlers` 函数进行注册。
+
+**服务端 Stats Handlers 示例:**
 
 ```go
-// main.go
-bootstrap.Boot()
+// app/grpc/stats/server_handler.go
+package stats
 
-// 创建一个通道来监听操作系统信号
-quit := make(chan os.Signal)
-signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+import (
+  "context"
+  
+  "google.golang.org/grpc/stats"
+)
 
-// 通过 facades.Grpc 启动 Grpc
-go func() {
-  if err := facades.Grpc().Run(); err != nil {
-    facades.Log().Errorf("Grpc run error: %v", err)
+type ServerStatsHandler struct{}
+
+func NewServerStatsHandler() stats.Handler {
+  return &ServerStatsHandler{}
+}
+
+func (h *ServerStatsHandler) TagRPC(ctx context.Context, info *stats.RPCTagInfo) context.Context {
+  // 在每个 RPC 开始时调用
+  return ctx
+}
+
+func (h *ServerStatsHandler) HandleRPC(ctx context.Context, s stats.RPCStats) {
+  // 为每个 RPC 事件调用
+}
+
+func (h *ServerStatsHandler) TagConn(ctx context.Context, info *stats.ConnTagInfo) context.Context {
+  // 当连接建立时调用
+  return ctx
+}
+
+func (h *ServerStatsHandler) HandleConn(ctx context.Context, s stats.ConnStats) {
+  // 为连接事件调用
+}
+```
+
+**客户端 Stats Handlers 示例:**
+
+```go
+// app/grpc/stats/client_handler.go
+package stats
+
+import (
+  "context"
+  
+  "google.golang.org/grpc/stats"
+)
+
+type ClientStatsHandler struct{}
+
+func NewClientStatsHandler() stats.Handler {
+  return &ClientStatsHandler{}
+}
+
+func (h *ClientStatsHandler) TagRPC(ctx context.Context, info *stats.RPCTagInfo) context.Context {
+  return ctx
+}
+
+func (h *ClientStatsHandler) HandleRPC(ctx context.Context, s stats.RPCStats) {
+  // 处理 RPC 事件，如 Begin、End、InPayload、OutPayload
+}
+
+func (h *ClientStatsHandler) TagConn(ctx context.Context, info *stats.ConnTagInfo) context.Context {
+  return ctx
+}
+
+func (h *ClientStatsHandler) HandleConn(ctx context.Context, s stats.ConnStats) {
+  // 处理连接事件
+}
+```
+
+### 在引导程序中注册
+
+在 `bootstrap/app.go` 中注册 Stats Handlers：
+
+```go
+import (
+  "google.golang.org/grpc/stats"
+  
+  grpcstats "goravel/app/grpc/stats"
+)
+
+func Boot() foundation.Application {
+  return foundation.Setup().
+    WithGrpcServerStatsHandlers(func() []stats.Handler {
+      return []stats.Handler{
+        grpcstats.NewServerStatsHandler(),
+      }
+    }).
+    WithGrpcClientStatsHandlers(func() map[string][]stats.Handler {
+      return map[string][]stats.Handler{
+        "user": {
+          grpcstats.NewClientStatsHandler(),
+        },
+      }
+    }).
+    Create()
+}
+```
+
+### 将 Stats Handlers 应用于客户端
+
+组名（例如 `"user"`）必须在你的 `config/grpc.go` 文件中的客户端 `stats_handlers` 数组中被引用：
+
+```go
+package config
+
+import (
+  "goravel/app/facades"
+)
+
+func init() {
+  config := facades.Config()
+  config.Add("grpc", map[string]any{
+    "host": config.Env("GRPC_HOST", ""),
+    "port": config.Env("GRPC_PORT", ""),
+    
+    "clients": map[string]any{
+      "user": map[string]any{
+        "host":           config.Env("GRPC_USER_HOST", ""),
+        "port":           config.Env("GRPC_USER_PORT", ""),
+        "interceptors":   []string{"default"},
+        "stats_handlers": []string{"user"}, // 应用 "user" Stats Handlers
+      },
+    },
+  })
+}
+```
+
+## gRPC 客户端
+
+Goravel 提供了一种简单的方法来创建 gRPC 客户端以使用 gRPC 服务。
+
+### 连接到 gRPC 服务器
+
+你可以使用 `facades.Grpc().Connect()` 方法连接到 gRPC 服务器。 连接名称应与 `config/grpc.go` 中定义的键匹配。
+
+```go
+// app/http/controllers/grpc_controller.go
+package controllers
+
+import (
+  "fmt"
+
+  proto "github.com/goravel/example-proto"
+  "github.com/goravel/framework/contracts/http"
+
+  "goravel/app/facades"
+)
+
+type GrpcController struct {
+  userService proto.UserServiceClient
+}
+
+func NewGrpcController() *GrpcController {
+  // 初始化过程可以移到 app/services/*.go
+  client, err := facades.Grpc().Connect("user")
+  if err != nil {
+    facades.Log().Error(fmt.Sprintf("连接到用户服务器失败: %+v", err))
   }
-}()
 
-// 监听操作系统信号
-go func() {
-  <-quit
-  if err := facades.Grpc().Shutdown(); err != nil {
-    facades.Log().Errorf("Grpc Shutdown error: %v", err)
+  return &GrpcController{
+    userService: proto.NewUserServiceClient(client),
+  }
+}
+
+func (r *GrpcController) User(ctx http.Context) http.Response {
+  resp, err := r.userService.GetUser(ctx, &proto.UserRequest{
+    Token: ctx.Request().Input("token"),
+  })
+  if err != nil {
+    return ctx.Response().String(http.StatusInternalServerError, fmt.Sprintf("调用 UserService.GetUser 错误: %+v", err))
+  }
+  if resp.Code != http.StatusOK {
+    return ctx.Response().String(http.StatusInternalServerError, fmt.Sprintf("用户服务返回错误, 代码: %d, 消息: %s", resp.Code, resp.Message))
   }
 
-  os.Exit(0)
-}()
-
-select {}
+  return ctx.Response().Success().Json(resp.GetData())
+}
 ```
