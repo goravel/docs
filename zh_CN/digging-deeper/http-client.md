@@ -60,6 +60,7 @@ type Response interface {
     Redirect() bool                 // 检查响应是否为重定向（3xx 状态码）
     ServerError() bool              // 检查状态码是否在 5xx 范围内
     Status() int                    // 获取 HTTP 状态码
+    Stream() (io.ReadCloser, error) // 返回 ReadCloser 允许流式传输响应体
     Successful() bool               // 检查状态码是否在 2xx 范围内
 
     /* 状态码相关方法 */
