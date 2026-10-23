@@ -41,18 +41,11 @@ type Response interface {
     Header(name string) string       // 获取指定名称的 Header 值
     Headers() http.Header            // 获取所有响应 Header
     Json() (map[string]any, error)   // 将响应体解码为 JSON 并返回 map
-<<<<<<< HEAD
     Redirect() bool                 // 检查响应是否为重定向（3xx 状态码）
     ServerError() bool              // 检查状态码是否在 5xx 范围内
     Status() int                    // 获取 HTTP 状态码
     Stream() (io.ReadCloser, error) // 返回 ReadCloser 允许流式传输响应体
-    Successful() bool               // 检查状态码是否在 2xx 范围内
-=======
-    Redirect() bool                  // 检查响应是否为重定向（3xx 状态码）
-    ServerError() bool               // 检查状态码是否在 5xx 范围内
-    Status() int                     // 获取 HTTP 状态码
-    Successful() bool                // 检查状态码是否在 2xx 范围内
->>>>>>> 633e59a760b9a5f07197125c49b834c871367bb0
+    Successful() bool               // 检查状态码是否在 2xx 范围
 
     /* 状态码相关方法 */
 
