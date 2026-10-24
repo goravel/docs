@@ -20,6 +20,7 @@ Here you can find packages that extend Goravel. To add your own, open a PR again
 | [goravel/postgres](https://github.com/goravel/postgres) | A Postgres database driver | 73.7% |
 | [goravel/anthropic](https://github.com/goravel/anthropic) | An Anthropic driver for `facades.AI()` | 73.3% |
 | [goravel/mysql](https://github.com/goravel/mysql) | A MySQL database driver | 73.3% |
+| [beratkara/goralens](https://github.com/beratkara/goralens) | A debug assistant inspired by Laravel Telescope | 72.5% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver) | A Sqlserver database driver | 60.6% |
 | [goravel/gemini](https://github.com/goravel/gemini) | A Gemini driver for `facades.AI()` | 51.8% |
 | [goravel/sqlite](https://github.com/goravel/sqlite) | A Sqlite database driver | 45.2% |

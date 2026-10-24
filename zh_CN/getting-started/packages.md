@@ -20,6 +20,7 @@ aside: false
 | [goravel/postgres](https://github.com/goravel/postgres)                                 | Postgres 数据库驱动                  | 73.7% |
 | [goravel/anthropic](https://github.com/goravel/anthropic)                               | `facades.AI()` 模块 Anthropic 驱动   | 73.3% |
 | [goravel/mysql](https://github.com/goravel/mysql)                                       | MySQL 数据库驱动                     | 73.3% |
+| [beratkara/goralens](https://github.com/beratkara/goralens)                             | 调试助手，灵感来自 Laravel Telescope | 72.5% |
 | [goravel/sqlserver](https://github.com/goravel/sqlserver)                               | Sqlserver 数据库驱动                 | 60.6% |
 | [goravel/gemini](https://github.com/goravel/gemini)                                     | `facades.AI()` 模块 Gemini 驱动      | 51.8% |
 | [goravel/sqlite](https://github.com/goravel/sqlite)                                     | Sqlite 数据库驱动                    | 45.2% |
