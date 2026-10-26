@@ -23,6 +23,7 @@ aside: false
 | [goravel/sqlserver](https://github.com/goravel/sqlserver)                               | Sqlserver 数据库驱动                 | 60.6% |
 | [goravel/gemini](https://github.com/goravel/gemini)                                     | `facades.AI()` 模块 Gemini 驱动      | 51.8% |
 | [goravel/sqlite](https://github.com/goravel/sqlite)                                     | Sqlite 数据库驱动                    | 45.2% |
+| [beratkara/goralens](https://github.com/beratkara/goralens)                             | 调试助手，灵感来自 Laravel Telescope | 43.2% |
 | [portofolio-mager/goravel-mongodb](https://github.com/portofolio-mager/goravel-mongodb) | MongoDB 包                       | 16.9% |
 | [hulutech-web/goravel-kit-cli](https://github.com/hulutech-web/goravel-kit-cli)         | Goravel Scaffold 命令行工具          | 15.2% |
 | [hulutech-web/goravel-workflow](https://github.com/hulutech-web/goravel-workflow)       | 工作流                             | 4.4%  |
