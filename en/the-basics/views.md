@@ -114,7 +114,7 @@ This middleware can be applied to routes to ensure that requests are coming from
 
 ::: v-pre
 1. Register the middleware (`github.com/goravel/framework/http/middleware::VerifyCsrfToken(exceptPaths)`) to global or a specific route.
-2. Add `<input type="hidden" name="_token" value="{{ .csrf_token }}" />` to your form in the view file, or add `X-CSRF-TOKEN={{ .csrf_token }}` to your request header to include the CSRF token.
+2. Add `{{ .csrf_field }}` (which renders `<input type="hidden" name="_token" value="{{ .csrf_token }}" />`) to your form in the view file, or add `X-CSRF-TOKEN={{ .csrf_token }}` to your request header to include the CSRF token.
 3. The middleware will automatically verify the token on form submission.
 :::
 
