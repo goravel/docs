@@ -11,6 +11,11 @@ export const config = defineConfig({
       collapsed: true,
       items: sidebarPrologue()
     }, {
+      text: "企业支持",
+      base: "/zh_CN/support/",
+      collapsed: true,
+      items: sidebarSupport()
+    }, {
       text: "升级",
       base: "/zh_CN/upgrade/",
       collapsed: true,
@@ -158,6 +163,12 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
   }, {
     text: "隐私政策",
     link: 'privacy'
+  }];
+}
+function sidebarSupport(): DefaultTheme.SidebarItem[] {
+  return [{
+    text: "订阅套餐对比",
+    link: 'enterprise'
   }];
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {
