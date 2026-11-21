@@ -167,7 +167,7 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
 }
 function sidebarSupport(): DefaultTheme.SidebarItem[] {
   return [{
-    text: "订阅套餐对比",
+    text: "订阅服务",
     link: 'enterprise'
   }];
 }
