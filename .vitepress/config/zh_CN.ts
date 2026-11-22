@@ -111,6 +111,11 @@ function nav(): DefaultTheme.NavItem[] {
       activeMatch: '^/zh_CN/getting-started/packages'
     },
     {
+      text: '企业支持',
+      link: '/zh_CN/support/enterprise',
+      activeMatch: '^/zh_CN/support/'
+    },
+    {
       text: '版本发布',
       link: '/zh_CN/prologue/releases',
       activeMatch: '^/zh_CN/(prologue/releases|upgrade/)'
