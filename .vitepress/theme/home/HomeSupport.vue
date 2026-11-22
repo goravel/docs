@@ -6,18 +6,18 @@ const { tr, link } = useI18n()
 </script>
 
 <template>
-<section class="home-sec support">
+<section class="home-sec">
   <div class="g-wrap">
     <header class="g-sec-head">
       <h2 class="g-h2">{{ tr(SUPPORT.title) }}</h2>
       <p class="g-lead">{{ tr(SUPPORT.lead) }}</p>
     </header>
 
-    <div class="support-plans">
-      <article v-for="plan in SUPPORT.plans" :key="plan.name" class="support-plan">
+    <div class="home-support-plans">
+      <article v-for="plan in SUPPORT.plans" :key="plan.name" class="home-support-plan">
         <h3 class="g-h3">{{ tr(plan.name) }}</h3>
         <p class="g-body muted">{{ tr(plan.says) }}</p>
-        <p class="support-channel">
+        <p class="home-support-channel">
           <span class="g-label muted">{{ tr('Response channel') }}</span>{{ tr(plan.channel) }}
         </p>
       </article>
@@ -36,7 +36,7 @@ const { tr, link } = useI18n()
 </template>
 
 <style>
-.support-plans {
+.home-support-plans {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: 56px;
@@ -44,7 +44,7 @@ const { tr, link } = useI18n()
   border-left: 1px solid var(--g-line);
 }
 
-.support-plan {
+.home-support-plan {
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -53,11 +53,11 @@ const { tr, link } = useI18n()
   border-bottom: 1px solid var(--g-line);
 }
 
-.support-plan .g-body {
+.home-support-plan .g-body {
   margin-top: 10px;
 }
 
-.support-channel {
+.home-support-channel {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -70,11 +70,11 @@ const { tr, link } = useI18n()
 }
 
 @media (max-width: 900px) {
-  .support-plans {
+  .home-support-plans {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .support-plan {
+  .home-support-plan {
     padding: 28px 20px 32px;
   }
 }
