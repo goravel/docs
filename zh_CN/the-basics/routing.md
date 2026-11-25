@@ -120,6 +120,92 @@ facades.Route().Group(func(router route.Router) {
 facades.Route().Prefix("users").Get("/", userController.Show)
 ```
 
+## 域名路由
+
+### 将路由限制到某个域名
+
+你可以使用 `Domain` 方法将路由限制为只处理指定域名的请求。没有设置域名的路由会匹配任意域名。
+
+```go
+// routes/web.go
+package routes
+
+import (
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/contracts/route"
+
+	"goravel/app/facades"
+)
+
+func Web() {
+	facades.Route().Domain("admin.example.com").Group(func(router route.Router) {
+		router.Get("/", func(ctx http.Context) http.Response {
+			return ctx.Response().String(http.StatusOK, "admin home")
+		})
+	})
+
+	facades.Route().Get("/", func(ctx http.Context) http.Response {
+		return ctx.Response().String(http.StatusOK, "home")
+	})
+}
+```
+
+匹配时会忽略端口和大小写，所以 `Admin.Example.com:3000` 会进入第一个路由。无效的域名，例如带有协议、端口、路径或 `*` 通配符的域名，会在注册路由时触发 panic。
+
+### 读取域名参数
+
+用花括号包裹的一段，例如 `{account}.example.com`，会匹配域名中的一段。你可以像读取路由参数一样，通过 `Route`、`Input` 或 `All` 读取它的值：
+
+```go
+// routes/web.go
+package routes
+
+import (
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/contracts/route"
+
+	"goravel/app/facades"
+)
+
+func Web() {
+	facades.Route().Domain("{account}.example.com").Group(func(router route.Router) {
+		router.Get("/users/{id}", func(ctx http.Context) http.Response {
+			return ctx.Response().Success().Json(http.Json{
+				"account": ctx.Request().Route("account"),
+				"id":      ctx.Request().Route("id"),
+			})
+		})
+	})
+}
+```
+
+```text
+GET http://goravel.example.com/users/1
+{"account":"goravel","id":"1"}
+```
+
+参数值为小写。一个参数只匹配一段，所以 `a.b.example.com` 不会匹配 `{account}.example.com`。当路径参数与域名参数同名时，以路径参数为准。
+
+### 由哪个域名处理请求
+
+请求由第一个匹配其域名的路由域名处理。先尝试没有参数的域名，再按注册顺序尝试带参数的域名，所以无论注册顺序如何，`admin.example.com` 都优先于 `{account}.example.com`。
+
+设置了域名的路由优先于没有域名的路由。当匹配的域名没有对应路径或方法的路由时，请求会交给没有域名的路由处理，而不会交给其他域名。
+
+`Info` 的 `Domain` 字段返回路由所限制的域名，匹配任意域名的路由该字段为空：
+
+```go
+// routes/web.go
+facades.Route().Domain("admin.example.com").Get("/users", userController.Index).Name("admin.users")
+
+info := facades.Route().Info("admin.users")
+// info.Domain: "admin.example.com", info.Path: "/users"
+```
+
+::: warning 域名来自客户端
+域名是根据请求的 `Host` 头匹配的，而这个头由客户端决定。不要把域名作为显示某个账户数据前的唯一检查，还需要确认用户有权访问这些数据。
+:::
+
 ## 文件路由
 
 ```go

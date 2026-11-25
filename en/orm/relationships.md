@@ -411,6 +411,116 @@ facades.Orm().Query().Model(&users).Association("Team").Append(&userA, &userB, &
 facades.Orm().Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]models.User{userA, userB, userC})
 ```
 
+## Querying Relationship Existence
+
+The examples in this section use a `User` model that has many `Post` models, and a `Post` model that has many `Comment` models:
+
+```go
+// app/models/user.go
+package models
+
+import "github.com/goravel/framework/database/orm"
+
+type User struct {
+	orm.Model
+	Name  string
+	Posts []*Post
+}
+
+type Post struct {
+	orm.Model
+	UserID    uint
+	Title     string
+	Published bool
+	Comments  []*Comment
+}
+
+type Comment struct {
+	orm.Model
+	PostID uint
+	Body   string
+}
+```
+
+### Filtering By Related Records
+
+You may use the `Has` method to retrieve the models that have at least one related record. The relation is the name of the field, as in `With`:
+
+```go
+// app/http/controllers/user_controller.go
+var users []models.User
+err := facades.Orm().Query().Model(&models.User{}).Has("Posts").Find(&users)
+if err != nil {
+	return ctx.Response().Status(http.StatusInternalServerError).String(err.Error())
+}
+```
+
+Pass an operator and a count to compare the number of related records. The operators are `=`, `!=`, `<>`, `<`, `<=`, `>` and `>=`:
+
+```go
+// Users with three or more posts.
+err := facades.Orm().Query().Model(&models.User{}).Has("Posts", ">=", 3).Find(&users)
+```
+
+A nested relation is written with a dot. This query retrieves the users that have at least one post with at least one comment:
+
+```go
+err := facades.Orm().Query().Model(&models.User{}).Has("Posts.Comments").Find(&users)
+```
+
+The query builds an `EXISTS` subquery from the relationship, so it works for has one, has many, belongs to, many to many and polymorphic relationships without extra configuration.
+
+### Adding Conditions To The Related Records
+
+You may use the `WhereHas` method to add conditions to the related records. The callback receives a query on the related model:
+
+```go
+// Users with at least one published post.
+err := facades.Orm().Query().Model(&models.User{}).WhereHas("Posts", func(query orm.Query) orm.Query {
+	return query.Where("published", true)
+}).Find(&users)
+```
+
+`WhereHas` takes the same operator and count as `Has`, after the callback:
+
+```go
+// Users with two or more published posts.
+err := facades.Orm().Query().Model(&models.User{}).WhereHas("Posts", func(query orm.Query) orm.Query {
+	return query.Where("published", true)
+}, ">=", 2).Find(&users)
+```
+
+The global scopes of the related model and its soft deletes apply to the related records.
+
+### Querying Relationship Absence
+
+You may use the `DoesntHave` and `WhereDoesntHave` methods to retrieve the models without related records:
+
+```go
+// Users without posts.
+err := facades.Orm().Query().Model(&models.User{}).DoesntHave("Posts").Find(&users)
+
+// Users without published posts.
+err = facades.Orm().Query().Model(&models.User{}).WhereDoesntHave("Posts", func(query orm.Query) orm.Query {
+	return query.Where("published", true)
+}).Find(&users)
+```
+
+As in Laravel, `DoesntHave("Posts.Comments")` retrieves the users that don't have a post with comments.
+
+### Combining The Conditions With Or
+
+`OrHas`, `OrWhereHas`, `OrDoesntHave` and `OrWhereDoesntHave` join the condition with `OR`, like `OrWhere`:
+
+```go
+// Users named Goravel, or with at least one post.
+err := facades.Orm().Query().Model(&models.User{}).Where("name", "Goravel").OrHas("Posts").Find(&users)
+```
+
+::: warning The query needs a model
+The relation is resolved on the model of the query, set with `Model` or by the destination passed to `Find`, `First` or a similar method. Without one, or when the related model uses another database connection, the query returns an error.
+:::
+
 ## Eager Loading
 
 Eager loading conveniences for querying multiple models, and alleviates the "N + 1" query problem. To illustrate the N + 1 query problem, consider a `Book` model that "belongs to" an `Author` model:
