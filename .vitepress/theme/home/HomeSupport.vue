@@ -1,12 +1,20 @@
 <script setup lang="ts">
 import { useI18n } from '../i18n'
 import { SUPPORT } from './config'
-import { SUPPORT_PLANS, SUPPORT_ROWS, type SupportValue } from '../../support'
+import {
+  SUPPORT_PLANS,
+  SUPPORT_ROWS,
+  supportDiscountLabel,
+  type SupportPrice,
+  type SupportValue
+} from '../../support'
 
 const { tr, link } = useI18n()
 
 const yes = (v: SupportValue) => v === true
 const text = (v: SupportValue) => (typeof v === 'string' ? v : '')
+const annualNote = (price: SupportPrice) =>
+  `${tr('Billed annually')} ${price.annual} · ${supportDiscountLabel(price)}`
 </script>
 
 <template>
@@ -25,9 +33,7 @@ const text = (v: SupportValue) => (typeof v === 'string' ? v : '')
           <strong>{{ plan.price.monthly }}</strong>
           <span class="g-label muted">{{ tr('per month') }}</span>
         </p>
-        <p class="home-support-annual">
-          {{ tr('Billed annually') }} {{ plan.price.annual }} · {{ tr('two months free') }}
-        </p>
+        <p class="home-support-annual">{{ annualNote(plan.price) }}</p>
         <dl class="home-support-rows">
           <div v-for="row in SUPPORT_ROWS" :key="row.label" class="home-support-row">
             <dt class="g-label muted">{{ row.label }}</dt>

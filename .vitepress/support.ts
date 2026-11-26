@@ -8,6 +8,7 @@ export interface SupportRow {
 export interface SupportPrice {
   monthly: string
   annual: string
+  annualMonths: number
 }
 
 export interface SupportPlan {
@@ -23,18 +24,21 @@ export const SUPPORT_PRICE_LABEL = '价格'
 export const SUPPORT_PLANS: SupportPlan[] = [
   {
     name: '优先支持',
-    price: { monthly: '¥1,280', annual: '¥12,800' }
+    price: { monthly: '¥1,280', annual: '¥12,800', annualMonths: 10 }
   },
   {
     name: '生产保障',
-    price: { monthly: '¥3,980', annual: '¥39,800' },
+    price: { monthly: '¥3,980', annual: '¥39,800', annualMonths: 10 },
     featured: true
   },
   {
     name: '尊享专属',
-    price: { monthly: '¥9,980', annual: '¥99,800' }
+    price: { monthly: '¥9,980', annual: '¥99,800', annualMonths: 10 }
   }
 ]
+
+export const supportDiscountLabel = (price: SupportPrice) =>
+  `省 ${12 - price.annualMonths} 个月`
 
 export const SUPPORT_ROWS: SupportRow[] = [
   {
@@ -56,7 +60,11 @@ export const SUPPORT_ROWS: SupportRow[] = [
   { label: '版本变更风险提前通知', values: [true, true, true] },
   {
     label: 'PHP 迁移支持',
-    values: ['1 次 60 分钟迁移咨询', '1 次迁移方案评审', '迁移全程指导（每季度 1 次评审）']
+    values: [
+      '1 次 60 分钟迁移咨询',
+      '1 次迁移方案评审',
+      '迁移全程指导（每季度 1 次评审）'
+    ]
   },
   { label: '框架缺陷加急评估与临时补丁支持', values: [false, true, true] },
   { label: '长期兼容分支维护', values: [false, false, true] }

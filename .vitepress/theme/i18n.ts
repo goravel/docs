@@ -97,7 +97,6 @@ const zh_CN: Dict = {
   'Compare support plans': '订阅套餐对比',
   'per month': '/ 月',
   'Billed annually': '年付',
-  'two months free': '省 2 个月',
   'Most popular': '推荐',
   Included: '包含',
   'Not included': '未包含'

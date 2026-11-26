@@ -1,9 +1,19 @@
 <script setup lang="ts">
-import { SUPPORT_ITEM_LABEL, SUPPORT_PLANS, SUPPORT_PRICE_LABEL, SUPPORT_ROWS } from '../../support'
-import type { SupportValue } from '../../support'
+import {
+  SUPPORT_ITEM_LABEL,
+  SUPPORT_PLANS,
+  SUPPORT_PRICE_LABEL,
+  SUPPORT_ROWS,
+  supportDiscountLabel,
+  type SupportPrice,
+  type SupportValue
+} from '../../support'
 
 const cell = (value: SupportValue) =>
   typeof value === 'boolean' ? (value ? '✅' : '❌') : value
+
+const annualNote = (price: SupportPrice) =>
+  `年付 ${price.annual}（${supportDiscountLabel(price)}）`
 </script>
 
 <template>
@@ -19,7 +29,9 @@ const cell = (value: SupportValue) =>
         <td>{{ SUPPORT_PRICE_LABEL }}</td>
         <td v-for="plan in SUPPORT_PLANS" :key="`${plan.name}-price`">
           <strong>{{ plan.price.monthly }}</strong> / 月
-          <span class="support-price-annual">年付 {{ plan.price.annual }}（省 2 个月）</span>
+          <span class="support-price-annual">
+            {{ annualNote(plan.price) }}
+          </span>
         </td>
       </tr>
       <tr v-for="row in SUPPORT_ROWS" :key="row.label">
@@ -31,7 +43,7 @@ const cell = (value: SupportValue) =>
 </template>
 
 <style scoped>
-.support-price-row td {
+.support-price-row strong {
   white-space: nowrap;
 }
 
