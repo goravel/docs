@@ -219,21 +219,10 @@ export const OPEN_SOURCE: { title: string; joins: Join[] } = {
   ]
 }
 
-interface Plan {
-  name: string
-  says: string
-  channel: string
-}
-
-export const SUPPORT: { title: string; lead: string; cta: { text: string; link: string }; plans: Plan[] } = {
+export const SUPPORT: { title: string; lead: string; cta: { text: string; link: string } } = {
   title: 'Enterprise support.',
   lead: 'Priority, production and dedicated subscription plans, each with a response channel and PHP migration help. Support is a service, not a software license: the framework stays MIT licensed and free.',
-  cta: { text: 'Compare support plans', link: '/support/enterprise.html' },
-  plans: [
-    { name: 'Priority', says: 'Pre-launch projects and small production teams.', channel: 'Priority ticket queue' },
-    { name: 'Production', says: 'Teams running core production workloads.', channel: 'Two-hour response on business days' },
-    { name: 'Dedicated', says: 'High-availability, compliance-heavy core systems.', channel: '24/7 emergency channel' }
-  ]
+  cta: { text: 'Compare support plans', link: '/support/enterprise.html' }
 }
 
 export const CORE_TEAM = ['hwbrzzl', 'krishankumar01', 'DevHaoZi', 'almas-x']

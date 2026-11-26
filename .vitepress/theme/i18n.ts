@@ -95,16 +95,8 @@ const zh_CN: Dict = {
   'Priority, production and dedicated subscription plans, each with a response channel and PHP migration help. Support is a service, not a software license: the framework stays MIT licensed and free.':
     '优先支持、生产保障与尊享专属三档订阅，每一档都有对应的响应通道与 PHP 迁移支持。订阅的是人工支持服务，不是软件授权：框架永久以 MIT 协议开源免费。',
   'Compare support plans': '订阅套餐对比',
-  Priority: '优先支持',
-  'Pre-launch projects and small production teams.': '中小流量生产团队。',
-  'Priority ticket queue': '优先工单队列',
-  Production: '生产保障',
-  'Teams running core production workloads.': '核心线上业务团队。',
-  'Two-hour response on business days': '工作日 2 小时响应',
-  Dedicated: '尊享专属',
-  'High-availability, compliance-heavy core systems.': '高可用、强合规核心系统。',
-  '24/7 emergency channel': '7×24 应急通道',
-  'Response channel': '响应通道'
+  Included: '包含',
+  'Not included': '未包含'
 }
 
 const DICTS: Record<string, Dict> = { zh_CN }

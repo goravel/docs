@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { useI18n } from '../i18n'
 import { SUPPORT } from './config'
+import { SUPPORT_PLANS, SUPPORT_ROWS, type SupportValue } from '../../support'
 
 const { tr, link } = useI18n()
+
+const yes = (v: SupportValue) => v === true
+const text = (v: SupportValue) => (typeof v === 'string' ? v : '')
 </script>
 
 <template>
@@ -14,12 +18,21 @@ const { tr, link } = useI18n()
     </header>
 
     <div class="home-support-plans">
-      <article v-for="plan in SUPPORT.plans" :key="plan.name" class="home-support-plan">
-        <h3 class="g-h3">{{ tr(plan.name) }}</h3>
-        <p class="g-body muted">{{ tr(plan.says) }}</p>
-        <p class="home-support-channel">
-          <span class="g-label muted">{{ tr('Response channel') }}</span>{{ tr(plan.channel) }}
-        </p>
+      <article v-for="(plan, p) in SUPPORT_PLANS" :key="plan" class="home-support-plan">
+        <h3 class="g-h3">{{ plan }}</h3>
+        <dl class="home-support-rows">
+          <div v-for="row in SUPPORT_ROWS" :key="row.label" class="home-support-row">
+            <dt class="g-label muted">{{ row.label }}</dt>
+            <dd v-if="typeof row.values[p] === 'boolean'" class="home-support-value">
+              <span
+                :class="yes(row.values[p]) ? 'icon-[lucide--check] home-support-yes' : 'icon-[lucide--x] home-support-no'"
+                role="img"
+                :aria-label="yes(row.values[p]) ? tr('Included') : tr('Not included')"
+              />
+            </dd>
+            <dd v-else class="home-support-value">{{ text(row.values[p]) }}</dd>
+          </div>
+        </dl>
       </article>
     </div>
 
@@ -53,20 +66,39 @@ const { tr, link } = useI18n()
   border-bottom: 1px solid var(--g-line);
 }
 
-.home-support-plan .g-body {
-  margin-top: 10px;
+.home-support-rows {
+  margin: 24px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--g-line);
 }
 
-.home-support-channel {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: auto 0 0;
-  padding-top: 24px;
-  font-family: var(--vp-font-family-mono);
-  font-size: 13.5px;
-  line-height: 20px;
+.home-support-row {
+  display: grid;
+  gap: 4px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--g-line);
+}
+
+.home-support-value {
+  margin: 0;
+  font-size: 15px;
+  line-height: 23px;
   color: var(--g-ink);
+}
+
+.home-support-value [class^='icon-'] {
+  display: block;
+  width: 17px;
+  height: 17px;
+  margin: 3px 0;
+}
+
+.home-support-yes {
+  color: var(--g-cyan);
+}
+
+.home-support-no {
+  color: var(--g-grey);
 }
 
 @media (max-width: 900px) {
