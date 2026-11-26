@@ -95,6 +95,10 @@ const zh_CN: Dict = {
   'Priority, production and dedicated subscription plans, each with a response channel and PHP migration help. Support is a service, not a software license: the framework stays MIT licensed and free.':
     '优先支持、生产保障与尊享专属三档订阅，每一档都有对应的响应通道与 PHP 迁移支持。订阅的是人工支持服务，不是软件授权：框架永久以 MIT 协议开源免费。',
   'Compare support plans': '订阅套餐对比',
+  'per month': '/ 月',
+  'Billed annually': '年付',
+  'two months free': '省 2 个月',
+  'Most popular': '推荐',
   Included: '包含',
   'Not included': '未包含'
 }

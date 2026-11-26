@@ -18,8 +18,16 @@ const text = (v: SupportValue) => (typeof v === 'string' ? v : '')
     </header>
 
     <div class="home-support-plans">
-      <article v-for="(plan, p) in SUPPORT_PLANS" :key="plan" class="home-support-plan">
-        <h3 class="g-h3">{{ plan }}</h3>
+      <article v-for="(plan, p) in SUPPORT_PLANS" :key="plan.name" class="home-support-plan">
+        <h3 class="g-h3">{{ plan.name }}</h3>
+        <span v-if="plan.featured" class="home-support-badge">{{ tr('Most popular') }}</span>
+        <p class="home-support-price">
+          <strong>{{ plan.price.monthly }}</strong>
+          <span class="g-label muted">{{ tr('per month') }}</span>
+        </p>
+        <p class="home-support-annual">
+          {{ tr('Billed annually') }} {{ plan.price.annual }} · {{ tr('two months free') }}
+        </p>
         <dl class="home-support-rows">
           <div v-for="row in SUPPORT_ROWS" :key="row.label" class="home-support-row">
             <dt class="g-label muted">{{ row.label }}</dt>
@@ -58,12 +66,48 @@ const text = (v: SupportValue) => (typeof v === 'string' ? v : '')
 }
 
 .home-support-plan {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
   padding: 36px 28px 32px;
   border-right: 1px solid var(--g-line);
   border-bottom: 1px solid var(--g-line);
+}
+
+.home-support-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 3px 8px;
+  border: 1px solid var(--g-cyan);
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--g-cyan-text);
+  background: var(--g-cyan-tint);
+}
+
+.home-support-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 18px 0 0;
+}
+
+.home-support-price strong {
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--g-ink);
+}
+
+.home-support-annual {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--g-grey);
 }
 
 .home-support-rows {
