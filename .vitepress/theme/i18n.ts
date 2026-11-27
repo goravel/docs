@@ -92,8 +92,8 @@ const zh_CN: Dict = {
   Sponsor: '赞助',
   'Features earn a T‑shirt': '贡献功能可获得 T 恤',
   'Enterprise support.': '企业支持',
-  'Priority, production and dedicated subscription plans, each with a response channel and PHP migration help. Support is a service, not a software license: the framework stays MIT licensed and free.':
-    '优先支持、生产保障与尊享专属三档订阅，每一档都有对应的响应通道与 PHP 迁移支持。订阅的是人工支持服务，不是软件授权：框架永久以 MIT 协议开源免费。',
+  'Priority, production and dedicated subscription plans, each with a support channel and a stated response window. Support is a service, not a software license: the framework stays MIT licensed and free.':
+    '优先支持、生产保障与尊享专属三档订阅，每一档都有明确的支持渠道与响应时限。订阅的是人工支持服务，不是软件授权：框架永久以 MIT 协议开源免费。',
   'Compare support plans': '订阅套餐对比',
   'per month': '/ 月',
   'Billed annually': '年付',
