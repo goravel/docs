@@ -1,16 +1,13 @@
 <script setup lang="ts">
+import SupportMark from './SupportMark.vue'
 import {
   SUPPORT_ITEM_LABEL,
   SUPPORT_PLANS,
   SUPPORT_PRICE_LABEL,
   SUPPORT_ROWS,
   supportDiscountLabel,
-  type SupportPrice,
-  type SupportValue
+  type SupportPrice
 } from '../../support'
-
-const cell = (value: SupportValue) =>
-  typeof value === 'boolean' ? (value ? '✅' : '❌') : value
 
 const annualNote = (price: SupportPrice) =>
   `年付 ${price.annual}（${supportDiscountLabel(price)}）`
@@ -36,7 +33,10 @@ const annualNote = (price: SupportPrice) =>
       </tr>
       <tr v-for="row in SUPPORT_ROWS" :key="row.label">
         <td>{{ row.label }}</td>
-        <td v-for="(value, i) in row.values" :key="i">{{ cell(value) }}</td>
+        <td v-for="(value, i) in row.values" :key="i">
+          <SupportMark v-if="typeof value === 'boolean'" :value="value" />
+          <template v-else>{{ value }}</template>
+        </td>
       </tr>
     </tbody>
   </table>

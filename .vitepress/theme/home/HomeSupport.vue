@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from '../i18n'
 import { SUPPORT } from './config'
+import SupportMark from '../components/SupportMark.vue'
 import {
   SUPPORT_PLANS,
   SUPPORT_ROWS,
@@ -11,7 +12,6 @@ import {
 
 const { tr, link } = useI18n()
 
-const yes = (v: SupportValue) => v === true
 const text = (v: SupportValue) => (typeof v === 'string' ? v : '')
 const annualNote = (price: SupportPrice) =>
   `${tr('Billed annually')} ${price.annual} · ${supportDiscountLabel(price)}`
@@ -38,11 +38,7 @@ const annualNote = (price: SupportPrice) =>
           <div v-for="row in SUPPORT_ROWS" :key="row.label" class="home-support-row">
             <dt class="g-label muted">{{ row.label }}</dt>
             <dd v-if="typeof row.values[p] === 'boolean'" class="home-support-value">
-              <span
-                :class="yes(row.values[p]) ? 'icon-[lucide--check] home-support-yes' : 'icon-[lucide--x] home-support-no'"
-                role="img"
-                :aria-label="yes(row.values[p]) ? tr('Included') : tr('Not included')"
-              />
+              <SupportMark :value="row.values[p] === true" />
             </dd>
             <dd v-else class="home-support-value">{{ text(row.values[p]) }}</dd>
           </div>
@@ -134,21 +130,6 @@ const annualNote = (price: SupportPrice) =>
   font-size: 15px;
   line-height: 23px;
   color: var(--g-ink);
-}
-
-.home-support-value [class^='icon-'] {
-  display: block;
-  width: 17px;
-  height: 17px;
-  margin: 3px 0;
-}
-
-.home-support-yes {
-  color: var(--g-cyan);
-}
-
-.home-support-no {
-  color: var(--g-grey);
 }
 
 @media (max-width: 900px) {
