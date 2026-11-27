@@ -43,11 +43,7 @@ export const supportDiscountLabel = (price: SupportPrice) =>
 export const SUPPORT_ROWS: SupportRow[] = [
   {
     label: '支持范围',
-    values: ['1 个生产应用', '3 个生产应用', '10 个生产应用']
-  },
-  {
-    label: '支持渠道',
-    values: ['工单 + 微信群', '工单 + 微信群', '专属微信群 + 工单']
+    values: ['1 个生产应用', '3 个生产应用', '不限']
   },
   {
     label: '服务时段',
@@ -55,13 +51,16 @@ export const SUPPORT_ROWS: SupportRow[] = [
   },
   {
     label: '首次响应',
-    values: ['咨询 1 个工作日', '故障 2 小时', '业务阻断 2 小时']
+    values: ['2 小时', '2 小时', '2 小时']
   },
   {
     label: '技术评审',
-    values: [false, '年度 1 次', '每季度 1 次']
+    values: ['每年 1 次', '每年 3 次', '每年 3 次']
   },
-  { label: '加急补丁', values: [false, true, true] },
-  { label: '专属联系人', values: [false, false, '固定联系人'] },
-  { label: '历史版本维护', values: [false, false, '1 条分支'] }
+  { label: '升级协助', values: [false, '每年 1 次', '每年 3 次'] },
+  { label: '加急补丁', values: [true, true, true] },
+  {
+    label: '版本维护期',
+    values: ['18 个月', '24 个月', '36 个月']
+  }
 ]
