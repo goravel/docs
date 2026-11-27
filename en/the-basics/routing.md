@@ -46,6 +46,7 @@ Use the `route:list` command to view routes list:
 | ---------- | ------------------------------------- |
 | Group      | [Group Routing](#group-routing)       |
 | Prefix     | [Routing Prefix](#routing-prefix)     |
+| Domain     | [Domain Routing](#domain-routing)     |
 | ServeHTTP  | [Testing Routing](#testing-routing)   |
 | Get        | [Basic Routing](#basic-routing)       |
 | Post       | [Basic Routing](#basic-routing)       |
@@ -119,6 +120,92 @@ facades.Route().Group(func(router route.Router) {
 ```go
 facades.Route().Prefix("users").Get("/", userController.Show)
 ```
+
+## Domain Routing
+
+### Limiting Routes To A Host
+
+You may use the `Domain` method to limit routes to requests for a given host. Routes without a domain match any host.
+
+```go
+// routes/web.go
+package routes
+
+import (
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/contracts/route"
+
+	"goravel/app/facades"
+)
+
+func Web() {
+	facades.Route().Domain("admin.example.com").Group(func(router route.Router) {
+		router.Get("/", func(ctx http.Context) http.Response {
+			return ctx.Response().String(http.StatusOK, "admin home")
+		})
+	})
+
+	facades.Route().Get("/", func(ctx http.Context) http.Response {
+		return ctx.Response().String(http.StatusOK, "home")
+	})
+}
+```
+
+The host is matched without its port and ignoring case, so `Admin.Example.com:3000` reaches the first route. An invalid domain, such as one with a scheme, a port, a path or a `*` wildcard, panics when the routes are registered.
+
+### Reading Domain Parameters
+
+A label in braces, such as `{account}.example.com`, matches one label of the host. You may read its value like a route parameter, with `Route`, `Input` or `All`:
+
+```go
+// routes/web.go
+package routes
+
+import (
+	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/contracts/route"
+
+	"goravel/app/facades"
+)
+
+func Web() {
+	facades.Route().Domain("{account}.example.com").Group(func(router route.Router) {
+		router.Get("/users/{id}", func(ctx http.Context) http.Response {
+			return ctx.Response().Success().Json(http.Json{
+				"account": ctx.Request().Route("account"),
+				"id":      ctx.Request().Route("id"),
+			})
+		})
+	})
+}
+```
+
+```text
+GET http://goravel.example.com/users/1
+{"account":"goravel","id":"1"}
+```
+
+The value is in lower case. A parameter matches a single label, so `a.b.example.com` doesn't match `{account}.example.com`. When a path parameter has the same name as a domain parameter, the path parameter wins.
+
+### Which Domain Serves A Request
+
+A request is served by the first domain that matches its host. Domains without parameters are tried first, then domains with parameters in the order they were registered, so `admin.example.com` wins over `{account}.example.com` whatever the order.
+
+Routes on a domain take priority over routes without one. When the matching domain has no route for the path or the method, the request goes on to the routes without a domain, not to another domain.
+
+`Info` returns the domain a route is limited to in its `Domain` field, which is empty for a route that matches any host:
+
+```go
+// routes/web.go
+facades.Route().Domain("admin.example.com").Get("/users", userController.Index).Name("admin.users")
+
+info := facades.Route().Info("admin.users")
+// info.Domain: "admin.example.com", info.Path: "/users"
+```
+
+::: warning The host comes from the client
+The domain is matched against the `Host` header of the request, which the client chooses. Don't use a domain as the only check before showing data that belongs to an account: check that the user may access it.
+:::
 
 ## File Routing
 

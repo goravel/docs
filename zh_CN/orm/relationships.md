@@ -411,6 +411,130 @@ facades.Orm().Query().Model(&users).Association("Team").Append(&userA, &userB, &
 facades.Orm().Query().Model(&users).Association("Team").Replace(&userA, &userB, &[]models.User{userA, userB, userC})
 ```
 
+## 查询关联是否存在
+
+本节的示例使用一个拥有多个 `Post` 模型的 `User` 模型，以及一个拥有多个 `Comment` 模型的 `Post` 模型：
+
+```go
+// app/models/user.go
+package models
+
+import "github.com/goravel/framework/database/orm"
+
+type User struct {
+	orm.Model
+	Name  string
+	Posts []*Post
+}
+
+type Post struct {
+	orm.Model
+	UserID    uint
+	Title     string
+	Published bool
+	Comments  []*Comment
+}
+
+type Comment struct {
+	orm.Model
+	PostID uint
+	Body   string
+}
+```
+
+### 按关联记录筛选
+
+你可以使用 `Has` 方法获取至少拥有一条关联记录的模型。关联名是字段名，与 `With` 相同：
+
+```go
+// app/http/controllers/user_controller.go
+package controllers
+
+import (
+	"github.com/goravel/framework/contracts/http"
+
+	"goravel/app/facades"
+	"goravel/app/models"
+)
+
+func (r *UserController) Index(ctx http.Context) http.Response {
+	var users []models.User
+	if err := facades.Orm().Query().Model(&models.User{}).Has("Posts").Find(&users); err != nil {
+		return ctx.Response().Status(http.StatusInternalServerError).String(err.Error())
+	}
+
+	return ctx.Response().Success().Json(users)
+}
+```
+
+传入运算符和数量可以比较关联记录的数量。支持的运算符有 `=`、`!=`、`<>`、`<`、`<=`、`>` 和 `>=`：
+
+```go
+// 拥有三篇或以上文章的用户。
+err := facades.Orm().Query().Model(&models.User{}).Has("Posts", ">=", 3).Find(&users)
+```
+
+嵌套关联使用点号表示。下面的查询获取至少有一篇带评论的文章的用户：
+
+```go
+err := facades.Orm().Query().Model(&models.User{}).Has("Posts.Comments").Find(&users)
+```
+
+查询会根据关联生成 `EXISTS` 子查询，传入运算符和数量时则生成 `COUNT(*)` 子查询，因此一对一、一对多、属于、多对多和多态关联都无需额外配置即可使用。
+
+### 为关联记录添加条件
+
+你可以使用 `WhereHas` 方法为关联记录添加条件。回调接收一个关联模型的查询，类型为 `github.com/goravel/framework/contracts/database/orm` 中的 `orm.Query`：
+
+```go
+import "github.com/goravel/framework/contracts/database/orm"
+
+// 至少有一篇已发布文章的用户。
+err := facades.Orm().Query().Model(&models.User{}).WhereHas("Posts", func(query orm.Query) orm.Query {
+	return query.Where("published", true)
+}).Find(&users)
+```
+
+`WhereHas` 在回调之后接收与 `Has` 相同的运算符和数量：
+
+```go
+// 拥有两篇或以上已发布文章的用户。
+err := facades.Orm().Query().Model(&models.User{}).WhereHas("Posts", func(query orm.Query) orm.Query {
+	return query.Where("published", true)
+}, ">=", 2).Find(&users)
+```
+
+关联模型的全局作用域和软删除会作用于关联记录。
+
+### 查询关联不存在
+
+你可以使用 `DoesntHave` 和 `WhereDoesntHave` 方法获取没有关联记录的模型：
+
+```go
+// 没有文章的用户。
+err := facades.Orm().Query().Model(&models.User{}).DoesntHave("Posts").Find(&users)
+
+// 没有已发布文章的用户。
+err = facades.Orm().Query().Model(&models.User{}).WhereDoesntHave("Posts", func(query orm.Query) orm.Query {
+	return query.Where("published", true)
+}).Find(&users)
+```
+
+与 Laravel 一样，`DoesntHave("Posts.Comments")` 获取没有带评论的文章的用户。
+
+### 使用 Or 组合条件
+
+`OrHas`、`OrWhereHas`、`OrDoesntHave` 和 `OrWhereDoesntHave` 会像 `OrWhere` 一样使用 `OR` 连接条件：
+
+```go
+// 名为 Goravel 的用户，或者至少有一篇文章的用户。
+err := facades.Orm().Query().Model(&models.User{}).Where("name", "Goravel").OrHas("Posts").Find(&users)
+```
+
+::: warning 查询需要模型
+关联是在查询的模型上解析的，模型可以通过 `Model` 设置，也可以由传给 `Find`、`First` 等方法的目标决定。如果没有模型，或者关联模型使用了另一个数据库连接，查询会返回错误。
+:::
+
 ## 预加载
 
 预加载为多个模型的查询提供方便，同时减轻了 `N + 1` 查询问题。 为了说明 `N + 1` 查询问题，请参考属于 `Author` 模型的 `Book` 模型：
