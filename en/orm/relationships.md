@@ -448,10 +448,22 @@ You may use the `Has` method to retrieve the models that have at least one relat
 
 ```go
 // app/http/controllers/user_controller.go
-var users []models.User
-err := facades.Orm().Query().Model(&models.User{}).Has("Posts").Find(&users)
-if err != nil {
-	return ctx.Response().Status(http.StatusInternalServerError).String(err.Error())
+package controllers
+
+import (
+	"github.com/goravel/framework/contracts/http"
+
+	"goravel/app/facades"
+	"goravel/app/models"
+)
+
+func (r *UserController) Index(ctx http.Context) http.Response {
+	var users []models.User
+	if err := facades.Orm().Query().Model(&models.User{}).Has("Posts").Find(&users); err != nil {
+		return ctx.Response().Status(http.StatusInternalServerError).String(err.Error())
+	}
+
+	return ctx.Response().Success().Json(users)
 }
 ```
 
@@ -468,13 +480,15 @@ A nested relation is written with a dot. This query retrieves the users that hav
 err := facades.Orm().Query().Model(&models.User{}).Has("Posts.Comments").Find(&users)
 ```
 
-The query builds an `EXISTS` subquery from the relationship, so it works for has one, has many, belongs to, many to many and polymorphic relationships without extra configuration.
+The query builds an `EXISTS` subquery from the relationship, or a `COUNT(*)` subquery when you pass an operator and a count, so it works for has one, has many, belongs to, many to many and polymorphic relationships without extra configuration.
 
 ### Adding Conditions To The Related Records
 
-You may use the `WhereHas` method to add conditions to the related records. The callback receives a query on the related model:
+You may use the `WhereHas` method to add conditions to the related records. The callback receives a query on the related model, of the `orm.Query` type from `github.com/goravel/framework/contracts/database/orm`:
 
 ```go
+import "github.com/goravel/framework/contracts/database/orm"
+
 // Users with at least one published post.
 err := facades.Orm().Query().Model(&models.User{}).WhereHas("Posts", func(query orm.Query) orm.Query {
 	return query.Where("published", true)

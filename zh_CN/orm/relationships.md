@@ -448,10 +448,22 @@ type Comment struct {
 
 ```go
 // app/http/controllers/user_controller.go
-var users []models.User
-err := facades.Orm().Query().Model(&models.User{}).Has("Posts").Find(&users)
-if err != nil {
-	return ctx.Response().Status(http.StatusInternalServerError).String(err.Error())
+package controllers
+
+import (
+	"github.com/goravel/framework/contracts/http"
+
+	"goravel/app/facades"
+	"goravel/app/models"
+)
+
+func (r *UserController) Index(ctx http.Context) http.Response {
+	var users []models.User
+	if err := facades.Orm().Query().Model(&models.User{}).Has("Posts").Find(&users); err != nil {
+		return ctx.Response().Status(http.StatusInternalServerError).String(err.Error())
+	}
+
+	return ctx.Response().Success().Json(users)
 }
 ```
 
@@ -468,13 +480,15 @@ err := facades.Orm().Query().Model(&models.User{}).Has("Posts", ">=", 3).Find(&u
 err := facades.Orm().Query().Model(&models.User{}).Has("Posts.Comments").Find(&users)
 ```
 
-查询会根据关联生成 `EXISTS` 子查询，因此一对一、一对多、属于、多对多和多态关联都无需额外配置即可使用。
+查询会根据关联生成 `EXISTS` 子查询，传入运算符和数量时则生成 `COUNT(*)` 子查询，因此一对一、一对多、属于、多对多和多态关联都无需额外配置即可使用。
 
 ### 为关联记录添加条件
 
-你可以使用 `WhereHas` 方法为关联记录添加条件。回调接收一个关联模型的查询：
+你可以使用 `WhereHas` 方法为关联记录添加条件。回调接收一个关联模型的查询，类型为 `github.com/goravel/framework/contracts/database/orm` 中的 `orm.Query`：
 
 ```go
+import "github.com/goravel/framework/contracts/database/orm"
+
 // 至少有一篇已发布文章的用户。
 err := facades.Orm().Query().Model(&models.User{}).WhereHas("Posts", func(query orm.Query) orm.Query {
 	return query.Where("published", true)
