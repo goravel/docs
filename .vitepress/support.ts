@@ -55,12 +55,12 @@ export const SUPPORT_ROWS: SupportRow[] = [
   },
   {
     label: '技术评审',
-    values: ['每年 1 次', '每年 3 次', '每年 3 次']
+    values: ['每年 1 次', '每年 2 次', '每年 4 次']
   },
-  { label: '升级协助', values: [false, '每年 1 次', '每年 3 次'] },
+  { label: '升级协助', values: ['每年 1 次', '每年 2 次', '每年 4 次'] },
   { label: '加急补丁', values: [true, true, true] },
   {
-    label: '版本维护期',
-    values: ['18 个月', '24 个月', '36 个月']
+    label: '维护期延长',
+    values: ['不延长', '+6 个月（共 18 个月）', '+12 个月（共 24 个月）']
   }
 ]
