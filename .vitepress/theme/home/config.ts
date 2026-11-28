@@ -219,6 +219,12 @@ export const OPEN_SOURCE: { title: string; joins: Join[] } = {
   ]
 }
 
+export const SUPPORT: { title: string; lead: string; cta: { text: string; link: string } } = {
+  title: 'Enterprise support.',
+  lead: 'Priority, production and dedicated subscription plans, each with a stated response window. Support is a service, not a software license: the framework stays MIT licensed and free.',
+  cta: { text: 'Compare support plans', link: '/support/enterprise.html' }
+}
+
 export const CORE_TEAM = ['hwbrzzl', 'krishankumar01', 'DevHaoZi', 'almas-x']
 
 export const CONTRIBUTORS = [

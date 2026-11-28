@@ -11,6 +11,11 @@ export const config = defineConfig({
       collapsed: true,
       items: sidebarPrologue()
     }, {
+      text: "企业支持",
+      base: "/zh_CN/support/",
+      collapsed: true,
+      items: sidebarSupport()
+    }, {
       text: "升级",
       base: "/zh_CN/upgrade/",
       collapsed: true,
@@ -106,6 +111,11 @@ function nav(): DefaultTheme.NavItem[] {
       activeMatch: '^/zh_CN/getting-started/packages'
     },
     {
+      text: '企业支持',
+      link: '/zh_CN/support/enterprise',
+      activeMatch: '^/zh_CN/support/'
+    },
+    {
       text: '版本发布',
       link: '/zh_CN/prologue/releases',
       activeMatch: '^/zh_CN/(prologue/releases|upgrade/)'
@@ -158,6 +168,12 @@ function sidebarPrologue(): DefaultTheme.SidebarItem[] {
   }, {
     text: "隐私政策",
     link: 'privacy'
+  }];
+}
+function sidebarSupport(): DefaultTheme.SidebarItem[] {
+  return [{
+    text: "订阅服务",
+    link: 'enterprise'
   }];
 }
 function sidebarUpgrade(): DefaultTheme.SidebarItem[] {

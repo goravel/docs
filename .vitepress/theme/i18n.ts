@@ -23,15 +23,15 @@ const zh_CN: Dict = {
   'Core layer': '核心层',
   'Data layer': '数据层',
   'Async layer': '异步层',
-  'Familiar structure.': '熟悉的结构。',
-  'Native Go.': '原生的 Go。',
+  'Familiar structure.': '熟悉的结构',
+  'Native Go.': '原生的 Go',
   'Routing, an ORM, validation, queues, events and cache, in one framework.':
     '路由、ORM、验证、队列、事件与缓存，尽在一个框架之中。',
   'Get started': '快速开始',
   'Compare with Laravel': '与 Laravel 对比',
-  'Start with the core.': '从核心开始。',
+  'Start with the core.': '从核心开始',
   'facades installed': '个门面已安装',
-  'Open source.': '开源。',
+  'Open source.': '开源',
   'WeChat group': '微信群',
   'Support with WeChat': '微信赞赏',
   'A Go framework with the structure of Laravel.': '拥有 Laravel 结构的 Go 框架。',
@@ -61,8 +61,8 @@ const zh_CN: Dict = {
   'Excellent Packages': '优秀扩展包',
   'Familiar facades, familiar method names': '熟悉的门面，熟悉的方法名',
   'The same file layout, artisan included': '相同的目录结构，自带 artisan',
-  'Laravel, line for line.': '与 Laravel 逐行对应。',
-  'facades. One framework.': '个门面，一个框架。',
+  'Laravel, line for line.': '与 Laravel 一致的风格',
+  'facades. One framework.': '个模块 一个框架',
   'One process': '一个进程',
   'HTTP, gRPC, queue, scheduler and telemetry start together.': 'HTTP、gRPC、队列、调度与遥测一同启动。',
   'Gin or Fiber': 'Gin 或 Fiber',
@@ -90,7 +90,16 @@ const zh_CN: Dict = {
   'Join Discord': '加入 Discord',
   'Questions and discussion': '提问与讨论',
   Sponsor: '赞助',
-  'Features earn a T‑shirt': '贡献功能可获得 T 恤'
+  'Features earn a T‑shirt': '贡献功能可获得 T 恤',
+  'Enterprise support.': '企业支持',
+  'Priority, production and dedicated subscription plans, each with a stated response window. Support is a service, not a software license: the framework stays MIT licensed and free.':
+    '优先支持、生产保障与尊享专属三档订阅，每一档都有明确的响应时限。订阅的是人工支持服务，不是软件授权：框架永久以 MIT 协议开源免费。',
+  'Compare support plans': '订阅套餐对比',
+  'per month': '/ 月',
+  'Billed annually': '年付',
+  'Most popular': '推荐',
+  Included: '包含',
+  'Not included': '未包含'
 }
 
 const DICTS: Record<string, Dict> = { zh_CN }
