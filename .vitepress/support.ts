@@ -61,6 +61,6 @@ export const SUPPORT_ROWS: SupportRow[] = [
   { label: '加急补丁', values: [true, true, true] },
   {
     label: '维护期延长',
-    values: ['不延长', '+6 个月（共 18 个月）', '+12 个月（共 24 个月）']
+    values: ['不延长（共 12 个月）', '+6 个月（共 18 个月）', '+12 个月（共 24 个月）']
   }
 ]
